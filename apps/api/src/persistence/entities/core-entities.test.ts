@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getMetadataArgsStorage } from "typeorm";
 import {
+  CommentEntity,
   ProjectEntity,
   StatusEntity,
   TaskEntity,
@@ -24,12 +25,14 @@ test("core persistence entities map to the expected table names", () => {
         table.target === StatusEntity ||
         table.target === TaskEntity ||
         table.target === TaskSkillEntity ||
-        table.target === TaskSkillVersionEntity,
+        table.target === TaskSkillVersionEntity ||
+        table.target === CommentEntity,
     )
     .map((table) => table.name)
     .sort();
 
   assert.deepEqual(tables, [
+    "comments",
     "projects",
     "statuses",
     "task_skill_versions",
@@ -205,5 +208,30 @@ test("task skill version columns, uniqueness, and indexes metadata are registere
     "idx_task_skill_versions_created_by_user_id",
     "idx_task_skill_versions_task_skill_id",
     "idx_task_skill_versions_workspace_id",
+  ]);
+});
+
+test("comment columns and lookup indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const bodyColumn = storage.columns.find(
+    (column) => column.target === CommentEntity && column.propertyName === "body",
+  );
+  const createdAtColumn = storage.columns.find(
+    (column) => column.target === CommentEntity && column.propertyName === "createdAt",
+  );
+  const updatedAtColumn = storage.columns.find(
+    (column) => column.target === CommentEntity && column.propertyName === "updatedAt",
+  );
+  const commentIndexes = storage.indices
+    .filter((index) => index.target === CommentEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(bodyColumn?.options.type, "text");
+  assert.equal(createdAtColumn?.options.type, "timestamptz");
+  assert.equal(updatedAtColumn?.options.type, "timestamptz");
+  assert.deepEqual(commentIndexes, [
+    "idx_comments_workspace_id_author_user_id",
+    "idx_comments_workspace_id_task_id",
   ]);
 });

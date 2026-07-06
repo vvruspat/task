@@ -3,6 +3,7 @@ import test from "node:test";
 import { parseApiConfig } from "./config.js";
 import { createApiDataSource, createTypeOrmDataSourceOptions } from "./data-source.js";
 import {
+  CommentEntity,
   ProjectEntity,
   StatusEntity,
   TaskEntity,
@@ -16,6 +17,7 @@ import { CreateCorePersistenceTables1783296000000 } from "./persistence/migratio
 import { CreateProjectsTable1783296060000 } from "./persistence/migrations/1783296060000-create-projects-table.js";
 import { CreateTasksTable1783296120000 } from "./persistence/migrations/1783296120000-create-tasks-table.js";
 import { CreateTaskSkillsTables1783296180000 } from "./persistence/migrations/1783296180000-create-task-skills-tables.js";
+import { CreateCommentsTable1783296240000 } from "./persistence/migrations/1783296240000-create-comments-table.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -43,12 +45,14 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     TaskEntity,
     TaskSkillEntity,
     TaskSkillVersionEntity,
+    CommentEntity,
   ]);
   assert.deepEqual(options.migrations, [
     CreateCorePersistenceTables1783296000000,
     CreateProjectsTable1783296060000,
     CreateTasksTable1783296120000,
     CreateTaskSkillsTables1783296180000,
+    CreateCommentsTable1783296240000,
   ]);
 });
 

@@ -91,3 +91,13 @@ export type TaskSkillVersionRecord = {
   createdByUserId: string;
   createdAt: Date;
 };
+
+export type CommentRecord = {
+  id: string;
+  workspaceId: string;
+  taskId: string;
+  authorUserId: string;
+  body: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

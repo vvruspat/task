@@ -1,3 +1,4 @@
+export { CommentEntity } from "./comment.entity.js";
 export { ProjectEntity } from "./project.entity.js";
 export { StatusEntity } from "./status.entity.js";
 export { TaskEntity } from "./task.entity.js";
