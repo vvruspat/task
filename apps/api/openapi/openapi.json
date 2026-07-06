@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getRoot",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get API health",
+        "tags": ["health"]
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "AppController_getHealth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get API health",
+        "tags": ["health"]
+      }
+    }
+  },
+  "info": {
+    "title": "tAsk API",
+    "description": "Backend API contract for tAsk.",
+    "version": "0.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "HealthResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Current API health status.",
+            "enum": ["ok"],
+            "example": "ok"
+          },
+          "service": {
+            "type": "string",
+            "description": "Service identifier.",
+            "example": "api"
+          },
+          "version": {
+            "type": "string",
+            "description": "API package version.",
+            "example": "0.0.0"
+          }
+        },
+        "required": ["status", "service", "version"]
+      }
+    }
+  }
+}
