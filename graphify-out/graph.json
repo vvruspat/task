@@ -547,7 +547,7 @@
       "label": "apiEntities",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L29",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "src_data_source_apientities",
       "community": 49,
@@ -557,7 +557,7 @@
       "label": "apiMigrations",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L45",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
       "community": 49,
@@ -567,7 +567,7 @@
       "label": "createTypeOrmDataSourceOptions()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L57",
+      "source_location": "L63",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
       "community": 49,
@@ -577,7 +577,7 @@
       "label": "createApiDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L68",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
       "community": 49,
@@ -882,6 +882,46 @@
       "id": "entities_task_entity_taskentity",
       "community": 50,
       "norm_label": "taskentity"
+    },
+    {
+      "label": "telegram-chat.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/telegram-chat.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_telegram_chat_entity",
+      "community": 50,
+      "norm_label": "telegram-chat.entity.ts"
+    },
+    {
+      "label": "TelegramChatEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/telegram-chat.entity.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "entities_telegram_chat_entity_telegramchatentity",
+      "community": 50,
+      "norm_label": "telegramchatentity"
+    },
+    {
+      "label": "telegram-identity.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/telegram-identity.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_telegram_identity_entity",
+      "community": 50,
+      "norm_label": "telegram-identity.entity.ts"
+    },
+    {
+      "label": "TelegramIdentityEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/telegram-identity.entity.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "entities_telegram_identity_entity_telegramidentityentity",
+      "community": 50,
+      "norm_label": "telegramidentityentity"
     },
     {
       "label": "user.entity.ts",
@@ -1504,6 +1544,66 @@
       "norm_label": ".down()"
     },
     {
+      "label": "1783296540000-create-telegram-tables.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_1783296540000_create_telegram_tables",
+      "community": 49,
+      "norm_label": "1783296540000-create-telegram-tables.ts"
+    },
+    {
+      "label": "createTelegramTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "migrations_1783296540000_create_telegram_tables_createtelegramtablessql",
+      "community": 49,
+      "norm_label": "createtelegramtablessql"
+    },
+    {
+      "label": "dropTelegramTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "migrations_1783296540000_create_telegram_tables_droptelegramtablessql",
+      "community": 49,
+      "norm_label": "droptelegramtablessql"
+    },
+    {
+      "label": "CreateTelegramTables1783296540000",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
+      "community": 49,
+      "norm_label": "createtelegramtables1783296540000"
+    },
+    {
+      "label": ".up()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_up",
+      "community": 49,
+      "norm_label": ".up()"
+    },
+    {
+      "label": ".down()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_down",
+      "community": 49,
+      "norm_label": ".down()"
+    },
+    {
       "label": "create-activity-events-table.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/persistence/migrations/create-activity-events-table.test.ts",
@@ -1612,6 +1712,16 @@
       "id": "migrations_create_tasks_table_test",
       "community": 49,
       "norm_label": "create-tasks-table.test.ts"
+    },
+    {
+      "label": "create-telegram-tables.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-telegram-tables.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_create_telegram_tables_test",
+      "community": 49,
+      "norm_label": "create-telegram-tables.test.ts"
     },
     {
       "label": "core-persistence.types.ts",
@@ -1832,6 +1942,26 @@
       "id": "types_core_persistence_types_confirmationrequestrecord",
       "community": 50,
       "norm_label": "confirmationrequestrecord"
+    },
+    {
+      "label": "TelegramIdentityRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L187",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_telegramidentityrecord",
+      "community": 50,
+      "norm_label": "telegramidentityrecord"
+    },
+    {
+      "label": "TelegramChatRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L198",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_telegramchatrecord",
+      "community": 50,
+      "norm_label": "telegramchatrecord"
     },
     {
       "label": "tsconfig.json",
@@ -7830,9 +7960,9 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "entities_confirmation_request_entity_confirmationrequestentity",
-      "confidence_score": 1.0
+      "target": "entities_confirmation_request_entity_confirmationrequestentity"
     },
     {
       "relation": "imports_from",
@@ -7899,6 +8029,28 @@
       "confidence_score": 1.0,
       "source": "src_data_source_test",
       "target": "entities_task_skill_version_entity_taskskillversionentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_telegram_chat_entity_telegramchatentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_telegram_identity_entity_telegramidentityentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -8116,9 +8268,9 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296480000_create_confirmation_requests_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table"
     },
     {
       "relation": "imports",
@@ -8127,8 +8279,30 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
+      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296540000_create_telegram_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
       "confidence_score": 1.0
     },
     {
@@ -8226,9 +8400,9 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "entities_confirmation_request_entity_confirmationrequestentity",
-      "confidence_score": 1.0
+      "target": "entities_confirmation_request_entity_confirmationrequestentity"
     },
     {
       "relation": "imports_from",
@@ -8295,6 +8469,28 @@
       "confidence_score": 1.0,
       "source": "src_data_source",
       "target": "entities_task_skill_version_entity_taskskillversionentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "entities_telegram_chat_entity_telegramchatentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "entities_telegram_identity_entity_telegramidentityentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -8512,9 +8708,9 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296480000_create_confirmation_requests_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table"
     },
     {
       "relation": "imports",
@@ -8523,8 +8719,30 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
+      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296540000_create_telegram_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
       "confidence_score": 1.0
     },
     {
@@ -9170,9 +9388,9 @@
       "source_file": "apps/api/src/persistence/entities/confirmation-request.entity.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_confirmation_request_entity",
-      "target": "entities_confirmation_request_entity_confirmationrequestentity",
-      "confidence_score": 1.0
+      "target": "entities_confirmation_request_entity_confirmationrequestentity"
     },
     {
       "relation": "imports_from",
@@ -9181,9 +9399,9 @@
       "source_file": "apps/api/src/persistence/entities/confirmation-request.entity.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_confirmation_request_entity",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "imports",
@@ -9192,9 +9410,9 @@
       "source_file": "apps/api/src/persistence/entities/confirmation-request.entity.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_confirmation_request_entity",
-      "target": "types_core_persistence_types_confirmationrequestrecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequestrecord"
     },
     {
       "relation": "imports",
@@ -9203,9 +9421,9 @@
       "source_file": "apps/api/src/persistence/entities/confirmation-request.entity.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_confirmation_request_entity",
-      "target": "types_core_persistence_types_confirmationrequeststatus",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequeststatus"
     },
     {
       "relation": "re_exports",
@@ -9214,9 +9432,9 @@
       "source_file": "apps/api/src/persistence/entities/index.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_index",
-      "target": "entities_confirmation_request_entity",
-      "confidence_score": 1.0
+      "target": "entities_confirmation_request_entity"
     },
     {
       "relation": "implements",
@@ -9225,9 +9443,9 @@
       "source_file": "apps/api/src/persistence/entities/confirmation-request.entity.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_confirmation_request_entity_confirmationrequestentity",
-      "target": "types_core_persistence_types_confirmationrequestrecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequestrecord"
     },
     {
       "relation": "references",
@@ -9236,9 +9454,9 @@
       "source_file": "apps/api/src/persistence/entities/confirmation-request.entity.ts",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_confirmation_request_entity_confirmationrequestentity",
-      "target": "types_core_persistence_types_confirmationrequeststatus",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequeststatus"
     },
     {
       "relation": "imports",
@@ -9247,9 +9465,9 @@
       "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_core_entities_test",
-      "target": "entities_confirmation_request_entity_confirmationrequestentity",
-      "confidence_score": 1.0
+      "target": "entities_confirmation_request_entity_confirmationrequestentity"
     },
     {
       "relation": "re_exports",
@@ -9258,9 +9476,9 @@
       "source_file": "apps/api/src/persistence/entities/index.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_index",
-      "target": "entities_confirmation_request_entity_confirmationrequestentity",
-      "confidence_score": 1.0
+      "target": "entities_confirmation_request_entity_confirmationrequestentity"
     },
     {
       "relation": "imports_from",
@@ -9327,6 +9545,28 @@
       "confidence_score": 1.0,
       "source": "entities_core_entities_test",
       "target": "entities_task_skill_version_entity_taskskillversionentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_telegram_chat_entity_telegramchatentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_telegram_identity_entity_telegramidentityentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -9470,6 +9710,50 @@
       "confidence_score": 1.0,
       "source": "entities_index",
       "target": "entities_task_skill_version_entity_taskskillversionentity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_telegram_chat_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_telegram_chat_entity_telegramchatentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_telegram_identity_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_telegram_identity_entity_telegramidentityentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "re_exports",
@@ -9751,6 +10035,92 @@
       "confidence_score": 1.0,
       "source": "entities_task_entity_taskentity",
       "target": "types_core_persistence_types_taskrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-chat.entity.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "entities_telegram_chat_entity",
+      "target": "entities_telegram_chat_entity_telegramchatentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-chat.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "entities_telegram_chat_entity",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-chat.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "entities_telegram_chat_entity",
+      "target": "types_core_persistence_types_telegramchatrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-chat.entity.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "entities_telegram_chat_entity_telegramchatentity",
+      "target": "types_core_persistence_types_telegramchatrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-identity.entity.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "entities_telegram_identity_entity",
+      "target": "entities_telegram_identity_entity_telegramidentityentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-identity.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_telegram_identity_entity",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-identity.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_telegram_identity_entity",
+      "target": "types_core_persistence_types_telegramidentityrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/telegram-identity.entity.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "entities_telegram_identity_entity_telegramidentityentity",
+      "target": "types_core_persistence_types_telegramidentityrecord",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10037,7 +10407,18 @@
       "source_file": "apps/api/src/persistence/migrations/1783296480000-create-confirmation-requests-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table",
+      "target": "migrations_1783296000000_create_core_persistence_tables"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables",
       "target": "migrations_1783296000000_create_core_persistence_tables",
       "confidence_score": 1.0
     },
@@ -10334,9 +10715,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296480000-create-confirmation-requests-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table",
-      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
-      "confidence_score": 1.0
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
       "relation": "calls",
@@ -10358,6 +10739,39 @@
       "source_location": "L39",
       "weight": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_down",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_up",
       "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
@@ -10978,9 +11392,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296480000-create-confirmation-requests-table.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000"
     },
     {
       "relation": "contains",
@@ -10988,9 +11402,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296480000-create-confirmation-requests-table.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql"
     },
     {
       "relation": "contains",
@@ -10998,9 +11412,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296480000-create-confirmation-requests-table.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql"
     },
     {
       "relation": "imports_from",
@@ -11009,9 +11423,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-confirmation-requests-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_confirmation_requests_table_test",
-      "target": "migrations_1783296480000_create_confirmation_requests_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table"
     },
     {
       "relation": "imports",
@@ -11020,9 +11434,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-confirmation-requests-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_confirmation_requests_table_test",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql"
     },
     {
       "relation": "imports",
@@ -11031,9 +11445,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-confirmation-requests-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_confirmation_requests_table_test",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql"
     },
     {
       "relation": "method",
@@ -11041,9 +11455,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296480000-create-confirmation-requests-table.ts",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_down",
-      "confidence_score": 1.0
+      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_down"
     },
     {
       "relation": "method",
@@ -11051,8 +11465,91 @@
       "source_file": "apps/api/src/persistence/migrations/1783296480000-create-confirmation-requests-table.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up",
+      "target": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables",
+      "target": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables",
+      "target": "migrations_1783296540000_create_telegram_tables_createtelegramtablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables",
+      "target": "migrations_1783296540000_create_telegram_tables_droptelegramtablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-telegram-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_telegram_tables_test",
+      "target": "migrations_1783296540000_create_telegram_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-telegram-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_telegram_tables_test",
+      "target": "migrations_1783296540000_create_telegram_tables_createtelegramtablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-telegram-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_telegram_tables_test",
+      "target": "migrations_1783296540000_create_telegram_tables_droptelegramtablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
+      "target": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_down",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296540000-create-telegram-tables.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
+      "target": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_up",
       "confidence_score": 1.0
     },
     {
@@ -11181,9 +11678,9 @@
       "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
       "source_location": "L174",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_core_persistence_types",
-      "target": "types_core_persistence_types_confirmationrequestrecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequestrecord"
     },
     {
       "relation": "contains",
@@ -11191,9 +11688,9 @@
       "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
       "source_location": "L172",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_core_persistence_types",
-      "target": "types_core_persistence_types_confirmationrequeststatus",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequeststatus"
     },
     {
       "relation": "contains",
@@ -11244,6 +11741,26 @@
       "confidence_score": 1.0,
       "source": "types_core_persistence_types",
       "target": "types_core_persistence_types_taskskillversionrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_telegramchatrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L187",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_telegramidentityrecord",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15897,5 +16414,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5e2fb22a1eafeac6e16cd43e9b0819ba2cd1041d"
+  "built_at_commit": "5f9ca1ca4d0d019e6b483019231358512db5979e"
 }

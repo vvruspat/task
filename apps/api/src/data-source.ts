@@ -12,6 +12,8 @@ import {
   TaskEntity,
   TaskSkillEntity,
   TaskSkillVersionEntity,
+  TelegramChatEntity,
+  TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
   WorkspaceMemberEntity,
@@ -25,6 +27,7 @@ import { CreateAttachmentsTable1783296300000 } from "./persistence/migrations/17
 import { CreateActivityEventsTable1783296360000 } from "./persistence/migrations/1783296360000-create-activity-events-table.js";
 import { CreateAgentRunTables1783296420000 } from "./persistence/migrations/1783296420000-create-agent-run-tables.js";
 import { CreateConfirmationRequestsTable1783296480000 } from "./persistence/migrations/1783296480000-create-confirmation-requests-table.js";
+import { CreateTelegramTables1783296540000 } from "./persistence/migrations/1783296540000-create-telegram-tables.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -41,6 +44,8 @@ const apiEntities = [
   AgentRunEntity,
   AgentToolCallEntity,
   ConfirmationRequestEntity,
+  TelegramIdentityEntity,
+  TelegramChatEntity,
 ] as const;
 const apiMigrations = [
   CreateCorePersistenceTables1783296000000,
@@ -52,6 +57,7 @@ const apiMigrations = [
   CreateActivityEventsTable1783296360000,
   CreateAgentRunTables1783296420000,
   CreateConfirmationRequestsTable1783296480000,
+  CreateTelegramTables1783296540000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

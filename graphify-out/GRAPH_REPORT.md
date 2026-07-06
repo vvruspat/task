@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-33-confirmation-request-persistence  (2026-07-06)
+# Graph Report - tAsk-issue-35-telegram-persistence  (2026-07-06)
 
 ## Corpus Check
-- 98 files · ~25,358 words
+- 102 files · ~26,323 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 686 nodes · 875 edges · 51 communities (48 shown, 3 thin omitted)
+- 699 nodes · 911 edges · 51 communities (48 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5e2fb22a`
+- Built from commit: `5f9ca1ca`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -61,7 +61,7 @@
 - [[_COMMUNITY_Community 50|Community 50]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `executeMigrationQueries()` - 28 edges
+1. `executeMigrationQueries()` - 31 edges
 2. `compilerOptions` - 23 edges
 3. `Tables` - 18 edges
 4. `Technical architecture` - 17 edges
@@ -246,12 +246,12 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.06
-Nodes (34): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+26 more)
+Cohesion: 0.05
+Nodes (37): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+29 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 0.10
-Nodes (35): ActivityEventEntity, AgentRunEntity, AgentToolCallEntity, AttachmentEntity, CommentEntity, ConfirmationRequestEntity, ProjectEntity, StatusEntity (+27 more)
+Cohesion: 0.09
+Nodes (39): ActivityEventEntity, AgentRunEntity, AgentToolCallEntity, AttachmentEntity, CommentEntity, ConfirmationRequestEntity, ProjectEntity, StatusEntity (+31 more)
 
 ## Knowledge Gaps
 - **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)

@@ -13,6 +13,8 @@ import {
   TaskEntity,
   TaskSkillEntity,
   TaskSkillVersionEntity,
+  TelegramChatEntity,
+  TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
   WorkspaceMemberEntity,
@@ -36,7 +38,9 @@ test("core persistence entities map to the expected table names", () => {
         table.target === ActivityEventEntity ||
         table.target === AgentRunEntity ||
         table.target === AgentToolCallEntity ||
-        table.target === ConfirmationRequestEntity,
+        table.target === ConfirmationRequestEntity ||
+        table.target === TelegramIdentityEntity ||
+        table.target === TelegramChatEntity,
     )
     .map((table) => table.name)
     .sort();
@@ -53,9 +57,55 @@ test("core persistence entities map to the expected table names", () => {
     "task_skill_versions",
     "task_skills",
     "tasks",
+    "telegram_chats",
+    "telegram_identities",
     "users",
     "workspace_members",
     "workspaces",
+  ]);
+});
+
+test("telegram identity columns and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const telegramIdColumn = storage.columns.find(
+    (column) => column.target === TelegramIdentityEntity && column.propertyName === "telegramId",
+  );
+  const lastSeenAtColumn = storage.columns.find(
+    (column) => column.target === TelegramIdentityEntity && column.propertyName === "lastSeenAt",
+  );
+  const identityIndexes = storage.indices
+    .filter((index) => index.target === TelegramIdentityEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(telegramIdColumn?.options.type, "bigint");
+  assert.equal(telegramIdColumn?.options.unique, true);
+  assert.equal(lastSeenAtColumn?.options.type, "timestamptz");
+  assert.equal(lastSeenAtColumn?.options.nullable, true);
+  assert.deepEqual(identityIndexes, ["idx_telegram_identities_user_id"]);
+});
+
+test("telegram chat columns and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const telegramChatIdColumn = storage.columns.find(
+    (column) => column.target === TelegramChatEntity && column.propertyName === "telegramChatId",
+  );
+  const defaultProjectColumn = storage.columns.find(
+    (column) => column.target === TelegramChatEntity && column.propertyName === "defaultProjectId",
+  );
+  const chatIndexes = storage.indices
+    .filter((index) => index.target === TelegramChatEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(telegramChatIdColumn?.options.type, "bigint");
+  assert.equal(telegramChatIdColumn?.options.unique, true);
+  assert.equal(defaultProjectColumn?.options.type, "uuid");
+  assert.equal(defaultProjectColumn?.options.nullable, true);
+  assert.deepEqual(chatIndexes, [
+    "idx_telegram_chats_default_project_id",
+    "idx_telegram_chats_linked_by_user_id",
+    "idx_telegram_chats_workspace_id",
   ]);
 });
 
