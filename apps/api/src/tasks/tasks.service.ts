@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import type { CreateTaskInput } from "./tasks.contracts.js";
 import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
 import type { TaskReadStore } from "./tasks.store.js";
 
@@ -33,5 +39,28 @@ export class TasksService {
     }
 
     return new TaskDetailDto(task);
+  }
+
+  async createTask(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: CreateTaskInput,
+  ): Promise<TaskDetailDto> {
+    const result = await this.readStore.createForProject(workspaceId, projectId, userId, input);
+
+    if (result.status === "project_not_found") {
+      throw new NotFoundException("Project was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot create tasks in this workspace.");
+    }
+
+    if (result.status === "invalid_parent_task") {
+      throw new BadRequestException("Parent task must belong to the same project.");
+    }
+
+    return new TaskDetailDto(result.task);
   }
 }

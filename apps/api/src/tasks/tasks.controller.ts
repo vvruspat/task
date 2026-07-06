@@ -1,5 +1,9 @@
-import { Controller, Get, Param, ParseUUIDPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
 import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -10,7 +14,13 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
+import type { CreateTaskInput } from "./tasks.contracts.js";
+import {
+  CreateTaskDto,
+  ParseCreateTaskBodyPipe,
+  TaskDetailDto,
+  TaskSummaryDto,
+} from "./tasks.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { TasksService } from "./tasks.service.js";
 
@@ -34,6 +44,24 @@ export class TasksController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskSummaryDto[]> {
     return this.tasksService.listActiveTasks(workspaceId, projectId, userId);
+  }
+
+  @Post()
+  @ApiOperation({ summary: "Create a task in a visible project" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiBody({ type: CreateTaskDto })
+  @ApiCreatedResponse({ type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Task payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot create tasks in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace or project is missing or not visible." })
+  createTask(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseCreateTaskBodyPipe()) input: CreateTaskInput,
+  ): Promise<TaskDetailDto> {
+    return this.tasksService.createTask(workspaceId, projectId, userId, input);
   }
 
   @Get(":taskId")

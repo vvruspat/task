@@ -410,7 +410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_test",
-      "community": 51,
+      "community": 2,
       "norm_label": "trusted-current-user.decorator.test.ts"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator",
-      "community": 51,
+      "community": 2,
       "norm_label": "trusted-current-user.decorator.ts"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "community": 51,
+      "community": 2,
       "norm_label": "apitrustedcurrentuser()"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "community": 51,
+      "community": 2,
       "norm_label": "trustedcurrentuserid"
     },
     {
@@ -450,7 +450,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "community": 51,
+      "community": 2,
       "norm_label": "parsetrustedcurrentuserid()"
     },
     {
@@ -460,7 +460,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "community": 51,
+      "community": 2,
       "norm_label": "trustedcurrentuserheader"
     },
     {
@@ -470,7 +470,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
-      "community": 51,
+      "community": 2,
       "norm_label": "trustedcurrentuserrequest"
     },
     {
@@ -660,7 +660,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 51,
+      "community": 18,
       "norm_label": "database.module.ts"
     },
     {
@@ -670,7 +670,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 51,
+      "community": 18,
       "norm_label": "apidatasource"
     },
     {
@@ -680,7 +680,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 51,
+      "community": 18,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -700,7 +700,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 51,
+      "community": 18,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -710,7 +710,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 51,
+      "community": 18,
       "norm_label": ".getdatasource()"
     },
     {
@@ -720,7 +720,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 51,
+      "community": 18,
       "norm_label": "databasemodule"
     },
     {
@@ -2660,7 +2660,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 51,
+      "community": 18,
       "norm_label": ".constructor()"
     },
     {
@@ -2764,6 +2764,16 @@
       "norm_label": "taskdetail"
     },
     {
+      "label": "CreateTaskInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.contracts.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "tasks_tasks_contracts_createtaskinput",
+      "community": 51,
+      "norm_label": "createtaskinput"
+    },
+    {
       "label": "tasks.controller.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
@@ -2777,7 +2787,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
-      "source_location": "L12",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "tasks_tasks_controller_test_createdat",
       "community": 51,
@@ -2787,7 +2797,7 @@
       "label": "taskSummary",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
-      "source_location": "L14",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "tasks_tasks_controller_test_tasksummary",
       "community": 51,
@@ -2797,7 +2807,7 @@
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
-      "source_location": "L54",
+      "source_location": "L105",
       "_origin": "ast",
       "id": "tasks_tasks_controller_test_createreadstore",
       "community": 51,
@@ -2817,7 +2827,7 @@
       "label": "uuidV4Pipe",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L17",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "tasks_tasks_controller_uuidv4pipe",
       "community": 51,
@@ -2827,7 +2837,7 @@
       "label": "TasksController",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L22",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller",
       "community": 51,
@@ -2837,7 +2847,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L23",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_constructor",
       "community": 51,
@@ -2847,17 +2857,27 @@
       "label": ".listActiveTasks()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L31",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_listactivetasks",
       "community": 51,
       "norm_label": ".listactivetasks()"
     },
     {
+      "label": ".createTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "tasks_tasks_controller_taskscontroller_createtask",
+      "community": 51,
+      "norm_label": ".createtask()"
+    },
+    {
       "label": ".getTask()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L48",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_gettask",
       "community": 51,
@@ -2874,10 +2894,40 @@
       "norm_label": "tasks.dto.ts"
     },
     {
+      "label": "CreateTaskDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_createtaskdto",
+      "community": 51,
+      "norm_label": "createtaskdto"
+    },
+    {
+      "label": "ParseCreateTaskBodyPipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_parsecreatetaskbodypipe",
+      "community": 51,
+      "norm_label": "parsecreatetaskbodypipe"
+    },
+    {
+      "label": ".transform()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
+      "community": 51,
+      "norm_label": ".transform()"
+    },
+    {
       "label": "TaskSummaryDto",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L4",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "tasks_tasks_dto_tasksummarydto",
       "community": 51,
@@ -2887,7 +2937,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L56",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "tasks_tasks_dto_tasksummarydto_constructor",
       "community": 51,
@@ -2897,11 +2947,81 @@
       "label": "TaskDetailDto",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L77",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "tasks_tasks_dto_taskdetaildto",
       "community": 51,
       "norm_label": "taskdetaildto"
+    },
+    {
+      "label": "parseCreateTaskInput()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_parsecreatetaskinput",
+      "community": 51,
+      "norm_label": "parsecreatetaskinput()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_isunknownrecord",
+      "community": 51,
+      "norm_label": "isunknownrecord()"
+    },
+    {
+      "label": "readRequiredNonEmptyString()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L154",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_readrequirednonemptystring",
+      "community": 51,
+      "norm_label": "readrequirednonemptystring()"
+    },
+    {
+      "label": "readOptionalNullableString()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L170",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_readoptionalnullablestring",
+      "community": 51,
+      "norm_label": "readoptionalnullablestring()"
+    },
+    {
+      "label": "readOptionalNullableUuid()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L189",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_readoptionalnullableuuid",
+      "community": 51,
+      "norm_label": "readoptionalnullableuuid()"
+    },
+    {
+      "label": "readOptionalNullableDateTime()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L206",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_readoptionalnullabledatetime",
+      "community": 51,
+      "norm_label": "readoptionalnullabledatetime()"
+    },
+    {
+      "label": "readOptionalRecord()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L225",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_readoptionalrecord",
+      "community": 51,
+      "norm_label": "readoptionalrecord()"
     },
     {
       "label": "tasks.module.ts",
@@ -2967,7 +3087,7 @@
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
-      "source_location": "L69",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "tasks_tasks_service_test_createreadstore",
       "community": 51,
@@ -2987,7 +3107,7 @@
       "label": "TasksService",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L6",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice",
       "community": 51,
@@ -2997,7 +3117,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L7",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_constructor",
       "community": 51,
@@ -3007,7 +3127,7 @@
       "label": ".listActiveTasks()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L9",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_listactivetasks",
       "community": 51,
@@ -3017,11 +3137,21 @@
       "label": ".getTask()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L23",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_gettask",
       "community": 51,
       "norm_label": ".gettask()"
+    },
+    {
+      "label": ".createTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "tasks_tasks_service_tasksservice_createtask",
+      "community": 51,
+      "norm_label": ".createtask()"
     },
     {
       "label": "tasks.store.ts",
@@ -3034,10 +3164,20 @@
       "norm_label": "tasks.store.ts"
     },
     {
-      "label": "TaskReadStore",
+      "label": "TaskCreateResult",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.store.ts",
       "source_location": "L3",
+      "_origin": "ast",
+      "id": "tasks_tasks_store_taskcreateresult",
+      "community": 51,
+      "norm_label": "taskcreateresult"
+    },
+    {
+      "label": "TaskReadStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.store.ts",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "tasks_tasks_store_taskreadstore",
       "community": 51,
@@ -3054,10 +3194,20 @@
       "norm_label": "typeorm-task-read.store.ts"
     },
     {
+      "label": "taskWriteRoles",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "tasks_typeorm_task_read_store_taskwriteroles",
+      "community": 51,
+      "norm_label": "taskwriteroles"
+    },
+    {
       "label": "TypeOrmTaskReadStore",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L10",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore",
       "community": 51,
@@ -3067,17 +3217,17 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L13",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 51,
+      "community": 18,
       "norm_label": ".constructor()"
     },
     {
       "label": ".listActiveForProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L15",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_listactiveforproject",
       "community": 51,
@@ -3087,27 +3237,47 @@
       "label": ".getForProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L35",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_getforproject",
       "community": 51,
       "norm_label": ".getforproject()"
     },
     {
+      "label": ".createForProject()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L69",
+      "_origin": "ast",
+      "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
+      "community": 51,
+      "norm_label": ".createforproject()"
+    },
+    {
       "label": ".canReadProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L61",
+      "source_location": "L141",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_canreadproject",
       "community": 51,
       "norm_label": ".canreadproject()"
     },
     {
+      "label": ".getWorkspaceMembership()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L161",
+      "_origin": "ast",
+      "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
+      "community": 51,
+      "norm_label": ".getworkspacemembership()"
+    },
+    {
       "label": ".getInitializedDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L84",
+      "source_location": "L172",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource",
       "community": 51,
@@ -3117,7 +3287,7 @@
       "label": "toTaskSummary()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L106",
+      "source_location": "L194",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_totasksummary",
       "community": 51,
@@ -3150,7 +3320,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 51,
+      "community": 18,
       "norm_label": ".constructor()"
     },
     {
@@ -5157,7 +5327,7 @@
       "label": "webhooks",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L162",
+      "source_location": "L163",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
       "community": 33,
@@ -5167,7 +5337,7 @@
       "label": "components",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L163",
+      "source_location": "L164",
       "_origin": "ast",
       "id": "generated_openapi_components",
       "community": 33,
@@ -5177,7 +5347,7 @@
       "label": "$defs",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L357",
+      "source_location": "L371",
       "_origin": "ast",
       "id": "generated_openapi_defs",
       "community": 33,
@@ -5187,7 +5357,7 @@
       "label": "operations",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L358",
+      "source_location": "L372",
       "_origin": "ast",
       "id": "generated_openapi_operations",
       "community": 33,
@@ -11318,6 +11488,17 @@
       "source_file": "apps/api/src/openapi.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "source": "src_openapi",
+      "target": "tasks_tasks_dto_createtaskdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L6",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_openapi",
       "target": "tasks_tasks_dto_taskdetaildto"
@@ -11460,7 +11641,18 @@
       "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "projects_typeorm_project_read_store",
+      "target": "entities_activity_event_entity_activityevententity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store",
       "target": "entities_activity_event_entity_activityevententity",
       "confidence_score": 1.0
     },
@@ -12933,6 +13125,17 @@
       "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
       "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L161",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
+      "target": "entities_workspace_member_entity_workspacememberentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -14448,6 +14651,17 @@
       "target": "types_core_persistence_types"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
@@ -14708,6 +14922,17 @@
       "confidence_score": 1.0,
       "source": "projects_typeorm_project_read_store",
       "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store",
+      "target": "types_core_persistence_types_workspacememberrole",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -16242,6 +16467,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.contracts.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "tasks_tasks_contracts",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.contracts.ts",
       "source_location": "L21",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -16257,6 +16492,17 @@
       "confidence_score": 1.0,
       "source": "tasks_tasks_contracts",
       "target": "tasks_tasks_contracts_tasksummary"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller",
+      "target": "tasks_tasks_contracts",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -16279,6 +16525,17 @@
       "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
       "target": "tasks_tasks_contracts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "tasks_tasks_service",
+      "target": "tasks_tasks_contracts",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -16479,6 +16736,138 @@
       "target": "tasks_tasks_contracts_taskdetail"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_taskscontroller_createtask",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_test",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_createtaskdto",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "tasks_tasks_service",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "tasks_tasks_service_tasksservice_createtask",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tasks_tasks_service_test",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "tasks_tasks_store",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
+      "target": "tasks_tasks_contracts_createtaskinput",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -16535,6 +16924,28 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_test",
+      "target": "tasks_tasks_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_test",
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -16562,6 +16973,17 @@
       "confidence_score": 1.0,
       "source": "tasks_tasks_controller_test",
       "target": "tasks_tasks_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_test",
+      "target": "tasks_tasks_store_taskcreateresult",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -16604,6 +17026,28 @@
       "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
       "target": "tasks_tasks_dto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller",
+      "target": "tasks_tasks_dto_createtaskdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller",
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -16674,6 +17118,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_taskscontroller",
+      "target": "tasks_tasks_controller_taskscontroller_createtask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L48",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -16728,11 +17182,112 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_taskscontroller_createtask",
+      "target": "tasks_tasks_dto_taskdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L48",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "tasks_tasks_controller_taskscontroller_gettask",
       "target": "tasks_tasks_dto_taskdetaildto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_createtaskdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_parsecreatetaskinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L206",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_readoptionalnullabledatetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L189",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_readoptionalnullableuuid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L225",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_readoptionalrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L154",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16775,6 +17330,27 @@
       "confidence_score": 1.0,
       "source": "tasks_tasks_service_test",
       "target": "tasks_tasks_dto"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskbodypipe",
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
+      "target": "tasks_tasks_dto_parsecreatetaskinput",
+      "confidence_score": 1.0
     },
     {
       "relation": "inherits",
@@ -16846,6 +17422,17 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "tasks_tasks_service_tasksservice_createtask",
+      "target": "tasks_tasks_dto_taskdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L23",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -16862,6 +17449,105 @@
       "confidence_score": 1.0,
       "source": "tasks_tasks_service_test",
       "target": "tasks_tasks_dto_taskdetaildto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskinput",
+      "target": "tasks_tasks_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskinput",
+      "target": "tasks_tasks_dto_readoptionalnullabledatetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskinput",
+      "target": "tasks_tasks_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L115",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskinput",
+      "target": "tasks_tasks_dto_readoptionalnullableuuid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L119",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskinput",
+      "target": "tasks_tasks_dto_readoptionalrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parsecreatetaskinput",
+      "target": "tasks_tasks_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L235",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_readoptionalrecord",
+      "target": "tasks_tasks_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L210",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_readoptionalnullabledatetime",
+      "target": "tasks_tasks_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L193",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_readoptionalnullableuuid",
+      "target": "tasks_tasks_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17019,6 +17705,17 @@
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "source": "tasks_tasks_service_test",
+      "target": "tasks_tasks_store_taskcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "tasks_tasks_service_test",
       "target": "tasks_tasks_store_taskreadstore"
@@ -17069,6 +17766,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "tasks_tasks_service_tasksservice",
+      "target": "tasks_tasks_service_tasksservice_createtask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L23",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -17102,6 +17809,16 @@
       "source_file": "apps/api/src/tasks/tasks.store.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "source": "tasks_tasks_store",
+      "target": "tasks_tasks_store_taskcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.store.ts",
+      "source_location": "L3",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "tasks_tasks_store",
       "target": "tasks_tasks_store_taskreadstore"
@@ -17116,6 +17833,28 @@
       "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
       "target": "tasks_tasks_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store",
+      "target": "tasks_tasks_store_taskcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
+      "target": "tasks_tasks_store_taskcreateresult",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -17138,6 +17877,16 @@
       "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
       "target": "tasks_tasks_store_taskreadstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store",
+      "target": "tasks_typeorm_task_read_store_taskwriteroles",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17183,6 +17932,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L35",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -17198,6 +17957,16 @@
       "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
       "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L161",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -17263,6 +18032,50 @@
       "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_getforproject",
       "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L138",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
+      "target": "tasks_typeorm_task_read_store_totasksummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_canreadproject",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -23343,5 +24156,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bb4b954e2a32e05286321fc4005b5efaf60dc2b5"
+  "built_at_commit": "e0bd1e8ac0af1fe43a1d38e1fa4c26aeecb717b1"
 }

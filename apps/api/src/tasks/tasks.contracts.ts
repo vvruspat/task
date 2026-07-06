@@ -19,3 +19,12 @@ export type TaskSummary = {
 };
 
 export type TaskDetail = TaskSummary;
+
+export type CreateTaskInput = {
+  title: string;
+  parentTaskId?: string | null;
+  description?: string | null;
+  position?: string | null;
+  dueAt?: string | null;
+  metadata?: Record<string, unknown>;
+};

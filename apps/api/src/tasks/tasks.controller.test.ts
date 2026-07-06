@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { TaskDetail, TaskSummary } from "./tasks.contracts.js";
+import { BadRequestException } from "@nestjs/common";
+import type { CreateTaskInput, TaskDetail, TaskSummary } from "./tasks.contracts.js";
 import { TasksController } from "./tasks.controller.js";
+import { ParseCreateTaskBodyPipe } from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
-import type { TaskReadStore } from "./tasks.store.js";
+import type { TaskCreateResult, TaskReadStore } from "./tasks.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "33333333-3333-4333-8333-333333333333";
@@ -51,14 +53,66 @@ test("TasksController uses trusted current user context for task detail reads", 
   assert.equal(response.projectId, projectId);
 });
 
+test("TasksController uses trusted current user context for task creates", async () => {
+  const input: CreateTaskInput = { title: "Record drums" };
+  const controller = new TasksController(
+    new TasksService(
+      createReadStore({
+        createResult: {
+          status: "created",
+          task: { ...taskSummary, title: input.title },
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.createTask(workspaceId, projectId, userId, input);
+
+  assert.equal(response.title, input.title);
+  assert.equal(response.createdByUserId, userId);
+});
+
+test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", () => {
+  const pipe = new ParseCreateTaskBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      title: "  Record drums  ",
+      description: "",
+      parentTaskId: taskId,
+      position: "2000",
+      dueAt: "2026-01-02T10:00:00.000Z",
+      metadata: { instrument: "drums" },
+    }),
+    {
+      title: "Record drums",
+      description: null,
+      parentTaskId: taskId,
+      position: "2000",
+      dueAt: "2026-01-02T10:00:00.000Z",
+      metadata: { instrument: "drums" },
+    },
+  );
+
+  assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", parentTaskId: "bad" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", position: "first" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", dueAt: "tomorrow" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", metadata: [] }), BadRequestException);
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
   tasks?: TaskSummary[] | null;
   task?: TaskDetail | null;
+  createResult?: TaskCreateResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
       options.tasks === undefined ? [] : options.tasks,
     getForProject: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
+    createForProject: async (): Promise<TaskCreateResult> =>
+      options.createResult ?? { status: "project_not_found" },
   };
 }

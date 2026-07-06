@@ -2,9 +2,17 @@ import { Injectable, ServiceUnavailableException } from "@nestjs/common";
 import { type DataSource, IsNull } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
-import { ProjectEntity, TaskEntity, WorkspaceMemberEntity } from "../persistence/entities/index.js";
-import type { TaskDetail, TaskSummary } from "./tasks.contracts.js";
-import type { TaskReadStore } from "./tasks.store.js";
+import {
+  ActivityEventEntity,
+  ProjectEntity,
+  TaskEntity,
+  WorkspaceMemberEntity,
+} from "../persistence/entities/index.js";
+import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
+import type { CreateTaskInput, TaskDetail, TaskSummary } from "./tasks.contracts.js";
+import type { TaskCreateResult, TaskReadStore } from "./tasks.store.js";
+
+const taskWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
 
 @Injectable()
 export class TypeOrmTaskReadStore implements TaskReadStore {
@@ -58,16 +66,85 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     return toTaskSummary(task);
   }
 
+  async createForProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: CreateTaskInput,
+  ): Promise<TaskCreateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "project_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      id: projectId,
+      workspaceId,
+    });
+
+    if (project === null) {
+      return { status: "project_not_found" };
+    }
+
+    if (input.parentTaskId !== undefined && input.parentTaskId !== null) {
+      const parentTask = await dataSource.getRepository(TaskEntity).findOneBy({
+        id: input.parentTaskId,
+        projectId,
+        workspaceId,
+      });
+
+      if (parentTask === null) {
+        return { status: "invalid_parent_task" };
+      }
+    }
+
+    const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      const taskRepository = manager.getRepository(TaskEntity);
+      const task = taskRepository.create({
+        workspaceId,
+        projectId,
+        parentTaskId: input.parentTaskId ?? null,
+        title: input.title,
+        description: input.description ?? null,
+        createdByUserId: userId,
+        position: input.position ?? "0",
+        dueAt: input.dueAt === undefined || input.dueAt === null ? null : new Date(input.dueAt),
+        metadata: input.metadata ?? {},
+      });
+      const createdTask = await taskRepository.save(task);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.created",
+        entityType: "task",
+        entityId: createdTask.id,
+        payload: {
+          projectId,
+          title: createdTask.title,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return createdTask;
+    });
+
+    return { status: "created", task: toTaskSummary(savedTask) };
+  }
+
   private async canReadProject(
     dataSource: DataSource,
     workspaceId: string,
     projectId: string,
     userId: string,
   ): Promise<boolean> {
-    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
-      workspaceId,
-      userId,
-    });
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
 
     if (membership === null) {
       return false;
@@ -79,6 +156,17 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     });
 
     return project !== null;
+  }
+
+  private async getWorkspaceMembership(
+    dataSource: DataSource,
+    workspaceId: string,
+    userId: string,
+  ): Promise<WorkspaceMemberEntity | null> {
+    return dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {

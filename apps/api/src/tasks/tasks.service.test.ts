@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { NotFoundException } from "@nestjs/common";
-import type { TaskDetail, TaskSummary } from "./tasks.contracts.js";
+import { BadRequestException, ForbiddenException, NotFoundException } from "@nestjs/common";
+import type { CreateTaskInput, TaskDetail, TaskSummary } from "./tasks.contracts.js";
 import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
-import type { TaskReadStore } from "./tasks.store.js";
+import type { TaskCreateResult, TaskReadStore } from "./tasks.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "33333333-3333-4333-8333-333333333333";
@@ -53,6 +53,33 @@ test("TasksService returns one visible task DTO", async () => {
   assert.equal(response.projectId, projectId);
 });
 
+test("TasksService creates a task for writable workspace members", async () => {
+  const input: CreateTaskInput = {
+    title: "Record drums",
+    description: "Studio take",
+    position: "2000",
+  };
+  const service = new TasksService(
+    createReadStore({
+      createResult: {
+        status: "created",
+        task: {
+          ...taskSummary,
+          title: input.title,
+          description: input.description ?? null,
+          position: input.position ?? "0",
+        },
+      },
+    }),
+  );
+
+  const response = await service.createTask(workspaceId, projectId, userId, input);
+
+  assert.ok(response instanceof TaskDetailDto);
+  assert.equal(response.title, input.title);
+  assert.equal(response.createdByUserId, userId);
+});
+
 test("TasksService hides inaccessible projects and missing tasks", async () => {
   const service = new TasksService(createReadStore({ task: null, tasks: null }));
 
@@ -64,16 +91,44 @@ test("TasksService hides inaccessible projects and missing tasks", async () => {
     () => service.getTask(workspaceId, projectId, taskId, userId),
     NotFoundException,
   );
+  await assert.rejects(
+    () => service.createTask(workspaceId, projectId, userId, { title: "Hidden" }),
+    NotFoundException,
+  );
+});
+
+test("TasksService rejects task creation without write permission", async () => {
+  const service = new TasksService(createReadStore({ createResult: { status: "forbidden" } }));
+
+  await assert.rejects(
+    () => service.createTask(workspaceId, projectId, userId, { title: "Hidden" }),
+    ForbiddenException,
+  );
+});
+
+test("TasksService rejects parent tasks outside the project", async () => {
+  const service = new TasksService(
+    createReadStore({ createResult: { status: "invalid_parent_task" } }),
+  );
+
+  await assert.rejects(
+    () =>
+      service.createTask(workspaceId, projectId, userId, { parentTaskId: taskId, title: "Sub" }),
+    BadRequestException,
+  );
 });
 
 function createReadStore(options: {
   tasks?: TaskSummary[] | null;
   task?: TaskDetail | null;
+  createResult?: TaskCreateResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
       options.tasks === undefined ? [] : options.tasks,
     getForProject: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
+    createForProject: async (): Promise<TaskCreateResult> =>
+      options.createResult ?? { status: "project_not_found" },
   };
 }
