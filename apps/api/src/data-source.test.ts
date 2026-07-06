@@ -6,6 +6,8 @@ import {
   ProjectEntity,
   StatusEntity,
   TaskEntity,
+  TaskSkillEntity,
+  TaskSkillVersionEntity,
   UserEntity,
   WorkspaceEntity,
   WorkspaceMemberEntity,
@@ -13,6 +15,7 @@ import {
 import { CreateCorePersistenceTables1783296000000 } from "./persistence/migrations/1783296000000-create-core-persistence-tables.js";
 import { CreateProjectsTable1783296060000 } from "./persistence/migrations/1783296060000-create-projects-table.js";
 import { CreateTasksTable1783296120000 } from "./persistence/migrations/1783296120000-create-tasks-table.js";
+import { CreateTaskSkillsTables1783296180000 } from "./persistence/migrations/1783296180000-create-task-skills-tables.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -38,11 +41,14 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     ProjectEntity,
     StatusEntity,
     TaskEntity,
+    TaskSkillEntity,
+    TaskSkillVersionEntity,
   ]);
   assert.deepEqual(options.migrations, [
     CreateCorePersistenceTables1783296000000,
     CreateProjectsTable1783296060000,
     CreateTasksTable1783296120000,
+    CreateTaskSkillsTables1783296180000,
   ]);
 });
 

@@ -69,3 +69,25 @@ export type TaskRecord = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type TaskSkillRecord = {
+  id: string;
+  workspaceId: string;
+  name: string;
+  description: string | null;
+  aliases: string[];
+  createdByUserId: string;
+  archivedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type TaskSkillVersionRecord = {
+  id: string;
+  workspaceId: string;
+  taskSkillId: string;
+  version: number;
+  definition: Record<string, unknown>;
+  createdByUserId: string;
+  createdAt: Date;
+};

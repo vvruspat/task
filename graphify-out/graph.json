@@ -547,7 +547,7 @@
       "label": "apiEntities",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L15",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "src_data_source_apientities",
       "community": 50,
@@ -557,7 +557,7 @@
       "label": "apiMigrations",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L23",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
       "community": 50,
@@ -567,7 +567,7 @@
       "label": "createTypeOrmDataSourceOptions()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L29",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
       "community": 50,
@@ -577,7 +577,7 @@
       "label": "createApiDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L40",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
       "community": 50,
@@ -704,6 +704,46 @@
       "norm_label": "statusentity"
     },
     {
+      "label": "task-skill-version.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/task-skill-version.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_task_skill_version_entity",
+      "community": 50,
+      "norm_label": "task-skill-version.entity.ts"
+    },
+    {
+      "label": "TaskSkillVersionEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/task-skill-version.entity.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "entities_task_skill_version_entity_taskskillversionentity",
+      "community": 50,
+      "norm_label": "taskskillversionentity"
+    },
+    {
+      "label": "task-skill.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/task-skill.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_task_skill_entity",
+      "community": 50,
+      "norm_label": "task-skill.entity.ts"
+    },
+    {
+      "label": "TaskSkillEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/task-skill.entity.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "entities_task_skill_entity_taskskillentity",
+      "community": 50,
+      "norm_label": "taskskillentity"
+    },
+    {
       "label": "task.entity.ts",
       "file_type": "code",
       "source_file": "apps/api/src/persistence/entities/task.entity.ts",
@@ -790,7 +830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables",
-      "community": 50,
+      "community": 49,
       "norm_label": "1783296000000-create-core-persistence-tables.ts"
     },
     {
@@ -800,7 +840,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_migrationqueryexecutor",
-      "community": 50,
+      "community": 49,
       "norm_label": "migrationqueryexecutor"
     },
     {
@@ -810,7 +850,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetablessql",
-      "community": 50,
+      "community": 49,
       "norm_label": "createcorepersistencetablessql"
     },
     {
@@ -820,7 +860,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_dropcorepersistencetablessql",
-      "community": 50,
+      "community": 49,
       "norm_label": "dropcorepersistencetablessql"
     },
     {
@@ -830,7 +870,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
-      "community": 50,
+      "community": 49,
       "norm_label": "executemigrationqueries()"
     },
     {
@@ -840,7 +880,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000",
-      "community": 50,
+      "community": 49,
       "norm_label": "createcorepersistencetables1783296000000"
     },
     {
@@ -850,7 +890,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_up",
-      "community": 50,
+      "community": 49,
       "norm_label": ".up()"
     },
     {
@@ -860,7 +900,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_down",
-      "community": 50,
+      "community": 49,
       "norm_label": ".down()"
     },
     {
@@ -870,7 +910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table",
-      "community": 50,
+      "community": 49,
       "norm_label": "1783296060000-create-projects-table.ts"
     },
     {
@@ -880,7 +920,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
-      "community": 50,
+      "community": 49,
       "norm_label": "createprojectstablesql"
     },
     {
@@ -890,7 +930,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
-      "community": 50,
+      "community": 49,
       "norm_label": "dropprojectstablesql"
     },
     {
@@ -900,7 +940,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
-      "community": 50,
+      "community": 49,
       "norm_label": "createprojectstable1783296060000"
     },
     {
@@ -910,7 +950,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
-      "community": 50,
+      "community": 49,
       "norm_label": ".up()"
     },
     {
@@ -920,7 +960,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
-      "community": 50,
+      "community": 49,
       "norm_label": ".down()"
     },
     {
@@ -930,7 +970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table",
-      "community": 50,
+      "community": 49,
       "norm_label": "1783296120000-create-tasks-table.ts"
     },
     {
@@ -940,7 +980,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstablesql",
-      "community": 50,
+      "community": 49,
       "norm_label": "createtaskstablesql"
     },
     {
@@ -950,7 +990,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_droptaskstablesql",
-      "community": 50,
+      "community": 49,
       "norm_label": "droptaskstablesql"
     },
     {
@@ -960,7 +1000,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000",
-      "community": 50,
+      "community": 49,
       "norm_label": "createtaskstable1783296120000"
     },
     {
@@ -970,7 +1010,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_up",
-      "community": 50,
+      "community": 49,
       "norm_label": ".up()"
     },
     {
@@ -980,7 +1020,67 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_down",
-      "community": 50,
+      "community": 49,
+      "norm_label": ".down()"
+    },
+    {
+      "label": "1783296180000-create-task-skills-tables.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_1783296180000_create_task_skills_tables",
+      "community": 49,
+      "norm_label": "1783296180000-create-task-skills-tables.ts"
+    },
+    {
+      "label": "createTaskSkillsTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstablessql",
+      "community": 49,
+      "norm_label": "createtaskskillstablessql"
+    },
+    {
+      "label": "dropTaskSkillsTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "migrations_1783296180000_create_task_skills_tables_droptaskskillstablessql",
+      "community": 49,
+      "norm_label": "droptaskskillstablessql"
+    },
+    {
+      "label": "CreateTaskSkillsTables1783296180000",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
+      "community": 49,
+      "norm_label": "createtaskskillstables1783296180000"
+    },
+    {
+      "label": ".up()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_up",
+      "community": 49,
+      "norm_label": ".up()"
+    },
+    {
+      "label": ".down()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_down",
+      "community": 49,
       "norm_label": ".down()"
     },
     {
@@ -990,7 +1090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_core_persistence_tables_test",
-      "community": 50,
+      "community": 49,
       "norm_label": "create-core-persistence-tables.test.ts"
     },
     {
@@ -1000,7 +1100,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "migrations_create_core_persistence_tables_test_recordingqueryrunner",
-      "community": 50,
+      "community": 49,
       "norm_label": "recordingqueryrunner"
     },
     {
@@ -1010,7 +1110,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "migrations_create_core_persistence_tables_test_recordingqueryrunner_query",
-      "community": 50,
+      "community": 49,
       "norm_label": ".query()"
     },
     {
@@ -1020,8 +1120,18 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_projects_table_test",
-      "community": 50,
+      "community": 49,
       "norm_label": "create-projects-table.test.ts"
+    },
+    {
+      "label": "create-task-skills-tables.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-task-skills-tables.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_create_task_skills_tables_test",
+      "community": 49,
+      "norm_label": "create-task-skills-tables.test.ts"
     },
     {
       "label": "create-tasks-table.test.ts",
@@ -1030,7 +1140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_tasks_table_test",
-      "community": 50,
+      "community": 49,
       "norm_label": "create-tasks-table.test.ts"
     },
     {
@@ -1112,6 +1222,26 @@
       "id": "types_core_persistence_types_taskrecord",
       "community": 50,
       "norm_label": "taskrecord"
+    },
+    {
+      "label": "TaskSkillRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_taskskillrecord",
+      "community": 50,
+      "norm_label": "taskskillrecord"
+    },
+    {
+      "label": "TaskSkillVersionRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_taskskillversionrecord",
+      "community": 50,
+      "norm_label": "taskskillversionrecord"
     },
     {
       "label": "tsconfig.json",
@@ -7099,6 +7229,28 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_task_skill_entity_taskskillentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_task_skill_version_entity_taskskillversionentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_data_source_test",
       "target": "entities_user_entity_userentity"
@@ -7190,6 +7342,28 @@
       "confidence_score": 1.0,
       "source": "src_data_source_test",
       "target": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296180000_create_task_skills_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -7275,6 +7449,28 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "source": "src_data_source",
+      "target": "entities_task_skill_entity_taskskillentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "entities_task_skill_version_entity_taskskillversionentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_data_source",
       "target": "entities_user_entity_userentity"
@@ -7366,6 +7562,28 @@
       "confidence_score": 1.0,
       "source": "src_data_source",
       "target": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296180000_create_task_skills_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7565,6 +7783,28 @@
       "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_task_skill_entity_taskskillentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_task_skill_version_entity_taskskillversionentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "entities_core_entities_test",
       "target": "entities_user_entity_userentity"
@@ -7656,6 +7896,50 @@
       "confidence_score": 1.0,
       "source": "entities_index",
       "target": "entities_task_entity_taskentity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_task_skill_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_task_skill_entity_taskskillentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_task_skill_version_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_task_skill_version_entity_taskskillversionentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "re_exports",
@@ -7808,6 +8092,92 @@
       "confidence_score": 1.0,
       "source": "entities_status_entity_statusentity",
       "target": "types_core_persistence_types_statusrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill-version.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "entities_task_skill_version_entity",
+      "target": "entities_task_skill_version_entity_taskskillversionentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill-version.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_task_skill_version_entity",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill-version.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_task_skill_version_entity",
+      "target": "types_core_persistence_types_taskskillversionrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill-version.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "entities_task_skill_version_entity_taskskillversionentity",
+      "target": "types_core_persistence_types_taskskillversionrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill.entity.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "entities_task_skill_entity",
+      "target": "entities_task_skill_entity_taskskillentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "entities_task_skill_entity",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "entities_task_skill_entity",
+      "target": "types_core_persistence_types_taskskillrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/task-skill.entity.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "entities_task_skill_entity_taskskillentity",
+      "target": "types_core_persistence_types_taskskillrecord",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8079,6 +8449,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
       "source_location": "L3",
       "weight": 1.0,
@@ -8194,6 +8575,39 @@
       "source_location": "L50",
       "weight": 1.0,
       "source": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_up",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_down",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_up",
       "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
@@ -8396,6 +8810,89 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables",
+      "target": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables",
+      "target": "migrations_1783296180000_create_task_skills_tables_createtaskskillstablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables",
+      "target": "migrations_1783296180000_create_task_skills_tables_droptaskskillstablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-task-skills-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_task_skills_tables_test",
+      "target": "migrations_1783296180000_create_task_skills_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-task-skills-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_task_skills_tables_test",
+      "target": "migrations_1783296180000_create_task_skills_tables_createtaskskillstablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-task-skills-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_task_skills_tables_test",
+      "target": "migrations_1783296180000_create_task_skills_tables_droptaskskillstablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
+      "target": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_down",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296180000-create-task-skills-tables.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
+      "target": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_up",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
       "source_location": "L9",
       "weight": 1.0,
@@ -8442,6 +8939,26 @@
       "confidence_score": 1.0,
       "source": "types_core_persistence_types",
       "target": "types_core_persistence_types_taskrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_taskskillrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_taskskillversionrecord",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13095,5 +13612,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5d5abb8c31e572777d85b09edece36bb89eb40e1"
+  "built_at_commit": "08d27383577c7784e78846494c49a22ac6fe2b63"
 }
