@@ -4,6 +4,926 @@
   "graph": {},
   "nodes": [
     {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_package",
+      "community": 37,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "api_package_name",
+      "community": 37,
+      "norm_label": "name"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "api_package_version",
+      "community": 37,
+      "norm_label": "version"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "api_package_private",
+      "community": 37,
+      "norm_label": "private"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "api_package_description",
+      "community": 37,
+      "norm_label": "description"
+    },
+    {
+      "label": "type",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "api_package_type",
+      "community": 37,
+      "norm_label": "type"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "api_package_scripts",
+      "community": 37,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "api_package_scripts_build",
+      "community": 37,
+      "norm_label": "build"
+    },
+    {
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "api_package_scripts_lint",
+      "community": 37,
+      "norm_label": "lint"
+    },
+    {
+      "label": "lint:fix",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "api_package_scripts_lint_fix",
+      "community": 37,
+      "norm_label": "lint:fix"
+    },
+    {
+      "label": "format",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "api_package_scripts_format",
+      "community": 37,
+      "norm_label": "format"
+    },
+    {
+      "label": "typecheck",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "api_package_scripts_typecheck",
+      "community": 37,
+      "norm_label": "typecheck"
+    },
+    {
+      "label": "test",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "api_package_scripts_test",
+      "community": 37,
+      "norm_label": "test"
+    },
+    {
+      "label": "generate:openapi",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "api_package_scripts_generate_openapi",
+      "community": 37,
+      "norm_label": "generate:openapi"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_api_src_index_ts_src_index",
+      "community": 45,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_tsconfig",
+      "community": 41,
+      "norm_label": "tsconfig.json"
+    },
+    {
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "api_tsconfig_schema",
+      "community": 41,
+      "norm_label": "$schema"
+    },
+    {
+      "label": "extends",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "api_tsconfig_extends",
+      "community": 41,
+      "norm_label": "extends"
+    },
+    {
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "api_tsconfig_compileroptions",
+      "community": 41,
+      "norm_label": "compileroptions"
+    },
+    {
+      "label": "incremental",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "api_tsconfig_compileroptions_incremental",
+      "community": 41,
+      "norm_label": "incremental"
+    },
+    {
+      "label": "outDir",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "api_tsconfig_compileroptions_outdir",
+      "community": 41,
+      "norm_label": "outdir"
+    },
+    {
+      "label": "rootDir",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "api_tsconfig_compileroptions_rootdir",
+      "community": 41,
+      "norm_label": "rootdir"
+    },
+    {
+      "label": "tsBuildInfoFile",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "api_tsconfig_compileroptions_tsbuildinfofile",
+      "community": 41,
+      "norm_label": "tsbuildinfofile"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "api_tsconfig_include",
+      "community": 41,
+      "norm_label": "include"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "mcp_server_package",
+      "community": 38,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "mcp_server_package_name",
+      "community": 38,
+      "norm_label": "name"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "mcp_server_package_version",
+      "community": 38,
+      "norm_label": "version"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "mcp_server_package_private",
+      "community": 38,
+      "norm_label": "private"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "mcp_server_package_description",
+      "community": 38,
+      "norm_label": "description"
+    },
+    {
+      "label": "type",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "mcp_server_package_type",
+      "community": 38,
+      "norm_label": "type"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "mcp_server_package_scripts",
+      "community": 38,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "mcp_server_package_scripts_build",
+      "community": 38,
+      "norm_label": "build"
+    },
+    {
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "mcp_server_package_scripts_lint",
+      "community": 38,
+      "norm_label": "lint"
+    },
+    {
+      "label": "lint:fix",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "mcp_server_package_scripts_lint_fix",
+      "community": 38,
+      "norm_label": "lint:fix"
+    },
+    {
+      "label": "format",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "mcp_server_package_scripts_format",
+      "community": 38,
+      "norm_label": "format"
+    },
+    {
+      "label": "typecheck",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "mcp_server_package_scripts_typecheck",
+      "community": 38,
+      "norm_label": "typecheck"
+    },
+    {
+      "label": "test",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "mcp_server_package_scripts_test",
+      "community": 38,
+      "norm_label": "test"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_mcp_server_src_index_ts_src_index",
+      "community": 46,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig",
+      "community": 42,
+      "norm_label": "tsconfig.json"
+    },
+    {
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_schema",
+      "community": 42,
+      "norm_label": "$schema"
+    },
+    {
+      "label": "extends",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_extends",
+      "community": 42,
+      "norm_label": "extends"
+    },
+    {
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_compileroptions",
+      "community": 42,
+      "norm_label": "compileroptions"
+    },
+    {
+      "label": "incremental",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_compileroptions_incremental",
+      "community": 42,
+      "norm_label": "incremental"
+    },
+    {
+      "label": "outDir",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_compileroptions_outdir",
+      "community": 42,
+      "norm_label": "outdir"
+    },
+    {
+      "label": "rootDir",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_compileroptions_rootdir",
+      "community": 42,
+      "norm_label": "rootdir"
+    },
+    {
+      "label": "tsBuildInfoFile",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_compileroptions_tsbuildinfofile",
+      "community": 42,
+      "norm_label": "tsbuildinfofile"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "mcp_server_tsconfig_include",
+      "community": 42,
+      "norm_label": "include"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tg_bot_package",
+      "community": 39,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "tg_bot_package_name",
+      "community": 39,
+      "norm_label": "name"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "tg_bot_package_version",
+      "community": 39,
+      "norm_label": "version"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "tg_bot_package_private",
+      "community": 39,
+      "norm_label": "private"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "tg_bot_package_description",
+      "community": 39,
+      "norm_label": "description"
+    },
+    {
+      "label": "type",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "tg_bot_package_type",
+      "community": 39,
+      "norm_label": "type"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "tg_bot_package_scripts",
+      "community": 39,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "tg_bot_package_scripts_build",
+      "community": 39,
+      "norm_label": "build"
+    },
+    {
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "tg_bot_package_scripts_lint",
+      "community": 39,
+      "norm_label": "lint"
+    },
+    {
+      "label": "lint:fix",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "tg_bot_package_scripts_lint_fix",
+      "community": 39,
+      "norm_label": "lint:fix"
+    },
+    {
+      "label": "format",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "tg_bot_package_scripts_format",
+      "community": 39,
+      "norm_label": "format"
+    },
+    {
+      "label": "typecheck",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "tg_bot_package_scripts_typecheck",
+      "community": 39,
+      "norm_label": "typecheck"
+    },
+    {
+      "label": "test",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "tg_bot_package_scripts_test",
+      "community": 39,
+      "norm_label": "test"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_tg_bot_src_index_ts_src_index",
+      "community": 47,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig",
+      "community": 43,
+      "norm_label": "tsconfig.json"
+    },
+    {
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_schema",
+      "community": 43,
+      "norm_label": "$schema"
+    },
+    {
+      "label": "extends",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_extends",
+      "community": 43,
+      "norm_label": "extends"
+    },
+    {
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_compileroptions",
+      "community": 43,
+      "norm_label": "compileroptions"
+    },
+    {
+      "label": "incremental",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_compileroptions_incremental",
+      "community": 43,
+      "norm_label": "incremental"
+    },
+    {
+      "label": "outDir",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_compileroptions_outdir",
+      "community": 43,
+      "norm_label": "outdir"
+    },
+    {
+      "label": "rootDir",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_compileroptions_rootdir",
+      "community": 43,
+      "norm_label": "rootdir"
+    },
+    {
+      "label": "tsBuildInfoFile",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_compileroptions_tsbuildinfofile",
+      "community": 43,
+      "norm_label": "tsbuildinfofile"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "tg_bot_tsconfig_include",
+      "community": 43,
+      "norm_label": "include"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "web_package",
+      "community": 40,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "web_package_name",
+      "community": 40,
+      "norm_label": "name"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "web_package_version",
+      "community": 40,
+      "norm_label": "version"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "web_package_private",
+      "community": 40,
+      "norm_label": "private"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "web_package_description",
+      "community": 40,
+      "norm_label": "description"
+    },
+    {
+      "label": "type",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "web_package_type",
+      "community": 40,
+      "norm_label": "type"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "web_package_scripts",
+      "community": 40,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "web_package_scripts_build",
+      "community": 40,
+      "norm_label": "build"
+    },
+    {
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "web_package_scripts_lint",
+      "community": 40,
+      "norm_label": "lint"
+    },
+    {
+      "label": "lint:fix",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "web_package_scripts_lint_fix",
+      "community": 40,
+      "norm_label": "lint:fix"
+    },
+    {
+      "label": "format",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "web_package_scripts_format",
+      "community": 40,
+      "norm_label": "format"
+    },
+    {
+      "label": "typecheck",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "web_package_scripts_typecheck",
+      "community": 40,
+      "norm_label": "typecheck"
+    },
+    {
+      "label": "test",
+      "file_type": "code",
+      "source_file": "apps/web/package.json",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "web_package_scripts_test",
+      "community": 40,
+      "norm_label": "test"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "apps/web/src/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_web_src_index_ts_src_index",
+      "community": 48,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "web_tsconfig",
+      "community": 44,
+      "norm_label": "tsconfig.json"
+    },
+    {
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "web_tsconfig_schema",
+      "community": 44,
+      "norm_label": "$schema"
+    },
+    {
+      "label": "extends",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "web_tsconfig_extends",
+      "community": 44,
+      "norm_label": "extends"
+    },
+    {
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "web_tsconfig_compileroptions",
+      "community": 44,
+      "norm_label": "compileroptions"
+    },
+    {
+      "label": "incremental",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "web_tsconfig_compileroptions_incremental",
+      "community": 44,
+      "norm_label": "incremental"
+    },
+    {
+      "label": "tsBuildInfoFile",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "web_tsconfig_compileroptions_tsbuildinfofile",
+      "community": 44,
+      "norm_label": "tsbuildinfofile"
+    },
+    {
+      "label": "rootDir",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "web_tsconfig_compileroptions_rootdir",
+      "community": 44,
+      "norm_label": "rootdir"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "web_tsconfig_include",
+      "community": 44,
+      "norm_label": "include"
+    },
+    {
       "label": "biome.json",
       "file_type": "code",
       "source_file": "biome.json",
@@ -489,7 +1409,7 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "api_client_package",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
       "community": 19,
       "norm_label": "package.json"
     },
@@ -689,7 +1609,7 @@
       "source_file": "packages/api-client/tsconfig.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "api_client_tsconfig",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_tsconfig_json",
       "community": 26,
       "norm_label": "tsconfig.json"
     },
@@ -789,7 +1709,7 @@
       "source_file": "packages/config/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "config_package",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
       "community": 20,
       "norm_label": "package.json"
     },
@@ -979,7 +1899,7 @@
       "source_file": "packages/config/tsconfig.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "config_tsconfig",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_tsconfig_json",
       "community": 27,
       "norm_label": "tsconfig.json"
     },
@@ -1079,7 +1999,7 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "domain_package",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
       "community": 21,
       "norm_label": "package.json"
     },
@@ -1269,7 +2189,7 @@
       "source_file": "packages/domain/tsconfig.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "domain_tsconfig",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_tsconfig_json",
       "community": 28,
       "norm_label": "tsconfig.json"
     },
@@ -1369,7 +2289,7 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "ui_package",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
       "community": 22,
       "norm_label": "package.json"
     },
@@ -1559,7 +2479,7 @@
       "source_file": "packages/ui/tsconfig.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "ui_tsconfig",
+      "id": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_tsconfig_json",
       "community": 31,
       "norm_label": "tsconfig.json"
     },
@@ -4248,6 +5168,806 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "api_package",
+      "target": "api_package_description",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "api_package",
+      "target": "api_package_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "api_package",
+      "target": "api_package_private",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "api_package",
+      "target": "api_package_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "api_package",
+      "target": "api_package_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "api_package",
+      "target": "api_package_version",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "api_package_scripts",
+      "target": "api_package_scripts_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "api_package_scripts",
+      "target": "api_package_scripts_format",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "api_package_scripts",
+      "target": "api_package_scripts_generate_openapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "api_package_scripts",
+      "target": "api_package_scripts_lint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "api_package_scripts",
+      "target": "api_package_scripts_lint_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "api_package_scripts",
+      "target": "api_package_scripts_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "api_package_scripts",
+      "target": "api_package_scripts_typecheck",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "api_tsconfig",
+      "target": "api_tsconfig_compileroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "api_tsconfig",
+      "target": "api_tsconfig_extends",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "api_tsconfig",
+      "target": "api_tsconfig_include",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "api_tsconfig",
+      "target": "api_tsconfig_schema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "api_tsconfig_compileroptions",
+      "target": "api_tsconfig_compileroptions_incremental",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "api_tsconfig_compileroptions",
+      "target": "api_tsconfig_compileroptions_outdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "api_tsconfig_compileroptions",
+      "target": "api_tsconfig_compileroptions_rootdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tsconfig.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "api_tsconfig_compileroptions",
+      "target": "api_tsconfig_compileroptions_tsbuildinfofile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "mcp_server_package",
+      "target": "mcp_server_package_description",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "mcp_server_package",
+      "target": "mcp_server_package_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "mcp_server_package",
+      "target": "mcp_server_package_private",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "mcp_server_package",
+      "target": "mcp_server_package_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "mcp_server_package",
+      "target": "mcp_server_package_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "mcp_server_package",
+      "target": "mcp_server_package_version",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "mcp_server_package_scripts",
+      "target": "mcp_server_package_scripts_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "mcp_server_package_scripts",
+      "target": "mcp_server_package_scripts_format",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "mcp_server_package_scripts",
+      "target": "mcp_server_package_scripts_lint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "mcp_server_package_scripts",
+      "target": "mcp_server_package_scripts_lint_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "mcp_server_package_scripts",
+      "target": "mcp_server_package_scripts_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "mcp_server_package_scripts",
+      "target": "mcp_server_package_scripts_typecheck",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig",
+      "target": "mcp_server_tsconfig_compileroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig",
+      "target": "mcp_server_tsconfig_extends",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig",
+      "target": "mcp_server_tsconfig_include",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig",
+      "target": "mcp_server_tsconfig_schema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig_compileroptions",
+      "target": "mcp_server_tsconfig_compileroptions_incremental",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig_compileroptions",
+      "target": "mcp_server_tsconfig_compileroptions_outdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig_compileroptions",
+      "target": "mcp_server_tsconfig_compileroptions_rootdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/tsconfig.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "mcp_server_tsconfig_compileroptions",
+      "target": "mcp_server_tsconfig_compileroptions_tsbuildinfofile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tg_bot_package",
+      "target": "tg_bot_package_description",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tg_bot_package",
+      "target": "tg_bot_package_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tg_bot_package",
+      "target": "tg_bot_package_private",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "tg_bot_package",
+      "target": "tg_bot_package_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "tg_bot_package",
+      "target": "tg_bot_package_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "tg_bot_package",
+      "target": "tg_bot_package_version",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "tg_bot_package_scripts",
+      "target": "tg_bot_package_scripts_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "tg_bot_package_scripts",
+      "target": "tg_bot_package_scripts_format",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "tg_bot_package_scripts",
+      "target": "tg_bot_package_scripts_lint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "tg_bot_package_scripts",
+      "target": "tg_bot_package_scripts_lint_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "tg_bot_package_scripts",
+      "target": "tg_bot_package_scripts_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "tg_bot_package_scripts",
+      "target": "tg_bot_package_scripts_typecheck",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig",
+      "target": "tg_bot_tsconfig_compileroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig",
+      "target": "tg_bot_tsconfig_extends",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig",
+      "target": "tg_bot_tsconfig_include",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig",
+      "target": "tg_bot_tsconfig_schema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig_compileroptions",
+      "target": "tg_bot_tsconfig_compileroptions_incremental",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig_compileroptions",
+      "target": "tg_bot_tsconfig_compileroptions_outdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig_compileroptions",
+      "target": "tg_bot_tsconfig_compileroptions_rootdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/tsconfig.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "tg_bot_tsconfig_compileroptions",
+      "target": "tg_bot_tsconfig_compileroptions_tsbuildinfofile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "web_package",
+      "target": "web_package_description",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "web_package",
+      "target": "web_package_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "web_package",
+      "target": "web_package_private",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "web_package",
+      "target": "web_package_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "web_package",
+      "target": "web_package_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "web_package",
+      "target": "web_package_version",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "web_package_scripts",
+      "target": "web_package_scripts_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "web_package_scripts",
+      "target": "web_package_scripts_format",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "web_package_scripts",
+      "target": "web_package_scripts_lint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "web_package_scripts",
+      "target": "web_package_scripts_lint_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "web_package_scripts",
+      "target": "web_package_scripts_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "web_package_scripts",
+      "target": "web_package_scripts_typecheck",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "web_tsconfig",
+      "target": "web_tsconfig_compileroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "web_tsconfig",
+      "target": "web_tsconfig_extends",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "web_tsconfig",
+      "target": "web_tsconfig_include",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "web_tsconfig",
+      "target": "web_tsconfig_schema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "web_tsconfig_compileroptions",
+      "target": "web_tsconfig_compileroptions_incremental",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "web_tsconfig_compileroptions",
+      "target": "web_tsconfig_compileroptions_rootdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "web_tsconfig_compileroptions",
+      "target": "web_tsconfig_compileroptions_tsbuildinfofile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "biome.json",
       "source_location": "L8",
       "weight": 1.0,
@@ -4721,29 +6441,29 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_description"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_description",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/api-client/package.json",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_exports"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_exports",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/api-client/package.json",
-      "source_location": "L13",
+      "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_files"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4751,7 +6471,7 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "api_client_package",
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
       "target": "api_client_package_main",
       "confidence_score": 1.0
     },
@@ -4761,9 +6481,9 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_name"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4771,19 +6491,19 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_private"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_private",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/api-client/package.json",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_scripts"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_scripts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4791,19 +6511,19 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_type"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_type",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/api-client/package.json",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_types"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_types",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4811,9 +6531,9 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_package",
-      "target": "api_client_package_version"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_package_json",
+      "target": "api_client_package_version",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4831,9 +6551,9 @@
       "source_file": "packages/api-client/package.json",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_client_package_exports",
-      "target": "api_client_package_import",
-      "confidence_score": 1.0
+      "target": "api_client_package_import"
     },
     {
       "relation": "contains",
@@ -4911,9 +6631,9 @@
       "source_file": "packages/api-client/tsconfig.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_tsconfig",
-      "target": "api_client_tsconfig_compileroptions"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_tsconfig_json",
+      "target": "api_client_tsconfig_compileroptions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4921,19 +6641,19 @@
       "source_file": "packages/api-client/tsconfig.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_tsconfig",
-      "target": "api_client_tsconfig_extends"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_tsconfig_json",
+      "target": "api_client_tsconfig_extends",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/api-client/tsconfig.json",
-      "source_location": "L9",
+      "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_tsconfig",
-      "target": "api_client_tsconfig_include"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_tsconfig_json",
+      "target": "api_client_tsconfig_include",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4941,9 +6661,9 @@
       "source_file": "packages/api-client/tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_client_tsconfig",
-      "target": "api_client_tsconfig_schema"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_api_client_tsconfig_json",
+      "target": "api_client_tsconfig_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4961,9 +6681,9 @@
       "source_file": "packages/api-client/tsconfig.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_client_tsconfig_compileroptions",
-      "target": "api_client_tsconfig_compileroptions_emitdeclarationonly",
-      "confidence_score": 1.0
+      "target": "api_client_tsconfig_compileroptions_emitdeclarationonly"
     },
     {
       "relation": "contains",
@@ -5001,29 +6721,29 @@
       "source_file": "packages/config/package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_description"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_description",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/config/package.json",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_exports"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_exports",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/config/package.json",
-      "source_location": "L13",
+      "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_files"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5031,7 +6751,7 @@
       "source_file": "packages/config/package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "config_package",
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
       "target": "config_package_main",
       "confidence_score": 1.0
     },
@@ -5041,9 +6761,9 @@
       "source_file": "packages/config/package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_name"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5051,19 +6771,19 @@
       "source_file": "packages/config/package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_private"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_private",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/config/package.json",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_scripts"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_scripts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5071,19 +6791,19 @@
       "source_file": "packages/config/package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_type"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_type",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/config/package.json",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_types"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_types",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5091,9 +6811,9 @@
       "source_file": "packages/config/package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_package",
-      "target": "config_package_version"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_package_json",
+      "target": "config_package_version",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5111,9 +6831,9 @@
       "source_file": "packages/config/package.json",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "config_package_exports",
-      "target": "config_package_import",
-      "confidence_score": 1.0
+      "target": "config_package_import"
     },
     {
       "relation": "contains",
@@ -5181,9 +6901,9 @@
       "source_file": "packages/config/tsconfig.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_tsconfig",
-      "target": "config_tsconfig_compileroptions"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_tsconfig_json",
+      "target": "config_tsconfig_compileroptions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5191,19 +6911,19 @@
       "source_file": "packages/config/tsconfig.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_tsconfig",
-      "target": "config_tsconfig_extends"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_tsconfig_json",
+      "target": "config_tsconfig_extends",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/config/tsconfig.json",
-      "source_location": "L9",
+      "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_tsconfig",
-      "target": "config_tsconfig_include"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_tsconfig_json",
+      "target": "config_tsconfig_include",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5211,9 +6931,9 @@
       "source_file": "packages/config/tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "config_tsconfig",
-      "target": "config_tsconfig_schema"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_config_tsconfig_json",
+      "target": "config_tsconfig_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5231,9 +6951,9 @@
       "source_file": "packages/config/tsconfig.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "config_tsconfig_compileroptions",
-      "target": "config_tsconfig_compileroptions_emitdeclarationonly",
-      "confidence_score": 1.0
+      "target": "config_tsconfig_compileroptions_emitdeclarationonly"
     },
     {
       "relation": "contains",
@@ -5271,29 +6991,29 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_description"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_description",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/domain/package.json",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_exports"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_exports",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/domain/package.json",
-      "source_location": "L13",
+      "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_files"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5301,7 +7021,7 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "domain_package",
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
       "target": "domain_package_main",
       "confidence_score": 1.0
     },
@@ -5311,9 +7031,9 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_name"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5321,19 +7041,19 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_private"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_private",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/domain/package.json",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_scripts"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_scripts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5341,19 +7061,19 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_type"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_type",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/domain/package.json",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_types"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_types",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5361,9 +7081,9 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_package",
-      "target": "domain_package_version"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_package_json",
+      "target": "domain_package_version",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5381,9 +7101,9 @@
       "source_file": "packages/domain/package.json",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "domain_package_exports",
-      "target": "domain_package_import",
-      "confidence_score": 1.0
+      "target": "domain_package_import"
     },
     {
       "relation": "contains",
@@ -5451,9 +7171,9 @@
       "source_file": "packages/domain/tsconfig.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_tsconfig",
-      "target": "domain_tsconfig_compileroptions"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_tsconfig_json",
+      "target": "domain_tsconfig_compileroptions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5461,19 +7181,19 @@
       "source_file": "packages/domain/tsconfig.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_tsconfig",
-      "target": "domain_tsconfig_extends"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_tsconfig_json",
+      "target": "domain_tsconfig_extends",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/domain/tsconfig.json",
-      "source_location": "L9",
+      "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_tsconfig",
-      "target": "domain_tsconfig_include"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_tsconfig_json",
+      "target": "domain_tsconfig_include",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5481,9 +7201,9 @@
       "source_file": "packages/domain/tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "domain_tsconfig",
-      "target": "domain_tsconfig_schema"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_domain_tsconfig_json",
+      "target": "domain_tsconfig_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5501,9 +7221,9 @@
       "source_file": "packages/domain/tsconfig.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "domain_tsconfig_compileroptions",
-      "target": "domain_tsconfig_compileroptions_emitdeclarationonly",
-      "confidence_score": 1.0
+      "target": "domain_tsconfig_compileroptions_emitdeclarationonly"
     },
     {
       "relation": "contains",
@@ -5541,29 +7261,29 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_description"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_description",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/ui/package.json",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_exports"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_exports",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/ui/package.json",
-      "source_location": "L13",
+      "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_files"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5571,7 +7291,7 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "ui_package",
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
       "target": "ui_package_main",
       "confidence_score": 1.0
     },
@@ -5581,9 +7301,9 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_name"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5591,19 +7311,19 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_private"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_private",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/ui/package.json",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_scripts"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_scripts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5611,19 +7331,19 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_type"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_type",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/ui/package.json",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_types"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_types",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5631,9 +7351,9 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_package",
-      "target": "ui_package_version"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_package_json",
+      "target": "ui_package_version",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5651,9 +7371,9 @@
       "source_file": "packages/ui/package.json",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_package_exports",
-      "target": "ui_package_import",
-      "confidence_score": 1.0
+      "target": "ui_package_import"
     },
     {
       "relation": "contains",
@@ -5721,9 +7441,9 @@
       "source_file": "packages/ui/tsconfig.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_tsconfig",
-      "target": "ui_tsconfig_compileroptions"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_tsconfig_json",
+      "target": "ui_tsconfig_compileroptions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5731,19 +7451,19 @@
       "source_file": "packages/ui/tsconfig.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_tsconfig",
-      "target": "ui_tsconfig_extends"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_tsconfig_json",
+      "target": "ui_tsconfig_extends",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "packages/ui/tsconfig.json",
-      "source_location": "L9",
+      "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_tsconfig",
-      "target": "ui_tsconfig_include"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_tsconfig_json",
+      "target": "ui_tsconfig_include",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5751,9 +7471,9 @@
       "source_file": "packages/ui/tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "ui_tsconfig",
-      "target": "ui_tsconfig_schema"
+      "source": "users_alexander_documents_task_issue_6_empty_packages_scaffold_packages_ui_tsconfig_json",
+      "target": "ui_tsconfig_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5771,9 +7491,9 @@
       "source_file": "packages/ui/tsconfig.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_tsconfig_compileroptions",
-      "target": "ui_tsconfig_compileroptions_emitdeclarationonly",
-      "confidence_score": 1.0
+      "target": "ui_tsconfig_compileroptions_emitdeclarationonly"
     },
     {
       "relation": "contains",
@@ -8167,5 +9887,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "896489f509380e411ea5de20aabe21a5af7526e6"
+  "built_at_commit": "a04d444e990032bef77b291d6bd4a4017ac76f01"
 }
