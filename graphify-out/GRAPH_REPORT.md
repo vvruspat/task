@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-11-api-openapi-shell  (2026-07-06)
+# Graph Report - tAsk-issue-13-api-env-config  (2026-07-06)
 
 ## Corpus Check
-- 59 files · ~16,473 words
+- 61 files · ~16,657 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 548 nodes · 532 edges · 49 communities (46 shown, 3 thin omitted)
+- 556 nodes · 545 edges · 49 communities (46 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d334837d`
+- Built from commit: `a2fa9977`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -77,6 +77,8 @@
   apps/api/src/app.dto.ts → apps/api/src/app.contracts.ts
 - `HealthResponseDto` --implements--> `HealthResponse`  [EXTRACTED]
   apps/api/src/app.dto.ts → apps/api/src/app.contracts.ts
+- `bootstrap()` --calls--> `loadApiConfig()`  [EXTRACTED]
+  apps/api/src/main.ts → apps/api/src/config.ts
 - `bootstrap()` --calls--> `createOpenApiDocument()`  [EXTRACTED]
   apps/api/src/main.ts → apps/api/src/openapi.ts
 
@@ -146,8 +148,8 @@ Cohesion: 0.08
 Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.18
-Nodes (10): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, generateOpenApi(), bootstrap() (+2 more)
+Cohesion: 0.13
+Nodes (15): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, ApiConfig, ApiEnvironment (+7 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.11
@@ -242,7 +244,7 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ## Knowledge Gaps
-- **402 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+397 more)
+- **404 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+399 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -250,7 +252,7 @@ Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, ty
 _Questions this graph is uniquely positioned to answer:_
 
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _402 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _404 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

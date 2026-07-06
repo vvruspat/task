@@ -9,7 +9,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "api_package",
+      "id": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
       "community": 37,
       "norm_label": "package.json"
     },
@@ -384,6 +384,96 @@
       "norm_label": ".gethealth()"
     },
     {
+      "label": "config.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_config_test",
+      "community": 18,
+      "norm_label": "config.test.ts"
+    },
+    {
+      "label": "config.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_config",
+      "community": 18,
+      "norm_label": "config.ts"
+    },
+    {
+      "label": "ApiEnvironment",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_config_apienvironment",
+      "community": 18,
+      "norm_label": "apienvironment"
+    },
+    {
+      "label": "ApiConfig",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "src_config_apiconfig",
+      "community": 18,
+      "norm_label": "apiconfig"
+    },
+    {
+      "label": "InvalidApiEnvironmentError",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "src_config_invalidapienvironmenterror",
+      "community": 18,
+      "norm_label": "invalidapienvironmenterror"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "src_config_invalidapienvironmenterror_constructor",
+      "community": 18,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "parseApiConfig()",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "src_config_parseapiconfig",
+      "community": 18,
+      "norm_label": "parseapiconfig()"
+    },
+    {
+      "label": "loadApiConfig()",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "src_config_loadapiconfig",
+      "community": 18,
+      "norm_label": "loadapiconfig()"
+    },
+    {
+      "label": "parsePort()",
+      "file_type": "code",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "src_config_parseport",
+      "community": 18,
+      "norm_label": "parseport()"
+    },
+    {
       "label": "generate-openapi.ts",
       "file_type": "code",
       "source_file": "apps/api/src/generate-openapi.ts",
@@ -414,20 +504,10 @@
       "norm_label": "main.ts"
     },
     {
-      "label": "getPort()",
-      "file_type": "code",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L11",
-      "_origin": "ast",
-      "id": "src_main_getport",
-      "community": 18,
-      "norm_label": "getport()"
-    },
-    {
       "label": "bootstrap()",
       "file_type": "code",
       "source_file": "apps/api/src/main.ts",
-      "source_location": "L24",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "src_main_bootstrap",
       "community": 18,
@@ -459,7 +539,7 @@
       "source_file": "apps/api/tsconfig.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "api_tsconfig",
+      "id": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_tsconfig_json",
       "community": 41,
       "norm_label": "tsconfig.json"
     },
@@ -1499,7 +1579,7 @@
       "source_file": "package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "package",
+      "id": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
       "community": 45,
       "norm_label": "package.json"
     },
@@ -1509,7 +1589,7 @@
       "source_file": "package.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "package_name",
+      "id": "task_issue_11_api_openapi_shell_package_name",
       "community": 45,
       "norm_label": "name"
     },
@@ -1519,7 +1599,7 @@
       "source_file": "package.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "package_version",
+      "id": "task_issue_11_api_openapi_shell_package_version",
       "community": 45,
       "norm_label": "version"
     },
@@ -1529,7 +1609,7 @@
       "source_file": "package.json",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "package_private",
+      "id": "task_issue_11_api_openapi_shell_package_private",
       "community": 45,
       "norm_label": "private"
     },
@@ -1539,7 +1619,7 @@
       "source_file": "package.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "package_description",
+      "id": "task_issue_11_api_openapi_shell_package_description",
       "community": 45,
       "norm_label": "description"
     },
@@ -1549,7 +1629,7 @@
       "source_file": "package.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "package_license",
+      "id": "task_issue_11_api_openapi_shell_package_license",
       "community": 45,
       "norm_label": "license"
     },
@@ -1559,7 +1639,7 @@
       "source_file": "package.json",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "package_packagemanager",
+      "id": "task_issue_11_api_openapi_shell_package_packagemanager",
       "community": 45,
       "norm_label": "packagemanager"
     },
@@ -1569,7 +1649,7 @@
       "source_file": "package.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "package_workspaces",
+      "id": "task_issue_11_api_openapi_shell_package_workspaces",
       "community": 45,
       "norm_label": "workspaces"
     },
@@ -1579,7 +1659,7 @@
       "source_file": "package.json",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "package_scripts",
+      "id": "task_issue_11_api_openapi_shell_package_scripts",
       "community": 45,
       "norm_label": "scripts"
     },
@@ -1589,7 +1669,7 @@
       "source_file": "package.json",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "package_scripts_dev",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_dev",
       "community": 45,
       "norm_label": "dev"
     },
@@ -1599,7 +1679,7 @@
       "source_file": "package.json",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "package_scripts_build",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_build",
       "community": 45,
       "norm_label": "build"
     },
@@ -1609,7 +1689,7 @@
       "source_file": "package.json",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "package_scripts_lint",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_lint",
       "community": 45,
       "norm_label": "lint"
     },
@@ -1619,7 +1699,7 @@
       "source_file": "package.json",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "package_scripts_lint_fix",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_lint_fix",
       "community": 45,
       "norm_label": "lint:fix"
     },
@@ -1629,7 +1709,7 @@
       "source_file": "package.json",
       "source_location": "L17",
       "_origin": "ast",
-      "id": "package_scripts_format",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_format",
       "community": 45,
       "norm_label": "format"
     },
@@ -1639,7 +1719,7 @@
       "source_file": "package.json",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "package_scripts_test",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_test",
       "community": 45,
       "norm_label": "test"
     },
@@ -1649,7 +1729,7 @@
       "source_file": "package.json",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "package_scripts_typecheck",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_typecheck",
       "community": 45,
       "norm_label": "typecheck"
     },
@@ -1659,7 +1739,7 @@
       "source_file": "package.json",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "package_scripts_generate_openapi",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_generate_openapi",
       "community": 45,
       "norm_label": "generate:openapi"
     },
@@ -1669,7 +1749,7 @@
       "source_file": "package.json",
       "source_location": "L21",
       "_origin": "ast",
-      "id": "package_scripts_generate_api_client",
+      "id": "task_issue_11_api_openapi_shell_package_scripts_generate_api_client",
       "community": 45,
       "norm_label": "generate:api-client"
     },
@@ -1679,7 +1759,7 @@
       "source_file": "package.json",
       "source_location": "L23",
       "_origin": "ast",
-      "id": "package_devdependencies",
+      "id": "task_issue_11_api_openapi_shell_package_devdependencies",
       "community": 45,
       "norm_label": "devdependencies"
     },
@@ -1689,7 +1769,7 @@
       "source_file": "package.json",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "package_devdependencies_biomejs_biome",
+      "id": "task_issue_11_api_openapi_shell_package_devdependencies_biomejs_biome",
       "community": 45,
       "norm_label": "@biomejs/biome"
     },
@@ -1699,7 +1779,7 @@
       "source_file": "package.json",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "package_devdependencies_types_node",
+      "id": "task_issue_11_api_openapi_shell_package_devdependencies_types_node",
       "community": 45,
       "norm_label": "@types/node"
     },
@@ -1709,7 +1789,7 @@
       "source_file": "package.json",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "package_devdependencies_turbo",
+      "id": "task_issue_11_api_openapi_shell_package_devdependencies_turbo",
       "community": 45,
       "norm_label": "turbo"
     },
@@ -1719,7 +1799,7 @@
       "source_file": "package.json",
       "source_location": "L27",
       "_origin": "ast",
-      "id": "package_devdependencies_typescript",
+      "id": "task_issue_11_api_openapi_shell_package_devdependencies_typescript",
       "community": 45,
       "norm_label": "typescript"
     },
@@ -5491,9 +5571,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_package",
-      "target": "api_package_dependencies"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
+      "target": "api_package_dependencies",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5501,9 +5581,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_package",
-      "target": "api_package_description"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
+      "target": "api_package_description",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5511,9 +5591,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_package",
-      "target": "api_package_name"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
+      "target": "api_package_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5521,9 +5601,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_package",
-      "target": "api_package_private"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
+      "target": "api_package_private",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5531,9 +5611,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_package",
-      "target": "api_package_scripts"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
+      "target": "api_package_scripts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5541,9 +5621,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_package",
-      "target": "api_package_type"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
+      "target": "api_package_type",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5551,9 +5631,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_package",
-      "target": "api_package_version"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_package_json",
+      "target": "api_package_version",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -5651,9 +5731,9 @@
       "source_file": "apps/api/package.json",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_package_dependencies",
-      "target": "api_package_dependencies_nestjs_platform_fastify",
-      "confidence_score": 1.0
+      "target": "api_package_dependencies_nestjs_platform_fastify"
     },
     {
       "relation": "contains",
@@ -6115,6 +6195,164 @@
       "target": "src_app_service_appservice_gethealth"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_config_test",
+      "target": "src_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_config_test",
+      "target": "src_config_invalidapienvironmenterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_config_test",
+      "target": "src_config_parseapiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_config",
+      "target": "src_config_apiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_config",
+      "target": "src_config_apienvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_config",
+      "target": "src_config_invalidapienvironmenterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "src_config",
+      "target": "src_config_loadapiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_config",
+      "target": "src_config_parseapiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "src_config",
+      "target": "src_config_parseport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_main",
+      "target": "src_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_config_invalidapienvironmenterror",
+      "target": "src_config_invalidapienvironmenterror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "src_config_loadapiconfig",
+      "target": "src_config_parseapiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_config_parseapiconfig",
+      "target": "src_config_parseport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_main",
+      "target": "src_config_loadapiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_main_bootstrap",
+      "target": "src_config_loadapiconfig",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/generate-openapi.ts",
@@ -6168,16 +6406,6 @@
       "target": "src_main_bootstrap"
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
-      "target": "src_main_getport"
-    },
-    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -6198,17 +6426,6 @@
       "confidence_score": 1.0,
       "source": "src_main",
       "target": "src_openapi_createopenapidocument"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main_bootstrap",
-      "target": "src_main_getport"
     },
     {
       "relation": "calls",
@@ -6237,9 +6454,9 @@
       "source_file": "apps/api/tsconfig.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_tsconfig",
-      "target": "api_tsconfig_compileroptions"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_tsconfig_json",
+      "target": "api_tsconfig_compileroptions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -6247,19 +6464,19 @@
       "source_file": "apps/api/tsconfig.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_tsconfig",
-      "target": "api_tsconfig_extends"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_tsconfig_json",
+      "target": "api_tsconfig_extends",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/tsconfig.json",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_tsconfig",
-      "target": "api_tsconfig_include"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_tsconfig_json",
+      "target": "api_tsconfig_include",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -6267,9 +6484,9 @@
       "source_file": "apps/api/tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_tsconfig",
-      "target": "api_tsconfig_schema"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_apps_api_tsconfig_json",
+      "target": "api_tsconfig_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7177,9 +7394,9 @@
       "source_file": "package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_description"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_description",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7187,9 +7404,9 @@
       "source_file": "package.json",
       "source_location": "L23",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_devdependencies"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_devdependencies",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7197,9 +7414,9 @@
       "source_file": "package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_license"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_license",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7207,9 +7424,9 @@
       "source_file": "package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_name"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7217,9 +7434,9 @@
       "source_file": "package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_packagemanager"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_packagemanager",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7227,9 +7444,9 @@
       "source_file": "package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_private"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_private",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7237,9 +7454,9 @@
       "source_file": "package.json",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_scripts"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_scripts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7247,9 +7464,9 @@
       "source_file": "package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_version"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_version",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7257,9 +7474,9 @@
       "source_file": "package.json",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package",
-      "target": "package_workspaces"
+      "source": "users_alexander_documents_task_issue_11_api_openapi_shell_package_json",
+      "target": "task_issue_11_api_openapi_shell_package_workspaces",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7267,9 +7484,9 @@
       "source_file": "package.json",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_build"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_build",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7277,9 +7494,9 @@
       "source_file": "package.json",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_dev"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_dev",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7287,9 +7504,9 @@
       "source_file": "package.json",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_format"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_format",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7297,9 +7514,9 @@
       "source_file": "package.json",
       "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_generate_api_client"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_generate_api_client",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7307,9 +7524,9 @@
       "source_file": "package.json",
       "source_location": "L20",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_generate_openapi"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_generate_openapi",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7317,9 +7534,9 @@
       "source_file": "package.json",
       "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_lint"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_lint",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7327,9 +7544,9 @@
       "source_file": "package.json",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_lint_fix"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_lint_fix",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7337,9 +7554,9 @@
       "source_file": "package.json",
       "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_test"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_test",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7347,9 +7564,9 @@
       "source_file": "package.json",
       "source_location": "L19",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_scripts",
-      "target": "package_scripts_typecheck"
+      "source": "task_issue_11_api_openapi_shell_package_scripts",
+      "target": "task_issue_11_api_openapi_shell_package_scripts_typecheck",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7357,9 +7574,9 @@
       "source_file": "package.json",
       "source_location": "L24",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_devdependencies",
-      "target": "package_devdependencies_biomejs_biome"
+      "source": "task_issue_11_api_openapi_shell_package_devdependencies",
+      "target": "task_issue_11_api_openapi_shell_package_devdependencies_biomejs_biome",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7367,9 +7584,9 @@
       "source_file": "package.json",
       "source_location": "L26",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_devdependencies",
-      "target": "package_devdependencies_turbo"
+      "source": "task_issue_11_api_openapi_shell_package_devdependencies",
+      "target": "task_issue_11_api_openapi_shell_package_devdependencies_turbo",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7377,9 +7594,9 @@
       "source_file": "package.json",
       "source_location": "L25",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_devdependencies",
-      "target": "package_devdependencies_types_node"
+      "source": "task_issue_11_api_openapi_shell_package_devdependencies",
+      "target": "task_issue_11_api_openapi_shell_package_devdependencies_types_node",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7387,9 +7604,9 @@
       "source_file": "package.json",
       "source_location": "L27",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "package_devdependencies",
-      "target": "package_devdependencies_typescript"
+      "source": "task_issue_11_api_openapi_shell_package_devdependencies",
+      "target": "task_issue_11_api_openapi_shell_package_devdependencies_typescript",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10843,5 +11060,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d334837d4b85c7a5434e9ad2ffade160c2b5af3c"
+  "built_at_commit": "a2fa99779e980cefa552cfe20f70d2b9356d4252"
 }
