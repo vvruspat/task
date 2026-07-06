@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-39-workspace-read-api  (2026-07-06)
+# Graph Report - tAsk-issue-41-current-user-boundary  (2026-07-06)
 
 ## Corpus Check
-- 115 files · ~29,243 words
+- 117 files · ~29,342 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 770 nodes · 1100 edges · 63 communities (58 shown, 5 thin omitted)
+- 776 nodes · 1106 edges · 63 communities (58 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f4a9f30b`
+- Built from commit: `099cc06e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -110,8 +110,8 @@ Cohesion: 0.11
 Nodes (17): Backend architecture, Confirmation model, Database, Deployment draft, External references, Frontend architecture, Linting and formatting, LLM and OpenRouter (+9 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.08
-Nodes (24): ApiDataSource, ApiDataSourceProvider, DatabaseModule, toWorkspaceSummary(), TypeOrmWorkspaceReadStore, WorkspaceDetail, WorkspaceMember, WorkspaceSummary (+16 more)
+Cohesion: 0.07
+Nodes (29): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, ApiDataSource, ApiDataSourceProvider, DatabaseModule (+21 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.14
@@ -163,7 +163,7 @@ Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, ou
 
 ### Community 18 - "Community 18"
 Cohesion: 0.11
-Nodes (19): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, ApiConfig, ApiDatabaseConfig (+11 more)
+Nodes (18): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, ApiConfig, ApiDatabaseConfig (+10 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.11
@@ -258,8 +258,8 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.26
-Nodes (7): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, apiEntities, apiMigrations, createApiDataSource(), createTypeOrmDataSourceOptions()
+Cohesion: 0.38
+Nodes (3): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql
 
 ### Community 50 - "Community 50"
 Cohesion: 0.09
@@ -267,7 +267,7 @@ Nodes (41): ActivityEventEntity, AgentRunEntity, AgentToolCallEntity, Attachment
 
 ### Community 51 - "Community 51"
 Cohesion: 0.27
-Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTasksTable1783296120000, CreateTaskSkillsTables1783296180000
+Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTaskSkillsTables1783296180000, CreateActivityEventsTable1783296360000
 
 ### Community 52 - "Community 52"
 Cohesion: 0.38
@@ -277,6 +277,10 @@ Nodes (4): createCorePersistenceTablesSql, dropCorePersistenceTablesSql, Migrati
 Cohesion: 0.38
 Nodes (3): CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql
 
+### Community 54 - "Community 54"
+Cohesion: 0.38
+Nodes (3): CreateTasksTable1783296120000, createTasksTableSql, dropTasksTableSql
+
 ### Community 55 - "Community 55"
 Cohesion: 0.38
 Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql
@@ -284,10 +288,6 @@ Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropComment
 ### Community 56 - "Community 56"
 Cohesion: 0.38
 Nodes (3): CreateAttachmentsTable1783296300000, createAttachmentsTableSql, dropAttachmentsTableSql
-
-### Community 57 - "Community 57"
-Cohesion: 0.38
-Nodes (3): CreateActivityEventsTable1783296360000, createActivityEventsTableSql, dropActivityEventsTableSql
 
 ### Community 58 - "Community 58"
 Cohesion: 0.38
@@ -298,15 +298,15 @@ Cohesion: 0.38
 Nodes (3): CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
 
 ### Community 61 - "Community 61"
-Cohesion: 0.38
-Nodes (3): CreateInvitesTable1783296600000, createInvitesTableSql, dropInvitesTableSql
+Cohesion: 0.26
+Nodes (7): CreateInvitesTable1783296600000, createInvitesTableSql, dropInvitesTableSql, apiEntities, apiMigrations, createApiDataSource(), createTypeOrmDataSourceOptions()
 
 ### Community 62 - "Community 62"
 Cohesion: 0.07
 Nodes (27): files, includes, formatter, enabled, indentStyle, indentWidth, lineWidth, quoteStyle (+19 more)
 
 ## Knowledge Gaps
-- **420 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+415 more)
+- **422 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+417 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -315,15 +315,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `executeMigrationQueries()` connect `Community 51` to `Community 49`, `Community 52`, `Community 53`, `Community 54`, `Community 55`, `Community 56`, `Community 57`, `Community 58`, `Community 59`, `Community 60`, `Community 61`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `WorkspaceEntity` connect `Community 50` to `Community 49`, `Community 2`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 49`, `Community 2`?**
+- **Why does `WorkspaceEntity` connect `Community 50` to `Community 2`, `Community 61`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `HealthResponseDto` connect `Community 18` to `Community 2`?**
   _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _420 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _422 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.08357685563997662 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06993006993006994 - nodes in this community are weakly interconnected._
