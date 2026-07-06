@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getMetadataArgsStorage } from "typeorm";
 import {
+  AttachmentEntity,
   CommentEntity,
   ProjectEntity,
   StatusEntity,
@@ -26,12 +27,14 @@ test("core persistence entities map to the expected table names", () => {
         table.target === TaskEntity ||
         table.target === TaskSkillEntity ||
         table.target === TaskSkillVersionEntity ||
-        table.target === CommentEntity,
+        table.target === CommentEntity ||
+        table.target === AttachmentEntity,
     )
     .map((table) => table.name)
     .sort();
 
   assert.deepEqual(tables, [
+    "attachments",
     "comments",
     "projects",
     "statuses",
@@ -41,6 +44,37 @@ test("core persistence entities map to the expected table names", () => {
     "users",
     "workspace_members",
     "workspaces",
+  ]);
+});
+
+test("attachment columns, checks, and lookup indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const targetTypeColumn = storage.columns.find(
+    (column) => column.target === AttachmentEntity && column.propertyName === "targetType",
+  );
+  const kindColumn = storage.columns.find(
+    (column) => column.target === AttachmentEntity && column.propertyName === "kind",
+  );
+  const sizeBytesColumn = storage.columns.find(
+    (column) => column.target === AttachmentEntity && column.propertyName === "sizeBytes",
+  );
+  const attachmentChecks = storage.checks
+    .filter((check) => check.target === AttachmentEntity)
+    .map((check) => check.name)
+    .sort();
+  const attachmentIndexes = storage.indices
+    .filter((index) => index.target === AttachmentEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(targetTypeColumn?.options.type, "text");
+  assert.equal(kindColumn?.options.type, "text");
+  assert.equal(sizeBytesColumn?.options.type, "bigint");
+  assert.equal(sizeBytesColumn?.options.nullable, true);
+  assert.deepEqual(attachmentChecks, ["chk_attachments_kind", "chk_attachments_target_type"]);
+  assert.deepEqual(attachmentIndexes, [
+    "idx_attachments_workspace_id_created_by_user_id",
+    "idx_attachments_workspace_id_target",
   ]);
 });
 

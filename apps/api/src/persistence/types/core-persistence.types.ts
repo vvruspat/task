@@ -101,3 +101,23 @@ export type CommentRecord = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type AttachmentTargetType = "task" | "project" | "comment";
+
+export type AttachmentKind = "file" | "link" | "telegram_file";
+
+export type AttachmentRecord = {
+  id: string;
+  workspaceId: string;
+  targetType: AttachmentTargetType;
+  targetId: string;
+  kind: AttachmentKind;
+  title: string | null;
+  url: string | null;
+  storageKey: string | null;
+  telegramFileId: string | null;
+  mimeType: string | null;
+  sizeBytes: string | null;
+  createdByUserId: string;
+  createdAt: Date;
+};
