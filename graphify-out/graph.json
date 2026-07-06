@@ -530,7 +530,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 50,
+      "community": 49,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -540,47 +540,47 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 50,
+      "community": 49,
       "norm_label": "data-source.ts"
     },
     {
       "label": "apiEntities",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L24",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 50,
+      "community": 49,
       "norm_label": "apientities"
     },
     {
       "label": "apiMigrations",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L37",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 50,
+      "community": 49,
       "norm_label": "apimigrations"
     },
     {
       "label": "createTypeOrmDataSourceOptions()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L47",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 50,
+      "community": 49,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
       "label": "createApiDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L58",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 50,
+      "community": 49,
       "norm_label": "createapidatasource()"
     },
     {
@@ -662,6 +662,46 @@
       "id": "entities_activity_event_entity_activityevententity",
       "community": 50,
       "norm_label": "activityevententity"
+    },
+    {
+      "label": "agent-run.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_agent_run_entity",
+      "community": 50,
+      "norm_label": "agent-run.entity.ts"
+    },
+    {
+      "label": "AgentRunEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "entities_agent_run_entity_agentrunentity",
+      "community": 50,
+      "norm_label": "agentrunentity"
+    },
+    {
+      "label": "agent-tool-call.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_agent_tool_call_entity",
+      "community": 50,
+      "norm_label": "agent-tool-call.entity.ts"
+    },
+    {
+      "label": "AgentToolCallEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "entities_agent_tool_call_entity_agenttoolcallentity",
+      "community": 50,
+      "norm_label": "agenttoolcallentity"
     },
     {
       "label": "attachment.entity.ts",
@@ -1324,6 +1364,66 @@
       "norm_label": ".down()"
     },
     {
+      "label": "1783296420000-create-agent-run-tables.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_1783296420000_create_agent_run_tables",
+      "community": 49,
+      "norm_label": "1783296420000-create-agent-run-tables.ts"
+    },
+    {
+      "label": "createAgentRunTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "migrations_1783296420000_create_agent_run_tables_createagentruntablessql",
+      "community": 49,
+      "norm_label": "createagentruntablessql"
+    },
+    {
+      "label": "dropAgentRunTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "migrations_1783296420000_create_agent_run_tables_dropagentruntablessql",
+      "community": 49,
+      "norm_label": "dropagentruntablessql"
+    },
+    {
+      "label": "CreateAgentRunTables1783296420000",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
+      "community": 49,
+      "norm_label": "createagentruntables1783296420000"
+    },
+    {
+      "label": ".up()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_up",
+      "community": 49,
+      "norm_label": ".up()"
+    },
+    {
+      "label": ".down()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_down",
+      "community": 49,
+      "norm_label": ".down()"
+    },
+    {
       "label": "create-activity-events-table.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/persistence/migrations/create-activity-events-table.test.ts",
@@ -1332,6 +1432,16 @@
       "id": "migrations_create_activity_events_table_test",
       "community": 49,
       "norm_label": "create-activity-events-table.test.ts"
+    },
+    {
+      "label": "create-agent-run-tables.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-agent-run-tables.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_create_agent_run_tables_test",
+      "community": 49,
+      "norm_label": "create-agent-run-tables.test.ts"
     },
     {
       "label": "create-attachments-table.test.ts",
@@ -1562,6 +1672,56 @@
       "id": "types_core_persistence_types_activityeventrecord",
       "community": 50,
       "norm_label": "activityeventrecord"
+    },
+    {
+      "label": "AgentRunSource",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L136",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_agentrunsource",
+      "community": 50,
+      "norm_label": "agentrunsource"
+    },
+    {
+      "label": "AgentRunStatus",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L138",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_agentrunstatus",
+      "community": 50,
+      "norm_label": "agentrunstatus"
+    },
+    {
+      "label": "AgentRunRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L140",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_agentrunrecord",
+      "community": 50,
+      "norm_label": "agentrunrecord"
+    },
+    {
+      "label": "AgentToolCallStatus",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L158",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_agenttoolcallstatus",
+      "community": 50,
+      "norm_label": "agenttoolcallstatus"
+    },
+    {
+      "label": "AgentToolCallRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L160",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_agenttoolcallrecord",
+      "community": 50,
+      "norm_label": "agenttoolcallrecord"
     },
     {
       "label": "tsconfig.json",
@@ -7505,8 +7665,30 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "entities_activity_event_entity_activityevententity",
+      "target": "entities_activity_event_entity_activityevententity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_agent_run_entity_agentrunentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_agent_tool_call_entity_agenttoolcallentity",
       "confidence_score": 1.0
     },
     {
@@ -7769,9 +7951,9 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296360000_create_activity_events_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table"
     },
     {
       "relation": "imports",
@@ -7780,8 +7962,30 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
+      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296420000_create_agent_run_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
       "confidence_score": 1.0
     },
     {
@@ -7824,8 +8028,30 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "entities_activity_event_entity_activityevententity",
+      "target": "entities_activity_event_entity_activityevententity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "entities_agent_run_entity_agentrunentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "entities_agent_tool_call_entity_agenttoolcallentity",
       "confidence_score": 1.0
     },
     {
@@ -8088,9 +8314,9 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296360000_create_activity_events_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table"
     },
     {
       "relation": "imports",
@@ -8099,8 +8325,30 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
+      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296420000_create_agent_run_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
       "confidence_score": 1.0
     },
     {
@@ -8256,9 +8504,9 @@
       "source_file": "apps/api/src/persistence/entities/activity-event.entity.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_activity_event_entity",
-      "target": "entities_activity_event_entity_activityevententity",
-      "confidence_score": 1.0
+      "target": "entities_activity_event_entity_activityevententity"
     },
     {
       "relation": "imports_from",
@@ -8267,9 +8515,9 @@
       "source_file": "apps/api/src/persistence/entities/activity-event.entity.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_activity_event_entity",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "imports",
@@ -8278,9 +8526,9 @@
       "source_file": "apps/api/src/persistence/entities/activity-event.entity.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_activity_event_entity",
-      "target": "types_core_persistence_types_activityeventrecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_activityeventrecord"
     },
     {
       "relation": "re_exports",
@@ -8289,9 +8537,9 @@
       "source_file": "apps/api/src/persistence/entities/index.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_index",
-      "target": "entities_activity_event_entity",
-      "confidence_score": 1.0
+      "target": "entities_activity_event_entity"
     },
     {
       "relation": "implements",
@@ -8300,8 +8548,128 @@
       "source_file": "apps/api/src/persistence/entities/activity-event.entity.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_activity_event_entity_activityevententity",
-      "target": "types_core_persistence_types_activityeventrecord",
+      "target": "types_core_persistence_types_activityeventrecord"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_activity_event_entity_activityevententity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_activity_event_entity_activityevententity"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity",
+      "target": "entities_agent_run_entity_agentrunentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity",
+      "target": "types_core_persistence_types_agentrunrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity",
+      "target": "types_core_persistence_types_agentrunsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity",
+      "target": "types_core_persistence_types_agentrunstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_agent_run_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity_agentrunentity",
+      "target": "types_core_persistence_types_agentrunrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity_agentrunentity",
+      "target": "types_core_persistence_types_agentrunsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-run.entity.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "entities_agent_run_entity_agentrunentity",
+      "target": "types_core_persistence_types_agentrunstatus",
       "confidence_score": 1.0
     },
     {
@@ -8312,7 +8680,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "entities_core_entities_test",
-      "target": "entities_activity_event_entity_activityevententity",
+      "target": "entities_agent_run_entity_agentrunentity",
       "confidence_score": 1.0
     },
     {
@@ -8320,10 +8688,108 @@
       "context": "re-export",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/entities/index.ts",
-      "source_location": "L1",
+      "source_location": "L2",
       "weight": 1.0,
       "source": "entities_index",
-      "target": "entities_activity_event_entity_activityevententity",
+      "target": "entities_agent_run_entity_agentrunentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "entities_agent_tool_call_entity",
+      "target": "entities_agent_tool_call_entity_agenttoolcallentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_agent_tool_call_entity",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_agent_tool_call_entity",
+      "target": "types_core_persistence_types_agenttoolcallrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_agent_tool_call_entity",
+      "target": "types_core_persistence_types_agenttoolcallstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_agent_tool_call_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "entities_agent_tool_call_entity_agenttoolcallentity",
+      "target": "types_core_persistence_types_agenttoolcallrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/agent-tool-call.entity.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "entities_agent_tool_call_entity_agenttoolcallentity",
+      "target": "types_core_persistence_types_agenttoolcallstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_agent_tool_call_entity_agenttoolcallentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_agent_tool_call_entity_agenttoolcallentity",
       "confidence_score": 1.0
     },
     {
@@ -9275,7 +9741,18 @@
       "source_file": "apps/api/src/persistence/migrations/1783296360000-create-activity-events-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table",
+      "target": "migrations_1783296000000_create_core_persistence_tables"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables",
       "target": "migrations_1783296000000_create_core_persistence_tables",
       "confidence_score": 1.0
     },
@@ -9506,9 +9983,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296360000-create-activity-events-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table",
-      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
-      "confidence_score": 1.0
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
       "relation": "calls",
@@ -9530,6 +10007,39 @@
       "source_location": "L33",
       "weight": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_down",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_up",
       "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
@@ -9984,9 +10494,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296360000-create-activity-events-table.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table",
-      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000"
     },
     {
       "relation": "contains",
@@ -9994,9 +10504,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296360000-create-activity-events-table.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table",
-      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstablesql"
     },
     {
       "relation": "contains",
@@ -10004,9 +10514,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296360000-create-activity-events-table.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table",
-      "target": "migrations_1783296360000_create_activity_events_table_dropactivityeventstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table_dropactivityeventstablesql"
     },
     {
       "relation": "imports_from",
@@ -10015,9 +10525,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-activity-events-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_activity_events_table_test",
-      "target": "migrations_1783296360000_create_activity_events_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table"
     },
     {
       "relation": "imports",
@@ -10026,9 +10536,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-activity-events-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_activity_events_table_test",
-      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstablesql"
     },
     {
       "relation": "imports",
@@ -10037,9 +10547,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-activity-events-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_activity_events_table_test",
-      "target": "migrations_1783296360000_create_activity_events_table_dropactivityeventstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table_dropactivityeventstablesql"
     },
     {
       "relation": "method",
@@ -10047,9 +10557,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296360000-create-activity-events-table.ts",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down",
-      "confidence_score": 1.0
+      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down"
     },
     {
       "relation": "method",
@@ -10057,8 +10567,91 @@
       "source_file": "apps/api/src/persistence/migrations/1783296360000-create-activity-events-table.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
+      "target": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables",
+      "target": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables",
+      "target": "migrations_1783296420000_create_agent_run_tables_createagentruntablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables",
+      "target": "migrations_1783296420000_create_agent_run_tables_dropagentruntablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-agent-run-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_agent_run_tables_test",
+      "target": "migrations_1783296420000_create_agent_run_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-agent-run-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_agent_run_tables_test",
+      "target": "migrations_1783296420000_create_agent_run_tables_createagentruntablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-agent-run-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_agent_run_tables_test",
+      "target": "migrations_1783296420000_create_agent_run_tables_dropagentruntablessql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
+      "target": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_down",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
+      "target": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_up",
       "confidence_score": 1.0
     },
     {
@@ -10087,8 +10680,58 @@
       "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
       "source_location": "L125",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_core_persistence_types",
-      "target": "types_core_persistence_types_activityeventrecord",
+      "target": "types_core_persistence_types_activityeventrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_agentrunrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_agentrunsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L138",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_agentrunstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L160",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_agenttoolcallrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L158",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_agenttoolcallstatus",
       "confidence_score": 1.0
     },
     {
@@ -14833,5 +15476,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b56944b911c6526cb4ac3dc42231499db442e2d4"
+  "built_at_commit": "0a6aace0c71a7def3e7f15bd53d3007977d273e7"
 }

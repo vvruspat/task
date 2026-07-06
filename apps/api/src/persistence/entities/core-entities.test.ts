@@ -3,6 +3,8 @@ import test from "node:test";
 import { getMetadataArgsStorage } from "typeorm";
 import {
   ActivityEventEntity,
+  AgentRunEntity,
+  AgentToolCallEntity,
   AttachmentEntity,
   CommentEntity,
   ProjectEntity,
@@ -30,13 +32,17 @@ test("core persistence entities map to the expected table names", () => {
         table.target === TaskSkillVersionEntity ||
         table.target === CommentEntity ||
         table.target === AttachmentEntity ||
-        table.target === ActivityEventEntity,
+        table.target === ActivityEventEntity ||
+        table.target === AgentRunEntity ||
+        table.target === AgentToolCallEntity,
     )
     .map((table) => table.name)
     .sort();
 
   assert.deepEqual(tables, [
     "activity_events",
+    "agent_runs",
+    "agent_tool_calls",
     "attachments",
     "comments",
     "projects",
@@ -47,6 +53,62 @@ test("core persistence entities map to the expected table names", () => {
     "users",
     "workspace_members",
     "workspaces",
+  ]);
+});
+
+test("agent run columns, checks, and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const normalizedIntentColumn = storage.columns.find(
+    (column) => column.target === AgentRunEntity && column.propertyName === "normalizedIntent",
+  );
+  const tokenUsageColumn = storage.columns.find(
+    (column) => column.target === AgentRunEntity && column.propertyName === "tokenUsage",
+  );
+  const runChecks = storage.checks
+    .filter((check) => check.target === AgentRunEntity)
+    .map((check) => check.name)
+    .sort();
+  const runIndexes = storage.indices
+    .filter((index) => index.target === AgentRunEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(normalizedIntentColumn?.options.type, "jsonb");
+  assert.equal(normalizedIntentColumn?.options.nullable, true);
+  assert.equal(tokenUsageColumn?.options.type, "jsonb");
+  assert.equal(tokenUsageColumn?.options.nullable, true);
+  assert.deepEqual(runChecks, ["chk_agent_runs_source", "chk_agent_runs_status"]);
+  assert.deepEqual(runIndexes, [
+    "idx_agent_runs_workspace_id_created_at",
+    "idx_agent_runs_workspace_id_status",
+    "idx_agent_runs_workspace_id_user_id",
+  ]);
+});
+
+test("agent tool call columns, checks, and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const argumentsColumn = storage.columns.find(
+    (column) => column.target === AgentToolCallEntity && column.propertyName === "arguments",
+  );
+  const completedAtColumn = storage.columns.find(
+    (column) => column.target === AgentToolCallEntity && column.propertyName === "completedAt",
+  );
+  const toolCallChecks = storage.checks
+    .filter((check) => check.target === AgentToolCallEntity)
+    .map((check) => check.name)
+    .sort();
+  const toolCallIndexes = storage.indices
+    .filter((index) => index.target === AgentToolCallEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(argumentsColumn?.options.type, "jsonb");
+  assert.equal(completedAtColumn?.options.type, "timestamptz");
+  assert.equal(completedAtColumn?.options.nullable, true);
+  assert.deepEqual(toolCallChecks, ["chk_agent_tool_calls_status"]);
+  assert.deepEqual(toolCallIndexes, [
+    "idx_agent_tool_calls_agent_run_id_created_at",
+    "idx_agent_tool_calls_agent_run_id_status",
   ]);
 });
 

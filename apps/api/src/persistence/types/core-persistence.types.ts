@@ -132,3 +132,39 @@ export type ActivityEventRecord = {
   payload: Record<string, unknown>;
   createdAt: Date;
 };
+
+export type AgentRunSource = "telegram" | "web" | "mini_app";
+
+export type AgentRunStatus = "running" | "waiting_confirmation" | "completed" | "failed";
+
+export type AgentRunRecord = {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  source: AgentRunSource;
+  sourceMessageId: string | null;
+  model: string | null;
+  inputText: string;
+  normalizedIntent: Record<string, unknown> | null;
+  finalResponse: string | null;
+  status: AgentRunStatus;
+  tokenUsage: Record<string, unknown> | null;
+  cost: Record<string, unknown> | null;
+  error: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type AgentToolCallStatus = "pending" | "success" | "error";
+
+export type AgentToolCallRecord = {
+  id: string;
+  agentRunId: string;
+  toolName: string;
+  arguments: Record<string, unknown>;
+  result: Record<string, unknown> | null;
+  status: AgentToolCallStatus;
+  error: string | null;
+  createdAt: Date;
+  completedAt: Date | null;
+};

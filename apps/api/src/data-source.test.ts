@@ -4,6 +4,8 @@ import { parseApiConfig } from "./config.js";
 import { createApiDataSource, createTypeOrmDataSourceOptions } from "./data-source.js";
 import {
   ActivityEventEntity,
+  AgentRunEntity,
+  AgentToolCallEntity,
   AttachmentEntity,
   CommentEntity,
   ProjectEntity,
@@ -22,6 +24,7 @@ import { CreateTaskSkillsTables1783296180000 } from "./persistence/migrations/17
 import { CreateCommentsTable1783296240000 } from "./persistence/migrations/1783296240000-create-comments-table.js";
 import { CreateAttachmentsTable1783296300000 } from "./persistence/migrations/1783296300000-create-attachments-table.js";
 import { CreateActivityEventsTable1783296360000 } from "./persistence/migrations/1783296360000-create-activity-events-table.js";
+import { CreateAgentRunTables1783296420000 } from "./persistence/migrations/1783296420000-create-agent-run-tables.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -52,6 +55,8 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     CommentEntity,
     AttachmentEntity,
     ActivityEventEntity,
+    AgentRunEntity,
+    AgentToolCallEntity,
   ]);
   assert.deepEqual(options.migrations, [
     CreateCorePersistenceTables1783296000000,
@@ -61,6 +66,7 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     CreateCommentsTable1783296240000,
     CreateAttachmentsTable1783296300000,
     CreateActivityEventsTable1783296360000,
+    CreateAgentRunTables1783296420000,
   ]);
 });
 
