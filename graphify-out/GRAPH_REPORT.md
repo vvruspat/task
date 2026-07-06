@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-43-project-read-api  (2026-07-06)
+# Graph Report - tAsk-issue-45-task-read-api  (2026-07-06)
 
 ## Corpus Check
-- 126 files · ~31,041 words
+- 135 files · ~33,132 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 815 nodes · 1218 edges · 64 communities (59 shown, 5 thin omitted)
+- 854 nodes · 1331 edges · 64 communities (61 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fe966ae1`
+- Built from commit: `a1ac84ac`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -82,8 +82,8 @@
 6. `Agent and MCP design` - 12 edges
 7. `What You Must Do When Invoked` - 11 edges
 8. `HealthResponseDto` - 10 edges
-9. `ProjectSummaryDto` - 10 edges
-10. `TypeOrmWorkspaceReadStore` - 10 edges
+9. `ApiDataSourceProvider` - 10 edges
+10. `WorkspaceMemberEntity` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `generateOpenApi()` --calls--> `createOpenApiDocument()`  [EXTRACTED]
@@ -100,7 +100,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (64 total, 5 thin omitted)
+## Communities (64 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -164,7 +164,7 @@ Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, ou
 
 ### Community 18 - "Community 18"
 Cohesion: 0.10
-Nodes (20): ProjectsModule, HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, ApiConfig (+12 more)
+Nodes (21): ProjectsModule, HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, ApiConfig (+13 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.11
@@ -259,16 +259,16 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.26
-Nodes (7): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, apiEntities, apiMigrations, createApiDataSource(), createTypeOrmDataSourceOptions()
+Cohesion: 0.38
+Nodes (3): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql
 
 ### Community 50 - "Community 50"
 Cohesion: 0.09
-Nodes (41): ActivityEventEntity, AgentRunEntity, AgentToolCallEntity, AttachmentEntity, CommentEntity, ConfirmationRequestEntity, InviteEntity, ProjectEntity (+33 more)
+Nodes (45): ActivityEventEntity, AgentRunEntity, AgentToolCallEntity, AttachmentEntity, CommentEntity, ConfirmationRequestEntity, InviteEntity, ProjectEntity (+37 more)
 
 ### Community 51 - "Community 51"
-Cohesion: 0.27
-Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTaskSkillsTables1783296180000, CreateCommentsTable1783296240000
+Cohesion: 0.08
+Nodes (23): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, ApiDataSource, ApiDataSourceProvider, DatabaseModule (+15 more)
 
 ### Community 52 - "Community 52"
 Cohesion: 0.38
@@ -281,6 +281,10 @@ Nodes (3): CreateProjectsTable1783296060000, createProjectsTableSql, dropProject
 ### Community 54 - "Community 54"
 Cohesion: 0.38
 Nodes (3): CreateTasksTable1783296120000, createTasksTableSql, dropTasksTableSql
+
+### Community 55 - "Community 55"
+Cohesion: 0.38
+Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql
 
 ### Community 56 - "Community 56"
 Cohesion: 0.38
@@ -295,8 +299,12 @@ Cohesion: 0.38
 Nodes (3): CreateAgentRunTables1783296420000, createAgentRunTablesSql, dropAgentRunTablesSql
 
 ### Community 59 - "Community 59"
+Cohesion: 0.27
+Nodes (5): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
+
+### Community 60 - "Community 60"
 Cohesion: 0.38
-Nodes (3): CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
+Nodes (3): CreateTaskSkillsTables1783296180000, createTaskSkillsTablesSql, dropTaskSkillsTablesSql
 
 ### Community 61 - "Community 61"
 Cohesion: 0.38
@@ -307,25 +315,25 @@ Cohesion: 0.07
 Nodes (27): files, includes, formatter, enabled, indentStyle, indentWidth, lineWidth, quoteStyle (+19 more)
 
 ### Community 63 - "Community 63"
-Cohesion: 0.08
-Nodes (23): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, ApiDataSource, ApiDataSourceProvider, DatabaseModule (+15 more)
+Cohesion: 0.14
+Nodes (15): ProjectDetail, ProjectSummary, ProjectsController, createdAt, projectSummary, uuidV4Pipe, ProjectDetailDto, ProjectSummaryDto (+7 more)
 
 ## Knowledge Gaps
-- **428 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+423 more)
+- **434 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+429 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 49`, `Community 2`, `Community 63`?**
+- **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 2`, `Community 51`, `Community 63`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `ApiDataSourceProvider` connect `Community 51` to `Community 18`, `Community 2`, `Community 63`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `executeMigrationQueries()` connect `Community 51` to `Community 49`, `Community 52`, `Community 53`, `Community 54`, `Community 55`, `Community 56`, `Community 57`, `Community 58`, `Community 59`, `Community 60`, `Community 61`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `WorkspaceEntity` connect `Community 50` to `Community 49`, `Community 2`?**
+- **Why does `executeMigrationQueries()` connect `Community 59` to `Community 49`, `Community 52`, `Community 53`, `Community 54`, `Community 55`, `Community 56`, `Community 57`, `Community 58`, `Community 60`, `Community 61`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _428 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _434 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
