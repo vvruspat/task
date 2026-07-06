@@ -410,7 +410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_test",
-      "community": 49,
+      "community": 18,
       "norm_label": "config.test.ts"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config",
-      "community": 49,
+      "community": 18,
       "norm_label": "config.ts"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_apienvironment",
-      "community": 49,
+      "community": 18,
       "norm_label": "apienvironment"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_config_apidatabaseconfig",
-      "community": 49,
+      "community": 18,
       "norm_label": "apidatabaseconfig"
     },
     {
@@ -450,7 +450,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_config_apiconfig",
-      "community": 49,
+      "community": 18,
       "norm_label": "apiconfig"
     },
     {
@@ -460,7 +460,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_config_invalidapienvironmenterror",
-      "community": 49,
+      "community": 18,
       "norm_label": "invalidapienvironmenterror"
     },
     {
@@ -470,7 +470,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_config_invalidapienvironmenterror_constructor",
-      "community": 49,
+      "community": 18,
       "norm_label": ".constructor()"
     },
     {
@@ -480,7 +480,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_config_parseapiconfig",
-      "community": 49,
+      "community": 18,
       "norm_label": "parseapiconfig()"
     },
     {
@@ -500,7 +500,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_config_parseport",
-      "community": 49,
+      "community": 18,
       "norm_label": "parseport()"
     },
     {
@@ -510,7 +510,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_config_parsedatabaseconfig",
-      "community": 49,
+      "community": 18,
       "norm_label": "parsedatabaseconfig()"
     },
     {
@@ -520,7 +520,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_config_formatinvalidvalue",
-      "community": 49,
+      "community": 18,
       "norm_label": "formatinvalidvalue()"
     },
     {
@@ -547,7 +547,7 @@
       "label": "apiEntities",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L11",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "src_data_source_apientities",
       "community": 50,
@@ -557,7 +557,7 @@
       "label": "apiMigrations",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L12",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
       "community": 50,
@@ -567,7 +567,7 @@
       "label": "createTypeOrmDataSourceOptions()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L14",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
       "community": 50,
@@ -577,7 +577,7 @@
       "label": "createApiDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L25",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
       "community": 50,
@@ -662,6 +662,26 @@
       "id": "entities_index",
       "community": 50,
       "norm_label": "index.ts"
+    },
+    {
+      "label": "project.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/project.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_project_entity",
+      "community": 50,
+      "norm_label": "project.entity.ts"
+    },
+    {
+      "label": "ProjectEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/project.entity.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "entities_project_entity_projectentity",
+      "community": 50,
+      "norm_label": "projectentity"
     },
     {
       "label": "status.entity.ts",
@@ -824,6 +844,66 @@
       "norm_label": ".down()"
     },
     {
+      "label": "1783296060000-create-projects-table.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_1783296060000_create_projects_table",
+      "community": 50,
+      "norm_label": "1783296060000-create-projects-table.ts"
+    },
+    {
+      "label": "createProjectsTableSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
+      "community": 50,
+      "norm_label": "createprojectstablesql"
+    },
+    {
+      "label": "dropProjectsTableSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
+      "community": 50,
+      "norm_label": "dropprojectstablesql"
+    },
+    {
+      "label": "CreateProjectsTable1783296060000",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
+      "community": 50,
+      "norm_label": "createprojectstable1783296060000"
+    },
+    {
+      "label": ".up()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
+      "community": 50,
+      "norm_label": ".up()"
+    },
+    {
+      "label": ".down()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
+      "community": 50,
+      "norm_label": ".down()"
+    },
+    {
       "label": "create-core-persistence-tables.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
@@ -852,6 +932,16 @@
       "id": "migrations_create_core_persistence_tables_test_recordingqueryrunner_query",
       "community": 50,
       "norm_label": ".query()"
+    },
+    {
+      "label": "create-projects-table.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-projects-table.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_create_projects_table_test",
+      "community": 50,
+      "norm_label": "create-projects-table.test.ts"
     },
     {
       "label": "core-persistence.types.ts",
@@ -912,6 +1002,16 @@
       "id": "types_core_persistence_types_statusrecord",
       "community": 50,
       "norm_label": "statusrecord"
+    },
+    {
+      "label": "ProjectRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_projectrecord",
+      "community": 50,
+      "norm_label": "projectrecord"
     },
     {
       "label": "tsconfig.json",
@@ -6866,6 +6966,17 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_data_source_test",
       "target": "entities_status_entity_statusentity"
@@ -6924,6 +7035,28 @@
       "confidence_score": 1.0,
       "source": "src_data_source_test",
       "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296060000_create_projects_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -6976,6 +7109,17 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "source": "src_data_source",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_data_source",
       "target": "entities_status_entity_statusentity"
@@ -7034,6 +7178,28 @@
       "confidence_score": 1.0,
       "source": "src_data_source",
       "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296060000_create_projects_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7200,6 +7366,17 @@
       "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "entities_core_entities_test",
       "target": "entities_status_entity_statusentity"
@@ -7236,6 +7413,28 @@
       "confidence_score": 1.0,
       "source": "entities_core_entities_test",
       "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_project_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "entities_index",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "re_exports",
@@ -7324,6 +7523,49 @@
       "confidence_score": 1.0,
       "source": "entities_index",
       "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/project.entity.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "entities_project_entity",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/project.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "entities_project_entity",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/project.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "entities_project_entity",
+      "target": "types_core_persistence_types_projectrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/project.entity.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "entities_project_entity_projectentity",
+      "target": "types_core_persistence_types_projectrecord",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7573,6 +7815,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table",
+      "target": "migrations_1783296000000_create_core_persistence_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
       "source_location": "L3",
       "weight": 1.0,
@@ -7628,6 +7881,39 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
       "source_location": "L3",
       "weight": 1.0,
@@ -7658,6 +7944,89 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table",
+      "target": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table",
+      "target": "migrations_1783296060000_create_projects_table_createprojectstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table",
+      "target": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-projects-table.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_projects_table_test",
+      "target": "migrations_1783296060000_create_projects_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-projects-table.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_projects_table_test",
+      "target": "migrations_1783296060000_create_projects_table_createprojectstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-projects-table.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_projects_table_test",
+      "target": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
+      "target": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296060000-create-projects-table.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
+      "target": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
       "source_location": "L9",
       "weight": 1.0,
@@ -7674,6 +8043,16 @@
       "confidence_score": 1.0,
       "source": "migrations_create_core_persistence_tables_test_recordingqueryrunner",
       "target": "migrations_create_core_persistence_tables_test_recordingqueryrunner_query"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_projectrecord",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12337,5 +12716,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "394ddfd04bc4463538a080fd64264c279ed8566e"
+  "built_at_commit": "0a30273a2699dce3aeb17652f8a157a521a295d3"
 }
