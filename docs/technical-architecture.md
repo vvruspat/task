@@ -56,7 +56,7 @@ apps/
 
 packages/
   api-client/       # generated client/types from backend OpenAPI
-  config/           # shared eslint/tsconfig/prettier/env helpers
+  config/           # shared tsconfig/env helpers
   ui/               # copied/adapted UI kit
   domain/           # shared domain constants that are not API contracts
   test-utils/       # shared test helpers
@@ -66,23 +66,42 @@ docs/
 
 ## Package manager
 
-Prefer `pnpm` with workspaces:
+Use regular `npm` with npm workspaces:
 
 ```text
-pnpm-workspace.yaml
+package.json workspaces
 turbo.json
 ```
 
 Core commands:
 
 ```text
-pnpm dev
-pnpm build
-pnpm lint
-pnpm test
-pnpm generate:openapi
-pnpm generate:api-client
+npm run dev
+npm run build
+npm run lint
+npm run format
+npm run test
+npm run generate:openapi
+npm run generate:api-client
 ```
+
+## Linting and formatting
+
+Use Biome.js as the monorepo linter and formatter.
+
+```text
+biome.json
+```
+
+Expected commands:
+
+```text
+npm run lint       # biome check
+npm run format     # biome format --write
+npm run lint:fix   # biome check --write
+```
+
+Biome should own formatting and common lint rules across apps and packages. Avoid adding ESLint/Prettier unless a specific framework integration forces it.
 
 ## Backend architecture
 

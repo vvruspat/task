@@ -1,0 +1,92 @@
+{
+  ".codex/hooks.json": {
+    "mtime": 1783334886.7818787,
+    "ast_hash": "aa67d272b0bec2084320ef8309710bb6",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/SKILL.md": {
+    "mtime": 1783332287.2529497,
+    "ast_hash": "2b3477036742471691b444be392c3f81",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/add-watch.md": {
+    "mtime": 1781770926.7865164,
+    "ast_hash": "0df0589623217ca38a12bdcabfb42f4c",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/exports.md": {
+    "mtime": 1781770926.786967,
+    "ast_hash": "c04ddf8f1f5ef5e262ebec491a523c74",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/extraction-spec.md": {
+    "mtime": 1781770926.787411,
+    "ast_hash": "a86a7321597b23cc2b22e011b3dc6e1d",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/github-and-merge.md": {
+    "mtime": 1781770926.787659,
+    "ast_hash": "cde13df085e4c492aeb7ba298a996d0d",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/hooks.md": {
+    "mtime": 1781770926.7885485,
+    "ast_hash": "3f545db6ce646650bb9de588f5512a27",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/query.md": {
+    "mtime": 1781770926.788989,
+    "ast_hash": "7d1ff295a0e0aa1cc9a14e52c3a19202",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/transcribe.md": {
+    "mtime": 1781770926.789183,
+    "ast_hash": "70f6aa30d6211f3a2c7e9fc45479f50c",
+    "semantic_hash": ""
+  },
+  ".codex/skills/graphify/references/update.md": {
+    "mtime": 1781770926.7893884,
+    "ast_hash": "0662e1a77b21d670132cd5855954bfff",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1783335190.6153715,
+    "ast_hash": "499cd4bd2b35e89cb0a3954c9a25e098",
+    "semantic_hash": ""
+  },
+  "docs/README.md": {
+    "mtime": 1783329347.9538798,
+    "ast_hash": "83db66f48e96750a62db1f003eee604e",
+    "semantic_hash": ""
+  },
+  "docs/agent-mcp-design.md": {
+    "mtime": 1783329348.4585667,
+    "ast_hash": "4be9e0ca6b2c037cf6e3fc2f05c31a33",
+    "semantic_hash": ""
+  },
+  "docs/data-model.md": {
+    "mtime": 1783329348.6326492,
+    "ast_hash": "05667162638e5c043b7fabdd473eefc6",
+    "semantic_hash": ""
+  },
+  "docs/product-model.md": {
+    "mtime": 1783329348.1270597,
+    "ast_hash": "d05d57ec6e88ccbecc5725f658333c37",
+    "semantic_hash": ""
+  },
+  "docs/technical-architecture.md": {
+    "mtime": 1783330674.1550488,
+    "ast_hash": "88bbb8a4db0a3977c210c3a39baf6a7f",
+    "semantic_hash": ""
+  },
+  ".serena/project.local.yml": {
+    "mtime": 1783334927.570587,
+    "ast_hash": "f136e7d47205d9a758913615074760e5",
+    "semantic_hash": ""
+  },
+  ".serena/project.yml": {
+    "mtime": 1783334927.5697446,
+    "ast_hash": "0db625e45f2e100e5cf1133561928a57",
+    "semantic_hash": ""
+  }
+}

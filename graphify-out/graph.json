@@ -1,0 +1,2901 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "graphify_skill",
+      "community": 6,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "/graphify",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "graphify_skill_graphify",
+      "community": 6,
+      "norm_label": "/graphify"
+    },
+    {
+      "label": "Usage",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "graphify_skill_usage",
+      "community": 6,
+      "norm_label": "usage"
+    },
+    {
+      "label": "What graphify is for",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "graphify_skill_what_graphify_is_for",
+      "community": 6,
+      "norm_label": "what graphify is for"
+    },
+    {
+      "label": "What You Must Do When Invoked",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "graphify_skill_what_you_must_do_when_invoked",
+      "community": 4,
+      "norm_label": "what you must do when invoked"
+    },
+    {
+      "label": "Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths",
+      "community": 4,
+      "norm_label": "step 0 - github repos and multi-path merge (only if a url or several paths)"
+    },
+    {
+      "label": "Step 1 - Ensure graphify is installed",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "graphify_skill_step_1_ensure_graphify_is_installed",
+      "community": 4,
+      "norm_label": "step 1 - ensure graphify is installed"
+    },
+    {
+      "label": "Step 2 - Detect files",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L107",
+      "_origin": "ast",
+      "id": "graphify_skill_step_2_detect_files",
+      "community": 4,
+      "norm_label": "step 2 - detect files"
+    },
+    {
+      "label": "Step 2.5 - Video and audio (only if video files detected)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L144",
+      "_origin": "ast",
+      "id": "graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected",
+      "community": 4,
+      "norm_label": "step 2.5 - video and audio (only if video files detected)"
+    },
+    {
+      "label": "Step 3 - Extract entities and relationships",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L148",
+      "_origin": "ast",
+      "id": "graphify_skill_step_3_extract_entities_and_relationships",
+      "community": 4,
+      "norm_label": "step 3 - extract entities and relationships"
+    },
+    {
+      "label": "Part A - Structural extraction for code files",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L165",
+      "_origin": "ast",
+      "id": "graphify_skill_part_a_structural_extraction_for_code_files",
+      "community": 4,
+      "norm_label": "part a - structural extraction for code files"
+    },
+    {
+      "label": "Part B - Semantic extraction (parallel subagents)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L191",
+      "_origin": "ast",
+      "id": "graphify_skill_part_b_semantic_extraction_parallel_subagents",
+      "community": 4,
+      "norm_label": "part b - semantic extraction (parallel subagents)"
+    },
+    {
+      "label": "Part C - Merge AST + semantic into final extraction",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L333",
+      "_origin": "ast",
+      "id": "graphify_skill_part_c_merge_ast_semantic_into_final_extraction",
+      "community": 4,
+      "norm_label": "part c - merge ast + semantic into final extraction"
+    },
+    {
+      "label": "Step 4 - Build graph, cluster, analyze, generate outputs",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L367",
+      "_origin": "ast",
+      "id": "graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs",
+      "community": 4,
+      "norm_label": "step 4 - build graph, cluster, analyze, generate outputs"
+    },
+    {
+      "label": "Step 5 - Label communities",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L419",
+      "_origin": "ast",
+      "id": "graphify_skill_step_5_label_communities",
+      "community": 4,
+      "norm_label": "step 5 - label communities"
+    },
+    {
+      "label": "Step 6 - Generate Obsidian vault (opt-in) + HTML",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L459",
+      "_origin": "ast",
+      "id": "graphify_skill_step_6_generate_obsidian_vault_opt_in_html",
+      "community": 4,
+      "norm_label": "step 6 - generate obsidian vault (opt-in) + html"
+    },
+    {
+      "label": "Steps 6b-8 - Wiki, Neo4j, FalkorDB, SVG, GraphML, MCP, benchmark (only on their flags)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L479",
+      "_origin": "ast",
+      "id": "graphify_skill_steps_6b_8_wiki_neo4j_falkordb_svg_graphml_mcp_benchmark_only_on_their_flags",
+      "community": 4,
+      "norm_label": "steps 6b-8 - wiki, neo4j, falkordb, svg, graphml, mcp, benchmark (only on their flags)"
+    },
+    {
+      "label": "Step 9 - Save manifest, update cost tracker, clean up, and report",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L485",
+      "_origin": "ast",
+      "id": "graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report",
+      "community": 4,
+      "norm_label": "step 9 - save manifest, update cost tracker, clean up, and report"
+    },
+    {
+      "label": "Interpreter guard for subcommands",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L560",
+      "_origin": "ast",
+      "id": "graphify_skill_interpreter_guard_for_subcommands",
+      "community": 6,
+      "norm_label": "interpreter guard for subcommands"
+    },
+    {
+      "label": "For --update and --cluster-only",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L578",
+      "_origin": "ast",
+      "id": "graphify_skill_for_update_and_cluster_only",
+      "community": 6,
+      "norm_label": "for --update and --cluster-only"
+    },
+    {
+      "label": "For /graphify query",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L584",
+      "_origin": "ast",
+      "id": "graphify_skill_for_graphify_query",
+      "community": 6,
+      "norm_label": "for /graphify query"
+    },
+    {
+      "label": "For /graphify add and --watch",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L596",
+      "_origin": "ast",
+      "id": "graphify_skill_for_graphify_add_and_watch",
+      "community": 6,
+      "norm_label": "for /graphify add and --watch"
+    },
+    {
+      "label": "For the commit hook and native CLAUDE.md integration",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L602",
+      "_origin": "ast",
+      "id": "graphify_skill_for_the_commit_hook_and_native_claude_md_integration",
+      "community": 6,
+      "norm_label": "for the commit hook and native claude.md integration"
+    },
+    {
+      "label": "Honesty Rules",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L608",
+      "_origin": "ast",
+      "id": "graphify_skill_honesty_rules",
+      "community": 6,
+      "norm_label": "honesty rules"
+    },
+    {
+      "label": "add-watch.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/add-watch.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_add_watch",
+      "community": 11,
+      "norm_label": "add-watch.md"
+    },
+    {
+      "label": "graphify reference: add a URL and watch a folder",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/add-watch.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
+      "community": 11,
+      "norm_label": "graphify reference: add a url and watch a folder"
+    },
+    {
+      "label": "For /graphify add",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/add-watch.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "references_add_watch_for_graphify_add",
+      "community": 11,
+      "norm_label": "for /graphify add"
+    },
+    {
+      "label": "For --watch",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/add-watch.md",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "references_add_watch_for_watch",
+      "community": 11,
+      "norm_label": "for --watch"
+    },
+    {
+      "label": "exports.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_exports",
+      "community": 7,
+      "norm_label": "exports.md"
+    },
+    {
+      "label": "graphify reference: extra exports and benchmark",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "community": 7,
+      "norm_label": "graphify reference: extra exports and benchmark"
+    },
+    {
+      "label": "Step 6b - Wiki (only if --wiki flag)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "references_exports_step_6b_wiki_only_if_wiki_flag",
+      "community": 7,
+      "norm_label": "step 6b - wiki (only if --wiki flag)"
+    },
+    {
+      "label": "Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag",
+      "community": 7,
+      "norm_label": "step 7 - neo4j export (only if --neo4j or --neo4j-push flag)"
+    },
+    {
+      "label": "Step 7a - FalkorDB export (only if --falkordb or --falkordb-push flag)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "references_exports_step_7a_falkordb_export_only_if_falkordb_or_falkordb_push_flag",
+      "community": 7,
+      "norm_label": "step 7a - falkordb export (only if --falkordb or --falkordb-push flag)"
+    },
+    {
+      "label": "Step 7b - SVG export (only if --svg flag)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "references_exports_step_7b_svg_export_only_if_svg_flag",
+      "community": 7,
+      "norm_label": "step 7b - svg export (only if --svg flag)"
+    },
+    {
+      "label": "Step 7c - GraphML export (only if --graphml flag)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "references_exports_step_7c_graphml_export_only_if_graphml_flag",
+      "community": 7,
+      "norm_label": "step 7c - graphml export (only if --graphml flag)"
+    },
+    {
+      "label": "Step 7d - MCP server (only if --mcp flag)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "references_exports_step_7d_mcp_server_only_if_mcp_flag",
+      "community": 7,
+      "norm_label": "step 7d - mcp server (only if --mcp flag)"
+    },
+    {
+      "label": "Step 8 - Token reduction benchmark (only if total_words > 5000)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000",
+      "community": 7,
+      "norm_label": "step 8 - token reduction benchmark (only if total_words > 5000)"
+    },
+    {
+      "label": "extraction-spec.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/extraction-spec.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_extraction_spec",
+      "community": 16,
+      "norm_label": "extraction-spec.md"
+    },
+    {
+      "label": "graphify reference: extraction subagent prompt (compact)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/extraction-spec.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_extraction_spec_graphify_reference_extraction_subagent_prompt_compact",
+      "community": 16,
+      "norm_label": "graphify reference: extraction subagent prompt (compact)"
+    },
+    {
+      "label": "github-and-merge.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/github-and-merge.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_github_and_merge",
+      "community": 14,
+      "norm_label": "github-and-merge.md"
+    },
+    {
+      "label": "graphify reference: GitHub clone and cross-repo merge",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/github-and-merge.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
+      "community": 14,
+      "norm_label": "graphify reference: github clone and cross-repo merge"
+    },
+    {
+      "label": "Step 0 - Clone GitHub repo(s) (only if a GitHub URL was given)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/github-and-merge.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given",
+      "community": 14,
+      "norm_label": "step 0 - clone github repo(s) (only if a github url was given)"
+    },
+    {
+      "label": "hooks.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/hooks.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_hooks",
+      "community": 12,
+      "norm_label": "hooks.md"
+    },
+    {
+      "label": "graphify reference: commit hook and native CLAUDE.md integration",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/hooks.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
+      "community": 12,
+      "norm_label": "graphify reference: commit hook and native claude.md integration"
+    },
+    {
+      "label": "For git commit hook",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/hooks.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "references_hooks_for_git_commit_hook",
+      "community": 12,
+      "norm_label": "for git commit hook"
+    },
+    {
+      "label": "For native CLAUDE.md integration",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/hooks.md",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "references_hooks_for_native_claude_md_integration",
+      "community": 12,
+      "norm_label": "for native claude.md integration"
+    },
+    {
+      "label": "query.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_query",
+      "community": 9,
+      "norm_label": "query.md"
+    },
+    {
+      "label": "graphify reference: query, path, explain",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_query_graphify_reference_query_path_explain",
+      "community": 9,
+      "norm_label": "graphify reference: query, path, explain"
+    },
+    {
+      "label": "Step 0 \u2014 Constrained query expansion (REQUIRED before traversal)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "references_query_step_0_constrained_query_expansion_required_before_traversal",
+      "community": 9,
+      "norm_label": "step 0 \u2014 constrained query expansion (required before traversal)"
+    },
+    {
+      "label": "Step 1 \u2014 Traversal",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "references_query_step_1_traversal",
+      "community": 9,
+      "norm_label": "step 1 \u2014 traversal"
+    },
+    {
+      "label": "For /graphify path",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L178",
+      "_origin": "ast",
+      "id": "references_query_for_graphify_path",
+      "community": 9,
+      "norm_label": "for /graphify path"
+    },
+    {
+      "label": "For /graphify explain",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L246",
+      "_origin": "ast",
+      "id": "references_query_for_graphify_explain",
+      "community": 9,
+      "norm_label": "for /graphify explain"
+    },
+    {
+      "label": "transcribe.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/transcribe.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_transcribe",
+      "community": 15,
+      "norm_label": "transcribe.md"
+    },
+    {
+      "label": "graphify reference: transcribe video and audio",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/transcribe.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_transcribe_graphify_reference_transcribe_video_and_audio",
+      "community": 15,
+      "norm_label": "graphify reference: transcribe video and audio"
+    },
+    {
+      "label": "Step 2.5 - Transcribe video / audio files (only if video files detected)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/transcribe.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected",
+      "community": 15,
+      "norm_label": "step 2.5 - transcribe video / audio files (only if video files detected)"
+    },
+    {
+      "label": "update.md",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/update.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_update",
+      "community": 13,
+      "norm_label": "update.md"
+    },
+    {
+      "label": "graphify reference: incremental update and cluster-only",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/update.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "references_update_graphify_reference_incremental_update_and_cluster_only",
+      "community": 13,
+      "norm_label": "graphify reference: incremental update and cluster-only"
+    },
+    {
+      "label": "For --update (incremental re-extraction)",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/update.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "references_update_for_update_incremental_re_extraction",
+      "community": 13,
+      "norm_label": "for --update (incremental re-extraction)"
+    },
+    {
+      "label": "For --cluster-only",
+      "file_type": "document",
+      "source_file": ".codex/skills/graphify/references/update.md",
+      "source_location": "L175",
+      "_origin": "ast",
+      "id": "references_update_for_cluster_only",
+      "community": 13,
+      "norm_label": "for --cluster-only"
+    },
+    {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "agents",
+      "community": 2,
+      "norm_label": "agents.md"
+    },
+    {
+      "label": "Agent rules",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "agents_agent_rules",
+      "community": 2,
+      "norm_label": "agent rules"
+    },
+    {
+      "label": "TypeScript strictness",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "agents_typescript_strictness",
+      "community": 2,
+      "norm_label": "typescript strictness"
+    },
+    {
+      "label": "Shared types and DTOs",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "agents_shared_types_and_dtos",
+      "community": 2,
+      "norm_label": "shared types and dtos"
+    },
+    {
+      "label": "API and OpenAPI",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "agents_api_and_openapi",
+      "community": 2,
+      "norm_label": "api and openapi"
+    },
+    {
+      "label": "Runtime validation",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L90",
+      "_origin": "ast",
+      "id": "agents_runtime_validation",
+      "community": 2,
+      "norm_label": "runtime validation"
+    },
+    {
+      "label": "Atomicity",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L105",
+      "_origin": "ast",
+      "id": "agents_atomicity",
+      "community": 2,
+      "norm_label": "atomicity"
+    },
+    {
+      "label": "Reuse and boundaries",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L116",
+      "_origin": "ast",
+      "id": "agents_reuse_and_boundaries",
+      "community": 2,
+      "norm_label": "reuse and boundaries"
+    },
+    {
+      "label": "Error handling",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "agents_error_handling",
+      "community": 2,
+      "norm_label": "error handling"
+    },
+    {
+      "label": "Async and data consistency",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L139",
+      "_origin": "ast",
+      "id": "agents_async_and_data_consistency",
+      "community": 2,
+      "norm_label": "async and data consistency"
+    },
+    {
+      "label": "Security",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L147",
+      "_origin": "ast",
+      "id": "agents_security",
+      "community": 2,
+      "norm_label": "security"
+    },
+    {
+      "label": "Testing expectations",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L156",
+      "_origin": "ast",
+      "id": "agents_testing_expectations",
+      "community": 2,
+      "norm_label": "testing expectations"
+    },
+    {
+      "label": "UI implementation",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L174",
+      "_origin": "ast",
+      "id": "agents_ui_implementation",
+      "community": 2,
+      "norm_label": "ui implementation"
+    },
+    {
+      "label": "Git hygiene",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L184",
+      "_origin": "ast",
+      "id": "agents_git_hygiene",
+      "community": 2,
+      "norm_label": "git hygiene"
+    },
+    {
+      "label": "graphify",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L192",
+      "_origin": "ast",
+      "id": "agents_graphify",
+      "community": 2,
+      "norm_label": "graphify"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "docs/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_readme",
+      "community": 10,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "tAsk docs",
+      "file_type": "document",
+      "source_file": "docs/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_readme_task_docs",
+      "community": 10,
+      "norm_label": "task docs"
+    },
+    {
+      "label": "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b",
+      "file_type": "document",
+      "source_file": "docs/README.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_readme_\u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b",
+      "community": 10,
+      "norm_label": "\u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b"
+    },
+    {
+      "label": "\u0413\u043b\u0430\u0432\u043d\u0430\u044f \u0438\u0434\u0435\u044f",
+      "file_type": "document",
+      "source_file": "docs/README.md",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "docs_readme_\u0433\u043b\u0430\u0432\u043d\u0430\u044f_\u0438\u0434\u0435\u044f",
+      "community": 10,
+      "norm_label": "\u0433\u043b\u0430\u0432\u043d\u0430\u044f \u0438\u0434\u0435\u044f"
+    },
+    {
+      "label": "agent-mcp-design.md",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design",
+      "community": 5,
+      "norm_label": "agent-mcp-design.md"
+    },
+    {
+      "label": "Agent and MCP design",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_agent_and_mcp_design",
+      "community": 5,
+      "norm_label": "agent and mcp design"
+    },
+    {
+      "label": "Role of the agent",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_role_of_the_agent",
+      "community": 5,
+      "norm_label": "role of the agent"
+    },
+    {
+      "label": "Example flow: create a song from a skill",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_example_flow_create_a_song_from_a_skill",
+      "community": 5,
+      "norm_label": "example flow: create a song from a skill"
+    },
+    {
+      "label": "Example flow: create a task skill",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_example_flow_create_a_task_skill",
+      "community": 5,
+      "norm_label": "example flow: create a task skill"
+    },
+    {
+      "label": "Example flow: apply a skill with overrides",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_example_flow_apply_a_skill_with_overrides",
+      "community": 5,
+      "norm_label": "example flow: apply a skill with overrides"
+    },
+    {
+      "label": "Tool surface",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_tool_surface",
+      "community": 8,
+      "norm_label": "tool surface"
+    },
+    {
+      "label": "Workspace/user tools",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_workspace_user_tools",
+      "community": 8,
+      "norm_label": "workspace/user tools"
+    },
+    {
+      "label": "Project tools",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L99",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_project_tools",
+      "community": 8,
+      "norm_label": "project tools"
+    },
+    {
+      "label": "Task tools",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_task_tools",
+      "community": 8,
+      "norm_label": "task tools"
+    },
+    {
+      "label": "Task skill tools",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L124",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_task_skill_tools",
+      "community": 8,
+      "norm_label": "task skill tools"
+    },
+    {
+      "label": "Attachment tools",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L136",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_attachment_tools",
+      "community": 8,
+      "norm_label": "attachment tools"
+    },
+    {
+      "label": "Summary tools",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L145",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_summary_tools",
+      "community": 8,
+      "norm_label": "summary tools"
+    },
+    {
+      "label": "Confirmation tools",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L154",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_confirmation_tools",
+      "community": 8,
+      "norm_label": "confirmation tools"
+    },
+    {
+      "label": "Fuzzy resolution",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L163",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_fuzzy_resolution",
+      "community": 5,
+      "norm_label": "fuzzy resolution"
+    },
+    {
+      "label": "Preview format",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L190",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_preview_format",
+      "community": 5,
+      "norm_label": "preview format"
+    },
+    {
+      "label": "Agent run audit",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L218",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_agent_run_audit",
+      "community": 5,
+      "norm_label": "agent run audit"
+    },
+    {
+      "label": "Permissions",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L237",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_permissions",
+      "community": 5,
+      "norm_label": "permissions"
+    },
+    {
+      "label": "Telegram files and links",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L249",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_telegram_files_and_links",
+      "community": 5,
+      "norm_label": "telegram files and links"
+    },
+    {
+      "label": "MCP and OpenAPI",
+      "file_type": "document",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L276",
+      "_origin": "ast",
+      "id": "docs_agent_mcp_design_mcp_and_openapi",
+      "community": 5,
+      "norm_label": "mcp and openapi"
+    },
+    {
+      "label": "data-model.md",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_data_model",
+      "community": 0,
+      "norm_label": "data-model.md"
+    },
+    {
+      "label": "Data model draft",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_data_model_data_model_draft",
+      "community": 0,
+      "norm_label": "data model draft"
+    },
+    {
+      "label": "Core principle",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_data_model_core_principle",
+      "community": 0,
+      "norm_label": "core principle"
+    },
+    {
+      "label": "Tables",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "docs_data_model_tables",
+      "community": 0,
+      "norm_label": "tables"
+    },
+    {
+      "label": "workspaces",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "docs_data_model_workspaces",
+      "community": 0,
+      "norm_label": "workspaces"
+    },
+    {
+      "label": "users",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "docs_data_model_users",
+      "community": 0,
+      "norm_label": "users"
+    },
+    {
+      "label": "workspace_members",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "docs_data_model_workspace_members",
+      "community": 0,
+      "norm_label": "workspace_members"
+    },
+    {
+      "label": "telegram_identities",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "docs_data_model_telegram_identities",
+      "community": 0,
+      "norm_label": "telegram_identities"
+    },
+    {
+      "label": "telegram_chats",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "docs_data_model_telegram_chats",
+      "community": 0,
+      "norm_label": "telegram_chats"
+    },
+    {
+      "label": "invites",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "docs_data_model_invites",
+      "community": 0,
+      "norm_label": "invites"
+    },
+    {
+      "label": "projects",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "docs_data_model_projects",
+      "community": 0,
+      "norm_label": "projects"
+    },
+    {
+      "label": "statuses",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "docs_data_model_statuses",
+      "community": 0,
+      "norm_label": "statuses"
+    },
+    {
+      "label": "tasks",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L119",
+      "_origin": "ast",
+      "id": "docs_data_model_tasks",
+      "community": 0,
+      "norm_label": "tasks"
+    },
+    {
+      "label": "task_skills",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L153",
+      "_origin": "ast",
+      "id": "docs_data_model_task_skills",
+      "community": 0,
+      "norm_label": "task_skills"
+    },
+    {
+      "label": "task_skill_versions",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L171",
+      "_origin": "ast",
+      "id": "docs_data_model_task_skill_versions",
+      "community": 0,
+      "norm_label": "task_skill_versions"
+    },
+    {
+      "label": "comments",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L209",
+      "_origin": "ast",
+      "id": "docs_data_model_comments",
+      "community": 0,
+      "norm_label": "comments"
+    },
+    {
+      "label": "attachments",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L221",
+      "_origin": "ast",
+      "id": "docs_data_model_attachments",
+      "community": 0,
+      "norm_label": "attachments"
+    },
+    {
+      "label": "activity_events",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L247",
+      "_origin": "ast",
+      "id": "docs_data_model_activity_events",
+      "community": 0,
+      "norm_label": "activity_events"
+    },
+    {
+      "label": "agent_runs",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L260",
+      "_origin": "ast",
+      "id": "docs_data_model_agent_runs",
+      "community": 0,
+      "norm_label": "agent_runs"
+    },
+    {
+      "label": "agent_tool_calls",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L280",
+      "_origin": "ast",
+      "id": "docs_data_model_agent_tool_calls",
+      "community": 0,
+      "norm_label": "agent_tool_calls"
+    },
+    {
+      "label": "confirmation_requests",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L294",
+      "_origin": "ast",
+      "id": "docs_data_model_confirmation_requests",
+      "community": 0,
+      "norm_label": "confirmation_requests"
+    },
+    {
+      "label": "Open questions",
+      "file_type": "document",
+      "source_file": "docs/data-model.md",
+      "source_location": "L309",
+      "_origin": "ast",
+      "id": "docs_data_model_open_questions",
+      "community": 0,
+      "norm_label": "open questions"
+    },
+    {
+      "label": "product-model.md",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_product_model",
+      "community": 3,
+      "norm_label": "product-model.md"
+    },
+    {
+      "label": "Product model",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_product_model_product_model",
+      "community": 3,
+      "norm_label": "product model"
+    },
+    {
+      "label": "\u0427\u0442\u043e \u0441\u0442\u0440\u043e\u0438\u043c",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_product_model_\u0447\u0442\u043e_\u0441\u0442\u0440\u043e\u0438\u043c",
+      "community": 3,
+      "norm_label": "\u0447\u0442\u043e \u0441\u0442\u0440\u043e\u0438\u043c"
+    },
+    {
+      "label": "\u041f\u0440\u0438\u043d\u0446\u0438\u043f \u0431\u0435\u0437 \u0436\u0435\u0441\u0442\u043a\u0438\u0445 \u0442\u0438\u043f\u043e\u0432",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "docs_product_model_\u043f\u0440\u0438\u043d\u0446\u0438\u043f_\u0431\u0435\u0437_\u0436\u0435\u0441\u0442\u043a\u0438\u0445_\u0442\u0438\u043f\u043e\u0432",
+      "community": 3,
+      "norm_label": "\u043f\u0440\u0438\u043d\u0446\u0438\u043f \u0431\u0435\u0437 \u0436\u0435\u0441\u0442\u043a\u0438\u0445 \u0442\u0438\u043f\u043e\u0432"
+    },
+    {
+      "label": "Task skills/templates",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "docs_product_model_task_skills_templates",
+      "community": 3,
+      "norm_label": "task skills/templates"
+    },
+    {
+      "label": "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0448\u0430\u0431\u043b\u043e\u043d\u043e\u0432 \u043f\u043e\u0434 \u043a\u043e\u043d\u043a\u0440\u0435\u0442\u043d\u0443\u044e \u0437\u0430\u0434\u0430\u0447\u0443",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "docs_product_model_\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435_\u0448\u0430\u0431\u043b\u043e\u043d\u043e\u0432_\u043f\u043e\u0434_\u043a\u043e\u043d\u043a\u0440\u0435\u0442\u043d\u0443\u044e_\u0437\u0430\u0434\u0430\u0447\u0443",
+      "community": 3,
+      "norm_label": "\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0448\u0430\u0431\u043b\u043e\u043d\u043e\u0432 \u043f\u043e\u0434 \u043a\u043e\u043d\u043a\u0440\u0435\u0442\u043d\u0443\u044e \u0437\u0430\u0434\u0430\u0447\u0443"
+    },
+    {
+      "label": "\u041e\u0441\u043d\u043e\u0432\u043d\u044b\u0435 views",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L103",
+      "_origin": "ast",
+      "id": "docs_product_model_\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435_views",
+      "community": 3,
+      "norm_label": "\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435 views"
+    },
+    {
+      "label": "Kanban",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L105",
+      "_origin": "ast",
+      "id": "docs_product_model_kanban",
+      "community": 3,
+      "norm_label": "kanban"
+    },
+    {
+      "label": "Matrix view",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L115",
+      "_origin": "ast",
+      "id": "docs_product_model_matrix_view",
+      "community": 3,
+      "norm_label": "matrix view"
+    },
+    {
+      "label": "Table view",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L127",
+      "_origin": "ast",
+      "id": "docs_product_model_table_view",
+      "community": 3,
+      "norm_label": "table view"
+    },
+    {
+      "label": "My tasks",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L140",
+      "_origin": "ast",
+      "id": "docs_product_model_my_tasks",
+      "community": 3,
+      "norm_label": "my tasks"
+    },
+    {
+      "label": "Templates/skills editor",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L149",
+      "_origin": "ast",
+      "id": "docs_product_model_templates_skills_editor",
+      "community": 3,
+      "norm_label": "templates/skills editor"
+    },
+    {
+      "label": "Telegram-first UX",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L163",
+      "_origin": "ast",
+      "id": "docs_product_model_telegram_first_ux",
+      "community": 3,
+      "norm_label": "telegram-first ux"
+    },
+    {
+      "label": "\u0421\u0438\u043d\u0445\u0440\u043e\u043d\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0435\u0439 Telegram",
+      "file_type": "document",
+      "source_file": "docs/product-model.md",
+      "source_location": "L197",
+      "_origin": "ast",
+      "id": "docs_product_model_\u0441\u0438\u043d\u0445\u0440\u043e\u043d\u0438\u0437\u0430\u0446\u0438\u044f_\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0435\u0439_telegram",
+      "community": 3,
+      "norm_label": "\u0441\u0438\u043d\u0445\u0440\u043e\u043d\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0435\u0438 telegram"
+    },
+    {
+      "label": "technical-architecture.md",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_technical_architecture",
+      "community": 1,
+      "norm_label": "technical-architecture.md"
+    },
+    {
+      "label": "Technical architecture",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_technical_architecture",
+      "community": 1,
+      "norm_label": "technical architecture"
+    },
+    {
+      "label": "Stack",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_stack",
+      "community": 1,
+      "norm_label": "stack"
+    },
+    {
+      "label": "Proposed monorepo layout",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_proposed_monorepo_layout",
+      "community": 1,
+      "norm_label": "proposed monorepo layout"
+    },
+    {
+      "label": "Package manager",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_package_manager",
+      "community": 1,
+      "norm_label": "package manager"
+    },
+    {
+      "label": "Linting and formatting",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_linting_and_formatting",
+      "community": 1,
+      "norm_label": "linting and formatting"
+    },
+    {
+      "label": "Backend architecture",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L106",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_backend_architecture",
+      "community": 1,
+      "norm_label": "backend architecture"
+    },
+    {
+      "label": "Database",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L141",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_database",
+      "community": 1,
+      "norm_label": "database"
+    },
+    {
+      "label": "OpenAPI contract",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L156",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_openapi_contract",
+      "community": 1,
+      "norm_label": "openapi contract"
+    },
+    {
+      "label": "Frontend architecture",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L192",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_frontend_architecture",
+      "community": 1,
+      "norm_label": "frontend architecture"
+    },
+    {
+      "label": "UI kit",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L224",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_ui_kit",
+      "community": 1,
+      "norm_label": "ui kit"
+    },
+    {
+      "label": "Telegram bot",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L250",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_telegram_bot",
+      "community": 1,
+      "norm_label": "telegram bot"
+    },
+    {
+      "label": "Telegram Mini App",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L274",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_telegram_mini_app",
+      "community": 1,
+      "norm_label": "telegram mini app"
+    },
+    {
+      "label": "LLM and OpenRouter",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L289",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_llm_and_openrouter",
+      "community": 1,
+      "norm_label": "llm and openrouter"
+    },
+    {
+      "label": "MCP strategy",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L319",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_mcp_strategy",
+      "community": 1,
+      "norm_label": "mcp strategy"
+    },
+    {
+      "label": "Confirmation model",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L343",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_confirmation_model",
+      "community": 1,
+      "norm_label": "confirmation model"
+    },
+    {
+      "label": "Deployment draft",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L364",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_deployment_draft",
+      "community": 1,
+      "norm_label": "deployment draft"
+    },
+    {
+      "label": "External references",
+      "file_type": "document",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L382",
+      "_origin": "ast",
+      "id": "docs_technical_architecture_external_references",
+      "community": 1,
+      "norm_label": "external references"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "graphify_skill",
+      "target": "graphify_skill_graphify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L596",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_for_graphify_add_and_watch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L584",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_for_graphify_query",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L602",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_for_the_commit_hook_and_native_claude_md_integration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L578",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_for_update_and_cluster_only",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L608",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_honesty_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L560",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_interpreter_guard_for_subcommands",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_usage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_what_graphify_is_for",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_what_you_must_do_when_invoked",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_1_ensure_graphify_is_installed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L144",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_2_detect_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_3_extract_entities_and_relationships",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L367",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L419",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_5_label_communities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L459",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_6_generate_obsidian_vault_opt_in_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L485",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L479",
+      "weight": 1.0,
+      "source": "graphify_skill_what_you_must_do_when_invoked",
+      "target": "graphify_skill_steps_6b_8_wiki_neo4j_falkordb_svg_graphml_mcp_benchmark_only_on_their_flags",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L165",
+      "weight": 1.0,
+      "source": "graphify_skill_step_3_extract_entities_and_relationships",
+      "target": "graphify_skill_part_a_structural_extraction_for_code_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L191",
+      "weight": 1.0,
+      "source": "graphify_skill_step_3_extract_entities_and_relationships",
+      "target": "graphify_skill_part_b_semantic_extraction_parallel_subagents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/SKILL.md",
+      "source_location": "L333",
+      "weight": 1.0,
+      "source": "graphify_skill_step_3_extract_entities_and_relationships",
+      "target": "graphify_skill_part_c_merge_ast_semantic_into_final_extraction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/add-watch.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_add_watch",
+      "target": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/add-watch.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
+      "target": "references_add_watch_for_graphify_add",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/add-watch.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
+      "target": "references_add_watch_for_watch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_exports",
+      "target": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "target": "references_exports_step_6b_wiki_only_if_wiki_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "target": "references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "target": "references_exports_step_7a_falkordb_export_only_if_falkordb_or_falkordb_push_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "target": "references_exports_step_7b_svg_export_only_if_svg_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "target": "references_exports_step_7c_graphml_export_only_if_graphml_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "target": "references_exports_step_7d_mcp_server_only_if_mcp_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/exports.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "target": "references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/extraction-spec.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_extraction_spec",
+      "target": "references_extraction_spec_graphify_reference_extraction_subagent_prompt_compact",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/github-and-merge.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_github_and_merge",
+      "target": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/github-and-merge.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
+      "target": "references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/hooks.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_hooks",
+      "target": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/hooks.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
+      "target": "references_hooks_for_git_commit_hook",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/hooks.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
+      "target": "references_hooks_for_native_claude_md_integration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_query",
+      "target": "references_query_graphify_reference_query_path_explain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L246",
+      "weight": 1.0,
+      "source": "references_query_graphify_reference_query_path_explain",
+      "target": "references_query_for_graphify_explain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L178",
+      "weight": 1.0,
+      "source": "references_query_graphify_reference_query_path_explain",
+      "target": "references_query_for_graphify_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "references_query_graphify_reference_query_path_explain",
+      "target": "references_query_step_0_constrained_query_expansion_required_before_traversal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/query.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "references_query_graphify_reference_query_path_explain",
+      "target": "references_query_step_1_traversal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/transcribe.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_transcribe",
+      "target": "references_transcribe_graphify_reference_transcribe_video_and_audio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/transcribe.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "references_transcribe_graphify_reference_transcribe_video_and_audio",
+      "target": "references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/update.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_update",
+      "target": "references_update_graphify_reference_incremental_update_and_cluster_only",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/update.md",
+      "source_location": "L175",
+      "weight": 1.0,
+      "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
+      "target": "references_update_for_cluster_only",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/skills/graphify/references/update.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
+      "target": "references_update_for_update_incremental_re_extraction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "agents",
+      "target": "agents_agent_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_api_and_openapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_async_and_data_consistency",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_atomicity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_error_handling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L184",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_git_hygiene",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L191",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_graphify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_reuse_and_boundaries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L90",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_runtime_validation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_security",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_shared_types_and_dtos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_testing_expectations",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_typescript_strictness",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L174",
+      "weight": 1.0,
+      "source": "agents_agent_rules",
+      "target": "agents_ui_implementation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_readme",
+      "target": "docs_readme_task_docs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/README.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "docs_readme_task_docs",
+      "target": "docs_readme_\u0433\u043b\u0430\u0432\u043d\u0430\u044f_\u0438\u0434\u0435\u044f",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/README.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "docs_readme_task_docs",
+      "target": "docs_readme_\u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design",
+      "target": "docs_agent_mcp_design_agent_and_mcp_design",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L218",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_agent_run_audit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_example_flow_apply_a_skill_with_overrides",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_example_flow_create_a_song_from_a_skill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_example_flow_create_a_task_skill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L163",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_fuzzy_resolution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L276",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_mcp_and_openapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L237",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_permissions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L190",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_preview_format",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_role_of_the_agent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L249",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_telegram_files_and_links",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_agent_and_mcp_design",
+      "target": "docs_agent_mcp_design_tool_surface",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_tool_surface",
+      "target": "docs_agent_mcp_design_attachment_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L154",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_tool_surface",
+      "target": "docs_agent_mcp_design_confirmation_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L99",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_tool_surface",
+      "target": "docs_agent_mcp_design_project_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_tool_surface",
+      "target": "docs_agent_mcp_design_summary_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_tool_surface",
+      "target": "docs_agent_mcp_design_task_skill_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_tool_surface",
+      "target": "docs_agent_mcp_design_task_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/agent-mcp-design.md",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "docs_agent_mcp_design_tool_surface",
+      "target": "docs_agent_mcp_design_workspace_user_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_data_model",
+      "target": "docs_data_model_data_model_draft",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "docs_data_model_data_model_draft",
+      "target": "docs_data_model_core_principle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L309",
+      "weight": 1.0,
+      "source": "docs_data_model_data_model_draft",
+      "target": "docs_data_model_open_questions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "docs_data_model_data_model_draft",
+      "target": "docs_data_model_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L247",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_activity_events",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L260",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_agent_runs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L280",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_agent_tool_calls",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L221",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_attachments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L209",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_comments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L294",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_confirmation_requests",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_invites",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_projects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L102",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_statuses",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L171",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_task_skill_versions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_task_skills",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L119",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_tasks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_telegram_chats",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_telegram_identities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_users",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_workspace_members",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/data-model.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "docs_data_model_tables",
+      "target": "docs_data_model_workspaces",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_product_model",
+      "target": "docs_product_model_product_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "docs_product_model_product_model",
+      "target": "docs_product_model_task_skills_templates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L163",
+      "weight": 1.0,
+      "source": "docs_product_model_product_model",
+      "target": "docs_product_model_telegram_first_ux",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "docs_product_model_product_model",
+      "target": "docs_product_model_\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435_\u0448\u0430\u0431\u043b\u043e\u043d\u043e\u0432_\u043f\u043e\u0434_\u043a\u043e\u043d\u043a\u0440\u0435\u0442\u043d\u0443\u044e_\u0437\u0430\u0434\u0430\u0447\u0443",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "docs_product_model_product_model",
+      "target": "docs_product_model_\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435_views",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "docs_product_model_product_model",
+      "target": "docs_product_model_\u043f\u0440\u0438\u043d\u0446\u0438\u043f_\u0431\u0435\u0437_\u0436\u0435\u0441\u0442\u043a\u0438\u0445_\u0442\u0438\u043f\u043e\u0432",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L197",
+      "weight": 1.0,
+      "source": "docs_product_model_product_model",
+      "target": "docs_product_model_\u0441\u0438\u043d\u0445\u0440\u043e\u043d\u0438\u0437\u0430\u0446\u0438\u044f_\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0435\u0439_telegram",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_product_model_product_model",
+      "target": "docs_product_model_\u0447\u0442\u043e_\u0441\u0442\u0440\u043e\u0438\u043c",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "docs_product_model_\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435_views",
+      "target": "docs_product_model_kanban",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L115",
+      "weight": 1.0,
+      "source": "docs_product_model_\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435_views",
+      "target": "docs_product_model_matrix_view",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "docs_product_model_\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435_views",
+      "target": "docs_product_model_my_tasks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "docs_product_model_\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435_views",
+      "target": "docs_product_model_table_view",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/product-model.md",
+      "source_location": "L149",
+      "weight": 1.0,
+      "source": "docs_product_model_\u043e\u0441\u043d\u043e\u0432\u043d\u044b\u0435_views",
+      "target": "docs_product_model_templates_skills_editor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_technical_architecture",
+      "target": "docs_technical_architecture_technical_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_backend_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L343",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_confirmation_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L141",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_database",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L364",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_deployment_draft",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L382",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_external_references",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L192",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_frontend_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_linting_and_formatting",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L289",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_llm_and_openrouter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L319",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_mcp_strategy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_openapi_contract",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_package_manager",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_proposed_monorepo_layout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_stack",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L250",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_telegram_bot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L274",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_telegram_mini_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/technical-architecture.md",
+      "source_location": "L224",
+      "weight": 1.0,
+      "source": "docs_technical_architecture_technical_architecture",
+      "target": "docs_technical_architecture_ui_kit",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "b45a2551bbcd493dd2fccd7a515b0095e13efa0f"
+}
