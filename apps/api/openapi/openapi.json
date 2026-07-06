@@ -163,6 +163,104 @@
         "summary": "List members for one visible workspace",
         "tags": ["workspaces"]
       }
+    },
+    "/workspaces/{workspaceId}/projects": {
+      "get": {
+        "operationId": "ProjectsController_listActiveProjects",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectSummaryDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          }
+        },
+        "summary": "List active projects in a visible workspace",
+        "tags": ["projects"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}": {
+      "get": {
+        "operationId": "ProjectsController_getProject",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace or project is missing or not visible to the current user."
+          }
+        },
+        "summary": "Get one project in a visible workspace",
+        "tags": ["projects"]
+      }
     }
   },
   "info": {
@@ -298,6 +396,104 @@
           }
         },
         "required": ["id", "name", "slug", "createdAt", "updatedAt", "members"]
+      },
+      "ProjectSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "example": "Album release"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "example": "active"
+          },
+          "position": {
+            "type": "string",
+            "nullable": true,
+            "example": "1000"
+          },
+          "createdByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "archivedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "workspaceId", "title", "createdByUserId", "createdAt", "updatedAt"]
+      },
+      "ProjectDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "example": "Album release"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "example": "active"
+          },
+          "position": {
+            "type": "string",
+            "nullable": true,
+            "example": "1000"
+          },
+          "createdByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "archivedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "workspaceId", "title", "createdByUserId", "createdAt", "updatedAt"]
       }
     }
   }
