@@ -357,7 +357,7 @@
       "label": "AppModule",
       "file_type": "code",
       "source_file": "apps/api/src/app.module.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "src_app_module_appmodule",
       "community": 18,
@@ -410,7 +410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_test",
-      "community": 2,
+      "community": 64,
       "norm_label": "trusted-current-user.decorator.test.ts"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator",
-      "community": 2,
+      "community": 64,
       "norm_label": "trusted-current-user.decorator.ts"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "community": 2,
+      "community": 64,
       "norm_label": "apitrustedcurrentuser()"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "community": 2,
+      "community": 64,
       "norm_label": "trustedcurrentuserid"
     },
     {
@@ -450,7 +450,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "community": 2,
+      "community": 64,
       "norm_label": "parsetrustedcurrentuserid()"
     },
     {
@@ -460,7 +460,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "community": 2,
+      "community": 64,
       "norm_label": "trustedcurrentuserheader"
     },
     {
@@ -470,8 +470,488 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
-      "community": 2,
+      "community": 64,
       "norm_label": "trustedcurrentuserrequest"
+    },
+    {
+      "label": "comments.contracts.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.contracts.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_contracts",
+      "community": 64,
+      "norm_label": "comments.contracts.ts"
+    },
+    {
+      "label": "TaskComment",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.contracts.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_contracts_taskcomment",
+      "community": 64,
+      "norm_label": "taskcomment"
+    },
+    {
+      "label": "CreateTaskCommentInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.contracts.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "comments_comments_contracts_createtaskcommentinput",
+      "community": 64,
+      "norm_label": "createtaskcommentinput"
+    },
+    {
+      "label": "comments.controller.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_controller_test",
+      "community": 64,
+      "norm_label": "comments.controller.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "comments_comments_controller_test_createdat",
+      "community": 64,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "taskComment",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "comments_comments_controller_test_taskcomment",
+      "community": 64,
+      "norm_label": "taskcomment"
+    },
+    {
+      "label": "createCommentsStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "comments_comments_controller_test_createcommentsstore",
+      "community": 64,
+      "norm_label": "createcommentsstore()"
+    },
+    {
+      "label": "comments.controller.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_controller",
+      "community": 64,
+      "norm_label": "comments.controller.ts"
+    },
+    {
+      "label": "uuidV4Pipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "comments_comments_controller_uuidv4pipe",
+      "community": 64,
+      "norm_label": "uuidv4pipe"
+    },
+    {
+      "label": "CommentsController",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "comments_comments_controller_commentscontroller",
+      "community": 64,
+      "norm_label": "commentscontroller"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "comments_comments_controller_commentscontroller_constructor",
+      "community": 64,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listTaskComments()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "comments_comments_controller_commentscontroller_listtaskcomments",
+      "community": 64,
+      "norm_label": ".listtaskcomments()"
+    },
+    {
+      "label": ".createTaskComment()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "comments_comments_controller_commentscontroller_createtaskcomment",
+      "community": 64,
+      "norm_label": ".createtaskcomment()"
+    },
+    {
+      "label": "comments.dto.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_dto",
+      "community": 64,
+      "norm_label": "comments.dto.ts"
+    },
+    {
+      "label": "CreateTaskCommentDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "comments_comments_dto_createtaskcommentdto",
+      "community": 64,
+      "norm_label": "createtaskcommentdto"
+    },
+    {
+      "label": "ParseCreateTaskCommentBodyPipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "comments_comments_dto_parsecreatetaskcommentbodypipe",
+      "community": 64,
+      "norm_label": "parsecreatetaskcommentbodypipe"
+    },
+    {
+      "label": ".transform()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform",
+      "community": 64,
+      "norm_label": ".transform()"
+    },
+    {
+      "label": "TaskCommentDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "comments_comments_dto_taskcommentdto",
+      "community": 64,
+      "norm_label": "taskcommentdto"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "comments_comments_dto_taskcommentdto_constructor",
+      "community": 64,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "parseCreateTaskCommentInput()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "comments_comments_dto_parsecreatetaskcommentinput",
+      "community": 64,
+      "norm_label": "parsecreatetaskcommentinput()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "comments_comments_dto_isunknownrecord",
+      "community": 64,
+      "norm_label": "isunknownrecord()"
+    },
+    {
+      "label": "readRequiredNonEmptyString()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "comments_comments_dto_readrequirednonemptystring",
+      "community": 64,
+      "norm_label": "readrequirednonemptystring()"
+    },
+    {
+      "label": "comments.module.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_module",
+      "community": 64,
+      "norm_label": "comments.module.ts"
+    },
+    {
+      "label": "commentsServiceProvider",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "comments_comments_module_commentsserviceprovider",
+      "community": 64,
+      "norm_label": "commentsserviceprovider"
+    },
+    {
+      "label": "CommentsModule",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "comments_comments_module_commentsmodule",
+      "community": 18,
+      "norm_label": "commentsmodule"
+    },
+    {
+      "label": "comments.service.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_service_test",
+      "community": 64,
+      "norm_label": "comments.service.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "comments_comments_service_test_createdat",
+      "community": 64,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "taskComment",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "comments_comments_service_test_taskcomment",
+      "community": 64,
+      "norm_label": "taskcomment"
+    },
+    {
+      "label": "createCommentsStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "comments_comments_service_test_createcommentsstore",
+      "community": 64,
+      "norm_label": "createcommentsstore()"
+    },
+    {
+      "label": "comments.service.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_service",
+      "community": 64,
+      "norm_label": "comments.service.ts"
+    },
+    {
+      "label": "CommentsService",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "comments_comments_service_commentsservice",
+      "community": 64,
+      "norm_label": "commentsservice"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "comments_comments_service_commentsservice_constructor",
+      "community": 64,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listTaskComments()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "comments_comments_service_commentsservice_listtaskcomments",
+      "community": 64,
+      "norm_label": ".listtaskcomments()"
+    },
+    {
+      "label": ".createTaskComment()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "comments_comments_service_commentsservice_createtaskcomment",
+      "community": 64,
+      "norm_label": ".createtaskcomment()"
+    },
+    {
+      "label": "comments.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_comments_store",
+      "community": 64,
+      "norm_label": "comments.store.ts"
+    },
+    {
+      "label": "TaskCommentCreateResult",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "comments_comments_store_taskcommentcreateresult",
+      "community": 64,
+      "norm_label": "taskcommentcreateresult"
+    },
+    {
+      "label": "TaskCommentsStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "comments_comments_store_taskcommentsstore",
+      "community": 64,
+      "norm_label": "taskcommentsstore"
+    },
+    {
+      "label": "typeorm-task-comments.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store",
+      "community": 64,
+      "norm_label": "typeorm-task-comments.store.ts"
+    },
+    {
+      "label": "commentWriteRoles",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_commentwriteroles",
+      "community": 64,
+      "norm_label": "commentwriteroles"
+    },
+    {
+      "label": "TypeOrmTaskCommentsStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "community": 64,
+      "norm_label": "typeormtaskcommentsstore"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listForTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
+      "community": 64,
+      "norm_label": ".listfortask()"
+    },
+    {
+      "label": ".createForTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "community": 64,
+      "norm_label": ".createfortask()"
+    },
+    {
+      "label": ".canReadTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L98",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
+      "community": 64,
+      "norm_label": ".canreadtask()"
+    },
+    {
+      "label": ".getVisibleTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L116",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
+      "community": 64,
+      "norm_label": ".getvisibletask()"
+    },
+    {
+      "label": ".getWorkspaceMembership()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L139",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
+      "community": 64,
+      "norm_label": ".getworkspacemembership()"
+    },
+    {
+      "label": ".getInitializedDataSource()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
+      "community": 64,
+      "norm_label": ".getinitializeddatasource()"
+    },
+    {
+      "label": "toTaskComment()",
+      "file_type": "code",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L172",
+      "_origin": "ast",
+      "id": "comments_typeorm_task_comments_store_totaskcomment",
+      "community": 64,
+      "norm_label": "totaskcomment()"
     },
     {
       "label": "config.test.ts",
@@ -600,7 +1080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 49,
+      "community": 61,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -610,7 +1090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 49,
+      "community": 61,
       "norm_label": "data-source.ts"
     },
     {
@@ -620,7 +1100,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 49,
+      "community": 61,
       "norm_label": "apientities"
     },
     {
@@ -630,7 +1110,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 49,
+      "community": 61,
       "norm_label": "apimigrations"
     },
     {
@@ -640,7 +1120,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 49,
+      "community": 61,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -650,7 +1130,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 49,
+      "community": 61,
       "norm_label": "createapidatasource()"
     },
     {
@@ -660,7 +1140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 18,
+      "community": 2,
       "norm_label": "database.module.ts"
     },
     {
@@ -670,7 +1150,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 18,
+      "community": 2,
       "norm_label": "apidatasource"
     },
     {
@@ -680,7 +1160,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 18,
+      "community": 2,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -700,7 +1180,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 18,
+      "community": 2,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -710,7 +1190,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 18,
+      "community": 2,
       "norm_label": ".getdatasource()"
     },
     {
@@ -720,7 +1200,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 18,
+      "community": 2,
       "norm_label": "databasemodule"
     },
     {
@@ -777,7 +1257,7 @@
       "label": "createOpenApiDocument()",
       "file_type": "code",
       "source_file": "apps/api/src/openapi.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "src_openapi_createopenapidocument",
       "community": 18,
@@ -1440,7 +1920,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 65,
+      "community": 55,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -1450,7 +1930,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 65,
+      "community": 55,
       "norm_label": ".up()"
     },
     {
@@ -1460,7 +1940,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 65,
+      "community": 55,
       "norm_label": ".down()"
     },
     {
@@ -1500,7 +1980,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
-      "community": 56,
+      "community": 65,
       "norm_label": "createattachmentstable1783296300000"
     },
     {
@@ -1510,7 +1990,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_up",
-      "community": 56,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -1520,7 +2000,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_down",
-      "community": 56,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2660,7 +3140,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 18,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -3220,7 +3700,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 18,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -3320,7 +3800,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 18,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -5327,7 +5807,7 @@
       "label": "webhooks",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L163",
+      "source_location": "L181",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
       "community": 33,
@@ -5337,7 +5817,7 @@
       "label": "components",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L164",
+      "source_location": "L182",
       "_origin": "ast",
       "id": "generated_openapi_components",
       "community": 33,
@@ -5347,7 +5827,7 @@
       "label": "$defs",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L371",
+      "source_location": "L409",
       "_origin": "ast",
       "id": "generated_openapi_defs",
       "community": 33,
@@ -5357,7 +5837,7 @@
       "label": "operations",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L372",
+      "source_location": "L410",
       "_origin": "ast",
       "id": "generated_openapi_operations",
       "community": 33,
@@ -9473,6 +9953,28 @@
       "source_file": "apps/api/src/app.module.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "source": "src_app_module",
+      "target": "comments_comments_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_app_module",
+      "target": "comments_comments_module_commentsmodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_app_module",
       "target": "projects_projects_module"
@@ -9726,6 +10228,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "auth_trusted_current_user_decorator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/projects/projects.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
@@ -9759,6 +10272,17 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/projects/projects.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
@@ -9792,6 +10316,17 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/projects/projects.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
@@ -9820,6 +10355,1507 @@
       "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller",
       "target": "auth_trusted_current_user_decorator_trustedcurrentuserid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.contracts.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "comments_comments_contracts",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "comments_comments_contracts",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "comments_comments_service",
+      "target": "comments_comments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "comments_comments_store",
+      "target": "comments_comments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_comments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "comments_comments_dto_taskcommentdto",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "comments_comments_dto_taskcommentdto_constructor",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "comments_comments_store",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
+      "target": "comments_comments_contracts_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "comments_comments_controller_commentscontroller_createtaskcomment",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_dto_createtaskcommentdto",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "comments_comments_service",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "comments_comments_service_commentsservice_createtaskcomment",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "comments_comments_store",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "target": "comments_comments_contracts_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_controller_commentscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_controller_test_createcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_controller_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_controller_test_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_service_commentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_store_taskcommentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "comments_comments_controller_test",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_controller_commentscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_controller_uuidv4pipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_dto_createtaskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "comments_comments_controller",
+      "target": "comments_comments_service_commentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "comments_comments_controller_commentscontroller",
+      "target": "comments_comments_controller_commentscontroller_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "comments_comments_controller_commentscontroller",
+      "target": "comments_comments_controller_commentscontroller_createtaskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "comments_comments_controller_commentscontroller",
+      "target": "comments_comments_controller_commentscontroller_listtaskcomments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_controller_commentscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "comments_comments_controller_commentscontroller_constructor",
+      "target": "comments_comments_service_commentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "comments_comments_controller_commentscontroller_listtaskcomments",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.controller.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "comments_comments_controller_commentscontroller_createtaskcomment",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_dto_createtaskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_dto_parsecreatetaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "comments_comments_dto",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_service",
+      "target": "comments_comments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "comments_comments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "comments_comments_dto_createtaskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "comments_comments_dto_parsecreatetaskcommentbodypipe",
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform",
+      "target": "comments_comments_dto_parsecreatetaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "comments_comments_dto_taskcommentdto",
+      "target": "comments_comments_dto_taskcommentdto_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_service",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "comments_comments_service_commentsservice_createtaskcomment",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "comments_comments_service_commentsservice_listtaskcomments",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "comments_comments_dto_taskcommentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "comments_comments_dto_parsecreatetaskcommentinput",
+      "target": "comments_comments_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.dto.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "comments_comments_dto_parsecreatetaskcommentinput",
+      "target": "comments_comments_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_module_commentsmodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_module_commentsserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_service_commentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_typeorm_task_comments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "comments_comments_module",
+      "target": "database_database_module_databasemodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_service_commentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_service_test_createcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_service_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_service_test_taskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_store_taskcommentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "comments_comments_service_test",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "comments_comments_service",
+      "target": "comments_comments_service_commentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_service",
+      "target": "comments_comments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_comments_service",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "comments_comments_service_commentsservice",
+      "target": "comments_comments_service_commentsservice_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "comments_comments_service_commentsservice",
+      "target": "comments_comments_service_commentsservice_createtaskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "comments_comments_service_commentsservice",
+      "target": "comments_comments_service_commentsservice_listtaskcomments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.service.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "comments_comments_service_commentsservice_constructor",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "comments_comments_store",
+      "target": "comments_comments_store_taskcommentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/comments.store.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "comments_comments_store",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_comments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_comments_store_taskcommentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "target": "comments_comments_store_taskcommentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_comments_store_taskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_typeorm_task_comments_store_commentwriteroles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L172",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_typeorm_task_comments_store_totaskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "entities_activity_event_entity_activityevententity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "entities_comment_entity_commententity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "entities_index",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "entities_task_entity_taskentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "entities_workspace_member_entity_workspacememberentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store",
+      "target": "types_core_persistence_types_workspacememberrole",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "target": "comments_typeorm_task_comments_store_totaskcomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
+      "target": "entities_task_entity_taskentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
+      "target": "entities_workspace_member_entity_workspacememberentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -11488,9 +13524,9 @@
       "source_file": "apps/api/src/openapi.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_openapi",
-      "target": "tasks_tasks_dto_createtaskdto",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_createtaskdto"
     },
     {
       "relation": "imports",
@@ -11652,9 +13688,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "entities_activity_event_entity_activityevententity",
-      "confidence_score": 1.0
+      "target": "entities_activity_event_entity_activityevententity"
     },
     {
       "relation": "contains",
@@ -13133,9 +15169,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L161",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
-      "target": "entities_workspace_member_entity_workspacememberentity",
-      "confidence_score": 1.0
+      "target": "entities_workspace_member_entity_workspacememberentity"
     },
     {
       "relation": "imports",
@@ -14657,9 +16693,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "contains",
@@ -14930,9 +16966,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "types_core_persistence_types_workspacememberrole",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_workspacememberrole"
     },
     {
       "relation": "imports",
@@ -16469,9 +18505,9 @@
       "source_file": "apps/api/src/tasks/tasks.contracts.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_contracts",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "contains",
@@ -16500,9 +18536,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
-      "target": "tasks_tasks_contracts",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts"
     },
     {
       "relation": "imports_from",
@@ -16533,9 +18569,9 @@
       "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service",
-      "target": "tasks_tasks_contracts",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts"
     },
     {
       "relation": "imports_from",
@@ -16742,9 +18778,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "references",
@@ -16753,9 +18789,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_taskscontroller_createtask",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "imports",
@@ -16764,9 +18800,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_test",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "imports",
@@ -16775,9 +18811,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "implements",
@@ -16786,9 +18822,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_createtaskdto",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "references",
@@ -16797,9 +18833,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "imports",
@@ -16808,9 +18844,9 @@
       "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "references",
@@ -16819,9 +18855,9 @@
       "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_tasksservice_createtask",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "imports",
@@ -16830,9 +18866,9 @@
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_test",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "imports",
@@ -16841,9 +18877,9 @@
       "source_file": "apps/api/src/tasks/tasks.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_store",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "imports",
@@ -16852,9 +18888,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "references",
@@ -16863,9 +18899,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
-      "target": "tasks_tasks_contracts_createtaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_createtaskinput"
     },
     {
       "relation": "imports_from",
@@ -16926,9 +18962,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_test",
-      "target": "tasks_tasks_dto",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto"
     },
     {
       "relation": "imports",
@@ -16937,9 +18973,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_test",
-      "target": "tasks_tasks_dto_parsecreatetaskbodypipe",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe"
     },
     {
       "relation": "imports_from",
@@ -16981,9 +19017,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_test",
-      "target": "tasks_tasks_store_taskcreateresult",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_store_taskcreateresult"
     },
     {
       "relation": "imports",
@@ -17034,9 +19070,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
-      "target": "tasks_tasks_dto_createtaskdto",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_createtaskdto"
     },
     {
       "relation": "imports",
@@ -17045,9 +19081,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
-      "target": "tasks_tasks_dto_parsecreatetaskbodypipe",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe"
     },
     {
       "relation": "imports",
@@ -17120,9 +19156,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_taskscontroller",
-      "target": "tasks_tasks_controller_taskscontroller_createtask",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_controller_taskscontroller_createtask"
     },
     {
       "relation": "method",
@@ -17184,9 +19220,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_taskscontroller_createtask",
-      "target": "tasks_tasks_dto_taskdetaildto",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_taskdetaildto"
     },
     {
       "relation": "references",
@@ -17205,9 +19241,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_createtaskdto",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_createtaskdto"
     },
     {
       "relation": "contains",
@@ -17215,9 +19251,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L150",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_isunknownrecord"
     },
     {
       "relation": "contains",
@@ -17225,9 +19261,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_parsecreatetaskbodypipe",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe"
     },
     {
       "relation": "contains",
@@ -17235,9 +19271,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_parsecreatetaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parsecreatetaskinput"
     },
     {
       "relation": "contains",
@@ -17245,9 +19281,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L206",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_readoptionalnullabledatetime",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullabledatetime"
     },
     {
       "relation": "contains",
@@ -17255,9 +19291,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L170",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullablestring"
     },
     {
       "relation": "contains",
@@ -17265,9 +19301,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L189",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_readoptionalnullableuuid",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullableuuid"
     },
     {
       "relation": "contains",
@@ -17275,9 +19311,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L225",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_readoptionalrecord",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalrecord"
     },
     {
       "relation": "contains",
@@ -17285,9 +19321,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L154",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readrequirednonemptystring"
     },
     {
       "relation": "contains",
@@ -17337,9 +19373,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskbodypipe",
-      "target": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parsecreatetaskbodypipe_transform"
     },
     {
       "relation": "calls",
@@ -17348,9 +19384,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
-      "target": "tasks_tasks_dto_parsecreatetaskinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parsecreatetaskinput"
     },
     {
       "relation": "inherits",
@@ -17424,9 +19460,9 @@
       "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_tasksservice_createtask",
-      "target": "tasks_tasks_dto_taskdetaildto",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_taskdetaildto"
     },
     {
       "relation": "references",
@@ -17457,9 +19493,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L110",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskinput",
-      "target": "tasks_tasks_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -17468,9 +19504,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskinput",
-      "target": "tasks_tasks_dto_readoptionalnullabledatetime",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullabledatetime"
     },
     {
       "relation": "calls",
@@ -17479,9 +19515,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L116",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskinput",
-      "target": "tasks_tasks_dto_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullablestring"
     },
     {
       "relation": "calls",
@@ -17490,9 +19526,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskinput",
-      "target": "tasks_tasks_dto_readoptionalnullableuuid",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullableuuid"
     },
     {
       "relation": "calls",
@@ -17501,9 +19537,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L119",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskinput",
-      "target": "tasks_tasks_dto_readoptionalrecord",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalrecord"
     },
     {
       "relation": "calls",
@@ -17512,9 +19548,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parsecreatetaskinput",
-      "target": "tasks_tasks_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readrequirednonemptystring"
     },
     {
       "relation": "calls",
@@ -17523,9 +19559,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L235",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_readoptionalrecord",
-      "target": "tasks_tasks_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -17534,9 +19570,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L210",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_readoptionalnullabledatetime",
-      "target": "tasks_tasks_dto_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullablestring"
     },
     {
       "relation": "calls",
@@ -17545,9 +19581,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L193",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_readoptionalnullableuuid",
-      "target": "tasks_tasks_dto_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_readoptionalnullablestring"
     },
     {
       "relation": "contains",
@@ -17705,9 +19741,9 @@
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_test",
-      "target": "tasks_tasks_store_taskcreateresult",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_store_taskcreateresult"
     },
     {
       "relation": "imports",
@@ -17768,9 +19804,9 @@
       "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_tasksservice",
-      "target": "tasks_tasks_service_tasksservice_createtask",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_service_tasksservice_createtask"
     },
     {
       "relation": "method",
@@ -17809,9 +19845,9 @@
       "source_file": "apps/api/src/tasks/tasks.store.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_store",
-      "target": "tasks_tasks_store_taskcreateresult",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_store_taskcreateresult"
     },
     {
       "relation": "contains",
@@ -17841,9 +19877,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "tasks_tasks_store_taskcreateresult",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_store_taskcreateresult"
     },
     {
       "relation": "references",
@@ -17852,9 +19888,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
-      "target": "tasks_tasks_store_taskcreateresult",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_store_taskcreateresult"
     },
     {
       "relation": "imports",
@@ -17884,9 +19920,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "tasks_typeorm_task_read_store_taskwriteroles",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_taskwriteroles"
     },
     {
       "relation": "contains",
@@ -17934,9 +19970,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject"
     },
     {
       "relation": "method",
@@ -17964,9 +20000,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L161",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership"
     },
     {
       "relation": "method",
@@ -18040,9 +20076,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L138",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
-      "target": "tasks_typeorm_task_read_store_totasksummary",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_totasksummary"
     },
     {
       "relation": "calls",
@@ -18051,9 +20087,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -18062,9 +20098,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L76",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership"
     },
     {
       "relation": "calls",
@@ -18073,9 +20109,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L147",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_canreadproject",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership"
     },
     {
       "relation": "contains",
@@ -24156,5 +26192,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e0bd1e8ac0af1fe43a1d38e1fa4c26aeecb717b1"
+  "built_at_commit": "9a291185b62a3e7aad871412c540e92c86d6b37f"
 }
