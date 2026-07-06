@@ -183,3 +183,25 @@ export type ConfirmationRequestRecord = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type TelegramIdentityRecord = {
+  id: string;
+  userId: string;
+  telegramId: string;
+  telegramUsername: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  linkedAt: Date;
+  lastSeenAt: Date | null;
+};
+
+export type TelegramChatRecord = {
+  id: string;
+  workspaceId: string;
+  telegramChatId: string;
+  title: string | null;
+  defaultProjectId: string | null;
+  linkedByUserId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
