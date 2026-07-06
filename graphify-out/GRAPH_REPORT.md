@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-13-api-env-config  (2026-07-06)
+# Graph Report - tAsk-issue-15-typeorm-postgres-shell  (2026-07-06)
 
 ## Corpus Check
-- 61 files · ~16,657 words
+- 63 files · ~17,115 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 556 nodes · 545 edges · 49 communities (46 shown, 3 thin omitted)
+- 565 nodes · 562 edges · 50 communities (47 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a2fa9977`
+- Built from commit: `445e905a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,6 +57,7 @@
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
+- [[_COMMUNITY_Community 49|Community 49]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 23 edges
@@ -85,7 +86,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (49 total, 3 thin omitted)
+## Communities (50 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -148,8 +149,8 @@ Cohesion: 0.08
 Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.13
-Nodes (15): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, ApiConfig, ApiEnvironment (+7 more)
+Cohesion: 0.18
+Nodes (10): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, loadApiConfig(), generateOpenApi() (+2 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.11
@@ -208,8 +209,8 @@ Cohesion: 0.33
 Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ### Community 37 - "Community 37"
-Cohesion: 0.10
-Nodes (20): dependencies, @nestjs/common, @nestjs/core, @nestjs/platform-fastify, @nestjs/swagger, reflect-metadata, rxjs, description (+12 more)
+Cohesion: 0.09
+Nodes (22): dependencies, @nestjs/common, @nestjs/core, @nestjs/platform-fastify, @nestjs/swagger, pg, reflect-metadata, rxjs (+14 more)
 
 ### Community 38 - "Community 38"
 Cohesion: 0.15
@@ -243,8 +244,12 @@ Nodes (7): compilerOptions, incremental, rootDir, tsBuildInfoFile, extends, incl
 Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
+### Community 49 - "Community 49"
+Cohesion: 0.24
+Nodes (10): ApiConfig, ApiDatabaseConfig, ApiEnvironment, formatInvalidValue(), InvalidApiEnvironmentError, parseApiConfig(), parseDatabaseConfig(), parsePort() (+2 more)
+
 ## Knowledge Gaps
-- **404 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+399 more)
+- **406 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+401 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -252,7 +257,7 @@ Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, ty
 _Questions this graph is uniquely positioned to answer:_
 
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _404 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _406 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
