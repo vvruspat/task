@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-15-typeorm-postgres-shell  (2026-07-06)
+# Graph Report - tAsk-issue-17-core-entities-migration  (2026-07-06)
 
 ## Corpus Check
-- 63 files · ~17,115 words
+- 72 files · ~18,378 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 565 nodes · 562 edges · 50 communities (47 shown, 3 thin omitted)
+- 594 nodes · 629 edges · 51 communities (48 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `445e905a`
+- Built from commit: `394ddfd0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -58,6 +58,7 @@
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
 - [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 23 edges
@@ -86,7 +87,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (50 total, 3 thin omitted)
+## Communities (51 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -245,11 +246,15 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.24
-Nodes (10): ApiConfig, ApiDatabaseConfig, ApiEnvironment, formatInvalidValue(), InvalidApiEnvironmentError, parseApiConfig(), parseDatabaseConfig(), parsePort() (+2 more)
+Cohesion: 0.27
+Nodes (8): ApiConfig, ApiDatabaseConfig, ApiEnvironment, formatInvalidValue(), InvalidApiEnvironmentError, parseApiConfig(), parseDatabaseConfig(), parsePort()
+
+### Community 50 - "Community 50"
+Cohesion: 0.14
+Nodes (19): StatusEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity, CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries() (+11 more)
 
 ## Knowledge Gaps
-- **406 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+401 more)
+- **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -257,7 +262,7 @@ Nodes (10): ApiConfig, ApiDatabaseConfig, ApiEnvironment, formatInvalidValue(), 
 _Questions this graph is uniquely positioned to answer:_
 
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _406 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _409 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

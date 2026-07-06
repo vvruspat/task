@@ -9,7 +9,7 @@
       "source_file": "apps/api/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "api_package",
+      "id": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "community": 37,
       "norm_label": "package.json"
     },
@@ -530,7 +530,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 49,
+      "community": 50,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -540,27 +540,47 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 49,
+      "community": 50,
       "norm_label": "data-source.ts"
+    },
+    {
+      "label": "apiEntities",
+      "file_type": "code",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "src_data_source_apientities",
+      "community": 50,
+      "norm_label": "apientities"
+    },
+    {
+      "label": "apiMigrations",
+      "file_type": "code",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "src_data_source_apimigrations",
+      "community": 50,
+      "norm_label": "apimigrations"
     },
     {
       "label": "createTypeOrmDataSourceOptions()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L4",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 49,
+      "community": 50,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
       "label": "createApiDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L15",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 49,
+      "community": 50,
       "norm_label": "createapidatasource()"
     },
     {
@@ -622,6 +642,276 @@
       "id": "src_openapi_createopenapidocument",
       "community": 18,
       "norm_label": "createopenapidocument()"
+    },
+    {
+      "label": "core-entities.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_core_entities_test",
+      "community": 50,
+      "norm_label": "core-entities.test.ts"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_index",
+      "community": 50,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "status.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/status.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_status_entity",
+      "community": 50,
+      "norm_label": "status.entity.ts"
+    },
+    {
+      "label": "StatusEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/status.entity.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "entities_status_entity_statusentity",
+      "community": 50,
+      "norm_label": "statusentity"
+    },
+    {
+      "label": "user.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/user.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_user_entity",
+      "community": 50,
+      "norm_label": "user.entity.ts"
+    },
+    {
+      "label": "UserEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/user.entity.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "entities_user_entity_userentity",
+      "community": 50,
+      "norm_label": "userentity"
+    },
+    {
+      "label": "workspace-member.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_workspace_member_entity",
+      "community": 50,
+      "norm_label": "workspace-member.entity.ts"
+    },
+    {
+      "label": "WorkspaceMemberEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "entities_workspace_member_entity_workspacememberentity",
+      "community": 50,
+      "norm_label": "workspacememberentity"
+    },
+    {
+      "label": "workspace.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/workspace.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_workspace_entity",
+      "community": 50,
+      "norm_label": "workspace.entity.ts"
+    },
+    {
+      "label": "WorkspaceEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/workspace.entity.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "entities_workspace_entity_workspaceentity",
+      "community": 50,
+      "norm_label": "workspaceentity"
+    },
+    {
+      "label": "1783296000000-create-core-persistence-tables.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables",
+      "community": 50,
+      "norm_label": "1783296000000-create-core-persistence-tables.ts"
+    },
+    {
+      "label": "MigrationQueryExecutor",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables_migrationqueryexecutor",
+      "community": 50,
+      "norm_label": "migrationqueryexecutor"
+    },
+    {
+      "label": "createCorePersistenceTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetablessql",
+      "community": 50,
+      "norm_label": "createcorepersistencetablessql"
+    },
+    {
+      "label": "dropCorePersistenceTablesSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables_dropcorepersistencetablessql",
+      "community": 50,
+      "norm_label": "dropcorepersistencetablessql"
+    },
+    {
+      "label": "executeMigrationQueries()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
+      "community": 50,
+      "norm_label": "executemigrationqueries()"
+    },
+    {
+      "label": "CreateCorePersistenceTables1783296000000",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L72",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000",
+      "community": 50,
+      "norm_label": "createcorepersistencetables1783296000000"
+    },
+    {
+      "label": ".up()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_up",
+      "community": 50,
+      "norm_label": ".up()"
+    },
+    {
+      "label": ".down()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_down",
+      "community": 50,
+      "norm_label": ".down()"
+    },
+    {
+      "label": "create-core-persistence-tables.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_create_core_persistence_tables_test",
+      "community": 50,
+      "norm_label": "create-core-persistence-tables.test.ts"
+    },
+    {
+      "label": "RecordingQueryRunner",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "migrations_create_core_persistence_tables_test_recordingqueryrunner",
+      "community": 50,
+      "norm_label": "recordingqueryrunner"
+    },
+    {
+      "label": ".query()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "migrations_create_core_persistence_tables_test_recordingqueryrunner_query",
+      "community": 50,
+      "norm_label": ".query()"
+    },
+    {
+      "label": "core-persistence.types.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "types_core_persistence_types",
+      "community": 50,
+      "norm_label": "core-persistence.types.ts"
+    },
+    {
+      "label": "WorkspaceRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_workspacerecord",
+      "community": 50,
+      "norm_label": "workspacerecord"
+    },
+    {
+      "label": "UserRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_userrecord",
+      "community": 50,
+      "norm_label": "userrecord"
+    },
+    {
+      "label": "WorkspaceMemberRole",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_workspacememberrole",
+      "community": 50,
+      "norm_label": "workspacememberrole"
+    },
+    {
+      "label": "WorkspaceMemberRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_workspacememberrecord",
+      "community": 50,
+      "norm_label": "workspacememberrecord"
+    },
+    {
+      "label": "StatusRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_statusrecord",
+      "community": 50,
+      "norm_label": "statusrecord"
     },
     {
       "label": "tsconfig.json",
@@ -5662,7 +5952,7 @@
       "source_location": "L16",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "api_package",
+      "source": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "target": "api_package_dependencies"
     },
     {
@@ -5672,7 +5962,7 @@
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "api_package",
+      "source": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "target": "api_package_description"
     },
     {
@@ -5682,7 +5972,7 @@
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "api_package",
+      "source": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "target": "api_package_name"
     },
     {
@@ -5692,7 +5982,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "api_package",
+      "source": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "target": "api_package_private"
     },
     {
@@ -5702,7 +5992,7 @@
       "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "api_package",
+      "source": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "target": "api_package_scripts"
     },
     {
@@ -5712,7 +6002,7 @@
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "api_package",
+      "source": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "target": "api_package_type"
     },
     {
@@ -5722,7 +6012,7 @@
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "api_package",
+      "source": "users_alexander_documents_task_issue_15_typeorm_postgres_shell_apps_api_package_json",
       "target": "api_package_version"
     },
     {
@@ -6373,9 +6663,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config",
-      "target": "src_config_formatinvalidvalue",
-      "confidence_score": 1.0
+      "target": "src_config_formatinvalidvalue"
     },
     {
       "relation": "contains",
@@ -6488,9 +6778,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_invalidapienvironmenterror_constructor",
-      "target": "src_config_formatinvalidvalue",
-      "confidence_score": 1.0
+      "target": "src_config_formatinvalidvalue"
     },
     {
       "relation": "calls",
@@ -6563,6 +6853,83 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_index"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_status_entity_statusentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_user_entity_userentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_workspace_entity_workspaceentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296000000_create_core_persistence_tables"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -6590,6 +6957,103 @@
       "confidence_score": 1.0,
       "source": "src_data_source_test",
       "target": "src_data_source_createtypeormdatasourceoptions"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "entities_index"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "entities_status_entity_statusentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "entities_user_entity_userentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "entities_workspace_entity_workspaceentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296000000_create_core_persistence_tables"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "src_data_source_apientities"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "src_data_source_apimigrations"
     },
     {
       "relation": "contains",
@@ -6717,6 +7181,549 @@
       "confidence_score": 1.0,
       "source": "src_openapi",
       "target": "src_openapi_createopenapidocument"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_index"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_status_entity_statusentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_user_entity_userentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_workspace_entity_workspaceentity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_status_entity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_status_entity_statusentity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_user_entity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_user_entity_userentity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_workspace_entity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_workspace_entity_workspaceentity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_workspace_member_entity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/status.entity.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_status_entity",
+      "target": "entities_status_entity_statusentity"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/status.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_status_entity",
+      "target": "types_core_persistence_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/status.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_status_entity",
+      "target": "types_core_persistence_types_statusrecord"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/status.entity.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_status_entity_statusentity",
+      "target": "types_core_persistence_types_statusrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/user.entity.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_user_entity",
+      "target": "entities_user_entity_userentity"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/user.entity.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_user_entity",
+      "target": "types_core_persistence_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/user.entity.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_user_entity",
+      "target": "types_core_persistence_types_userrecord"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/user.entity.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_user_entity_userentity",
+      "target": "types_core_persistence_types_userrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_member_entity",
+      "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_member_entity",
+      "target": "types_core_persistence_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_member_entity",
+      "target": "types_core_persistence_types_workspacememberrecord"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_member_entity",
+      "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_member_entity_workspacememberentity",
+      "target": "types_core_persistence_types_workspacememberrecord"
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_member_entity_workspacememberentity",
+      "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace.entity.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_entity",
+      "target": "entities_workspace_entity_workspaceentity"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace.entity.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_entity",
+      "target": "types_core_persistence_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace.entity.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_entity",
+      "target": "types_core_persistence_types_workspacerecord"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/workspace.entity.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_workspace_entity_workspaceentity",
+      "target": "types_core_persistence_types_workspacerecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L71",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetablessql"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L52",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_dropcorepersistencetablessql"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables",
+      "target": "migrations_1783296000000_create_core_persistence_tables_migrationqueryexecutor"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_create_core_persistence_tables_test",
+      "target": "migrations_1783296000000_create_core_persistence_tables"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_create_core_persistence_tables_test",
+      "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetablessql"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_create_core_persistence_tables_test",
+      "target": "migrations_1783296000000_create_core_persistence_tables_dropcorepersistencetablessql"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_down",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_up",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_create_core_persistence_tables_test",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000",
+      "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_down"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296000000-create-core-persistence-tables.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000",
+      "target": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetables1783296000000_up"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_create_core_persistence_tables_test",
+      "target": "migrations_create_core_persistence_tables_test_recordingqueryrunner"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-core-persistence-tables.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "migrations_create_core_persistence_tables_test_recordingqueryrunner",
+      "target": "migrations_create_core_persistence_tables_test_recordingqueryrunner_query"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_statusrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_userrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_workspacememberrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_workspacerecord"
     },
     {
       "relation": "contains",
@@ -11330,5 +12337,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "445e905a108d96bc2d7cfaaf84e4e03496f42364"
+  "built_at_commit": "394ddfd04bc4463538a080fd64264c279ed8566e"
 }
