@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-25-comment-persistence  (2026-07-06)
+# Graph Report - tAsk-issue-27-attachment-persistence  (2026-07-06)
 
 ## Corpus Check
-- 85 files · ~21,916 words
+- 88 files · ~22,705 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 637 nodes · 743 edges · 51 communities (48 shown, 3 thin omitted)
+- 649 nodes · 775 edges · 51 communities (48 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `39e195dd`
+- Built from commit: `dc8021bd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -62,9 +62,9 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 23 edges
-2. `Tables` - 18 edges
-3. `Technical architecture` - 17 edges
-4. `executeMigrationQueries()` - 16 edges
+2. `executeMigrationQueries()` - 19 edges
+3. `Tables` - 18 edges
+4. `Technical architecture` - 17 edges
 5. `Agent rules` - 14 edges
 6. `Agent and MCP design` - 12 edges
 7. `What You Must Do When Invoked` - 11 edges
@@ -246,12 +246,12 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.09
-Nodes (22): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+14 more)
+Cohesion: 0.08
+Nodes (25): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+17 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 0.16
-Nodes (19): CommentEntity, ProjectEntity, StatusEntity, TaskEntity, TaskSkillEntity, TaskSkillVersionEntity, UserEntity, WorkspaceEntity (+11 more)
+Cohesion: 0.14
+Nodes (23): AttachmentEntity, CommentEntity, ProjectEntity, StatusEntity, TaskEntity, TaskSkillEntity, TaskSkillVersionEntity, UserEntity (+15 more)
 
 ## Knowledge Gaps
 - **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)
@@ -261,6 +261,8 @@ Nodes (19): CommentEntity, ProjectEntity, StatusEntity, TaskEntity, TaskSkillEnt
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `AttachmentEntity` connect `Community 50` to `Community 49`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
   _409 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
@@ -273,5 +275,3 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
   _Cohesion score 0.08333333333333333 - nodes in this community are weakly interconnected._
-- **Should `Community 5` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._

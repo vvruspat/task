@@ -547,7 +547,7 @@
       "label": "apiEntities",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L20",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "src_data_source_apientities",
       "community": 49,
@@ -557,7 +557,7 @@
       "label": "apiMigrations",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L31",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
       "community": 49,
@@ -567,7 +567,7 @@
       "label": "createTypeOrmDataSourceOptions()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L39",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
       "community": 49,
@@ -577,7 +577,7 @@
       "label": "createApiDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L50",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
       "community": 49,
@@ -642,6 +642,26 @@
       "id": "src_openapi_createopenapidocument",
       "community": 18,
       "norm_label": "createopenapidocument()"
+    },
+    {
+      "label": "attachment.entity.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "entities_attachment_entity",
+      "community": 50,
+      "norm_label": "attachment.entity.ts"
+    },
+    {
+      "label": "AttachmentEntity",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "entities_attachment_entity_attachmententity",
+      "community": 50,
+      "norm_label": "attachmententity"
     },
     {
       "label": "comment.entity.ts",
@@ -1164,6 +1184,76 @@
       "norm_label": ".down()"
     },
     {
+      "label": "1783296300000-create-attachments-table.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_1783296300000_create_attachments_table",
+      "community": 49,
+      "norm_label": "1783296300000-create-attachments-table.ts"
+    },
+    {
+      "label": "createAttachmentsTableSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
+      "community": 49,
+      "norm_label": "createattachmentstablesql"
+    },
+    {
+      "label": "dropAttachmentsTableSql",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
+      "community": 49,
+      "norm_label": "dropattachmentstablesql"
+    },
+    {
+      "label": "CreateAttachmentsTable1783296300000",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
+      "community": 49,
+      "norm_label": "createattachmentstable1783296300000"
+    },
+    {
+      "label": ".up()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_up",
+      "community": 49,
+      "norm_label": ".up()"
+    },
+    {
+      "label": ".down()",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_down",
+      "community": 49,
+      "norm_label": ".down()"
+    },
+    {
+      "label": "create-attachments-table.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/migrations/create-attachments-table.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "migrations_create_attachments_table_test",
+      "community": 49,
+      "norm_label": "create-attachments-table.test.ts"
+    },
+    {
       "label": "create-comments-table.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/persistence/migrations/create-comments-table.test.ts",
@@ -1342,6 +1432,36 @@
       "id": "types_core_persistence_types_commentrecord",
       "community": 50,
       "norm_label": "commentrecord"
+    },
+    {
+      "label": "AttachmentTargetType",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L105",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_attachmenttargettype",
+      "community": 50,
+      "norm_label": "attachmenttargettype"
+    },
+    {
+      "label": "AttachmentKind",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L107",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_attachmentkind",
+      "community": 50,
+      "norm_label": "attachmentkind"
+    },
+    {
+      "label": "AttachmentRecord",
+      "file_type": "code",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "types_core_persistence_types_attachmentrecord",
+      "community": 50,
+      "norm_label": "attachmentrecord"
     },
     {
       "label": "tsconfig.json",
@@ -7286,8 +7406,19 @@
       "source_location": "L5",
       "weight": 1.0,
       "source": "src_data_source_test",
-      "target": "entities_comment_entity_commententity",
+      "target": "entities_attachment_entity_attachmententity",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source_test",
+      "target": "entities_comment_entity_commententity"
     },
     {
       "relation": "imports_from",
@@ -7483,9 +7614,9 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296240000_create_comments_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table"
     },
     {
       "relation": "imports",
@@ -7494,8 +7625,30 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
+      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296300000_create_attachments_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.test.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_data_source_test",
+      "target": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
       "confidence_score": 1.0
     },
     {
@@ -7539,8 +7692,19 @@
       "source_location": "L3",
       "weight": 1.0,
       "source": "src_data_source",
-      "target": "entities_comment_entity_commententity",
+      "target": "entities_attachment_entity_attachmententity",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_data_source",
+      "target": "entities_comment_entity_commententity"
     },
     {
       "relation": "imports_from",
@@ -7736,9 +7900,9 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296240000_create_comments_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table"
     },
     {
       "relation": "imports",
@@ -7747,8 +7911,30 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
+      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296300000_create_attachments_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/data-source.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_data_source",
+      "target": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
       "confidence_score": 1.0
     },
     {
@@ -7901,21 +8087,21 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
-      "source_location": "L14",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L13",
       "weight": 1.0,
-      "source": "entities_comment_entity",
-      "target": "entities_comment_entity_commententity",
+      "source": "entities_attachment_entity",
+      "target": "entities_attachment_entity_attachmententity",
       "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
-      "source_location": "L9",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L2",
       "weight": 1.0,
-      "source": "entities_comment_entity",
+      "source": "entities_attachment_entity",
       "target": "types_core_persistence_types",
       "confidence_score": 1.0
     },
@@ -7923,11 +8109,33 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
-      "source_location": "L9",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L2",
       "weight": 1.0,
-      "source": "entities_comment_entity",
-      "target": "types_core_persistence_types_commentrecord",
+      "source": "entities_attachment_entity",
+      "target": "types_core_persistence_types_attachmentkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_attachment_entity",
+      "target": "types_core_persistence_types_attachmentrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "entities_attachment_entity",
+      "target": "types_core_persistence_types_attachmenttargettype",
       "confidence_score": 1.0
     },
     {
@@ -7938,18 +8146,40 @@
       "source_location": "L1",
       "weight": 1.0,
       "source": "entities_index",
-      "target": "entities_comment_entity",
+      "target": "entities_attachment_entity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "entities_attachment_entity_attachmententity",
+      "target": "types_core_persistence_types_attachmentkind",
       "confidence_score": 1.0
     },
     {
       "relation": "implements",
       "context": "type",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
-      "source_location": "L14",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L13",
       "weight": 1.0,
-      "source": "entities_comment_entity_commententity",
-      "target": "types_core_persistence_types_commentrecord",
+      "source": "entities_attachment_entity_attachmententity",
+      "target": "types_core_persistence_types_attachmentrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "entities_attachment_entity_attachmententity",
+      "target": "types_core_persistence_types_attachmenttargettype",
       "confidence_score": 1.0
     },
     {
@@ -7960,7 +8190,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "entities_core_entities_test",
-      "target": "entities_comment_entity_commententity",
+      "target": "entities_attachment_entity_attachmententity",
       "confidence_score": 1.0
     },
     {
@@ -7971,8 +8201,84 @@
       "source_location": "L1",
       "weight": 1.0,
       "source": "entities_index",
-      "target": "entities_comment_entity_commententity",
+      "target": "entities_attachment_entity_attachmententity",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_comment_entity",
+      "target": "entities_comment_entity_commententity"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_comment_entity",
+      "target": "types_core_persistence_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_comment_entity",
+      "target": "types_core_persistence_types_commentrecord"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_comment_entity"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/comment.entity.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_comment_entity_commententity",
+      "target": "types_core_persistence_types_commentrecord"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_core_entities_test",
+      "target": "entities_comment_entity_commententity"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/entities/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "entities_index",
+      "target": "entities_comment_entity_commententity"
     },
     {
       "relation": "imports_from",
@@ -8705,7 +9011,18 @@
       "source_file": "apps/api/src/persistence/migrations/1783296240000-create-comments-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296240000_create_comments_table",
+      "target": "migrations_1783296000000_create_core_persistence_tables"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table",
       "target": "migrations_1783296000000_create_core_persistence_tables",
       "confidence_score": 1.0
     },
@@ -8870,9 +9187,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296240000-create-comments-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296240000_create_comments_table",
-      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
-      "confidence_score": 1.0
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
       "relation": "calls",
@@ -8894,6 +9211,39 @@
       "source_location": "L31",
       "weight": 1.0,
       "source": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_down",
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_up",
       "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
@@ -9182,9 +9532,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296240000-create-comments-table.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296240000_create_comments_table",
-      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000"
     },
     {
       "relation": "contains",
@@ -9192,9 +9542,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296240000-create-comments-table.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296240000_create_comments_table",
-      "target": "migrations_1783296240000_create_comments_table_createcommentstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table_createcommentstablesql"
     },
     {
       "relation": "contains",
@@ -9202,9 +9552,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296240000-create-comments-table.ts",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296240000_create_comments_table",
-      "target": "migrations_1783296240000_create_comments_table_dropcommentstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table_dropcommentstablesql"
     },
     {
       "relation": "imports_from",
@@ -9213,9 +9563,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-comments-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_comments_table_test",
-      "target": "migrations_1783296240000_create_comments_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table"
     },
     {
       "relation": "imports",
@@ -9224,9 +9574,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-comments-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_comments_table_test",
-      "target": "migrations_1783296240000_create_comments_table_createcommentstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table_createcommentstablesql"
     },
     {
       "relation": "imports",
@@ -9235,9 +9585,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-comments-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_comments_table_test",
-      "target": "migrations_1783296240000_create_comments_table_dropcommentstablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table_dropcommentstablesql"
     },
     {
       "relation": "method",
@@ -9245,9 +9595,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296240000-create-comments-table.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "confidence_score": 1.0
+      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down"
     },
     {
       "relation": "method",
@@ -9255,8 +9605,91 @@
       "source_file": "apps/api/src/persistence/migrations/1783296240000-create-comments-table.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
+      "target": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table",
+      "target": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table",
+      "target": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table",
+      "target": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-attachments-table.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_attachments_table_test",
+      "target": "migrations_1783296300000_create_attachments_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-attachments-table.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_attachments_table_test",
+      "target": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/create-attachments-table.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "migrations_create_attachments_table_test",
+      "target": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
+      "target": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_down",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/migrations/1783296300000-create-attachments-table.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
+      "target": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_up",
       "confidence_score": 1.0
     },
     {
@@ -9283,11 +9716,41 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
-      "source_location": "L95",
+      "source_location": "L107",
       "weight": 1.0,
       "source": "types_core_persistence_types",
-      "target": "types_core_persistence_types_commentrecord",
+      "target": "types_core_persistence_types_attachmentkind",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_attachmentrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_attachmenttargettype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "types_core_persistence_types",
+      "target": "types_core_persistence_types_commentrecord"
     },
     {
       "relation": "contains",
@@ -13991,5 +14454,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "39e195dd2211a1af2998604aae726a8fbb258e92"
+  "built_at_commit": "dc8021bd08a9451034c11014b28f4de9bfcb3d66"
 }
