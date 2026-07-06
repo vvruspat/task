@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { BadRequestException } from "@nestjs/common";
 import type { WorkspaceDetail, WorkspaceMember, WorkspaceSummary } from "./workspaces.contracts.js";
 import { WorkspacesController } from "./workspaces.controller.js";
 import { WorkspacesService } from "./workspaces.service.js";
@@ -18,7 +17,7 @@ const workspaceSummary: WorkspaceSummary = {
   updatedAt: createdAt,
 };
 
-test("WorkspacesController accepts a valid temporary user context header", async () => {
+test("WorkspacesController uses trusted current user context", async () => {
   const controller = new WorkspacesController(
     new WorkspacesService(createReadStore({ workspaces: [workspaceSummary] })),
   );
@@ -27,13 +26,6 @@ test("WorkspacesController accepts a valid temporary user context header", async
 
   assert.equal(response.length, 1);
   assert.equal(response[0]?.id, workspaceId);
-});
-
-test("WorkspacesController rejects missing or invalid temporary user context headers", async () => {
-  const controller = new WorkspacesController(new WorkspacesService(createReadStore({})));
-
-  assert.throws(() => controller.listWorkspaces(undefined), BadRequestException);
-  assert.throws(() => controller.listWorkspaces("not-a-uuid"), BadRequestException);
 });
 
 function createReadStore(options: {

@@ -404,6 +404,76 @@
       "norm_label": ".gethealth()"
     },
     {
+      "label": "trusted-current-user.decorator.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "auth_trusted_current_user_decorator_test",
+      "community": 2,
+      "norm_label": "trusted-current-user.decorator.test.ts"
+    },
+    {
+      "label": "trusted-current-user.decorator.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "auth_trusted_current_user_decorator",
+      "community": 2,
+      "norm_label": "trusted-current-user.decorator.ts"
+    },
+    {
+      "label": "ApiTrustedCurrentUser()",
+      "file_type": "code",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
+      "community": 2,
+      "norm_label": "apitrustedcurrentuser()"
+    },
+    {
+      "label": "TrustedCurrentUserId",
+      "file_type": "code",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
+      "community": 2,
+      "norm_label": "trustedcurrentuserid"
+    },
+    {
+      "label": "parseTrustedCurrentUserId()",
+      "file_type": "code",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
+      "community": 2,
+      "norm_label": "parsetrustedcurrentuserid()"
+    },
+    {
+      "label": "TrustedCurrentUserHeader",
+      "file_type": "code",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
+      "community": 2,
+      "norm_label": "trustedcurrentuserheader"
+    },
+    {
+      "label": "TrustedCurrentUserRequest",
+      "file_type": "code",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
+      "community": 2,
+      "norm_label": "trustedcurrentuserrequest"
+    },
+    {
       "label": "config.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/config.test.ts",
@@ -530,7 +600,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 49,
+      "community": 61,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -540,7 +610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 49,
+      "community": 61,
       "norm_label": "data-source.ts"
     },
     {
@@ -550,7 +620,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 49,
+      "community": 61,
       "norm_label": "apientities"
     },
     {
@@ -560,7 +630,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 49,
+      "community": 61,
       "norm_label": "apimigrations"
     },
     {
@@ -570,7 +640,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 49,
+      "community": 61,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -580,7 +650,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 49,
+      "community": 61,
       "norm_label": "createapidatasource()"
     },
     {
@@ -1250,7 +1320,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000",
-      "community": 51,
+      "community": 54,
       "norm_label": "createtaskstable1783296120000"
     },
     {
@@ -1260,7 +1330,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_up",
-      "community": 51,
+      "community": 54,
       "norm_label": ".up()"
     },
     {
@@ -1270,7 +1340,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_down",
-      "community": 51,
+      "community": 54,
       "norm_label": ".down()"
     },
     {
@@ -1490,7 +1560,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "community": 57,
+      "community": 51,
       "norm_label": "createactivityeventstable1783296360000"
     },
     {
@@ -1500,7 +1570,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
-      "community": 57,
+      "community": 51,
       "norm_label": ".up()"
     },
     {
@@ -1510,7 +1580,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down",
-      "community": 57,
+      "community": 51,
       "norm_label": ".down()"
     },
     {
@@ -2297,7 +2367,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
-      "source_location": "L11",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_test_createdat",
       "community": 2,
@@ -2307,7 +2377,7 @@
       "label": "workspaceSummary",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
-      "source_location": "L13",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_test_workspacesummary",
       "community": 2,
@@ -2317,7 +2387,7 @@
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
-      "source_location": "L39",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_test_createreadstore",
       "community": 2,
@@ -2337,7 +2407,7 @@
       "label": "uuidV4Pipe",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L22",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_uuidv4pipe",
       "community": 2,
@@ -2347,7 +2417,7 @@
       "label": "WorkspacesController",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L33",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_workspacescontroller",
       "community": 2,
@@ -2357,7 +2427,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L34",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_workspacescontroller_constructor",
       "community": 2,
@@ -2367,7 +2437,7 @@
       "label": ".listWorkspaces()",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L39",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_workspacescontroller_listworkspaces",
       "community": 2,
@@ -2377,7 +2447,7 @@
       "label": ".getWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L50",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_workspacescontroller_getworkspace",
       "community": 2,
@@ -2387,21 +2457,11 @@
       "label": ".listMembers()",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L62",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "workspaces_workspaces_controller_workspacescontroller_listmembers",
       "community": 2,
       "norm_label": ".listmembers()"
-    },
-    {
-      "label": "parseUserIdHeader()",
-      "file_type": "code",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L70",
-      "_origin": "ast",
-      "id": "workspaces_workspaces_controller_parseuseridheader",
-      "community": 2,
-      "norm_label": "parseuseridheader()"
     },
     {
       "label": "workspaces.dto.ts",
@@ -2500,7 +2560,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "workspaces_workspaces_module_workspacesmodule",
-      "community": 18,
+      "community": 2,
       "norm_label": "workspacesmodule"
     },
     {
@@ -3439,7 +3499,7 @@
       "source_file": "biome.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "biome",
+      "id": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
       "community": 62,
       "norm_label": "biome.json"
     },
@@ -3449,7 +3509,7 @@
       "source_file": "biome.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "biome_schema",
+      "id": "task_issue_39_workspace_read_api_biome_schema",
       "community": 62,
       "norm_label": "$schema"
     },
@@ -3459,7 +3519,7 @@
       "source_file": "biome.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "biome_vcs",
+      "id": "task_issue_39_workspace_read_api_biome_vcs",
       "community": 62,
       "norm_label": "vcs"
     },
@@ -3469,7 +3529,7 @@
       "source_file": "biome.json",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "biome_vcs_enabled",
+      "id": "task_issue_39_workspace_read_api_biome_vcs_enabled",
       "community": 62,
       "norm_label": "enabled"
     },
@@ -3479,7 +3539,7 @@
       "source_file": "biome.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "biome_vcs_clientkind",
+      "id": "task_issue_39_workspace_read_api_biome_vcs_clientkind",
       "community": 62,
       "norm_label": "clientkind"
     },
@@ -3489,7 +3549,7 @@
       "source_file": "biome.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "biome_vcs_useignorefile",
+      "id": "task_issue_39_workspace_read_api_biome_vcs_useignorefile",
       "community": 62,
       "norm_label": "useignorefile"
     },
@@ -3499,7 +3559,7 @@
       "source_file": "biome.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "biome_files",
+      "id": "task_issue_39_workspace_read_api_biome_files",
       "community": 62,
       "norm_label": "files"
     },
@@ -3509,7 +3569,7 @@
       "source_file": "biome.json",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "biome_files_includes",
+      "id": "task_issue_39_workspace_read_api_biome_files_includes",
       "community": 62,
       "norm_label": "includes"
     },
@@ -3519,7 +3579,7 @@
       "source_file": "biome.json",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "biome_formatter",
+      "id": "task_issue_39_workspace_read_api_biome_formatter",
       "community": 62,
       "norm_label": "formatter"
     },
@@ -3529,7 +3589,7 @@
       "source_file": "biome.json",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "biome_formatter_enabled",
+      "id": "task_issue_39_workspace_read_api_biome_formatter_enabled",
       "community": 62,
       "norm_label": "enabled"
     },
@@ -3539,7 +3599,7 @@
       "source_file": "biome.json",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "biome_formatter_indentstyle",
+      "id": "task_issue_39_workspace_read_api_biome_formatter_indentstyle",
       "community": 62,
       "norm_label": "indentstyle"
     },
@@ -3549,7 +3609,7 @@
       "source_file": "biome.json",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "biome_formatter_indentwidth",
+      "id": "task_issue_39_workspace_read_api_biome_formatter_indentwidth",
       "community": 62,
       "norm_label": "indentwidth"
     },
@@ -3559,7 +3619,7 @@
       "source_file": "biome.json",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "biome_formatter_linewidth",
+      "id": "task_issue_39_workspace_read_api_biome_formatter_linewidth",
       "community": 62,
       "norm_label": "linewidth"
     },
@@ -3569,7 +3629,7 @@
       "source_file": "biome.json",
       "source_location": "L17",
       "_origin": "ast",
-      "id": "biome_linter",
+      "id": "task_issue_39_workspace_read_api_biome_linter",
       "community": 62,
       "norm_label": "linter"
     },
@@ -3579,7 +3639,7 @@
       "source_file": "biome.json",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "biome_linter_enabled",
+      "id": "task_issue_39_workspace_read_api_biome_linter_enabled",
       "community": 62,
       "norm_label": "enabled"
     },
@@ -3589,7 +3649,7 @@
       "source_file": "biome.json",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "biome_linter_rules",
+      "id": "task_issue_39_workspace_read_api_biome_linter_rules",
       "community": 62,
       "norm_label": "rules"
     },
@@ -3599,7 +3659,7 @@
       "source_file": "biome.json",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "biome_rules_preset",
+      "id": "task_issue_39_workspace_read_api_biome_rules_preset",
       "community": 62,
       "norm_label": "preset"
     },
@@ -3609,7 +3669,7 @@
       "source_file": "biome.json",
       "source_location": "L21",
       "_origin": "ast",
-      "id": "biome_rules_suspicious",
+      "id": "task_issue_39_workspace_read_api_biome_rules_suspicious",
       "community": 62,
       "norm_label": "suspicious"
     },
@@ -3619,7 +3679,7 @@
       "source_file": "biome.json",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "biome_suspicious_noexplicitany",
+      "id": "task_issue_39_workspace_read_api_biome_suspicious_noexplicitany",
       "community": 62,
       "norm_label": "noexplicitany"
     },
@@ -3629,7 +3689,7 @@
       "source_file": "biome.json",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "biome_javascript",
+      "id": "task_issue_39_workspace_read_api_biome_javascript",
       "community": 62,
       "norm_label": "javascript"
     },
@@ -3639,7 +3699,7 @@
       "source_file": "biome.json",
       "source_location": "L27",
       "_origin": "ast",
-      "id": "biome_javascript_parser",
+      "id": "task_issue_39_workspace_read_api_biome_javascript_parser",
       "community": 62,
       "norm_label": "parser"
     },
@@ -3649,7 +3709,7 @@
       "source_file": "biome.json",
       "source_location": "L28",
       "_origin": "ast",
-      "id": "biome_parser_unsafeparameterdecoratorsenabled",
+      "id": "task_issue_39_workspace_read_api_biome_parser_unsafeparameterdecoratorsenabled",
       "community": 62,
       "norm_label": "unsafeparameterdecoratorsenabled"
     },
@@ -3659,7 +3719,7 @@
       "source_file": "biome.json",
       "source_location": "L30",
       "_origin": "ast",
-      "id": "biome_javascript_formatter",
+      "id": "task_issue_39_workspace_read_api_biome_javascript_formatter",
       "community": 62,
       "norm_label": "formatter"
     },
@@ -3669,7 +3729,7 @@
       "source_file": "biome.json",
       "source_location": "L31",
       "_origin": "ast",
-      "id": "biome_formatter_quotestyle",
+      "id": "task_issue_39_workspace_read_api_biome_formatter_quotestyle",
       "community": 62,
       "norm_label": "quotestyle"
     },
@@ -3679,7 +3739,7 @@
       "source_file": "biome.json",
       "source_location": "L32",
       "_origin": "ast",
-      "id": "biome_formatter_semicolons",
+      "id": "task_issue_39_workspace_read_api_biome_formatter_semicolons",
       "community": 62,
       "norm_label": "semicolons"
     },
@@ -3689,7 +3749,7 @@
       "source_file": "biome.json",
       "source_location": "L33",
       "_origin": "ast",
-      "id": "biome_formatter_trailingcommas",
+      "id": "task_issue_39_workspace_read_api_biome_formatter_trailingcommas",
       "community": 62,
       "norm_label": "trailingcommas"
     },
@@ -3699,7 +3759,7 @@
       "source_file": "biome.json",
       "source_location": "L36",
       "_origin": "ast",
-      "id": "biome_json",
+      "id": "task_issue_39_workspace_read_api_biome_json",
       "community": 62,
       "norm_label": "json"
     },
@@ -3709,7 +3769,7 @@
       "source_file": "biome.json",
       "source_location": "L37",
       "_origin": "ast",
-      "id": "biome_json_formatter",
+      "id": "task_issue_39_workspace_read_api_biome_json_formatter",
       "community": 62,
       "norm_label": "formatter"
     },
@@ -8375,6 +8435,111 @@
       "confidence_score": 1.0,
       "source": "src_app_service_appservice",
       "target": "src_app_service_appservice_gethealth"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "auth_trusted_current_user_decorator_test",
+      "target": "auth_trusted_current_user_decorator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "auth_trusted_current_user_decorator_test",
+      "target": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "auth_trusted_current_user_decorator",
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "auth_trusted_current_user_decorator",
+      "target": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "auth_trusted_current_user_decorator",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "auth_trusted_current_user_decorator",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "auth_trusted_current_user_decorator",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "auth_trusted_current_user_decorator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -13505,9 +13670,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_contracts",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_contracts"
     },
     {
       "relation": "imports_from",
@@ -13549,9 +13714,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_contracts_workspacesummary",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_contracts_workspacesummary"
     },
     {
       "relation": "imports",
@@ -13615,9 +13780,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_contracts_workspacemember",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_contracts_workspacemember"
     },
     {
       "relation": "imports",
@@ -13681,9 +13846,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_contracts_workspacedetail",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_contracts_workspacedetail"
     },
     {
       "relation": "imports",
@@ -13747,9 +13912,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_controller",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_controller"
     },
     {
       "relation": "contains",
@@ -13757,9 +13922,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_controller_test_createdat",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_controller_test_createdat"
     },
     {
       "relation": "contains",
@@ -13767,9 +13932,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_controller_test_createreadstore",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_controller_test_createreadstore"
     },
     {
       "relation": "contains",
@@ -13777,9 +13942,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_controller_test_workspacesummary",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_controller_test_workspacesummary"
     },
     {
       "relation": "imports",
@@ -13788,9 +13953,9 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_controller_workspacescontroller",
-      "confidence_score": 1.0
+      "target": "workspaces_workspaces_controller_workspacescontroller"
     },
     {
       "relation": "imports_from",
@@ -13798,53 +13963,43 @@
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
       "source_location": "L6",
-      "weight": 1.0,
-      "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_service",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_service_workspacesservice",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_store",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "workspaces_workspaces_controller_test",
-      "target": "workspaces_workspaces_store_workspacereadstore",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L65",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "workspaces_workspaces_controller",
-      "target": "workspaces_workspaces_controller_parseuseridheader"
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_service"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_service_workspacesservice"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_store_workspacereadstore"
     },
     {
       "relation": "contains",
@@ -14006,17 +14161,6 @@
       "target": "workspaces_workspaces_service_workspacesservice"
     },
     {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L39",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "workspaces_workspaces_controller_workspacescontroller_listworkspaces",
-      "target": "workspaces_workspaces_controller_parseuseridheader"
-    },
-    {
       "relation": "references",
       "context": "generic_arg",
       "confidence": "EXTRACTED",
@@ -14028,17 +14172,6 @@
       "target": "workspaces_workspaces_dto_workspacesummarydto"
     },
     {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L50",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "workspaces_workspaces_controller_workspacescontroller_getworkspace",
-      "target": "workspaces_workspaces_controller_parseuseridheader"
-    },
-    {
       "relation": "references",
       "context": "generic_arg",
       "confidence": "EXTRACTED",
@@ -14048,17 +14181,6 @@
       "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller_workspacescontroller_getworkspace",
       "target": "workspaces_workspaces_dto_workspacedetaildto"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
-      "source_location": "L61",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "workspaces_workspaces_controller_workspacescontroller_listmembers",
-      "target": "workspaces_workspaces_controller_parseuseridheader"
     },
     {
       "relation": "references",
@@ -15199,9 +15321,9 @@
       "source_file": "biome.json",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome",
-      "target": "biome_files"
+      "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15209,9 +15331,9 @@
       "source_file": "biome.json",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome",
-      "target": "biome_formatter"
+      "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_formatter",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15219,9 +15341,9 @@
       "source_file": "biome.json",
       "source_location": "L26",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome",
-      "target": "biome_javascript"
+      "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_javascript",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15229,9 +15351,9 @@
       "source_file": "biome.json",
       "source_location": "L36",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome",
-      "target": "biome_json"
+      "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_json",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15239,9 +15361,9 @@
       "source_file": "biome.json",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome",
-      "target": "biome_linter"
+      "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_linter",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15249,9 +15371,9 @@
       "source_file": "biome.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome",
-      "target": "biome_schema"
+      "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15259,9 +15381,9 @@
       "source_file": "biome.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome",
-      "target": "biome_vcs"
+      "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_vcs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15269,9 +15391,9 @@
       "source_file": "biome.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_vcs",
-      "target": "biome_vcs_clientkind"
+      "source": "task_issue_39_workspace_read_api_biome_vcs",
+      "target": "task_issue_39_workspace_read_api_biome_vcs_clientkind",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15279,9 +15401,9 @@
       "source_file": "biome.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_vcs",
-      "target": "biome_vcs_enabled"
+      "source": "task_issue_39_workspace_read_api_biome_vcs",
+      "target": "task_issue_39_workspace_read_api_biome_vcs_enabled",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15289,9 +15411,9 @@
       "source_file": "biome.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_vcs",
-      "target": "biome_vcs_useignorefile"
+      "source": "task_issue_39_workspace_read_api_biome_vcs",
+      "target": "task_issue_39_workspace_read_api_biome_vcs_useignorefile",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15299,9 +15421,9 @@
       "source_file": "biome.json",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_files",
-      "target": "biome_files_includes"
+      "source": "task_issue_39_workspace_read_api_biome_files",
+      "target": "task_issue_39_workspace_read_api_biome_files_includes",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15309,9 +15431,9 @@
       "source_file": "biome.json",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_formatter",
-      "target": "biome_formatter_enabled"
+      "source": "task_issue_39_workspace_read_api_biome_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_enabled",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15319,9 +15441,9 @@
       "source_file": "biome.json",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_formatter",
-      "target": "biome_formatter_indentstyle"
+      "source": "task_issue_39_workspace_read_api_biome_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_indentstyle",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15329,9 +15451,9 @@
       "source_file": "biome.json",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_formatter",
-      "target": "biome_formatter_indentwidth"
+      "source": "task_issue_39_workspace_read_api_biome_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_indentwidth",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15339,9 +15461,9 @@
       "source_file": "biome.json",
       "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_formatter",
-      "target": "biome_formatter_linewidth"
+      "source": "task_issue_39_workspace_read_api_biome_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_linewidth",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15349,9 +15471,9 @@
       "source_file": "biome.json",
       "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_linter",
-      "target": "biome_linter_enabled"
+      "source": "task_issue_39_workspace_read_api_biome_linter",
+      "target": "task_issue_39_workspace_read_api_biome_linter_enabled",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15359,9 +15481,9 @@
       "source_file": "biome.json",
       "source_location": "L19",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_linter",
-      "target": "biome_linter_rules"
+      "source": "task_issue_39_workspace_read_api_biome_linter",
+      "target": "task_issue_39_workspace_read_api_biome_linter_rules",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15369,9 +15491,9 @@
       "source_file": "biome.json",
       "source_location": "L20",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_linter_rules",
-      "target": "biome_rules_preset"
+      "source": "task_issue_39_workspace_read_api_biome_linter_rules",
+      "target": "task_issue_39_workspace_read_api_biome_rules_preset",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15379,9 +15501,9 @@
       "source_file": "biome.json",
       "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_linter_rules",
-      "target": "biome_rules_suspicious"
+      "source": "task_issue_39_workspace_read_api_biome_linter_rules",
+      "target": "task_issue_39_workspace_read_api_biome_rules_suspicious",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15389,9 +15511,9 @@
       "source_file": "biome.json",
       "source_location": "L22",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_rules_suspicious",
-      "target": "biome_suspicious_noexplicitany"
+      "source": "task_issue_39_workspace_read_api_biome_rules_suspicious",
+      "target": "task_issue_39_workspace_read_api_biome_suspicious_noexplicitany",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15399,9 +15521,9 @@
       "source_file": "biome.json",
       "source_location": "L30",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_javascript",
-      "target": "biome_javascript_formatter"
+      "source": "task_issue_39_workspace_read_api_biome_javascript",
+      "target": "task_issue_39_workspace_read_api_biome_javascript_formatter",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15409,9 +15531,9 @@
       "source_file": "biome.json",
       "source_location": "L27",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_javascript",
-      "target": "biome_javascript_parser"
+      "source": "task_issue_39_workspace_read_api_biome_javascript",
+      "target": "task_issue_39_workspace_read_api_biome_javascript_parser",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15419,9 +15541,9 @@
       "source_file": "biome.json",
       "source_location": "L28",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_javascript_parser",
-      "target": "biome_parser_unsafeparameterdecoratorsenabled"
+      "source": "task_issue_39_workspace_read_api_biome_javascript_parser",
+      "target": "task_issue_39_workspace_read_api_biome_parser_unsafeparameterdecoratorsenabled",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15429,9 +15551,9 @@
       "source_file": "biome.json",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_javascript_formatter",
-      "target": "biome_formatter_quotestyle"
+      "source": "task_issue_39_workspace_read_api_biome_javascript_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_quotestyle",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15439,9 +15561,9 @@
       "source_file": "biome.json",
       "source_location": "L32",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_javascript_formatter",
-      "target": "biome_formatter_semicolons"
+      "source": "task_issue_39_workspace_read_api_biome_javascript_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_semicolons",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15449,9 +15571,9 @@
       "source_file": "biome.json",
       "source_location": "L33",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_javascript_formatter",
-      "target": "biome_formatter_trailingcommas"
+      "source": "task_issue_39_workspace_read_api_biome_javascript_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_trailingcommas",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15459,9 +15581,9 @@
       "source_file": "biome.json",
       "source_location": "L38",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_json_formatter",
-      "target": "biome_formatter_trailingcommas"
+      "source": "task_issue_39_workspace_read_api_biome_json_formatter",
+      "target": "task_issue_39_workspace_read_api_biome_formatter_trailingcommas",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15469,9 +15591,9 @@
       "source_file": "biome.json",
       "source_location": "L37",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "biome_json",
-      "target": "biome_json_formatter"
+      "source": "task_issue_39_workspace_read_api_biome_json",
+      "target": "task_issue_39_workspace_read_api_biome_json_formatter",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -19145,5 +19267,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f4a9f30be545e9c825cb736e7109884ae26f8290"
+  "built_at_commit": "099cc06ef05ec0e68d5db0f627077cae5d6e02d4"
 }
