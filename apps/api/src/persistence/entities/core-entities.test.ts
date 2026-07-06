@@ -4,6 +4,7 @@ import { getMetadataArgsStorage } from "typeorm";
 import {
   ProjectEntity,
   StatusEntity,
+  TaskEntity,
   UserEntity,
   WorkspaceEntity,
   WorkspaceMemberEntity,
@@ -18,12 +19,20 @@ test("core persistence entities map to the expected table names", () => {
         table.target === UserEntity ||
         table.target === WorkspaceMemberEntity ||
         table.target === ProjectEntity ||
-        table.target === StatusEntity,
+        table.target === StatusEntity ||
+        table.target === TaskEntity,
     )
     .map((table) => table.name)
     .sort();
 
-  assert.deepEqual(tables, ["projects", "statuses", "users", "workspace_members", "workspaces"]);
+  assert.deepEqual(tables, [
+    "projects",
+    "statuses",
+    "tasks",
+    "users",
+    "workspace_members",
+    "workspaces",
+  ]);
 });
 
 test("workspace and status uniqueness metadata is registered", () => {
@@ -89,5 +98,44 @@ test("project nullable columns and indexes metadata are registered", () => {
     "idx_projects_created_by_user_id",
     "idx_projects_workspace_id",
     "idx_projects_workspace_id_archived_at",
+  ]);
+});
+
+test("task tree columns, metadata, and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const positionColumn = storage.columns.find(
+    (column) => column.target === TaskEntity && column.propertyName === "position",
+  );
+  const metadataColumn = storage.columns.find(
+    (column) => column.target === TaskEntity && column.propertyName === "metadata",
+  );
+  const sourceSkillColumn = storage.columns.find(
+    (column) => column.target === TaskEntity && column.propertyName === "sourceSkillId",
+  );
+  const sourceSkillVersionColumn = storage.columns.find(
+    (column) => column.target === TaskEntity && column.propertyName === "sourceSkillVersionId",
+  );
+  const taskIndexes = storage.indices
+    .filter((index) => index.target === TaskEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(positionColumn?.options.type, "numeric");
+  assert.equal(metadataColumn?.options.type, "jsonb");
+  assert.equal(typeof metadataColumn?.options.default, "function");
+  if (typeof metadataColumn?.options.default !== "function") {
+    throw new Error("Expected task metadata default to be a SQL expression factory.");
+  }
+  assert.equal(metadataColumn.options.default(), "'{}'::jsonb");
+  assert.equal(sourceSkillColumn?.options.type, "uuid");
+  assert.equal(sourceSkillColumn?.options.nullable, true);
+  assert.equal(sourceSkillVersionColumn?.options.type, "uuid");
+  assert.equal(sourceSkillVersionColumn?.options.nullable, true);
+  assert.deepEqual(taskIndexes, [
+    "idx_tasks_metadata_gin",
+    "idx_tasks_workspace_id_assignee_user_id",
+    "idx_tasks_workspace_id_parent_task_id",
+    "idx_tasks_workspace_id_project_id",
+    "idx_tasks_workspace_id_status_id",
   ]);
 });

@@ -3,12 +3,14 @@ import type { ApiDatabaseConfig } from "./config.js";
 import {
   ProjectEntity,
   StatusEntity,
+  TaskEntity,
   UserEntity,
   WorkspaceEntity,
   WorkspaceMemberEntity,
 } from "./persistence/entities/index.js";
 import { CreateCorePersistenceTables1783296000000 } from "./persistence/migrations/1783296000000-create-core-persistence-tables.js";
 import { CreateProjectsTable1783296060000 } from "./persistence/migrations/1783296060000-create-projects-table.js";
+import { CreateTasksTable1783296120000 } from "./persistence/migrations/1783296120000-create-tasks-table.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -16,10 +18,12 @@ const apiEntities = [
   WorkspaceMemberEntity,
   ProjectEntity,
   StatusEntity,
+  TaskEntity,
 ] as const;
 const apiMigrations = [
   CreateCorePersistenceTables1783296000000,
   CreateProjectsTable1783296060000,
+  CreateTasksTable1783296120000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {
