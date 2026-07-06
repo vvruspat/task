@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-17-core-entities-migration  (2026-07-06)
+# Graph Report - tAsk-issue-19-project-persistence  (2026-07-06)
 
 ## Corpus Check
-- 72 files · ~18,378 words
+- 75 files · ~18,949 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 594 nodes · 629 edges · 51 communities (48 shown, 3 thin omitted)
+- 604 nodes · 655 edges · 50 communities (47 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `394ddfd0`
+- Built from commit: `0a30273a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,7 +57,6 @@
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
-- [[_COMMUNITY_Community 49|Community 49]]
 - [[_COMMUNITY_Community 50|Community 50]]
 
 ## God Nodes (most connected - your core abstractions)
@@ -87,7 +86,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (51 total, 3 thin omitted)
+## Communities (50 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -150,8 +149,8 @@ Cohesion: 0.08
 Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.18
-Nodes (10): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, loadApiConfig(), generateOpenApi() (+2 more)
+Cohesion: 0.12
+Nodes (18): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, ApiConfig, ApiDatabaseConfig (+10 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.11
@@ -245,13 +244,9 @@ Nodes (7): compilerOptions, incremental, rootDir, tsBuildInfoFile, extends, incl
 Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
-### Community 49 - "Community 49"
-Cohesion: 0.27
-Nodes (8): ApiConfig, ApiDatabaseConfig, ApiEnvironment, formatInvalidValue(), InvalidApiEnvironmentError, parseApiConfig(), parseDatabaseConfig(), parsePort()
-
 ### Community 50 - "Community 50"
-Cohesion: 0.14
-Nodes (19): StatusEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity, CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries() (+11 more)
+Cohesion: 0.11
+Nodes (24): ProjectEntity, StatusEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity, CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql (+16 more)
 
 ## Knowledge Gaps
 - **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)

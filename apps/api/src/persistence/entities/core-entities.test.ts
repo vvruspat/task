@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getMetadataArgsStorage } from "typeorm";
-import { StatusEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity } from "./index.js";
+import {
+  ProjectEntity,
+  StatusEntity,
+  UserEntity,
+  WorkspaceEntity,
+  WorkspaceMemberEntity,
+} from "./index.js";
 
 test("core persistence entities map to the expected table names", () => {
   const storage = getMetadataArgsStorage();
@@ -11,12 +17,13 @@ test("core persistence entities map to the expected table names", () => {
         table.target === WorkspaceEntity ||
         table.target === UserEntity ||
         table.target === WorkspaceMemberEntity ||
+        table.target === ProjectEntity ||
         table.target === StatusEntity,
     )
     .map((table) => table.name)
     .sort();
 
-  assert.deepEqual(tables, ["statuses", "users", "workspace_members", "workspaces"]);
+  assert.deepEqual(tables, ["projects", "statuses", "users", "workspace_members", "workspaces"]);
 });
 
 test("workspace and status uniqueness metadata is registered", () => {
@@ -59,4 +66,28 @@ test("status defaults and numeric ordering metadata are registered", () => {
   assert.equal(positionColumn?.options.type, "numeric");
   assert.equal(isDoneColumn?.options.type, "boolean");
   assert.equal(isDoneColumn?.options.default, false);
+});
+
+test("project nullable columns and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const positionColumn = storage.columns.find(
+    (column) => column.target === ProjectEntity && column.propertyName === "position",
+  );
+  const archivedAtColumn = storage.columns.find(
+    (column) => column.target === ProjectEntity && column.propertyName === "archivedAt",
+  );
+  const projectIndexes = storage.indices
+    .filter((index) => index.target === ProjectEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(positionColumn?.options.type, "numeric");
+  assert.equal(positionColumn?.options.nullable, true);
+  assert.equal(archivedAtColumn?.options.type, "timestamptz");
+  assert.equal(archivedAtColumn?.options.nullable, true);
+  assert.deepEqual(projectIndexes, [
+    "idx_projects_created_by_user_id",
+    "idx_projects_workspace_id",
+    "idx_projects_workspace_id_archived_at",
+  ]);
 });
