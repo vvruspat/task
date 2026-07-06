@@ -12,14 +12,15 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
-    "format": "turbo run format",
+    "lint": "biome check . && turbo run lint",
+    "lint:fix": "biome check --write . && turbo run lint:fix",
+    "format": "biome format --write . && turbo run format",
     "test": "turbo run test",
     "generate:openapi": "turbo run generate:openapi",
     "generate:api-client": "npm run generate:openapi && turbo run generate:api-client"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.2",
     "turbo": "^2.10.3"
   }
 }

@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-1-root-workspaces-turbo  (2026-07-06)
+# Graph Report - tAsk-issue-3-biome-monorepo-config  (2026-07-06)
 
 ## Corpus Check
-- 18 files · ~14,826 words
+- 19 files · ~14,896 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 194 nodes · 178 edges · 19 communities (16 shown, 3 thin omitted)
+- 221 nodes · 205 edges · 20 communities (17 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bf11b663`
+- Built from commit: `198b320c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -34,6 +34,7 @@
 - [[_COMMUNITY_Community 16|Community 16]]
 - [[_COMMUNITY_Community 17|Community 17]]
 - [[_COMMUNITY_Community 18|Community 18]]
+- [[_COMMUNITY_Community 19|Community 19]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Tables` - 18 edges
@@ -53,7 +54,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (19 total, 3 thin omitted)
+## Communities (20 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -112,15 +113,19 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 17 - "Community 17"
-Cohesion: 0.17
-Nodes (10): description, devDependencies, turbo, license, name, packageManager, private, version (+2 more)
+Cohesion: 0.09
+Nodes (20): description, devDependencies, @biomejs/biome, turbo, license, name, packageManager, private (+12 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.22
-Nodes (9): scripts, build, dev, format, generate:api-client, generate:openapi, lint, lint:fix (+1 more)
+Cohesion: 0.11
+Nodes (19): files, includes, formatter, enabled, indentStyle, indentWidth, lineWidth, quoteStyle (+11 more)
+
+### Community 19 - "Community 19"
+Cohesion: 0.33
+Nodes (6): linter, enabled, rules, preset, suspicious, noExplicitAny
 
 ## Knowledge Gaps
-- **146 isolated node(s):** `name`, `version`, `private`, `description`, `license` (+141 more)
+- **161 isolated node(s):** `$schema`, `enabled`, `clientKind`, `useIgnoreFile`, `includes` (+156 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -128,9 +133,9 @@ Nodes (9): scripts, build, dev, format, generate:api-client, generate:openapi, l
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tasks` connect `Community 2` to `Community 17`?**
-  _High betweenness centrality (0.032) - this node is a cross-community bridge._
-- **What connects `name`, `version`, `private` to the rest of the system?**
-  _146 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **What connects `$schema`, `enabled`, `clientKind` to the rest of the system?**
+  _161 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
