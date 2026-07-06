@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-21-task-tree-persistence  (2026-07-06)
+# Graph Report - tAsk-issue-23-task-skill-persistence  (2026-07-06)
 
 ## Corpus Check
-- 78 files · ~20,012 words
+- 82 files · ~21,315 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 614 nodes · 681 edges · 50 communities (47 shown, 3 thin omitted)
+- 627 nodes · 717 edges · 51 communities (48 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5d5abb8c`
+- Built from commit: `08d27383`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,6 +57,7 @@
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
+- [[_COMMUNITY_Community 49|Community 49]]
 - [[_COMMUNITY_Community 50|Community 50]]
 
 ## God Nodes (most connected - your core abstractions)
@@ -64,10 +65,10 @@
 2. `Tables` - 18 edges
 3. `Technical architecture` - 17 edges
 4. `Agent rules` - 14 edges
-5. `Agent and MCP design` - 12 edges
-6. `What You Must Do When Invoked` - 11 edges
-7. `HealthResponseDto` - 10 edges
-8. `executeMigrationQueries()` - 10 edges
+5. `executeMigrationQueries()` - 13 edges
+6. `Agent and MCP design` - 12 edges
+7. `What You Must Do When Invoked` - 11 edges
+8. `HealthResponseDto` - 10 edges
 9. `scripts` - 10 edges
 10. `compilerOptions` - 10 edges
 
@@ -86,7 +87,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (50 total, 3 thin omitted)
+## Communities (51 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -244,9 +245,13 @@ Nodes (7): compilerOptions, incremental, rootDir, tsBuildInfoFile, extends, incl
 Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
+### Community 49 - "Community 49"
+Cohesion: 0.10
+Nodes (15): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+7 more)
+
 ### Community 50 - "Community 50"
-Cohesion: 0.09
-Nodes (29): ProjectEntity, StatusEntity, TaskEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity, CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql (+21 more)
+Cohesion: 0.17
+Nodes (21): ProjectEntity, StatusEntity, TaskEntity, TaskSkillEntity, TaskSkillVersionEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity (+13 more)
 
 ## Knowledge Gaps
 - **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)
