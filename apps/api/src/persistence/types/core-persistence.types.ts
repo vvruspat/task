@@ -121,3 +121,14 @@ export type AttachmentRecord = {
   createdByUserId: string;
   createdAt: Date;
 };
+
+export type ActivityEventRecord = {
+  id: string;
+  workspaceId: string;
+  actorUserId: string | null;
+  eventType: string;
+  entityType: string;
+  entityId: string;
+  payload: Record<string, unknown>;
+  createdAt: Date;
+};

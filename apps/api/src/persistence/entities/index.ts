@@ -1,3 +1,4 @@
+export { ActivityEventEntity } from "./activity-event.entity.js";
 export { AttachmentEntity } from "./attachment.entity.js";
 export { CommentEntity } from "./comment.entity.js";
 export { ProjectEntity } from "./project.entity.js";

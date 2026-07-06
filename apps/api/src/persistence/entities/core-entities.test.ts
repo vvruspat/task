@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getMetadataArgsStorage } from "typeorm";
 import {
+  ActivityEventEntity,
   AttachmentEntity,
   CommentEntity,
   ProjectEntity,
@@ -28,12 +29,14 @@ test("core persistence entities map to the expected table names", () => {
         table.target === TaskSkillEntity ||
         table.target === TaskSkillVersionEntity ||
         table.target === CommentEntity ||
-        table.target === AttachmentEntity,
+        table.target === AttachmentEntity ||
+        table.target === ActivityEventEntity,
     )
     .map((table) => table.name)
     .sort();
 
   assert.deepEqual(tables, [
+    "activity_events",
     "attachments",
     "comments",
     "projects",
@@ -44,6 +47,34 @@ test("core persistence entities map to the expected table names", () => {
     "users",
     "workspace_members",
     "workspaces",
+  ]);
+});
+
+test("activity event columns, payload default, and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const actorUserColumn = storage.columns.find(
+    (column) => column.target === ActivityEventEntity && column.propertyName === "actorUserId",
+  );
+  const payloadColumn = storage.columns.find(
+    (column) => column.target === ActivityEventEntity && column.propertyName === "payload",
+  );
+  const activityIndexes = storage.indices
+    .filter((index) => index.target === ActivityEventEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(actorUserColumn?.options.type, "uuid");
+  assert.equal(actorUserColumn?.options.nullable, true);
+  assert.equal(payloadColumn?.options.type, "jsonb");
+  assert.equal(typeof payloadColumn?.options.default, "function");
+  if (typeof payloadColumn?.options.default !== "function") {
+    throw new Error("Expected activity event payload default to be a SQL expression factory.");
+  }
+  assert.equal(payloadColumn.options.default(), "'{}'::jsonb");
+  assert.deepEqual(activityIndexes, [
+    "idx_activity_events_workspace_id_actor_user_id",
+    "idx_activity_events_workspace_id_created_at",
+    "idx_activity_events_workspace_id_entity",
   ]);
 });
 
