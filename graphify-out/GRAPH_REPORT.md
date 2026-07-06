@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-2-strict-typescript-configs  (2026-07-06)
+# Graph Report - tAsk-issue-6-empty-packages-scaffold  (2026-07-06)
 
 ## Corpus Check
-- 26 files · ~15,098 words
+- 38 files · ~15,486 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 307 nodes · 284 edges · 25 communities (22 shown, 3 thin omitted)
+- 424 nodes · 392 edges · 37 communities (34 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b3f69275`
+- Built from commit: `896489f5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -40,6 +40,14 @@
 - [[_COMMUNITY_Community 22|Community 22]]
 - [[_COMMUNITY_Community 23|Community 23]]
 - [[_COMMUNITY_Community 24|Community 24]]
+- [[_COMMUNITY_Community 25|Community 25]]
+- [[_COMMUNITY_Community 26|Community 26]]
+- [[_COMMUNITY_Community 27|Community 27]]
+- [[_COMMUNITY_Community 28|Community 28]]
+- [[_COMMUNITY_Community 29|Community 29]]
+- [[_COMMUNITY_Community 30|Community 30]]
+- [[_COMMUNITY_Community 31|Community 31]]
+- [[_COMMUNITY_Community 32|Community 32]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 23 edges
@@ -59,7 +67,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (25 total, 3 thin omitted)
+## Communities (37 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -119,48 +127,78 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 
 ### Community 17 - "Community 17"
 Cohesion: 0.08
-Nodes (22): description, devDependencies, @biomejs/biome, turbo, typescript, license, name, packageManager (+14 more)
+Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.08
-Nodes (24): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+16 more)
+Cohesion: 0.09
+Nodes (21): description, devDependencies, @biomejs/biome, turbo, typescript, license, name, packageManager (+13 more)
 
 ### Community 19 - "Community 19"
+Cohesion: 0.11
+Nodes (18): description, exports, files, import, main, name, private, scripts (+10 more)
+
+### Community 20 - "Community 20"
+Cohesion: 0.12
+Nodes (17): description, exports, files, import, main, name, private, scripts (+9 more)
+
+### Community 21 - "Community 21"
+Cohesion: 0.12
+Nodes (17): description, exports, files, import, main, name, private, scripts (+9 more)
+
+### Community 22 - "Community 22"
+Cohesion: 0.12
+Nodes (17): description, exports, files, import, main, name, private, scripts (+9 more)
+
+### Community 23 - "Community 23"
 Cohesion: 0.15
 Nodes (12): compilerOptions, composite, declaration, declarationMap, emitDeclarationOnly, lib, module, moduleResolution (+4 more)
 
-### Community 20 - "Community 20"
+### Community 24 - "Community 24"
 Cohesion: 0.18
 Nodes (10): compilerOptions, allowImportingTsExtensions, lib, module, moduleResolution, noEmit, strict, target (+2 more)
 
-### Community 21 - "Community 21"
+### Community 25 - "Community 25"
 Cohesion: 0.22
 Nodes (8): compilerOptions, lib, module, moduleResolution, strict, target, extends, $schema
 
-### Community 22 - "Community 22"
+### Community 26 - "Community 26"
+Cohesion: 0.20
+Nodes (9): compilerOptions, declarationMap, emitDeclarationOnly, outDir, rootDir, tsBuildInfoFile, extends, include (+1 more)
+
+### Community 27 - "Community 27"
+Cohesion: 0.20
+Nodes (9): compilerOptions, declarationMap, emitDeclarationOnly, outDir, rootDir, tsBuildInfoFile, extends, include (+1 more)
+
+### Community 28 - "Community 28"
+Cohesion: 0.20
+Nodes (9): compilerOptions, declarationMap, emitDeclarationOnly, outDir, rootDir, tsBuildInfoFile, extends, include (+1 more)
+
+### Community 29 - "Community 29"
 Cohesion: 0.25
 Nodes (7): compilerOptions, noEmit, strict, extends, files, references, $schema
 
-### Community 23 - "Community 23"
+### Community 30 - "Community 30"
 Cohesion: 0.25
 Nodes (7): compilerOptions, emitDecoratorMetadata, experimentalDecorators, strict, useDefineForClassFields, extends, $schema
 
-### Community 24 - "Community 24"
+### Community 31 - "Community 31"
+Cohesion: 0.20
+Nodes (9): compilerOptions, declarationMap, emitDeclarationOnly, outDir, rootDir, tsBuildInfoFile, extends, include (+1 more)
+
+### Community 32 - "Community 32"
 Cohesion: 0.33
 Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ## Knowledge Gaps
-- **232 isolated node(s):** `$schema`, `enabled`, `clientKind`, `useIgnoreFile`, `includes` (+227 more)
+- **322 isolated node(s):** `$schema`, `enabled`, `clientKind`, `useIgnoreFile`, `includes` (+317 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `tasks` connect `Community 18` to `Community 17`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **What connects `$schema`, `enabled`, `clientKind` to the rest of the system?**
-  _232 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _322 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
@@ -171,3 +209,5 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
   _Cohesion score 0.08333333333333333 - nodes in this community are weakly interconnected._
+- **Should `Community 5` be split into smaller, more focused modules?**
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
