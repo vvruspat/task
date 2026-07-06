@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-7-empty-apps-scaffold  (2026-07-06)
+# Graph Report - tAsk-issue-11-api-openapi-shell  (2026-07-06)
 
 ## Corpus Check
-- 50 files · ~15,805 words
+- 59 files · ~16,473 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 516 nodes · 472 edges · 49 communities (46 shown, 3 thin omitted)
+- 548 nodes · 532 edges · 49 communities (46 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a04d444e`
+- Built from commit: `d334837d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -56,6 +56,7 @@
 - [[_COMMUNITY_Community 42|Community 42]]
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
+- [[_COMMUNITY_Community 45|Community 45]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 23 edges
@@ -64,13 +65,20 @@
 4. `Agent rules` - 14 edges
 5. `Agent and MCP design` - 12 edges
 6. `What You Must Do When Invoked` - 11 edges
-7. `scripts` - 10 edges
-8. `compilerOptions` - 10 edges
-9. `tasks` - 10 edges
-10. `/graphify` - 10 edges
+7. `HealthResponseDto` - 10 edges
+8. `scripts` - 10 edges
+9. `compilerOptions` - 10 edges
+10. `tasks` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
-- None detected - all connections are within the same source files.
+- `generateOpenApi()` --calls--> `createOpenApiDocument()`  [EXTRACTED]
+  apps/api/src/generate-openapi.ts → apps/api/src/openapi.ts
+- `HealthResponseDto` --references--> `HealthStatus`  [EXTRACTED]
+  apps/api/src/app.dto.ts → apps/api/src/app.contracts.ts
+- `HealthResponseDto` --implements--> `HealthResponse`  [EXTRACTED]
+  apps/api/src/app.dto.ts → apps/api/src/app.contracts.ts
+- `bootstrap()` --calls--> `createOpenApiDocument()`  [EXTRACTED]
+  apps/api/src/main.ts → apps/api/src/openapi.ts
 
 ## Import Cycles
 - None detected.
@@ -138,8 +146,8 @@ Cohesion: 0.08
 Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.09
-Nodes (21): description, devDependencies, @biomejs/biome, turbo, typescript, license, name, packageManager (+13 more)
+Cohesion: 0.18
+Nodes (10): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService, generateOpenApi(), bootstrap() (+2 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.11
@@ -198,8 +206,8 @@ Cohesion: 0.33
 Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ### Community 37 - "Community 37"
-Cohesion: 0.14
-Nodes (13): description, name, private, scripts, build, format, generate:openapi, lint (+5 more)
+Cohesion: 0.10
+Nodes (20): dependencies, @nestjs/common, @nestjs/core, @nestjs/platform-fastify, @nestjs/swagger, reflect-metadata, rxjs, description (+12 more)
 
 ### Community 38 - "Community 38"
 Cohesion: 0.15
@@ -214,8 +222,8 @@ Cohesion: 0.15
 Nodes (12): description, name, private, scripts, build, format, lint, lint:fix (+4 more)
 
 ### Community 41 - "Community 41"
-Cohesion: 0.22
-Nodes (8): compilerOptions, incremental, outDir, rootDir, tsBuildInfoFile, extends, include, $schema
+Cohesion: 0.20
+Nodes (9): compilerOptions, incremental, outDir, rootDir, tsBuildInfoFile, types, extends, include (+1 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.22
@@ -229,8 +237,12 @@ Nodes (8): compilerOptions, incremental, outDir, rootDir, tsBuildInfoFile, exten
 Cohesion: 0.25
 Nodes (7): compilerOptions, incremental, rootDir, tsBuildInfoFile, extends, include, $schema
 
+### Community 45 - "Community 45"
+Cohesion: 0.09
+Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
+
 ## Knowledge Gaps
-- **394 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+389 more)
+- **402 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+397 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -238,7 +250,7 @@ Nodes (7): compilerOptions, incremental, rootDir, tsBuildInfoFile, extends, incl
 _Questions this graph is uniquely positioned to answer:_
 
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _394 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _402 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

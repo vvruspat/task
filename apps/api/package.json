@@ -10,7 +10,15 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node -e \"console.log('No tests yet for @task/api empty scaffold')\"",
-    "generate:openapi": "node -e \"console.log('OpenAPI generation placeholder for @task/api empty scaffold; NestJS OpenAPI generation is not configured yet')\""
+    "test": "npm run build && node --test \"dist/**/*.test.js\"",
+    "generate:openapi": "npm run build && node dist/generate-openapi.js && biome format --write openapi/openapi.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.27",
+    "@nestjs/core": "^11.1.27",
+    "@nestjs/platform-fastify": "^11.1.27",
+    "@nestjs/swagger": "^11.4.5",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
   }
 }
