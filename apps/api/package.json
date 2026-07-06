@@ -1,0 +1,16 @@
+{
+  "name": "@task/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "NestJS backend application for tAsk.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node -e \"console.log('No tests yet for @task/api empty scaffold')\"",
+    "generate:openapi": "node -e \"console.log('OpenAPI generation placeholder for @task/api empty scaffold; NestJS OpenAPI generation is not configured yet')\""
+  }
+}
