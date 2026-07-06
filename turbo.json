@@ -12,6 +12,15 @@
     "lint": {
       "dependsOn": ["^build"]
     },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": [
+        "*.tsbuildinfo",
+        "tsconfig.tsbuildinfo",
+        "dist/**/*.tsbuildinfo",
+        "build/**/*.tsbuildinfo"
+      ]
+    },
     "lint:fix": {
       "cache": false
     },

@@ -11,16 +11,18 @@
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
-    "lint": "biome check . && turbo run lint",
+    "build": "npm run typecheck && turbo run build",
+    "lint": "biome check . && npm run typecheck && turbo run lint",
     "lint:fix": "biome check --write . && turbo run lint:fix",
     "format": "biome format --write . && turbo run format",
     "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
     "generate:openapi": "turbo run generate:openapi",
     "generate:api-client": "npm run generate:openapi && turbo run generate:api-client"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",
-    "turbo": "^2.10.3"
+    "turbo": "^2.10.3",
+    "typescript": "^6.0.3"
   }
 }

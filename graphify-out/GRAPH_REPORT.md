@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-3-biome-monorepo-config  (2026-07-06)
+# Graph Report - tAsk-issue-2-strict-typescript-configs  (2026-07-06)
 
 ## Corpus Check
-- 19 files · ~14,896 words
+- 26 files · ~15,098 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 221 nodes · 205 edges · 20 communities (17 shown, 3 thin omitted)
+- 307 nodes · 284 edges · 25 communities (22 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `198b320c`
+- Built from commit: `b3f69275`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -35,18 +35,23 @@
 - [[_COMMUNITY_Community 17|Community 17]]
 - [[_COMMUNITY_Community 18|Community 18]]
 - [[_COMMUNITY_Community 19|Community 19]]
+- [[_COMMUNITY_Community 20|Community 20]]
+- [[_COMMUNITY_Community 21|Community 21]]
+- [[_COMMUNITY_Community 22|Community 22]]
+- [[_COMMUNITY_Community 23|Community 23]]
+- [[_COMMUNITY_Community 24|Community 24]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `Tables` - 18 edges
-2. `Technical architecture` - 17 edges
-3. `Agent rules` - 14 edges
-4. `Agent and MCP design` - 12 edges
-5. `What You Must Do When Invoked` - 11 edges
-6. `/graphify` - 10 edges
-7. `scripts` - 9 edges
-8. `tasks` - 9 edges
-9. `graphify reference: extra exports and benchmark` - 8 edges
-10. `Tool surface` - 8 edges
+1. `compilerOptions` - 23 edges
+2. `Tables` - 18 edges
+3. `Technical architecture` - 17 edges
+4. `Agent rules` - 14 edges
+5. `Agent and MCP design` - 12 edges
+6. `What You Must Do When Invoked` - 11 edges
+7. `scripts` - 10 edges
+8. `compilerOptions` - 10 edges
+9. `tasks` - 10 edges
+10. `/graphify` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
@@ -54,7 +59,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (20 total, 3 thin omitted)
+## Communities (25 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -65,24 +70,24 @@ Cohesion: 0.11
 Nodes (17): Backend architecture, Confirmation model, Database, Deployment draft, External references, Frontend architecture, Linting and formatting, LLM and OpenRouter (+9 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.10
-Nodes (21): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+13 more)
+Cohesion: 0.08
+Nodes (25): files, includes, formatter, enabled, indentStyle, indentWidth, lineWidth, quoteStyle (+17 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.14
 Nodes (13): Kanban, Matrix view, My tasks, Product model, Table view, Task skills/templates, Telegram-first UX, Templates/skills editor (+5 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.14
-Nodes (14): Part A - Structural extraction for code files, Part B - Semantic extraction (parallel subagents), Part C - Merge AST + semantic into final extraction, Step 0 - GitHub repos and multi-path merge (only if a URL or several paths), Step 1 - Ensure graphify is installed, Step 2.5 - Video and audio (only if video files detected), Step 2 - Detect files, Step 3 - Extract entities and relationships (+6 more)
+Cohesion: 0.08
+Nodes (23): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+15 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.10
 Nodes (19): Agent and MCP design, Agent run audit, Attachment tools, Confirmation tools, Example flow: apply a skill with overrides, Example flow: create a song from a skill, Example flow: create a task skill, Fuzzy resolution (+11 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.20
-Nodes (9): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Usage (+1 more)
+Cohesion: 0.08
+Nodes (25): compilerOptions, allowSyntheticDefaultImports, alwaysStrict, esModuleInterop, exactOptionalPropertyTypes, forceConsistentCasingInFileNames, isolatedModules, moduleDetection (+17 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.22
@@ -113,36 +118,56 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 17 - "Community 17"
-Cohesion: 0.09
-Nodes (20): description, devDependencies, @biomejs/biome, turbo, license, name, packageManager, private (+12 more)
+Cohesion: 0.08
+Nodes (22): description, devDependencies, @biomejs/biome, turbo, typescript, license, name, packageManager (+14 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.11
-Nodes (19): files, includes, formatter, enabled, indentStyle, indentWidth, lineWidth, quoteStyle (+11 more)
+Cohesion: 0.08
+Nodes (24): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+16 more)
 
 ### Community 19 - "Community 19"
+Cohesion: 0.15
+Nodes (12): compilerOptions, composite, declaration, declarationMap, emitDeclarationOnly, lib, module, moduleResolution (+4 more)
+
+### Community 20 - "Community 20"
+Cohesion: 0.18
+Nodes (10): compilerOptions, allowImportingTsExtensions, lib, module, moduleResolution, noEmit, strict, target (+2 more)
+
+### Community 21 - "Community 21"
+Cohesion: 0.22
+Nodes (8): compilerOptions, lib, module, moduleResolution, strict, target, extends, $schema
+
+### Community 22 - "Community 22"
+Cohesion: 0.25
+Nodes (7): compilerOptions, noEmit, strict, extends, files, references, $schema
+
+### Community 23 - "Community 23"
+Cohesion: 0.25
+Nodes (7): compilerOptions, emitDecoratorMetadata, experimentalDecorators, strict, useDefineForClassFields, extends, $schema
+
+### Community 24 - "Community 24"
 Cohesion: 0.33
-Nodes (6): linter, enabled, rules, preset, suspicious, noExplicitAny
+Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ## Knowledge Gaps
-- **161 isolated node(s):** `$schema`, `enabled`, `clientKind`, `useIgnoreFile`, `includes` (+156 more)
+- **232 isolated node(s):** `$schema`, `enabled`, `clientKind`, `useIgnoreFile`, `includes` (+227 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `tasks` connect `Community 2` to `Community 17`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Why does `tasks` connect `Community 18` to `Community 17`?**
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **What connects `$schema`, `enabled`, `clientKind` to the rest of the system?**
-  _161 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _232 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
-  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08333333333333333 - nodes in this community are weakly interconnected._
