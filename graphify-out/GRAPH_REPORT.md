@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-23-task-skill-persistence  (2026-07-06)
+# Graph Report - tAsk-issue-25-comment-persistence  (2026-07-06)
 
 ## Corpus Check
-- 82 files · ~21,315 words
+- 85 files · ~21,916 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 627 nodes · 717 edges · 51 communities (48 shown, 3 thin omitted)
+- 637 nodes · 743 edges · 51 communities (48 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `08d27383`
+- Built from commit: `39e195dd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -64,8 +64,8 @@
 1. `compilerOptions` - 23 edges
 2. `Tables` - 18 edges
 3. `Technical architecture` - 17 edges
-4. `Agent rules` - 14 edges
-5. `executeMigrationQueries()` - 13 edges
+4. `executeMigrationQueries()` - 16 edges
+5. `Agent rules` - 14 edges
 6. `Agent and MCP design` - 12 edges
 7. `What You Must Do When Invoked` - 11 edges
 8. `HealthResponseDto` - 10 edges
@@ -246,12 +246,12 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.10
-Nodes (15): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+7 more)
+Cohesion: 0.09
+Nodes (22): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+14 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 0.17
-Nodes (21): ProjectEntity, StatusEntity, TaskEntity, TaskSkillEntity, TaskSkillVersionEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity (+13 more)
+Cohesion: 0.16
+Nodes (19): CommentEntity, ProjectEntity, StatusEntity, TaskEntity, TaskSkillEntity, TaskSkillVersionEntity, UserEntity, WorkspaceEntity (+11 more)
 
 ## Knowledge Gaps
 - **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)

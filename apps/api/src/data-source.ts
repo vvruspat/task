@@ -1,6 +1,7 @@
 import { DataSource, type DataSourceOptions } from "typeorm";
 import type { ApiDatabaseConfig } from "./config.js";
 import {
+  CommentEntity,
   ProjectEntity,
   StatusEntity,
   TaskEntity,
@@ -14,6 +15,7 @@ import { CreateCorePersistenceTables1783296000000 } from "./persistence/migratio
 import { CreateProjectsTable1783296060000 } from "./persistence/migrations/1783296060000-create-projects-table.js";
 import { CreateTasksTable1783296120000 } from "./persistence/migrations/1783296120000-create-tasks-table.js";
 import { CreateTaskSkillsTables1783296180000 } from "./persistence/migrations/1783296180000-create-task-skills-tables.js";
+import { CreateCommentsTable1783296240000 } from "./persistence/migrations/1783296240000-create-comments-table.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -24,12 +26,14 @@ const apiEntities = [
   TaskEntity,
   TaskSkillEntity,
   TaskSkillVersionEntity,
+  CommentEntity,
 ] as const;
 const apiMigrations = [
   CreateCorePersistenceTables1783296000000,
   CreateProjectsTable1783296060000,
   CreateTasksTable1783296120000,
   CreateTaskSkillsTables1783296180000,
+  CreateCommentsTable1783296240000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {
