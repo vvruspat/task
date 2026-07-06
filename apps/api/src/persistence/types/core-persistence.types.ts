@@ -168,3 +168,18 @@ export type AgentToolCallRecord = {
   createdAt: Date;
   completedAt: Date | null;
 };
+
+export type ConfirmationRequestStatus = "pending" | "confirmed" | "cancelled" | "expired";
+
+export type ConfirmationRequestRecord = {
+  id: string;
+  workspaceId: string;
+  agentRunId: string;
+  userId: string;
+  kind: string;
+  preview: Record<string, unknown>;
+  status: ConfirmationRequestStatus;
+  expiresAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};

@@ -7,6 +7,7 @@ import {
   AgentToolCallEntity,
   AttachmentEntity,
   CommentEntity,
+  ConfirmationRequestEntity,
   ProjectEntity,
   StatusEntity,
   TaskEntity,
@@ -34,7 +35,8 @@ test("core persistence entities map to the expected table names", () => {
         table.target === AttachmentEntity ||
         table.target === ActivityEventEntity ||
         table.target === AgentRunEntity ||
-        table.target === AgentToolCallEntity,
+        table.target === AgentToolCallEntity ||
+        table.target === ConfirmationRequestEntity,
     )
     .map((table) => table.name)
     .sort();
@@ -45,6 +47,7 @@ test("core persistence entities map to the expected table names", () => {
     "agent_tool_calls",
     "attachments",
     "comments",
+    "confirmation_requests",
     "projects",
     "statuses",
     "task_skill_versions",
@@ -53,6 +56,33 @@ test("core persistence entities map to the expected table names", () => {
     "users",
     "workspace_members",
     "workspaces",
+  ]);
+});
+
+test("confirmation request columns, status check, and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const previewColumn = storage.columns.find(
+    (column) => column.target === ConfirmationRequestEntity && column.propertyName === "preview",
+  );
+  const expiresAtColumn = storage.columns.find(
+    (column) => column.target === ConfirmationRequestEntity && column.propertyName === "expiresAt",
+  );
+  const confirmationChecks = storage.checks
+    .filter((check) => check.target === ConfirmationRequestEntity)
+    .map((check) => check.name)
+    .sort();
+  const confirmationIndexes = storage.indices
+    .filter((index) => index.target === ConfirmationRequestEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(previewColumn?.options.type, "jsonb");
+  assert.equal(expiresAtColumn?.options.type, "timestamptz");
+  assert.deepEqual(confirmationChecks, ["chk_confirmation_requests_status"]);
+  assert.deepEqual(confirmationIndexes, [
+    "idx_confirmation_requests_agent_run_id",
+    "idx_confirmation_requests_workspace_id_expires_at",
+    "idx_confirmation_requests_workspace_id_user_id_status",
   ]);
 });
 
