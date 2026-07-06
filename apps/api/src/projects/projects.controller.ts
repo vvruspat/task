@@ -1,5 +1,9 @@
-import { Controller, Get, Param, ParseUUIDPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
 import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -10,7 +14,13 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import { ProjectDetailDto, ProjectSummaryDto } from "./projects.dto.js";
+import type { CreateProjectInput } from "./projects.contracts.js";
+import {
+  CreateProjectDto,
+  ParseCreateProjectBodyPipe,
+  ProjectDetailDto,
+  ProjectSummaryDto,
+} from "./projects.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { ProjectsService } from "./projects.service.js";
 
@@ -32,6 +42,22 @@ export class ProjectsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<ProjectSummaryDto[]> {
     return this.projectsService.listActiveProjects(workspaceId, userId);
+  }
+
+  @Post()
+  @ApiOperation({ summary: "Create a project in a visible workspace" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiBody({ type: CreateProjectDto })
+  @ApiCreatedResponse({ type: ProjectDetailDto })
+  @ApiBadRequestResponse({ description: "Project payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot create projects in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace is missing or not visible to the current user." })
+  createProject(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseCreateProjectBodyPipe()) input: CreateProjectInput,
+  ): Promise<ProjectDetailDto> {
+    return this.projectsService.createProject(workspaceId, userId, input);
   }
 
   @Get(":projectId")

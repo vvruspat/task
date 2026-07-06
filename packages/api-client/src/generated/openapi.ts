@@ -99,7 +99,8 @@ export interface paths {
     /** List active projects in a visible workspace */
     get: operations["ProjectsController_listActiveProjects"];
     put?: never;
-    post?: never;
+    /** Create a project in a visible workspace */
+    post: operations["ProjectsController_createProject"];
     delete?: never;
     options?: never;
     head?: never;
@@ -244,6 +245,14 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    CreateProjectDto: {
+      /** @example Album release */
+      title: string;
+      description?: string | null;
+      /** @example active */
+      status?: string | null;
+      position?: string | null;
     };
     ProjectDetailDto: {
       /** Format: uuid */
@@ -490,6 +499,55 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["ProjectSummaryDto"][];
         };
+      };
+      /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProjectsController_createProject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateProjectDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProjectDetailDto"];
+        };
+      };
+      /** @description Project payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot create projects in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
       /** @description Workspace is missing or not visible to the current user. */
       404: {

@@ -12,3 +12,10 @@ export type ProjectSummary = {
 };
 
 export type ProjectDetail = ProjectSummary;
+
+export type CreateProjectInput = {
+  title: string;
+  description?: string | null;
+  status?: string | null;
+  position?: string | null;
+};

@@ -208,6 +208,63 @@
         },
         "summary": "List active projects in a visible workspace",
         "tags": ["projects"]
+      },
+      "post": {
+        "operationId": "ProjectsController_createProject",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Project payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot create projects in this workspace."
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          }
+        },
+        "summary": "Create a project in a visible workspace",
+        "tags": ["projects"]
       }
     },
     "/workspaces/{workspaceId}/projects/{projectId}": {
@@ -561,6 +618,31 @@
           }
         },
         "required": ["id", "workspaceId", "title", "createdByUserId", "createdAt", "updatedAt"]
+      },
+      "CreateProjectDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Album release",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "example": "active"
+          },
+          "position": {
+            "type": "string",
+            "nullable": true,
+            "pattern": "^-?\\d+(\\.\\d+)?$"
+          }
+        },
+        "required": ["title"]
       },
       "ProjectDetailDto": {
         "type": "object",
