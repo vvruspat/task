@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-19-project-persistence  (2026-07-06)
+# Graph Report - tAsk-issue-21-task-tree-persistence  (2026-07-06)
 
 ## Corpus Check
-- 75 files · ~18,949 words
+- 78 files · ~20,012 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 604 nodes · 655 edges · 50 communities (47 shown, 3 thin omitted)
+- 614 nodes · 681 edges · 50 communities (47 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0a30273a`
+- Built from commit: `5d5abb8c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -67,9 +67,9 @@
 5. `Agent and MCP design` - 12 edges
 6. `What You Must Do When Invoked` - 11 edges
 7. `HealthResponseDto` - 10 edges
-8. `scripts` - 10 edges
-9. `compilerOptions` - 10 edges
-10. `tasks` - 10 edges
+8. `executeMigrationQueries()` - 10 edges
+9. `scripts` - 10 edges
+10. `compilerOptions` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `generateOpenApi()` --calls--> `createOpenApiDocument()`  [EXTRACTED]
@@ -245,8 +245,8 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 0.11
-Nodes (24): ProjectEntity, StatusEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity, CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql (+16 more)
+Cohesion: 0.09
+Nodes (29): ProjectEntity, StatusEntity, TaskEntity, UserEntity, WorkspaceEntity, WorkspaceMemberEntity, CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql (+21 more)
 
 ## Knowledge Gaps
 - **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)
