@@ -2,6 +2,11 @@ import type { INestApplication } from "@nestjs/common";
 import type { OpenAPIObject } from "@nestjs/swagger";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { HealthResponseDto } from "./app.dto.js";
+import {
+  WorkspaceDetailDto,
+  WorkspaceMemberDto,
+  WorkspaceSummaryDto,
+} from "./workspaces/workspaces.dto.js";
 
 export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
   const config = new DocumentBuilder()
@@ -11,6 +16,6 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
     .build();
 
   return SwaggerModule.createDocument(app, config, {
-    extraModels: [HealthResponseDto],
+    extraModels: [HealthResponseDto, WorkspaceSummaryDto, WorkspaceMemberDto, WorkspaceDetailDto],
   });
 }

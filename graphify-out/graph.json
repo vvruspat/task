@@ -357,7 +357,7 @@
       "label": "AppModule",
       "file_type": "code",
       "source_file": "apps/api/src/app.module.ts",
-      "source_location": "L9",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_app_module_appmodule",
       "community": 18,
@@ -584,6 +584,76 @@
       "norm_label": "createapidatasource()"
     },
     {
+      "label": "database.module.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "database_database_module",
+      "community": 2,
+      "norm_label": "database.module.ts"
+    },
+    {
+      "label": "ApiDataSource",
+      "file_type": "code",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "database_database_module_apidatasource",
+      "community": 2,
+      "norm_label": "apidatasource"
+    },
+    {
+      "label": "ApiDataSourceProvider",
+      "file_type": "code",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "database_database_module_apidatasourceprovider",
+      "community": 2,
+      "norm_label": "apidatasourceprovider"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "database_database_module_apidatasourceprovider_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".onApplicationShutdown()",
+      "file_type": "code",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
+      "community": 2,
+      "norm_label": ".onapplicationshutdown()"
+    },
+    {
+      "label": ".getDataSource()",
+      "file_type": "code",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "database_database_module_apidatasourceprovider_getdatasource",
+      "community": 2,
+      "norm_label": ".getdatasource()"
+    },
+    {
+      "label": "DatabaseModule",
+      "file_type": "code",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "database_database_module_databasemodule",
+      "community": 2,
+      "norm_label": "databasemodule"
+    },
+    {
       "label": "generate-openapi.ts",
       "file_type": "code",
       "source_file": "apps/api/src/generate-openapi.ts",
@@ -630,14 +700,14 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_openapi",
-      "community": 18,
+      "community": 2,
       "norm_label": "openapi.ts"
     },
     {
       "label": "createOpenApiDocument()",
       "file_type": "code",
       "source_file": "apps/api/src/openapi.ts",
-      "source_location": "L6",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_openapi_createopenapidocument",
       "community": 18,
@@ -1180,7 +1250,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000",
-      "community": 54,
+      "community": 51,
       "norm_label": "createtaskstable1783296120000"
     },
     {
@@ -1190,7 +1260,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_up",
-      "community": 54,
+      "community": 51,
       "norm_label": ".up()"
     },
     {
@@ -1200,7 +1270,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_down",
-      "community": 54,
+      "community": 51,
       "norm_label": ".down()"
     },
     {
@@ -1660,7 +1730,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "community": 51,
+      "community": 61,
       "norm_label": "createinvitestable1783296600000"
     },
     {
@@ -1670,7 +1740,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_up",
-      "community": 51,
+      "community": 61,
       "norm_label": ".up()"
     },
     {
@@ -1680,7 +1750,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_down",
-      "community": 51,
+      "community": 61,
       "norm_label": ".down()"
     },
     {
@@ -2062,6 +2132,526 @@
       "id": "types_core_persistence_types_inviterecord",
       "community": 50,
       "norm_label": "inviterecord"
+    },
+    {
+      "label": "typeorm-workspace-read.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store",
+      "community": 2,
+      "norm_label": "typeorm-workspace-read.store.ts"
+    },
+    {
+      "label": "TypeOrmWorkspaceReadStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "community": 2,
+      "norm_label": "typeormworkspacereadstore"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listForUser()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listforuser",
+      "community": 2,
+      "norm_label": ".listforuser()"
+    },
+    {
+      "label": ".getForUser()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getforuser",
+      "community": 2,
+      "norm_label": ".getforuser()"
+    },
+    {
+      "label": ".listMembersForUser()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforuser",
+      "community": 2,
+      "norm_label": ".listmembersforuser()"
+    },
+    {
+      "label": ".findWorkspaceForMember()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L72",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_findworkspaceformember",
+      "community": 2,
+      "norm_label": ".findworkspaceformember()"
+    },
+    {
+      "label": ".listMembersForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforworkspace",
+      "community": 2,
+      "norm_label": ".listmembersforworkspace()"
+    },
+    {
+      "label": ".getInitializedDataSource()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L117",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getinitializeddatasource",
+      "community": 2,
+      "norm_label": ".getinitializeddatasource()"
+    },
+    {
+      "label": "toWorkspaceSummary()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L139",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_toworkspacesummary",
+      "community": 2,
+      "norm_label": "toworkspacesummary()"
+    },
+    {
+      "label": "toWorkspaceMember()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L149",
+      "_origin": "ast",
+      "id": "workspaces_typeorm_workspace_read_store_toworkspacemember",
+      "community": 2,
+      "norm_label": "toworkspacemember()"
+    },
+    {
+      "label": "workspaces.contracts.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_contracts",
+      "community": 2,
+      "norm_label": "workspaces.contracts.ts"
+    },
+    {
+      "label": "WorkspaceSummary",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_contracts_workspacesummary",
+      "community": 2,
+      "norm_label": "workspacesummary"
+    },
+    {
+      "label": "WorkspaceMember",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_contracts_workspacemember",
+      "community": 2,
+      "norm_label": "workspacemember"
+    },
+    {
+      "label": "WorkspaceDetail",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_contracts_workspacedetail",
+      "community": 2,
+      "norm_label": "workspacedetail"
+    },
+    {
+      "label": "workspaces.controller.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_test",
+      "community": 2,
+      "norm_label": "workspaces.controller.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_test_createdat",
+      "community": 2,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "workspaceSummary",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_test_workspacesummary",
+      "community": 2,
+      "norm_label": "workspacesummary"
+    },
+    {
+      "label": "createReadStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_test_createreadstore",
+      "community": 2,
+      "norm_label": "createreadstore()"
+    },
+    {
+      "label": "workspaces.controller.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller",
+      "community": 2,
+      "norm_label": "workspaces.controller.ts"
+    },
+    {
+      "label": "uuidV4Pipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_uuidv4pipe",
+      "community": 2,
+      "norm_label": "uuidv4pipe"
+    },
+    {
+      "label": "WorkspacesController",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_workspacescontroller",
+      "community": 2,
+      "norm_label": "workspacescontroller"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_workspacescontroller_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listWorkspaces()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_workspacescontroller_listworkspaces",
+      "community": 2,
+      "norm_label": ".listworkspaces()"
+    },
+    {
+      "label": ".getWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_workspacescontroller_getworkspace",
+      "community": 2,
+      "norm_label": ".getworkspace()"
+    },
+    {
+      "label": ".listMembers()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_workspacescontroller_listmembers",
+      "community": 2,
+      "norm_label": ".listmembers()"
+    },
+    {
+      "label": "parseUserIdHeader()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_controller_parseuseridheader",
+      "community": 2,
+      "norm_label": "parseuseridheader()"
+    },
+    {
+      "label": "workspaces.dto.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_dto",
+      "community": 2,
+      "norm_label": "workspaces.dto.ts"
+    },
+    {
+      "label": "WorkspaceSummaryDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_dto_workspacesummarydto",
+      "community": 2,
+      "norm_label": "workspacesummarydto"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_dto_workspacesummarydto_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "WorkspaceMemberDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_dto_workspacememberdto",
+      "community": 2,
+      "norm_label": "workspacememberdto"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_dto_workspacememberdto_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "WorkspaceDetailDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_dto_workspacedetaildto",
+      "community": 2,
+      "norm_label": "workspacedetaildto"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_dto_workspacedetaildto_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "workspaces.module.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_module",
+      "community": 2,
+      "norm_label": "workspaces.module.ts"
+    },
+    {
+      "label": "workspacesServiceProvider",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_module_workspacesserviceprovider",
+      "community": 2,
+      "norm_label": "workspacesserviceprovider"
+    },
+    {
+      "label": "WorkspacesModule",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_module_workspacesmodule",
+      "community": 18,
+      "norm_label": "workspacesmodule"
+    },
+    {
+      "label": "workspaces.service.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_test",
+      "community": 2,
+      "norm_label": "workspaces.service.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_test_createdat",
+      "community": 2,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "updatedAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_test_updatedat",
+      "community": 2,
+      "norm_label": "updatedat"
+    },
+    {
+      "label": "workspaceSummary",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_test_workspacesummary",
+      "community": 2,
+      "norm_label": "workspacesummary"
+    },
+    {
+      "label": "workspaceMember",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_test_workspacemember",
+      "community": 2,
+      "norm_label": "workspacemember"
+    },
+    {
+      "label": "workspaceDetail",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_test_workspacedetail",
+      "community": 2,
+      "norm_label": "workspacedetail"
+    },
+    {
+      "label": "createReadStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L81",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_test_createreadstore",
+      "community": 2,
+      "norm_label": "createreadstore()"
+    },
+    {
+      "label": "workspaces.service.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service",
+      "community": 2,
+      "norm_label": "workspaces.service.ts"
+    },
+    {
+      "label": "WorkspacesService",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_workspacesservice",
+      "community": 2,
+      "norm_label": "workspacesservice"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_workspacesservice_constructor",
+      "community": 2,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listWorkspaces()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_workspacesservice_listworkspaces",
+      "community": 2,
+      "norm_label": ".listworkspaces()"
+    },
+    {
+      "label": ".getWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_workspacesservice_getworkspace",
+      "community": 2,
+      "norm_label": ".getworkspace()"
+    },
+    {
+      "label": ".listMembers()",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_service_workspacesservice_listmembers",
+      "community": 2,
+      "norm_label": ".listmembers()"
+    },
+    {
+      "label": "workspaces.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_store",
+      "community": 2,
+      "norm_label": "workspaces.store.ts"
+    },
+    {
+      "label": "WorkspaceReadStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/workspaces/workspaces.store.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "workspaces_workspaces_store_workspacereadstore",
+      "community": 2,
+      "norm_label": "workspacereadstore"
     },
     {
       "label": "tsconfig.json",
@@ -2849,8 +3439,8 @@
       "source_file": "biome.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "community": 2,
+      "id": "biome",
+      "community": 62,
       "norm_label": "biome.json"
     },
     {
@@ -2859,8 +3449,8 @@
       "source_file": "biome.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_schema",
-      "community": 2,
+      "id": "biome_schema",
+      "community": 62,
       "norm_label": "$schema"
     },
     {
@@ -2869,8 +3459,8 @@
       "source_file": "biome.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_vcs",
-      "community": 2,
+      "id": "biome_vcs",
+      "community": 62,
       "norm_label": "vcs"
     },
     {
@@ -2879,8 +3469,8 @@
       "source_file": "biome.json",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_vcs_enabled",
-      "community": 2,
+      "id": "biome_vcs_enabled",
+      "community": 62,
       "norm_label": "enabled"
     },
     {
@@ -2889,8 +3479,8 @@
       "source_file": "biome.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_vcs_clientkind",
-      "community": 2,
+      "id": "biome_vcs_clientkind",
+      "community": 62,
       "norm_label": "clientkind"
     },
     {
@@ -2899,8 +3489,8 @@
       "source_file": "biome.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_vcs_useignorefile",
-      "community": 2,
+      "id": "biome_vcs_useignorefile",
+      "community": 62,
       "norm_label": "useignorefile"
     },
     {
@@ -2909,8 +3499,8 @@
       "source_file": "biome.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_files",
-      "community": 2,
+      "id": "biome_files",
+      "community": 62,
       "norm_label": "files"
     },
     {
@@ -2919,8 +3509,8 @@
       "source_file": "biome.json",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_files_includes",
-      "community": 2,
+      "id": "biome_files_includes",
+      "community": 62,
       "norm_label": "includes"
     },
     {
@@ -2929,8 +3519,8 @@
       "source_file": "biome.json",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter",
-      "community": 2,
+      "id": "biome_formatter",
+      "community": 62,
       "norm_label": "formatter"
     },
     {
@@ -2939,8 +3529,8 @@
       "source_file": "biome.json",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter_enabled",
-      "community": 2,
+      "id": "biome_formatter_enabled",
+      "community": 62,
       "norm_label": "enabled"
     },
     {
@@ -2949,8 +3539,8 @@
       "source_file": "biome.json",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter_indentstyle",
-      "community": 2,
+      "id": "biome_formatter_indentstyle",
+      "community": 62,
       "norm_label": "indentstyle"
     },
     {
@@ -2959,8 +3549,8 @@
       "source_file": "biome.json",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter_indentwidth",
-      "community": 2,
+      "id": "biome_formatter_indentwidth",
+      "community": 62,
       "norm_label": "indentwidth"
     },
     {
@@ -2969,8 +3559,8 @@
       "source_file": "biome.json",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter_linewidth",
-      "community": 2,
+      "id": "biome_formatter_linewidth",
+      "community": 62,
       "norm_label": "linewidth"
     },
     {
@@ -2979,8 +3569,8 @@
       "source_file": "biome.json",
       "source_location": "L17",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_linter",
-      "community": 2,
+      "id": "biome_linter",
+      "community": 62,
       "norm_label": "linter"
     },
     {
@@ -2989,8 +3579,8 @@
       "source_file": "biome.json",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_linter_enabled",
-      "community": 2,
+      "id": "biome_linter_enabled",
+      "community": 62,
       "norm_label": "enabled"
     },
     {
@@ -2999,8 +3589,8 @@
       "source_file": "biome.json",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_linter_rules",
-      "community": 2,
+      "id": "biome_linter_rules",
+      "community": 62,
       "norm_label": "rules"
     },
     {
@@ -3009,8 +3599,8 @@
       "source_file": "biome.json",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_rules_preset",
-      "community": 2,
+      "id": "biome_rules_preset",
+      "community": 62,
       "norm_label": "preset"
     },
     {
@@ -3019,8 +3609,8 @@
       "source_file": "biome.json",
       "source_location": "L21",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_rules_suspicious",
-      "community": 2,
+      "id": "biome_rules_suspicious",
+      "community": 62,
       "norm_label": "suspicious"
     },
     {
@@ -3029,8 +3619,8 @@
       "source_file": "biome.json",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_suspicious_noexplicitany",
-      "community": 2,
+      "id": "biome_suspicious_noexplicitany",
+      "community": 62,
       "norm_label": "noexplicitany"
     },
     {
@@ -3039,68 +3629,88 @@
       "source_file": "biome.json",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_javascript",
-      "community": 2,
+      "id": "biome_javascript",
+      "community": 62,
       "norm_label": "javascript"
+    },
+    {
+      "label": "parser",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "biome_javascript_parser",
+      "community": 62,
+      "norm_label": "parser"
+    },
+    {
+      "label": "unsafeParameterDecoratorsEnabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "biome_parser_unsafeparameterdecoratorsenabled",
+      "community": 62,
+      "norm_label": "unsafeparameterdecoratorsenabled"
     },
     {
       "label": "formatter",
       "file_type": "code",
       "source_file": "biome.json",
-      "source_location": "L27",
+      "source_location": "L30",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_javascript_formatter",
-      "community": 2,
+      "id": "biome_javascript_formatter",
+      "community": 62,
       "norm_label": "formatter"
     },
     {
       "label": "quoteStyle",
       "file_type": "code",
       "source_file": "biome.json",
-      "source_location": "L28",
+      "source_location": "L31",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter_quotestyle",
-      "community": 2,
+      "id": "biome_formatter_quotestyle",
+      "community": 62,
       "norm_label": "quotestyle"
     },
     {
       "label": "semicolons",
       "file_type": "code",
       "source_file": "biome.json",
-      "source_location": "L29",
+      "source_location": "L32",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter_semicolons",
-      "community": 2,
+      "id": "biome_formatter_semicolons",
+      "community": 62,
       "norm_label": "semicolons"
     },
     {
       "label": "trailingCommas",
       "file_type": "code",
       "source_file": "biome.json",
-      "source_location": "L30",
+      "source_location": "L33",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_formatter_trailingcommas",
-      "community": 2,
+      "id": "biome_formatter_trailingcommas",
+      "community": 62,
       "norm_label": "trailingcommas"
     },
     {
       "label": "json",
       "file_type": "code",
       "source_file": "biome.json",
-      "source_location": "L33",
+      "source_location": "L36",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_json",
-      "community": 2,
+      "id": "biome_json",
+      "community": 62,
       "norm_label": "json"
     },
     {
       "label": "formatter",
       "file_type": "code",
       "source_file": "biome.json",
-      "source_location": "L34",
+      "source_location": "L37",
       "_origin": "ast",
-      "id": "task_issue_3_biome_monorepo_config_biome_json_formatter",
-      "community": 2,
+      "id": "biome_json_formatter",
+      "community": 62,
       "norm_label": "formatter"
     },
     {
@@ -7662,6 +8272,28 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_module",
+      "target": "workspaces_workspaces_module"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_module",
+      "target": "workspaces_workspaces_module_workspacesmodule"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/generate-openapi.ts",
       "source_location": "L6",
       "weight": 1.0,
@@ -7776,6 +8408,17 @@
       "confidence_score": 1.0,
       "source": "src_config_test",
       "target": "src_config_parseapiconfig"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module",
+      "target": "src_config"
     },
     {
       "relation": "contains",
@@ -7980,6 +8623,28 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module",
+      "target": "src_config_loadapiconfig"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "database_database_module_apidatasourceprovider_constructor",
+      "target": "src_config_loadapiconfig"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/main.ts",
       "source_location": "L7",
       "weight": 1.0,
@@ -8082,9 +8747,9 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "entities_invite_entity_inviteentity",
-      "confidence_score": 1.0
+      "target": "entities_invite_entity_inviteentity"
     },
     {
       "relation": "imports",
@@ -8423,9 +9088,9 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296600000_create_invites_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table"
     },
     {
       "relation": "imports",
@@ -8434,9 +9099,9 @@
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source_test",
-      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000"
     },
     {
       "relation": "imports_from",
@@ -8470,6 +9135,17 @@
       "confidence_score": 1.0,
       "source": "src_data_source_test",
       "target": "src_data_source_createtypeormdatasourceoptions"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module",
+      "target": "src_data_source"
     },
     {
       "relation": "imports",
@@ -8555,9 +9231,9 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "entities_invite_entity_inviteentity",
-      "confidence_score": 1.0
+      "target": "entities_invite_entity_inviteentity"
     },
     {
       "relation": "imports",
@@ -8896,9 +9572,9 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296600000_create_invites_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table"
     },
     {
       "relation": "imports",
@@ -8907,9 +9583,9 @@
       "source_file": "apps/api/src/data-source.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_data_source",
-      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000"
     },
     {
       "relation": "contains",
@@ -8961,6 +9637,143 @@
       "confidence_score": 1.0,
       "source": "src_data_source_createapidatasource",
       "target": "src_data_source_createtypeormdatasourceoptions"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module",
+      "target": "src_data_source_createapidatasource"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "database_database_module_apidatasourceprovider_constructor",
+      "target": "src_data_source_createapidatasource"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module",
+      "target": "database_database_module_apidatasource"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module",
+      "target": "database_database_module_apidatasourceprovider"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module",
+      "target": "database_database_module_databasemodule"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "database_database_module"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "database_database_module"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module_apidatasourceprovider",
+      "target": "database_database_module_apidatasourceprovider_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module_apidatasourceprovider",
+      "target": "database_database_module_apidatasourceprovider_getdatasource"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/database/database.module.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "database_database_module_apidatasourceprovider",
+      "target": "database_database_module_apidatasourceprovider_onapplicationshutdown"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "database_database_module_apidatasourceprovider"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
+      "target": "database_database_module_apidatasourceprovider"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "database_database_module_databasemodule"
     },
     {
       "relation": "contains",
@@ -9057,6 +9870,50 @@
       "confidence_score": 1.0,
       "source": "src_openapi",
       "target": "src_openapi_createopenapidocument"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_openapi",
+      "target": "workspaces_workspaces_dto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_openapi",
+      "target": "workspaces_workspaces_dto_workspacedetaildto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_openapi",
+      "target": "workspaces_workspaces_dto_workspacememberdto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_openapi",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
     },
     {
       "relation": "contains",
@@ -9664,9 +10521,9 @@
       "source_file": "apps/api/src/persistence/entities/core-entities.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_core_entities_test",
-      "target": "entities_invite_entity_inviteentity",
-      "confidence_score": 1.0
+      "target": "entities_invite_entity_inviteentity"
     },
     {
       "relation": "imports",
@@ -9785,9 +10642,9 @@
       "source_file": "apps/api/src/persistence/entities/index.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_index",
-      "target": "entities_invite_entity",
-      "confidence_score": 1.0
+      "target": "entities_invite_entity"
     },
     {
       "relation": "re_exports",
@@ -9796,9 +10653,9 @@
       "source_file": "apps/api/src/persistence/entities/index.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_index",
-      "target": "entities_invite_entity_inviteentity",
-      "confidence_score": 1.0
+      "target": "entities_invite_entity_inviteentity"
     },
     {
       "relation": "re_exports",
@@ -10021,14 +10878,25 @@
       "target": "entities_workspace_member_entity_workspacememberentity"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "entities_index"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/entities/invite.entity.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_invite_entity",
-      "target": "entities_invite_entity_inviteentity",
-      "confidence_score": 1.0
+      "target": "entities_invite_entity_inviteentity"
     },
     {
       "relation": "imports_from",
@@ -10037,9 +10905,9 @@
       "source_file": "apps/api/src/persistence/entities/invite.entity.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_invite_entity",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "imports",
@@ -10048,9 +10916,9 @@
       "source_file": "apps/api/src/persistence/entities/invite.entity.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_invite_entity",
-      "target": "types_core_persistence_types_inviterecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_inviterecord"
     },
     {
       "relation": "imports",
@@ -10059,9 +10927,9 @@
       "source_file": "apps/api/src/persistence/entities/invite.entity.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_invite_entity",
-      "target": "types_core_persistence_types_workspacememberrole",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_workspacememberrole"
     },
     {
       "relation": "implements",
@@ -10070,9 +10938,9 @@
       "source_file": "apps/api/src/persistence/entities/invite.entity.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_invite_entity_inviteentity",
-      "target": "types_core_persistence_types_inviterecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_inviterecord"
     },
     {
       "relation": "references",
@@ -10081,9 +10949,9 @@
       "source_file": "apps/api/src/persistence/entities/invite.entity.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "entities_invite_entity_inviteentity",
-      "target": "types_core_persistence_types_workspacememberrole",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_workspacememberrole"
     },
     {
       "relation": "contains",
@@ -10430,6 +11298,17 @@
       "target": "types_core_persistence_types_userrecord"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "entities_user_entity_userentity"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/entities/workspace-member.entity.ts",
@@ -10495,6 +11374,17 @@
       "target": "types_core_persistence_types_workspacememberrole"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "entities_workspace_member_entity_workspacememberentity"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/persistence/entities/workspace.entity.ts",
@@ -10536,6 +11426,28 @@
       "confidence_score": 1.0,
       "source": "entities_workspace_entity_workspaceentity",
       "target": "types_core_persistence_types_workspacerecord"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "entities_workspace_entity_workspaceentity"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_findworkspaceformember",
+      "target": "entities_workspace_entity_workspaceentity"
     },
     {
       "relation": "contains",
@@ -10693,9 +11605,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296600000-create-invites-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296600000_create_invites_table",
-      "target": "migrations_1783296000000_create_core_persistence_tables",
-      "confidence_score": 1.0
+      "target": "migrations_1783296000000_create_core_persistence_tables"
     },
     {
       "relation": "imports_from",
@@ -11056,9 +11968,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296600000-create-invites-table.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296600000_create_invites_table",
-      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries",
-      "confidence_score": 1.0
+      "target": "migrations_1783296000000_create_core_persistence_tables_executemigrationqueries"
     },
     {
       "relation": "calls",
@@ -11866,9 +12778,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296600000-create-invites-table.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296600000_create_invites_table",
-      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000"
     },
     {
       "relation": "contains",
@@ -11876,9 +12788,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296600000-create-invites-table.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296600000_create_invites_table",
-      "target": "migrations_1783296600000_create_invites_table_createinvitestablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_createinvitestablesql"
     },
     {
       "relation": "contains",
@@ -11886,9 +12798,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296600000-create-invites-table.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296600000_create_invites_table",
-      "target": "migrations_1783296600000_create_invites_table_dropinvitestablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_dropinvitestablesql"
     },
     {
       "relation": "imports_from",
@@ -11897,9 +12809,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-invites-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_invites_table_test",
-      "target": "migrations_1783296600000_create_invites_table",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table"
     },
     {
       "relation": "imports",
@@ -11908,9 +12820,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-invites-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_invites_table_test",
-      "target": "migrations_1783296600000_create_invites_table_createinvitestablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_createinvitestablesql"
     },
     {
       "relation": "imports",
@@ -11919,9 +12831,9 @@
       "source_file": "apps/api/src/persistence/migrations/create-invites-table.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_create_invites_table_test",
-      "target": "migrations_1783296600000_create_invites_table_dropinvitestablesql",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_dropinvitestablesql"
     },
     {
       "relation": "method",
@@ -11929,9 +12841,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296600000-create-invites-table.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_down",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_down"
     },
     {
       "relation": "method",
@@ -11939,9 +12851,9 @@
       "source_file": "apps/api/src/persistence/migrations/1783296600000-create-invites-table.ts",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_up",
-      "confidence_score": 1.0
+      "target": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_up"
     },
     {
       "relation": "contains",
@@ -12089,9 +13001,9 @@
       "source_file": "apps/api/src/persistence/types/core-persistence.types.ts",
       "source_location": "L209",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_core_persistence_types",
-      "target": "types_core_persistence_types_inviterecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_inviterecord"
     },
     {
       "relation": "contains",
@@ -12202,6 +13114,1404 @@
       "confidence_score": 1.0,
       "source": "types_core_persistence_types",
       "target": "types_core_persistence_types_workspacerecord"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_contracts",
+      "target": "types_core_persistence_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_contracts",
+      "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L149",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_typeorm_workspace_read_store_toworkspacemember"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L139",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_typeorm_workspace_read_store_toworkspacesummary"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_workspaces_contracts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_workspaces_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store",
+      "target": "workspaces_workspaces_store_workspacereadstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_typeorm_workspace_read_store"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_findworkspaceformember"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getforuser"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L117",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listforuser"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforuser"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforworkspace"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore",
+      "target": "workspaces_workspaces_store_workspacereadstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listforuser",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listforuser",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getforuser",
+      "target": "workspaces_typeorm_workspace_read_store_toworkspacesummary"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getforuser",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_findworkspaceformember"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getforuser",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforworkspace"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getforuser",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforuser",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_findworkspaceformember"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforuser",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforworkspace"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforuser",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_findworkspaceformember",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L90",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforworkspace",
+      "target": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_listmembersforworkspace",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_contracts",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_contracts",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.contracts.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_contracts",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto",
+      "target": "workspaces_workspaces_contracts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_contracts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_store",
+      "target": "workspaces_workspaces_contracts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_contracts_workspacesummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacesummarydto",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacesummarydto_constructor",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_store",
+      "target": "workspaces_workspaces_contracts_workspacesummary"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_contracts_workspacemember",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacememberdto",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacememberdto_constructor",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_store",
+      "target": "workspaces_workspaces_contracts_workspacemember"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_contracts_workspacedetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L70",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacedetaildto",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacedetaildto_constructor",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_store",
+      "target": "workspaces_workspaces_contracts_workspacedetail"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_controller_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_controller_test_createreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_controller_test_workspacesummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_controller_workspacescontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_service_workspacesservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "workspaces_workspaces_controller_test",
+      "target": "workspaces_workspaces_store_workspacereadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_controller_parseuseridheader"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_controller_uuidv4pipe"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_controller_workspacescontroller"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_dto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_dto_workspacedetaildto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_dto_workspacememberdto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_service"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "workspaces_workspaces_service_workspacesservice"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_controller"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller",
+      "target": "workspaces_workspaces_controller_workspacescontroller_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller",
+      "target": "workspaces_workspaces_controller_workspacescontroller_getworkspace"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller",
+      "target": "workspaces_workspaces_controller_workspacescontroller_listmembers"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller",
+      "target": "workspaces_workspaces_controller_workspacescontroller_listworkspaces"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_controller_workspacescontroller"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller_constructor",
+      "target": "workspaces_workspaces_service_workspacesservice"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller_listworkspaces",
+      "target": "workspaces_workspaces_controller_parseuseridheader"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller_listworkspaces",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller_getworkspace",
+      "target": "workspaces_workspaces_controller_parseuseridheader"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller_getworkspace",
+      "target": "workspaces_workspaces_dto_workspacedetaildto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller_listmembers",
+      "target": "workspaces_workspaces_controller_parseuseridheader"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller_workspacescontroller_listmembers",
+      "target": "workspaces_workspaces_dto_workspacememberdto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L70",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto",
+      "target": "workspaces_workspaces_dto_workspacedetaildto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto",
+      "target": "workspaces_workspaces_dto_workspacememberdto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service",
+      "target": "workspaces_workspaces_dto"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_dto"
+    },
+    {
+      "relation": "inherits",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L70",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacedetaildto",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacesummarydto",
+      "target": "workspaces_workspaces_dto_workspacesummarydto_constructor"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice_listworkspaces",
+      "target": "workspaces_workspaces_dto_workspacesummarydto"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacememberdto",
+      "target": "workspaces_workspaces_dto_workspacememberdto_constructor"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service",
+      "target": "workspaces_workspaces_dto_workspacememberdto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_dto_workspacememberdto"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice_listmembers",
+      "target": "workspaces_workspaces_dto_workspacememberdto"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.dto.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_dto_workspacedetaildto",
+      "target": "workspaces_workspaces_dto_workspacedetaildto_constructor"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service",
+      "target": "workspaces_workspaces_dto_workspacedetaildto"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice_getworkspace",
+      "target": "workspaces_workspaces_dto_workspacedetaildto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_module_workspacesmodule"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_module_workspacesserviceprovider"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_service"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_service_workspacesservice"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_module",
+      "target": "workspaces_workspaces_store_workspacereadstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service_test_createdat"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service_test_createreadstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service_test_updatedat"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service_test_workspacedetail"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service_test_workspacemember"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service_test_workspacesummary"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_service_workspacesservice"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_test",
+      "target": "workspaces_workspaces_store_workspacereadstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service",
+      "target": "workspaces_workspaces_service_workspacesservice"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service",
+      "target": "workspaces_workspaces_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service",
+      "target": "workspaces_workspaces_store_workspacereadstore"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice",
+      "target": "workspaces_workspaces_service_workspacesservice_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice",
+      "target": "workspaces_workspaces_service_workspacesservice_getworkspace"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice",
+      "target": "workspaces_workspaces_service_workspacesservice_listmembers"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice",
+      "target": "workspaces_workspaces_service_workspacesservice_listworkspaces"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_service_workspacesservice_constructor",
+      "target": "workspaces_workspaces_store_workspacereadstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.store.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_store",
+      "target": "workspaces_workspaces_store_workspacereadstore"
     },
     {
       "relation": "contains",
@@ -12890,8 +15200,8 @@
       "source_location": "L8",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_files"
+      "source": "biome",
+      "target": "biome_files"
     },
     {
       "relation": "contains",
@@ -12900,8 +15210,8 @@
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter"
+      "source": "biome",
+      "target": "biome_formatter"
     },
     {
       "relation": "contains",
@@ -12910,18 +15220,18 @@
       "source_location": "L26",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_javascript"
+      "source": "biome",
+      "target": "biome_javascript"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "biome.json",
-      "source_location": "L33",
+      "source_location": "L36",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_json"
+      "source": "biome",
+      "target": "biome_json"
     },
     {
       "relation": "contains",
@@ -12930,8 +15240,8 @@
       "source_location": "L17",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_linter"
+      "source": "biome",
+      "target": "biome_linter"
     },
     {
       "relation": "contains",
@@ -12940,8 +15250,8 @@
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_schema"
+      "source": "biome",
+      "target": "biome_schema"
     },
     {
       "relation": "contains",
@@ -12950,8 +15260,8 @@
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_alexander_documents_task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_vcs"
+      "source": "biome",
+      "target": "biome_vcs"
     },
     {
       "relation": "contains",
@@ -12960,8 +15270,8 @@
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_vcs",
-      "target": "task_issue_3_biome_monorepo_config_biome_vcs_clientkind"
+      "source": "biome_vcs",
+      "target": "biome_vcs_clientkind"
     },
     {
       "relation": "contains",
@@ -12970,8 +15280,8 @@
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_vcs",
-      "target": "task_issue_3_biome_monorepo_config_biome_vcs_enabled"
+      "source": "biome_vcs",
+      "target": "biome_vcs_enabled"
     },
     {
       "relation": "contains",
@@ -12980,8 +15290,8 @@
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_vcs",
-      "target": "task_issue_3_biome_monorepo_config_biome_vcs_useignorefile"
+      "source": "biome_vcs",
+      "target": "biome_vcs_useignorefile"
     },
     {
       "relation": "contains",
@@ -12990,8 +15300,8 @@
       "source_location": "L9",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_files",
-      "target": "task_issue_3_biome_monorepo_config_biome_files_includes"
+      "source": "biome_files",
+      "target": "biome_files_includes"
     },
     {
       "relation": "contains",
@@ -13000,8 +15310,8 @@
       "source_location": "L12",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_enabled"
+      "source": "biome_formatter",
+      "target": "biome_formatter_enabled"
     },
     {
       "relation": "contains",
@@ -13010,8 +15320,8 @@
       "source_location": "L13",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_indentstyle"
+      "source": "biome_formatter",
+      "target": "biome_formatter_indentstyle"
     },
     {
       "relation": "contains",
@@ -13020,8 +15330,8 @@
       "source_location": "L14",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_indentwidth"
+      "source": "biome_formatter",
+      "target": "biome_formatter_indentwidth"
     },
     {
       "relation": "contains",
@@ -13030,8 +15340,8 @@
       "source_location": "L15",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_linewidth"
+      "source": "biome_formatter",
+      "target": "biome_formatter_linewidth"
     },
     {
       "relation": "contains",
@@ -13040,8 +15350,8 @@
       "source_location": "L18",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_linter",
-      "target": "task_issue_3_biome_monorepo_config_biome_linter_enabled"
+      "source": "biome_linter",
+      "target": "biome_linter_enabled"
     },
     {
       "relation": "contains",
@@ -13050,8 +15360,8 @@
       "source_location": "L19",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_linter",
-      "target": "task_issue_3_biome_monorepo_config_biome_linter_rules"
+      "source": "biome_linter",
+      "target": "biome_linter_rules"
     },
     {
       "relation": "contains",
@@ -13060,8 +15370,8 @@
       "source_location": "L20",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_linter_rules",
-      "target": "task_issue_3_biome_monorepo_config_biome_rules_preset"
+      "source": "biome_linter_rules",
+      "target": "biome_rules_preset"
     },
     {
       "relation": "contains",
@@ -13070,8 +15380,8 @@
       "source_location": "L21",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_linter_rules",
-      "target": "task_issue_3_biome_monorepo_config_biome_rules_suspicious"
+      "source": "biome_linter_rules",
+      "target": "biome_rules_suspicious"
     },
     {
       "relation": "contains",
@@ -13080,38 +15390,8 @@
       "source_location": "L22",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_rules_suspicious",
-      "target": "task_issue_3_biome_monorepo_config_biome_suspicious_noexplicitany"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "biome.json",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_javascript",
-      "target": "task_issue_3_biome_monorepo_config_biome_javascript_formatter"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "biome.json",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_javascript_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_quotestyle"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "biome.json",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_javascript_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_semicolons"
+      "source": "biome_rules_suspicious",
+      "target": "biome_suspicious_noexplicitany"
     },
     {
       "relation": "contains",
@@ -13120,28 +15400,78 @@
       "source_location": "L30",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_javascript_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_trailingcommas"
+      "source": "biome_javascript",
+      "target": "biome_javascript_formatter"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "biome.json",
-      "source_location": "L35",
+      "source_location": "L27",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_json_formatter",
-      "target": "task_issue_3_biome_monorepo_config_biome_formatter_trailingcommas"
+      "source": "biome_javascript",
+      "target": "biome_javascript_parser"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "biome.json",
-      "source_location": "L34",
+      "source_location": "L28",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "task_issue_3_biome_monorepo_config_biome_json",
-      "target": "task_issue_3_biome_monorepo_config_biome_json_formatter"
+      "source": "biome_javascript_parser",
+      "target": "biome_parser_unsafeparameterdecoratorsenabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_javascript_formatter",
+      "target": "biome_formatter_quotestyle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_javascript_formatter",
+      "target": "biome_formatter_semicolons"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_javascript_formatter",
+      "target": "biome_formatter_trailingcommas"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_json_formatter",
+      "target": "biome_formatter_trailingcommas"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_json",
+      "target": "biome_json_formatter"
     },
     {
       "relation": "contains",
@@ -16815,5 +19145,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "14efaae7e827834ff023ea79c4660a076ff4bf20"
+  "built_at_commit": "f4a9f30be545e9c825cb736e7109884ae26f8290"
 }
