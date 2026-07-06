@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { NotFoundException } from "@nestjs/common";
-import type { ProjectDetail, ProjectSummary } from "./projects.contracts.js";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projects.contracts.js";
 import { ProjectDetailDto, ProjectSummaryDto } from "./projects.dto.js";
 import { ProjectsService } from "./projects.service.js";
-import type { ProjectReadStore } from "./projects.store.js";
+import type { ProjectCreateResult, ProjectReadStore } from "./projects.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "33333333-3333-4333-8333-333333333333";
@@ -45,21 +45,65 @@ test("ProjectsService returns one visible project DTO", async () => {
   assert.equal(response.workspaceId, workspaceId);
 });
 
+test("ProjectsService creates a project for writable workspace members", async () => {
+  const input: CreateProjectInput = {
+    title: "Next release",
+    description: "Release planning",
+    status: "active",
+    position: "2000",
+  };
+  const service = new ProjectsService(
+    createReadStore({
+      createResult: {
+        project: {
+          ...projectSummary,
+          title: input.title,
+          description: input.description ?? null,
+          position: input.position ?? null,
+        },
+        status: "created",
+      },
+    }),
+  );
+
+  const response = await service.createProject(workspaceId, userId, input);
+
+  assert.ok(response instanceof ProjectDetailDto);
+  assert.equal(response.title, input.title);
+  assert.equal(response.createdByUserId, userId);
+});
+
 test("ProjectsService hides inaccessible workspaces and missing projects", async () => {
   const service = new ProjectsService(createReadStore({ project: null, projects: null }));
 
   await assert.rejects(() => service.listActiveProjects(workspaceId, userId), NotFoundException);
   await assert.rejects(() => service.getProject(workspaceId, projectId, userId), NotFoundException);
+  await assert.rejects(
+    () => service.createProject(workspaceId, userId, { title: "Hidden" }),
+    NotFoundException,
+  );
+});
+
+test("ProjectsService rejects project creation without write permission", async () => {
+  const service = new ProjectsService(createReadStore({ createResult: { status: "forbidden" } }));
+
+  await assert.rejects(
+    () => service.createProject(workspaceId, userId, { title: "Hidden" }),
+    ForbiddenException,
+  );
 });
 
 function createReadStore(options: {
   projects?: ProjectSummary[] | null;
   project?: ProjectDetail | null;
+  createResult?: ProjectCreateResult;
 }): ProjectReadStore {
   return {
     listActiveForWorkspace: async (): Promise<ProjectSummary[] | null> =>
       options.projects === undefined ? [] : options.projects,
     getForWorkspace: async (): Promise<ProjectDetail | null> =>
       options.project === undefined ? null : options.project,
+    createForWorkspace: async (): Promise<ProjectCreateResult> =>
+      options.createResult ?? { status: "workspace_not_found" },
   };
 }
