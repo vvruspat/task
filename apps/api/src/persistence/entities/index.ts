@@ -4,6 +4,7 @@ export { AgentToolCallEntity } from "./agent-tool-call.entity.js";
 export { AttachmentEntity } from "./attachment.entity.js";
 export { CommentEntity } from "./comment.entity.js";
 export { ConfirmationRequestEntity } from "./confirmation-request.entity.js";
+export { InviteEntity } from "./invite.entity.js";
 export { ProjectEntity } from "./project.entity.js";
 export { StatusEntity } from "./status.entity.js";
 export { TaskEntity } from "./task.entity.js";

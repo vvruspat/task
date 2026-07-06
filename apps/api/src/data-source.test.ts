@@ -9,6 +9,7 @@ import {
   AttachmentEntity,
   CommentEntity,
   ConfirmationRequestEntity,
+  InviteEntity,
   ProjectEntity,
   StatusEntity,
   TaskEntity,
@@ -30,6 +31,7 @@ import { CreateActivityEventsTable1783296360000 } from "./persistence/migrations
 import { CreateAgentRunTables1783296420000 } from "./persistence/migrations/1783296420000-create-agent-run-tables.js";
 import { CreateConfirmationRequestsTable1783296480000 } from "./persistence/migrations/1783296480000-create-confirmation-requests-table.js";
 import { CreateTelegramTables1783296540000 } from "./persistence/migrations/1783296540000-create-telegram-tables.js";
+import { CreateInvitesTable1783296600000 } from "./persistence/migrations/1783296600000-create-invites-table.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -65,6 +67,7 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     ConfirmationRequestEntity,
     TelegramIdentityEntity,
     TelegramChatEntity,
+    InviteEntity,
   ]);
   assert.deepEqual(options.migrations, [
     CreateCorePersistenceTables1783296000000,
@@ -77,6 +80,7 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     CreateAgentRunTables1783296420000,
     CreateConfirmationRequestsTable1783296480000,
     CreateTelegramTables1783296540000,
+    CreateInvitesTable1783296600000,
   ]);
 });
 

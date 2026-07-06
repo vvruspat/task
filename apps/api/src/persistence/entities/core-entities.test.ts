@@ -8,6 +8,7 @@ import {
   AttachmentEntity,
   CommentEntity,
   ConfirmationRequestEntity,
+  InviteEntity,
   ProjectEntity,
   StatusEntity,
   TaskEntity,
@@ -40,7 +41,8 @@ test("core persistence entities map to the expected table names", () => {
         table.target === AgentToolCallEntity ||
         table.target === ConfirmationRequestEntity ||
         table.target === TelegramIdentityEntity ||
-        table.target === TelegramChatEntity,
+        table.target === TelegramChatEntity ||
+        table.target === InviteEntity,
     )
     .map((table) => table.name)
     .sort();
@@ -52,6 +54,7 @@ test("core persistence entities map to the expected table names", () => {
     "attachments",
     "comments",
     "confirmation_requests",
+    "invites",
     "projects",
     "statuses",
     "task_skill_versions",
@@ -62,6 +65,35 @@ test("core persistence entities map to the expected table names", () => {
     "users",
     "workspace_members",
     "workspaces",
+  ]);
+});
+
+test("invite columns, role check, uniqueness, and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const tokenHashColumn = storage.columns.find(
+    (column) => column.target === InviteEntity && column.propertyName === "tokenHash",
+  );
+  const usedAtColumn = storage.columns.find(
+    (column) => column.target === InviteEntity && column.propertyName === "usedAt",
+  );
+  const inviteChecks = storage.checks
+    .filter((check) => check.target === InviteEntity)
+    .map((check) => check.name)
+    .sort();
+  const inviteIndexes = storage.indices
+    .filter((index) => index.target === InviteEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(tokenHashColumn?.options.type, "text");
+  assert.equal(tokenHashColumn?.options.unique, true);
+  assert.equal(usedAtColumn?.options.type, "timestamptz");
+  assert.equal(usedAtColumn?.options.nullable, true);
+  assert.deepEqual(inviteChecks, ["chk_invites_role"]);
+  assert.deepEqual(inviteIndexes, [
+    "idx_invites_created_by_user_id",
+    "idx_invites_workspace_id_expires_at",
+    "idx_invites_workspace_id_invited_user_id",
   ]);
 });
 
