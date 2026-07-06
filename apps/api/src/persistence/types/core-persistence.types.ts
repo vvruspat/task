@@ -205,3 +205,15 @@ export type TelegramChatRecord = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type InviteRecord = {
+  id: string;
+  workspaceId: string;
+  invitedUserId: string | null;
+  tokenHash: string;
+  role: WorkspaceMemberRole;
+  expiresAt: Date;
+  usedAt: Date | null;
+  createdByUserId: string;
+  createdAt: Date;
+};

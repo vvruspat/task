@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-35-telegram-persistence  (2026-07-06)
+# Graph Report - tAsk-issue-37-invite-persistence  (2026-07-06)
 
 ## Corpus Check
-- 102 files · ~26,323 words
+- 105 files · ~27,000 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 699 nodes · 911 edges · 51 communities (48 shown, 3 thin omitted)
+- 709 nodes · 939 edges · 62 communities (57 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5f9ca1ca`
+- Built from commit: `14efaae7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -59,9 +59,20 @@
 - [[_COMMUNITY_Community 45|Community 45]]
 - [[_COMMUNITY_Community 49|Community 49]]
 - [[_COMMUNITY_Community 50|Community 50]]
+- [[_COMMUNITY_Community 51|Community 51]]
+- [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `executeMigrationQueries()` - 31 edges
+1. `executeMigrationQueries()` - 34 edges
 2. `compilerOptions` - 23 edges
 3. `Tables` - 18 edges
 4. `Technical architecture` - 17 edges
@@ -87,7 +98,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (51 total, 3 thin omitted)
+## Communities (62 total, 5 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -246,21 +257,59 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.05
-Nodes (37): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+29 more)
+Cohesion: 0.26
+Nodes (7): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, apiEntities, apiMigrations, createApiDataSource(), createTypeOrmDataSourceOptions()
 
 ### Community 50 - "Community 50"
 Cohesion: 0.09
-Nodes (39): ActivityEventEntity, AgentRunEntity, AgentToolCallEntity, AttachmentEntity, CommentEntity, ConfirmationRequestEntity, ProjectEntity, StatusEntity (+31 more)
+Nodes (41): ActivityEventEntity, AgentRunEntity, AgentToolCallEntity, AttachmentEntity, CommentEntity, ConfirmationRequestEntity, InviteEntity, ProjectEntity (+33 more)
+
+### Community 51 - "Community 51"
+Cohesion: 0.27
+Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTaskSkillsTables1783296180000, CreateInvitesTable1783296600000
+
+### Community 52 - "Community 52"
+Cohesion: 0.38
+Nodes (4): createCorePersistenceTablesSql, dropCorePersistenceTablesSql, MigrationQueryExecutor, RecordingQueryRunner
+
+### Community 53 - "Community 53"
+Cohesion: 0.38
+Nodes (3): CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql
+
+### Community 54 - "Community 54"
+Cohesion: 0.38
+Nodes (3): CreateTasksTable1783296120000, createTasksTableSql, dropTasksTableSql
+
+### Community 55 - "Community 55"
+Cohesion: 0.38
+Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql
+
+### Community 56 - "Community 56"
+Cohesion: 0.38
+Nodes (3): CreateAttachmentsTable1783296300000, createAttachmentsTableSql, dropAttachmentsTableSql
+
+### Community 57 - "Community 57"
+Cohesion: 0.38
+Nodes (3): CreateActivityEventsTable1783296360000, createActivityEventsTableSql, dropActivityEventsTableSql
+
+### Community 58 - "Community 58"
+Cohesion: 0.38
+Nodes (3): CreateAgentRunTables1783296420000, createAgentRunTablesSql, dropAgentRunTablesSql
+
+### Community 59 - "Community 59"
+Cohesion: 0.38
+Nodes (3): CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
 
 ## Knowledge Gaps
 - **409 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+404 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `executeMigrationQueries()` connect `Community 51` to `Community 49`, `Community 52`, `Community 53`, `Community 54`, `Community 55`, `Community 56`, `Community 57`, `Community 58`, `Community 59`, `Community 60`, `Community 61`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `AgentRunEntity` connect `Community 50` to `Community 49`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
@@ -273,5 +322,3 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.08 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
-- **Should `Community 4` be split into smaller, more focused modules?**
-  _Cohesion score 0.08333333333333333 - nodes in this community are weakly interconnected._
