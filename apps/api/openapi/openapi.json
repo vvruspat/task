@@ -500,6 +500,145 @@
         "summary": "Get one task in a visible project",
         "tags": ["tasks"]
       }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/comments": {
+      "get": {
+        "operationId": "CommentsController_listTaskComments",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskCommentDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "List comments for a visible task",
+        "tags": ["comments"]
+      },
+      "post": {
+        "operationId": "CommentsController_createTaskComment",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskCommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskCommentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Comment payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot comment on tasks in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "Create a comment on a visible task",
+        "tags": ["comments"]
+      }
     }
   },
   "info": {
@@ -974,6 +1113,59 @@
           "createdAt",
           "updatedAt"
         ]
+      },
+      "TaskCommentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "authorUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "body": {
+            "type": "string",
+            "example": "Bass take is ready for review."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "taskId",
+          "authorUserId",
+          "body",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateTaskCommentDto": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "example": "Bass take is ready for review.",
+            "minLength": 1
+          }
+        },
+        "required": ["body"]
       }
     }
   }
