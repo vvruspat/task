@@ -134,7 +134,8 @@ export interface paths {
     /** List active tasks in a visible project */
     get: operations["TasksController_listActiveTasks"];
     put?: never;
-    post?: never;
+    /** Create a task in a visible project */
+    post: operations["TasksController_createTask"];
     delete?: never;
     options?: never;
     head?: never;
@@ -310,6 +311,19 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    CreateTaskDto: {
+      /** @example Record bass */
+      title: string;
+      /** Format: uuid */
+      parentTaskId?: string | null;
+      description?: string | null;
+      position?: string | null;
+      /** Format: date-time */
+      dueAt?: string | null;
+      metadata?: {
+        [key: string]: unknown;
+      };
     };
     TaskDetailDto: {
       /** Format: uuid */
@@ -612,6 +626,56 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["TaskSummaryDto"][];
         };
+      };
+      /** @description Workspace or project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_createTask: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTaskDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Task payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot create tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
       /** @description Workspace or project is missing or not visible. */
       404: {
