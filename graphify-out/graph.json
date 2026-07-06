@@ -357,7 +357,7 @@
       "label": "AppModule",
       "file_type": "code",
       "source_file": "apps/api/src/app.module.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "src_app_module_appmodule",
       "community": 18,
@@ -410,7 +410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_test",
-      "community": 2,
+      "community": 63,
       "norm_label": "trusted-current-user.decorator.test.ts"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator",
-      "community": 2,
+      "community": 63,
       "norm_label": "trusted-current-user.decorator.ts"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "community": 2,
+      "community": 63,
       "norm_label": "apitrustedcurrentuser()"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "community": 2,
+      "community": 63,
       "norm_label": "trustedcurrentuserid"
     },
     {
@@ -450,7 +450,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "community": 2,
+      "community": 63,
       "norm_label": "parsetrustedcurrentuserid()"
     },
     {
@@ -460,7 +460,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "community": 2,
+      "community": 63,
       "norm_label": "trustedcurrentuserheader"
     },
     {
@@ -470,7 +470,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
-      "community": 2,
+      "community": 63,
       "norm_label": "trustedcurrentuserrequest"
     },
     {
@@ -600,7 +600,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 61,
+      "community": 49,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -610,7 +610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 61,
+      "community": 49,
       "norm_label": "data-source.ts"
     },
     {
@@ -620,7 +620,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 61,
+      "community": 49,
       "norm_label": "apientities"
     },
     {
@@ -630,7 +630,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 61,
+      "community": 49,
       "norm_label": "apimigrations"
     },
     {
@@ -640,7 +640,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 61,
+      "community": 49,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -650,7 +650,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 61,
+      "community": 49,
       "norm_label": "createapidatasource()"
     },
     {
@@ -660,7 +660,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 2,
+      "community": 63,
       "norm_label": "database.module.ts"
     },
     {
@@ -670,7 +670,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 2,
+      "community": 63,
       "norm_label": "apidatasource"
     },
     {
@@ -680,7 +680,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 2,
+      "community": 63,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -690,7 +690,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_constructor",
-      "community": 2,
+      "community": 63,
       "norm_label": ".constructor()"
     },
     {
@@ -700,7 +700,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 2,
+      "community": 63,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -710,7 +710,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 2,
+      "community": 63,
       "norm_label": ".getdatasource()"
     },
     {
@@ -720,7 +720,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 2,
+      "community": 63,
       "norm_label": "databasemodule"
     },
     {
@@ -777,7 +777,7 @@
       "label": "createOpenApiDocument()",
       "file_type": "code",
       "source_file": "apps/api/src/openapi.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "src_openapi_createopenapidocument",
       "community": 18,
@@ -1440,7 +1440,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 55,
+      "community": 51,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 55,
+      "community": 51,
       "norm_label": ".up()"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 55,
+      "community": 51,
       "norm_label": ".down()"
     },
     {
@@ -1560,7 +1560,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "community": 51,
+      "community": 57,
       "norm_label": "createactivityeventstable1783296360000"
     },
     {
@@ -1570,7 +1570,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
-      "community": 51,
+      "community": 57,
       "norm_label": ".up()"
     },
     {
@@ -1580,7 +1580,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down",
-      "community": 51,
+      "community": 57,
       "norm_label": ".down()"
     },
     {
@@ -2204,6 +2204,396 @@
       "norm_label": "inviterecord"
     },
     {
+      "label": "projects.contracts.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.contracts.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_contracts",
+      "community": 63,
+      "norm_label": "projects.contracts.ts"
+    },
+    {
+      "label": "ProjectSummary",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.contracts.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_contracts_projectsummary",
+      "community": 63,
+      "norm_label": "projectsummary"
+    },
+    {
+      "label": "ProjectDetail",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.contracts.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "projects_projects_contracts_projectdetail",
+      "community": 63,
+      "norm_label": "projectdetail"
+    },
+    {
+      "label": "projects.controller.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_controller_test",
+      "community": 63,
+      "norm_label": "projects.controller.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "projects_projects_controller_test_createdat",
+      "community": 63,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "projectSummary",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "projects_projects_controller_test_projectsummary",
+      "community": 63,
+      "norm_label": "projectsummary"
+    },
+    {
+      "label": "createReadStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "projects_projects_controller_test_createreadstore",
+      "community": 63,
+      "norm_label": "createreadstore()"
+    },
+    {
+      "label": "projects.controller.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_controller",
+      "community": 63,
+      "norm_label": "projects.controller.ts"
+    },
+    {
+      "label": "uuidV4Pipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "projects_projects_controller_uuidv4pipe",
+      "community": 63,
+      "norm_label": "uuidv4pipe"
+    },
+    {
+      "label": "ProjectsController",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "projects_projects_controller_projectscontroller",
+      "community": 63,
+      "norm_label": "projectscontroller"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "projects_projects_controller_projectscontroller_constructor",
+      "community": 63,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listActiveProjects()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "projects_projects_controller_projectscontroller_listactiveprojects",
+      "community": 63,
+      "norm_label": ".listactiveprojects()"
+    },
+    {
+      "label": ".getProject()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "projects_projects_controller_projectscontroller_getproject",
+      "community": 63,
+      "norm_label": ".getproject()"
+    },
+    {
+      "label": "projects.dto.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_dto",
+      "community": 63,
+      "norm_label": "projects.dto.ts"
+    },
+    {
+      "label": "ProjectSummaryDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "projects_projects_dto_projectsummarydto",
+      "community": 63,
+      "norm_label": "projectsummarydto"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "projects_projects_dto_projectsummarydto_constructor",
+      "community": 63,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "ProjectDetailDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "projects_projects_dto_projectdetaildto",
+      "community": 63,
+      "norm_label": "projectdetaildto"
+    },
+    {
+      "label": "projects.module.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_module",
+      "community": 63,
+      "norm_label": "projects.module.ts"
+    },
+    {
+      "label": "projectsServiceProvider",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "projects_projects_module_projectsserviceprovider",
+      "community": 63,
+      "norm_label": "projectsserviceprovider"
+    },
+    {
+      "label": "ProjectsModule",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "projects_projects_module_projectsmodule",
+      "community": 18,
+      "norm_label": "projectsmodule"
+    },
+    {
+      "label": "projects.service.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_service_test",
+      "community": 63,
+      "norm_label": "projects.service.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "projects_projects_service_test_createdat",
+      "community": 63,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "projectSummary",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "projects_projects_service_test_projectsummary",
+      "community": 63,
+      "norm_label": "projectsummary"
+    },
+    {
+      "label": "createReadStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "projects_projects_service_test_createreadstore",
+      "community": 63,
+      "norm_label": "createreadstore()"
+    },
+    {
+      "label": "projects.service.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_service",
+      "community": 63,
+      "norm_label": "projects.service.ts"
+    },
+    {
+      "label": "ProjectsService",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "projects_projects_service_projectsservice",
+      "community": 63,
+      "norm_label": "projectsservice"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "projects_projects_service_projectsservice_constructor",
+      "community": 63,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listActiveProjects()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "projects_projects_service_projectsservice_listactiveprojects",
+      "community": 63,
+      "norm_label": ".listactiveprojects()"
+    },
+    {
+      "label": ".getProject()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "projects_projects_service_projectsservice_getproject",
+      "community": 63,
+      "norm_label": ".getproject()"
+    },
+    {
+      "label": "projects.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_projects_store",
+      "community": 63,
+      "norm_label": "projects.store.ts"
+    },
+    {
+      "label": "ProjectReadStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/projects.store.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "projects_projects_store_projectreadstore",
+      "community": 63,
+      "norm_label": "projectreadstore"
+    },
+    {
+      "label": "typeorm-project-read.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store",
+      "community": 63,
+      "norm_label": "typeorm-project-read.store.ts"
+    },
+    {
+      "label": "TypeOrmProjectReadStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "community": 63,
+      "norm_label": "typeormprojectreadstore"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
+      "community": 63,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listActiveForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store_typeormprojectreadstore_listactiveforworkspace",
+      "community": 63,
+      "norm_label": ".listactiveforworkspace()"
+    },
+    {
+      "label": ".getForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store_typeormprojectreadstore_getforworkspace",
+      "community": 63,
+      "norm_label": ".getforworkspace()"
+    },
+    {
+      "label": ".hasWorkspaceMembership()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store_typeormprojectreadstore_hasworkspacemembership",
+      "community": 63,
+      "norm_label": ".hasworkspacemembership()"
+    },
+    {
+      "label": ".getInitializedDataSource()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L71",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store_typeormprojectreadstore_getinitializeddatasource",
+      "community": 63,
+      "norm_label": ".getinitializeddatasource()"
+    },
+    {
+      "label": "toProjectSummary()",
+      "file_type": "code",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L93",
+      "_origin": "ast",
+      "id": "projects_typeorm_project_read_store_toprojectsummary",
+      "community": 63,
+      "norm_label": "toprojectsummary()"
+    },
+    {
       "label": "typeorm-workspace-read.store.ts",
       "file_type": "code",
       "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
@@ -2230,7 +2620,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 2,
+      "community": 63,
       "norm_label": ".constructor()"
     },
     {
@@ -2560,7 +2950,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "workspaces_workspaces_module_workspacesmodule",
-      "community": 2,
+      "community": 18,
       "norm_label": "workspacesmodule"
     },
     {
@@ -8297,6 +8687,28 @@
       "target": "src_app_dto_healthresponsedto"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_app_module",
+      "target": "projects_projects_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_app_module",
+      "target": "projects_projects_module_projectsmodule",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/app.module.ts",
@@ -8443,9 +8855,9 @@
       "source_file": "apps/api/src/auth/trusted-current-user.decorator.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "auth_trusted_current_user_decorator_test",
-      "target": "auth_trusted_current_user_decorator",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator"
     },
     {
       "relation": "imports",
@@ -8454,9 +8866,9 @@
       "source_file": "apps/api/src/auth/trusted-current-user.decorator.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "auth_trusted_current_user_decorator_test",
-      "target": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid"
     },
     {
       "relation": "contains",
@@ -8464,9 +8876,9 @@
       "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "auth_trusted_current_user_decorator",
-      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser"
     },
     {
       "relation": "contains",
@@ -8474,9 +8886,9 @@
       "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "auth_trusted_current_user_decorator",
-      "target": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid"
     },
     {
       "relation": "contains",
@@ -8484,9 +8896,9 @@
       "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "auth_trusted_current_user_decorator",
-      "target": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserheader"
     },
     {
       "relation": "contains",
@@ -8494,9 +8906,9 @@
       "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "auth_trusted_current_user_decorator",
-      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid"
     },
     {
       "relation": "contains",
@@ -8504,8 +8916,19 @@
       "source_file": "apps/api/src/auth/trusted-current-user.decorator.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "auth_trusted_current_user_decorator",
-      "target": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserrequest"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "auth_trusted_current_user_decorator",
       "confidence_score": 1.0
     },
     {
@@ -8515,18 +8938,18 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller",
-      "target": "auth_trusted_current_user_decorator",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
-      "source": "workspaces_workspaces_controller",
+      "source": "projects_projects_controller",
       "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
       "confidence_score": 1.0
     },
@@ -8537,9 +8960,31 @@
       "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workspaces_workspaces_controller",
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
       "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/workspaces/workspaces.controller.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "workspaces_workspaces_controller",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid"
     },
     {
       "relation": "imports_from",
@@ -9859,6 +10304,28 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
       "source_location": "L4",
       "weight": 1.0,
@@ -9911,6 +10378,28 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
       "source_location": "L4",
       "weight": 1.0,
@@ -9928,6 +10417,17 @@
       "confidence_score": 1.0,
       "source": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
       "target": "database_database_module_apidatasourceprovider"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "database_database_module_databasemodule",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -10025,6 +10525,39 @@
       "confidence_score": 1.0,
       "source": "src_main_bootstrap",
       "target": "src_openapi_createopenapidocument"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "projects_projects_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "projects_projects_dto_projectdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11046,6 +11579,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "entities_index",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/workspaces/typeorm-workspace-read.store.ts",
       "source_location": "L5",
       "weight": 1.0,
@@ -11160,6 +11704,17 @@
       "confidence_score": 1.0,
       "source": "entities_project_entity_projectentity",
       "target": "types_core_persistence_types_projectrecord"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11537,6 +12092,17 @@
       "confidence_score": 1.0,
       "source": "entities_workspace_member_entity_workspacememberentity",
       "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "entities_workspace_member_entity_workspacememberentity",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -13301,6 +13867,1032 @@
       "confidence_score": 1.0,
       "source": "workspaces_workspaces_contracts",
       "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.contracts.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "projects_projects_contracts",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "projects_projects_contracts",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_dto",
+      "target": "projects_projects_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "projects_projects_store",
+      "target": "projects_projects_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "projects_projects_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_dto",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_dto_projectsummarydto",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "projects_projects_dto_projectsummarydto_constructor",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "projects_projects_store",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_listactiveforworkspace",
+      "target": "projects_projects_contracts_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_dto",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "projects_projects_dto_projectdetaildto",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "projects_projects_store",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_getforworkspace",
+      "target": "projects_projects_contracts_projectdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_controller_projectscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_controller_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_controller_test_createreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_controller_test_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_service_projectsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_projects_controller_test",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "projects_projects_controller_projectscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "projects_projects_controller_uuidv4pipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "projects_projects_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "projects_projects_dto_projectdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "projects_projects_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "projects_projects_controller",
+      "target": "projects_projects_service_projectsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "projects_projects_controller_projectscontroller",
+      "target": "projects_projects_controller_projectscontroller_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "projects_projects_controller_projectscontroller",
+      "target": "projects_projects_controller_projectscontroller_getproject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "projects_projects_controller_projectscontroller",
+      "target": "projects_projects_controller_projectscontroller_listactiveprojects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_controller_projectscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "projects_projects_controller_projectscontroller_constructor",
+      "target": "projects_projects_service_projectsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "projects_projects_controller_projectscontroller_listactiveprojects",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.controller.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "projects_projects_controller_projectscontroller_getproject",
+      "target": "projects_projects_dto_projectdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "projects_projects_dto",
+      "target": "projects_projects_dto_projectdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_dto",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_service",
+      "target": "projects_projects_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "projects_projects_dto_projectdetaildto",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.dto.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "projects_projects_dto_projectsummarydto",
+      "target": "projects_projects_dto_projectsummarydto_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_service",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "projects_projects_service_projectsservice_listactiveprojects",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_dto_projectsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "projects_projects_service",
+      "target": "projects_projects_dto_projectdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "projects_projects_service_projectsservice_getproject",
+      "target": "projects_projects_dto_projectdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_dto_projectdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_module_projectsmodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_module_projectsserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_service_projectsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_typeorm_project_read_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_projects_module",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_service_projectsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_service_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_service_test_createreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_service_test_projectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "projects_projects_service_test",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "projects_projects_service",
+      "target": "projects_projects_service_projectsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_service",
+      "target": "projects_projects_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_service",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "projects_projects_service_projectsservice",
+      "target": "projects_projects_service_projectsservice_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "projects_projects_service_projectsservice",
+      "target": "projects_projects_service_projectsservice_getproject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "projects_projects_service_projectsservice",
+      "target": "projects_projects_service_projectsservice_listactiveprojects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "projects_projects_service_projectsservice_constructor",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/projects.store.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "projects_projects_store",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "projects_projects_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "target": "projects_projects_store_projectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "projects_typeorm_project_read_store_toprojectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_getforworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_hasworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_listactiveforworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_listactiveforworkspace",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_listactiveforworkspace",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_hasworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_getforworkspace",
+      "target": "projects_typeorm_project_read_store_toprojectsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_getforworkspace",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/projects/typeorm-project-read.store.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "projects_typeorm_project_read_store_typeormprojectreadstore_getforworkspace",
+      "target": "projects_typeorm_project_read_store_typeormprojectreadstore_hasworkspacemembership",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15321,9 +16913,9 @@
       "source_file": "biome.json",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_files",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_files"
     },
     {
       "relation": "contains",
@@ -15331,9 +16923,9 @@
       "source_file": "biome.json",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_formatter",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter"
     },
     {
       "relation": "contains",
@@ -15341,9 +16933,9 @@
       "source_file": "biome.json",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_javascript",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_javascript"
     },
     {
       "relation": "contains",
@@ -15351,9 +16943,9 @@
       "source_file": "biome.json",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_json",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_json"
     },
     {
       "relation": "contains",
@@ -15361,9 +16953,9 @@
       "source_file": "biome.json",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_linter",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_linter"
     },
     {
       "relation": "contains",
@@ -15371,9 +16963,9 @@
       "source_file": "biome.json",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_schema",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_schema"
     },
     {
       "relation": "contains",
@@ -15381,9 +16973,9 @@
       "source_file": "biome.json",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_vcs",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_vcs"
     },
     {
       "relation": "contains",
@@ -15391,9 +16983,9 @@
       "source_file": "biome.json",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_vcs",
-      "target": "task_issue_39_workspace_read_api_biome_vcs_clientkind",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_vcs_clientkind"
     },
     {
       "relation": "contains",
@@ -15401,9 +16993,9 @@
       "source_file": "biome.json",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_vcs",
-      "target": "task_issue_39_workspace_read_api_biome_vcs_enabled",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_vcs_enabled"
     },
     {
       "relation": "contains",
@@ -15411,9 +17003,9 @@
       "source_file": "biome.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_vcs",
-      "target": "task_issue_39_workspace_read_api_biome_vcs_useignorefile",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_vcs_useignorefile"
     },
     {
       "relation": "contains",
@@ -15421,9 +17013,9 @@
       "source_file": "biome.json",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_files",
-      "target": "task_issue_39_workspace_read_api_biome_files_includes",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_files_includes"
     },
     {
       "relation": "contains",
@@ -15431,9 +17023,9 @@
       "source_file": "biome.json",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_enabled",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_enabled"
     },
     {
       "relation": "contains",
@@ -15441,9 +17033,9 @@
       "source_file": "biome.json",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_indentstyle",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_indentstyle"
     },
     {
       "relation": "contains",
@@ -15451,9 +17043,9 @@
       "source_file": "biome.json",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_indentwidth",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_indentwidth"
     },
     {
       "relation": "contains",
@@ -15461,9 +17053,9 @@
       "source_file": "biome.json",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_linewidth",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_linewidth"
     },
     {
       "relation": "contains",
@@ -15471,9 +17063,9 @@
       "source_file": "biome.json",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_linter",
-      "target": "task_issue_39_workspace_read_api_biome_linter_enabled",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_linter_enabled"
     },
     {
       "relation": "contains",
@@ -15481,9 +17073,9 @@
       "source_file": "biome.json",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_linter",
-      "target": "task_issue_39_workspace_read_api_biome_linter_rules",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_linter_rules"
     },
     {
       "relation": "contains",
@@ -15491,9 +17083,9 @@
       "source_file": "biome.json",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_linter_rules",
-      "target": "task_issue_39_workspace_read_api_biome_rules_preset",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_rules_preset"
     },
     {
       "relation": "contains",
@@ -15501,9 +17093,9 @@
       "source_file": "biome.json",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_linter_rules",
-      "target": "task_issue_39_workspace_read_api_biome_rules_suspicious",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_rules_suspicious"
     },
     {
       "relation": "contains",
@@ -15511,9 +17103,9 @@
       "source_file": "biome.json",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_rules_suspicious",
-      "target": "task_issue_39_workspace_read_api_biome_suspicious_noexplicitany",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_suspicious_noexplicitany"
     },
     {
       "relation": "contains",
@@ -15521,9 +17113,9 @@
       "source_file": "biome.json",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_javascript",
-      "target": "task_issue_39_workspace_read_api_biome_javascript_formatter",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_javascript_formatter"
     },
     {
       "relation": "contains",
@@ -15531,9 +17123,9 @@
       "source_file": "biome.json",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_javascript",
-      "target": "task_issue_39_workspace_read_api_biome_javascript_parser",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_javascript_parser"
     },
     {
       "relation": "contains",
@@ -15541,9 +17133,9 @@
       "source_file": "biome.json",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_javascript_parser",
-      "target": "task_issue_39_workspace_read_api_biome_parser_unsafeparameterdecoratorsenabled",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_parser_unsafeparameterdecoratorsenabled"
     },
     {
       "relation": "contains",
@@ -15551,9 +17143,9 @@
       "source_file": "biome.json",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_javascript_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_quotestyle",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_quotestyle"
     },
     {
       "relation": "contains",
@@ -15561,9 +17153,9 @@
       "source_file": "biome.json",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_javascript_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_semicolons",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_semicolons"
     },
     {
       "relation": "contains",
@@ -15571,9 +17163,9 @@
       "source_file": "biome.json",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_javascript_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_trailingcommas",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_trailingcommas"
     },
     {
       "relation": "contains",
@@ -15581,9 +17173,9 @@
       "source_file": "biome.json",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_json_formatter",
-      "target": "task_issue_39_workspace_read_api_biome_formatter_trailingcommas",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_formatter_trailingcommas"
     },
     {
       "relation": "contains",
@@ -15591,9 +17183,9 @@
       "source_file": "biome.json",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_issue_39_workspace_read_api_biome_json",
-      "target": "task_issue_39_workspace_read_api_biome_json_formatter",
-      "confidence_score": 1.0
+      "target": "task_issue_39_workspace_read_api_biome_json_formatter"
     },
     {
       "relation": "contains",
@@ -19267,5 +20859,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "099cc06ef05ec0e68d5db0f627077cae5d6e02d4"
+  "built_at_commit": "fe966ae1274fd0bed7a379b79220a93c3f80902d"
 }
