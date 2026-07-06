@@ -4,6 +4,266 @@
   "graph": {},
   "nodes": [
     {
+      "label": "biome.json",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "biome",
+      "community": 18,
+      "norm_label": "biome.json"
+    },
+    {
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "biome_schema",
+      "community": 18,
+      "norm_label": "$schema"
+    },
+    {
+      "label": "vcs",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "biome_vcs",
+      "community": 18,
+      "norm_label": "vcs"
+    },
+    {
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "biome_vcs_enabled",
+      "community": 18,
+      "norm_label": "enabled"
+    },
+    {
+      "label": "clientKind",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "biome_vcs_clientkind",
+      "community": 18,
+      "norm_label": "clientkind"
+    },
+    {
+      "label": "useIgnoreFile",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "biome_vcs_useignorefile",
+      "community": 18,
+      "norm_label": "useignorefile"
+    },
+    {
+      "label": "files",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "biome_files",
+      "community": 18,
+      "norm_label": "files"
+    },
+    {
+      "label": "includes",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "biome_files_includes",
+      "community": 18,
+      "norm_label": "includes"
+    },
+    {
+      "label": "formatter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "biome_formatter",
+      "community": 18,
+      "norm_label": "formatter"
+    },
+    {
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "biome_formatter_enabled",
+      "community": 18,
+      "norm_label": "enabled"
+    },
+    {
+      "label": "indentStyle",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "biome_formatter_indentstyle",
+      "community": 18,
+      "norm_label": "indentstyle"
+    },
+    {
+      "label": "indentWidth",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "biome_formatter_indentwidth",
+      "community": 18,
+      "norm_label": "indentwidth"
+    },
+    {
+      "label": "lineWidth",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "biome_formatter_linewidth",
+      "community": 18,
+      "norm_label": "linewidth"
+    },
+    {
+      "label": "linter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "biome_linter",
+      "community": 19,
+      "norm_label": "linter"
+    },
+    {
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "biome_linter_enabled",
+      "community": 19,
+      "norm_label": "enabled"
+    },
+    {
+      "label": "rules",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "biome_linter_rules",
+      "community": 19,
+      "norm_label": "rules"
+    },
+    {
+      "label": "preset",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "biome_rules_preset",
+      "community": 19,
+      "norm_label": "preset"
+    },
+    {
+      "label": "suspicious",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "biome_rules_suspicious",
+      "community": 19,
+      "norm_label": "suspicious"
+    },
+    {
+      "label": "noExplicitAny",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "biome_suspicious_noexplicitany",
+      "community": 19,
+      "norm_label": "noexplicitany"
+    },
+    {
+      "label": "javascript",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "biome_javascript",
+      "community": 18,
+      "norm_label": "javascript"
+    },
+    {
+      "label": "formatter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "biome_javascript_formatter",
+      "community": 18,
+      "norm_label": "formatter"
+    },
+    {
+      "label": "quoteStyle",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "biome_formatter_quotestyle",
+      "community": 18,
+      "norm_label": "quotestyle"
+    },
+    {
+      "label": "semicolons",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "biome_formatter_semicolons",
+      "community": 18,
+      "norm_label": "semicolons"
+    },
+    {
+      "label": "trailingCommas",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "biome_formatter_trailingcommas",
+      "community": 18,
+      "norm_label": "trailingcommas"
+    },
+    {
+      "label": "json",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "biome_json",
+      "community": 18,
+      "norm_label": "json"
+    },
+    {
+      "label": "formatter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "biome_json_formatter",
+      "community": 18,
+      "norm_label": "formatter"
+    },
+    {
       "label": "package.json",
       "file_type": "code",
       "source_file": "package.json",
@@ -90,7 +350,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "package_scripts",
-      "community": 18,
+      "community": 17,
       "norm_label": "scripts"
     },
     {
@@ -100,7 +360,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "package_scripts_dev",
-      "community": 18,
+      "community": 17,
       "norm_label": "dev"
     },
     {
@@ -110,7 +370,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "package_scripts_build",
-      "community": 18,
+      "community": 17,
       "norm_label": "build"
     },
     {
@@ -120,7 +380,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "package_scripts_lint",
-      "community": 18,
+      "community": 17,
       "norm_label": "lint"
     },
     {
@@ -130,7 +390,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "package_scripts_lint_fix",
-      "community": 18,
+      "community": 17,
       "norm_label": "lint:fix"
     },
     {
@@ -140,7 +400,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "package_scripts_format",
-      "community": 18,
+      "community": 17,
       "norm_label": "format"
     },
     {
@@ -150,7 +410,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "package_scripts_test",
-      "community": 18,
+      "community": 17,
       "norm_label": "test"
     },
     {
@@ -160,7 +420,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "package_scripts_generate_openapi",
-      "community": 18,
+      "community": 17,
       "norm_label": "generate:openapi"
     },
     {
@@ -170,7 +430,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "package_scripts_generate_api_client",
-      "community": 18,
+      "community": 17,
       "norm_label": "generate:api-client"
     },
     {
@@ -184,10 +444,20 @@
       "norm_label": "devdependencies"
     },
     {
-      "label": "turbo",
+      "label": "@biomejs/biome",
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L23",
+      "_origin": "ast",
+      "id": "package_devdependencies_biomejs_biome",
+      "community": 17,
+      "norm_label": "@biomejs/biome"
+    },
+    {
+      "label": "turbo",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "package_devdependencies_turbo",
       "community": 17,
@@ -277,7 +547,7 @@
       "label": "outputs",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L12",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "turbo_build_outputs",
       "community": 2,
@@ -287,7 +557,7 @@
       "label": "lint",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L19",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "turbo_tasks_lint",
       "community": 2,
@@ -297,7 +567,7 @@
       "label": "dependsOn",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L20",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "turbo_lint_dependson",
       "community": 2,
@@ -307,7 +577,7 @@
       "label": "lint:fix",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L24",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "turbo_tasks_lint_fix",
       "community": 2,
@@ -317,7 +587,7 @@
       "label": "cache",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L25",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "turbo_lint_fix_cache",
       "community": 2,
@@ -327,7 +597,7 @@
       "label": "format",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L27",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "turbo_tasks_format",
       "community": 2,
@@ -337,7 +607,7 @@
       "label": "cache",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L28",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "turbo_format_cache",
       "community": 2,
@@ -347,7 +617,7 @@
       "label": "test",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L30",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "turbo_tasks_test",
       "community": 2,
@@ -357,7 +627,7 @@
       "label": "dependsOn",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L31",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "turbo_test_dependson",
       "community": 2,
@@ -367,7 +637,7 @@
       "label": "outputs",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L34",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "turbo_test_outputs",
       "community": 2,
@@ -377,7 +647,7 @@
       "label": "generate:openapi",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L38",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "turbo_tasks_generate_openapi",
       "community": 2,
@@ -387,7 +657,7 @@
       "label": "dependsOn",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L39",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "turbo_generate_openapi_dependson",
       "community": 2,
@@ -397,7 +667,7 @@
       "label": "outputs",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L42",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "turbo_generate_openapi_outputs",
       "community": 2,
@@ -407,7 +677,7 @@
       "label": "generate:api-client",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L46",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "turbo_tasks_generate_api_client",
       "community": 2,
@@ -417,7 +687,7 @@
       "label": "outputs",
       "file_type": "code",
       "source_file": "turbo.json",
-      "source_location": "L47",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "turbo_generate_api_client_outputs",
       "community": 2,
@@ -1948,6 +2218,266 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome",
+      "target": "biome_files"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome",
+      "target": "biome_formatter"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome",
+      "target": "biome_javascript"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L42",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome",
+      "target": "biome_json"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome",
+      "target": "biome_linter"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome",
+      "target": "biome_schema"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome",
+      "target": "biome_vcs"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_vcs",
+      "target": "biome_vcs_clientkind"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_vcs",
+      "target": "biome_vcs_enabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_vcs",
+      "target": "biome_vcs_useignorefile"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_files",
+      "target": "biome_files_includes"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_formatter",
+      "target": "biome_formatter_enabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_formatter",
+      "target": "biome_formatter_indentstyle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_formatter",
+      "target": "biome_formatter_indentwidth"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_formatter",
+      "target": "biome_formatter_linewidth"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_linter",
+      "target": "biome_linter_enabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_linter",
+      "target": "biome_linter_rules"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_linter_rules",
+      "target": "biome_rules_preset"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_linter_rules",
+      "target": "biome_rules_suspicious"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_rules_suspicious",
+      "target": "biome_suspicious_noexplicitany"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_javascript",
+      "target": "biome_javascript_formatter"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_javascript_formatter",
+      "target": "biome_formatter_quotestyle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_javascript_formatter",
+      "target": "biome_formatter_semicolons"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_javascript_formatter",
+      "target": "biome_formatter_trailingcommas"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L44",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_json_formatter",
+      "target": "biome_formatter_trailingcommas"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L43",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "biome_json",
+      "target": "biome_json_formatter"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "package.json",
       "source_location": "L5",
       "weight": 1.0,
@@ -2123,18 +2653,28 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "package_devdependencies",
+      "target": "package_devdependencies_biomejs_biome"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "package_devdependencies",
       "target": "package_devdependencies_turbo"
     },
     {
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "context": "import",
-      "confidence_score": 1.0,
       "source": "package_devdependencies_turbo",
-      "target": "turbo"
+      "target": "turbo",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2142,9 +2682,9 @@
       "source_file": "turbo.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo",
-      "target": "turbo_schema"
+      "target": "turbo_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2152,9 +2692,9 @@
       "source_file": "turbo.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo",
-      "target": "turbo_tasks"
+      "target": "turbo_tasks",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2162,9 +2702,9 @@
       "source_file": "turbo.json",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks",
-      "target": "turbo_tasks_build"
+      "target": "turbo_tasks_build",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2172,119 +2712,29 @@
       "source_file": "turbo.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks",
-      "target": "turbo_tasks_dev"
+      "target": "turbo_tasks_dev",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L27",
+      "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks",
-      "target": "turbo_tasks_format"
+      "target": "turbo_tasks_format",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L46",
+      "source_location": "L29",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks",
-      "target": "turbo_tasks_generate_api_client"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks",
-      "target": "turbo_tasks_generate_openapi"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L19",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks",
-      "target": "turbo_tasks_lint"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks",
-      "target": "turbo_tasks_lint_fix"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks",
-      "target": "turbo_tasks_test"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks_dev",
-      "target": "turbo_dev_cache"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks_dev",
-      "target": "turbo_dev_persistent"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks_build",
-      "target": "turbo_build_dependson"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks_build",
-      "target": "turbo_build_outputs"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "turbo.json",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "turbo_tasks_lint",
-      "target": "turbo_lint_dependson"
+      "target": "turbo_tasks_generate_api_client",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2292,69 +2742,159 @@
       "source_file": "turbo.json",
       "source_location": "L25",
       "weight": 1.0,
-      "confidence_score": 1.0,
+      "source": "turbo_tasks",
+      "target": "turbo_tasks_generate_openapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "turbo_tasks",
+      "target": "turbo_tasks_lint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "turbo_tasks",
+      "target": "turbo_tasks_lint_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "turbo_tasks",
+      "target": "turbo_tasks_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "turbo_tasks_dev",
+      "target": "turbo_dev_cache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "turbo_tasks_dev",
+      "target": "turbo_dev_persistent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "turbo_tasks_build",
+      "target": "turbo_build_dependson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "turbo_tasks_build",
+      "target": "turbo_build_outputs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "turbo_tasks_lint",
+      "target": "turbo_lint_dependson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "turbo.json",
+      "source_location": "L16",
+      "weight": 1.0,
       "source": "turbo_tasks_lint_fix",
-      "target": "turbo_lint_fix_cache"
+      "target": "turbo_lint_fix_cache",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L28",
+      "source_location": "L19",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks_format",
-      "target": "turbo_format_cache"
+      "target": "turbo_format_cache",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L31",
+      "source_location": "L22",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks_test",
-      "target": "turbo_test_dependson"
+      "target": "turbo_test_dependson",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L34",
+      "source_location": "L23",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks_test",
-      "target": "turbo_test_outputs"
+      "target": "turbo_test_outputs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L39",
+      "source_location": "L26",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks_generate_openapi",
-      "target": "turbo_generate_openapi_dependson"
+      "target": "turbo_generate_openapi_dependson",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L42",
+      "source_location": "L27",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks_generate_openapi",
-      "target": "turbo_generate_openapi_outputs"
+      "target": "turbo_generate_openapi_outputs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "turbo.json",
-      "source_location": "L50",
+      "source_location": "L30",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks_generate_api_client",
-      "target": "turbo_generate_api_client_outputs"
+      "target": "turbo_generate_api_client_outputs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3728,5 +4268,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bf11b66328773a1a4063a6541311e1e9f46c4ab7"
+  "built_at_commit": "198b320cb39f765764e618db4090aad60c1999fe"
 }
