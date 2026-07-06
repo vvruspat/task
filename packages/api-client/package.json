@@ -1,0 +1,27 @@
+{
+  "name": "@task/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Generated API client and types for tAsk.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node -e \"console.log('No tests yet for @task/api-client')\"",
+    "generate:api-client": "node -e \"console.log('API client generation is not configured yet')\""
+  }
+}
