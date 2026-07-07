@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
+  CreateTaskCommentRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
@@ -14,6 +15,7 @@ import type {
 import {
   CommentToolInputError,
   createCommentToolHandlers,
+  parseCommentCreateToolInput,
   parseCommentListToolInput,
 } from "./comment-tools.js";
 
@@ -33,6 +35,34 @@ const taskComment: TaskCommentResponse = {
   createdAt: timestamp,
   updatedAt: timestamp,
 };
+
+test("parseCommentCreateToolInput validates and normalizes comment create payloads", () => {
+  assert.deepEqual(
+    parseCommentCreateToolInput({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: "  Bass take is ready for review.  ",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: "Bass take is ready for review.",
+    },
+  );
+
+  assert.throws(
+    () => parseCommentCreateToolInput({ workspaceId, projectId, taskId, userId, body: "" }),
+    CommentToolInputError,
+  );
+  assert.throws(
+    () => parseCommentCreateToolInput({ workspaceId, projectId, taskId, userId }),
+    CommentToolInputError,
+  );
+});
 
 test("parseCommentListToolInput validates and normalizes comment list payloads", () => {
   assert.deepEqual(
@@ -69,6 +99,33 @@ test("comment list handler forwards task identifiers to the backend client", asy
   assert.deepEqual(calls, [{ workspaceId, projectId, taskId, userId }]);
 });
 
+test("comment create handler forwards comment payloads to the backend client", async () => {
+  const calls: CreateTaskCommentRequest[] = [];
+  const handlers = createCommentToolHandlers(createBackendClientStub([taskComment], [], calls));
+
+  assert.deepEqual(
+    await handlers.create({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: "  Bass take is ready for review.  ",
+    }),
+    taskComment,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: {
+        body: "Bass take is ready for review.",
+      },
+    },
+  ]);
+});
+
 function createBackendClientStub(
   comments: TaskCommentResponse[],
   listTaskCommentsCalls: Array<{
@@ -76,7 +133,8 @@ function createBackendClientStub(
     projectId: string;
     taskId: string;
     userId: string;
-  }>,
+  }> = [],
+  createTaskCommentCalls: CreateTaskCommentRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
@@ -86,6 +144,11 @@ function createBackendClientStub(
       listTaskCommentsCalls.push(request);
 
       return comments;
+    },
+    createTaskComment: async (request): Promise<TaskCommentResponse> => {
+      createTaskCommentCalls.push(request);
+
+      return taskComment;
     },
     createProject: async (): Promise<ProjectDetailResponse> => {
       throw new Error("Not implemented.");

@@ -4,6 +4,8 @@ export {
   type ApplyTaskSkillResponse,
   type CreateProjectInput,
   type CreateProjectRequest,
+  type CreateTaskCommentInput,
+  type CreateTaskCommentRequest,
   type CreateTaskInput,
   type CreateTaskRequest,
   createTaskBackendClient,
@@ -39,10 +41,12 @@ export {
 } from "./backend-client.js";
 
 export {
+  type CommentCreateToolInput,
   type CommentListToolInput,
   type CommentToolHandlers,
   CommentToolInputError,
   createCommentToolHandlers,
+  parseCommentCreateToolInput,
   parseCommentListToolInput,
 } from "./comment-tools.js";
 

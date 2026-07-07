@@ -41,6 +41,14 @@ const commentListInputSchema = {
   userId: z.string().uuid(),
 };
 
+const commentCreateInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  body: z.string().min(1),
+};
+
 const projectGetInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -109,6 +117,7 @@ const taskSetDueDateInputSchema = {
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
 type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
+type CommentCreateMcpArgs = z.output<z.ZodObject<typeof commentCreateInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
@@ -123,6 +132,7 @@ type TaskMcpToolCallback = (
     | TaskSkillApplyMcpArgs
     | StatusListMcpArgs
     | CommentListMcpArgs
+    | CommentCreateMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
     | ProjectCreateMcpArgs
@@ -144,6 +154,7 @@ export type TaskMcpToolRegistrar = {
         | typeof taskSkillApplyInputSchema
         | typeof statusListInputSchema
         | typeof commentListInputSchema
+        | typeof commentCreateInputSchema
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
@@ -185,6 +196,16 @@ export function registerCommentTools(
   registrar: TaskMcpToolRegistrar,
   handlers: CommentToolHandlers,
 ): void {
+  registrar.registerTool(
+    "comment.create",
+    {
+      title: "Create comment",
+      description: "Create a comment on one writable task.",
+      inputSchema: commentCreateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.create(input)),
+  );
+
   registrar.registerTool(
     "comment.list",
     {

@@ -192,6 +192,9 @@ function createBackendClientStub(
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");
     },
+    createTaskComment: async (): Promise<TaskCommentResponse> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async (request): Promise<ProjectDetailResponse> => {
       createProjectCalls.push(request);
 
