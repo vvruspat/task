@@ -226,14 +226,17 @@ Lazy loading rule:
 Target source:
 
 ```text
-https://github.com/vvruspat/sci-fy-dashboard
+https://github.com/vvruspat/ws-uikit/tree/react-aria
 ```
 
 Plan:
 
-1. Copy/adapt reusable primitives into `packages/ui`.
-2. Keep local ownership after copy; do not make the app depend on the source repo at runtime.
-3. Normalize components around project needs:
+1. Copy/adapt reusable primitives from `vvruspat/ws-uikit` branch `react-aria` into `packages/ui`.
+2. Keep local ownership after copy; do not make the app depend on the source repo at runtime unless the workspace later decides to publish/consume `ws-uikit` as a package.
+3. Preserve the React Aria accessibility foundation for new reusable components.
+4. Use UI-kit layout primitives for flex/grid and typography primitives for text. App code should not hand-style these patterns when a UI-kit component exists.
+5. Avoid custom CSS in apps. If a needed primitive is missing, extend `packages/ui` first and consume it from the app.
+6. Normalize components around project needs:
    - buttons;
    - inputs;
    - modals;
@@ -245,7 +248,7 @@ Plan:
    - tooltips;
    - icon buttons.
 
-Current note: this UI kit is owned by the project author, so implementation can vendor/adapt it directly into `packages/ui` after inspecting its component structure.
+Current note: this UI kit is owned by the project author, so implementation can vendor/adapt the `react-aria` branch directly into `packages/ui` after inspecting its component structure.
 
 ## Telegram bot
 
@@ -383,4 +386,4 @@ Potential infrastructure:
 
 - OpenRouter API docs: https://openrouter.ai/docs/api/reference/overview
 - OpenRouter models API: https://openrouter.ai/api/v1/models
-- Target UI kit source: https://github.com/vvruspat/sci-fy-dashboard
+- Target UI kit source: https://github.com/vvruspat/ws-uikit/tree/react-aria
