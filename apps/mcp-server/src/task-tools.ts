@@ -4,6 +4,7 @@ import type {
   TaskDetailResponse,
   TaskSummaryResponse,
   UpdateTaskAssigneeInput,
+  UpdateTaskDueDateInput,
   UpdateTaskStatusInput,
 } from "./backend-client.js";
 
@@ -52,10 +53,19 @@ export type TaskSetAssigneeToolInput = {
   assigneeUserId: string | null;
 };
 
+export type TaskSetDueDateToolInput = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  dueAt: string | null;
+};
+
 export type TaskToolHandlers = {
   create(input: unknown): Promise<TaskDetailResponse>;
   setStatus(input: unknown): Promise<TaskDetailResponse>;
   setAssignee(input: unknown): Promise<TaskDetailResponse>;
+  setDueDate(input: unknown): Promise<TaskDetailResponse>;
   search(input: unknown): Promise<TaskSummaryResponse[]>;
   get(input: unknown): Promise<TaskDetailResponse>;
 };
@@ -99,6 +109,17 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
         taskId: parsedInput.taskId,
         userId: parsedInput.userId,
         body: toUpdateTaskAssigneeInput(parsedInput),
+      });
+    },
+    setDueDate: (input) => {
+      const parsedInput = parseTaskSetDueDateToolInput(input);
+
+      return client.updateTaskDueDate({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toUpdateTaskDueDateInput(parsedInput),
       });
     },
     get: (input) => {
@@ -151,6 +172,18 @@ export function parseTaskSetAssigneeToolInput(input: unknown): TaskSetAssigneeTo
     taskId: readRequiredUuid(record, "taskId"),
     userId: readRequiredUuid(record, "userId"),
     assigneeUserId: readRequiredNullableUuid(record, "assigneeUserId"),
+  };
+}
+
+export function parseTaskSetDueDateToolInput(input: unknown): TaskSetDueDateToolInput {
+  const record = readRecord(input, "task set due date tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+    dueAt: readRequiredNullableDateTime(record, "dueAt"),
   };
 }
 
@@ -255,6 +288,12 @@ function toUpdateTaskStatusInput(input: TaskSetStatusToolInput): UpdateTaskStatu
 function toUpdateTaskAssigneeInput(input: TaskSetAssigneeToolInput): UpdateTaskAssigneeInput {
   return {
     assigneeUserId: input.assigneeUserId,
+  };
+}
+
+function toUpdateTaskDueDateInput(input: TaskSetDueDateToolInput): UpdateTaskDueDateInput {
+  return {
+    dueAt: input.dueAt,
   };
 }
 
@@ -370,6 +409,30 @@ function readRequiredNullableUuid(
   }
 
   return trimmedValue;
+}
+
+function readRequiredNullableDateTime(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | null {
+  const value = record[propertyName];
+
+  if (value === null) {
+    return null;
+  }
+
+  if (typeof value !== "string") {
+    throw new TaskToolInputError(`${propertyName} must be a datetime string or null.`);
+  }
+
+  const trimmedValue = value.trim();
+  const date = new Date(trimmedValue);
+
+  if (trimmedValue.length === 0 || Number.isNaN(date.getTime())) {
+    throw new TaskToolInputError(`${propertyName} must be a datetime string or null.`);
+  }
+
+  return date.toISOString();
 }
 
 function readOptionalNullableNumericString(

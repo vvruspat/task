@@ -10,6 +10,7 @@ type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type UpdateTaskAssigneeOperation = operations["TasksController_updateTaskAssignee"];
+type UpdateTaskDueDateOperation = operations["TasksController_updateTaskDueDate"];
 
 export type PreviewTaskSkillApplyInput =
   PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
@@ -24,6 +25,8 @@ export type UpdateTaskStatusInput =
   UpdateTaskStatusOperation["requestBody"]["content"]["application/json"];
 export type UpdateTaskAssigneeInput =
   UpdateTaskAssigneeOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskDueDateInput =
+  UpdateTaskDueDateOperation["requestBody"]["content"]["application/json"];
 export type ProjectSummaryResponse =
   ListActiveProjectsOperation["responses"]["200"]["content"]["application/json"][number];
 export type ProjectDetailResponse =
@@ -137,6 +140,14 @@ export type UpdateTaskAssigneeRequest = {
   body: UpdateTaskAssigneeInput;
 };
 
+export type UpdateTaskDueDateRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  body: UpdateTaskDueDateInput;
+};
+
 export type TaskBackendClient = {
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
@@ -146,6 +157,7 @@ export type TaskBackendClient = {
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
   updateTaskStatus(request: UpdateTaskStatusRequest): Promise<TaskDetailResponse>;
   updateTaskAssignee(request: UpdateTaskAssigneeRequest): Promise<TaskDetailResponse>;
+  updateTaskDueDate(request: UpdateTaskDueDateRequest): Promise<TaskDetailResponse>;
   previewTaskSkillApply(request: TaskSkillApplyRequest): Promise<PreviewTaskSkillApplyResponse>;
   applyTaskSkill(request: TaskSkillApplyRequest): Promise<ApplyTaskSkillResponse>;
 };
@@ -235,6 +247,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.body,
         readTaskDetail,
       ),
+    updateTaskDueDate: (request) =>
+      patchJson(
+        fetchImplementation,
+        baseUrl,
+        buildProjectTaskDueDatePath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        request.body,
+        readTaskDetail,
+      ),
     previewTaskSkillApply: (request) =>
       postJson(
         fetchImplementation,
@@ -279,7 +300,7 @@ async function patchJson<ResponseBody>(
   baseUrl: string,
   path: string,
   userId: string,
-  body: UpdateTaskStatusInput | UpdateTaskAssigneeInput,
+  body: UpdateTaskStatusInput | UpdateTaskAssigneeInput | UpdateTaskDueDateInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   return writeJson(fetchImplementation, baseUrl, path, userId, "PATCH", body, readResponse);
@@ -296,7 +317,8 @@ async function writeJson<ResponseBody>(
     | CreateProjectInput
     | CreateTaskInput
     | UpdateTaskStatusInput
-    | UpdateTaskAssigneeInput,
+    | UpdateTaskAssigneeInput
+    | UpdateTaskDueDateInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(`${baseUrl}${path}`, {
@@ -400,6 +422,14 @@ function buildProjectTaskAssigneePath(
   taskId: string,
 ): string {
   return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/assignee`;
+}
+
+function buildProjectTaskDueDatePath(
+  workspaceId: string,
+  projectId: string,
+  taskId: string,
+): string {
+  return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/due-date`;
 }
 
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {

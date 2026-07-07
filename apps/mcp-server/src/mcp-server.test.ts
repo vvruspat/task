@@ -13,6 +13,7 @@ import type {
   TaskSkillApplyRequest,
   TaskSummaryResponse,
   UpdateTaskAssigneeRequest,
+  UpdateTaskDueDateRequest,
   UpdateTaskStatusRequest,
 } from "./backend-client.js";
 import {
@@ -32,6 +33,7 @@ const rootTaskId = "66666666-6666-4666-8666-666666666666";
 const statusId = "88888888-8888-4888-8888-888888888888";
 const assigneeUserId = "99999999-9999-4999-8999-999999999999";
 const timestamp = "2026-01-01T00:00:00.000Z";
+const dueAt = "2026-01-03T12:00:00.000Z";
 
 const toolInput = {
   workspaceId,
@@ -202,6 +204,7 @@ test("registerTaskTools registers task tools", async () => {
   const createCalls: CreateTaskRequest[] = [];
   const statusCalls: UpdateTaskStatusRequest[] = [];
   const assigneeCalls: UpdateTaskAssigneeRequest[] = [];
+  const dueDateCalls: UpdateTaskDueDateRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerTaskTools(registrar, {
@@ -249,6 +252,21 @@ test("registerTaskTools registers task tools", async () => {
       });
       return taskResponse;
     },
+    setDueDate: async (input: unknown): Promise<TaskDetailResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected task due date input.");
+      }
+      dueDateCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          dueAt: readNullableString(input, "dueAt"),
+        },
+      });
+      return taskResponse;
+    },
     get: async (input: unknown): Promise<TaskDetailResponse> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -271,13 +289,21 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["task.create", "task.set_status", "task.set_assignee", "task.get", "task.search"],
+    [
+      "task.create",
+      "task.set_status",
+      "task.set_assignee",
+      "task.set_due_date",
+      "task.get",
+      "task.search",
+    ],
   );
   assert.equal(toolCalls[0]?.config.title, "Create task");
   assert.equal(toolCalls[1]?.config.title, "Set task status");
   assert.equal(toolCalls[2]?.config.title, "Set task assignee");
-  assert.equal(toolCalls[3]?.config.title, "Get task");
-  assert.equal(toolCalls[4]?.config.title, "Search tasks");
+  assert.equal(toolCalls[3]?.config.title, "Set task due date");
+  assert.equal(toolCalls[4]?.config.title, "Get task");
+  assert.equal(toolCalls[5]?.config.title, "Search tasks");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -346,7 +372,30 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const getCall = toolCalls[3];
+  const dueDateCall = toolCalls[3];
+  assert.ok(dueDateCall !== undefined);
+  const dueDateResult = await dueDateCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    dueAt,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(dueDateResult)), taskResponse);
+  assert.deepEqual(dueDateCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        dueAt,
+      },
+    },
+  ]);
+
+  const getCall = toolCalls[4];
   assert.ok(getCall !== undefined);
   const getResult = await getCall.callback({
     workspaceId,
@@ -357,7 +406,7 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), taskResponse);
 
-  const searchCall = toolCalls[4];
+  const searchCall = toolCalls[5];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -454,6 +503,10 @@ function createBackendClientStub(): TaskBackendClient {
     updateTaskAssignee: async (): Promise<TaskDetailResponse> => ({
       ...taskResponse,
       assigneeUserId,
+    }),
+    updateTaskDueDate: async (): Promise<TaskDetailResponse> => ({
+      ...taskResponse,
+      dueAt,
     }),
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,
     applyTaskSkill: async (): Promise<ApplyTaskSkillResponse> => applyResponse,

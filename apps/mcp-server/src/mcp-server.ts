@@ -84,6 +84,14 @@ const taskSetAssigneeInputSchema = {
   assigneeUserId: z.string().uuid().nullable(),
 };
 
+const taskSetDueDateInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  dueAt: z.string().datetime().nullable(),
+};
+
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
@@ -93,6 +101,7 @@ type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskCreateMcpArgs = z.output<z.ZodObject<typeof taskCreateInputSchema>>;
 type TaskSetStatusMcpArgs = z.output<z.ZodObject<typeof taskSetStatusInputSchema>>;
 type TaskSetAssigneeMcpArgs = z.output<z.ZodObject<typeof taskSetAssigneeInputSchema>>;
+type TaskSetDueDateMcpArgs = z.output<z.ZodObject<typeof taskSetDueDateInputSchema>>;
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
@@ -103,7 +112,8 @@ type TaskMcpToolCallback = (
     | TaskGetMcpArgs
     | TaskCreateMcpArgs
     | TaskSetStatusMcpArgs
-    | TaskSetAssigneeMcpArgs,
+    | TaskSetAssigneeMcpArgs
+    | TaskSetDueDateMcpArgs,
 ) => Promise<CallToolResult>;
 
 export type TaskMcpToolRegistrar = {
@@ -121,7 +131,8 @@ export type TaskMcpToolRegistrar = {
         | typeof taskGetInputSchema
         | typeof taskCreateInputSchema
         | typeof taskSetStatusInputSchema
-        | typeof taskSetAssigneeInputSchema;
+        | typeof taskSetAssigneeInputSchema
+        | typeof taskSetDueDateInputSchema;
     },
     callback: TaskMcpToolCallback,
   ): unknown;
@@ -215,6 +226,16 @@ export function registerTaskTools(
       inputSchema: taskSetAssigneeInputSchema,
     },
     async (input) => toToolResult(await handlers.setAssignee(input)),
+  );
+
+  registrar.registerTool(
+    "task.set_due_date",
+    {
+      title: "Set task due date",
+      description: "Set or clear one visible task due date.",
+      inputSchema: taskSetDueDateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.setDueDate(input)),
   );
 
   registrar.registerTool(
