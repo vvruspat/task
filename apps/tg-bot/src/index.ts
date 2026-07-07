@@ -81,3 +81,15 @@ export {
   type TelegramWebhookUnauthorizedResult,
   telegramWebhookSecretHeaderName,
 } from "./webhook-handler.js";
+
+export {
+  handleTelegramWebhookHttpRequest,
+  type TelegramWebhookHttpAcceptedResponse,
+  type TelegramWebhookHttpFailedResponse,
+  type TelegramWebhookHttpHeaders,
+  type TelegramWebhookHttpHeaderValue,
+  type TelegramWebhookHttpMethodNotAllowedResponse,
+  type TelegramWebhookHttpRequest,
+  type TelegramWebhookHttpResponse,
+  type TelegramWebhookHttpUnauthorizedResponse,
+} from "./webhook-http-adapter.js";
