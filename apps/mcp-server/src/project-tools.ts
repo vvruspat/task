@@ -1,4 +1,8 @@
-import type { ProjectSummaryResponse, TaskBackendClient } from "./backend-client.js";
+import type {
+  ProjectDetailResponse,
+  ProjectSummaryResponse,
+  TaskBackendClient,
+} from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -8,8 +12,15 @@ export type ProjectSearchToolInput = {
   query?: string;
 };
 
+export type ProjectGetToolInput = {
+  workspaceId: string;
+  projectId: string;
+  userId: string;
+};
+
 export type ProjectToolHandlers = {
   search(input: unknown): Promise<ProjectSummaryResponse[]>;
+  get(input: unknown): Promise<ProjectDetailResponse>;
 };
 
 export class ProjectToolInputError extends Error {
@@ -21,6 +32,15 @@ export class ProjectToolInputError extends Error {
 
 export function createProjectToolHandlers(client: TaskBackendClient): ProjectToolHandlers {
   return {
+    get: (input) => {
+      const parsedInput = parseProjectGetToolInput(input);
+
+      return client.getProject({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        userId: parsedInput.userId,
+      });
+    },
     search: async (input) => {
       const parsedInput = parseProjectSearchToolInput(input);
       const projects = await client.listActiveProjects({
@@ -38,6 +58,16 @@ export function createProjectToolHandlers(client: TaskBackendClient): ProjectToo
         normalizeSearchText(project.title).includes(normalizedQuery),
       );
     },
+  };
+}
+
+export function parseProjectGetToolInput(input: unknown): ProjectGetToolInput {
+  const record = readRecord(input, "project get tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    userId: readRequiredUuid(record, "userId"),
   };
 }
 

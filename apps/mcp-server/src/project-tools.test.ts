@@ -3,12 +3,14 @@ import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
   PreviewTaskSkillApplyResponse,
+  ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
 } from "./backend-client.js";
 import {
   createProjectToolHandlers,
   ProjectToolInputError,
+  parseProjectGetToolInput,
   parseProjectSearchToolInput,
 } from "./project-tools.js";
 
@@ -18,19 +20,21 @@ const projectId = "22222222-2222-4222-8222-222222222222";
 const secondProjectId = "33333333-3333-4333-8333-333333333333";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
+const albumProject: ProjectSummaryResponse = {
+  id: projectId,
+  workspaceId,
+  title: "Album Release",
+  description: null,
+  status: "active",
+  position: "1000",
+  createdByUserId: userId,
+  archivedAt: null,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
 const projects: ProjectSummaryResponse[] = [
-  {
-    id: projectId,
-    workspaceId,
-    title: "Album Release",
-    description: null,
-    status: "active",
-    position: "1000",
-    createdByUserId: userId,
-    archivedAt: null,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-  },
+  albumProject,
   {
     id: secondProjectId,
     workspaceId,
@@ -40,6 +44,23 @@ const projects: ProjectSummaryResponse[] = [
     updatedAt: timestamp,
   },
 ];
+
+const projectDetail: ProjectDetailResponse = {
+  ...albumProject,
+};
+
+test("parseProjectGetToolInput validates project get payloads", () => {
+  assert.deepEqual(parseProjectGetToolInput({ workspaceId, projectId, userId }), {
+    workspaceId,
+    projectId,
+    userId,
+  });
+
+  assert.throws(
+    () => parseProjectGetToolInput({ workspaceId, projectId: "bad", userId }),
+    ProjectToolInputError,
+  );
+});
 
 test("parseProjectSearchToolInput validates and normalizes project search payloads", () => {
   assert.deepEqual(
@@ -81,11 +102,28 @@ test("project search handler filters active projects by title", async () => {
   const client = createBackendClientStub(projects);
   const handlers = createProjectToolHandlers(client);
 
-  assert.deepEqual(await handlers.search({ workspaceId, userId, query: "album" }), [projects[0]]);
+  assert.deepEqual(await handlers.search({ workspaceId, userId, query: "album" }), [albumProject]);
 });
 
-function createBackendClientStub(projects: ProjectSummaryResponse[]): TaskBackendClient {
+test("project get handler forwards project identifiers to the backend client", async () => {
+  const calls: Array<{ workspaceId: string; projectId: string; userId: string }> = [];
+  const client = createBackendClientStub(projects, calls);
+  const handlers = createProjectToolHandlers(client);
+
+  assert.deepEqual(await handlers.get({ workspaceId, projectId, userId }), projectDetail);
+  assert.deepEqual(calls, [{ workspaceId, projectId, userId }]);
+});
+
+function createBackendClientStub(
+  projects: ProjectSummaryResponse[],
+  getProjectCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
+): TaskBackendClient {
   return {
+    getProject: async (request): Promise<ProjectDetailResponse> => {
+      getProjectCalls.push(request);
+
+      return projectDetail;
+    },
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => projects,
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => {
       throw new Error("Not implemented.");

@@ -4,6 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   ApplyTaskSkillResponse,
   PreviewTaskSkillApplyResponse,
+  ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
   TaskSkillApplyRequest,
@@ -78,11 +79,23 @@ const projectResponse: ProjectSummaryResponse = {
   updatedAt: timestamp,
 };
 
+const projectDetailResponse: ProjectDetailResponse = {
+  ...projectResponse,
+};
+
 test("registerProjectTools registers project search", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerProjectTools(registrar, {
+    get: async (input: unknown): Promise<ProjectDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        projectId,
+        userId,
+      });
+      return projectDetailResponse;
+    },
     search: async (input: unknown): Promise<ProjectSummaryResponse[]> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -95,11 +108,22 @@ test("registerProjectTools registers project search", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["project.search"],
+    ["project.get", "project.search"],
   );
-  assert.equal(toolCalls[0]?.config.title, "Search projects");
+  assert.equal(toolCalls[0]?.config.title, "Get project");
+  assert.equal(toolCalls[1]?.config.title, "Search projects");
 
-  const searchCall = toolCalls[0];
+  const getCall = toolCalls[0];
+  assert.ok(getCall !== undefined);
+  const getResult = await getCall.callback({
+    workspaceId,
+    projectId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(getResult)), projectDetailResponse);
+
+  const searchCall = toolCalls[1];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -182,6 +206,7 @@ function createRegistrar(calls: RegisteredToolCall[]): TaskMcpToolRegistrar {
 
 function createBackendClientStub(): TaskBackendClient {
   return {
+    getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,
     applyTaskSkill: async (): Promise<ApplyTaskSkillResponse> => applyResponse,
