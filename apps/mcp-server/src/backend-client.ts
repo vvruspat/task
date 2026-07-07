@@ -2,6 +2,7 @@ import type { components, operations } from "@task/api-client";
 
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
+type ListWorkspaceStatusesOperation = operations["StatusesController_listStatuses"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
 type GetProjectOperation = operations["ProjectsController_getProject"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
@@ -18,6 +19,8 @@ export type PreviewTaskSkillApplyResponse =
   PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
 export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type WorkspaceStatusResponse =
+  ListWorkspaceStatusesOperation["responses"]["200"]["content"]["application/json"][number];
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
@@ -92,6 +95,11 @@ export type ListActiveProjectsRequest = {
   userId: string;
 };
 
+export type ListWorkspaceStatusesRequest = {
+  workspaceId: string;
+  userId: string;
+};
+
 export type GetProjectRequest = {
   workspaceId: string;
   projectId: string;
@@ -149,6 +157,7 @@ export type UpdateTaskDueDateRequest = {
 };
 
 export type TaskBackendClient = {
+  listWorkspaceStatuses(request: ListWorkspaceStatusesRequest): Promise<WorkspaceStatusResponse[]>;
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
@@ -179,6 +188,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
   const fetchImplementation = options.fetch ?? defaultFetch;
 
   return {
+    listWorkspaceStatuses: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceStatusesPath(request.workspaceId),
+        request.userId,
+        readWorkspaceStatusList,
+      ),
     listActiveProjects: (request) =>
       getJson(
         fetchImplementation,
@@ -396,6 +413,10 @@ function buildWorkspaceProjectsPath(workspaceId: string): string {
   return `/workspaces/${encodeURIComponent(workspaceId)}/projects`;
 }
 
+function buildWorkspaceStatusesPath(workspaceId: string): string {
+  return `/workspaces/${encodeURIComponent(workspaceId)}/statuses`;
+}
+
 function buildWorkspaceProjectPath(workspaceId: string, projectId: string): string {
   return `${buildWorkspaceProjectsPath(workspaceId)}/${encodeURIComponent(projectId)}`;
 }
@@ -440,12 +461,35 @@ function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {
   return value.map(readProjectSummary);
 }
 
+function readWorkspaceStatusList(value: unknown): WorkspaceStatusResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("workspace status list must be an array.");
+  }
+
+  return value.map(readWorkspaceStatus);
+}
+
 function readTaskSummaryList(value: unknown): TaskSummaryResponse[] {
   if (!Array.isArray(value)) {
     throw new Error("task summary list must be an array.");
   }
 
   return value.map(readTaskSummary);
+}
+
+function readWorkspaceStatus(value: unknown): WorkspaceStatusResponse {
+  const record = readRecord(value, "workspace status");
+
+  return {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    name: readString(record, "name"),
+    color: readString(record, "color"),
+    position: readString(record, "position"),
+    isDone: readBoolean(record, "isDone"),
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
 }
 
 function readProjectDetail(value: unknown): ProjectDetailResponse {
@@ -650,6 +694,16 @@ function readNumber(record: Record<string, unknown>, propertyName: string): numb
 
   if (typeof value !== "number") {
     throw new Error(`${propertyName} must be a number.`);
+  }
+
+  return value;
+}
+
+function readBoolean(record: Record<string, unknown>, propertyName: string): boolean {
+  const value = readProperty(record, propertyName);
+
+  if (typeof value !== "boolean") {
+    throw new Error(`${propertyName} must be a boolean.`);
   }
 
   return value;

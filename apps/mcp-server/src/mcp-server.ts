@@ -4,6 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import * as z from "zod/v4";
 import type { TaskBackendClient } from "./backend-client.js";
 import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-tools.js";
+import { createStatusToolHandlers, type StatusToolHandlers } from "./status-tools.js";
 import { createTaskSkillToolHandlers, type TaskSkillToolHandlers } from "./task-skill-tools.js";
 import { createTaskToolHandlers, type TaskToolHandlers } from "./task-tools.js";
 
@@ -25,6 +26,11 @@ const projectSearchInputSchema = {
   workspaceId: z.string().uuid(),
   userId: z.string().uuid(),
   query: z.string().min(1).optional(),
+};
+
+const statusListInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
 };
 
 const projectGetInputSchema = {
@@ -93,6 +99,7 @@ const taskSetDueDateInputSchema = {
 };
 
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
+type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
@@ -105,6 +112,7 @@ type TaskSetDueDateMcpArgs = z.output<z.ZodObject<typeof taskSetDueDateInputSche
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
+    | StatusListMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
     | ProjectCreateMcpArgs
@@ -124,6 +132,7 @@ export type TaskMcpToolRegistrar = {
       description: string;
       inputSchema:
         | typeof taskSkillApplyInputSchema
+        | typeof statusListInputSchema
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
@@ -152,11 +161,27 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
     version: options.version ?? "0.0.0",
   });
 
+  registerStatusTools(server, createStatusToolHandlers(options.backendClient));
   registerProjectTools(server, createProjectToolHandlers(options.backendClient));
   registerTaskTools(server, createTaskToolHandlers(options.backendClient));
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
 
   return server;
+}
+
+export function registerStatusTools(
+  registrar: TaskMcpToolRegistrar,
+  handlers: StatusToolHandlers,
+): void {
+  registrar.registerTool(
+    "status.list",
+    {
+      title: "List statuses",
+      description: "List statuses for one visible workspace.",
+      inputSchema: statusListInputSchema,
+    },
+    async (input) => toToolResult(await handlers.list(input)),
+  );
 }
 
 export function registerProjectTools(

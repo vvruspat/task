@@ -15,10 +15,12 @@ import type {
   UpdateTaskAssigneeRequest,
   UpdateTaskDueDateRequest,
   UpdateTaskStatusRequest,
+  WorkspaceStatusResponse,
 } from "./backend-client.js";
 import {
   createTaskMcpServer,
   registerProjectTools,
+  registerStatusTools,
   registerTaskSkillApplyTools,
   registerTaskTools,
   type TaskMcpToolRegistrar,
@@ -92,6 +94,17 @@ const projectResponse: ProjectSummaryResponse = {
 
 const projectDetailResponse: ProjectDetailResponse = {
   ...projectResponse,
+};
+
+const statusResponse: WorkspaceStatusResponse = {
+  id: statusId,
+  workspaceId,
+  name: "In progress",
+  color: "#3b82f6",
+  position: "1000",
+  isDone: false,
+  createdAt: timestamp,
+  updatedAt: timestamp,
 };
 
 const taskResponse: TaskSummaryResponse = {
@@ -197,6 +210,41 @@ test("registerProjectTools registers project tools", async () => {
   });
 
   assert.deepEqual(JSON.parse(readTextResult(searchResult)), [projectResponse]);
+});
+
+test("registerStatusTools registers status tools", async () => {
+  const toolCalls: RegisteredToolCall[] = [];
+  const listCalls: Array<{ workspaceId: string; userId: string }> = [];
+  const registrar = createRegistrar(toolCalls);
+
+  registerStatusTools(registrar, {
+    list: async (input: unknown): Promise<WorkspaceStatusResponse[]> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected status list input.");
+      }
+      listCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        userId: readString(input, "userId"),
+      });
+      return [statusResponse];
+    },
+  });
+
+  assert.deepEqual(
+    toolCalls.map((call) => call.name),
+    ["status.list"],
+  );
+  assert.equal(toolCalls[0]?.config.title, "List statuses");
+
+  const listCall = toolCalls[0];
+  assert.ok(listCall !== undefined);
+  const listResult = await listCall.callback({
+    workspaceId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(listResult)), [statusResponse]);
+  assert.deepEqual(listCalls, [{ workspaceId, userId }]);
 });
 
 test("registerTaskTools registers task tools", async () => {
@@ -490,6 +538,7 @@ function createRegistrar(calls: RegisteredToolCall[]): TaskMcpToolRegistrar {
 
 function createBackendClientStub(): TaskBackendClient {
   return {
+    listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => [statusResponse],
     createProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],

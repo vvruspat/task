@@ -9,6 +9,7 @@ import type {
   TaskBackendClient,
   TaskDetailResponse,
   TaskSummaryResponse,
+  WorkspaceStatusResponse,
 } from "./backend-client.js";
 import {
   createProjectToolHandlers,
@@ -184,6 +185,9 @@ function createBackendClientStub(
   createProjectCalls: CreateProjectRequest[] = [],
 ): TaskBackendClient {
   return {
+    listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async (request): Promise<ProjectDetailResponse> => {
       createProjectCalls.push(request);
 

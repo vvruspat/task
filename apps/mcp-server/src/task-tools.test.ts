@@ -12,6 +12,7 @@ import type {
   UpdateTaskAssigneeRequest,
   UpdateTaskDueDateRequest,
   UpdateTaskStatusRequest,
+  WorkspaceStatusResponse,
 } from "./backend-client.js";
 import {
   createTaskToolHandlers,
@@ -508,6 +509,9 @@ function createBackendClientStub(
   updateTaskDueDateCalls: UpdateTaskDueDateRequest[] = [],
 ): TaskBackendClient {
   return {
+    listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async (): Promise<ProjectDetailResponse> => {
       throw new Error("Not implemented.");
     },
