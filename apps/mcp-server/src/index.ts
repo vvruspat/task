@@ -4,6 +4,8 @@ export {
   type ApplyTaskSkillResponse,
   type CreateProjectInput,
   type CreateProjectRequest,
+  type CreateTaskInput,
+  type CreateTaskRequest,
   createTaskBackendClient,
   type GetProjectRequest,
   type GetTaskRequest,
@@ -69,8 +71,10 @@ export {
 } from "./task-skill-tools.js";
 export {
   createTaskToolHandlers,
+  parseTaskCreateToolInput,
   parseTaskGetToolInput,
   parseTaskSearchToolInput,
+  type TaskCreateToolInput,
   type TaskGetToolInput,
   type TaskSearchToolInput,
   type TaskToolHandlers,

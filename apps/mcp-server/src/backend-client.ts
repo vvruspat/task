@@ -7,6 +7,7 @@ type GetProjectOperation = operations["ProjectsController_getProject"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ListActiveTasksOperation = operations["TasksController_listActiveTasks"];
 type GetTaskOperation = operations["TasksController_getTask"];
+type CreateTaskOperation = operations["TasksController_createTask"];
 
 export type PreviewTaskSkillApplyInput =
   PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
@@ -16,6 +17,7 @@ export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
+export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
 export type ProjectSummaryResponse =
   ListActiveProjectsOperation["responses"]["200"]["content"]["application/json"][number];
 export type ProjectDetailResponse =
@@ -101,12 +103,20 @@ export type GetTaskRequest = {
   userId: string;
 };
 
+export type CreateTaskRequest = {
+  workspaceId: string;
+  projectId: string;
+  userId: string;
+  body: CreateTaskInput;
+};
+
 export type TaskBackendClient = {
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
   listActiveTasks(request: ListActiveTasksRequest): Promise<TaskSummaryResponse[]>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
+  createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
   previewTaskSkillApply(request: TaskSkillApplyRequest): Promise<PreviewTaskSkillApplyResponse>;
   applyTaskSkill(request: TaskSkillApplyRequest): Promise<ApplyTaskSkillResponse>;
 };
@@ -169,6 +179,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.userId,
         readTaskDetail,
       ),
+    createTask: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildProjectTasksPath(request.workspaceId, request.projectId),
+        request.userId,
+        request.body,
+        readTaskDetail,
+      ),
     previewTaskSkillApply: (request) =>
       postJson(
         fetchImplementation,
@@ -202,7 +221,7 @@ async function postJson<ResponseBody>(
   baseUrl: string,
   path: string,
   userId: string,
-  body: PreviewTaskSkillApplyInput | CreateProjectInput,
+  body: PreviewTaskSkillApplyInput | CreateProjectInput | CreateTaskInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(`${baseUrl}${path}`, {
