@@ -11,6 +11,7 @@ import {
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
   TaskSkillVersionSummaryDto,
+  UpdateTaskSkillMetadataDto,
 } from "./task-skills/task-skills.dto.js";
 import {
   CreateTaskDto,
@@ -44,6 +45,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       ProjectDetailDto,
       WorkspaceStatusDto,
       CreateTaskSkillDto,
+      UpdateTaskSkillMetadataDto,
       TaskSkillSummaryDto,
       TaskSkillVersionSummaryDto,
       TaskSkillDetailDto,

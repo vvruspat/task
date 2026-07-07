@@ -15,8 +15,13 @@ import type {
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
+  UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
-import type { TaskSkillCreateResult, TaskSkillsReadStore } from "./task-skills.store.js";
+import type {
+  TaskSkillCreateResult,
+  TaskSkillMetadataUpdateResult,
+  TaskSkillsReadStore,
+} from "./task-skills.store.js";
 
 const taskSkillWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
 
@@ -152,6 +157,108 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
     });
 
     return { status: "created", taskSkill: created };
+  }
+
+  async updateMetadataForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: UpdateTaskSkillMetadataInput,
+  ): Promise<TaskSkillMetadataUpdateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null) {
+      return { status: "workspace_not_found" };
+    }
+
+    if (!taskSkillWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const skillRepository = dataSource.getRepository(TaskSkillEntity);
+    const skill = await skillRepository.findOneBy({
+      archivedAt: IsNull(),
+      id: taskSkillId,
+      workspaceId,
+    });
+
+    if (skill === null) {
+      return { status: "task_skill_not_found" };
+    }
+
+    if (input.name !== undefined && input.name !== skill.name) {
+      const duplicateSkill = await skillRepository.findOneBy({
+        name: input.name,
+        workspaceId,
+      });
+
+      if (duplicateSkill !== null && duplicateSkill.id !== taskSkillId) {
+        return { status: "duplicate_name" };
+      }
+    }
+
+    const updated = await dataSource.transaction(
+      async (manager): Promise<TaskSkillDetail | null> => {
+        const transactionalSkillRepository = manager.getRepository(TaskSkillEntity);
+        const transactionalSkill = await transactionalSkillRepository.findOneBy({
+          archivedAt: IsNull(),
+          id: taskSkillId,
+          workspaceId,
+        });
+
+        if (transactionalSkill === null) {
+          return null;
+        }
+
+        if (input.name !== undefined) {
+          transactionalSkill.name = input.name;
+        }
+
+        if (input.description !== undefined) {
+          transactionalSkill.description = input.description;
+        }
+
+        if (input.aliases !== undefined) {
+          transactionalSkill.aliases = input.aliases;
+        }
+
+        const savedSkill = await transactionalSkillRepository.save(transactionalSkill);
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "task_skill.metadata_updated",
+          entityType: "task_skill",
+          entityId: savedSkill.id,
+          payload: {
+            aliases: savedSkill.aliases,
+            description: savedSkill.description,
+            name: savedSkill.name,
+          },
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        const versions = await manager.getRepository(TaskSkillVersionEntity).find({
+          where: { taskSkillId, workspaceId },
+          order: { version: "DESC", createdAt: "DESC" },
+        });
+
+        return {
+          ...toTaskSkillSummary(savedSkill),
+          versions: versions.map((version) => toTaskSkillVersionSummary(version)),
+        };
+      },
+    );
+
+    if (updated === null) {
+      return { status: "task_skill_not_found" };
+    }
+
+    return { status: "updated", taskSkill: updated };
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {

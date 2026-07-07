@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-69-task-skill-create-api  (2026-07-07)
+# Graph Report - tAsk-issue-71-task-skill-metadata-update-api  (2026-07-07)
 
 ## Corpus Check
-- 172 files · ~51,965 words
+- 172 files · ~53,322 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1117 nodes · 2133 edges · 69 communities (64 shown, 5 thin omitted)
+- 1128 nodes · 2172 edges · 70 communities (65 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1702d029`
+- Built from commit: `21d050eb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -78,6 +78,7 @@
 - [[_COMMUNITY_Community 66|Community 66]]
 - [[_COMMUNITY_Community 67|Community 67]]
 - [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `executeMigrationQueries()` - 34 edges
@@ -87,9 +88,9 @@
 5. `Tables` - 18 edges
 6. `TaskDetailDto` - 17 edges
 7. `Technical architecture` - 17 edges
-8. `TypeOrmTaskReadStore` - 14 edges
-9. `Agent rules` - 14 edges
-10. `CreateTaskLinkAttachmentInput` - 13 edges
+8. `TaskSkillDetailDto` - 14 edges
+9. `TypeOrmTaskReadStore` - 14 edges
+10. `Agent rules` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `generateOpenApi()` --calls--> `createOpenApiDocument()`  [EXTRACTED]
@@ -106,7 +107,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (69 total, 5 thin omitted)
+## Communities (70 total, 5 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -169,8 +170,8 @@ Cohesion: 0.08
 Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.16
-Nodes (12): AttachmentsModule, CommentsModule, ProjectsModule, HealthResponse, HealthStatus, AppController, HealthResponseDto, AppService (+4 more)
+Cohesion: 0.09
+Nodes (25): AttachmentsModule, CommentsModule, ProjectsModule, HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule (+17 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.10
@@ -269,8 +270,8 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.08
-Nodes (33): CreateTaskSkillInput, TaskSkillDetail, TaskSkillSummary, TaskSkillVersionSummary, TaskSkillsController, createdAt, createInput, taskSkill (+25 more)
+Cohesion: 0.07
+Nodes (40): CreateTaskSkillInput, TaskSkillDetail, TaskSkillSummary, TaskSkillVersionSummary, UpdateTaskSkillMetadataInput, TaskSkillsController, createdAt, createInput (+32 more)
 
 ### Community 50 - "Community 50"
 Cohesion: 0.09
@@ -289,24 +290,24 @@ Cohesion: 0.38
 Nodes (3): CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql
 
 ### Community 54 - "Community 54"
-Cohesion: 0.26
-Nodes (7): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, apiEntities, apiMigrations, createApiDataSource(), createTypeOrmDataSourceOptions()
-
-### Community 55 - "Community 55"
 Cohesion: 0.38
-Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql
+Nodes (3): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql
 
 ### Community 56 - "Community 56"
 Cohesion: 0.38
 Nodes (3): CreateAttachmentsTable1783296300000, createAttachmentsTableSql, dropAttachmentsTableSql
 
-### Community 58 - "Community 58"
+### Community 57 - "Community 57"
 Cohesion: 0.38
-Nodes (3): CreateActivityEventsTable1783296360000, createActivityEventsTableSql, dropActivityEventsTableSql
+Nodes (3): CreateTasksTable1783296120000, createTasksTableSql, dropTasksTableSql
 
 ### Community 59 - "Community 59"
 Cohesion: 0.38
 Nodes (3): CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
+
+### Community 60 - "Community 60"
+Cohesion: 0.38
+Nodes (3): CreateTaskSkillsTables1783296180000, createTaskSkillsTablesSql, dropTaskSkillsTablesSql
 
 ### Community 61 - "Community 61"
 Cohesion: 0.38
@@ -321,39 +322,43 @@ Cohesion: 0.11
 Nodes (24): CreateProjectInput, ProjectDetail, ProjectSummary, ProjectsController, createdAt, projectSummary, uuidV4Pipe, CreateProjectDto (+16 more)
 
 ### Community 64 - "Community 64"
-Cohesion: 0.09
-Nodes (26): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, CreateTaskCommentInput, TaskComment, CommentsController (+18 more)
+Cohesion: 0.12
+Nodes (21): CreateTaskCommentInput, TaskComment, CommentsController, createdAt, taskComment, uuidV4Pipe, CreateTaskCommentDto, isUnknownRecord() (+13 more)
 
 ### Community 65 - "Community 65"
 Cohesion: 0.27
-Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTasksTable1783296120000, CreateTaskSkillsTables1783296180000
+Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateCommentsTable1783296240000, CreateActivityEventsTable1783296360000
 
 ### Community 66 - "Community 66"
 Cohesion: 0.11
 Nodes (22): CreateTaskLinkAttachmentInput, TaskAttachment, AttachmentsController, createdAt, taskAttachment, uuidV4Pipe, CreateTaskLinkAttachmentDto, isUnknownRecord() (+14 more)
 
 ### Community 67 - "Community 67"
-Cohesion: 0.06
-Nodes (29): ApiDataSource, ApiDataSourceProvider, DatabaseModule, AppModule, ApiConfig, ApiDatabaseConfig, ApiEnvironment, formatInvalidValue() (+21 more)
+Cohesion: 0.08
+Nodes (19): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, ApiDataSourceProvider, WorkspaceStatus, StatusesController (+11 more)
 
 ### Community 68 - "Community 68"
 Cohesion: 0.38
 Nodes (3): CreateAgentRunTables1783296420000, createAgentRunTablesSql, dropAgentRunTablesSql
 
+### Community 69 - "Community 69"
+Cohesion: 0.33
+Nodes (6): ApiDataSource, DatabaseModule, apiEntities, apiMigrations, createApiDataSource(), createTypeOrmDataSourceOptions()
+
 ## Knowledge Gaps
-- **472 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+467 more)
+- **474 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+469 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 64`, `Community 66`, `Community 67`, `Community 2`, `Community 49`, `Community 51`, `Community 54`, `Community 63`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
-- **Why does `ApiDataSourceProvider` connect `Community 67` to `Community 64`, `Community 66`, `Community 2`, `Community 49`, `Community 51`, `Community 63`?**
+- **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 64`, `Community 66`, `Community 67`, `Community 2`, `Community 69`, `Community 49`, `Community 51`, `Community 63`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `ApiDataSourceProvider` connect `Community 67` to `Community 64`, `Community 66`, `Community 2`, `Community 69`, `Community 49`, `Community 51`, `Community 63`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _472 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _474 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
