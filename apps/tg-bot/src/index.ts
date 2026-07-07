@@ -54,3 +54,10 @@ export {
   TelegramUpdateParseError,
   type TelegramUserContext,
 } from "./telegram-update.js";
+
+export {
+  processTelegramUpdate,
+  type TelegramReplySentAction,
+  type TelegramUpdateProcessorOptions,
+  type TelegramUpdateProcessorResult,
+} from "./update-processor.js";
