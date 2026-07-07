@@ -10,6 +10,9 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node -e \"console.log('No tests yet for @task/mcp-server empty scaffold')\""
+    "test": "npm run build && node --test \"dist/**/*.test.js\""
+  },
+  "dependencies": {
+    "@task/api-client": "0.0.0"
   }
 }
