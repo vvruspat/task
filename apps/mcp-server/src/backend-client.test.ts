@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   createTaskBackendClient,
+  type ProjectSummaryResponse,
   TaskBackendClientError,
   type TaskBackendFetch,
   type TaskBackendFetchInit,
@@ -15,6 +16,19 @@ const userId = "55555555-5555-4555-8555-555555555555";
 const rootTaskId = "66666666-6666-4666-8666-666666666666";
 const subtaskId = "77777777-7777-4777-8777-777777777777";
 const timestamp = "2026-01-01T00:00:00.000Z";
+
+const projectSummary: ProjectSummaryResponse = {
+  id: projectId,
+  workspaceId,
+  title: "Album Release",
+  description: null,
+  status: "active",
+  position: "1000",
+  createdByUserId: userId,
+  archivedAt: null,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
 
 const requestBody = {
   projectId,
@@ -74,9 +88,27 @@ test("previewTaskSkillApply posts typed payloads with trusted user context", asy
     `https://api.task.local/workspaces/${workspaceId}/task-skills/${taskSkillId}/preview-apply`,
   );
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
-  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
-  assert.deepEqual(JSON.parse(fetchCalls[0]?.init.body ?? ""), requestBody);
+  assert.equal(readPostInit(fetchCalls[0]?.init).headers["content-type"], "application/json");
+  assert.deepEqual(readJsonBody(fetchCalls[0]?.init), requestBody);
   assert.equal(response.subtasks[0]?.source, "added");
+});
+
+test("listActiveProjects gets typed project summaries with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [projectSummary]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listActiveProjects({ workspaceId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(fetchCalls[0]?.input, `https://api.task.local/workspaces/${workspaceId}/projects`);
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.deepEqual(response, [projectSummary]);
 });
 
 test("applyTaskSkill narrows created task tree responses", async () => {
@@ -174,6 +206,18 @@ test("backend client rejects malformed success responses", async () => {
   );
 });
 
+test("backend client rejects malformed project list responses", async () => {
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local",
+    fetch: createJsonFetch([], [{ ...projectSummary, title: null }]),
+  });
+
+  await assert.rejects(
+    () => client.listActiveProjects({ workspaceId, userId }),
+    /title must be a string/,
+  );
+});
+
 function createJsonFetch(
   calls: { input: string; init: TaskBackendFetchInit }[],
   responseBody: unknown,
@@ -189,4 +233,18 @@ function createJsonFetch(
       json: async (): Promise<unknown> => responseBody,
     };
   };
+}
+
+function readJsonBody(init: TaskBackendFetchInit | undefined): unknown {
+  return JSON.parse(readPostInit(init).body);
+}
+
+function readPostInit(
+  init: TaskBackendFetchInit | undefined,
+): Extract<TaskBackendFetchInit, { method: "POST" }> {
+  if (init?.method !== "POST") {
+    throw new Error("Expected POST fetch init.");
+  }
+
+  return init;
 }
