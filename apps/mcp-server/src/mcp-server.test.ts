@@ -9,11 +9,13 @@ import type {
   ProjectSummaryResponse,
   TaskBackendClient,
   TaskSkillApplyRequest,
+  TaskSummaryResponse,
 } from "./backend-client.js";
 import {
   createTaskMcpServer,
   registerProjectTools,
   registerTaskSkillApplyTools,
+  registerTaskTools,
   type TaskMcpToolRegistrar,
 } from "./mcp-server.js";
 
@@ -82,6 +84,26 @@ const projectResponse: ProjectSummaryResponse = {
 
 const projectDetailResponse: ProjectDetailResponse = {
   ...projectResponse,
+};
+
+const taskResponse: TaskSummaryResponse = {
+  id: rootTaskId,
+  workspaceId,
+  projectId,
+  parentTaskId: null,
+  title: "Intro",
+  description: null,
+  statusId: null,
+  assigneeUserId: null,
+  createdByUserId: userId,
+  position: "0",
+  dueAt: null,
+  sourceSkillId: taskSkillId,
+  sourceSkillVersionId: taskSkillVersionId,
+  metadata: {},
+  archivedAt: null,
+  createdAt: timestamp,
+  updatedAt: timestamp,
 };
 
 test("registerProjectTools registers project tools", async () => {
@@ -169,6 +191,40 @@ test("registerProjectTools registers project tools", async () => {
   assert.deepEqual(JSON.parse(readTextResult(searchResult)), [projectResponse]);
 });
 
+test("registerTaskTools registers task tools", async () => {
+  const toolCalls: RegisteredToolCall[] = [];
+  const registrar = createRegistrar(toolCalls);
+
+  registerTaskTools(registrar, {
+    search: async (input: unknown): Promise<TaskSummaryResponse[]> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        projectId,
+        userId,
+        query: "intro",
+      });
+      return [taskResponse];
+    },
+  });
+
+  assert.deepEqual(
+    toolCalls.map((call) => call.name),
+    ["task.search"],
+  );
+  assert.equal(toolCalls[0]?.config.title, "Search tasks");
+
+  const searchCall = toolCalls[0];
+  assert.ok(searchCall !== undefined);
+  const searchResult = await searchCall.callback({
+    workspaceId,
+    projectId,
+    userId,
+    query: "intro",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(searchResult)), [taskResponse]);
+});
+
 test("registerTaskSkillApplyTools registers preview and apply tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const backendCalls: TaskSkillApplyRequest[] = [];
@@ -244,6 +300,7 @@ function createBackendClientStub(): TaskBackendClient {
     createProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],
+    listActiveTasks: async (): Promise<TaskSummaryResponse[]> => [taskResponse],
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,
     applyTaskSkill: async (): Promise<ApplyTaskSkillResponse> => applyResponse,
   };
