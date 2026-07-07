@@ -5,6 +5,7 @@ import type {
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
+  UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 
@@ -44,6 +45,19 @@ export class ParseUpdateTaskSkillMetadataBodyPipe
 {
   transform(value: unknown): UpdateTaskSkillMetadataInput {
     return parseUpdateTaskSkillMetadataInput(value);
+  }
+}
+
+export class UpdateTaskSkillDefinitionDto implements UpdateTaskSkillDefinitionInput {
+  @ApiProperty({ additionalProperties: true, type: "object" })
+  readonly definition: Record<string, unknown> = {};
+}
+
+export class ParseUpdateTaskSkillDefinitionBodyPipe
+  implements PipeTransform<unknown, UpdateTaskSkillDefinitionInput>
+{
+  transform(value: unknown): UpdateTaskSkillDefinitionInput {
+    return parseUpdateTaskSkillDefinitionInput(value);
   }
 }
 
@@ -145,6 +159,16 @@ function parseUpdateTaskSkillMetadataInput(value: unknown): UpdateTaskSkillMetad
   }
 
   return input;
+}
+
+function parseUpdateTaskSkillDefinitionInput(value: unknown): UpdateTaskSkillDefinitionInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task skill payload must be an object.");
+  }
+
+  return {
+    definition: readRequiredDefinition(value, "definition"),
+  };
 }
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
