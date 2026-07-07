@@ -820,7 +820,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_constructor",
-      "community": 66,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -1370,7 +1370,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 66,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -1449,7 +1449,7 @@
       "source_file": "apps/api/src/config.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_config_test",
+      "id": "apps_api_src_config_test_ts_src_config_test",
       "community": 18,
       "norm_label": "config.test.ts"
     },
@@ -1459,7 +1459,7 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_config",
+      "id": "apps_api_src_config_ts_src_config",
       "community": 18,
       "norm_label": "config.ts"
     },
@@ -1559,7 +1559,7 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L107",
       "_origin": "ast",
-      "id": "src_config_formatinvalidvalue",
+      "id": "apps_api_src_config_ts_src_config_formatinvalidvalue",
       "community": 18,
       "norm_label": "formatinvalidvalue()"
     },
@@ -1630,7 +1630,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 66,
+      "community": 67,
       "norm_label": "database.module.ts"
     },
     {
@@ -1640,7 +1640,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 66,
+      "community": 67,
       "norm_label": "apidatasource"
     },
     {
@@ -1650,7 +1650,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 66,
+      "community": 67,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -1670,7 +1670,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 66,
+      "community": 67,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -1680,7 +1680,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 66,
+      "community": 67,
       "norm_label": ".getdatasource()"
     },
     {
@@ -1690,7 +1690,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 66,
+      "community": 67,
       "norm_label": "databasemodule"
     },
     {
@@ -1719,7 +1719,7 @@
       "source_file": "apps/api/src/main.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_main",
+      "id": "apps_api_src_main_ts_src_main",
       "community": 18,
       "norm_label": "main.ts"
     },
@@ -1800,7 +1800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_agent_tool_call_entity",
-      "community": 50,
+      "community": 76,
       "norm_label": "agent-tool-call.entity.ts"
     },
     {
@@ -1810,7 +1810,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "entities_agent_tool_call_entity_agenttoolcallentity",
-      "community": 50,
+      "community": 76,
       "norm_label": "agenttoolcallentity"
     },
     {
@@ -1820,7 +1820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_attachment_entity",
-      "community": 50,
+      "community": 65,
       "norm_label": "attachment.entity.ts"
     },
     {
@@ -1830,7 +1830,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "entities_attachment_entity_attachmententity",
-      "community": 50,
+      "community": 65,
       "norm_label": "attachmententity"
     },
     {
@@ -1860,7 +1860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_confirmation_request_entity",
-      "community": 76,
+      "community": 50,
       "norm_label": "confirmation-request.entity.ts"
     },
     {
@@ -1870,7 +1870,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "entities_confirmation_request_entity_confirmationrequestentity",
-      "community": 76,
+      "community": 50,
       "norm_label": "confirmationrequestentity"
     },
     {
@@ -2060,7 +2060,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_user_entity",
-      "community": 53,
+      "community": 50,
       "norm_label": "user.entity.ts"
     },
     {
@@ -2070,7 +2070,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "entities_user_entity_userentity",
-      "community": 53,
+      "community": 50,
       "norm_label": "userentity"
     },
     {
@@ -2260,7 +2260,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table",
-      "community": 53,
+      "community": 52,
       "norm_label": "1783296120000-create-tasks-table.ts"
     },
     {
@@ -2270,7 +2270,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstablesql",
-      "community": 53,
+      "community": 52,
       "norm_label": "createtaskstablesql"
     },
     {
@@ -2280,7 +2280,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_droptaskstablesql",
-      "community": 53,
+      "community": 52,
       "norm_label": "droptaskstablesql"
     },
     {
@@ -2290,7 +2290,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000",
-      "community": 53,
+      "community": 52,
       "norm_label": "createtaskstable1783296120000"
     },
     {
@@ -2300,7 +2300,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_up",
-      "community": 53,
+      "community": 52,
       "norm_label": ".up()"
     },
     {
@@ -2310,7 +2310,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_down",
-      "community": 53,
+      "community": 52,
       "norm_label": ".down()"
     },
     {
@@ -2320,7 +2320,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables",
-      "community": 52,
+      "community": 53,
       "norm_label": "1783296180000-create-task-skills-tables.ts"
     },
     {
@@ -2330,7 +2330,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstablessql",
-      "community": 52,
+      "community": 53,
       "norm_label": "createtaskskillstablessql"
     },
     {
@@ -2340,7 +2340,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_droptaskskillstablessql",
-      "community": 52,
+      "community": 53,
       "norm_label": "droptaskskillstablessql"
     },
     {
@@ -2350,7 +2350,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
-      "community": 52,
+      "community": 53,
       "norm_label": "createtaskskillstables1783296180000"
     },
     {
@@ -2360,7 +2360,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_up",
-      "community": 52,
+      "community": 53,
       "norm_label": ".up()"
     },
     {
@@ -2370,7 +2370,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_down",
-      "community": 52,
+      "community": 53,
       "norm_label": ".down()"
     },
     {
@@ -2380,7 +2380,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table",
-      "community": 52,
+      "community": 53,
       "norm_label": "1783296240000-create-comments-table.ts"
     },
     {
@@ -2390,7 +2390,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstablesql",
-      "community": 52,
+      "community": 53,
       "norm_label": "createcommentstablesql"
     },
     {
@@ -2400,7 +2400,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_dropcommentstablesql",
-      "community": 52,
+      "community": 53,
       "norm_label": "dropcommentstablesql"
     },
     {
@@ -2410,7 +2410,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 52,
+      "community": 53,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 52,
+      "community": 53,
       "norm_label": ".up()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 52,
+      "community": 53,
       "norm_label": ".down()"
     },
     {
@@ -2440,7 +2440,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table",
-      "community": 75,
+      "community": 52,
       "norm_label": "1783296300000-create-attachments-table.ts"
     },
     {
@@ -2450,7 +2450,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
-      "community": 75,
+      "community": 52,
       "norm_label": "createattachmentstablesql"
     },
     {
@@ -2460,7 +2460,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
-      "community": 75,
+      "community": 52,
       "norm_label": "dropattachmentstablesql"
     },
     {
@@ -2470,7 +2470,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
-      "community": 75,
+      "community": 52,
       "norm_label": "createattachmentstable1783296300000"
     },
     {
@@ -2480,7 +2480,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_up",
-      "community": 75,
+      "community": 52,
       "norm_label": ".up()"
     },
     {
@@ -2490,7 +2490,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_down",
-      "community": 75,
+      "community": 52,
       "norm_label": ".down()"
     },
     {
@@ -2740,7 +2740,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table",
-      "community": 52,
+      "community": 75,
       "norm_label": "1783296600000-create-invites-table.ts"
     },
     {
@@ -2750,7 +2750,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestablesql",
-      "community": 52,
+      "community": 75,
       "norm_label": "createinvitestablesql"
     },
     {
@@ -2760,7 +2760,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_dropinvitestablesql",
-      "community": 52,
+      "community": 75,
       "norm_label": "dropinvitestablesql"
     },
     {
@@ -2770,7 +2770,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "community": 52,
+      "community": 75,
       "norm_label": "createinvitestable1783296600000"
     },
     {
@@ -2780,7 +2780,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_up",
-      "community": 52,
+      "community": 75,
       "norm_label": ".up()"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_down",
-      "community": 52,
+      "community": 75,
       "norm_label": ".down()"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_attachments_table_test",
-      "community": 75,
+      "community": 52,
       "norm_label": "create-attachments-table.test.ts"
     },
     {
@@ -2830,7 +2830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_comments_table_test",
-      "community": 52,
+      "community": 53,
       "norm_label": "create-comments-table.test.ts"
     },
     {
@@ -2880,7 +2880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_invites_table_test",
-      "community": 52,
+      "community": 75,
       "norm_label": "create-invites-table.test.ts"
     },
     {
@@ -2900,7 +2900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_task_skills_tables_test",
-      "community": 52,
+      "community": 53,
       "norm_label": "create-task-skills-tables.test.ts"
     },
     {
@@ -2910,7 +2910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_tasks_table_test",
-      "community": 53,
+      "community": 52,
       "norm_label": "create-tasks-table.test.ts"
     },
     {
@@ -2950,7 +2950,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "types_core_persistence_types_userrecord",
-      "community": 53,
+      "community": 50,
       "norm_label": "userrecord"
     },
     {
@@ -3040,7 +3040,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "types_core_persistence_types_attachmenttargettype",
-      "community": 50,
+      "community": 65,
       "norm_label": "attachmenttargettype"
     },
     {
@@ -3050,7 +3050,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "types_core_persistence_types_attachmentkind",
-      "community": 50,
+      "community": 65,
       "norm_label": "attachmentkind"
     },
     {
@@ -3060,7 +3060,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "types_core_persistence_types_attachmentrecord",
-      "community": 50,
+      "community": 65,
       "norm_label": "attachmentrecord"
     },
     {
@@ -3110,7 +3110,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "types_core_persistence_types_agenttoolcallstatus",
-      "community": 50,
+      "community": 76,
       "norm_label": "agenttoolcallstatus"
     },
     {
@@ -3120,7 +3120,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "types_core_persistence_types_agenttoolcallrecord",
-      "community": 50,
+      "community": 76,
       "norm_label": "agenttoolcallrecord"
     },
     {
@@ -3130,7 +3130,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "types_core_persistence_types_confirmationrequeststatus",
-      "community": 76,
+      "community": 50,
       "norm_label": "confirmationrequeststatus"
     },
     {
@@ -3140,7 +3140,7 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "types_core_persistence_types_confirmationrequestrecord",
-      "community": 76,
+      "community": 50,
       "norm_label": "confirmationrequestrecord"
     },
     {
@@ -3630,7 +3630,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 66,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -4050,7 +4050,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts",
-      "community": 56,
+      "community": 54,
       "norm_label": "task-skills.contracts.ts"
     },
     {
@@ -4070,7 +4070,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "community": 56,
+      "community": 54,
       "norm_label": "taskskillversionsummary"
     },
     {
@@ -4080,7 +4080,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskilldetail",
-      "community": 49,
+      "community": 68,
       "norm_label": "taskskilldetail"
     },
     {
@@ -4120,7 +4120,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtasksource",
-      "community": 56,
+      "community": 54,
       "norm_label": "taskskillapplypreviewsubtasksource"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtask",
-      "community": 56,
+      "community": 54,
       "norm_label": "taskskillapplypreviewsubtask"
     },
     {
@@ -4360,7 +4360,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_listactivetaskskills",
-      "community": 49,
+      "community": 58,
       "norm_label": ".listactivetaskskills()"
     },
     {
@@ -4410,7 +4410,7 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_applytaskskill",
-      "community": 49,
+      "community": 71,
       "norm_label": ".applytaskskill()"
     },
     {
@@ -4460,7 +4460,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
-      "community": 54,
+      "community": 49,
       "norm_label": "parsecreatetaskskillbodypipe"
     },
     {
@@ -4470,7 +4470,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe_transform",
-      "community": 54,
+      "community": 49,
       "norm_label": ".transform()"
     },
     {
@@ -4520,7 +4520,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskilldefinitionbodypipe",
-      "community": 54,
+      "community": 57,
       "norm_label": "parseupdatetaskskilldefinitionbodypipe"
     },
     {
@@ -4530,7 +4530,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskilldefinitionbodypipe_transform",
-      "community": 54,
+      "community": 57,
       "norm_label": ".transform()"
     },
     {
@@ -4550,7 +4550,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_previewtaskskillapplydto",
-      "community": 49,
+      "community": 71,
       "norm_label": "previewtaskskillapplydto"
     },
     {
@@ -4580,7 +4580,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto",
-      "community": 56,
+      "community": 54,
       "norm_label": "taskskillapplypreviewsubtaskdto"
     },
     {
@@ -4590,7 +4590,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto_constructor",
-      "community": 56,
+      "community": 54,
       "norm_label": ".constructor()"
     },
     {
@@ -4770,7 +4770,7 @@
       "source_location": "L449",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "community": 56,
+      "community": 54,
       "norm_label": "taskskillversionsummarydto"
     },
     {
@@ -4780,7 +4780,7 @@
       "source_location": "L471",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
-      "community": 56,
+      "community": 54,
       "norm_label": ".constructor()"
     },
     {
@@ -4800,7 +4800,7 @@
       "source_location": "L486",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskilldetaildto_constructor",
-      "community": 49,
+      "community": 68,
       "norm_label": ".constructor()"
     },
     {
@@ -4810,7 +4810,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_module",
-      "community": 71,
+      "community": 49,
       "norm_label": "task-skills.module.ts"
     },
     {
@@ -4820,7 +4820,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "task_skills_task_skills_module_taskskillsserviceprovider",
-      "community": 71,
+      "community": 49,
       "norm_label": "taskskillsserviceprovider"
     },
     {
@@ -4990,7 +4990,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_service",
-      "community": 71,
+      "community": 49,
       "norm_label": "task-skills.service.ts"
     },
     {
@@ -5100,7 +5100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_store",
-      "community": 71,
+      "community": 68,
       "norm_label": "task-skills.store.ts"
     },
     {
@@ -5120,7 +5120,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillmetadataupdateresult",
-      "community": 71,
+      "community": 68,
       "norm_label": "taskskillmetadataupdateresult"
     },
     {
@@ -5140,7 +5140,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillarchiveresult",
-      "community": 58,
+      "community": 68,
       "norm_label": "taskskillarchiveresult"
     },
     {
@@ -5150,7 +5150,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillapplypreviewresult",
-      "community": 57,
+      "community": 68,
       "norm_label": "taskskillapplypreviewresult"
     },
     {
@@ -5170,7 +5170,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillsreadstore",
-      "community": 71,
+      "community": 49,
       "norm_label": "taskskillsreadstore"
     },
     {
@@ -5180,7 +5180,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store",
-      "community": 50,
+      "community": 68,
       "norm_label": "typeorm-task-skills-read.store.ts"
     },
     {
@@ -5190,7 +5190,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_taskskillwriteroles",
-      "community": 50,
+      "community": 68,
       "norm_label": "taskskillwriteroles"
     },
     {
@@ -5210,7 +5210,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
-      "community": 66,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -5320,7 +5320,7 @@
       "source_location": "L644",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_totaskskillversionsummary",
-      "community": 50,
+      "community": 68,
       "norm_label": "totaskskillversionsummary()"
     },
     {
@@ -5360,7 +5360,7 @@
       "source_location": "L715",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_totaskdetail",
-      "community": 50,
+      "community": 68,
       "norm_label": "totaskdetail()"
     },
     {
@@ -6110,7 +6110,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 66,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -6250,7 +6250,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 66,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -6894,10 +6894,30 @@
       "norm_label": "type"
     },
     {
-      "label": "scripts",
+      "label": "bin",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L7",
+      "_origin": "ast",
+      "id": "mcp_server_package_bin",
+      "community": 38,
+      "norm_label": "bin"
+    },
+    {
+      "label": "task-mcp-server",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "mcp_server_package_bin_task_mcp_server",
+      "community": 38,
+      "norm_label": "task-mcp-server"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "mcp_server_package_scripts",
       "community": 38,
@@ -6907,7 +6927,7 @@
       "label": "build",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L8",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "mcp_server_package_scripts_build",
       "community": 38,
@@ -6917,7 +6937,7 @@
       "label": "lint",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L9",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "mcp_server_package_scripts_lint",
       "community": 38,
@@ -6927,7 +6947,7 @@
       "label": "lint:fix",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L10",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "mcp_server_package_scripts_lint_fix",
       "community": 38,
@@ -6937,7 +6957,7 @@
       "label": "format",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L11",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "mcp_server_package_scripts_format",
       "community": 38,
@@ -6947,7 +6967,7 @@
       "label": "typecheck",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L12",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "mcp_server_package_scripts_typecheck",
       "community": 38,
@@ -6957,7 +6977,7 @@
       "label": "test",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L13",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "mcp_server_package_scripts_test",
       "community": 38,
@@ -6967,7 +6987,7 @@
       "label": "dependencies",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L15",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "mcp_server_package_dependencies",
       "community": 38,
@@ -6977,7 +6997,7 @@
       "label": "@modelcontextprotocol/sdk",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L16",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "mcp_server_package_dependencies_modelcontextprotocol_sdk",
       "community": 38,
@@ -6987,7 +7007,7 @@
       "label": "@task/api-client",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L17",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "mcp_server_package_dependencies_task_api_client",
       "community": 38,
@@ -6997,7 +7017,7 @@
       "label": "zod",
       "file_type": "code",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L18",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "mcp_server_package_dependencies_zod",
       "community": 38,
@@ -7050,7 +7070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_backend_client",
-      "community": 33,
+      "community": 61,
       "norm_label": "backend-client.ts"
     },
     {
@@ -7060,7 +7080,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyoperation",
-      "community": 33,
+      "community": 61,
       "norm_label": "previewtaskskillapplyoperation"
     },
     {
@@ -7070,7 +7090,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskilloperation",
-      "community": 33,
+      "community": 61,
       "norm_label": "applytaskskilloperation"
     },
     {
@@ -7090,7 +7110,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 70,
+      "community": 60,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
@@ -7110,7 +7130,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_backend_client_taskdetailresponse",
-      "community": 33,
+      "community": 61,
       "norm_label": "taskdetailresponse"
     },
     {
@@ -7120,7 +7140,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_backend_client_taskskillapplypreviewsubtaskresponse",
-      "community": 33,
+      "community": 61,
       "norm_label": "taskskillapplypreviewsubtaskresponse"
     },
     {
@@ -7140,7 +7160,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetchresponse",
-      "community": 55,
+      "community": 56,
       "norm_label": "taskbackendfetchresponse"
     },
     {
@@ -7150,7 +7170,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetch",
-      "community": 33,
+      "community": 55,
       "norm_label": "taskbackendfetch"
     },
     {
@@ -7160,7 +7180,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclientoptions",
-      "community": 33,
+      "community": 61,
       "norm_label": "taskbackendclientoptions"
     },
     {
@@ -7170,7 +7190,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_backend_client_taskskillapplyrequest",
-      "community": 70,
+      "community": 69,
       "norm_label": "taskskillapplyrequest"
     },
     {
@@ -7180,7 +7200,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclient",
-      "community": 55,
+      "community": 60,
       "norm_label": "taskbackendclient"
     },
     {
@@ -7210,7 +7230,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_backend_client_createtaskbackendclient",
-      "community": 33,
+      "community": 55,
       "norm_label": "createtaskbackendclient()"
     },
     {
@@ -7220,7 +7240,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_backend_client_defaultfetch",
-      "community": 33,
+      "community": 61,
       "norm_label": "defaultfetch()"
     },
     {
@@ -7230,7 +7250,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "src_backend_client_postjson",
-      "community": 33,
+      "community": 61,
       "norm_label": "postjson()"
     },
     {
@@ -7240,7 +7260,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_backend_client_normalizebaseurl",
-      "community": 33,
+      "community": 61,
       "norm_label": "normalizebaseurl()"
     },
     {
@@ -7250,7 +7270,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskskillapplypath",
-      "community": 33,
+      "community": 61,
       "norm_label": "buildtaskskillapplypath()"
     },
     {
@@ -7364,6 +7384,116 @@
       "norm_label": "readoptionalnullablestring()"
     },
     {
+      "label": "config.test.ts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_mcp_server_src_config_test_ts_src_config_test",
+      "community": 70,
+      "norm_label": "config.test.ts"
+    },
+    {
+      "label": "config.ts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_mcp_server_src_config_ts_src_config",
+      "community": 70,
+      "norm_label": "config.ts"
+    },
+    {
+      "label": "TaskMcpEnvironment",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_config_taskmcpenvironment",
+      "community": 55,
+      "norm_label": "taskmcpenvironment"
+    },
+    {
+      "label": "TaskMcpConfig",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "src_config_taskmcpconfig",
+      "community": 70,
+      "norm_label": "taskmcpconfig"
+    },
+    {
+      "label": "InvalidTaskMcpEnvironmentError",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "src_config_invalidtaskmcpenvironmenterror",
+      "community": 70,
+      "norm_label": "invalidtaskmcpenvironmenterror"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "src_config_invalidtaskmcpenvironmenterror_constructor",
+      "community": 70,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "parseTaskMcpConfig()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "src_config_parsetaskmcpconfig",
+      "community": 70,
+      "norm_label": "parsetaskmcpconfig()"
+    },
+    {
+      "label": "loadTaskMcpConfig()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_config_loadtaskmcpconfig",
+      "community": 55,
+      "norm_label": "loadtaskmcpconfig()"
+    },
+    {
+      "label": "parseBackendBaseUrl()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "src_config_parsebackendbaseurl",
+      "community": 70,
+      "norm_label": "parsebackendbaseurl()"
+    },
+    {
+      "label": "parseOptionalNonEmptyString()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "src_config_parseoptionalnonemptystring",
+      "community": 70,
+      "norm_label": "parseoptionalnonemptystring()"
+    },
+    {
+      "label": "formatInvalidValue()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L105",
+      "_origin": "ast",
+      "id": "apps_mcp_server_src_config_ts_src_config_formatinvalidvalue",
+      "community": 70,
+      "norm_label": "formatinvalidvalue()"
+    },
+    {
       "label": "index.ts",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/index.ts",
@@ -7372,6 +7502,16 @@
       "id": "apps_mcp_server_src_index_ts_src_index",
       "community": 55,
       "norm_label": "index.ts"
+    },
+    {
+      "label": "main.ts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/main.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_mcp_server_src_main_ts_src_main",
+      "community": 55,
+      "norm_label": "main.ts"
     },
     {
       "label": "mcp-server.test.ts",
@@ -7584,13 +7724,183 @@
       "norm_label": "totoolresult()"
     },
     {
+      "label": "runtime.test.ts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_runtime_test",
+      "community": 56,
+      "norm_label": "runtime.test.ts"
+    },
+    {
+      "label": "FetchCall",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "src_runtime_test_fetchcall",
+      "community": 56,
+      "norm_label": "fetchcall"
+    },
+    {
+      "label": "RegisteredServerTool",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "src_runtime_test_registeredservertool",
+      "community": 56,
+      "norm_label": "registeredservertool"
+    },
+    {
+      "label": "RegisteredServerToolCollection",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L94",
+      "_origin": "ast",
+      "id": "src_runtime_test_registeredservertoolcollection",
+      "community": 56,
+      "norm_label": "registeredservertoolcollection"
+    },
+    {
+      "label": "createFetchStub()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L98",
+      "_origin": "ast",
+      "id": "src_runtime_test_createfetchstub",
+      "community": 56,
+      "norm_label": "createfetchstub()"
+    },
+    {
+      "label": "readRegisteredTool()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L112",
+      "_origin": "ast",
+      "id": "src_runtime_test_readregisteredtool",
+      "community": 56,
+      "norm_label": "readregisteredtool()"
+    },
+    {
+      "label": "readRegisteredTools()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L123",
+      "_origin": "ast",
+      "id": "src_runtime_test_readregisteredtools",
+      "community": 56,
+      "norm_label": "readregisteredtools()"
+    },
+    {
+      "label": "readProperty()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L133",
+      "_origin": "ast",
+      "id": "src_runtime_test_readproperty",
+      "community": 56,
+      "norm_label": "readproperty()"
+    },
+    {
+      "label": "isRegisteredServerToolCollection()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L141",
+      "_origin": "ast",
+      "id": "src_runtime_test_isregisteredservertoolcollection",
+      "community": 56,
+      "norm_label": "isregisteredservertoolcollection()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L145",
+      "_origin": "ast",
+      "id": "src_runtime_test_isunknownrecord",
+      "community": 56,
+      "norm_label": "isunknownrecord()"
+    },
+    {
+      "label": "readTextResult()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L149",
+      "_origin": "ast",
+      "id": "src_runtime_test_readtextresult",
+      "community": 56,
+      "norm_label": "readtextresult()"
+    },
+    {
+      "label": "previewResponse",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L159",
+      "_origin": "ast",
+      "id": "src_runtime_test_previewresponse",
+      "community": 56,
+      "norm_label": "previewresponse"
+    },
+    {
+      "label": "applyResponse",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L169",
+      "_origin": "ast",
+      "id": "src_runtime_test_applyresponse",
+      "community": 56,
+      "norm_label": "applyresponse"
+    },
+    {
+      "label": "runtime.ts",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_runtime",
+      "community": 55,
+      "norm_label": "runtime.ts"
+    },
+    {
+      "label": "TaskMcpServerConnector",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "src_runtime_taskmcpserverconnector",
+      "community": 55,
+      "norm_label": "taskmcpserverconnector"
+    },
+    {
+      "label": "RunTaskMcpServerOptions",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "src_runtime_runtaskmcpserveroptions",
+      "community": 55,
+      "norm_label": "runtaskmcpserveroptions"
+    },
+    {
+      "label": "runTaskMcpServerFromEnvironment()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "src_runtime_runtaskmcpserverfromenvironment",
+      "community": 55,
+      "norm_label": "runtaskmcpserverfromenvironment()"
+    },
+    {
       "label": "task-skill-tools.test.ts",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/task-skill-tools.test.ts",
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_task_skill_tools_test",
-      "community": 70,
+      "community": 60,
       "norm_label": "task-skill-tools.test.ts"
     },
     {
@@ -7600,7 +7910,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_toolinput",
-      "community": 70,
+      "community": 60,
       "norm_label": "toolinput"
     },
     {
@@ -7610,7 +7920,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_previewresponse",
-      "community": 70,
+      "community": 60,
       "norm_label": "previewresponse"
     },
     {
@@ -7620,7 +7930,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_applyresponse",
-      "community": 70,
+      "community": 60,
       "norm_label": "applyresponse"
     },
     {
@@ -7630,7 +7940,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_createbackendclientstub",
-      "community": 70,
+      "community": 60,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -7670,7 +7980,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_task_skill_tools_taskskilltoolinputerror",
-      "community": 70,
+      "community": 60,
       "norm_label": "taskskilltoolinputerror"
     },
     {
@@ -7680,7 +7990,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_task_skill_tools_taskskilltoolinputerror_constructor",
-      "community": 70,
+      "community": 60,
       "norm_label": ".constructor()"
     },
     {
@@ -13210,6 +13520,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "apps_api_src_main_ts_src_main",
+      "target": "src_app_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/app.module.ts",
       "source_location": "L4",
       "weight": 1.0,
@@ -13404,15 +13725,15 @@
       "target": "src_app_module"
     },
     {
-      "relation": "imports_from",
+      "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/main.ts",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
-      "target": "src_app_module"
+      "source": "apps_api_src_main_ts_src_main",
+      "target": "src_app_module_appmodule",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -13423,17 +13744,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_generate_openapi",
-      "target": "src_app_module_appmodule"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
       "target": "src_app_module_appmodule"
     },
     {
@@ -16838,15 +17148,15 @@
       "target": "entities_workspace_member_entity_workspacememberentity"
     },
     {
-      "relation": "imports_from",
+      "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/config.test.ts",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config_test",
-      "target": "src_config"
+      "source": "apps_api_src_config_test_ts_src_config_test",
+      "target": "src_config_invalidapienvironmenterror",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -16855,61 +17165,9 @@
       "source_file": "apps/api/src/config.test.ts",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config_test",
-      "target": "src_config_invalidapienvironmenterror"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/config.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config_test",
-      "target": "src_config_parseapiconfig"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/database/database.module.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "database_database_module",
-      "target": "src_config"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/config.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_apiconfig"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/config.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_apidatabaseconfig"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/config.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_apienvironment"
+      "source": "apps_api_src_config_test_ts_src_config_test",
+      "target": "src_config_parseapiconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16917,92 +17175,89 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L107",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_formatinvalidvalue"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "apps_api_src_config_ts_src_config_formatinvalidvalue",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/config.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_invalidapienvironmenterror"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_apiconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/config.ts",
-      "source_location": "L26",
+      "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_loadapiconfig"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_apidatabaseconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/config.ts",
-      "source_location": "L20",
+      "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_parseapiconfig"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_apienvironment",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/config.ts",
-      "source_location": "L55",
+      "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_parsedatabaseconfig"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_invalidapienvironmenterror",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/config.ts",
-      "source_location": "L30",
+      "source_location": "L35",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_config",
-      "target": "src_config_parseport"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_loadapiconfig",
+      "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/data-source.ts",
-      "source_location": "L2",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L28",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_data_source",
-      "target": "src_config"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_parseapiconfig",
+      "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/data-source.test.ts",
-      "source_location": "L3",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L57",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_data_source_test",
-      "target": "src_config"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_parsedatabaseconfig",
+      "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L7",
+      "source_file": "apps/api/src/config.ts",
+      "source_location": "L39",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
-      "target": "src_config"
+      "source": "apps_api_src_config_ts_src_config",
+      "target": "src_config_parseport",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -17032,9 +17287,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "src_config_invalidapienvironmenterror_constructor",
-      "target": "src_config_formatinvalidvalue"
+      "target": "apps_api_src_config_ts_src_config_formatinvalidvalue",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -17084,6 +17339,17 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/main.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "apps_api_src_main_ts_src_main",
+      "target": "src_config_loadapiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/database/database.module.ts",
       "source_location": "L3",
       "weight": 1.0,
@@ -17100,17 +17366,6 @@
       "source_location": "L13",
       "weight": 1.0,
       "source": "database_database_module_apidatasourceprovider_constructor",
-      "target": "src_config_loadapiconfig"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/main.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
       "target": "src_config_loadapiconfig"
     },
     {
@@ -18503,33 +18758,33 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/main.ts",
-      "source_location": "L23",
+      "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
-      "target": "src_main_bootstrap"
+      "source": "apps_api_src_main_ts_src_main",
+      "target": "src_main_bootstrap",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/main.ts",
-      "source_location": "L6",
+      "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
-      "target": "src_openapi"
+      "source": "apps_api_src_main_ts_src_main",
+      "target": "src_openapi",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/main.ts",
-      "source_location": "L6",
+      "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_main",
-      "target": "src_openapi_createopenapidocument"
+      "source": "apps_api_src_main_ts_src_main",
+      "target": "src_openapi_createopenapidocument",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -32832,11 +33087,21 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/mcp-server/package.json",
-      "source_location": "L15",
+      "source_location": "L7",
       "weight": 1.0,
       "source": "mcp_server_package",
-      "target": "mcp_server_package_dependencies",
+      "target": "mcp_server_package_bin",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mcp_server_package",
+      "target": "mcp_server_package_dependencies"
     },
     {
       "relation": "contains",
@@ -32844,9 +33109,9 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package",
-      "target": "mcp_server_package_description",
-      "confidence_score": 1.0
+      "target": "mcp_server_package_description"
     },
     {
       "relation": "contains",
@@ -32854,9 +33119,9 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package",
-      "target": "mcp_server_package_name",
-      "confidence_score": 1.0
+      "target": "mcp_server_package_name"
     },
     {
       "relation": "contains",
@@ -32864,9 +33129,9 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package",
-      "target": "mcp_server_package_private",
-      "confidence_score": 1.0
+      "target": "mcp_server_package_private"
     },
     {
       "relation": "contains",
@@ -32874,9 +33139,9 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package",
-      "target": "mcp_server_package_scripts",
-      "confidence_score": 1.0
+      "target": "mcp_server_package_scripts"
     },
     {
       "relation": "contains",
@@ -32884,9 +33149,9 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package",
-      "target": "mcp_server_package_type",
-      "confidence_score": 1.0
+      "target": "mcp_server_package_type"
     },
     {
       "relation": "contains",
@@ -32894,8 +33159,18 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package",
-      "target": "mcp_server_package_version",
+      "target": "mcp_server_package_version"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "mcp_server_package_bin",
+      "target": "mcp_server_package_bin_task_mcp_server",
       "confidence_score": 1.0
     },
     {
@@ -32964,9 +33239,9 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package_dependencies",
-      "target": "mcp_server_package_dependencies_modelcontextprotocol_sdk",
-      "confidence_score": 1.0
+      "target": "mcp_server_package_dependencies_modelcontextprotocol_sdk"
     },
     {
       "relation": "contains",
@@ -32984,9 +33259,9 @@
       "source_file": "apps/mcp-server/package.json",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_server_package_dependencies",
-      "target": "mcp_server_package_dependencies_zod",
-      "confidence_score": 1.0
+      "target": "mcp_server_package_dependencies_zod"
     },
     {
       "relation": "imports_from",
@@ -33413,9 +33688,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_backend_client",
-      "confidence_score": 1.0
+      "target": "src_backend_client"
     },
     {
       "relation": "imports_from",
@@ -33424,7 +33699,29 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
+      "target": "src_backend_client"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_backend_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime_test",
       "target": "src_backend_client",
       "confidence_score": 1.0
     },
@@ -33490,7 +33787,18 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
+      "target": "src_backend_client_previewtaskskillapplyresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime_test",
       "target": "src_backend_client_previewtaskskillapplyresponse",
       "confidence_score": 1.0
     },
@@ -33534,7 +33842,18 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
+      "target": "src_backend_client_applytaskskillresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime_test",
       "target": "src_backend_client_applytaskskillresponse",
       "confidence_score": 1.0
     },
@@ -33572,6 +33891,17 @@
       "target": "src_backend_client_taskbackendfetchinit"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_backend_client_taskbackendfetchinit",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "re_exports",
       "context": "re-export",
       "confidence": "EXTRACTED",
@@ -33583,6 +33913,17 @@
       "target": "src_backend_client_taskbackendfetchresponse"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_backend_client_taskbackendfetchresponse",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "re_exports",
       "context": "re-export",
       "confidence": "EXTRACTED",
@@ -33592,6 +33933,28 @@
       "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
       "target": "src_backend_client_taskbackendfetch"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_backend_client_taskbackendfetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_backend_client_taskbackendfetch",
+      "confidence_score": 1.0
     },
     {
       "relation": "re_exports",
@@ -33622,9 +33985,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_backend_client_taskskillapplyrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskskillapplyrequest"
     },
     {
       "relation": "imports",
@@ -33655,9 +34018,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_backend_client_taskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclient"
     },
     {
       "relation": "imports",
@@ -33666,9 +34029,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_backend_client_taskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclient"
     },
     {
       "relation": "imports",
@@ -33734,6 +34097,28 @@
       "confidence_score": 1.0,
       "source": "src_backend_client_createtaskbackendclient",
       "target": "src_backend_client_normalizebaseurl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_backend_client_createtaskbackendclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_runtime_runtaskmcpserverfromenvironment",
+      "target": "src_backend_client_createtaskbackendclient"
     },
     {
       "relation": "calls",
@@ -33967,15 +34352,259 @@
       "target": "src_backend_client_readproperty"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_test_ts_src_config_test",
+      "target": "src_config_invalidtaskmcpenvironmenterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_test_ts_src_config_test",
+      "target": "src_config_parsetaskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "apps_mcp_server_src_config_ts_src_config_formatinvalidvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "src_config_invalidtaskmcpenvironmenterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "src_config_loadtaskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "src_config_parsebackendbaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "src_config_parseoptionalnonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "src_config_parsetaskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "src_config_taskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_config_ts_src_config",
+      "target": "src_config_taskmcpenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_config_taskmcpenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_config_taskmcpenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_config_taskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_config_invalidtaskmcpenvironmenterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "src_config_invalidtaskmcpenvironmenterror",
+      "target": "src_config_invalidtaskmcpenvironmenterror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_config_invalidtaskmcpenvironmenterror_constructor",
+      "target": "apps_mcp_server_src_config_ts_src_config_formatinvalidvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_config_parsetaskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "src_config_loadtaskmcpconfig",
+      "target": "src_config_parsetaskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "src_config_parsetaskmcpconfig",
+      "target": "src_config_parsebackendbaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/config.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "src_config_parsetaskmcpconfig",
+      "target": "src_config_parseoptionalnonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_config_loadtaskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_config_loadtaskmcpconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "src_runtime_runtaskmcpserverfromenvironment",
+      "target": "src_config_loadtaskmcpconfig"
+    },
+    {
       "relation": "re_exports",
       "context": "export",
       "confidence": "EXTRACTED",
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server",
-      "confidence_score": 1.0
+      "target": "src_mcp_server"
     },
     {
       "relation": "re_exports",
@@ -33984,9 +34613,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server_connecttaskmcpservertostdio",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_connecttaskmcpservertostdio"
     },
     {
       "relation": "re_exports",
@@ -33995,9 +34624,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server_createtaskmcpserver",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_createtaskmcpserver"
     },
     {
       "relation": "re_exports",
@@ -34006,9 +34635,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server_registertaskskillapplytools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registertaskskillapplytools"
     },
     {
       "relation": "re_exports",
@@ -34017,9 +34646,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server_taskmcpserveroptions",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_taskmcpserveroptions"
     },
     {
       "relation": "re_exports",
@@ -34028,8 +34657,52 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server_taskskilltoolregistrar",
+      "target": "src_mcp_server_taskskilltoolregistrar"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_runtime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_runtime_runtaskmcpserverfromenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_runtime_runtaskmcpserveroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_runtime_taskmcpserverconnector",
       "confidence_score": 1.0
     },
     {
@@ -34102,12 +34775,34 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/main.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_main_ts_src_main",
+      "target": "src_runtime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/main.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_main_ts_src_main",
+      "target": "src_runtime_runtaskmcpserverfromenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server",
-      "confidence_score": 1.0
+      "target": "src_mcp_server"
     },
     {
       "relation": "imports",
@@ -34116,9 +34811,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_createtaskmcpserver",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_createtaskmcpserver"
     },
     {
       "relation": "imports",
@@ -34127,9 +34822,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_registertaskskillapplytools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registertaskskillapplytools"
     },
     {
       "relation": "imports",
@@ -34138,9 +34833,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_taskskilltoolregistrar",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_taskskilltoolregistrar"
     },
     {
       "relation": "contains",
@@ -34148,9 +34843,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_applyresponse",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_applyresponse"
     },
     {
       "relation": "contains",
@@ -34158,9 +34853,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L144",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_createbackendclientstub",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_createbackendclientstub"
     },
     {
       "relation": "contains",
@@ -34168,9 +34863,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L135",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_createregistrar",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_createregistrar"
     },
     {
       "relation": "contains",
@@ -34178,9 +34873,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L173",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_isunknownrecord"
     },
     {
       "relation": "contains",
@@ -34188,9 +34883,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_previewresponse",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_previewresponse"
     },
     {
       "relation": "contains",
@@ -34198,9 +34893,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L151",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_readbackendrequestinput",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_readbackendrequestinput"
     },
     {
       "relation": "contains",
@@ -34208,9 +34903,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L177",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_readstring",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_readstring"
     },
     {
       "relation": "contains",
@@ -34218,9 +34913,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L187",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_readtextresult",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_readtextresult"
     },
     {
       "relation": "contains",
@@ -34228,9 +34923,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L125",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_registeredtoolcall",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_registeredtoolcall"
     },
     {
       "relation": "contains",
@@ -34238,9 +34933,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_toolinput",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_toolinput"
     },
     {
       "relation": "calls",
@@ -34249,9 +34944,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L152",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test_readbackendrequestinput",
-      "target": "src_mcp_server_test_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -34260,9 +34955,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L156",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test_readbackendrequestinput",
-      "target": "src_mcp_server_test_readstring",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_readstring"
     },
     {
       "relation": "contains",
@@ -34270,9 +34965,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_connecttaskmcpservertostdio",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_connecttaskmcpservertostdio"
     },
     {
       "relation": "contains",
@@ -34280,9 +34975,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_createtaskmcpserver",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_createtaskmcpserver"
     },
     {
       "relation": "contains",
@@ -34290,9 +34985,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_registertaskskillapplytools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registertaskskillapplytools"
     },
     {
       "relation": "contains",
@@ -34300,9 +34995,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_taskmcpserveroptions",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_taskmcpserveroptions"
     },
     {
       "relation": "contains",
@@ -34310,9 +35005,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_taskskillapplyinputschema",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_taskskillapplyinputschema"
     },
     {
       "relation": "contains",
@@ -34320,9 +35015,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_taskskillapplymcpargs",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_taskskillapplymcpargs"
     },
     {
       "relation": "contains",
@@ -34330,9 +35025,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_taskskilltoolcallback",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_taskskilltoolcallback"
     },
     {
       "relation": "contains",
@@ -34340,9 +35035,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_taskskilltoolregistrar",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_taskskilltoolregistrar"
     },
     {
       "relation": "contains",
@@ -34350,9 +35045,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_totoolresult",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_totoolresult"
     },
     {
       "relation": "imports_from",
@@ -34361,9 +35056,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_task_skill_tools",
-      "confidence_score": 1.0
+      "target": "src_task_skill_tools"
     },
     {
       "relation": "imports",
@@ -34372,9 +35067,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_task_skill_tools_createtaskskilltoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_task_skill_tools_createtaskskilltoolhandlers"
     },
     {
       "relation": "imports",
@@ -34383,8 +35078,19 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_task_skill_tools_taskskilltoolhandlers",
+      "target": "src_task_skill_tools_taskskilltoolhandlers"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_mcp_server",
       "confidence_score": 1.0
     },
     {
@@ -34394,9 +35100,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_createtaskmcpserver",
-      "target": "src_mcp_server_registertaskskillapplytools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registertaskskillapplytools"
     },
     {
       "relation": "calls",
@@ -34408,6 +35114,266 @@
       "weight": 1.0,
       "source": "src_mcp_server_createtaskmcpserver",
       "target": "src_task_skill_tools_createtaskskilltoolhandlers"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_mcp_server_createtaskmcpserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "src_runtime_runtaskmcpserverfromenvironment",
+      "target": "src_mcp_server_createtaskmcpserver"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_mcp_server_connecttaskmcpservertostdio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_runtaskmcpserverfromenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L169",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_applyresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_createfetchstub",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_fetchcall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L141",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_isregisteredservertoolcollection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L159",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_previewresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L112",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_readregisteredtool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_readregisteredtools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L149",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_readtextresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_registeredservertool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "src_runtime_test",
+      "target": "src_runtime_test_registeredservertoolcollection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L113",
+      "weight": 1.0,
+      "source": "src_runtime_test_readregisteredtool",
+      "target": "src_runtime_test_readregisteredtools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "src_runtime_test_readregisteredtools",
+      "target": "src_runtime_test_isregisteredservertoolcollection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "src_runtime_test_readregisteredtools",
+      "target": "src_runtime_test_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "src_runtime_test_readproperty",
+      "target": "src_runtime_test_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.test.ts",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "src_runtime_test_isregisteredservertoolcollection",
+      "target": "src_runtime_test_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_runtime_runtaskmcpserverfromenvironment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_runtime_runtaskmcpserveroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/runtime.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_runtime",
+      "target": "src_runtime_taskmcpserverconnector",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -39257,5 +40223,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0559eacbabdad9656cfcff419b37153d8cf0860f"
+  "built_at_commit": "7a90f90497b41ad6a3479caf47934d3609b8e3bf"
 }

@@ -4,6 +4,9 @@
   "private": true,
   "description": "MCP server application for tAsk.",
   "type": "module",
+  "bin": {
+    "task-mcp-server": "./dist/main.js"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "biome check .",
