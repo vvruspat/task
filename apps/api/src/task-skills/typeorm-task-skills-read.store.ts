@@ -19,6 +19,7 @@ import type {
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import type {
+  TaskSkillArchiveResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
   TaskSkillMetadataUpdateResult,
@@ -340,6 +341,73 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
     }
 
     return { status: "updated", taskSkill: updated };
+  }
+
+  async archiveForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+  ): Promise<TaskSkillArchiveResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null) {
+      return { status: "workspace_not_found" };
+    }
+
+    if (!taskSkillWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const archived = await dataSource.transaction(
+      async (manager): Promise<TaskSkillDetail | null> => {
+        const skillRepository = manager.getRepository(TaskSkillEntity);
+        const skill = await skillRepository.findOneBy({
+          archivedAt: IsNull(),
+          id: taskSkillId,
+          workspaceId,
+        });
+
+        if (skill === null) {
+          return null;
+        }
+
+        skill.archivedAt = new Date();
+
+        const savedSkill = await skillRepository.save(skill);
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "task_skill.archived",
+          entityType: "task_skill",
+          entityId: savedSkill.id,
+          payload: {
+            name: savedSkill.name,
+          },
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        const versions = await manager.getRepository(TaskSkillVersionEntity).find({
+          where: { taskSkillId, workspaceId },
+          order: { version: "DESC", createdAt: "DESC" },
+        });
+
+        return {
+          ...toTaskSkillSummary(savedSkill),
+          versions: versions.map((version) => toTaskSkillVersionSummary(version)),
+        };
+      },
+    );
+
+    if (archived === null) {
+      return { status: "task_skill_not_found" };
+    }
+
+    return { status: "archived", taskSkill: archived };
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {

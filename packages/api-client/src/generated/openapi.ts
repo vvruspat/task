@@ -239,7 +239,8 @@ export interface paths {
     get: operations["TaskSkillsController_getTaskSkill"];
     put?: never;
     post?: never;
-    delete?: never;
+    /** Archive one active task skill */
+    delete: operations["TaskSkillsController_archiveTaskSkill"];
     options?: never;
     head?: never;
     /** Update task skill metadata in a visible workspace */
@@ -1301,6 +1302,45 @@ export interface operations {
         };
       };
       /** @description Workspace or task skill is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_archiveTaskSkill: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        taskSkillId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillDetailDto"];
+        };
+      };
+      /** @description Current user cannot archive task skills in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or active task skill is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;

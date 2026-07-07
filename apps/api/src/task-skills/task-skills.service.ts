@@ -121,4 +121,26 @@ export class TaskSkillsService {
 
     return new TaskSkillDetailDto(result.taskSkill);
   }
+
+  async archiveTaskSkill(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+  ): Promise<TaskSkillDetailDto> {
+    const result = await this.readStore.archiveForWorkspace(workspaceId, taskSkillId, userId);
+
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    if (result.status === "task_skill_not_found") {
+      throw new NotFoundException("Task skill was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot archive task skills in this workspace.");
+    }
+
+    return new TaskSkillDetailDto(result.taskSkill);
+  }
 }
