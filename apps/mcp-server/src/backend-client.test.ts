@@ -9,6 +9,7 @@ import {
   type TaskBackendFetchInit,
   type TaskDetailResponse,
   type TaskSummaryResponse,
+  type WorkspaceStatusResponse,
 } from "./backend-client.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -19,6 +20,17 @@ const userId = "55555555-5555-4555-8555-555555555555";
 const rootTaskId = "66666666-6666-4666-8666-666666666666";
 const subtaskId = "77777777-7777-4777-8777-777777777777";
 const timestamp = "2026-01-01T00:00:00.000Z";
+
+const workspaceStatus: WorkspaceStatusResponse = {
+  id: "99999999-9999-4999-8999-999999999999",
+  workspaceId,
+  name: "In progress",
+  color: "#3b82f6",
+  position: "1000",
+  isDone: false,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
 
 const projectSummary: ProjectSummaryResponse = {
   id: projectId,
@@ -124,6 +136,24 @@ test("listActiveProjects gets typed project summaries with trusted user context"
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
   assert.deepEqual(response, [projectSummary]);
+});
+
+test("listWorkspaceStatuses gets typed workspace statuses with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [workspaceStatus]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listWorkspaceStatuses({ workspaceId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(fetchCalls[0]?.input, `https://api.task.local/workspaces/${workspaceId}/statuses`);
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.deepEqual(response, [workspaceStatus]);
 });
 
 test("getProject gets typed project detail with trusted user context", async () => {
@@ -442,6 +472,18 @@ test("backend client rejects malformed project list responses", async () => {
   await assert.rejects(
     () => client.listActiveProjects({ workspaceId, userId }),
     /title must be a string/,
+  );
+});
+
+test("backend client rejects malformed status list responses", async () => {
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local",
+    fetch: createJsonFetch([], [{ ...workspaceStatus, isDone: "false" }]),
+  });
+
+  await assert.rejects(
+    () => client.listWorkspaceStatuses({ workspaceId, userId }),
+    /isDone must be a boolean/,
   );
 });
 

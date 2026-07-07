@@ -7,6 +7,7 @@ import type {
   TaskDetailResponse,
   TaskSkillApplyRequest,
   TaskSummaryResponse,
+  WorkspaceStatusResponse,
 } from "./backend-client.js";
 import {
   createTaskSkillToolHandlers,
@@ -156,6 +157,9 @@ test("task skill tool handlers forward apply inputs to the backend client", asyn
 
 function createBackendClientStub(calls: TaskSkillApplyRequest[]): TaskBackendClient {
   return {
+    listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async () => {
       throw new Error("Not implemented.");
     },

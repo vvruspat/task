@@ -11,6 +11,7 @@ export {
   type GetTaskRequest,
   type ListActiveProjectsRequest,
   type ListActiveTasksRequest,
+  type ListWorkspaceStatusesRequest,
   type PreviewTaskSkillApplyInput,
   type PreviewTaskSkillApplyResponse,
   type ProjectDetailResponse,
@@ -32,6 +33,7 @@ export {
   type UpdateTaskDueDateRequest,
   type UpdateTaskStatusInput,
   type UpdateTaskStatusRequest,
+  type WorkspaceStatusResponse,
 } from "./backend-client.js";
 
 export {
@@ -46,6 +48,7 @@ export {
   connectTaskMcpServerToStdio,
   createTaskMcpServer,
   registerProjectTools,
+  registerStatusTools,
   registerTaskSkillApplyTools,
   registerTaskTools,
   type TaskMcpServerOptions,
@@ -68,6 +71,13 @@ export {
   runTaskMcpServerFromEnvironment,
   type TaskMcpServerConnector,
 } from "./runtime.js";
+export {
+  createStatusToolHandlers,
+  parseStatusListToolInput,
+  type StatusListToolInput,
+  type StatusToolHandlers,
+  StatusToolInputError,
+} from "./status-tools.js";
 export {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
