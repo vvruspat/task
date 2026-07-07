@@ -3,6 +3,7 @@ import type { components, operations } from "@task/api-client";
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
+type GetProjectOperation = operations["ProjectsController_getProject"];
 
 export type PreviewTaskSkillApplyInput =
   PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
@@ -12,6 +13,8 @@ export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
 export type ProjectSummaryResponse =
   ListActiveProjectsOperation["responses"]["200"]["content"]["application/json"][number];
+export type ProjectDetailResponse =
+  GetProjectOperation["responses"]["200"]["content"]["application/json"];
 type TaskDetailResponse = components["schemas"]["TaskDetailDto"];
 type TaskSkillApplyPreviewSubtaskResponse =
   components["schemas"]["TaskSkillApplyPreviewSubtaskDto"];
@@ -65,8 +68,15 @@ export type ListActiveProjectsRequest = {
   userId: string;
 };
 
+export type GetProjectRequest = {
+  workspaceId: string;
+  projectId: string;
+  userId: string;
+};
+
 export type TaskBackendClient = {
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
+  getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   previewTaskSkillApply(request: TaskSkillApplyRequest): Promise<PreviewTaskSkillApplyResponse>;
   applyTaskSkill(request: TaskSkillApplyRequest): Promise<ApplyTaskSkillResponse>;
 };
@@ -95,6 +105,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildWorkspaceProjectsPath(request.workspaceId),
         request.userId,
         readProjectSummaryList,
+      ),
+    getProject: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceProjectPath(request.workspaceId, request.projectId),
+        request.userId,
+        readProjectDetail,
       ),
     previewTaskSkillApply: (request) =>
       postJson(
@@ -207,12 +225,50 @@ function buildWorkspaceProjectsPath(workspaceId: string): string {
   return `/workspaces/${encodeURIComponent(workspaceId)}/projects`;
 }
 
+function buildWorkspaceProjectPath(workspaceId: string, projectId: string): string {
+  return `${buildWorkspaceProjectsPath(workspaceId)}/${encodeURIComponent(projectId)}`;
+}
+
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {
   if (!Array.isArray(value)) {
     throw new Error("project summary list must be an array.");
   }
 
   return value.map(readProjectSummary);
+}
+
+function readProjectDetail(value: unknown): ProjectDetailResponse {
+  const record = readRecord(value, "project detail");
+  const project: ProjectDetailResponse = {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    title: readString(record, "title"),
+    createdByUserId: readString(record, "createdByUserId"),
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
+  const description = readOptionalNullableString(record, "description");
+  const status = readOptionalNullableString(record, "status");
+  const position = readOptionalNullableString(record, "position");
+  const archivedAt = readOptionalNullableString(record, "archivedAt");
+
+  if (description !== undefined) {
+    project.description = description;
+  }
+
+  if (status !== undefined) {
+    project.status = status;
+  }
+
+  if (position !== undefined) {
+    project.position = position;
+  }
+
+  if (archivedAt !== undefined) {
+    project.archivedAt = archivedAt;
+  }
+
+  return project;
 }
 
 function readProjectSummary(value: unknown): ProjectSummaryResponse {
