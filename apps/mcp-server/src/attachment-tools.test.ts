@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import {
+  AttachmentToolInputError,
+  createAttachmentToolHandlers,
+  parseAttachmentListToolInput,
+} from "./attachment-tools.js";
 import type {
   ApplyTaskSkillResponse,
+  ListTaskAttachmentsRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
@@ -12,72 +18,82 @@ import type {
   TaskSummaryResponse,
   WorkspaceStatusResponse,
 } from "./backend-client.js";
-import {
-  createStatusToolHandlers,
-  parseStatusListToolInput,
-  StatusToolInputError,
-} from "./status-tools.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
+const projectId = "22222222-2222-4222-8222-222222222222";
+const taskId = "66666666-6666-4666-8666-666666666666";
 const userId = "55555555-5555-4555-8555-555555555555";
-const statusId = "88888888-8888-4888-8888-888888888888";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
-const workspaceStatus: WorkspaceStatusResponse = {
-  id: statusId,
+const taskAttachment: TaskAttachmentResponse = {
+  id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
   workspaceId,
-  name: "In progress",
-  color: "#3b82f6",
-  position: "1000",
-  isDone: false,
+  targetType: "task",
+  targetId: taskId,
+  kind: "link",
+  title: "Reference mix",
+  url: "https://example.com/reference",
+  storageKey: null,
+  telegramFileId: null,
+  mimeType: null,
+  sizeBytes: null,
+  createdByUserId: userId,
   createdAt: timestamp,
-  updatedAt: timestamp,
 };
 
-test("parseStatusListToolInput validates and normalizes status list payloads", () => {
+test("parseAttachmentListToolInput validates and normalizes attachment list payloads", () => {
   assert.deepEqual(
-    parseStatusListToolInput({
+    parseAttachmentListToolInput({
       workspaceId: ` ${workspaceId} `,
+      projectId,
+      taskId,
       userId,
     }),
     {
       workspaceId,
+      projectId,
+      taskId,
       userId,
     },
   );
 
   assert.throws(
-    () => parseStatusListToolInput({ workspaceId: "bad", userId }),
-    StatusToolInputError,
+    () => parseAttachmentListToolInput({ workspaceId, projectId: "bad", taskId, userId }),
+    AttachmentToolInputError,
   );
-  assert.throws(() => parseStatusListToolInput({ workspaceId }), StatusToolInputError);
+  assert.throws(
+    () => parseAttachmentListToolInput({ workspaceId, projectId, userId }),
+    AttachmentToolInputError,
+  );
 });
 
-test("status list handler forwards workspace identifiers to the backend client", async () => {
-  const calls: Array<{ workspaceId: string; userId: string }> = [];
-  const handlers = createStatusToolHandlers(createBackendClientStub([workspaceStatus], calls));
+test("attachment list handler forwards task identifiers to the backend client", async () => {
+  const calls: ListTaskAttachmentsRequest[] = [];
+  const handlers = createAttachmentToolHandlers(createBackendClientStub([taskAttachment], calls));
 
-  assert.deepEqual(await handlers.list({ workspaceId, userId }), [workspaceStatus]);
-  assert.deepEqual(calls, [{ workspaceId, userId }]);
+  assert.deepEqual(await handlers.list({ workspaceId, projectId, taskId, userId }), [
+    taskAttachment,
+  ]);
+  assert.deepEqual(calls, [{ workspaceId, projectId, taskId, userId }]);
 });
 
 function createBackendClientStub(
-  statuses: WorkspaceStatusResponse[],
-  listWorkspaceStatusesCalls: Array<{ workspaceId: string; userId: string }>,
+  attachments: TaskAttachmentResponse[],
+  listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [],
 ): TaskBackendClient {
   return {
-    listWorkspaceStatuses: async (request): Promise<WorkspaceStatusResponse[]> => {
-      listWorkspaceStatusesCalls.push(request);
+    listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
+      throw new Error("Not implemented.");
+    },
+    listTaskAttachments: async (request): Promise<TaskAttachmentResponse[]> => {
+      listTaskAttachmentsCalls.push(request);
 
-      return statuses;
+      return attachments;
     },
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");
     },
     createTaskComment: async (): Promise<TaskCommentResponse> => {
-      throw new Error("Not implemented.");
-    },
-    listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => {
       throw new Error("Not implemented.");
     },
     createProject: async (): Promise<ProjectDetailResponse> => {

@@ -1,6 +1,14 @@
 export const mcpServerAppPackageName = "@task/mcp-server";
 
 export {
+  type AttachmentListToolInput,
+  type AttachmentToolHandlers,
+  AttachmentToolInputError,
+  createAttachmentToolHandlers,
+  parseAttachmentListToolInput,
+} from "./attachment-tools.js";
+
+export {
   type ApplyTaskSkillResponse,
   type CreateProjectInput,
   type CreateProjectRequest,
@@ -13,12 +21,14 @@ export {
   type GetTaskRequest,
   type ListActiveProjectsRequest,
   type ListActiveTasksRequest,
+  type ListTaskAttachmentsRequest,
   type ListTaskCommentsRequest,
   type ListWorkspaceStatusesRequest,
   type PreviewTaskSkillApplyInput,
   type PreviewTaskSkillApplyResponse,
   type ProjectDetailResponse,
   type ProjectSummaryResponse,
+  type TaskAttachmentResponse,
   type TaskBackendClient,
   TaskBackendClientError,
   type TaskBackendClientOptions,
@@ -61,6 +71,7 @@ export {
 export {
   connectTaskMcpServerToStdio,
   createTaskMcpServer,
+  registerAttachmentTools,
   registerCommentTools,
   registerProjectTools,
   registerStatusTools,

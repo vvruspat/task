@@ -9,6 +9,7 @@ type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ListActiveTasksOperation = operations["TasksController_listActiveTasks"];
 type ListTaskCommentsOperation = operations["CommentsController_listTaskComments"];
 type CreateTaskCommentOperation = operations["CommentsController_createTaskComment"];
+type ListTaskAttachmentsOperation = operations["AttachmentsController_listTaskAttachments"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
@@ -42,6 +43,8 @@ export type TaskSummaryResponse =
   ListActiveTasksOperation["responses"]["200"]["content"]["application/json"][number];
 export type TaskCommentResponse =
   ListTaskCommentsOperation["responses"]["200"]["content"]["application/json"][number];
+export type TaskAttachmentResponse =
+  ListTaskAttachmentsOperation["responses"]["200"]["content"]["application/json"][number];
 export type TaskDetailResponse =
   GetTaskOperation["responses"]["200"]["content"]["application/json"];
 type TaskSkillApplyPreviewSubtaskResponse =
@@ -139,6 +142,13 @@ export type CreateTaskCommentRequest = {
   body: CreateTaskCommentInput;
 };
 
+export type ListTaskAttachmentsRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+};
+
 export type GetTaskRequest = {
   workspaceId: string;
   projectId: string;
@@ -185,6 +195,7 @@ export type TaskBackendClient = {
   listActiveTasks(request: ListActiveTasksRequest): Promise<TaskSummaryResponse[]>;
   listTaskComments(request: ListTaskCommentsRequest): Promise<TaskCommentResponse[]>;
   createTaskComment(request: CreateTaskCommentRequest): Promise<TaskCommentResponse>;
+  listTaskAttachments(request: ListTaskAttachmentsRequest): Promise<TaskAttachmentResponse[]>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
   updateTaskStatus(request: UpdateTaskStatusRequest): Promise<TaskDetailResponse>;
@@ -268,6 +279,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.userId,
         request.body,
         readTaskComment,
+      ),
+    listTaskAttachments: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskAttachmentsPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        readTaskAttachmentList,
       ),
     getTask: (request) =>
       getJson(
@@ -498,6 +517,10 @@ function buildTaskCommentsPath(workspaceId: string, projectId: string, taskId: s
   return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/comments`;
 }
 
+function buildTaskAttachmentsPath(workspaceId: string, projectId: string, taskId: string): string {
+  return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/attachments`;
+}
+
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {
   if (!Array.isArray(value)) {
     throw new Error("project summary list must be an array.");
@@ -530,6 +553,14 @@ function readTaskCommentList(value: unknown): TaskCommentResponse[] {
   return value.map(readTaskComment);
 }
 
+function readTaskAttachmentList(value: unknown): TaskAttachmentResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("task attachment list must be an array.");
+  }
+
+  return value.map(readTaskAttachment);
+}
+
 function readWorkspaceStatus(value: unknown): WorkspaceStatusResponse {
   const record = readRecord(value, "workspace status");
 
@@ -557,6 +588,69 @@ function readTaskComment(value: unknown): TaskCommentResponse {
     createdAt: readString(record, "createdAt"),
     updatedAt: readString(record, "updatedAt"),
   };
+}
+
+function readTaskAttachment(value: unknown): TaskAttachmentResponse {
+  const record = readRecord(value, "task attachment");
+  const targetType = readString(record, "targetType");
+  const kind = readString(record, "kind");
+  const attachment: TaskAttachmentResponse = {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    targetId: readString(record, "targetId"),
+    targetType: readAttachmentTargetType(targetType),
+    kind: readAttachmentKind(kind),
+    createdByUserId: readString(record, "createdByUserId"),
+    createdAt: readString(record, "createdAt"),
+  };
+  const title = readOptionalNullableString(record, "title");
+  const url = readOptionalNullableString(record, "url");
+  const storageKey = readOptionalNullableString(record, "storageKey");
+  const telegramFileId = readOptionalNullableString(record, "telegramFileId");
+  const mimeType = readOptionalNullableString(record, "mimeType");
+  const sizeBytes = readOptionalNullableString(record, "sizeBytes");
+
+  if (title !== undefined) {
+    attachment.title = title;
+  }
+
+  if (url !== undefined) {
+    attachment.url = url;
+  }
+
+  if (storageKey !== undefined) {
+    attachment.storageKey = storageKey;
+  }
+
+  if (telegramFileId !== undefined) {
+    attachment.telegramFileId = telegramFileId;
+  }
+
+  if (mimeType !== undefined) {
+    attachment.mimeType = mimeType;
+  }
+
+  if (sizeBytes !== undefined) {
+    attachment.sizeBytes = sizeBytes;
+  }
+
+  return attachment;
+}
+
+function readAttachmentTargetType(value: string): TaskAttachmentResponse["targetType"] {
+  if (value !== "task" && value !== "project" && value !== "comment") {
+    throw new Error("Attachment targetType is invalid.");
+  }
+
+  return value;
+}
+
+function readAttachmentKind(value: string): TaskAttachmentResponse["kind"] {
+  if (value !== "file" && value !== "link" && value !== "telegram_file") {
+    throw new Error("Attachment kind is invalid.");
+  }
+
+  return value;
 }
 
 function readProjectDetail(value: unknown): ProjectDetailResponse {

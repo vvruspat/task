@@ -3,6 +3,7 @@ import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
   PreviewTaskSkillApplyResponse,
+  TaskAttachmentResponse,
   TaskBackendClient,
   TaskCommentResponse,
   TaskDetailResponse,
@@ -165,6 +166,9 @@ function createBackendClientStub(calls: TaskSkillApplyRequest[]): TaskBackendCli
       throw new Error("Not implemented.");
     },
     createTaskComment: async (): Promise<TaskCommentResponse> => {
+      throw new Error("Not implemented.");
+    },
+    listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => {
       throw new Error("Not implemented.");
     },
     createProject: async () => {
