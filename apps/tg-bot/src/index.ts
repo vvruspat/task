@@ -32,6 +32,14 @@ export {
 } from "./message-handler.js";
 
 export {
+  type CreateTelegramBotRuntimeFromEnvironmentOptions,
+  type CreateTelegramBotRuntimeOptions,
+  createTelegramBotRuntime,
+  createTelegramBotRuntimeFromEnvironment,
+  type TelegramBotRuntime,
+} from "./runtime.js";
+
+export {
   createTelegramReplySender,
   type TelegramBotApiFetch,
   type TelegramBotApiFetchInit,
