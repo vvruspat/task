@@ -11,6 +11,7 @@ import type {
 import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
 import type {
+  TaskSkillArchiveResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
   TaskSkillMetadataUpdateResult,
@@ -24,6 +25,7 @@ const versionId = "44444444-4444-4444-8444-444444444444";
 const nextVersionId = "55555555-5555-4555-8555-555555555555";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 const updatedAt = new Date("2026-01-02T00:00:00.000Z");
+const archivedAt = new Date("2026-01-03T00:00:00.000Z");
 
 const taskSkill: TaskSkillSummary = {
   id: skillId,
@@ -70,6 +72,11 @@ const taskSkillDetailWithNewVersion: TaskSkillDetail = {
     },
     ...taskSkillDetail.versions,
   ],
+};
+
+const archivedTaskSkillDetail: TaskSkillDetail = {
+  ...taskSkillDetail,
+  archivedAt,
 };
 
 const createInput: CreateTaskSkillInput = {
@@ -174,6 +181,24 @@ test("TaskSkillsService creates new task skill definition versions for writable 
   assert.equal(response.versions[1]?.version, 1);
 });
 
+test("TaskSkillsService archives task skills for writable workspace members", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({
+      archiveResult: {
+        status: "archived",
+        taskSkill: archivedTaskSkillDetail,
+      },
+    }),
+  );
+
+  const response = await service.archiveTaskSkill(workspaceId, skillId, userId);
+
+  assert.ok(response instanceof TaskSkillDetailDto);
+  assert.equal(response.id, taskSkillDetail.id);
+  assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
+  assert.equal(response.versions[0]?.version, 1);
+});
+
 test("TaskSkillsService hides missing task skills during metadata updates", async () => {
   const service = new TaskSkillsService(
     createReadStore({ metadataUpdateResult: { status: "task_skill_not_found" } }),
@@ -196,9 +221,21 @@ test("TaskSkillsService hides missing task skills during definition updates", as
   );
 });
 
+test("TaskSkillsService hides missing task skills during archives", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ archiveResult: { status: "task_skill_not_found" } }),
+  );
+
+  await assert.rejects(
+    () => service.archiveTaskSkill(workspaceId, skillId, userId),
+    NotFoundException,
+  );
+});
+
 test("TaskSkillsService hides missing or inaccessible workspaces", async () => {
   const service = new TaskSkillsService(
     createReadStore({
+      archiveResult: { status: "workspace_not_found" },
       createResult: { status: "workspace_not_found" },
       definitionUpdateResult: { status: "workspace_not_found" },
       metadataUpdateResult: { status: "workspace_not_found" },
@@ -219,6 +256,10 @@ test("TaskSkillsService hides missing or inaccessible workspaces", async () => {
   );
   await assert.rejects(
     () => service.updateTaskSkillDefinition(workspaceId, skillId, userId, definitionUpdateInput),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () => service.archiveTaskSkill(workspaceId, skillId, userId),
     NotFoundException,
   );
 });
@@ -254,6 +295,17 @@ test("TaskSkillsService rejects task skill definition updates without write perm
   );
 });
 
+test("TaskSkillsService rejects task skill archives without write permission", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ archiveResult: { status: "forbidden" } }),
+  );
+
+  await assert.rejects(
+    () => service.archiveTaskSkill(workspaceId, skillId, userId),
+    ForbiddenException,
+  );
+});
+
 test("TaskSkillsService rejects duplicate task skill names", async () => {
   const service = new TaskSkillsService(
     createReadStore({ createResult: { status: "duplicate_name" } }),
@@ -277,6 +329,7 @@ test("TaskSkillsService rejects duplicate task skill names during metadata updat
 });
 
 function createReadStore(options: {
+  archiveResult?: TaskSkillArchiveResult;
   createResult?: TaskSkillCreateResult;
   definitionUpdateResult?: TaskSkillDefinitionUpdateResult;
   metadataUpdateResult?: TaskSkillMetadataUpdateResult;
@@ -286,6 +339,8 @@ function createReadStore(options: {
   return {
     listActiveForWorkspace: async (): Promise<TaskSkillSummary[] | null> => options.skills ?? null,
     getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
+    archiveForWorkspace: async (): Promise<TaskSkillArchiveResult> =>
+      options.archiveResult ?? { status: "workspace_not_found" },
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
     updateDefinitionForWorkspace: async (): Promise<TaskSkillDefinitionUpdateResult> =>

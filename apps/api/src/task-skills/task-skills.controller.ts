@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -84,6 +84,25 @@ export class TaskSkillsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskSkillDetailDto> {
     return this.taskSkillsService.getTaskSkill(workspaceId, taskSkillId, userId);
+  }
+
+  @Delete(":taskSkillId")
+  @ApiOperation({ summary: "Archive one active task skill" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "taskSkillId" })
+  @ApiOkResponse({ type: TaskSkillDetailDto })
+  @ApiForbiddenResponse({
+    description: "Current user cannot archive task skills in this workspace.",
+  })
+  @ApiNotFoundResponse({
+    description: "Workspace or active task skill is missing or not visible to the current user.",
+  })
+  archiveTaskSkill(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("taskSkillId", uuidV4Pipe) taskSkillId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<TaskSkillDetailDto> {
+    return this.taskSkillsService.archiveTaskSkill(workspaceId, taskSkillId, userId);
   }
 
   @Patch(":taskSkillId/definition")

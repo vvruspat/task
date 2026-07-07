@@ -54,6 +54,21 @@ export type TaskSkillDefinitionUpdateResult =
       status: "task_skill_not_found";
     };
 
+export type TaskSkillArchiveResult =
+  | {
+      status: "archived";
+      taskSkill: TaskSkillDetail;
+    }
+  | {
+      status: "workspace_not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "task_skill_not_found";
+    };
+
 export type TaskSkillsReadStore = {
   listActiveForWorkspace(workspaceId: string, userId: string): Promise<TaskSkillSummary[] | null>;
   getActiveForWorkspace(
@@ -78,4 +93,9 @@ export type TaskSkillsReadStore = {
     userId: string,
     input: UpdateTaskSkillDefinitionInput,
   ): Promise<TaskSkillDefinitionUpdateResult>;
+  archiveForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+  ): Promise<TaskSkillArchiveResult>;
 };

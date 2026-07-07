@@ -16,6 +16,7 @@ import {
 } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
 import type {
+  TaskSkillArchiveResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
   TaskSkillMetadataUpdateResult,
@@ -28,6 +29,7 @@ const skillId = "33333333-3333-4333-8333-333333333333";
 const versionId = "44444444-4444-4444-8444-444444444444";
 const nextVersionId = "55555555-5555-4555-8555-555555555555";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
+const archivedAt = new Date("2026-01-03T00:00:00.000Z");
 
 const taskSkill: TaskSkillSummary = {
   id: skillId,
@@ -74,6 +76,11 @@ const taskSkillDetailWithNewVersion: TaskSkillDetail = {
     },
     ...taskSkillDetail.versions,
   ],
+};
+
+const archivedTaskSkillDetail: TaskSkillDetail = {
+  ...taskSkillDetail,
+  archivedAt,
 };
 
 const createInput: CreateTaskSkillInput = {
@@ -178,6 +185,25 @@ test("TaskSkillsController uses trusted current user context for task skill defi
   assert.equal(response.versions[1]?.version, 1);
 });
 
+test("TaskSkillsController uses trusted current user context for task skill archives", async () => {
+  const controller = new TaskSkillsController(
+    new TaskSkillsService(
+      createReadStore({
+        archiveResult: {
+          status: "archived",
+          taskSkill: archivedTaskSkillDetail,
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.archiveTaskSkill(workspaceId, skillId, userId);
+
+  assert.equal(response.id, skillId);
+  assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
+  assert.equal(response.versions[0]?.version, 1);
+});
+
 test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads", () => {
   const pipe = new ParseCreateTaskSkillBodyPipe();
 
@@ -272,6 +298,7 @@ test("ParseUpdateTaskSkillDefinitionBodyPipe validates task skill definition pay
 });
 
 function createReadStore(options: {
+  archiveResult?: TaskSkillArchiveResult;
   createResult?: TaskSkillCreateResult;
   definitionUpdateResult?: TaskSkillDefinitionUpdateResult;
   metadataUpdateResult?: TaskSkillMetadataUpdateResult;
@@ -281,6 +308,8 @@ function createReadStore(options: {
   return {
     listActiveForWorkspace: async (): Promise<TaskSkillSummary[] | null> => options.skills ?? null,
     getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
+    archiveForWorkspace: async (): Promise<TaskSkillArchiveResult> =>
+      options.archiveResult ?? { status: "workspace_not_found" },
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
     updateDefinitionForWorkspace: async (): Promise<TaskSkillDefinitionUpdateResult> =>
