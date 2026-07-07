@@ -62,6 +62,7 @@ test("handleTelegramUpdate replies when the Telegram user is unlinked", async ()
 
   assert.deepEqual(action, {
     kind: "reply",
+    telegramChatId: "-100987654321",
     replyToMessageId: "20",
     text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
   });
@@ -77,6 +78,7 @@ test("handleTelegramUpdate replies when the Telegram chat is unlinked", async ()
 
   assert.deepEqual(action, {
     kind: "reply",
+    telegramChatId: "-100987654321",
     replyToMessageId: "20",
     text: "Этот чат ещё не привязан к workspace tAsk. Попроси администратора привязать чат.",
   });
@@ -93,6 +95,7 @@ test("handleTelegramUpdate replies when the user is outside the chat workspace",
 
   assert.deepEqual(action, {
     kind: "reply",
+    telegramChatId: "-100987654321",
     replyToMessageId: "20",
     text: "Ты не состоишь в workspace, к которому привязан этот чат.",
   });
@@ -108,6 +111,7 @@ test("handleTelegramUpdate replies for malformed Telegram updates", async () => 
 
   assert.deepEqual(action, {
     kind: "reply",
+    telegramChatId: null,
     replyToMessageId: null,
     text: "Не смог прочитать сообщение Telegram.",
   });
@@ -120,6 +124,7 @@ test("handleTelegramUpdate replies for backend client failures", async () => {
 
   assert.deepEqual(action, {
     kind: "reply",
+    telegramChatId: "-100987654321",
     replyToMessageId: "20",
     text: "Сейчас не удалось проверить доступ в tAsk. Попробуй позже.",
   });
