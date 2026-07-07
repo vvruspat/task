@@ -4,6 +4,7 @@ import { InvalidTelegramBotEnvironmentError, parseTelegramBotConfig } from "./co
 
 const validEnvironment = {
   TELEGRAM_BOT_TOKEN: "123456:telegram-token",
+  TASK_API_BOT_SHARED_SECRET: "bot-secret",
   TASK_API_BASE_URL: "https://api.example.test/",
 };
 
@@ -12,6 +13,7 @@ test("parseTelegramBotConfig accepts required Telegram bot settings", () => {
 
   assert.deepEqual(config, {
     botToken: "123456:telegram-token",
+    backendBotSharedSecret: "bot-secret",
     backendBaseUrl: "https://api.example.test",
     webhookSecret: null,
   });
@@ -25,6 +27,7 @@ test("parseTelegramBotConfig accepts an explicit webhook secret", () => {
 
   assert.deepEqual(config, {
     botToken: "123456:telegram-token",
+    backendBotSharedSecret: "bot-secret",
     backendBaseUrl: "https://api.example.test",
     webhookSecret: "webhook-secret",
   });
@@ -41,6 +44,30 @@ test("parseTelegramBotConfig rejects missing or empty bot tokens", () => {
       () =>
         parseTelegramBotConfig({
           TELEGRAM_BOT_TOKEN: botToken,
+          TASK_API_BOT_SHARED_SECRET: "bot-secret",
+          TASK_API_BASE_URL: "https://api.example.test",
+        }),
+      InvalidTelegramBotEnvironmentError,
+    );
+  }
+});
+
+test("parseTelegramBotConfig rejects missing or empty backend bot shared secrets", () => {
+  assert.throws(
+    () =>
+      parseTelegramBotConfig({
+        TELEGRAM_BOT_TOKEN: "123456:telegram-token",
+        TASK_API_BASE_URL: "https://api.example.test",
+      }),
+    InvalidTelegramBotEnvironmentError,
+  );
+
+  for (const sharedSecret of ["", " secret"]) {
+    assert.throws(
+      () =>
+        parseTelegramBotConfig({
+          TELEGRAM_BOT_TOKEN: "123456:telegram-token",
+          TASK_API_BOT_SHARED_SECRET: sharedSecret,
           TASK_API_BASE_URL: "https://api.example.test",
         }),
       InvalidTelegramBotEnvironmentError,
@@ -56,6 +83,7 @@ test("parseTelegramBotConfig rejects invalid backend base URLs", () => {
       () =>
         parseTelegramBotConfig({
           TELEGRAM_BOT_TOKEN: "123456:telegram-token",
+          TASK_API_BOT_SHARED_SECRET: "bot-secret",
           TASK_API_BASE_URL: backendBaseUrl,
         }),
       InvalidTelegramBotEnvironmentError,
@@ -94,6 +122,21 @@ test("parseTelegramBotConfig redacts sensitive environment values in errors", ()
     () =>
       parseTelegramBotConfig({
         TELEGRAM_BOT_TOKEN: "123456:telegram-token",
+        TASK_API_BOT_SHARED_SECRET: " secret-token",
+        TASK_API_BASE_URL: "https://api.example.test",
+      }),
+    (error: unknown): boolean => {
+      assert.ok(error instanceof InvalidTelegramBotEnvironmentError);
+      assert.match(error.message, /Received "\[redacted\]"/);
+      assert.doesNotMatch(error.message, /secret-token/);
+      return true;
+    },
+  );
+  assert.throws(
+    () =>
+      parseTelegramBotConfig({
+        TELEGRAM_BOT_TOKEN: "123456:telegram-token",
+        TASK_API_BOT_SHARED_SECRET: "bot-secret",
         TASK_API_BASE_URL: "postgresql://task_user:task_password@localhost/task_db",
       }),
     (error: unknown): boolean => {
