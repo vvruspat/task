@@ -517,6 +517,83 @@
         "tags": ["tasks"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/assignee": {
+      "patch": {
+        "operationId": "TasksController_updateTaskAssignee",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskAssigneeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task assignee payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot update tasks in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "Update one task assignee in a visible project",
+        "tags": ["tasks"]
+      }
+    },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}": {
       "get": {
         "operationId": "TasksController_getTask",
@@ -1388,6 +1465,17 @@
           }
         },
         "required": ["statusId"]
+      },
+      "UpdateTaskAssigneeDto": {
+        "type": "object",
+        "properties": {
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "required": ["assigneeUserId"]
       },
       "WorkspaceStatusDto": {
         "type": "object",

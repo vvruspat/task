@@ -14,13 +14,19 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import type { CreateTaskInput, UpdateTaskStatusInput } from "./tasks.contracts.js";
+import type {
+  CreateTaskInput,
+  UpdateTaskAssigneeInput,
+  UpdateTaskStatusInput,
+} from "./tasks.contracts.js";
 import {
   CreateTaskDto,
   ParseCreateTaskBodyPipe,
+  ParseUpdateTaskAssigneeBodyPipe,
   ParseUpdateTaskStatusBodyPipe,
   TaskDetailDto,
   TaskSummaryDto,
+  UpdateTaskAssigneeDto,
   UpdateTaskStatusDto,
 } from "./tasks.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
@@ -84,6 +90,26 @@ export class TasksController {
     @Body(new ParseUpdateTaskStatusBodyPipe()) input: UpdateTaskStatusInput,
   ): Promise<TaskDetailDto> {
     return this.tasksService.updateTaskStatus(workspaceId, projectId, taskId, userId, input);
+  }
+
+  @Patch(":taskId/assignee")
+  @ApiOperation({ summary: "Update one task assignee in a visible project" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiParam({ format: "uuid", name: "taskId" })
+  @ApiBody({ type: UpdateTaskAssigneeDto })
+  @ApiOkResponse({ type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Task assignee payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update tasks in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace, project, or task is missing or not visible." })
+  updateTaskAssignee(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @Param("taskId", uuidV4Pipe) taskId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateTaskAssigneeBodyPipe()) input: UpdateTaskAssigneeInput,
+  ): Promise<TaskDetailDto> {
+    return this.tasksService.updateTaskAssignee(workspaceId, projectId, taskId, userId, input);
   }
 
   @Get(":taskId")

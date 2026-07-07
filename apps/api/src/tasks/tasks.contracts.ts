@@ -32,3 +32,7 @@ export type CreateTaskInput = {
 export type UpdateTaskStatusInput = {
   statusId: string | null;
 };
+
+export type UpdateTaskAssigneeInput = {
+  assigneeUserId: string | null;
+};

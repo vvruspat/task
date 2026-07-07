@@ -2,6 +2,7 @@ import type {
   CreateTaskInput,
   TaskDetail,
   TaskSummary,
+  UpdateTaskAssigneeInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 
@@ -35,6 +36,21 @@ export type TaskUpdateStatusResult =
       status: "invalid_status";
     };
 
+export type TaskUpdateAssigneeResult =
+  | {
+      status: "updated";
+      task: TaskDetail;
+    }
+  | {
+      status: "task_not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "invalid_assignee";
+    };
+
 export type TaskReadStore = {
   listActiveForProject(
     workspaceId: string,
@@ -60,4 +76,11 @@ export type TaskReadStore = {
     userId: string,
     input: UpdateTaskStatusInput,
   ): Promise<TaskUpdateStatusResult>;
+  updateAssigneeForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: UpdateTaskAssigneeInput,
+  ): Promise<TaskUpdateAssigneeResult>;
 };

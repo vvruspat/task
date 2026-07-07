@@ -5,17 +5,28 @@ import type {
   CreateTaskInput,
   TaskDetail,
   TaskSummary,
+  UpdateTaskAssigneeInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import { TasksController } from "./tasks.controller.js";
-import { ParseCreateTaskBodyPipe, ParseUpdateTaskStatusBodyPipe } from "./tasks.dto.js";
+import {
+  ParseCreateTaskBodyPipe,
+  ParseUpdateTaskAssigneeBodyPipe,
+  ParseUpdateTaskStatusBodyPipe,
+} from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
-import type { TaskCreateResult, TaskReadStore, TaskUpdateStatusResult } from "./tasks.store.js";
+import type {
+  TaskCreateResult,
+  TaskReadStore,
+  TaskUpdateAssigneeResult,
+  TaskUpdateStatusResult,
+} from "./tasks.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "33333333-3333-4333-8333-333333333333";
 const taskId = "44444444-4444-4444-8444-444444444444";
 const statusId = "55555555-5555-4555-8555-555555555555";
+const assigneeUserId = "66666666-6666-4666-8666-666666666666";
 const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 
@@ -97,6 +108,31 @@ test("TasksController uses trusted current user context for task status updates"
   assert.equal(response.statusId, statusId);
 });
 
+test("TasksController uses trusted current user context for task assignee updates", async () => {
+  const input: UpdateTaskAssigneeInput = { assigneeUserId };
+  const controller = new TasksController(
+    new TasksService(
+      createReadStore({
+        updateAssigneeResult: {
+          status: "updated",
+          task: { ...taskSummary, assigneeUserId },
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.updateTaskAssignee(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
+
+  assert.equal(response.id, taskId);
+  assert.equal(response.assigneeUserId, assigneeUserId);
+});
+
 test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", () => {
   const pipe = new ParseCreateTaskBodyPipe();
 
@@ -140,11 +176,25 @@ test("ParseUpdateTaskStatusBodyPipe validates task status payloads", () => {
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseUpdateTaskAssigneeBodyPipe validates task assignee payloads", () => {
+  const pipe = new ParseUpdateTaskAssigneeBodyPipe();
+
+  assert.deepEqual(pipe.transform({ assigneeUserId }), { assigneeUserId });
+  assert.deepEqual(pipe.transform({ assigneeUserId: null }), { assigneeUserId: null });
+
+  assert.throws(() => pipe.transform({}), BadRequestException);
+  assert.throws(() => pipe.transform({ assigneeUserId: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ assigneeUserId: "bad" }), BadRequestException);
+  assert.throws(() => pipe.transform({ assigneeUserId: 1 }), BadRequestException);
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
   tasks?: TaskSummary[] | null;
   task?: TaskDetail | null;
   createResult?: TaskCreateResult;
   updateStatusResult?: TaskUpdateStatusResult;
+  updateAssigneeResult?: TaskUpdateAssigneeResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
@@ -155,5 +205,7 @@ function createReadStore(options: {
       options.createResult ?? { status: "project_not_found" },
     updateStatusForProject: async (): Promise<TaskUpdateStatusResult> =>
       options.updateStatusResult ?? { status: "task_not_found" },
+    updateAssigneeForProject: async (): Promise<TaskUpdateAssigneeResult> =>
+      options.updateAssigneeResult ?? { status: "task_not_found" },
   };
 }

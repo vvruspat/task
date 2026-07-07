@@ -4,6 +4,7 @@ import type {
   CreateTaskInput,
   TaskDetail,
   TaskSummary,
+  UpdateTaskAssigneeInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 
@@ -46,6 +47,19 @@ export class ParseUpdateTaskStatusBodyPipe
 {
   transform(value: unknown): UpdateTaskStatusInput {
     return parseUpdateTaskStatusInput(value);
+  }
+}
+
+export class UpdateTaskAssigneeDto implements UpdateTaskAssigneeInput {
+  @ApiProperty({ format: "uuid", nullable: true, type: String })
+  readonly assigneeUserId: string | null = null;
+}
+
+export class ParseUpdateTaskAssigneeBodyPipe
+  implements PipeTransform<unknown, UpdateTaskAssigneeInput>
+{
+  transform(value: unknown): UpdateTaskAssigneeInput {
+    return parseUpdateTaskAssigneeInput(value);
   }
 }
 
@@ -172,6 +186,16 @@ function parseUpdateTaskStatusInput(value: unknown): UpdateTaskStatusInput {
 
   return {
     statusId: readRequiredNullableUuid(value, "statusId"),
+  };
+}
+
+function parseUpdateTaskAssigneeInput(value: unknown): UpdateTaskAssigneeInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task assignee payload must be an object.");
+  }
+
+  return {
+    assigneeUserId: readRequiredNullableUuid(value, "assigneeUserId"),
   };
 }
 
