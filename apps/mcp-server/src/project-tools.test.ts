@@ -7,6 +7,7 @@ import type {
   ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
+  TaskCommentResponse,
   TaskDetailResponse,
   TaskSummaryResponse,
   WorkspaceStatusResponse,
@@ -186,6 +187,9 @@ function createBackendClientStub(
 ): TaskBackendClient {
   return {
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
+      throw new Error("Not implemented.");
+    },
+    listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");
     },
     createProject: async (request): Promise<ProjectDetailResponse> => {

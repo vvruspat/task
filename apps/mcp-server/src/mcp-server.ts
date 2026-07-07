@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import * as z from "zod/v4";
 import type { TaskBackendClient } from "./backend-client.js";
+import { type CommentToolHandlers, createCommentToolHandlers } from "./comment-tools.js";
 import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-tools.js";
 import { createStatusToolHandlers, type StatusToolHandlers } from "./status-tools.js";
 import { createTaskSkillToolHandlers, type TaskSkillToolHandlers } from "./task-skill-tools.js";
@@ -30,6 +31,13 @@ const projectSearchInputSchema = {
 
 const statusListInputSchema = {
   workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
+
+const commentListInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
   userId: z.string().uuid(),
 };
 
@@ -100,6 +108,7 @@ const taskSetDueDateInputSchema = {
 
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
+type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
@@ -113,6 +122,7 @@ type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
     | StatusListMcpArgs
+    | CommentListMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
     | ProjectCreateMcpArgs
@@ -133,6 +143,7 @@ export type TaskMcpToolRegistrar = {
       inputSchema:
         | typeof taskSkillApplyInputSchema
         | typeof statusListInputSchema
+        | typeof commentListInputSchema
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
@@ -164,9 +175,25 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
   registerStatusTools(server, createStatusToolHandlers(options.backendClient));
   registerProjectTools(server, createProjectToolHandlers(options.backendClient));
   registerTaskTools(server, createTaskToolHandlers(options.backendClient));
+  registerCommentTools(server, createCommentToolHandlers(options.backendClient));
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
 
   return server;
+}
+
+export function registerCommentTools(
+  registrar: TaskMcpToolRegistrar,
+  handlers: CommentToolHandlers,
+): void {
+  registrar.registerTool(
+    "comment.list",
+    {
+      title: "List comments",
+      description: "List comments for one visible task.",
+      inputSchema: commentListInputSchema,
+    },
+    async (input) => toToolResult(await handlers.list(input)),
+  );
 }
 
 export function registerStatusTools(

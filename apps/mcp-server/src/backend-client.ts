@@ -7,6 +7,7 @@ type ListActiveProjectsOperation = operations["ProjectsController_listActiveProj
 type GetProjectOperation = operations["ProjectsController_getProject"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ListActiveTasksOperation = operations["TasksController_listActiveTasks"];
+type ListTaskCommentsOperation = operations["CommentsController_listTaskComments"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
@@ -36,6 +37,8 @@ export type ProjectDetailResponse =
   GetProjectOperation["responses"]["200"]["content"]["application/json"];
 export type TaskSummaryResponse =
   ListActiveTasksOperation["responses"]["200"]["content"]["application/json"][number];
+export type TaskCommentResponse =
+  ListTaskCommentsOperation["responses"]["200"]["content"]["application/json"][number];
 export type TaskDetailResponse =
   GetTaskOperation["responses"]["200"]["content"]["application/json"];
 type TaskSkillApplyPreviewSubtaskResponse =
@@ -118,6 +121,13 @@ export type ListActiveTasksRequest = {
   userId: string;
 };
 
+export type ListTaskCommentsRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+};
+
 export type GetTaskRequest = {
   workspaceId: string;
   projectId: string;
@@ -162,6 +172,7 @@ export type TaskBackendClient = {
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
   listActiveTasks(request: ListActiveTasksRequest): Promise<TaskSummaryResponse[]>;
+  listTaskComments(request: ListTaskCommentsRequest): Promise<TaskCommentResponse[]>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
   updateTaskStatus(request: UpdateTaskStatusRequest): Promise<TaskDetailResponse>;
@@ -228,6 +239,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildProjectTasksPath(request.workspaceId, request.projectId),
         request.userId,
         readTaskSummaryList,
+      ),
+    listTaskComments: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskCommentsPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        readTaskCommentList,
       ),
     getTask: (request) =>
       getJson(
@@ -453,6 +472,10 @@ function buildProjectTaskDueDatePath(
   return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/due-date`;
 }
 
+function buildTaskCommentsPath(workspaceId: string, projectId: string, taskId: string): string {
+  return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/comments`;
+}
+
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {
   if (!Array.isArray(value)) {
     throw new Error("project summary list must be an array.");
@@ -477,6 +500,14 @@ function readTaskSummaryList(value: unknown): TaskSummaryResponse[] {
   return value.map(readTaskSummary);
 }
 
+function readTaskCommentList(value: unknown): TaskCommentResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("task comment list must be an array.");
+  }
+
+  return value.map(readTaskComment);
+}
+
 function readWorkspaceStatus(value: unknown): WorkspaceStatusResponse {
   const record = readRecord(value, "workspace status");
 
@@ -487,6 +518,20 @@ function readWorkspaceStatus(value: unknown): WorkspaceStatusResponse {
     color: readString(record, "color"),
     position: readString(record, "position"),
     isDone: readBoolean(record, "isDone"),
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
+}
+
+function readTaskComment(value: unknown): TaskCommentResponse {
+  const record = readRecord(value, "task comment");
+
+  return {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    taskId: readString(record, "taskId"),
+    authorUserId: readString(record, "authorUserId"),
+    body: readString(record, "body"),
     createdAt: readString(record, "createdAt"),
     updatedAt: readString(record, "updatedAt"),
   };

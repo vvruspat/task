@@ -11,6 +11,7 @@ export {
   type GetTaskRequest,
   type ListActiveProjectsRequest,
   type ListActiveTasksRequest,
+  type ListTaskCommentsRequest,
   type ListWorkspaceStatusesRequest,
   type PreviewTaskSkillApplyInput,
   type PreviewTaskSkillApplyResponse,
@@ -24,6 +25,7 @@ export {
   type TaskBackendFetchResponse,
   type TaskBackendGetHeaders,
   type TaskBackendPostHeaders,
+  type TaskCommentResponse,
   type TaskDetailResponse,
   type TaskSkillApplyRequest,
   type TaskSummaryResponse,
@@ -37,6 +39,14 @@ export {
 } from "./backend-client.js";
 
 export {
+  type CommentListToolInput,
+  type CommentToolHandlers,
+  CommentToolInputError,
+  createCommentToolHandlers,
+  parseCommentListToolInput,
+} from "./comment-tools.js";
+
+export {
   InvalidTaskMcpEnvironmentError,
   loadTaskMcpConfig,
   parseTaskMcpConfig,
@@ -47,6 +57,7 @@ export {
 export {
   connectTaskMcpServerToStdio,
   createTaskMcpServer,
+  registerCommentTools,
   registerProjectTools,
   registerStatusTools,
   registerTaskSkillApplyTools,
