@@ -1,4 +1,8 @@
-import type { TelegramBackendClient } from "./backend-client.js";
+import {
+  type TelegramAgentRunIntakeResponse,
+  type TelegramBackendClient,
+  TelegramBackendClientError,
+} from "./backend-client.js";
 import {
   handleTelegramUpdate,
   type TelegramReplyAction,
@@ -17,7 +21,17 @@ export type TelegramReplySentAction = {
   sentMessage: TelegramSendMessageResult;
 };
 
-export type TelegramUpdateProcessorResult = TelegramReplySentAction | TelegramResolvedMessageAction;
+export type TelegramAgentRunReplySentAction = {
+  kind: "agent_run_reply_sent";
+  agentRun: TelegramAgentRunIntakeResponse;
+  reply: TelegramReplyAction;
+  sentMessage: TelegramSendMessageResult;
+};
+
+export type TelegramUpdateProcessorResult =
+  | TelegramReplySentAction
+  | TelegramAgentRunReplySentAction
+  | TelegramResolvedMessageAction;
 
 export async function processTelegramUpdate(
   update: unknown,
@@ -28,12 +42,77 @@ export async function processTelegramUpdate(
   });
 
   if (action.kind === "reply") {
-    return {
-      kind: "reply_sent",
-      reply: action,
-      sentMessage: await options.replySender.sendReply(action),
-    };
+    return sendReply(action, options.replySender);
   }
 
-  return action;
+  if (action.message.text === null || action.message.text.trim().length === 0) {
+    return sendReply(
+      createReply(
+        action.message.chat.telegramChatId,
+        action.message.messageId,
+        "Пока я принимаю только текстовые команды для агента tAsk.",
+      ),
+      options.replySender,
+    );
+  }
+
+  try {
+    const agentRun = await options.backendClient.createTelegramAgentRun({
+      body: {
+        telegramId: action.message.sender.telegramId,
+        telegramChatId: action.message.chat.telegramChatId,
+        sourceMessageId: action.message.messageId,
+        inputText: action.message.text,
+      },
+    });
+    const reply = createReply(
+      action.message.chat.telegramChatId,
+      action.message.messageId,
+      agentRun.responseText,
+    );
+
+    return {
+      kind: "agent_run_reply_sent",
+      agentRun,
+      reply,
+      sentMessage: await options.replySender.sendReply(reply),
+    };
+  } catch (error) {
+    if (error instanceof TelegramBackendClientError) {
+      return sendReply(
+        createReply(
+          action.message.chat.telegramChatId,
+          action.message.messageId,
+          "Сейчас не удалось отправить запрос агенту tAsk. Попробуй позже.",
+        ),
+        options.replySender,
+      );
+    }
+
+    throw error;
+  }
+}
+
+async function sendReply(
+  reply: TelegramReplyAction,
+  replySender: TelegramReplySender,
+): Promise<TelegramReplySentAction> {
+  return {
+    kind: "reply_sent",
+    reply,
+    sentMessage: await replySender.sendReply(reply),
+  };
+}
+
+function createReply(
+  telegramChatId: string,
+  replyToMessageId: string,
+  text: string,
+): TelegramReplyAction {
+  return {
+    kind: "reply",
+    telegramChatId,
+    replyToMessageId,
+    text,
+  };
 }

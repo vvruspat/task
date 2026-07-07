@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  CreateTelegramAgentRunRequest,
   ResolveTelegramContextRequest,
   TelegramAgentRunIntakeResponse,
   TelegramBackendClient,
@@ -55,13 +56,27 @@ test("processTelegramUpdate sends reply actions through the reply sender", async
   });
 });
 
-test("processTelegramUpdate returns resolved actions without sending Telegram replies", async () => {
-  const backendClient = new RecordingTelegramBackendClient({
-    status: "resolved",
-    userId: "22222222-2222-4222-8222-222222222222",
-    workspaceId: "33333333-3333-4333-8333-333333333333",
-    defaultProjectId: null,
-  });
+const agentRunResponse: TelegramAgentRunIntakeResponse = {
+  agentRunId: "11111111-1111-4111-8111-111111111111",
+  workspaceId: "33333333-3333-4333-8333-333333333333",
+  userId: "22222222-2222-4222-8222-222222222222",
+  source: "telegram",
+  sourceMessageId: "20",
+  status: "completed",
+  responseText: "Request recorded. Agent execution is not connected yet.",
+  createdAt: "2026-07-08T00:00:00.000Z",
+};
+
+test("processTelegramUpdate records resolved commands and replies with agent response text", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    {
+      status: "resolved",
+      userId: "22222222-2222-4222-8222-222222222222",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      defaultProjectId: null,
+    },
+    agentRunResponse,
+  );
   const replySender = new RecordingTelegramReplySender({ messageId: "45" });
 
   const result = await processTelegramUpdate(telegramUpdate, {
@@ -69,30 +84,71 @@ test("processTelegramUpdate returns resolved actions without sending Telegram re
     replySender,
   });
 
-  assert.equal(result.kind, "resolved");
+  assert.equal(result.kind, "agent_run_reply_sent");
   assert.deepEqual(backendClient.lastRequest, {
     body: {
       telegramId: "123456789",
       telegramChatId: "-100987654321",
     },
   });
-  assert.equal(replySender.lastAction, null);
+  assert.deepEqual(backendClient.lastAgentRunRequest, {
+    body: {
+      telegramId: "123456789",
+      telegramChatId: "-100987654321",
+      sourceMessageId: "20",
+      inputText: "создай задачу записать бас",
+    },
+  });
+  assert.deepEqual(replySender.lastAction, {
+    kind: "reply",
+    telegramChatId: "-100987654321",
+    replyToMessageId: "20",
+    text: "Request recorded. Agent execution is not connected yet.",
+  });
 
-  if (result.kind === "resolved") {
-    assert.equal(result.message.text, "создай задачу записать бас");
-    assert.deepEqual(result.context, {
+  if (result.kind === "agent_run_reply_sent") {
+    assert.deepEqual(result.agentRun, agentRunResponse);
+    assert.deepEqual(result.sentMessage, { messageId: "45" });
+  }
+});
+
+test("processTelegramUpdate replies when agent intake fails", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    {
       status: "resolved",
       userId: "22222222-2222-4222-8222-222222222222",
       workspaceId: "33333333-3333-4333-8333-333333333333",
       defaultProjectId: null,
-    });
-  }
+    },
+    null,
+  );
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+
+  const result = await processTelegramUpdate(telegramUpdate, {
+    backendClient,
+    replySender,
+  });
+
+  assert.deepEqual(result, {
+    kind: "reply_sent",
+    reply: {
+      kind: "reply",
+      telegramChatId: "-100987654321",
+      replyToMessageId: "20",
+      text: "Сейчас не удалось отправить запрос агенту tAsk. Попробуй позже.",
+    },
+    sentMessage: { messageId: "45" },
+  });
 });
 
 class RecordingTelegramBackendClient implements TelegramBackendClient {
   lastRequest: ResolveTelegramContextRequest | null = null;
+  lastAgentRunRequest: CreateTelegramAgentRunRequest | null = null;
 
-  constructor(private readonly response: TelegramContextResolutionResponse) {}
+  constructor(
+    private readonly response: TelegramContextResolutionResponse,
+    private readonly agentRunResponse: TelegramAgentRunIntakeResponse | null = null,
+  ) {}
 
   async resolveTelegramContext(
     request: ResolveTelegramContextRequest,
@@ -102,8 +158,16 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
     return this.response;
   }
 
-  async createTelegramAgentRun(): Promise<TelegramAgentRunIntakeResponse> {
-    throw new TelegramBackendClientError("Unexpected agent intake request.");
+  async createTelegramAgentRun(
+    request: CreateTelegramAgentRunRequest,
+  ): Promise<TelegramAgentRunIntakeResponse> {
+    this.lastAgentRunRequest = request;
+
+    if (this.agentRunResponse === null) {
+      throw new TelegramBackendClientError("Agent intake unavailable.");
+    }
+
+    return this.agentRunResponse;
   }
 }
 

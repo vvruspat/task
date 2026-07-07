@@ -88,13 +88,25 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
   });
 });
 
-test("createTelegramBotRuntimeFromEnvironment leaves resolved updates for future agent runtime", async () => {
-  const backendFetch = new RecordingTelegramBackendFetch({
-    status: "resolved",
-    userId: "22222222-2222-4222-8222-222222222222",
-    workspaceId: "33333333-3333-4333-8333-333333333333",
-    defaultProjectId: null,
-  });
+test("createTelegramBotRuntimeFromEnvironment records resolved updates through agent intake", async () => {
+  const backendFetch = new RecordingTelegramBackendFetch([
+    {
+      status: "resolved",
+      userId: "22222222-2222-4222-8222-222222222222",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      defaultProjectId: null,
+    },
+    {
+      agentRunId: "11111111-1111-4111-8111-111111111111",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      userId: "22222222-2222-4222-8222-222222222222",
+      source: "telegram",
+      sourceMessageId: "20",
+      status: "completed",
+      responseText: "Request recorded. Agent execution is not connected yet.",
+      createdAt: "2026-07-08T00:00:00.000Z",
+    },
+  ]);
   const telegramFetch = new RecordingTelegramBotApiFetch({
     ok: true,
     result: { message_id: 45 },
@@ -108,16 +120,58 @@ test("createTelegramBotRuntimeFromEnvironment leaves resolved updates for future
 
   const result = await runtime.processUpdate(telegramUpdate);
 
-  assert.equal(result.kind, "resolved");
-  assert.equal(telegramFetch.lastInput, null);
+  assert.equal(result.kind, "agent_run_reply_sent");
+  assert.deepEqual(
+    backendFetch.calls.map((call) => call.input),
+    [
+      "https://api.example.test/internal/telegram/context/resolve",
+      "https://api.example.test/internal/agent/telegram/runs",
+    ],
+  );
+  assert.deepEqual(backendFetch.calls[1]?.init, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+      "x-task-bot-secret": "bot-secret",
+    },
+    body: JSON.stringify({
+      telegramId: "123456789",
+      telegramChatId: "-100987654321",
+      sourceMessageId: "20",
+      inputText: "создай задачу записать бас",
+    }),
+  });
+  assert.equal(
+    telegramFetch.lastInput,
+    "https://api.telegram.org/bot123456:telegram-token/sendMessage",
+  );
+  assert.deepEqual(telegramFetch.lastInit, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      chat_id: "-100987654321",
+      text: "Request recorded. Agent execution is not connected yet.",
+      reply_parameters: {
+        message_id: 20,
+        allow_sending_without_reply: true,
+      },
+    }),
+  });
 
-  if (result.kind === "resolved") {
-    assert.equal(result.message.text, "создай задачу записать бас");
-    assert.deepEqual(result.context, {
-      status: "resolved",
-      userId: "22222222-2222-4222-8222-222222222222",
+  if (result.kind === "agent_run_reply_sent") {
+    assert.deepEqual(result.agentRun, {
+      agentRunId: "11111111-1111-4111-8111-111111111111",
       workspaceId: "33333333-3333-4333-8333-333333333333",
-      defaultProjectId: null,
+      userId: "22222222-2222-4222-8222-222222222222",
+      source: "telegram",
+      sourceMessageId: "20",
+      status: "completed",
+      responseText: "Request recorded. Agent execution is not connected yet.",
+      createdAt: "2026-07-08T00:00:00.000Z",
     });
   }
 });
@@ -125,23 +179,29 @@ test("createTelegramBotRuntimeFromEnvironment leaves resolved updates for future
 class RecordingTelegramBackendFetch {
   lastInput: string | null = null;
   lastInit: TelegramBackendFetchInit | null = null;
+  readonly calls: { input: string; init: TelegramBackendFetchInit }[] = [];
+  private readonly jsonBodies: unknown[];
 
   constructor(
-    private readonly jsonBody: unknown,
+    jsonBody: unknown | readonly unknown[],
     private readonly response: { ok: boolean; status: number; statusText: string } = {
       ok: true,
       status: 200,
       statusText: "OK",
     },
-  ) {}
+  ) {
+    this.jsonBodies = Array.isArray(jsonBody) ? [...jsonBody] : [jsonBody];
+  }
 
   readonly call: TelegramBackendFetch = async (input, init) => {
     this.lastInput = input;
     this.lastInit = init;
+    this.calls.push({ input, init });
+    const jsonBody = this.jsonBodies.length > 1 ? this.jsonBodies.shift() : this.jsonBodies[0];
 
     return {
       ...this.response,
-      json: async () => this.jsonBody,
+      json: async () => jsonBody,
     };
   };
 }
