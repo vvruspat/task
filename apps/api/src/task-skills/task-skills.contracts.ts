@@ -1,3 +1,5 @@
+import type { TaskDetail } from "../tasks/tasks.contracts.js";
+
 export type TaskSkillSummary = {
   id: string;
   workspaceId: string;
@@ -56,6 +58,16 @@ export type TaskSkillApplyPreview = {
   taskSkillVersion: number;
   rootTaskTitle: string;
   subtasks: TaskSkillApplyPreviewSubtask[];
+};
+
+export type TaskSkillApplyResult = {
+  workspaceId: string;
+  projectId: string;
+  taskSkillId: string;
+  taskSkillVersionId: string;
+  taskSkillVersion: number;
+  rootTask: TaskDetail;
+  subtasks: TaskDetail[];
 };
 
 export type PreviewTaskSkillApplyOverrides = {

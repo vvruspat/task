@@ -12,6 +12,7 @@ import type {
 } from "./task-skills.contracts.js";
 import {
   TaskSkillApplyPreviewDto,
+  TaskSkillApplyResultDto,
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
 } from "./task-skills.dto.js";
@@ -171,5 +172,28 @@ export class TaskSkillsService {
     }
 
     return new TaskSkillApplyPreviewDto(result.preview);
+  }
+
+  async applyTaskSkill(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: PreviewTaskSkillApplyInput,
+  ): Promise<TaskSkillApplyResultDto> {
+    const result = await this.readStore.applyForWorkspace(workspaceId, taskSkillId, userId, input);
+
+    if (result.status === "not_found") {
+      throw new NotFoundException("Task skill apply target was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot apply task skills in this workspace.");
+    }
+
+    if (result.status === "invalid_definition") {
+      throw new BadRequestException("Task skill definition cannot be applied.");
+    }
+
+    return new TaskSkillApplyResultDto(result.result);
   }
 }

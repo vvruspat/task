@@ -28,6 +28,7 @@ import {
   ParseUpdateTaskSkillMetadataBodyPipe,
   PreviewTaskSkillApplyDto,
   TaskSkillApplyPreviewDto,
+  TaskSkillApplyResultDto,
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
   UpdateTaskSkillDefinitionDto,
@@ -126,6 +127,28 @@ export class TaskSkillsController {
     @Body(new ParsePreviewTaskSkillApplyBodyPipe()) input: PreviewTaskSkillApplyInput,
   ): Promise<TaskSkillApplyPreviewDto> {
     return this.taskSkillsService.previewTaskSkillApply(workspaceId, taskSkillId, userId, input);
+  }
+
+  @Post(":taskSkillId/apply")
+  @ApiOperation({ summary: "Apply one task skill and create a task tree" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "taskSkillId" })
+  @ApiBody({ type: PreviewTaskSkillApplyDto })
+  @ApiCreatedResponse({ type: TaskSkillApplyResultDto })
+  @ApiBadRequestResponse({ description: "Task skill apply payload or definition is invalid." })
+  @ApiForbiddenResponse({
+    description: "Current user cannot apply task skills in this workspace.",
+  })
+  @ApiNotFoundResponse({
+    description: "Workspace, project, or task skill is missing or not visible to the current user.",
+  })
+  applyTaskSkill(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("taskSkillId", uuidV4Pipe) taskSkillId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParsePreviewTaskSkillApplyBodyPipe()) input: PreviewTaskSkillApplyInput,
+  ): Promise<TaskSkillApplyResultDto> {
+    return this.taskSkillsService.applyTaskSkill(workspaceId, taskSkillId, userId, input);
   }
 
   @Patch(":taskSkillId/definition")

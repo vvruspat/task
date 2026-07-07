@@ -264,6 +264,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/task-skills/{taskSkillId}/apply": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Apply one task skill and create a task tree */
+    post: operations["TaskSkillsController_applyTaskSkill"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/task-skills/{taskSkillId}/definition": {
     parameters: {
       query?: never;
@@ -658,6 +675,20 @@ export interface components {
       /** @example Intro */
       rootTaskTitle: string;
       subtasks: components["schemas"]["TaskSkillApplyPreviewSubtaskDto"][];
+    };
+    TaskSkillApplyResultDto: {
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      projectId: string;
+      /** Format: uuid */
+      taskSkillId: string;
+      /** Format: uuid */
+      taskSkillVersionId: string;
+      /** @example 1 */
+      taskSkillVersion: number;
+      rootTask: components["schemas"]["TaskDetailDto"];
+      subtasks: components["schemas"]["TaskDetailDto"][];
     };
     UpdateTaskSkillDefinitionDto: {
       definition: {
@@ -1477,6 +1508,56 @@ export interface operations {
       };
       /** @description Task skill apply preview payload is invalid. */
       400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task skill is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_applyTaskSkill: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        taskSkillId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PreviewTaskSkillApplyDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillApplyResultDto"];
+        };
+      };
+      /** @description Task skill apply payload or definition is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot apply task skills in this workspace. */
+      403: {
         headers: {
           [name: string]: unknown;
         };

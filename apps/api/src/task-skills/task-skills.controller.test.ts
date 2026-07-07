@@ -5,6 +5,7 @@ import type {
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   TaskSkillApplyPreview,
+  TaskSkillApplyResult,
   TaskSkillDetail,
   TaskSkillSummary,
   UpdateTaskSkillDefinitionInput,
@@ -19,6 +20,7 @@ import {
 } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
 import type {
+  TaskSkillApplyForWorkspaceResult,
   TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
   TaskSkillCreateResult,
@@ -30,6 +32,8 @@ import type {
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
 const projectId = "66666666-6666-4666-8666-666666666666";
+const rootTaskId = "77777777-7777-4777-8777-777777777777";
+const subtaskId = "88888888-8888-4888-8888-888888888888";
 const skillId = "33333333-3333-4333-8333-333333333333";
 const versionId = "44444444-4444-4444-8444-444444444444";
 const nextVersionId = "55555555-5555-4555-8555-555555555555";
@@ -126,6 +130,54 @@ const applyPreview: TaskSkillApplyPreview = {
   taskSkillVersion: 1,
   rootTaskTitle: "Intro",
   subtasks: [{ title: "Strings", source: "added" }],
+};
+
+const applyResult: TaskSkillApplyResult = {
+  workspaceId,
+  projectId,
+  taskSkillId: skillId,
+  taskSkillVersionId: versionId,
+  taskSkillVersion: 1,
+  rootTask: {
+    id: rootTaskId,
+    workspaceId,
+    projectId,
+    parentTaskId: null,
+    title: "Intro",
+    description: null,
+    statusId: null,
+    assigneeUserId: null,
+    createdByUserId: userId,
+    position: "0",
+    dueAt: null,
+    sourceSkillId: skillId,
+    sourceSkillVersionId: versionId,
+    metadata: {},
+    archivedAt: null,
+    createdAt,
+    updatedAt: createdAt,
+  },
+  subtasks: [
+    {
+      id: subtaskId,
+      workspaceId,
+      projectId,
+      parentTaskId: rootTaskId,
+      title: "Strings",
+      description: null,
+      statusId: null,
+      assigneeUserId: null,
+      createdByUserId: userId,
+      position: "1",
+      dueAt: null,
+      sourceSkillId: skillId,
+      sourceSkillVersionId: versionId,
+      metadata: { taskSkillSubtaskSource: "added" },
+      archivedAt: null,
+      createdAt,
+      updatedAt: createdAt,
+    },
+  ],
 };
 
 test("TaskSkillsController uses trusted current user context for task skill list reads", async () => {
@@ -252,6 +304,28 @@ test("TaskSkillsController uses trusted current user context for task skill appl
   assert.deepEqual(
     response.subtasks.map((subtask) => subtask.title),
     ["Strings"],
+  );
+});
+
+test("TaskSkillsController uses trusted current user context for task skill applies", async () => {
+  const controller = new TaskSkillsController(
+    new TaskSkillsService(
+      createReadStore({
+        applyResult: {
+          status: "applied",
+          result: applyResult,
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.applyTaskSkill(workspaceId, skillId, userId, previewInput);
+
+  assert.equal(response.taskSkillId, skillId);
+  assert.equal(response.rootTask.id, rootTaskId);
+  assert.deepEqual(
+    response.subtasks.map((subtask) => subtask.parentTaskId),
+    [rootTaskId],
   );
 });
 
@@ -393,6 +467,7 @@ test("ParsePreviewTaskSkillApplyBodyPipe validates and normalizes preview payloa
 
 function createReadStore(options: {
   archiveResult?: TaskSkillArchiveResult;
+  applyResult?: TaskSkillApplyForWorkspaceResult;
   applyPreviewResult?: TaskSkillApplyPreviewResult;
   createResult?: TaskSkillCreateResult;
   definitionUpdateResult?: TaskSkillDefinitionUpdateResult;
@@ -407,6 +482,8 @@ function createReadStore(options: {
       options.archiveResult ?? { status: "workspace_not_found" },
     previewApplyForWorkspace: async (): Promise<TaskSkillApplyPreviewResult> =>
       options.applyPreviewResult ?? { status: "not_found" },
+    applyForWorkspace: async (): Promise<TaskSkillApplyForWorkspaceResult> =>
+      options.applyResult ?? { status: "not_found" },
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
     updateDefinitionForWorkspace: async (): Promise<TaskSkillDefinitionUpdateResult> =>
