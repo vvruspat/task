@@ -5,6 +5,7 @@ import { HealthResponseDto } from "./app.dto.js";
 import { CreateTaskLinkAttachmentDto, TaskAttachmentDto } from "./attachments/attachments.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
 import { CreateProjectDto, ProjectDetailDto, ProjectSummaryDto } from "./projects/projects.dto.js";
+import { WorkspaceStatusDto } from "./statuses/statuses.dto.js";
 import {
   CreateTaskDto,
   TaskDetailDto,
@@ -33,6 +34,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       CreateProjectDto,
       ProjectSummaryDto,
       ProjectDetailDto,
+      WorkspaceStatusDto,
       CreateTaskDto,
       UpdateTaskStatusDto,
       TaskSummaryDto,

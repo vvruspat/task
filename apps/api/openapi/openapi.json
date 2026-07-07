@@ -578,6 +578,52 @@
         "tags": ["tasks"]
       }
     },
+    "/workspaces/{workspaceId}/statuses": {
+      "get": {
+        "operationId": "StatusesController_listStatuses",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceStatusDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          }
+        },
+        "summary": "List statuses for one visible workspace",
+        "tags": ["statuses"]
+      }
+    },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/comments": {
       "get": {
         "operationId": "CommentsController_listTaskComments",
@@ -1342,6 +1388,53 @@
           }
         },
         "required": ["statusId"]
+      },
+      "WorkspaceStatusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "In progress"
+          },
+          "color": {
+            "type": "string",
+            "example": "#3b82f6"
+          },
+          "position": {
+            "type": "string",
+            "example": "1000"
+          },
+          "isDone": {
+            "type": "boolean",
+            "example": false
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "name",
+          "color",
+          "position",
+          "isDone",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "TaskCommentDto": {
         "type": "object",
