@@ -732,6 +732,52 @@
         "tags": ["tasks"]
       }
     },
+    "/workspaces/{workspaceId}/task-skills": {
+      "get": {
+        "operationId": "TaskSkillsController_listActiveTaskSkills",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskSkillSummaryDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          }
+        },
+        "summary": "List active task skills for one visible workspace",
+        "tags": ["task-skills"]
+      }
+    },
     "/workspaces/{workspaceId}/statuses": {
       "get": {
         "operationId": "StatusesController_listStatuses",
@@ -1564,6 +1610,59 @@
           }
         },
         "required": ["dueAt"]
+      },
+      "TaskSkillSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Song"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "archivedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "name",
+          "aliases",
+          "createdByUserId",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "WorkspaceStatusDto": {
         "type": "object",

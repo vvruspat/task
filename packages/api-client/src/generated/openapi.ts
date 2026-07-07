@@ -210,6 +210,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/task-skills": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List active task skills for one visible workspace */
+    get: operations["TaskSkillsController_listActiveTaskSkills"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/statuses": {
     parameters: {
       query?: never;
@@ -492,6 +509,24 @@ export interface components {
     UpdateTaskDueDateDto: {
       /** Format: date-time */
       dueAt: string | null;
+    };
+    TaskSkillSummaryDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** @example Song */
+      name: string;
+      description?: string | null;
+      aliases: string[];
+      /** Format: uuid */
+      createdByUserId: string;
+      /** Format: date-time */
+      archivedAt?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
     };
     WorkspaceStatusDto: {
       /** Format: uuid */
@@ -1062,6 +1097,37 @@ export interface operations {
         };
       };
       /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_listActiveTaskSkills: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillSummaryDto"][];
+        };
+      };
+      /** @description Workspace is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;
