@@ -3,6 +3,7 @@ import type {
   TaskBackendClient,
   TaskDetailResponse,
   TaskSummaryResponse,
+  UpdateTaskAssigneeInput,
   UpdateTaskStatusInput,
 } from "./backend-client.js";
 
@@ -43,9 +44,18 @@ export type TaskSetStatusToolInput = {
   statusId: string | null;
 };
 
+export type TaskSetAssigneeToolInput = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  assigneeUserId: string | null;
+};
+
 export type TaskToolHandlers = {
   create(input: unknown): Promise<TaskDetailResponse>;
   setStatus(input: unknown): Promise<TaskDetailResponse>;
+  setAssignee(input: unknown): Promise<TaskDetailResponse>;
   search(input: unknown): Promise<TaskSummaryResponse[]>;
   get(input: unknown): Promise<TaskDetailResponse>;
 };
@@ -78,6 +88,17 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
         taskId: parsedInput.taskId,
         userId: parsedInput.userId,
         body: toUpdateTaskStatusInput(parsedInput),
+      });
+    },
+    setAssignee: (input) => {
+      const parsedInput = parseTaskSetAssigneeToolInput(input);
+
+      return client.updateTaskAssignee({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toUpdateTaskAssigneeInput(parsedInput),
       });
     },
     get: (input) => {
@@ -118,6 +139,18 @@ export function parseTaskSetStatusToolInput(input: unknown): TaskSetStatusToolIn
     taskId: readRequiredUuid(record, "taskId"),
     userId: readRequiredUuid(record, "userId"),
     statusId: readRequiredNullableUuid(record, "statusId"),
+  };
+}
+
+export function parseTaskSetAssigneeToolInput(input: unknown): TaskSetAssigneeToolInput {
+  const record = readRecord(input, "task set assignee tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+    assigneeUserId: readRequiredNullableUuid(record, "assigneeUserId"),
   };
 }
 
@@ -216,6 +249,12 @@ function toCreateTaskInput(input: TaskCreateToolInput): CreateTaskInput {
 function toUpdateTaskStatusInput(input: TaskSetStatusToolInput): UpdateTaskStatusInput {
   return {
     statusId: input.statusId,
+  };
+}
+
+function toUpdateTaskAssigneeInput(input: TaskSetAssigneeToolInput): UpdateTaskAssigneeInput {
+  return {
+    assigneeUserId: input.assigneeUserId,
   };
 }
 

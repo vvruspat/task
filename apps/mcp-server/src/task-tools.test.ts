@@ -9,6 +9,7 @@ import type {
   TaskBackendClient,
   TaskDetailResponse,
   TaskSummaryResponse,
+  UpdateTaskAssigneeRequest,
   UpdateTaskStatusRequest,
 } from "./backend-client.js";
 import {
@@ -16,6 +17,7 @@ import {
   parseTaskCreateToolInput,
   parseTaskGetToolInput,
   parseTaskSearchToolInput,
+  parseTaskSetAssigneeToolInput,
   parseTaskSetStatusToolInput,
   TaskToolInputError,
 } from "./task-tools.js";
@@ -26,6 +28,7 @@ const userId = "55555555-5555-4555-8555-555555555555";
 const firstTaskId = "66666666-6666-4666-8666-666666666666";
 const secondTaskId = "77777777-7777-4777-8777-777777777777";
 const statusId = "88888888-8888-4888-8888-888888888888";
+const assigneeUserId = "99999999-9999-4999-8999-999999999999";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
 const arrangeTask: TaskSummaryResponse = {
@@ -225,6 +228,58 @@ test("parseTaskSetStatusToolInput validates task status payloads", () => {
   );
 });
 
+test("parseTaskSetAssigneeToolInput validates task assignee payloads", () => {
+  assert.deepEqual(
+    parseTaskSetAssigneeToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      assigneeUserId: ` ${assigneeUserId} `,
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      assigneeUserId,
+    },
+  );
+
+  assert.deepEqual(
+    parseTaskSetAssigneeToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      assigneeUserId: null,
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      assigneeUserId: null,
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseTaskSetAssigneeToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        assigneeUserId: "bad",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSetAssigneeToolInput({ workspaceId, projectId, taskId: firstTaskId, userId }),
+    TaskToolInputError,
+  );
+});
+
 test("task search handler lists active tasks when query is absent", async () => {
   const client = createBackendClientStub(tasks);
   const handlers = createTaskToolHandlers(client);
@@ -327,6 +382,34 @@ test("task set status handler forwards status payloads to the backend client", a
   ]);
 });
 
+test("task set assignee handler forwards assignee payloads to the backend client", async () => {
+  const calls: UpdateTaskAssigneeRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.setAssignee({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      assigneeUserId,
+    }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      body: {
+        assigneeUserId,
+      },
+    },
+  ]);
+});
+
 function createBackendClientStub(
   responseTasks: TaskSummaryResponse[],
   listActiveTaskCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
@@ -338,6 +421,7 @@ function createBackendClientStub(
   }> = [],
   createTaskCalls: CreateTaskRequest[] = [],
   updateTaskStatusCalls: UpdateTaskStatusRequest[] = [],
+  updateTaskAssigneeCalls: UpdateTaskAssigneeRequest[] = [],
 ): TaskBackendClient {
   return {
     createProject: async (): Promise<ProjectDetailResponse> => {
@@ -366,6 +450,11 @@ function createBackendClientStub(
     },
     updateTaskStatus: async (request): Promise<TaskDetailResponse> => {
       updateTaskStatusCalls.push(request);
+
+      return taskDetail;
+    },
+    updateTaskAssignee: async (request): Promise<TaskDetailResponse> => {
+      updateTaskAssigneeCalls.push(request);
 
       return taskDetail;
     },
