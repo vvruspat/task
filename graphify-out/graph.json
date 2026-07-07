@@ -3890,7 +3890,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "statuses_statuses_module_statusesmodule",
-      "community": 77,
+      "community": 67,
       "norm_label": "statusesmodule"
     },
     {
@@ -4030,7 +4030,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_constructor",
-      "community": 2,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -4380,7 +4380,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_listactivetaskskills",
-      "community": 49,
+      "community": 58,
       "norm_label": ".listactivetaskskills()"
     },
     {
@@ -4470,7 +4470,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_createtaskskilldto",
-      "community": 49,
+      "community": 71,
       "norm_label": "createtaskskilldto"
     },
     {
@@ -4530,7 +4530,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_updatetaskskilldefinitiondto",
-      "community": 71,
+      "community": 49,
       "norm_label": "updatetaskskilldefinitiondto"
     },
     {
@@ -6620,7 +6620,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "telegram_typeorm_telegram_context_store_typeormtelegramcontextstore_constructor",
-      "community": 46,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -7450,7 +7450,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_attachment_tools_test",
-      "community": 76,
+      "community": 84,
       "norm_label": "attachment-tools.test.ts"
     },
     {
@@ -7460,7 +7460,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_attachment_tools_test_taskattachment",
-      "community": 76,
+      "community": 84,
       "norm_label": "taskattachment"
     },
     {
@@ -7470,7 +7470,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_attachment_tools_test_createbackendclientstub",
-      "community": 76,
+      "community": 84,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -7960,7 +7960,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskillresponse",
-      "community": 76,
+      "community": 84,
       "norm_label": "applytaskskillresponse"
     },
     {
@@ -7970,7 +7970,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_backend_client_workspacestatusresponse",
-      "community": 33,
+      "community": 84,
       "norm_label": "workspacestatusresponse"
     },
     {
@@ -8050,7 +8050,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_backend_client_projectsummaryresponse",
-      "community": 33,
+      "community": 84,
       "norm_label": "projectsummaryresponse"
     },
     {
@@ -8070,7 +8070,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_backend_client_tasksummaryresponse",
-      "community": 60,
+      "community": 84,
       "norm_label": "tasksummaryresponse"
     },
     {
@@ -8080,7 +8080,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_backend_client_taskcommentresponse",
-      "community": 60,
+      "community": 84,
       "norm_label": "taskcommentresponse"
     },
     {
@@ -8090,7 +8090,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_backend_client_taskattachmentresponse",
-      "community": 33,
+      "community": 84,
       "norm_label": "taskattachmentresponse"
     },
     {
@@ -8180,7 +8180,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_backend_client_taskskillapplyrequest",
-      "community": 60,
+      "community": 84,
       "norm_label": "taskskillapplyrequest"
     },
     {
@@ -8250,7 +8250,7 @@
       "source_location": "L141",
       "_origin": "ast",
       "id": "src_backend_client_createtaskcommentrequest",
-      "community": 53,
+      "community": 84,
       "norm_label": "createtaskcommentrequest"
     },
     {
@@ -8260,7 +8260,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "src_backend_client_listtaskattachmentsrequest",
-      "community": 76,
+      "community": 84,
       "norm_label": "listtaskattachmentsrequest"
     },
     {
@@ -8270,7 +8270,7 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_backend_client_createtasklinkattachmentrequest",
-      "community": 76,
+      "community": 84,
       "norm_label": "createtasklinkattachmentrequest"
     },
     {
@@ -8330,7 +8330,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclient",
-      "community": 53,
+      "community": 84,
       "norm_label": "taskbackendclient"
     },
     {
@@ -8800,7 +8800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_comment_tools_test",
-      "community": 53,
+      "community": 84,
       "norm_label": "comment-tools.test.ts"
     },
     {
@@ -8810,7 +8810,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_comment_tools_test_taskcomment",
-      "community": 53,
+      "community": 84,
       "norm_label": "taskcomment"
     },
     {
@@ -8820,7 +8820,7 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_comment_tools_test_createbackendclientstub",
-      "community": 53,
+      "community": 84,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -8890,7 +8890,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_comment_tools_createcommenttoolhandlers",
-      "community": 53,
+      "community": 84,
       "norm_label": "createcommenttoolhandlers()"
     },
     {
@@ -10130,7 +10130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_status_tools_test",
-      "community": 33,
+      "community": 84,
       "norm_label": "status-tools.test.ts"
     },
     {
@@ -10140,7 +10140,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_status_tools_test_workspacestatus",
-      "community": 33,
+      "community": 84,
       "norm_label": "workspacestatus"
     },
     {
@@ -10150,7 +10150,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_status_tools_test_createbackendclientstub",
-      "community": 33,
+      "community": 84,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -10160,7 +10160,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_status_tools",
-      "community": 33,
+      "community": 84,
       "norm_label": "status-tools.ts"
     },
     {
@@ -10170,7 +10170,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_status_tools_statuslisttoolinput",
-      "community": 33,
+      "community": 84,
       "norm_label": "statuslisttoolinput"
     },
     {
@@ -10180,7 +10180,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_status_tools_statustoolhandlers",
-      "community": 33,
+      "community": 84,
       "norm_label": "statustoolhandlers"
     },
     {
@@ -10190,7 +10190,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_status_tools_statustoolinputerror",
-      "community": 33,
+      "community": 84,
       "norm_label": "statustoolinputerror"
     },
     {
@@ -10200,7 +10200,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_status_tools_statustoolinputerror_constructor",
-      "community": 33,
+      "community": 84,
       "norm_label": ".constructor()"
     },
     {
@@ -10210,7 +10210,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_status_tools_createstatustoolhandlers",
-      "community": 33,
+      "community": 84,
       "norm_label": "createstatustoolhandlers()"
     },
     {
@@ -10220,7 +10220,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_status_tools_parsestatuslisttoolinput",
-      "community": 33,
+      "community": 84,
       "norm_label": "parsestatuslisttoolinput()"
     },
     {
@@ -10230,7 +10230,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_status_tools_readrecord",
-      "community": 33,
+      "community": 84,
       "norm_label": "readrecord()"
     },
     {
@@ -10240,7 +10240,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_status_tools_isunknownrecord",
-      "community": 33,
+      "community": 84,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -10250,7 +10250,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_status_tools_readrequireduuid",
-      "community": 33,
+      "community": 84,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -10260,7 +10260,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_task_skill_tools_test",
-      "community": 60,
+      "community": 84,
       "norm_label": "task-skill-tools.test.ts"
     },
     {
@@ -10270,7 +10270,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_toolinput",
-      "community": 60,
+      "community": 84,
       "norm_label": "toolinput"
     },
     {
@@ -10280,7 +10280,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_previewresponse",
-      "community": 60,
+      "community": 84,
       "norm_label": "previewresponse"
     },
     {
@@ -10290,7 +10290,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_applyresponse",
-      "community": 60,
+      "community": 84,
       "norm_label": "applyresponse"
     },
     {
@@ -10300,7 +10300,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "src_task_skill_tools_test_createbackendclientstub",
-      "community": 60,
+      "community": 84,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -11090,7 +11090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "community": 47,
+      "community": 86,
       "norm_label": "backend-client.test.ts"
     },
     {
@@ -11100,7 +11100,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test_requestbody",
-      "community": 47,
+      "community": 86,
       "norm_label": "requestbody"
     },
     {
@@ -11110,7 +11110,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_backend_client_test_recordingtelegrambackendfetch",
-      "community": 47,
+      "community": 86,
       "norm_label": "recordingtelegrambackendfetch"
     },
     {
@@ -11120,7 +11120,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_backend_client_test_recordingtelegrambackendfetch_constructor",
-      "community": 47,
+      "community": 86,
       "norm_label": ".constructor()"
     },
     {
@@ -11130,7 +11130,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_backend_client_test_recordingtelegrambackendfetch_call",
-      "community": 47,
+      "community": 86,
       "norm_label": ".call()"
     },
     {
@@ -11140,7 +11140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "community": 47,
+      "community": 86,
       "norm_label": "backend-client.ts"
     },
     {
@@ -11150,7 +11150,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_backend_client_resolvetelegramcontextoperation",
-      "community": 47,
+      "community": 86,
       "norm_label": "resolvetelegramcontextoperation"
     },
     {
@@ -11160,7 +11160,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_backend_client_resolvetelegramcontextinput",
-      "community": 47,
+      "community": 86,
       "norm_label": "resolvetelegramcontextinput"
     },
     {
@@ -11170,7 +11170,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_backend_client_telegramcontextresolutionresponse",
-      "community": 47,
+      "community": 89,
       "norm_label": "telegramcontextresolutionresponse"
     },
     {
@@ -11180,7 +11180,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendfetchinit",
-      "community": 47,
+      "community": 86,
       "norm_label": "telegrambackendfetchinit"
     },
     {
@@ -11190,7 +11190,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendpostheaders",
-      "community": 47,
+      "community": 86,
       "norm_label": "telegrambackendpostheaders"
     },
     {
@@ -11200,7 +11200,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendfetchresponse",
-      "community": 47,
+      "community": 86,
       "norm_label": "telegrambackendfetchresponse"
     },
     {
@@ -11210,7 +11210,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendfetch",
-      "community": 47,
+      "community": 86,
       "norm_label": "telegrambackendfetch"
     },
     {
@@ -11220,7 +11220,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendclientoptions",
-      "community": 47,
+      "community": 86,
       "norm_label": "telegrambackendclientoptions"
     },
     {
@@ -11230,7 +11230,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_backend_client_resolvetelegramcontextrequest",
-      "community": 47,
+      "community": 89,
       "norm_label": "resolvetelegramcontextrequest"
     },
     {
@@ -11240,7 +11240,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendclient",
-      "community": 47,
+      "community": 89,
       "norm_label": "telegrambackendclient"
     },
     {
@@ -11250,7 +11250,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendclienterror",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegrambackendclienterror"
     },
     {
@@ -11260,7 +11260,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendclienterror_constructor",
-      "community": 47,
+      "community": 87,
       "norm_label": ".constructor()"
     },
     {
@@ -11270,7 +11270,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_backend_client_createtelegrambackendclient",
-      "community": 47,
+      "community": 86,
       "norm_label": "createtelegrambackendclient()"
     },
     {
@@ -11280,7 +11280,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client_postjson",
-      "community": 47,
+      "community": 86,
       "norm_label": "postjson()"
     },
     {
@@ -11290,7 +11290,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "community": 47,
+      "community": 86,
       "norm_label": "normalizebaseurl()"
     },
     {
@@ -11300,7 +11300,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_backend_client_readtelegramcontextresolutionresponse",
-      "community": 47,
+      "community": 86,
       "norm_label": "readtelegramcontextresolutionresponse()"
     },
     {
@@ -11310,7 +11310,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client_readrecord",
-      "community": 47,
+      "community": 86,
       "norm_label": "readrecord()"
     },
     {
@@ -11320,7 +11320,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client_isunknownrecord",
-      "community": 47,
+      "community": 86,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -11330,7 +11330,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "src_backend_client_readresolutionstatus",
-      "community": 47,
+      "community": 86,
       "norm_label": "readresolutionstatus()"
     },
     {
@@ -11340,7 +11340,7 @@
       "source_location": "L164",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client_readstring",
-      "community": 47,
+      "community": 86,
       "norm_label": "readstring()"
     },
     {
@@ -11350,7 +11350,7 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "community": 47,
+      "community": 86,
       "norm_label": "readoptionalnullablestring()"
     },
     {
@@ -11360,7 +11360,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_test_ts_src_config_test",
-      "community": 47,
+      "community": 88,
       "norm_label": "config.test.ts"
     },
     {
@@ -11370,7 +11370,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_config_test_validenvironment",
-      "community": 47,
+      "community": 88,
       "norm_label": "validenvironment"
     },
     {
@@ -11380,7 +11380,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_ts_src_config",
-      "community": 47,
+      "community": 88,
       "norm_label": "config.ts"
     },
     {
@@ -11390,7 +11390,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_telegrambotenvironment",
-      "community": 47,
+      "community": 88,
       "norm_label": "telegrambotenvironment"
     },
     {
@@ -11400,7 +11400,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_config_telegrambotconfig",
-      "community": 47,
+      "community": 88,
       "norm_label": "telegrambotconfig"
     },
     {
@@ -11410,7 +11410,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_config_invalidtelegrambotenvironmenterror",
-      "community": 47,
+      "community": 88,
       "norm_label": "invalidtelegrambotenvironmenterror"
     },
     {
@@ -11420,7 +11420,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_config_invalidtelegrambotenvironmenterror_constructor",
-      "community": 47,
+      "community": 88,
       "norm_label": ".constructor()"
     },
     {
@@ -11430,7 +11430,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_config_parsetelegrambotconfig",
-      "community": 47,
+      "community": 88,
       "norm_label": "parsetelegrambotconfig()"
     },
     {
@@ -11440,7 +11440,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_config_loadtelegrambotconfig",
-      "community": 47,
+      "community": 88,
       "norm_label": "loadtelegrambotconfig()"
     },
     {
@@ -11450,7 +11450,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_config_parserequiredsecret",
-      "community": 47,
+      "community": 88,
       "norm_label": "parserequiredsecret()"
     },
     {
@@ -11460,7 +11460,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_config_parseoptionalsecret",
-      "community": 47,
+      "community": 88,
       "norm_label": "parseoptionalsecret()"
     },
     {
@@ -11470,7 +11470,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_ts_src_config_parsebackendbaseurl",
-      "community": 47,
+      "community": 88,
       "norm_label": "parsebackendbaseurl()"
     },
     {
@@ -11480,7 +11480,7 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_ts_src_config_formatinvalidvalue",
-      "community": 47,
+      "community": 88,
       "norm_label": "formatinvalidvalue()"
     },
     {
@@ -11490,7 +11490,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_index_ts_src_index",
-      "community": 47,
+      "community": 87,
       "norm_label": "index.ts"
     },
     {
@@ -11500,7 +11500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_message_handler_test",
-      "community": 47,
+      "community": 89,
       "norm_label": "message-handler.test.ts"
     },
     {
@@ -11510,7 +11510,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_message_handler_test_telegramupdate",
-      "community": 47,
+      "community": 89,
       "norm_label": "telegramupdate"
     },
     {
@@ -11520,7 +11520,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient",
-      "community": 47,
+      "community": 89,
       "norm_label": "recordingtelegrambackendclient"
     },
     {
@@ -11530,7 +11530,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient_constructor",
-      "community": 47,
+      "community": 89,
       "norm_label": ".constructor()"
     },
     {
@@ -11540,7 +11540,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
-      "community": 47,
+      "community": 89,
       "norm_label": ".resolvetelegramcontext()"
     },
     {
@@ -11550,7 +11550,7 @@
       "source_location": "L147",
       "_origin": "ast",
       "id": "src_message_handler_test_failingtelegrambackendclient",
-      "community": 47,
+      "community": 89,
       "norm_label": "failingtelegrambackendclient"
     },
     {
@@ -11560,7 +11560,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
-      "community": 47,
+      "community": 89,
       "norm_label": ".resolvetelegramcontext()"
     },
     {
@@ -11570,7 +11570,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_message_handler",
-      "community": 47,
+      "community": 87,
       "norm_label": "message-handler.ts"
     },
     {
@@ -11580,7 +11580,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_message_handler_telegrammessagehandleroptions",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegrammessagehandleroptions"
     },
     {
@@ -11590,7 +11590,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_message_handler_telegramreplyaction",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramreplyaction"
     },
     {
@@ -11600,7 +11600,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_message_handler_telegramresolvedmessageaction",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramresolvedmessageaction"
     },
     {
@@ -11610,7 +11610,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_message_handler_telegramresolvedcontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramresolvedcontext"
     },
     {
@@ -11620,7 +11620,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_message_handler_telegrammessagehandleraction",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegrammessagehandleraction"
     },
     {
@@ -11630,7 +11630,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_message_handler_handletelegramupdate",
-      "community": 47,
+      "community": 87,
       "norm_label": "handletelegramupdate()"
     },
     {
@@ -11640,7 +11640,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_message_handler_createreply",
-      "community": 47,
+      "community": 87,
       "norm_label": "createreply()"
     },
     {
@@ -11650,8 +11650,268 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_message_handler_readresolvedcontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "readresolvedcontext()"
+    },
+    {
+      "label": "telegram-sender.test.ts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_telegram_sender_test",
+      "community": 85,
+      "norm_label": "telegram-sender.test.ts"
+    },
+    {
+      "label": "replyAction",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "src_telegram_sender_test_replyaction",
+      "community": 85,
+      "norm_label": "replyaction"
+    },
+    {
+      "label": "RecordingTelegramBotApiFetch",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L127",
+      "_origin": "ast",
+      "id": "src_telegram_sender_test_recordingtelegrambotapifetch",
+      "community": 85,
+      "norm_label": "recordingtelegrambotapifetch"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L131",
+      "_origin": "ast",
+      "id": "src_telegram_sender_test_recordingtelegrambotapifetch_constructor",
+      "community": 85,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".call()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L140",
+      "_origin": "ast",
+      "id": "src_telegram_sender_test_recordingtelegrambotapifetch_call",
+      "community": 85,
+      "norm_label": ".call()"
+    },
+    {
+      "label": "telegram-sender.ts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_telegram_sender",
+      "community": 85,
+      "norm_label": "telegram-sender.ts"
+    },
+    {
+      "label": "TelegramBotApiPostHeaders",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegrambotapipostheaders",
+      "community": 85,
+      "norm_label": "telegrambotapipostheaders"
+    },
+    {
+      "label": "TelegramBotApiFetchInit",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegrambotapifetchinit",
+      "community": 85,
+      "norm_label": "telegrambotapifetchinit"
+    },
+    {
+      "label": "TelegramBotApiFetchResponse",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegrambotapifetchresponse",
+      "community": 85,
+      "norm_label": "telegrambotapifetchresponse"
+    },
+    {
+      "label": "TelegramBotApiFetch",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegrambotapifetch",
+      "community": 85,
+      "norm_label": "telegrambotapifetch"
+    },
+    {
+      "label": "TelegramReplySenderOptions",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegramreplysenderoptions",
+      "community": 85,
+      "norm_label": "telegramreplysenderoptions"
+    },
+    {
+      "label": "TelegramReplySender",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegramreplysender",
+      "community": 85,
+      "norm_label": "telegramreplysender"
+    },
+    {
+      "label": "TelegramSendMessageResult",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegramsendmessageresult",
+      "community": 85,
+      "norm_label": "telegramsendmessageresult"
+    },
+    {
+      "label": "TelegramSendMessageBody",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegramsendmessagebody",
+      "community": 85,
+      "norm_label": "telegramsendmessagebody"
+    },
+    {
+      "label": "TelegramReplySenderError",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegramreplysendererror",
+      "community": 85,
+      "norm_label": "telegramreplysendererror"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "src_telegram_sender_telegramreplysendererror_constructor",
+      "community": 85,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "createTelegramReplySender()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "src_telegram_sender_createtelegramreplysender",
+      "community": 85,
+      "norm_label": "createtelegramreplysender()"
+    },
+    {
+      "label": "sendMessage()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "src_telegram_sender_sendmessage",
+      "community": 85,
+      "norm_label": "sendmessage()"
+    },
+    {
+      "label": "createSendMessageBody()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "src_telegram_sender_createsendmessagebody",
+      "community": 85,
+      "norm_label": "createsendmessagebody()"
+    },
+    {
+      "label": "readSendMessageResponse()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L116",
+      "_origin": "ast",
+      "id": "src_telegram_sender_readsendmessageresponse",
+      "community": 85,
+      "norm_label": "readsendmessageresponse()"
+    },
+    {
+      "label": "normalizeApiBaseUrl()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L131",
+      "_origin": "ast",
+      "id": "src_telegram_sender_normalizeapibaseurl",
+      "community": 85,
+      "norm_label": "normalizeapibaseurl()"
+    },
+    {
+      "label": "readMessageId()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L135",
+      "_origin": "ast",
+      "id": "src_telegram_sender_readmessageid",
+      "community": 85,
+      "norm_label": "readmessageid()"
+    },
+    {
+      "label": "readTelegramIntegerAsString()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L149",
+      "_origin": "ast",
+      "id": "src_telegram_sender_readtelegramintegerasstring",
+      "community": 85,
+      "norm_label": "readtelegramintegerasstring()"
+    },
+    {
+      "label": "readRecord()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L162",
+      "_origin": "ast",
+      "id": "src_telegram_sender_readrecord",
+      "community": 85,
+      "norm_label": "readrecord()"
+    },
+    {
+      "label": "readProperty()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L170",
+      "_origin": "ast",
+      "id": "src_telegram_sender_readproperty",
+      "community": 85,
+      "norm_label": "readproperty()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L174",
+      "_origin": "ast",
+      "id": "src_telegram_sender_isunknownrecord",
+      "community": 85,
+      "norm_label": "isunknownrecord()"
     },
     {
       "label": "telegram-update.test.ts",
@@ -11680,7 +11940,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_telegram_update_telegramusercontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramusercontext"
     },
     {
@@ -11690,7 +11950,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_telegram_update_telegramchatcontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramchatcontext"
     },
     {
@@ -11700,7 +11960,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_telegram_update_telegrammessageentitycontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegrammessageentitycontext"
     },
     {
@@ -11710,7 +11970,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_telegram_update_telegramdocumentattachmentcontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramdocumentattachmentcontext"
     },
     {
@@ -11720,7 +11980,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_telegram_update_telegramphotoattachmentcontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramphotoattachmentcontext"
     },
     {
@@ -11730,7 +11990,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_telegram_update_telegramattachmentcontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramattachmentcontext"
     },
     {
@@ -11740,7 +12000,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_telegram_update_telegrammessagecontext",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegrammessagecontext"
     },
     {
@@ -11750,7 +12010,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_telegram_update_telegramupdateparseerror",
-      "community": 47,
+      "community": 87,
       "norm_label": "telegramupdateparseerror"
     },
     {
@@ -11760,7 +12020,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_telegram_update_telegramupdateparseerror_constructor",
-      "community": 47,
+      "community": 87,
       "norm_label": ".constructor()"
     },
     {
@@ -47793,6 +48053,116 @@
       "context": "export",
       "confidence": "EXTRACTED",
       "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_createtelegramreplysender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegrambotapifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegrambotapifetchinit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegrambotapifetchresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegrambotapipostheaders",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegramreplysender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegramreplysendererror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegramreplysenderoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_sender_telegramsendmessageresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -48105,6 +48475,50 @@
       "target": "src_telegram_update_telegramupdateparseerror"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_message_handler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_message_handler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_message_handler_telegramreplyaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_message_handler_telegramreplyaction",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -48136,6 +48550,400 @@
       "weight": 1.0,
       "source": "src_message_handler_handletelegramupdate",
       "target": "src_telegram_update_parsetelegrammessagecontext"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_telegram_sender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_telegram_sender_createtelegramreplysender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_telegram_sender_telegrambotapifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_telegram_sender_telegrambotapifetchinit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_telegram_sender_telegramreplysendererror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_telegram_sender_test_recordingtelegrambotapifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test",
+      "target": "src_telegram_sender_test_replyaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test_recordingtelegrambotapifetch",
+      "target": "src_telegram_sender_telegrambotapifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test_recordingtelegrambotapifetch",
+      "target": "src_telegram_sender_telegrambotapifetchinit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test_recordingtelegrambotapifetch",
+      "target": "src_telegram_sender_test_recordingtelegrambotapifetch_call",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.test.ts",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "src_telegram_sender_test_recordingtelegrambotapifetch",
+      "target": "src_telegram_sender_test_recordingtelegrambotapifetch_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_createsendmessagebody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_createtelegramreplysender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L174",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_normalizeapibaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_readmessageid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L162",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_readsendmessageresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L149",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_readtelegramintegerasstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_sendmessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegrambotapifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegrambotapifetchinit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegrambotapifetchresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegrambotapipostheaders",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegramreplysender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegramreplysendererror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegramreplysenderoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegramsendmessagebody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_telegram_sender",
+      "target": "src_telegram_sender_telegramsendmessageresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "src_telegram_sender_telegramreplysendererror",
+      "target": "src_telegram_sender_telegramreplysendererror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "src_telegram_sender_createtelegramreplysender",
+      "target": "src_telegram_sender_normalizeapibaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "src_telegram_sender_sendmessage",
+      "target": "src_telegram_sender_readsendmessageresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L108",
+      "weight": 1.0,
+      "source": "src_telegram_sender_createsendmessagebody",
+      "target": "src_telegram_sender_readmessageid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "src_telegram_sender_readsendmessageresponse",
+      "target": "src_telegram_sender_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "src_telegram_sender_readsendmessageresponse",
+      "target": "src_telegram_sender_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "src_telegram_sender_readsendmessageresponse",
+      "target": "src_telegram_sender_readtelegramintegerasstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-sender.ts",
+      "source_location": "L163",
+      "weight": 1.0,
+      "source": "src_telegram_sender_readrecord",
+      "target": "src_telegram_sender_isunknownrecord",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -53331,5 +54139,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8c9e78c02cf533d09bc5f24744f7b523109fa312"
+  "built_at_commit": "67cfa28944d7e276ed380e35086ffc95dbd0f056"
 }
