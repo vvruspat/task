@@ -5,6 +5,7 @@ import type {
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
+  UpdateTaskDueDateInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 
@@ -60,6 +61,19 @@ export class ParseUpdateTaskAssigneeBodyPipe
 {
   transform(value: unknown): UpdateTaskAssigneeInput {
     return parseUpdateTaskAssigneeInput(value);
+  }
+}
+
+export class UpdateTaskDueDateDto implements UpdateTaskDueDateInput {
+  @ApiProperty({ format: "date-time", nullable: true, type: String })
+  readonly dueAt: string | null = null;
+}
+
+export class ParseUpdateTaskDueDateBodyPipe
+  implements PipeTransform<unknown, UpdateTaskDueDateInput>
+{
+  transform(value: unknown): UpdateTaskDueDateInput {
+    return parseUpdateTaskDueDateInput(value);
   }
 }
 
@@ -199,6 +213,16 @@ function parseUpdateTaskAssigneeInput(value: unknown): UpdateTaskAssigneeInput {
   };
 }
 
+function parseUpdateTaskDueDateInput(value: unknown): UpdateTaskDueDateInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task due date payload must be an object.");
+  }
+
+  return {
+    dueAt: readRequiredNullableDateTime(value, "dueAt"),
+  };
+}
+
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -276,6 +300,30 @@ function readRequiredNullableUuid(
   }
 
   return trimmedValue;
+}
+
+function readRequiredNullableDateTime(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | null {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === null) {
+    return null;
+  }
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Task ${propertyName} must be an ISO date-time string or null.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+  const timestamp = Date.parse(trimmedValue);
+
+  if (trimmedValue.length === 0 || !Number.isFinite(timestamp)) {
+    throw new BadRequestException(`Task ${propertyName} must be an ISO date-time string or null.`);
+  }
+
+  return new Date(timestamp).toISOString();
 }
 
 function readOptionalNullableDateTime(

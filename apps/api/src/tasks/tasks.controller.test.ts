@@ -6,12 +6,14 @@ import type {
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
+  UpdateTaskDueDateInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import { TasksController } from "./tasks.controller.js";
 import {
   ParseCreateTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
+  ParseUpdateTaskDueDateBodyPipe,
   ParseUpdateTaskStatusBodyPipe,
 } from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
@@ -19,6 +21,7 @@ import type {
   TaskCreateResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
+  TaskUpdateDueDateResult,
   TaskUpdateStatusResult,
 } from "./tasks.store.js";
 
@@ -29,6 +32,7 @@ const statusId = "55555555-5555-4555-8555-555555555555";
 const assigneeUserId = "66666666-6666-4666-8666-666666666666";
 const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
+const dueAt = "2026-01-03T12:00:00.000Z";
 
 const taskSummary: TaskSummary = {
   id: taskId,
@@ -133,6 +137,31 @@ test("TasksController uses trusted current user context for task assignee update
   assert.equal(response.assigneeUserId, assigneeUserId);
 });
 
+test("TasksController uses trusted current user context for task due date updates", async () => {
+  const input: UpdateTaskDueDateInput = { dueAt };
+  const controller = new TasksController(
+    new TasksService(
+      createReadStore({
+        updateDueDateResult: {
+          status: "updated",
+          task: { ...taskSummary, dueAt: new Date(dueAt) },
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.updateTaskDueDate(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
+
+  assert.equal(response.id, taskId);
+  assert.deepEqual(response.dueAt, new Date(dueAt));
+});
+
 test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", () => {
   const pipe = new ParseCreateTaskBodyPipe();
 
@@ -189,12 +218,29 @@ test("ParseUpdateTaskAssigneeBodyPipe validates task assignee payloads", () => {
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseUpdateTaskDueDateBodyPipe validates task due date payloads", () => {
+  const pipe = new ParseUpdateTaskDueDateBodyPipe();
+
+  assert.deepEqual(pipe.transform({ dueAt }), { dueAt });
+  assert.deepEqual(pipe.transform({ dueAt: null }), { dueAt: null });
+  assert.deepEqual(pipe.transform({ dueAt: "2026-01-03T12:00:00+02:00" }), {
+    dueAt: "2026-01-03T10:00:00.000Z",
+  });
+
+  assert.throws(() => pipe.transform({}), BadRequestException);
+  assert.throws(() => pipe.transform({ dueAt: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ dueAt: "tomorrow" }), BadRequestException);
+  assert.throws(() => pipe.transform({ dueAt: 1 }), BadRequestException);
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
   tasks?: TaskSummary[] | null;
   task?: TaskDetail | null;
   createResult?: TaskCreateResult;
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
+  updateDueDateResult?: TaskUpdateDueDateResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
@@ -207,5 +253,7 @@ function createReadStore(options: {
       options.updateStatusResult ?? { status: "task_not_found" },
     updateAssigneeForProject: async (): Promise<TaskUpdateAssigneeResult> =>
       options.updateAssigneeResult ?? { status: "task_not_found" },
+    updateDueDateForProject: async (): Promise<TaskUpdateDueDateResult> =>
+      options.updateDueDateResult ?? { status: "task_not_found" },
   };
 }

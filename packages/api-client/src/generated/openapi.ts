@@ -176,6 +176,23 @@ export interface paths {
     patch: operations["TasksController_updateTaskAssignee"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/due-date": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update one task due date in a visible project */
+    patch: operations["TasksController_updateTaskDueDate"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}": {
     parameters: {
       query?: never;
@@ -471,6 +488,10 @@ export interface components {
     UpdateTaskAssigneeDto: {
       /** Format: uuid */
       assigneeUserId: string | null;
+    };
+    UpdateTaskDueDateDto: {
+      /** Format: date-time */
+      dueAt: string | null;
     };
     WorkspaceStatusDto: {
       /** Format: uuid */
@@ -943,6 +964,57 @@ export interface operations {
         };
       };
       /** @description Task assignee payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_updateTaskDueDate: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTaskDueDateDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Task due date payload is invalid. */
       400: {
         headers: {
           [name: string]: unknown;

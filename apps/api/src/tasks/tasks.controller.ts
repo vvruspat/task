@@ -17,16 +17,19 @@ import {
 import type {
   CreateTaskInput,
   UpdateTaskAssigneeInput,
+  UpdateTaskDueDateInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import {
   CreateTaskDto,
   ParseCreateTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
+  ParseUpdateTaskDueDateBodyPipe,
   ParseUpdateTaskStatusBodyPipe,
   TaskDetailDto,
   TaskSummaryDto,
   UpdateTaskAssigneeDto,
+  UpdateTaskDueDateDto,
   UpdateTaskStatusDto,
 } from "./tasks.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
@@ -110,6 +113,26 @@ export class TasksController {
     @Body(new ParseUpdateTaskAssigneeBodyPipe()) input: UpdateTaskAssigneeInput,
   ): Promise<TaskDetailDto> {
     return this.tasksService.updateTaskAssignee(workspaceId, projectId, taskId, userId, input);
+  }
+
+  @Patch(":taskId/due-date")
+  @ApiOperation({ summary: "Update one task due date in a visible project" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiParam({ format: "uuid", name: "taskId" })
+  @ApiBody({ type: UpdateTaskDueDateDto })
+  @ApiOkResponse({ type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Task due date payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update tasks in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace, project, or task is missing or not visible." })
+  updateTaskDueDate(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @Param("taskId", uuidV4Pipe) taskId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateTaskDueDateBodyPipe()) input: UpdateTaskDueDateInput,
+  ): Promise<TaskDetailDto> {
+    return this.tasksService.updateTaskDueDate(workspaceId, projectId, taskId, userId, input);
   }
 
   @Get(":taskId")

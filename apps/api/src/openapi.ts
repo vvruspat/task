@@ -11,6 +11,7 @@ import {
   TaskDetailDto,
   TaskSummaryDto,
   UpdateTaskAssigneeDto,
+  UpdateTaskDueDateDto,
   UpdateTaskStatusDto,
 } from "./tasks/tasks.dto.js";
 import {
@@ -39,6 +40,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       CreateTaskDto,
       UpdateTaskStatusDto,
       UpdateTaskAssigneeDto,
+      UpdateTaskDueDateDto,
       TaskSummaryDto,
       TaskDetailDto,
       CreateTaskCommentDto,

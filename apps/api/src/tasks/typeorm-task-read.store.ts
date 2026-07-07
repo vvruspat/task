@@ -15,12 +15,14 @@ import type {
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
+  UpdateTaskDueDateInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import type {
   TaskCreateResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
+  TaskUpdateDueDateResult,
   TaskUpdateStatusResult,
 } from "./tasks.store.js";
 
@@ -257,6 +259,54 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
         entityId: updatedTask.id,
         payload: {
           assigneeUserId: input.assigneeUserId,
+          projectId,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return updatedTask;
+    });
+
+    return { status: "updated", task: toTaskSummary(savedTask) };
+  }
+
+  async updateDueDateForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: UpdateTaskDueDateInput,
+  ): Promise<TaskUpdateDueDateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      task.dueAt = input.dueAt === null ? null : new Date(input.dueAt);
+
+      const updatedTask = await manager.getRepository(TaskEntity).save(task);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.due_date_updated",
+        entityType: "task",
+        entityId: updatedTask.id,
+        payload: {
+          dueAt: input.dueAt,
           projectId,
         },
       });
