@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-53-task-comments-api  (2026-07-06)
+# Graph Report - tAsk-issue-55-task-link-attachments-api  (2026-07-07)
 
 ## Corpus Check
-- 145 files · ~40,261 words
+- 154 files · ~43,292 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 941 nodes · 1598 edges · 66 communities (61 shown, 5 thin omitted)
+- 990 nodes · 1748 edges · 67 communities (62 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9a291185`
+- Built from commit: `2d5f928a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -75,18 +75,19 @@
 - [[_COMMUNITY_Community 63|Community 63]]
 - [[_COMMUNITY_Community 64|Community 64]]
 - [[_COMMUNITY_Community 65|Community 65]]
+- [[_COMMUNITY_Community 66|Community 66]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `executeMigrationQueries()` - 34 edges
 2. `compilerOptions` - 23 edges
 3. `Tables` - 18 edges
 4. `Technical architecture` - 17 edges
-5. `WorkspaceMemberEntity` - 14 edges
-6. `Agent rules` - 14 edges
-7. `CreateTaskCommentInput` - 13 edges
-8. `CreateProjectInput` - 13 edges
-9. `CreateTaskInput` - 13 edges
-10. `ApiDataSourceProvider` - 12 edges
+5. `WorkspaceMemberEntity` - 16 edges
+6. `ApiDataSourceProvider` - 14 edges
+7. `Agent rules` - 14 edges
+8. `CreateTaskLinkAttachmentInput` - 13 edges
+9. `CreateTaskCommentInput` - 13 edges
+10. `CreateProjectInput` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `generateOpenApi()` --calls--> `createOpenApiDocument()`  [EXTRACTED]
@@ -95,15 +96,15 @@
   apps/api/src/app.dto.ts → apps/api/src/app.contracts.ts
 - `HealthResponseDto` --implements--> `HealthResponse`  [EXTRACTED]
   apps/api/src/app.dto.ts → apps/api/src/app.contracts.ts
-- `TaskCommentDto` --implements--> `TaskComment`  [EXTRACTED]
-  apps/api/src/comments/comments.dto.ts → apps/api/src/comments/comments.contracts.ts
-- `CreateTaskCommentDto` --implements--> `CreateTaskCommentInput`  [EXTRACTED]
-  apps/api/src/comments/comments.dto.ts → apps/api/src/comments/comments.contracts.ts
+- `TaskAttachmentDto` --implements--> `TaskAttachment`  [EXTRACTED]
+  apps/api/src/attachments/attachments.dto.ts → apps/api/src/attachments/attachments.contracts.ts
+- `CreateTaskLinkAttachmentDto` --implements--> `CreateTaskLinkAttachmentInput`  [EXTRACTED]
+  apps/api/src/attachments/attachments.dto.ts → apps/api/src/attachments/attachments.contracts.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (66 total, 5 thin omitted)
+## Communities (67 total, 5 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -114,8 +115,8 @@ Cohesion: 0.11
 Nodes (17): Backend architecture, Confirmation model, Database, Deployment draft, External references, Frontend architecture, Linting and formatting, LLM and OpenRouter (+9 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.08
-Nodes (23): ApiDataSource, ApiDataSourceProvider, DatabaseModule, toWorkspaceSummary(), TypeOrmWorkspaceReadStore, WorkspaceDetail, WorkspaceMember, WorkspaceSummary (+15 more)
+Cohesion: 0.10
+Nodes (20): toWorkspaceSummary(), TypeOrmWorkspaceReadStore, WorkspaceDetail, WorkspaceMember, WorkspaceSummary, createdAt, workspaceSummary, uuidV4Pipe (+12 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.14
@@ -167,7 +168,7 @@ Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, ou
 
 ### Community 18 - "Community 18"
 Cohesion: 0.09
-Nodes (22): CommentsModule, ProjectsModule, HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule, AppService (+14 more)
+Nodes (23): AttachmentsModule, CommentsModule, ProjectsModule, HealthResponse, HealthStatus, AppController, HealthResponseDto, AppModule (+15 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.10
@@ -325,25 +326,29 @@ Nodes (26): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrent
 Cohesion: 0.27
 Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTaskSkillsTables1783296180000, CreateAttachmentsTable1783296300000
 
+### Community 66 - "Community 66"
+Cohesion: 0.08
+Nodes (25): CreateTaskLinkAttachmentInput, TaskAttachment, AttachmentsController, createdAt, taskAttachment, uuidV4Pipe, CreateTaskLinkAttachmentDto, isUnknownRecord() (+17 more)
+
 ## Knowledge Gaps
-- **446 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+441 more)
+- **453 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+448 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 64`, `Community 2`, `Community 51`, `Community 61`, `Community 63`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `ApiDataSourceProvider` connect `Community 2` to `Community 64`, `Community 18`, `Community 51`, `Community 63`?**
+- **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 64`, `Community 66`, `Community 2`, `Community 51`, `Community 61`, `Community 63`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `ApiDataSourceProvider` connect `Community 66` to `Community 64`, `Community 2`, `Community 18`, `Community 51`, `Community 63`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **Why does `TaskEntity` connect `Community 50` to `Community 64`, `Community 66`, `Community 51`, `Community 61`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **Why does `ActivityEventEntity` connect `Community 50` to `Community 64`, `Community 51`, `Community 61`, `Community 63`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _446 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _453 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.07966101694915254 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1036734693877551 - nodes in this community are weakly interconnected._
