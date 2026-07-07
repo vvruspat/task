@@ -12,6 +12,7 @@ import type {
   TaskDetailResponse,
   TaskSkillApplyRequest,
   TaskSummaryResponse,
+  UpdateTaskAssigneeRequest,
   UpdateTaskStatusRequest,
 } from "./backend-client.js";
 import {
@@ -29,6 +30,7 @@ const taskSkillVersionId = "44444444-4444-4444-8444-444444444444";
 const userId = "55555555-5555-4555-8555-555555555555";
 const rootTaskId = "66666666-6666-4666-8666-666666666666";
 const statusId = "88888888-8888-4888-8888-888888888888";
+const assigneeUserId = "99999999-9999-4999-8999-999999999999";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
 const toolInput = {
@@ -199,6 +201,7 @@ test("registerTaskTools registers task tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const createCalls: CreateTaskRequest[] = [];
   const statusCalls: UpdateTaskStatusRequest[] = [];
+  const assigneeCalls: UpdateTaskAssigneeRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerTaskTools(registrar, {
@@ -231,6 +234,21 @@ test("registerTaskTools registers task tools", async () => {
       });
       return taskResponse;
     },
+    setAssignee: async (input: unknown): Promise<TaskDetailResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected task assignee input.");
+      }
+      assigneeCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          assigneeUserId: readNullableString(input, "assigneeUserId"),
+        },
+      });
+      return taskResponse;
+    },
     get: async (input: unknown): Promise<TaskDetailResponse> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -253,12 +271,13 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["task.create", "task.set_status", "task.get", "task.search"],
+    ["task.create", "task.set_status", "task.set_assignee", "task.get", "task.search"],
   );
   assert.equal(toolCalls[0]?.config.title, "Create task");
   assert.equal(toolCalls[1]?.config.title, "Set task status");
-  assert.equal(toolCalls[2]?.config.title, "Get task");
-  assert.equal(toolCalls[3]?.config.title, "Search tasks");
+  assert.equal(toolCalls[2]?.config.title, "Set task assignee");
+  assert.equal(toolCalls[3]?.config.title, "Get task");
+  assert.equal(toolCalls[4]?.config.title, "Search tasks");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -304,7 +323,30 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const getCall = toolCalls[2];
+  const assigneeCall = toolCalls[2];
+  assert.ok(assigneeCall !== undefined);
+  const assigneeResult = await assigneeCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    assigneeUserId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(assigneeResult)), taskResponse);
+  assert.deepEqual(assigneeCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        assigneeUserId,
+      },
+    },
+  ]);
+
+  const getCall = toolCalls[3];
   assert.ok(getCall !== undefined);
   const getResult = await getCall.callback({
     workspaceId,
@@ -315,7 +357,7 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), taskResponse);
 
-  const searchCall = toolCalls[3];
+  const searchCall = toolCalls[4];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -409,6 +451,10 @@ function createBackendClientStub(): TaskBackendClient {
       ...taskResponse,
       statusId,
     }),
+    updateTaskAssignee: async (): Promise<TaskDetailResponse> => ({
+      ...taskResponse,
+      assigneeUserId,
+    }),
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,
     applyTaskSkill: async (): Promise<ApplyTaskSkillResponse> => applyResponse,
   };
@@ -448,6 +494,16 @@ function readString(input: Record<string, unknown>, propertyName: string): strin
   }
 
   return value;
+}
+
+function readNullableString(input: Record<string, unknown>, propertyName: string): string | null {
+  const value = input[propertyName];
+
+  if (value === null || typeof value === "string") {
+    return value;
+  }
+
+  throw new Error(`${propertyName} must be a string or null.`);
 }
 
 function readTextResult(result: CallToolResult): string {

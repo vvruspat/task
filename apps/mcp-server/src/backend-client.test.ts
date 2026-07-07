@@ -278,6 +278,36 @@ test("updateTaskStatus patches typed payloads with trusted user context", async 
   assert.deepEqual(response, taskDetailResponse);
 });
 
+test("updateTaskAssignee patches typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, taskDetailResponse);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+  const body = {
+    assigneeUserId: null,
+  };
+
+  const response = await client.updateTaskAssignee({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    body,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}/assignee`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "PATCH");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
+  assert.deepEqual(response, taskDetailResponse);
+});
+
 test("applyTaskSkill narrows created task tree responses", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, {

@@ -76,6 +76,14 @@ const taskSetStatusInputSchema = {
   statusId: z.string().uuid().nullable(),
 };
 
+const taskSetAssigneeInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  assigneeUserId: z.string().uuid().nullable(),
+};
+
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
@@ -84,6 +92,7 @@ type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskCreateMcpArgs = z.output<z.ZodObject<typeof taskCreateInputSchema>>;
 type TaskSetStatusMcpArgs = z.output<z.ZodObject<typeof taskSetStatusInputSchema>>;
+type TaskSetAssigneeMcpArgs = z.output<z.ZodObject<typeof taskSetAssigneeInputSchema>>;
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
@@ -93,7 +102,8 @@ type TaskMcpToolCallback = (
     | TaskSearchMcpArgs
     | TaskGetMcpArgs
     | TaskCreateMcpArgs
-    | TaskSetStatusMcpArgs,
+    | TaskSetStatusMcpArgs
+    | TaskSetAssigneeMcpArgs,
 ) => Promise<CallToolResult>;
 
 export type TaskMcpToolRegistrar = {
@@ -110,7 +120,8 @@ export type TaskMcpToolRegistrar = {
         | typeof taskSearchInputSchema
         | typeof taskGetInputSchema
         | typeof taskCreateInputSchema
-        | typeof taskSetStatusInputSchema;
+        | typeof taskSetStatusInputSchema
+        | typeof taskSetAssigneeInputSchema;
     },
     callback: TaskMcpToolCallback,
   ): unknown;
@@ -194,6 +205,16 @@ export function registerTaskTools(
       inputSchema: taskSetStatusInputSchema,
     },
     async (input) => toToolResult(await handlers.setStatus(input)),
+  );
+
+  registrar.registerTool(
+    "task.set_assignee",
+    {
+      title: "Set task assignee",
+      description: "Set or clear one visible task assignee.",
+      inputSchema: taskSetAssigneeInputSchema,
+    },
+    async (input) => toToolResult(await handlers.setAssignee(input)),
   );
 
   registrar.registerTool(
