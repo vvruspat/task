@@ -4,6 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   ApplyTaskSkillResponse,
   CreateProjectRequest,
+  CreateTaskLinkAttachmentRequest,
   CreateTaskRequest,
   ListTaskAttachmentsRequest,
   PreviewTaskSkillApplyResponse,
@@ -374,9 +375,26 @@ test("registerCommentTools registers comment tools", async () => {
 test("registerAttachmentTools registers attachment tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const listCalls: ListTaskAttachmentsRequest[] = [];
+  const createLinkCalls: CreateTaskLinkAttachmentRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerAttachmentTools(registrar, {
+    createLink: async (input: unknown): Promise<TaskAttachmentResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected attachment create link input.");
+      }
+      createLinkCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          url: readString(input, "url"),
+          title: readNullableString(input, "title"),
+        },
+      });
+      return attachmentResponse;
+    },
     list: async (input: unknown): Promise<TaskAttachmentResponse[]> => {
       if (!isUnknownRecord(input)) {
         throw new Error("Expected attachment list input.");
@@ -393,11 +411,37 @@ test("registerAttachmentTools registers attachment tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["attachment.list"],
+    ["attachment.create_link", "attachment.list"],
   );
-  assert.equal(toolCalls[0]?.config.title, "List attachments");
+  assert.equal(toolCalls[0]?.config.title, "Create link attachment");
+  assert.equal(toolCalls[1]?.config.title, "List attachments");
 
-  const listCall = toolCalls[0];
+  const createLinkCall = toolCalls[0];
+  assert.ok(createLinkCall !== undefined);
+  const createLinkResult = await createLinkCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    url: "https://example.com/reference",
+    title: "Reference mix",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(createLinkResult)), attachmentResponse);
+  assert.deepEqual(createLinkCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        url: "https://example.com/reference",
+        title: "Reference mix",
+      },
+    },
+  ]);
+
+  const listCall = toolCalls[1];
   assert.ok(listCall !== undefined);
   const listResult = await listCall.callback({
     workspaceId,
@@ -705,6 +749,7 @@ function createBackendClientStub(): TaskBackendClient {
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],
     createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],
+    createTaskLinkAttachment: async (): Promise<TaskAttachmentResponse> => attachmentResponse,
     createProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],

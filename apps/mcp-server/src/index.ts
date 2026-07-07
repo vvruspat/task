@@ -1,10 +1,12 @@
 export const mcpServerAppPackageName = "@task/mcp-server";
 
 export {
+  type AttachmentCreateLinkToolInput,
   type AttachmentListToolInput,
   type AttachmentToolHandlers,
   AttachmentToolInputError,
   createAttachmentToolHandlers,
+  parseAttachmentCreateLinkToolInput,
   parseAttachmentListToolInput,
 } from "./attachment-tools.js";
 
@@ -15,6 +17,8 @@ export {
   type CreateTaskCommentInput,
   type CreateTaskCommentRequest,
   type CreateTaskInput,
+  type CreateTaskLinkAttachmentInput,
+  type CreateTaskLinkAttachmentRequest,
   type CreateTaskRequest,
   createTaskBackendClient,
   type GetProjectRequest,

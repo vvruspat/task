@@ -3,10 +3,12 @@ import test from "node:test";
 import {
   AttachmentToolInputError,
   createAttachmentToolHandlers,
+  parseAttachmentCreateLinkToolInput,
   parseAttachmentListToolInput,
 } from "./attachment-tools.js";
 import type {
   ApplyTaskSkillResponse,
+  CreateTaskLinkAttachmentRequest,
   ListTaskAttachmentsRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
@@ -41,6 +43,68 @@ const taskAttachment: TaskAttachmentResponse = {
   createdAt: timestamp,
 };
 
+test("parseAttachmentCreateLinkToolInput validates and normalizes link attachment payloads", () => {
+  assert.deepEqual(
+    parseAttachmentCreateLinkToolInput({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      url: " https://example.com/reference ",
+      title: " Reference mix ",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      url: "https://example.com/reference",
+      title: "Reference mix",
+    },
+  );
+  assert.deepEqual(
+    parseAttachmentCreateLinkToolInput({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      url: "https://example.com/reference",
+      title: "",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      url: "https://example.com/reference",
+      title: null,
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseAttachmentCreateLinkToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        url: "ftp://example.com/reference",
+      }),
+    AttachmentToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseAttachmentCreateLinkToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        url: "",
+      }),
+    AttachmentToolInputError,
+  );
+});
+
 test("parseAttachmentListToolInput validates and normalizes attachment list payloads", () => {
   assert.deepEqual(
     parseAttachmentListToolInput({
@@ -67,6 +131,37 @@ test("parseAttachmentListToolInput validates and normalizes attachment list payl
   );
 });
 
+test("attachment create link handler forwards link payloads to the backend client", async () => {
+  const calls: CreateTaskLinkAttachmentRequest[] = [];
+  const handlers = createAttachmentToolHandlers(
+    createBackendClientStub([taskAttachment], [], calls),
+  );
+
+  assert.deepEqual(
+    await handlers.createLink({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      url: " https://example.com/reference ",
+      title: " Reference mix ",
+    }),
+    taskAttachment,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: {
+        url: "https://example.com/reference",
+        title: "Reference mix",
+      },
+    },
+  ]);
+});
+
 test("attachment list handler forwards task identifiers to the backend client", async () => {
   const calls: ListTaskAttachmentsRequest[] = [];
   const handlers = createAttachmentToolHandlers(createBackendClientStub([taskAttachment], calls));
@@ -80,6 +175,7 @@ test("attachment list handler forwards task identifiers to the backend client", 
 function createBackendClientStub(
   attachments: TaskAttachmentResponse[],
   listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [],
+  createTaskLinkAttachmentCalls: CreateTaskLinkAttachmentRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
@@ -89,6 +185,11 @@ function createBackendClientStub(
       listTaskAttachmentsCalls.push(request);
 
       return attachments;
+    },
+    createTaskLinkAttachment: async (request): Promise<TaskAttachmentResponse> => {
+      createTaskLinkAttachmentCalls.push(request);
+
+      return taskAttachment;
     },
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");
