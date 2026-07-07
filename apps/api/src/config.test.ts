@@ -14,6 +14,41 @@ test("parseApiConfig leaves database config unset when DATABASE_URL is absent", 
   assert.equal(config.database, null);
 });
 
+test("parseApiConfig leaves bot auth unset when TELEGRAM_BOT_SHARED_SECRET is absent", () => {
+  const config = parseApiConfig({});
+
+  assert.equal(config.botAuth, null);
+});
+
+test("parseApiConfig accepts a valid TELEGRAM_BOT_SHARED_SECRET", () => {
+  const config = parseApiConfig({ TELEGRAM_BOT_SHARED_SECRET: "bot-secret" });
+
+  assert.deepEqual(config.botAuth, { sharedSecret: "bot-secret" });
+});
+
+test("parseApiConfig rejects invalid TELEGRAM_BOT_SHARED_SECRET values", () => {
+  const invalidSecrets = ["", " secret", "secret "];
+
+  for (const sharedSecret of invalidSecrets) {
+    assert.throws(
+      () => parseApiConfig({ TELEGRAM_BOT_SHARED_SECRET: sharedSecret }),
+      InvalidApiEnvironmentError,
+    );
+  }
+});
+
+test("parseApiConfig redacts invalid TELEGRAM_BOT_SHARED_SECRET values in error messages", () => {
+  assert.throws(
+    () => parseApiConfig({ TELEGRAM_BOT_SHARED_SECRET: " secret-token " }),
+    (error: unknown) => {
+      assert.ok(error instanceof InvalidApiEnvironmentError);
+      assert.match(error.message, /Received "\[redacted\]"/);
+      assert.doesNotMatch(error.message, /secret-token/);
+      return true;
+    },
+  );
+});
+
 test("parseApiConfig accepts a valid DATABASE_URL", () => {
   const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
   const config = parseApiConfig({ DATABASE_URL: databaseUrl });

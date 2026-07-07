@@ -367,6 +367,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/internal/telegram/context/resolve": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Resolve Telegram bot message identity and chat context */
+    post: operations["TelegramController_resolveContext"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -766,6 +783,26 @@ export interface components {
       url: string;
       /** @example Bass take reference */
       title?: string | null;
+    };
+    ResolveTelegramContextDto: {
+      /** @example 123456789 */
+      telegramId: string;
+      /** @example -100987654321 */
+      telegramChatId: string;
+    };
+    TelegramContextResolutionDto: {
+      /** @enum {string} */
+      status:
+        | "resolved"
+        | "telegram_user_unlinked"
+        | "telegram_chat_unlinked"
+        | "user_not_in_chat_workspace";
+      /** Format: uuid */
+      userId?: string;
+      /** Format: uuid */
+      workspaceId?: string;
+      /** Format: uuid */
+      defaultProjectId?: string | null;
     };
   };
   responses: never;
@@ -1814,6 +1851,46 @@ export interface operations {
       };
       /** @description Workspace, project, or task is missing or not visible. */
       404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramController_resolveContext: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
+        "x-task-bot-secret": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ResolveTelegramContextDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramContextResolutionDto"];
+        };
+      };
+      /** @description Telegram context payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram bot shared secret is missing or invalid. */
+      401: {
         headers: {
           [name: string]: unknown;
         };
