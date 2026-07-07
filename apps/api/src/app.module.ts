@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { AgentModule } from "./agent/agent.module.js";
 import { AppController } from "./app.controller.js";
 import { AppService } from "./app.service.js";
 import { AttachmentsModule } from "./attachments/attachments.module.js";
@@ -20,6 +21,7 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
     CommentsModule,
     AttachmentsModule,
     TelegramModule,
+    AgentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
