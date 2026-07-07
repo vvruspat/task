@@ -10,6 +10,7 @@ import type {
   TaskDetailResponse,
   TaskSummaryResponse,
   UpdateTaskAssigneeRequest,
+  UpdateTaskDueDateRequest,
   UpdateTaskStatusRequest,
 } from "./backend-client.js";
 import {
@@ -18,6 +19,7 @@ import {
   parseTaskGetToolInput,
   parseTaskSearchToolInput,
   parseTaskSetAssigneeToolInput,
+  parseTaskSetDueDateToolInput,
   parseTaskSetStatusToolInput,
   TaskToolInputError,
 } from "./task-tools.js";
@@ -30,6 +32,7 @@ const secondTaskId = "77777777-7777-4777-8777-777777777777";
 const statusId = "88888888-8888-4888-8888-888888888888";
 const assigneeUserId = "99999999-9999-4999-8999-999999999999";
 const timestamp = "2026-01-01T00:00:00.000Z";
+const dueAt = "2026-01-03T12:00:00.000Z";
 
 const arrangeTask: TaskSummaryResponse = {
   id: firstTaskId,
@@ -280,6 +283,58 @@ test("parseTaskSetAssigneeToolInput validates task assignee payloads", () => {
   );
 });
 
+test("parseTaskSetDueDateToolInput validates task due date payloads", () => {
+  assert.deepEqual(
+    parseTaskSetDueDateToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      dueAt: " 2026-01-03T12:00:00+02:00 ",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      dueAt: "2026-01-03T10:00:00.000Z",
+    },
+  );
+
+  assert.deepEqual(
+    parseTaskSetDueDateToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      dueAt: null,
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      dueAt: null,
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseTaskSetDueDateToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        dueAt: "tomorrow",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSetDueDateToolInput({ workspaceId, projectId, taskId: firstTaskId, userId }),
+    TaskToolInputError,
+  );
+});
+
 test("task search handler lists active tasks when query is absent", async () => {
   const client = createBackendClientStub(tasks);
   const handlers = createTaskToolHandlers(client);
@@ -410,6 +465,34 @@ test("task set assignee handler forwards assignee payloads to the backend client
   ]);
 });
 
+test("task set due date handler forwards due date payloads to the backend client", async () => {
+  const calls: UpdateTaskDueDateRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], [], [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.setDueDate({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      dueAt,
+    }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      body: {
+        dueAt,
+      },
+    },
+  ]);
+});
+
 function createBackendClientStub(
   responseTasks: TaskSummaryResponse[],
   listActiveTaskCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
@@ -422,6 +505,7 @@ function createBackendClientStub(
   createTaskCalls: CreateTaskRequest[] = [],
   updateTaskStatusCalls: UpdateTaskStatusRequest[] = [],
   updateTaskAssigneeCalls: UpdateTaskAssigneeRequest[] = [],
+  updateTaskDueDateCalls: UpdateTaskDueDateRequest[] = [],
 ): TaskBackendClient {
   return {
     createProject: async (): Promise<ProjectDetailResponse> => {
@@ -455,6 +539,11 @@ function createBackendClientStub(
     },
     updateTaskAssignee: async (request): Promise<TaskDetailResponse> => {
       updateTaskAssigneeCalls.push(request);
+
+      return taskDetail;
+    },
+    updateTaskDueDate: async (request): Promise<TaskDetailResponse> => {
+      updateTaskDueDateCalls.push(request);
 
       return taskDetail;
     },
