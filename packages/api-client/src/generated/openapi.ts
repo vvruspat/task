@@ -176,6 +176,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/statuses": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List statuses for one visible workspace */
+    get: operations["StatusesController_listStatuses"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/comments": {
     parameters: {
       query?: never;
@@ -433,6 +450,24 @@ export interface components {
     UpdateTaskStatusDto: {
       /** Format: uuid */
       statusId: string | null;
+    };
+    WorkspaceStatusDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** @example In progress */
+      name: string;
+      /** @example #3b82f6 */
+      color: string;
+      /** @example 1000 */
+      position: string;
+      /** @example false */
+      isDone: boolean;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
     };
     TaskCommentDto: {
       /** Format: uuid */
@@ -883,6 +918,37 @@ export interface operations {
         };
       };
       /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  StatusesController_listStatuses: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"][];
+        };
+      };
+      /** @description Workspace is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;
