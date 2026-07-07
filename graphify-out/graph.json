@@ -820,7 +820,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_constructor",
-      "community": 67,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -1370,7 +1370,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 67,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -1650,7 +1650,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 67,
+      "community": 2,
       "norm_label": "database.module.ts"
     },
     {
@@ -1660,7 +1660,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 67,
+      "community": 2,
       "norm_label": "apidatasource"
     },
     {
@@ -1670,7 +1670,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 67,
+      "community": 2,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -1690,7 +1690,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 67,
+      "community": 2,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -1700,7 +1700,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 67,
+      "community": 2,
       "norm_label": ".getdatasource()"
     },
     {
@@ -1710,7 +1710,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 67,
+      "community": 2,
       "norm_label": "databasemodule"
     },
     {
@@ -3650,7 +3650,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 67,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -4030,7 +4030,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_constructor",
-      "community": 67,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -5230,7 +5230,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
-      "community": 67,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -6130,7 +6130,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 67,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -6670,7 +6670,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 67,
+      "community": 2,
       "norm_label": ".constructor()"
     },
     {
@@ -7000,7 +7000,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "workspaces_workspaces_module_workspacesmodule",
-      "community": 77,
+      "community": 2,
       "norm_label": "workspacesmodule"
     },
     {
@@ -7950,7 +7950,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 60,
+      "community": 78,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
@@ -7960,7 +7960,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskillresponse",
-      "community": 53,
+      "community": 76,
       "norm_label": "applytaskskillresponse"
     },
     {
@@ -7970,7 +7970,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_backend_client_workspacestatusresponse",
-      "community": 65,
+      "community": 33,
       "norm_label": "workspacestatusresponse"
     },
     {
@@ -8050,7 +8050,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_backend_client_projectsummaryresponse",
-      "community": 70,
+      "community": 33,
       "norm_label": "projectsummaryresponse"
     },
     {
@@ -8060,7 +8060,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_backend_client_projectdetailresponse",
-      "community": 33,
+      "community": 70,
       "norm_label": "projectdetailresponse"
     },
     {
@@ -8070,7 +8070,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_backend_client_tasksummaryresponse",
-      "community": 70,
+      "community": 60,
       "norm_label": "tasksummaryresponse"
     },
     {
@@ -8090,7 +8090,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_backend_client_taskattachmentresponse",
-      "community": 76,
+      "community": 33,
       "norm_label": "taskattachmentresponse"
     },
     {
@@ -8100,7 +8100,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_backend_client_taskdetailresponse",
-      "community": 53,
+      "community": 33,
       "norm_label": "taskdetailresponse"
     },
     {
@@ -8160,7 +8160,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetch",
-      "community": 33,
+      "community": 78,
       "norm_label": "taskbackendfetch"
     },
     {
@@ -8260,7 +8260,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "src_backend_client_listtaskattachmentsrequest",
-      "community": 69,
+      "community": 76,
       "norm_label": "listtaskattachmentsrequest"
     },
     {
@@ -8270,7 +8270,7 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_backend_client_createtasklinkattachmentrequest",
-      "community": 69,
+      "community": 76,
       "norm_label": "createtasklinkattachmentrequest"
     },
     {
@@ -8330,7 +8330,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclient",
-      "community": 65,
+      "community": 53,
       "norm_label": "taskbackendclient"
     },
     {
@@ -8360,7 +8360,7 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_backend_client_createtaskbackendclient",
-      "community": 33,
+      "community": 78,
       "norm_label": "createtaskbackendclient()"
     },
     {
@@ -8420,7 +8420,7 @@
       "source_location": "L484",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "community": 33,
+      "community": 78,
       "norm_label": "normalizebaseurl()"
     },
     {
@@ -8440,7 +8440,7 @@
       "source_location": "L502",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectspath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildworkspaceprojectspath()"
     },
     {
@@ -8460,7 +8460,7 @@
       "source_location": "L510",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectpath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildworkspaceprojectpath()"
     },
     {
@@ -8470,7 +8470,7 @@
       "source_location": "L514",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskspath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildprojecttaskspath()"
     },
     {
@@ -8480,7 +8480,7 @@
       "source_location": "L518",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskpath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildprojecttaskpath()"
     },
     {
@@ -8490,7 +8490,7 @@
       "source_location": "L522",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskstatuspath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildprojecttaskstatuspath()"
     },
     {
@@ -8500,7 +8500,7 @@
       "source_location": "L530",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskassigneepath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildprojecttaskassigneepath()"
     },
     {
@@ -8510,7 +8510,7 @@
       "source_location": "L538",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskduedatepath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildprojecttaskduedatepath()"
     },
     {
@@ -8520,7 +8520,7 @@
       "source_location": "L546",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskcommentspath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildtaskcommentspath()"
     },
     {
@@ -8530,7 +8530,7 @@
       "source_location": "L550",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskattachmentspath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildtaskattachmentspath()"
     },
     {
@@ -8540,7 +8540,7 @@
       "source_location": "L554",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskattachmentlinkspath",
-      "community": 61,
+      "community": 65,
       "norm_label": "buildtaskattachmentlinkspath()"
     },
     {
@@ -8600,7 +8600,7 @@
       "source_location": "L602",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacestatus",
-      "community": 61,
+      "community": 55,
       "norm_label": "readworkspacestatus()"
     },
     {
@@ -8610,7 +8610,7 @@
       "source_location": "L617",
       "_origin": "ast",
       "id": "src_backend_client_readtaskcomment",
-      "community": 61,
+      "community": 55,
       "norm_label": "readtaskcomment()"
     },
     {
@@ -8620,7 +8620,7 @@
       "source_location": "L631",
       "_origin": "ast",
       "id": "src_backend_client_readtaskattachment",
-      "community": 61,
+      "community": 75,
       "norm_label": "readtaskattachment()"
     },
     {
@@ -8630,7 +8630,7 @@
       "source_location": "L678",
       "_origin": "ast",
       "id": "src_backend_client_readattachmenttargettype",
-      "community": 61,
+      "community": 75,
       "norm_label": "readattachmenttargettype()"
     },
     {
@@ -8640,7 +8640,7 @@
       "source_location": "L686",
       "_origin": "ast",
       "id": "src_backend_client_readattachmentkind",
-      "community": 61,
+      "community": 75,
       "norm_label": "readattachmentkind()"
     },
     {
@@ -8650,7 +8650,7 @@
       "source_location": "L694",
       "_origin": "ast",
       "id": "src_backend_client_readprojectdetail",
-      "community": 61,
+      "community": 55,
       "norm_label": "readprojectdetail()"
     },
     {
@@ -8660,7 +8660,7 @@
       "source_location": "L728",
       "_origin": "ast",
       "id": "src_backend_client_readprojectsummary",
-      "community": 61,
+      "community": 55,
       "norm_label": "readprojectsummary()"
     },
     {
@@ -8670,7 +8670,7 @@
       "source_location": "L762",
       "_origin": "ast",
       "id": "src_backend_client_readtasksummary",
-      "community": 61,
+      "community": 55,
       "norm_label": "readtasksummary()"
     },
     {
@@ -8680,7 +8680,7 @@
       "source_location": "L766",
       "_origin": "ast",
       "id": "src_backend_client_readpreviewtaskskillapplyresponse",
-      "community": 61,
+      "community": 55,
       "norm_label": "readpreviewtaskskillapplyresponse()"
     },
     {
@@ -8690,7 +8690,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "src_backend_client_readapplytaskskillresponse",
-      "community": 61,
+      "community": 55,
       "norm_label": "readapplytaskskillresponse()"
     },
     {
@@ -8700,7 +8700,7 @@
       "source_location": "L794",
       "_origin": "ast",
       "id": "src_backend_client_readtaskskillapplypreviewsubtask",
-      "community": 61,
+      "community": 55,
       "norm_label": "readtaskskillapplypreviewsubtask()"
     },
     {
@@ -8710,7 +8710,7 @@
       "source_location": "L808",
       "_origin": "ast",
       "id": "src_backend_client_readtaskdetail",
-      "community": 61,
+      "community": 55,
       "norm_label": "readtaskdetail()"
     },
     {
@@ -8720,7 +8720,7 @@
       "source_location": "L865",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "community": 61,
+      "community": 55,
       "norm_label": "readrecord()"
     },
     {
@@ -8730,7 +8730,7 @@
       "source_location": "L873",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_isunknownrecord",
-      "community": 61,
+      "community": 55,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -8740,7 +8740,7 @@
       "source_location": "L877",
       "_origin": "ast",
       "id": "src_backend_client_readproperty",
-      "community": 61,
+      "community": 55,
       "norm_label": "readproperty()"
     },
     {
@@ -8750,7 +8750,7 @@
       "source_location": "L881",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "community": 61,
+      "community": 55,
       "norm_label": "readstring()"
     },
     {
@@ -8760,7 +8760,7 @@
       "source_location": "L891",
       "_origin": "ast",
       "id": "src_backend_client_readnumber",
-      "community": 61,
+      "community": 55,
       "norm_label": "readnumber()"
     },
     {
@@ -8770,7 +8770,7 @@
       "source_location": "L901",
       "_origin": "ast",
       "id": "src_backend_client_readboolean",
-      "community": 61,
+      "community": 55,
       "norm_label": "readboolean()"
     },
     {
@@ -8780,7 +8780,7 @@
       "source_location": "L911",
       "_origin": "ast",
       "id": "src_backend_client_readarray",
-      "community": 61,
+      "community": 55,
       "norm_label": "readarray()"
     },
     {
@@ -8790,7 +8790,7 @@
       "source_location": "L921",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "community": 61,
+      "community": 55,
       "norm_label": "readoptionalnullablestring()"
     },
     {
@@ -8970,7 +8970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_config_test_ts_src_config_test",
-      "community": 55,
+      "community": 78,
       "norm_label": "config.test.ts"
     },
     {
@@ -8980,7 +8980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_config_ts_src_config",
-      "community": 55,
+      "community": 78,
       "norm_label": "config.ts"
     },
     {
@@ -8990,7 +8990,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_taskmcpenvironment",
-      "community": 55,
+      "community": 78,
       "norm_label": "taskmcpenvironment"
     },
     {
@@ -9000,7 +9000,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_config_taskmcpconfig",
-      "community": 55,
+      "community": 78,
       "norm_label": "taskmcpconfig"
     },
     {
@@ -9010,7 +9010,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_config_invalidtaskmcpenvironmenterror",
-      "community": 55,
+      "community": 78,
       "norm_label": "invalidtaskmcpenvironmenterror"
     },
     {
@@ -9020,7 +9020,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_config_invalidtaskmcpenvironmenterror_constructor",
-      "community": 55,
+      "community": 78,
       "norm_label": ".constructor()"
     },
     {
@@ -9030,7 +9030,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_config_parsetaskmcpconfig",
-      "community": 55,
+      "community": 78,
       "norm_label": "parsetaskmcpconfig()"
     },
     {
@@ -9040,7 +9040,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_config_loadtaskmcpconfig",
-      "community": 55,
+      "community": 78,
       "norm_label": "loadtaskmcpconfig()"
     },
     {
@@ -9050,7 +9050,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "apps_mcp_server_src_config_ts_src_config_parsebackendbaseurl",
-      "community": 55,
+      "community": 78,
       "norm_label": "parsebackendbaseurl()"
     },
     {
@@ -9060,7 +9060,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_config_parseoptionalnonemptystring",
-      "community": 55,
+      "community": 78,
       "norm_label": "parseoptionalnonemptystring()"
     },
     {
@@ -9070,7 +9070,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "apps_mcp_server_src_config_ts_src_config_formatinvalidvalue",
-      "community": 55,
+      "community": 78,
       "norm_label": "formatinvalidvalue()"
     },
     {
@@ -9090,7 +9090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_main_ts_src_main",
-      "community": 33,
+      "community": 78,
       "norm_label": "main.ts"
     },
     {
@@ -9700,7 +9700,7 @@
       "source_location": "L409",
       "_origin": "ast",
       "id": "src_mcp_server_connecttaskmcpservertostdio",
-      "community": 33,
+      "community": 78,
       "norm_label": "connecttaskmcpservertostdio()"
     },
     {
@@ -10090,7 +10090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_runtime",
-      "community": 33,
+      "community": 78,
       "norm_label": "runtime.ts"
     },
     {
@@ -10100,7 +10100,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_runtime_taskmcpserverconnector",
-      "community": 33,
+      "community": 78,
       "norm_label": "taskmcpserverconnector"
     },
     {
@@ -10110,7 +10110,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserveroptions",
-      "community": 33,
+      "community": 78,
       "norm_label": "runtaskmcpserveroptions"
     },
     {
@@ -10120,7 +10120,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserverfromenvironment",
-      "community": 33,
+      "community": 78,
       "norm_label": "runtaskmcpserverfromenvironment()"
     },
     {
@@ -10130,7 +10130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_status_tools_test",
-      "community": 65,
+      "community": 33,
       "norm_label": "status-tools.test.ts"
     },
     {
@@ -10140,7 +10140,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_status_tools_test_workspacestatus",
-      "community": 65,
+      "community": 33,
       "norm_label": "workspacestatus"
     },
     {
@@ -10150,7 +10150,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_status_tools_test_createbackendclientstub",
-      "community": 65,
+      "community": 33,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -10160,7 +10160,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_status_tools",
-      "community": 65,
+      "community": 33,
       "norm_label": "status-tools.ts"
     },
     {
@@ -10170,7 +10170,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_status_tools_statuslisttoolinput",
-      "community": 65,
+      "community": 33,
       "norm_label": "statuslisttoolinput"
     },
     {
@@ -10180,7 +10180,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_status_tools_statustoolhandlers",
-      "community": 65,
+      "community": 33,
       "norm_label": "statustoolhandlers"
     },
     {
@@ -10190,7 +10190,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_status_tools_statustoolinputerror",
-      "community": 65,
+      "community": 33,
       "norm_label": "statustoolinputerror"
     },
     {
@@ -10200,7 +10200,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_status_tools_statustoolinputerror_constructor",
-      "community": 65,
+      "community": 33,
       "norm_label": ".constructor()"
     },
     {
@@ -10210,7 +10210,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_status_tools_createstatustoolhandlers",
-      "community": 65,
+      "community": 33,
       "norm_label": "createstatustoolhandlers()"
     },
     {
@@ -10220,7 +10220,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_status_tools_parsestatuslisttoolinput",
-      "community": 65,
+      "community": 33,
       "norm_label": "parsestatuslisttoolinput()"
     },
     {
@@ -10230,7 +10230,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_status_tools_readrecord",
-      "community": 65,
+      "community": 33,
       "norm_label": "readrecord()"
     },
     {
@@ -10240,7 +10240,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_status_tools_isunknownrecord",
-      "community": 65,
+      "community": 33,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -10250,7 +10250,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_status_tools_readrequireduuid",
-      "community": 65,
+      "community": 33,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -10939,7 +10939,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "tg_bot_package",
+      "id": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "community": 39,
       "norm_label": "package.json"
     },
@@ -11492,6 +11492,166 @@
       "id": "apps_tg_bot_src_index_ts_src_index",
       "community": 47,
       "norm_label": "index.ts"
+    },
+    {
+      "label": "message-handler.test.ts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_message_handler_test",
+      "community": 47,
+      "norm_label": "message-handler.test.ts"
+    },
+    {
+      "label": "telegramUpdate",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "src_message_handler_test_telegramupdate",
+      "community": 47,
+      "norm_label": "telegramupdate"
+    },
+    {
+      "label": "RecordingTelegramBackendClient",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "src_message_handler_test_recordingtelegrambackendclient",
+      "community": 47,
+      "norm_label": "recordingtelegrambackendclient"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L131",
+      "_origin": "ast",
+      "id": "src_message_handler_test_recordingtelegrambackendclient_constructor",
+      "community": 47,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".resolveTelegramContext()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L133",
+      "_origin": "ast",
+      "id": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
+      "community": 47,
+      "norm_label": ".resolvetelegramcontext()"
+    },
+    {
+      "label": "FailingTelegramBackendClient",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L142",
+      "_origin": "ast",
+      "id": "src_message_handler_test_failingtelegrambackendclient",
+      "community": 47,
+      "norm_label": "failingtelegrambackendclient"
+    },
+    {
+      "label": ".resolveTelegramContext()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
+      "community": 47,
+      "norm_label": ".resolvetelegramcontext()"
+    },
+    {
+      "label": "message-handler.ts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_message_handler",
+      "community": 47,
+      "norm_label": "message-handler.ts"
+    },
+    {
+      "label": "TelegramMessageHandlerOptions",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "src_message_handler_telegrammessagehandleroptions",
+      "community": 47,
+      "norm_label": "telegrammessagehandleroptions"
+    },
+    {
+      "label": "TelegramReplyAction",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "src_message_handler_telegramreplyaction",
+      "community": 47,
+      "norm_label": "telegramreplyaction"
+    },
+    {
+      "label": "TelegramResolvedMessageAction",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "src_message_handler_telegramresolvedmessageaction",
+      "community": 47,
+      "norm_label": "telegramresolvedmessageaction"
+    },
+    {
+      "label": "TelegramResolvedContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "src_message_handler_telegramresolvedcontext",
+      "community": 47,
+      "norm_label": "telegramresolvedcontext"
+    },
+    {
+      "label": "TelegramMessageHandlerAction",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "src_message_handler_telegrammessagehandleraction",
+      "community": 47,
+      "norm_label": "telegrammessagehandleraction"
+    },
+    {
+      "label": "handleTelegramUpdate()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "src_message_handler_handletelegramupdate",
+      "community": 47,
+      "norm_label": "handletelegramupdate()"
+    },
+    {
+      "label": "createReply()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L101",
+      "_origin": "ast",
+      "id": "src_message_handler_createreply",
+      "community": 47,
+      "norm_label": "createreply()"
+    },
+    {
+      "label": "readResolvedContext()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "src_message_handler_readresolvedcontext",
+      "community": 47,
+      "norm_label": "readresolvedcontext()"
     },
     {
       "label": "telegram-update.test.ts",
@@ -12880,7 +13040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "generated_openapi",
-      "community": 47,
+      "community": 74,
       "norm_label": "openapi.ts"
     },
     {
@@ -12890,7 +13050,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "generated_openapi_paths",
-      "community": 47,
+      "community": 74,
       "norm_label": "paths"
     },
     {
@@ -12900,7 +13060,7 @@
       "source_location": "L388",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
-      "community": 47,
+      "community": 74,
       "norm_label": "webhooks"
     },
     {
@@ -12910,7 +13070,7 @@
       "source_location": "L389",
       "_origin": "ast",
       "id": "generated_openapi_components",
-      "community": 47,
+      "community": 74,
       "norm_label": "components"
     },
     {
@@ -12920,7 +13080,7 @@
       "source_location": "L814",
       "_origin": "ast",
       "id": "generated_openapi_defs",
-      "community": 47,
+      "community": 74,
       "norm_label": "$defs"
     },
     {
@@ -12930,7 +13090,7 @@
       "source_location": "L815",
       "_origin": "ast",
       "id": "generated_openapi_operations",
-      "community": 47,
+      "community": 74,
       "norm_label": "operations"
     },
     {
@@ -12940,7 +13100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "packages_api_client_src_index_ts_src_index",
-      "community": 47,
+      "community": 74,
       "norm_label": "index.ts"
     },
     {
@@ -38743,9 +38903,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L80",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test_requestbody",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test_requestbody"
     },
     {
       "relation": "imports",
@@ -38754,9 +38914,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_createtaskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskbackendclient"
     },
     {
       "relation": "imports",
@@ -38765,9 +38925,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_projectdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectdetailresponse"
     },
     {
       "relation": "imports",
@@ -38776,9 +38936,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_projectsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "imports",
@@ -38787,9 +38947,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_taskattachmentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskattachmentresponse"
     },
     {
       "relation": "imports",
@@ -38798,9 +38958,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_taskbackendclienterror",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclienterror"
     },
     {
       "relation": "imports",
@@ -38809,9 +38969,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_taskbackendfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendfetch"
     },
     {
       "relation": "imports",
@@ -38820,9 +38980,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_taskbackendfetchinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendfetchinit"
     },
     {
       "relation": "imports",
@@ -38831,9 +38991,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskcommentresponse"
     },
     {
       "relation": "imports",
@@ -38842,9 +39002,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_taskdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskdetailresponse"
     },
     {
       "relation": "imports",
@@ -38853,9 +39013,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_tasksummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_tasksummaryresponse"
     },
     {
       "relation": "contains",
@@ -38863,9 +39023,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L663",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_createjsonfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_createjsonfetch"
     },
     {
       "relation": "contains",
@@ -38873,9 +39033,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L76",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_projectdetail",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_projectdetail"
     },
     {
       "relation": "contains",
@@ -38883,9 +39043,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_projectsummary",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_projectsummary"
     },
     {
       "relation": "contains",
@@ -38893,9 +39053,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L680",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_readjsonbody",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_readjsonbody"
     },
     {
       "relation": "contains",
@@ -38903,9 +39063,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L684",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_readpostinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_readpostinit"
     },
     {
       "relation": "contains",
@@ -38913,9 +39073,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L694",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_readwriteinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_readwriteinit"
     },
     {
       "relation": "contains",
@@ -38923,9 +39083,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_taskattachment",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_taskattachment"
     },
     {
       "relation": "contains",
@@ -38933,9 +39093,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_taskcomment",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_taskcomment"
     },
     {
       "relation": "contains",
@@ -38943,9 +39103,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_taskdetail",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_taskdetail"
     },
     {
       "relation": "contains",
@@ -38953,9 +39113,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L113",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_taskdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_taskdetailresponse"
     },
     {
       "relation": "contains",
@@ -38963,9 +39123,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_tasksummary",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_tasksummary"
     },
     {
       "relation": "contains",
@@ -38973,9 +39133,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_workspacestatus",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_workspacestatus"
     },
     {
       "relation": "imports",
@@ -38984,9 +39144,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_workspacestatusresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_workspacestatusresponse"
     },
     {
       "relation": "calls",
@@ -39016,9 +39176,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L873",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_isunknownrecord"
     },
     {
       "relation": "contains",
@@ -39026,9 +39186,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L484",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_normalizebaseurl"
     },
     {
       "relation": "contains",
@@ -39036,9 +39196,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L387",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_postjson",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_postjson"
     },
     {
       "relation": "contains",
@@ -39046,9 +39206,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L921",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring"
     },
     {
       "relation": "contains",
@@ -39056,9 +39216,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L865",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "contains",
@@ -39066,9 +39226,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L881",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "imports",
@@ -39077,9 +39237,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "generated_openapi_components",
-      "confidence_score": 1.0
+      "target": "generated_openapi_components"
     },
     {
       "relation": "imports",
@@ -39088,9 +39248,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "generated_openapi_operations",
-      "confidence_score": 1.0
+      "target": "generated_openapi_operations"
     },
     {
       "relation": "contains",
@@ -39098,9 +39258,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_applytaskskilloperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_applytaskskilloperation"
     },
     {
       "relation": "contains",
@@ -39108,9 +39268,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_applytaskskillresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_applytaskskillresponse"
     },
     {
       "relation": "contains",
@@ -39118,9 +39278,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L530",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildprojecttaskassigneepath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildprojecttaskassigneepath"
     },
     {
       "relation": "contains",
@@ -39128,9 +39288,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L538",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildprojecttaskduedatepath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildprojecttaskduedatepath"
     },
     {
       "relation": "contains",
@@ -39138,9 +39298,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L518",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildprojecttaskpath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildprojecttaskpath"
     },
     {
       "relation": "contains",
@@ -39148,9 +39308,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L514",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildprojecttaskspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildprojecttaskspath"
     },
     {
       "relation": "contains",
@@ -39158,9 +39318,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L522",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildprojecttaskstatuspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildprojecttaskstatuspath"
     },
     {
       "relation": "contains",
@@ -39168,9 +39328,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L554",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildtaskattachmentlinkspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildtaskattachmentlinkspath"
     },
     {
       "relation": "contains",
@@ -39178,9 +39338,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L550",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildtaskattachmentspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildtaskattachmentspath"
     },
     {
       "relation": "contains",
@@ -39188,9 +39348,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L546",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildtaskcommentspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildtaskcommentspath"
     },
     {
       "relation": "contains",
@@ -39198,9 +39358,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L494",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildtaskskillapplypath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildtaskskillapplypath"
     },
     {
       "relation": "contains",
@@ -39208,9 +39368,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L510",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildworkspaceprojectpath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspaceprojectpath"
     },
     {
       "relation": "contains",
@@ -39218,9 +39378,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L502",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildworkspaceprojectspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspaceprojectspath"
     },
     {
       "relation": "contains",
@@ -39228,9 +39388,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L506",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildworkspacestatusespath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspacestatusespath"
     },
     {
       "relation": "contains",
@@ -39238,9 +39398,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createprojectinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createprojectinput"
     },
     {
       "relation": "contains",
@@ -39248,9 +39408,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createprojectoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createprojectoperation"
     },
     {
       "relation": "contains",
@@ -39258,9 +39418,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createprojectrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createprojectrequest"
     },
     {
       "relation": "contains",
@@ -39268,9 +39428,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L235",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtaskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskbackendclient"
     },
     {
       "relation": "contains",
@@ -39278,9 +39438,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskcommentinput"
     },
     {
       "relation": "contains",
@@ -39288,9 +39448,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtaskcommentoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskcommentoperation"
     },
     {
       "relation": "contains",
@@ -39298,9 +39458,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtaskcommentrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskcommentrequest"
     },
     {
       "relation": "contains",
@@ -39308,9 +39468,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtaskinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskinput"
     },
     {
       "relation": "contains",
@@ -39318,9 +39478,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtasklinkattachmentinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtasklinkattachmentinput"
     },
     {
       "relation": "contains",
@@ -39328,9 +39488,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtasklinkattachmentoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtasklinkattachmentoperation"
     },
     {
       "relation": "contains",
@@ -39338,9 +39498,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L156",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtasklinkattachmentrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtasklinkattachmentrequest"
     },
     {
       "relation": "contains",
@@ -39348,9 +39508,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtaskoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskoperation"
     },
     {
       "relation": "contains",
@@ -39358,9 +39518,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L171",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtaskrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtaskrequest"
     },
     {
       "relation": "contains",
@@ -39368,9 +39528,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L380",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_defaultfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_defaultfetch"
     },
     {
       "relation": "contains",
@@ -39378,9 +39538,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L455",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_getjson",
-      "confidence_score": 1.0
+      "target": "src_backend_client_getjson"
     },
     {
       "relation": "contains",
@@ -39388,9 +39548,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_getprojectoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_getprojectoperation"
     },
     {
       "relation": "contains",
@@ -39398,9 +39558,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L116",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_getprojectrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_getprojectrequest"
     },
     {
       "relation": "contains",
@@ -39408,9 +39568,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_gettaskoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_gettaskoperation"
     },
     {
       "relation": "contains",
@@ -39418,9 +39578,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L164",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_gettaskrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_gettaskrequest"
     },
     {
       "relation": "contains",
@@ -39428,9 +39588,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listactiveprojectsoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listactiveprojectsoperation"
     },
     {
       "relation": "contains",
@@ -39438,9 +39598,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L106",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listactiveprojectsrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listactiveprojectsrequest"
     },
     {
       "relation": "contains",
@@ -39448,9 +39608,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listactivetasksoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listactivetasksoperation"
     },
     {
       "relation": "contains",
@@ -39458,9 +39618,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L128",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listactivetasksrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listactivetasksrequest"
     },
     {
       "relation": "contains",
@@ -39468,9 +39628,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listtaskattachmentsoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listtaskattachmentsoperation"
     },
     {
       "relation": "contains",
@@ -39478,9 +39638,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listtaskattachmentsrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listtaskattachmentsrequest"
     },
     {
       "relation": "contains",
@@ -39488,9 +39648,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listtaskcommentsoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listtaskcommentsoperation"
     },
     {
       "relation": "contains",
@@ -39498,9 +39658,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listtaskcommentsrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listtaskcommentsrequest"
     },
     {
       "relation": "contains",
@@ -39508,9 +39668,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listworkspacestatusesoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listworkspacestatusesoperation"
     },
     {
       "relation": "contains",
@@ -39518,9 +39678,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L111",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listworkspacestatusesrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listworkspacestatusesrequest"
     },
     {
       "relation": "contains",
@@ -39528,9 +39688,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L403",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_patchjson",
-      "confidence_score": 1.0
+      "target": "src_backend_client_patchjson"
     },
     {
       "relation": "contains",
@@ -39538,9 +39698,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_previewtaskskillapplyinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_previewtaskskillapplyinput"
     },
     {
       "relation": "contains",
@@ -39548,9 +39708,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_previewtaskskillapplyoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_previewtaskskillapplyoperation"
     },
     {
       "relation": "contains",
@@ -39558,9 +39718,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_previewtaskskillapplyresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_previewtaskskillapplyresponse"
     },
     {
       "relation": "contains",
@@ -39568,9 +39728,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_projectdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectdetailresponse"
     },
     {
       "relation": "contains",
@@ -39578,9 +39738,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_projectsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "contains",
@@ -39588,9 +39748,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L780",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readapplytaskskillresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readapplytaskskillresponse"
     },
     {
       "relation": "contains",
@@ -39598,9 +39758,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L911",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readarray",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readarray"
     },
     {
       "relation": "contains",
@@ -39608,9 +39768,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L686",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readattachmentkind",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readattachmentkind"
     },
     {
       "relation": "contains",
@@ -39618,9 +39778,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L678",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readattachmenttargettype",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readattachmenttargettype"
     },
     {
       "relation": "contains",
@@ -39628,9 +39788,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L901",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readboolean",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readboolean"
     },
     {
       "relation": "contains",
@@ -39638,9 +39798,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L891",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readnumber",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readnumber"
     },
     {
       "relation": "contains",
@@ -39648,9 +39808,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L766",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readpreviewtaskskillapplyresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readpreviewtaskskillapplyresponse"
     },
     {
       "relation": "contains",
@@ -39658,9 +39818,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L694",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readprojectdetail",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readprojectdetail"
     },
     {
       "relation": "contains",
@@ -39668,9 +39828,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L728",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readprojectsummary",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readprojectsummary"
     },
     {
       "relation": "contains",
@@ -39678,9 +39838,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L562",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readprojectsummarylist",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readprojectsummarylist"
     },
     {
       "relation": "contains",
@@ -39688,9 +39848,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L877",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readproperty",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readproperty"
     },
     {
       "relation": "contains",
@@ -39698,9 +39858,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L631",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtaskattachment",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskattachment"
     },
     {
       "relation": "contains",
@@ -39708,9 +39868,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L594",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtaskattachmentlist",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskattachmentlist"
     },
     {
       "relation": "contains",
@@ -39718,9 +39878,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L617",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtaskcomment",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskcomment"
     },
     {
       "relation": "contains",
@@ -39728,9 +39888,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L586",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtaskcommentlist",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskcommentlist"
     },
     {
       "relation": "contains",
@@ -39738,9 +39898,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L808",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtaskdetail",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskdetail"
     },
     {
       "relation": "contains",
@@ -39748,9 +39908,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L794",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtaskskillapplypreviewsubtask",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskskillapplypreviewsubtask"
     },
     {
       "relation": "contains",
@@ -39758,9 +39918,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L762",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtasksummary",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtasksummary"
     },
     {
       "relation": "contains",
@@ -39768,9 +39928,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L578",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtasksummarylist",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtasksummarylist"
     },
     {
       "relation": "contains",
@@ -39778,9 +39938,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L602",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readworkspacestatus",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readworkspacestatus"
     },
     {
       "relation": "contains",
@@ -39788,9 +39948,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L570",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readworkspacestatuslist",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readworkspacestatuslist"
     },
     {
       "relation": "contains",
@@ -39798,9 +39958,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskattachmentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskattachmentresponse"
     },
     {
       "relation": "contains",
@@ -39808,9 +39968,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L202",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclient"
     },
     {
       "relation": "contains",
@@ -39818,9 +39978,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L223",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendclienterror",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclienterror"
     },
     {
       "relation": "contains",
@@ -39828,9 +39988,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L94",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendclientoptions",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclientoptions"
     },
     {
       "relation": "contains",
@@ -39838,9 +39998,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendfetch"
     },
     {
       "relation": "contains",
@@ -39848,9 +40008,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendfetchinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendfetchinit"
     },
     {
       "relation": "contains",
@@ -39858,9 +40018,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendfetchresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendfetchresponse"
     },
     {
       "relation": "contains",
@@ -39868,9 +40028,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendgetheaders",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendgetheaders"
     },
     {
       "relation": "contains",
@@ -39878,9 +40038,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskbackendpostheaders",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendpostheaders"
     },
     {
       "relation": "contains",
@@ -39888,9 +40048,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskcommentresponse"
     },
     {
       "relation": "contains",
@@ -39898,9 +40058,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskdetailresponse"
     },
     {
       "relation": "contains",
@@ -39908,9 +40068,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskskillapplypreviewsubtaskresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskskillapplypreviewsubtaskresponse"
     },
     {
       "relation": "contains",
@@ -39918,9 +40078,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_taskskillapplyrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskskillapplyrequest"
     },
     {
       "relation": "contains",
@@ -39928,9 +40088,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_tasksummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_tasksummaryresponse"
     },
     {
       "relation": "contains",
@@ -39938,9 +40098,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskassigneeinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskassigneeinput"
     },
     {
       "relation": "contains",
@@ -39948,9 +40108,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskassigneeoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskassigneeoperation"
     },
     {
       "relation": "contains",
@@ -39958,9 +40118,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L186",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskassigneerequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskassigneerequest"
     },
     {
       "relation": "contains",
@@ -39968,9 +40128,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskduedateinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskduedateinput"
     },
     {
       "relation": "contains",
@@ -39978,9 +40138,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskduedateoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskduedateoperation"
     },
     {
       "relation": "contains",
@@ -39988,9 +40148,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L194",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskduedaterequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskduedaterequest"
     },
     {
       "relation": "contains",
@@ -39998,9 +40158,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskstatusinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskstatusinput"
     },
     {
       "relation": "contains",
@@ -40008,9 +40168,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskstatusoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskstatusoperation"
     },
     {
       "relation": "contains",
@@ -40018,9 +40178,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L178",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_updatetaskstatusrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_updatetaskstatusrequest"
     },
     {
       "relation": "contains",
@@ -40028,9 +40188,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_workspacestatusresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_workspacestatusresponse"
     },
     {
       "relation": "contains",
@@ -40038,9 +40198,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L414",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_writejson",
-      "confidence_score": 1.0
+      "target": "src_backend_client_writejson"
     },
     {
       "relation": "re_exports",
@@ -41610,9 +41770,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L236",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_createtaskbackendclient",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_normalizebaseurl"
     },
     {
       "relation": "imports",
@@ -41643,9 +41803,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L400",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client_postjson",
-      "target": "src_backend_client_writejson",
-      "confidence_score": 1.0
+      "target": "src_backend_client_writejson"
     },
     {
       "relation": "calls",
@@ -41764,9 +41924,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L603",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readworkspacestatus",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -41775,9 +41935,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L606",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readworkspacestatus",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -41797,9 +41957,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L618",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskcomment",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -41808,9 +41968,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L621",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskcomment",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -41819,9 +41979,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L644",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskattachment",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring"
     },
     {
       "relation": "calls",
@@ -41830,9 +41990,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L632",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskattachment",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -41841,9 +42001,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L633",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskattachment",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -41874,9 +42034,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L704",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readprojectdetail",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring"
     },
     {
       "relation": "calls",
@@ -41885,9 +42045,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L695",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readprojectdetail",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -41896,9 +42056,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L697",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readprojectdetail",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -41907,9 +42067,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L738",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readprojectsummary",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring"
     },
     {
       "relation": "calls",
@@ -41918,9 +42078,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L729",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readprojectsummary",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -41929,9 +42089,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L731",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readprojectsummary",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -41951,9 +42111,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L767",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readpreviewtaskskillapplyresponse",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -41962,9 +42122,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L770",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readpreviewtaskskillapplyresponse",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -41995,9 +42155,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L781",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readapplytaskskillresponse",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -42006,9 +42166,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L784",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readapplytaskskillresponse",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -42061,9 +42221,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L795",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskskillapplypreviewsubtask",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -42072,9 +42232,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L796",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskskillapplypreviewsubtask",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -42083,9 +42243,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L821",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskdetail",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring"
     },
     {
       "relation": "calls",
@@ -42094,9 +42254,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L809",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskdetail",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -42105,9 +42265,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L811",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskdetail",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -42127,9 +42287,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L866",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -42138,9 +42298,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L925",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "target": "src_backend_client_readproperty",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readproperty"
     },
     {
       "relation": "calls",
@@ -42149,9 +42309,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L882",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "target": "src_backend_client_readproperty",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readproperty"
     },
     {
       "relation": "calls",
@@ -46507,7 +46667,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "target": "tg_bot_package_dependencies",
       "confidence_score": 1.0
     },
@@ -46517,7 +46677,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "target": "tg_bot_package_description",
       "confidence_score": 1.0
     },
@@ -46527,7 +46687,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "target": "tg_bot_package_name",
       "confidence_score": 1.0
     },
@@ -46537,7 +46697,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "target": "tg_bot_package_private",
       "confidence_score": 1.0
     },
@@ -46547,7 +46707,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L10",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "target": "tg_bot_package_scripts",
       "confidence_score": 1.0
     },
@@ -46557,7 +46717,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "target": "tg_bot_package_type",
       "confidence_score": 1.0
     },
@@ -46567,7 +46727,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
       "target": "tg_bot_package_version",
       "confidence_score": 1.0
     },
@@ -46577,9 +46737,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tg_bot_package_dependencies",
-      "target": "tg_bot_package_dependencies_task_api_client",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_dependencies_task_api_client"
     },
     {
       "relation": "contains",
@@ -46647,9 +46807,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "target": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test_requestbody",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test_requestbody"
     },
     {
       "relation": "imports",
@@ -46658,9 +46818,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_createtelegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtelegrambackendclient"
     },
     {
       "relation": "imports",
@@ -46669,9 +46829,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_telegrambackendclienterror",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclienterror"
     },
     {
       "relation": "imports",
@@ -46680,9 +46840,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_telegrambackendfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetch"
     },
     {
       "relation": "imports",
@@ -46691,9 +46851,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_telegrambackendfetchinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetchinit"
     },
     {
       "relation": "contains",
@@ -46701,9 +46861,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_recordingtelegrambackendfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_recordingtelegrambackendfetch"
     },
     {
       "relation": "references",
@@ -46712,9 +46872,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_test_recordingtelegrambackendfetch",
-      "target": "src_backend_client_telegrambackendfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetch"
     },
     {
       "relation": "references",
@@ -46723,9 +46883,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_test_recordingtelegrambackendfetch",
-      "target": "src_backend_client_telegrambackendfetchinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetchinit"
     },
     {
       "relation": "method",
@@ -46733,9 +46893,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_test_recordingtelegrambackendfetch",
-      "target": "src_backend_client_test_recordingtelegrambackendfetch_call",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_recordingtelegrambackendfetch_call"
     },
     {
       "relation": "method",
@@ -46743,9 +46903,9 @@
       "source_file": "apps/tg-bot/src/backend-client.test.ts",
       "source_location": "L103",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_test_recordingtelegrambackendfetch",
-      "target": "src_backend_client_test_recordingtelegrambackendfetch_constructor",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_recordingtelegrambackendfetch_constructor"
     },
     {
       "relation": "contains",
@@ -46753,9 +46913,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_isunknownrecord"
     },
     {
       "relation": "contains",
@@ -46763,9 +46923,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_normalizebaseurl"
     },
     {
       "relation": "contains",
@@ -46773,9 +46933,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L76",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_postjson",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_postjson"
     },
     {
       "relation": "contains",
@@ -46783,9 +46943,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L174",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readoptionalnullablestring"
     },
     {
       "relation": "contains",
@@ -46793,9 +46953,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "contains",
@@ -46803,9 +46963,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L164",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "imports",
@@ -46814,9 +46974,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "generated_openapi_operations",
-      "confidence_score": 1.0
+      "target": "generated_openapi_operations"
     },
     {
       "relation": "contains",
@@ -46824,9 +46984,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createtelegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtelegrambackendclient"
     },
     {
       "relation": "contains",
@@ -46834,9 +46994,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L146",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readresolutionstatus",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readresolutionstatus"
     },
     {
       "relation": "contains",
@@ -46844,9 +47004,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L106",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readtelegramcontextresolutionresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtelegramcontextresolutionresponse"
     },
     {
       "relation": "contains",
@@ -46854,9 +47014,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_resolvetelegramcontextinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_resolvetelegramcontextinput"
     },
     {
       "relation": "contains",
@@ -46864,9 +47024,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_resolvetelegramcontextoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_resolvetelegramcontextoperation"
     },
     {
       "relation": "contains",
@@ -46874,9 +47034,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_resolvetelegramcontextrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_resolvetelegramcontextrequest"
     },
     {
       "relation": "contains",
@@ -46884,9 +47044,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_telegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclient"
     },
     {
       "relation": "contains",
@@ -46894,9 +47054,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_telegrambackendclienterror",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclienterror"
     },
     {
       "relation": "contains",
@@ -46904,9 +47064,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_telegrambackendclientoptions",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclientoptions"
     },
     {
       "relation": "contains",
@@ -46914,9 +47074,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_telegrambackendfetch",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetch"
     },
     {
       "relation": "contains",
@@ -46924,9 +47084,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_telegrambackendfetchinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetchinit"
     },
     {
       "relation": "contains",
@@ -46934,9 +47094,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_telegrambackendfetchresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetchresponse"
     },
     {
       "relation": "contains",
@@ -46944,9 +47104,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_telegrambackendpostheaders",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendpostheaders"
     },
     {
       "relation": "contains",
@@ -46954,7 +47114,84 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client",
+      "target": "src_backend_client_telegramcontextresolutionresponse"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_backend_client_resolvetelegramcontextinput"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_backend_client_telegramcontextresolutionresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_backend_client_telegramcontextresolutionresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_backend_client_telegramcontextresolutionresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L143",
+      "weight": 1.0,
+      "source": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
+      "target": "src_backend_client_telegramcontextresolutionresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "src_message_handler_test_recordingtelegrambackendclient_constructor",
+      "target": "src_backend_client_telegramcontextresolutionresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
       "target": "src_backend_client_telegramcontextresolutionresponse",
       "confidence_score": 1.0
     },
@@ -46965,9 +47202,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_resolvetelegramcontextinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetchinit"
     },
     {
       "relation": "re_exports",
@@ -46976,9 +47213,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_telegramcontextresolutionresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendpostheaders"
     },
     {
       "relation": "re_exports",
@@ -46987,9 +47224,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_telegrambackendfetchinit",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetchresponse"
     },
     {
       "relation": "re_exports",
@@ -46998,9 +47235,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_telegrambackendpostheaders",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendfetch"
     },
     {
       "relation": "re_exports",
@@ -47009,9 +47246,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_telegrambackendfetchresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclientoptions"
     },
     {
       "relation": "re_exports",
@@ -47020,29 +47257,40 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_telegrambackendfetch",
+      "target": "src_backend_client_resolvetelegramcontextrequest"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_backend_client_resolvetelegramcontextrequest",
       "confidence_score": 1.0
     },
     {
-      "relation": "re_exports",
-      "context": "re-export",
+      "relation": "references",
+      "context": "field",
       "confidence": "EXTRACTED",
-      "source_file": "apps/tg-bot/src/index.ts",
-      "source_location": "L3",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L129",
       "weight": 1.0,
-      "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_telegrambackendclientoptions",
+      "source": "src_message_handler_test_recordingtelegrambackendclient",
+      "target": "src_backend_client_resolvetelegramcontextrequest",
       "confidence_score": 1.0
     },
     {
-      "relation": "re_exports",
-      "context": "re-export",
+      "relation": "references",
+      "context": "parameter_type",
       "confidence": "EXTRACTED",
-      "source_file": "apps/tg-bot/src/index.ts",
-      "source_location": "L3",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L133",
       "weight": 1.0,
-      "source": "apps_tg_bot_src_index_ts_src_index",
+      "source": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
       "target": "src_backend_client_resolvetelegramcontextrequest",
       "confidence_score": 1.0
     },
@@ -47053,7 +47301,51 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_backend_client_telegrambackendclient"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_backend_client_telegrambackendclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_backend_client_telegrambackendclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "src_message_handler_test_failingtelegrambackendclient",
+      "target": "src_backend_client_telegrambackendclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "src_message_handler_test_recordingtelegrambackendclient",
       "target": "src_backend_client_telegrambackendclient",
       "confidence_score": 1.0
     },
@@ -47064,9 +47356,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_telegrambackendclienterror",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclienterror"
     },
     {
       "relation": "method",
@@ -47074,8 +47366,30 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_telegrambackendclienterror",
-      "target": "src_backend_client_telegrambackendclienterror_constructor",
+      "target": "src_backend_client_telegrambackendclienterror_constructor"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_backend_client_telegrambackendclienterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_backend_client_telegrambackendclienterror",
       "confidence_score": 1.0
     },
     {
@@ -47085,9 +47399,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_backend_client_createtelegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createtelegrambackendclient"
     },
     {
       "relation": "calls",
@@ -47096,9 +47410,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_createtelegrambackendclient",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_normalizebaseurl"
     },
     {
       "relation": "calls",
@@ -47107,9 +47421,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtelegramcontextresolutionresponse",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readoptionalnullablestring"
     },
     {
       "relation": "calls",
@@ -47118,9 +47432,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtelegramcontextresolutionresponse",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -47129,9 +47443,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtelegramcontextresolutionresponse",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -47140,9 +47454,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L108",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtelegramcontextresolutionresponse",
-      "target": "src_backend_client_readresolutionstatus",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readresolutionstatus"
     },
     {
       "relation": "calls",
@@ -47151,9 +47465,9 @@
       "source_file": "apps/tg-bot/src/backend-client.ts",
       "source_location": "L135",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_backend_client_ts_src_backend_client_readrecord",
-      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_backend_client_ts_src_backend_client_isunknownrecord"
     },
     {
       "relation": "imports",
@@ -47402,6 +47716,83 @@
       "context": "export",
       "confidence": "EXTRACTED",
       "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_message_handler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_message_handler_handletelegramupdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_message_handler_telegrammessagehandleraction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_message_handler_telegrammessagehandleroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_message_handler_telegramreplyaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_message_handler_telegramresolvedcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_message_handler_telegramresolvedmessageaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -47506,6 +47897,245 @@
       "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
       "target": "src_telegram_update_telegramusercontext"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_message_handler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_message_handler_handletelegramupdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_message_handler_test_failingtelegrambackendclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_message_handler_test_recordingtelegrambackendclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_message_handler_test",
+      "target": "src_message_handler_test_telegramupdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "src_message_handler_test_recordingtelegrambackendclient",
+      "target": "src_message_handler_test_recordingtelegrambackendclient_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "src_message_handler_test_recordingtelegrambackendclient",
+      "target": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.test.ts",
+      "source_location": "L143",
+      "weight": 1.0,
+      "source": "src_message_handler_test_failingtelegrambackendclient",
+      "target": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_createreply",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_handletelegramupdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_readresolvedcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_telegrammessagehandleraction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_telegrammessagehandleroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_telegramreplyaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_telegramresolvedcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_message_handler_telegramresolvedmessageaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_telegram_update",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_telegram_update_parsetelegrammessagecontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_telegram_update_telegrammessagecontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_message_handler",
+      "target": "src_telegram_update_telegramupdateparseerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "src_message_handler_handletelegramupdate",
+      "target": "src_message_handler_createreply",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "src_message_handler_handletelegramupdate",
+      "target": "src_message_handler_readresolvedcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/tg-bot/src/message-handler.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "src_message_handler_handletelegramupdate",
+      "target": "src_telegram_update_parsetelegrammessagecontext"
     },
     {
       "relation": "imports_from",
@@ -52701,5 +53331,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d81ea590733bff118994a285bffe6351c53b5fa3"
+  "built_at_commit": "c2f35fba252607ce216d8a3e2ba4be9fbd50958d"
 }

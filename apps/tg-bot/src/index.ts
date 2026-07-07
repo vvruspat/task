@@ -23,6 +23,15 @@ export {
 } from "./config.js";
 
 export {
+  handleTelegramUpdate,
+  type TelegramMessageHandlerAction,
+  type TelegramMessageHandlerOptions,
+  type TelegramReplyAction,
+  type TelegramResolvedContext,
+  type TelegramResolvedMessageAction,
+} from "./message-handler.js";
+
+export {
   parseTelegramMessageContext,
   type TelegramAttachmentContext,
   type TelegramChatContext,
