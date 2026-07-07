@@ -14,9 +14,15 @@ import type {
   CreateTaskInput,
   TaskDetail,
   TaskSummary,
+  UpdateTaskAssigneeInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
-import type { TaskCreateResult, TaskReadStore, TaskUpdateStatusResult } from "./tasks.store.js";
+import type {
+  TaskCreateResult,
+  TaskReadStore,
+  TaskUpdateAssigneeResult,
+  TaskUpdateStatusResult,
+} from "./tasks.store.js";
 
 const taskWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
 
@@ -192,6 +198,66 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
         payload: {
           projectId,
           statusId: input.statusId,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return updatedTask;
+    });
+
+    return { status: "updated", task: toTaskSummary(savedTask) };
+  }
+
+  async updateAssigneeForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: UpdateTaskAssigneeInput,
+  ): Promise<TaskUpdateAssigneeResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (input.assigneeUserId !== null) {
+      const assigneeMembership = await this.getWorkspaceMembership(
+        dataSource,
+        workspaceId,
+        input.assigneeUserId,
+      );
+
+      if (assigneeMembership === null) {
+        return { status: "invalid_assignee" };
+      }
+    }
+
+    const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      task.assigneeUserId = input.assigneeUserId;
+
+      const updatedTask = await manager.getRepository(TaskEntity).save(task);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.assignee_updated",
+        entityType: "task",
+        entityId: updatedTask.id,
+        payload: {
+          assigneeUserId: input.assigneeUserId,
+          projectId,
         },
       });
 

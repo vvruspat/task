@@ -5,16 +5,23 @@ import type {
   CreateTaskInput,
   TaskDetail,
   TaskSummary,
+  UpdateTaskAssigneeInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
-import type { TaskCreateResult, TaskReadStore, TaskUpdateStatusResult } from "./tasks.store.js";
+import type {
+  TaskCreateResult,
+  TaskReadStore,
+  TaskUpdateAssigneeResult,
+  TaskUpdateStatusResult,
+} from "./tasks.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "33333333-3333-4333-8333-333333333333";
 const taskId = "44444444-4444-4444-8444-444444444444";
 const statusId = "55555555-5555-4555-8555-555555555555";
+const assigneeUserId = "66666666-6666-4666-8666-666666666666";
 const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 
@@ -104,6 +111,24 @@ test("TasksService updates task status for writable workspace members", async ()
   assert.equal(response.statusId, statusId);
 });
 
+test("TasksService updates task assignee for writable workspace members", async () => {
+  const input: UpdateTaskAssigneeInput = { assigneeUserId };
+  const service = new TasksService(
+    createReadStore({
+      updateAssigneeResult: {
+        status: "updated",
+        task: { ...taskSummary, assigneeUserId },
+      },
+    }),
+  );
+
+  const response = await service.updateTaskAssignee(workspaceId, projectId, taskId, userId, input);
+
+  assert.ok(response instanceof TaskDetailDto);
+  assert.equal(response.id, taskId);
+  assert.equal(response.assigneeUserId, assigneeUserId);
+});
+
 test("TasksService hides inaccessible projects and missing tasks", async () => {
   const service = new TasksService(createReadStore({ task: null, tasks: null }));
 
@@ -121,6 +146,10 @@ test("TasksService hides inaccessible projects and missing tasks", async () => {
   );
   await assert.rejects(
     () => service.updateTaskStatus(workspaceId, projectId, taskId, userId, { statusId }),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () => service.updateTaskAssignee(workspaceId, projectId, taskId, userId, { assigneeUserId }),
     NotFoundException,
   );
 });
@@ -145,6 +174,17 @@ test("TasksService rejects status updates without write permission", async () =>
   );
 });
 
+test("TasksService rejects assignee updates without write permission", async () => {
+  const service = new TasksService(
+    createReadStore({ updateAssigneeResult: { status: "forbidden" } }),
+  );
+
+  await assert.rejects(
+    () => service.updateTaskAssignee(workspaceId, projectId, taskId, userId, { assigneeUserId }),
+    ForbiddenException,
+  );
+});
+
 test("TasksService rejects statuses outside the workspace", async () => {
   const service = new TasksService(
     createReadStore({ updateStatusResult: { status: "invalid_status" } }),
@@ -152,6 +192,17 @@ test("TasksService rejects statuses outside the workspace", async () => {
 
   await assert.rejects(
     () => service.updateTaskStatus(workspaceId, projectId, taskId, userId, { statusId }),
+    BadRequestException,
+  );
+});
+
+test("TasksService rejects assignees outside the workspace", async () => {
+  const service = new TasksService(
+    createReadStore({ updateAssigneeResult: { status: "invalid_assignee" } }),
+  );
+
+  await assert.rejects(
+    () => service.updateTaskAssignee(workspaceId, projectId, taskId, userId, { assigneeUserId }),
     BadRequestException,
   );
 });
@@ -173,6 +224,7 @@ function createReadStore(options: {
   task?: TaskDetail | null;
   createResult?: TaskCreateResult;
   updateStatusResult?: TaskUpdateStatusResult;
+  updateAssigneeResult?: TaskUpdateAssigneeResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
@@ -183,5 +235,7 @@ function createReadStore(options: {
       options.createResult ?? { status: "project_not_found" },
     updateStatusForProject: async (): Promise<TaskUpdateStatusResult> =>
       options.updateStatusResult ?? { status: "task_not_found" },
+    updateAssigneeForProject: async (): Promise<TaskUpdateAssigneeResult> =>
+      options.updateAssigneeResult ?? { status: "task_not_found" },
   };
 }
