@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
+  CreateTaskRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
@@ -11,6 +12,7 @@ import type {
 } from "./backend-client.js";
 import {
   createTaskToolHandlers,
+  parseTaskCreateToolInput,
   parseTaskGetToolInput,
   parseTaskSearchToolInput,
   TaskToolInputError,
@@ -103,6 +105,71 @@ test("parseTaskGetToolInput validates task get payloads", () => {
   );
 });
 
+test("parseTaskCreateToolInput validates and normalizes task create payloads", () => {
+  assert.deepEqual(
+    parseTaskCreateToolInput({
+      workspaceId,
+      projectId,
+      userId,
+      title: "  Arrange intro  ",
+      parentTaskId: null,
+      description: "   ",
+      position: " 1000 ",
+      dueAt: "2026-01-01",
+      metadata: { source: "manual" },
+    }),
+    {
+      workspaceId,
+      projectId,
+      userId,
+      title: "Arrange intro",
+      parentTaskId: null,
+      description: null,
+      position: "1000",
+      dueAt: timestamp,
+      metadata: { source: "manual" },
+    },
+  );
+
+  assert.throws(
+    () => parseTaskCreateToolInput({ workspaceId, projectId, userId, title: "" }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskCreateToolInput({
+        workspaceId,
+        projectId,
+        userId,
+        title: "Arrange",
+        parentTaskId: "bad",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskCreateToolInput({
+        workspaceId,
+        projectId,
+        userId,
+        title: "Arrange",
+        position: "first",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskCreateToolInput({
+        workspaceId,
+        projectId,
+        userId,
+        title: "Arrange",
+        metadata: [],
+      }),
+    TaskToolInputError,
+  );
+});
+
 test("task search handler lists active tasks when query is absent", async () => {
   const client = createBackendClientStub(tasks);
   const handlers = createTaskToolHandlers(client);
@@ -141,6 +208,42 @@ test("task get handler forwards task identifiers to the backend client", async (
   assert.deepEqual(calls, [{ workspaceId, projectId, taskId: firstTaskId, userId }]);
 });
 
+test("task create handler forwards task payloads to the backend client", async () => {
+  const calls: CreateTaskRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.create({
+      workspaceId,
+      projectId,
+      userId,
+      title: "Arrange intro",
+      parentTaskId: null,
+      description: "Opening section",
+      position: "1000",
+      dueAt: timestamp,
+      metadata: { source: "manual" },
+    }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      userId,
+      body: {
+        title: "Arrange intro",
+        parentTaskId: null,
+        description: "Opening section",
+        position: "1000",
+        dueAt: timestamp,
+        metadata: { source: "manual" },
+      },
+    },
+  ]);
+});
+
 function createBackendClientStub(
   responseTasks: TaskSummaryResponse[],
   listActiveTaskCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
@@ -150,6 +253,7 @@ function createBackendClientStub(
     taskId: string;
     userId: string;
   }> = [],
+  createTaskCalls: CreateTaskRequest[] = [],
 ): TaskBackendClient {
   return {
     createProject: async (): Promise<ProjectDetailResponse> => {
@@ -168,6 +272,11 @@ function createBackendClientStub(
     },
     getTask: async (request): Promise<TaskDetailResponse> => {
       getTaskCalls.push(request);
+
+      return taskDetail;
+    },
+    createTask: async (request): Promise<TaskDetailResponse> => {
+      createTaskCalls.push(request);
 
       return taskDetail;
     },

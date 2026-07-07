@@ -56,12 +56,25 @@ const taskGetInputSchema = {
   userId: z.string().uuid(),
 };
 
+const taskCreateInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
+  title: z.string().min(1),
+  parentTaskId: z.string().uuid().nullable().optional(),
+  description: z.string().nullable().optional(),
+  position: z.string().nullable().optional(),
+  dueAt: z.string().datetime().nullable().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+};
+
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
 type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
+type TaskCreateMcpArgs = z.output<z.ZodObject<typeof taskCreateInputSchema>>;
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
@@ -69,7 +82,8 @@ type TaskMcpToolCallback = (
     | ProjectGetMcpArgs
     | ProjectCreateMcpArgs
     | TaskSearchMcpArgs
-    | TaskGetMcpArgs,
+    | TaskGetMcpArgs
+    | TaskCreateMcpArgs,
 ) => Promise<CallToolResult>;
 
 export type TaskMcpToolRegistrar = {
@@ -84,7 +98,8 @@ export type TaskMcpToolRegistrar = {
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
         | typeof taskSearchInputSchema
-        | typeof taskGetInputSchema;
+        | typeof taskGetInputSchema
+        | typeof taskCreateInputSchema;
     },
     callback: TaskMcpToolCallback,
   ): unknown;
@@ -150,6 +165,16 @@ export function registerTaskTools(
   registrar: TaskMcpToolRegistrar,
   handlers: TaskToolHandlers,
 ): void {
+  registrar.registerTool(
+    "task.create",
+    {
+      title: "Create task",
+      description: "Create a task in a visible project.",
+      inputSchema: taskCreateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.create(input)),
+  );
+
   registrar.registerTool(
     "task.get",
     {
