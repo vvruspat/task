@@ -220,7 +220,8 @@ export interface paths {
     /** List active task skills for one visible workspace */
     get: operations["TaskSkillsController_listActiveTaskSkills"];
     put?: never;
-    post?: never;
+    /** Create a task skill in a visible workspace */
+    post: operations["TaskSkillsController_createTaskSkill"];
     delete?: never;
     options?: never;
     head?: never;
@@ -544,6 +545,15 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    CreateTaskSkillDto: {
+      /** @example Song */
+      name: string;
+      description?: string | null;
+      aliases?: string[];
+      definition: {
+        [key: string]: unknown;
+      };
     };
     TaskSkillVersionSummaryDto: {
       /** Format: uuid */
@@ -1179,6 +1189,55 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["TaskSkillSummaryDto"][];
         };
+      };
+      /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_createTaskSkill: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTaskSkillDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillDetailDto"];
+        };
+      };
+      /** @description Task skill payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot create task skills in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
       /** @description Workspace is missing or not visible to the current user. */
       404: {

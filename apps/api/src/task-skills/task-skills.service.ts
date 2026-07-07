@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import type { CreateTaskSkillInput } from "./task-skills.contracts.js";
 import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
 import type { TaskSkillsReadStore } from "./task-skills.store.js";
 
@@ -28,5 +34,27 @@ export class TaskSkillsService {
     }
 
     return new TaskSkillDetailDto(skill);
+  }
+
+  async createTaskSkill(
+    workspaceId: string,
+    userId: string,
+    input: CreateTaskSkillInput,
+  ): Promise<TaskSkillDetailDto> {
+    const result = await this.readStore.createForWorkspace(workspaceId, userId, input);
+
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot create task skills in this workspace.");
+    }
+
+    if (result.status === "duplicate_name") {
+      throw new BadRequestException("Task skill name already exists in this workspace.");
+    }
+
+    return new TaskSkillDetailDto(result.taskSkill);
   }
 }

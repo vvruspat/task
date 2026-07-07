@@ -360,7 +360,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_app_module_appmodule",
-      "community": 18,
+      "community": 67,
       "norm_label": "appmodule"
     },
     {
@@ -900,7 +900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_test",
-      "community": 67,
+      "community": 64,
       "norm_label": "trusted-current-user.decorator.test.ts"
     },
     {
@@ -910,7 +910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator",
-      "community": 67,
+      "community": 64,
       "norm_label": "trusted-current-user.decorator.ts"
     },
     {
@@ -920,7 +920,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "community": 67,
+      "community": 64,
       "norm_label": "apitrustedcurrentuser()"
     },
     {
@@ -930,7 +930,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "community": 67,
+      "community": 64,
       "norm_label": "trustedcurrentuserid"
     },
     {
@@ -940,7 +940,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "community": 67,
+      "community": 64,
       "norm_label": "parsetrustedcurrentuserid()"
     },
     {
@@ -950,7 +950,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "community": 67,
+      "community": 64,
       "norm_label": "trustedcurrentuserheader"
     },
     {
@@ -960,7 +960,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
-      "community": 67,
+      "community": 64,
       "norm_label": "trustedcurrentuserrequest"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_test",
-      "community": 18,
+      "community": 67,
       "norm_label": "config.test.ts"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config",
-      "community": 18,
+      "community": 67,
       "norm_label": "config.ts"
     },
     {
@@ -1470,7 +1470,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_apienvironment",
-      "community": 18,
+      "community": 67,
       "norm_label": "apienvironment"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_config_apidatabaseconfig",
-      "community": 18,
+      "community": 67,
       "norm_label": "apidatabaseconfig"
     },
     {
@@ -1490,7 +1490,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_config_apiconfig",
-      "community": 18,
+      "community": 67,
       "norm_label": "apiconfig"
     },
     {
@@ -1500,7 +1500,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_config_invalidapienvironmenterror",
-      "community": 18,
+      "community": 67,
       "norm_label": "invalidapienvironmenterror"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_config_invalidapienvironmenterror_constructor",
-      "community": 18,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -1520,7 +1520,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_config_parseapiconfig",
-      "community": 18,
+      "community": 67,
       "norm_label": "parseapiconfig()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_config_loadapiconfig",
-      "community": 18,
+      "community": 67,
       "norm_label": "loadapiconfig()"
     },
     {
@@ -1540,7 +1540,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_config_parseport",
-      "community": 18,
+      "community": 67,
       "norm_label": "parseport()"
     },
     {
@@ -1550,7 +1550,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_config_parsedatabaseconfig",
-      "community": 18,
+      "community": 67,
       "norm_label": "parsedatabaseconfig()"
     },
     {
@@ -1560,7 +1560,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_config_formatinvalidvalue",
-      "community": 18,
+      "community": 67,
       "norm_label": "formatinvalidvalue()"
     },
     {
@@ -1660,7 +1660,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_constructor",
-      "community": 18,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -1700,7 +1700,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_generate_openapi",
-      "community": 18,
+      "community": 67,
       "norm_label": "generate-openapi.ts"
     },
     {
@@ -1710,7 +1710,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_generate_openapi_generateopenapi",
-      "community": 18,
+      "community": 67,
       "norm_label": "generateopenapi()"
     },
     {
@@ -1720,7 +1720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 18,
+      "community": 67,
       "norm_label": "main.ts"
     },
     {
@@ -1730,7 +1730,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_main_bootstrap",
-      "community": 18,
+      "community": 67,
       "norm_label": "bootstrap()"
     },
     {
@@ -1747,10 +1747,10 @@
       "label": "createOpenApiDocument()",
       "file_type": "code",
       "source_file": "apps/api/src/openapi.ts",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "src_openapi_createopenapidocument",
-      "community": 18,
+      "community": 67,
       "norm_label": "createopenapidocument()"
     },
     {
@@ -2290,7 +2290,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000",
-      "community": 57,
+      "community": 65,
       "norm_label": "createtaskstable1783296120000"
     },
     {
@@ -2300,7 +2300,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_up",
-      "community": 57,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2310,7 +2310,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_down",
-      "community": 57,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2410,7 +2410,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 65,
+      "community": 55,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 65,
+      "community": 55,
       "norm_label": ".up()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 65,
+      "community": 55,
       "norm_label": ".down()"
     },
     {
@@ -4084,6 +4084,16 @@
       "norm_label": "taskskilldetail"
     },
     {
+      "label": "CreateTaskSkillInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_contracts_createtaskskillinput",
+      "community": 49,
+      "norm_label": "createtaskskillinput"
+    },
+    {
       "label": "task-skills.controller.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
@@ -4097,7 +4107,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L12",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_createdat",
       "community": 49,
@@ -4107,7 +4117,7 @@
       "label": "taskSkill",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L14",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_taskskill",
       "community": 49,
@@ -4117,17 +4127,27 @@
       "label": "taskSkillDetail",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L26",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_taskskilldetail",
       "community": 49,
       "norm_label": "taskskilldetail"
     },
     {
+      "label": "createInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_controller_test_createinput",
+      "community": 49,
+      "norm_label": "createinput"
+    },
+    {
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L66",
+      "source_location": "L137",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_createreadstore",
       "community": 49,
@@ -4147,7 +4167,7 @@
       "label": "uuidV4Pipe",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L17",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_uuidv4pipe",
       "community": 49,
@@ -4157,7 +4177,7 @@
       "label": "TaskSkillsController",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L22",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller",
       "community": 49,
@@ -4167,7 +4187,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L23",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_constructor",
       "community": 49,
@@ -4177,17 +4197,27 @@
       "label": ".listActiveTaskSkills()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L30",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_listactivetaskskills",
       "community": 49,
       "norm_label": ".listactivetaskskills()"
     },
     {
+      "label": ".createTaskSkill()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_controller_taskskillscontroller_createtaskskill",
+      "community": 49,
+      "norm_label": ".createtaskskill()"
+    },
+    {
       "label": ".getTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L45",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_gettaskskill",
       "community": 49,
@@ -4204,10 +4234,40 @@
       "norm_label": "task-skills.dto.ts"
     },
     {
+      "label": "CreateTaskSkillDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_createtaskskilldto",
+      "community": 49,
+      "norm_label": "createtaskskilldto"
+    },
+    {
+      "label": "ParseCreateTaskSkillBodyPipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
+      "community": 49,
+      "norm_label": "parsecreatetaskskillbodypipe"
+    },
+    {
+      "label": ".transform()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe_transform",
+      "community": 49,
+      "norm_label": ".transform()"
+    },
+    {
       "label": "TaskSkillSummaryDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L8",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillsummarydto",
       "community": 49,
@@ -4217,17 +4277,77 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L36",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillsummarydto_constructor",
       "community": 49,
       "norm_label": ".constructor()"
     },
     {
+      "label": "parseCreateTaskSkillInput()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L71",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "community": 49,
+      "norm_label": "parsecreatetaskskillinput()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_isunknownrecord",
+      "community": 49,
+      "norm_label": "isunknownrecord()"
+    },
+    {
+      "label": "readRequiredNonEmptyString()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_readrequirednonemptystring",
+      "community": 49,
+      "norm_label": "readrequirednonemptystring()"
+    },
+    {
+      "label": "readOptionalNullableString()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L116",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_readoptionalnullablestring",
+      "community": 49,
+      "norm_label": "readoptionalnullablestring()"
+    },
+    {
+      "label": "readOptionalStringArray()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L135",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_readoptionalstringarray",
+      "community": 49,
+      "norm_label": "readoptionalstringarray()"
+    },
+    {
+      "label": "readRequiredDefinition()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L166",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_readrequireddefinition",
+      "community": 49,
+      "norm_label": "readrequireddefinition()"
+    },
+    {
       "label": "TaskSkillVersionSummaryDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L49",
+      "source_location": "L197",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto",
       "community": 49,
@@ -4237,7 +4357,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L71",
+      "source_location": "L219",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
       "community": 49,
@@ -4247,7 +4367,7 @@
       "label": "TaskSkillDetailDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L82",
+      "source_location": "L230",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskilldetaildto",
       "community": 49,
@@ -4257,7 +4377,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L86",
+      "source_location": "L234",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskilldetaildto_constructor",
       "community": 49,
@@ -4307,7 +4427,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L13",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_createdat",
       "community": 49,
@@ -4317,7 +4437,7 @@
       "label": "updatedAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L14",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_updatedat",
       "community": 49,
@@ -4327,7 +4447,7 @@
       "label": "taskSkill",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L16",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_taskskill",
       "community": 49,
@@ -4337,17 +4457,27 @@
       "label": "taskSkillDetail",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L28",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_taskskilldetail",
       "community": 49,
       "norm_label": "taskskilldetail"
     },
     {
+      "label": "createInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_service_test_createinput",
+      "community": 49,
+      "norm_label": "createinput"
+    },
+    {
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L79",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_createreadstore",
       "community": 49,
@@ -4367,7 +4497,7 @@
       "label": "TaskSkillsService",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L6",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice",
       "community": 49,
@@ -4377,7 +4507,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L7",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_constructor",
       "community": 49,
@@ -4387,7 +4517,7 @@
       "label": ".listActiveTaskSkills()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L9",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_listactivetaskskills",
       "community": 49,
@@ -4397,11 +4527,21 @@
       "label": ".getTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L19",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_gettaskskill",
       "community": 49,
       "norm_label": ".gettaskskill()"
+    },
+    {
+      "label": ".createTaskSkill()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_service_taskskillsservice_createtaskskill",
+      "community": 49,
+      "norm_label": ".createtaskskill()"
     },
     {
       "label": "task-skills.store.ts",
@@ -4414,10 +4554,20 @@
       "norm_label": "task-skills.store.ts"
     },
     {
+      "label": "TaskSkillCreateResult",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.store.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_store_taskskillcreateresult",
+      "community": 49,
+      "norm_label": "taskskillcreateresult"
+    },
+    {
       "label": "TaskSkillsReadStore",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L3",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillsreadstore",
       "community": 49,
@@ -4434,10 +4584,20 @@
       "norm_label": "typeorm-task-skills-read.store.ts"
     },
     {
+      "label": "taskSkillWriteRoles",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "task_skills_typeorm_task_skills_read_store_taskskillwriteroles",
+      "community": 49,
+      "norm_label": "taskskillwriteroles"
+    },
+    {
       "label": "TypeOrmTaskSkillsReadStore",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L19",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore",
       "community": 49,
@@ -4447,7 +4607,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L22",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
       "community": 49,
@@ -4457,7 +4617,7 @@
       "label": ".listActiveForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L24",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_listactiveforworkspace",
       "community": 49,
@@ -4467,17 +4627,27 @@
       "label": ".getActiveForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L46",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace",
       "community": 49,
       "norm_label": ".getactiveforworkspace()"
     },
     {
+      "label": ".createForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
+      "community": 49,
+      "norm_label": ".createforworkspace()"
+    },
+    {
       "label": ".getInitializedDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L82",
+      "source_location": "L157",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getinitializeddatasource",
       "community": 49,
@@ -4487,7 +4657,7 @@
       "label": "toTaskSkillSummary()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L104",
+      "source_location": "L179",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_totaskskillsummary",
       "community": 49,
@@ -4497,7 +4667,7 @@
       "label": "toTaskSkillVersionSummary()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L118",
+      "source_location": "L193",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_totaskskillversionsummary",
       "community": 49,
@@ -7397,7 +7567,7 @@
       "label": "webhooks",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L317",
+      "source_location": "L318",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
       "community": 33,
@@ -7407,7 +7577,7 @@
       "label": "components",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L318",
+      "source_location": "L319",
       "_origin": "ast",
       "id": "generated_openapi_components",
       "community": 33,
@@ -7417,7 +7587,7 @@
       "label": "$defs",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L657",
+      "source_location": "L667",
       "_origin": "ast",
       "id": "generated_openapi_defs",
       "community": 33,
@@ -7427,7 +7597,7 @@
       "label": "operations",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L658",
+      "source_location": "L668",
       "_origin": "ast",
       "id": "generated_openapi_operations",
       "community": 33,
@@ -16967,8 +17137,19 @@
       "source_location": "L9",
       "weight": 1.0,
       "source": "src_openapi",
-      "target": "task_skills_task_skills_dto_taskskilldetaildto",
+      "target": "task_skills_task_skills_dto_createtaskskilldto",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_openapi",
+      "target": "task_skills_task_skills_dto_taskskilldetaildto"
     },
     {
       "relation": "imports",
@@ -16988,9 +17169,9 @@
       "source_file": "apps/api/src/openapi.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_openapi",
-      "target": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskillversionsummarydto"
     },
     {
       "relation": "imports_from",
@@ -17199,6 +17380,17 @@
       "confidence_score": 1.0,
       "source": "projects_typeorm_project_read_store",
       "target": "entities_activity_event_entity_activityevententity"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "entities_activity_event_entity_activityevententity",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -18397,9 +18589,9 @@
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store",
-      "target": "entities_task_skill_version_entity_taskskillversionentity",
-      "confidence_score": 1.0
+      "target": "entities_task_skill_version_entity_taskskillversionentity"
     },
     {
       "relation": "contains",
@@ -20308,6 +20500,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L11",
       "weight": 1.0,
@@ -20576,6 +20779,17 @@
       "confidence_score": 1.0,
       "source": "projects_typeorm_project_read_store",
       "target": "types_core_persistence_types_workspacememberrole"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "types_core_persistence_types_workspacememberrole",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -22910,11 +23124,21 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L23",
+      "source_location": "L27",
       "weight": 1.0,
       "source": "task_skills_task_skills_contracts",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_task_skills_contracts",
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
     },
     {
       "relation": "contains",
@@ -22932,8 +23156,19 @@
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_contracts",
-      "target": "task_skills_task_skills_contracts_taskskillversionsummary",
+      "target": "task_skills_task_skills_contracts_taskskillversionsummary"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller",
+      "target": "task_skills_task_skills_contracts",
       "confidence_score": 1.0
     },
     {
@@ -22957,6 +23192,17 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto",
       "target": "task_skills_task_skills_contracts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service",
+      "target": "task_skills_task_skills_contracts",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -23086,9 +23332,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto",
-      "target": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_contracts_taskskillversionsummary"
     },
     {
       "relation": "implements",
@@ -23097,9 +23343,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "target": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_contracts_taskskillversionsummary"
     },
     {
       "relation": "references",
@@ -23108,9 +23354,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
-      "target": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_contracts_taskskillversionsummary"
     },
     {
       "relation": "imports",
@@ -23119,9 +23365,9 @@
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store",
-      "target": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_contracts_taskskillversionsummary"
     },
     {
       "relation": "imports",
@@ -23130,9 +23376,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_controller_test",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
     },
     {
       "relation": "imports",
@@ -23141,9 +23387,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
     },
     {
       "relation": "implements",
@@ -23152,9 +23398,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto_taskskilldetaildto",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
     },
     {
       "relation": "references",
@@ -23163,8 +23409,140 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L86",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto_taskskilldetaildto_constructor",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_task_skills_service_test",
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_task_skills_store",
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace",
+      "target": "task_skills_task_skills_contracts_taskskilldetail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_taskskillscontroller_createtaskskill",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_createtaskskilldto",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe_transform",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_taskskillsservice_createtaskskill",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
       "confidence_score": 1.0
     },
     {
@@ -23175,7 +23553,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "task_skills_task_skills_service_test",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
       "confidence_score": 1.0
     },
     {
@@ -23186,7 +23564,7 @@
       "source_location": "L1",
       "weight": 1.0,
       "source": "task_skills_task_skills_store",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
       "confidence_score": 1.0
     },
     {
@@ -23194,21 +23572,21 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L11",
+      "source_location": "L13",
       "weight": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
       "confidence_score": 1.0
     },
     {
       "relation": "references",
-      "context": "generic_arg",
+      "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L46",
+      "source_location": "L87",
       "weight": 1.0,
-      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace",
-      "target": "task_skills_task_skills_contracts_taskskilldetail",
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
+      "target": "task_skills_task_skills_contracts_createtaskskillinput",
       "confidence_score": 1.0
     },
     {
@@ -23247,6 +23625,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_controller_test_createinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
       "source_location": "L36",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -23269,8 +23657,30 @@
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_controller_test",
-      "target": "task_skills_task_skills_controller_test_taskskilldetail",
+      "target": "task_skills_task_skills_controller_test_taskskilldetail"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
       "confidence_score": 1.0
     },
     {
@@ -23305,6 +23715,17 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_controller_test",
       "target": "task_skills_task_skills_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_store_taskskillcreateresult",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -23353,11 +23774,33 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L13",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "task_skills_task_skills_controller",
-      "target": "task_skills_task_skills_dto_taskskilldetaildto",
+      "target": "task_skills_task_skills_dto_createtaskskilldto",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller",
+      "target": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_task_skills_controller",
+      "target": "task_skills_task_skills_dto_taskskilldetaildto"
     },
     {
       "relation": "imports",
@@ -23417,11 +23860,21 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L45",
+      "source_location": "L57",
       "weight": 1.0,
       "source": "task_skills_task_skills_controller_taskskillscontroller",
-      "target": "task_skills_task_skills_controller_taskskillscontroller_gettaskskill",
+      "target": "task_skills_task_skills_controller_taskskillscontroller_createtaskskill",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_task_skills_controller_taskskillscontroller",
+      "target": "task_skills_task_skills_controller_taskskillscontroller_gettaskskill"
     },
     {
       "relation": "method",
@@ -23471,10 +23924,101 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_taskskillscontroller_createtaskskill",
+      "target": "task_skills_task_skills_dto_taskskilldetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_controller_taskskillscontroller_gettaskskill",
-      "target": "task_skills_task_skills_dto_taskskilldetaildto",
+      "target": "task_skills_task_skills_dto_taskskilldetaildto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_createtaskskilldto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_readoptionalstringarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L166",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_readrequireddefinition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_readrequirednonemptystring",
       "confidence_score": 1.0
     },
     {
@@ -23483,9 +24027,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto",
-      "target": "task_skills_task_skills_dto_taskskilldetaildto",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskilldetaildto"
     },
     {
       "relation": "contains",
@@ -23503,9 +24047,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto",
-      "target": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskillversionsummarydto"
     },
     {
       "relation": "imports_from",
@@ -23530,15 +24074,36 @@
       "target": "task_skills_task_skills_dto"
     },
     {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
+      "target": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe_transform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe_transform",
+      "target": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "inherits",
       "context": "type",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto_taskskilldetaildto",
-      "target": "task_skills_task_skills_dto_taskskillsummarydto",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskillsummarydto"
     },
     {
       "relation": "method",
@@ -23584,14 +24149,80 @@
       "target": "task_skills_task_skills_dto_taskskillsummarydto"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "target": "task_skills_task_skills_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "target": "task_skills_task_skills_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "target": "task_skills_task_skills_dto_readoptionalstringarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "target": "task_skills_task_skills_dto_readrequireddefinition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parsecreatetaskskillinput",
+      "target": "task_skills_task_skills_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L172",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_readrequireddefinition",
+      "target": "task_skills_task_skills_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "target": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor"
     },
     {
       "relation": "method",
@@ -23599,9 +24230,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L86",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto_taskskilldetaildto",
-      "target": "task_skills_task_skills_dto_taskskilldetaildto_constructor",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskilldetaildto_constructor"
     },
     {
       "relation": "imports",
@@ -23610,7 +24241,18 @@
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_service",
+      "target": "task_skills_task_skills_dto_taskskilldetaildto"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_taskskillsservice_createtaskskill",
       "target": "task_skills_task_skills_dto_taskskilldetaildto",
       "confidence_score": 1.0
     },
@@ -23621,9 +24263,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_service_taskskillsservice_gettaskskill",
-      "target": "task_skills_task_skills_dto_taskskilldetaildto",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskilldetaildto"
     },
     {
       "relation": "imports",
@@ -23632,9 +24274,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_service_test",
-      "target": "task_skills_task_skills_dto_taskskilldetaildto",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_dto_taskskilldetaildto"
     },
     {
       "relation": "contains",
@@ -23758,6 +24400,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_test",
+      "target": "task_skills_task_skills_service_test_createinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
       "source_location": "L48",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -23780,9 +24432,9 @@
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_task_skills_service_test",
-      "target": "task_skills_task_skills_service_test_taskskilldetail",
-      "confidence_score": 1.0
+      "target": "task_skills_task_skills_service_test_taskskilldetail"
     },
     {
       "relation": "contains",
@@ -23804,6 +24456,17 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_service_test",
       "target": "task_skills_task_skills_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_test",
+      "target": "task_skills_task_skills_store_taskskillcreateresult",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -23862,11 +24525,21 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L19",
+      "source_location": "L39",
       "weight": 1.0,
       "source": "task_skills_task_skills_service_taskskillsservice",
-      "target": "task_skills_task_skills_service_taskskillsservice_gettaskskill",
+      "target": "task_skills_task_skills_service_taskskillsservice_createtaskskill",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_task_skills_service_taskskillsservice",
+      "target": "task_skills_task_skills_service_taskskillsservice_gettaskskill"
     },
     {
       "relation": "method",
@@ -23888,6 +24561,16 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_service_taskskillsservice_constructor",
       "target": "task_skills_task_skills_store_taskskillsreadstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.store.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_store",
+      "target": "task_skills_task_skills_store_taskskillcreateresult",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -23915,6 +24598,28 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "task_skills_task_skills_store_taskskillcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
+      "target": "task_skills_task_skills_store_taskskillcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L8",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -23936,6 +24641,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "task_skills_typeorm_task_skills_read_store_taskskillwriteroles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L60",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -23948,9 +24663,9 @@
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store",
-      "target": "task_skills_typeorm_task_skills_read_store_totaskskillversionsummary",
-      "confidence_score": 1.0
+      "target": "task_skills_typeorm_task_skills_read_store_totaskskillversionsummary"
     },
     {
       "relation": "contains",
@@ -23976,11 +24691,21 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L46",
+      "source_location": "L87",
       "weight": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore",
-      "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace",
+      "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore",
+      "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace"
     },
     {
       "relation": "method",
@@ -24020,9 +24745,9 @@
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace",
-      "target": "task_skills_typeorm_task_skills_read_store_totaskskillsummary",
-      "confidence_score": 1.0
+      "target": "task_skills_typeorm_task_skills_read_store_totaskskillsummary"
     },
     {
       "relation": "calls",
@@ -24031,7 +24756,18 @@
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace",
+      "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
       "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getinitializeddatasource",
       "confidence_score": 1.0
     },
@@ -32952,5 +33688,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "26bb7a9a73190004be06ceb150712269b35ff0b7"
+  "built_at_commit": "1702d0296ee1de3edcb1fbe9a00b7c039c83340d"
 }

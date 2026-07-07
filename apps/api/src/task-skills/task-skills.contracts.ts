@@ -23,3 +23,10 @@ export type TaskSkillVersionSummary = {
 export type TaskSkillDetail = TaskSkillSummary & {
   versions: TaskSkillVersionSummary[];
 };
+
+export type CreateTaskSkillInput = {
+  name: string;
+  description?: string | null;
+  aliases?: string[];
+  definition: Record<string, unknown>;
+};
