@@ -7,6 +7,7 @@ export {
   createTaskBackendClient,
   type GetProjectRequest,
   type ListActiveProjectsRequest,
+  type ListActiveTasksRequest,
   type PreviewTaskSkillApplyInput,
   type PreviewTaskSkillApplyResponse,
   type ProjectDetailResponse,
@@ -20,6 +21,7 @@ export {
   type TaskBackendGetHeaders,
   type TaskBackendPostHeaders,
   type TaskSkillApplyRequest,
+  type TaskSummaryResponse,
 } from "./backend-client.js";
 
 export {
@@ -35,6 +37,7 @@ export {
   createTaskMcpServer,
   registerProjectTools,
   registerTaskSkillApplyTools,
+  registerTaskTools,
   type TaskMcpServerOptions,
   type TaskMcpToolRegistrar,
   type TaskSkillToolRegistrar,
@@ -62,3 +65,10 @@ export {
   type TaskSkillToolHandlers,
   TaskSkillToolInputError,
 } from "./task-skill-tools.js";
+export {
+  createTaskToolHandlers,
+  parseTaskSearchToolInput,
+  type TaskSearchToolInput,
+  type TaskToolHandlers,
+  TaskToolInputError,
+} from "./task-tools.js";

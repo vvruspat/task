@@ -5,6 +5,7 @@ import * as z from "zod/v4";
 import type { TaskBackendClient } from "./backend-client.js";
 import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-tools.js";
 import { createTaskSkillToolHandlers, type TaskSkillToolHandlers } from "./task-skill-tools.js";
+import { createTaskToolHandlers, type TaskToolHandlers } from "./task-tools.js";
 
 const taskSkillApplyInputSchema = {
   workspaceId: z.string().uuid(),
@@ -41,12 +42,25 @@ const projectCreateInputSchema = {
   position: z.string().min(1).nullable().optional(),
 };
 
+const taskSearchInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
+  query: z.string().min(1).optional(),
+};
+
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
+type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskMcpToolCallback = (
-  args: TaskSkillApplyMcpArgs | ProjectSearchMcpArgs | ProjectGetMcpArgs | ProjectCreateMcpArgs,
+  args:
+    | TaskSkillApplyMcpArgs
+    | ProjectSearchMcpArgs
+    | ProjectGetMcpArgs
+    | ProjectCreateMcpArgs
+    | TaskSearchMcpArgs,
 ) => Promise<CallToolResult>;
 
 export type TaskMcpToolRegistrar = {
@@ -59,7 +73,8 @@ export type TaskMcpToolRegistrar = {
         | typeof taskSkillApplyInputSchema
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
-        | typeof projectCreateInputSchema;
+        | typeof projectCreateInputSchema
+        | typeof taskSearchInputSchema;
     },
     callback: TaskMcpToolCallback,
   ): unknown;
@@ -80,6 +95,7 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
   });
 
   registerProjectTools(server, createProjectToolHandlers(options.backendClient));
+  registerTaskTools(server, createTaskToolHandlers(options.backendClient));
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
 
   return server;
@@ -115,6 +131,21 @@ export function registerProjectTools(
       title: "Search projects",
       description: "Search active projects in a workspace by title.",
       inputSchema: projectSearchInputSchema,
+    },
+    async (input) => toToolResult(await handlers.search(input)),
+  );
+}
+
+export function registerTaskTools(
+  registrar: TaskMcpToolRegistrar,
+  handlers: TaskToolHandlers,
+): void {
+  registrar.registerTool(
+    "task.search",
+    {
+      title: "Search tasks",
+      description: "Search active tasks in a project by title.",
+      inputSchema: taskSearchInputSchema,
     },
     async (input) => toToolResult(await handlers.search(input)),
   );

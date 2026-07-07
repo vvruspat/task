@@ -7,6 +7,7 @@ import {
   TaskBackendClientError,
   type TaskBackendFetch,
   type TaskBackendFetchInit,
+  type TaskSummaryResponse,
 } from "./backend-client.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -62,6 +63,10 @@ const taskDetail = {
   archivedAt: null,
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const taskSummary: TaskSummaryResponse = {
+  ...taskDetail,
 };
 
 test("previewTaskSkillApply posts typed payloads with trusted user context", async () => {
@@ -162,6 +167,27 @@ test("createProject posts typed payloads with trusted user context", async () =>
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
   assert.deepEqual(response, projectDetail);
+});
+
+test("listActiveTasks gets typed task summaries with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [taskSummary]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listActiveTasks({ workspaceId, projectId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.deepEqual(response, [taskSummary]);
 });
 
 test("applyTaskSkill narrows created task tree responses", async () => {
@@ -268,6 +294,18 @@ test("backend client rejects malformed project list responses", async () => {
   await assert.rejects(
     () => client.listActiveProjects({ workspaceId, userId }),
     /title must be a string/,
+  );
+});
+
+test("backend client rejects malformed task list responses", async () => {
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local",
+    fetch: createJsonFetch([], [{ ...taskSummary, metadata: null }]),
+  });
+
+  await assert.rejects(
+    () => client.listActiveTasks({ workspaceId, projectId, userId }),
+    /task metadata must be an object/,
   );
 });
 
