@@ -227,6 +227,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/task-skills/{taskSkillId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get one active task skill with versions */
+    get: operations["TaskSkillsController_getTaskSkill"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/statuses": {
     parameters: {
       query?: never;
@@ -527,6 +544,42 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    TaskSkillVersionSummaryDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      taskSkillId: string;
+      /** @example 1 */
+      version: number;
+      definition: {
+        [key: string]: unknown;
+      };
+      /** Format: uuid */
+      createdByUserId: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    TaskSkillDetailDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** @example Song */
+      name: string;
+      description?: string | null;
+      aliases: string[];
+      /** Format: uuid */
+      createdByUserId: string;
+      /** Format: date-time */
+      archivedAt?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      versions: components["schemas"]["TaskSkillVersionSummaryDto"][];
     };
     WorkspaceStatusDto: {
       /** Format: uuid */
@@ -1128,6 +1181,38 @@ export interface operations {
         };
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_getTaskSkill: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        taskSkillId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillDetailDto"];
+        };
+      };
+      /** @description Workspace or task skill is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;

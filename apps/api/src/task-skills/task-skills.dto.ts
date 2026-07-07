@@ -1,5 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import type { TaskSkillSummary } from "./task-skills.contracts.js";
+import type {
+  TaskSkillDetail,
+  TaskSkillSummary,
+  TaskSkillVersionSummary,
+} from "./task-skills.contracts.js";
 
 export class TaskSkillSummaryDto implements TaskSkillSummary {
   @ApiProperty({ format: "uuid" })
@@ -39,5 +43,48 @@ export class TaskSkillSummaryDto implements TaskSkillSummary {
     this.archivedAt = skill.archivedAt;
     this.createdAt = skill.createdAt;
     this.updatedAt = skill.updatedAt;
+  }
+}
+
+export class TaskSkillVersionSummaryDto implements TaskSkillVersionSummary {
+  @ApiProperty({ format: "uuid" })
+  readonly id: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly workspaceId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly taskSkillId: string;
+
+  @ApiProperty({ example: 1 })
+  readonly version: number;
+
+  @ApiProperty({ additionalProperties: true, type: "object" })
+  readonly definition: Record<string, unknown>;
+
+  @ApiProperty({ format: "uuid" })
+  readonly createdByUserId: string;
+
+  @ApiProperty({ format: "date-time" })
+  readonly createdAt: Date;
+
+  constructor(version: TaskSkillVersionSummary) {
+    this.id = version.id;
+    this.workspaceId = version.workspaceId;
+    this.taskSkillId = version.taskSkillId;
+    this.version = version.version;
+    this.definition = version.definition;
+    this.createdByUserId = version.createdByUserId;
+    this.createdAt = version.createdAt;
+  }
+}
+
+export class TaskSkillDetailDto extends TaskSkillSummaryDto implements TaskSkillDetail {
+  @ApiProperty({ isArray: true, type: TaskSkillVersionSummaryDto })
+  readonly versions: TaskSkillVersionSummaryDto[];
+
+  constructor(skill: TaskSkillDetail) {
+    super(skill);
+    this.versions = skill.versions.map((version) => new TaskSkillVersionSummaryDto(version));
   }
 }

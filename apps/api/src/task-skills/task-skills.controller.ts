@@ -10,7 +10,7 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import { TaskSkillSummaryDto } from "./task-skills.dto.js";
+import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { TaskSkillsService } from "./task-skills.service.js";
 
@@ -32,5 +32,21 @@ export class TaskSkillsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskSkillSummaryDto[]> {
     return this.taskSkillsService.listActiveTaskSkills(workspaceId, userId);
+  }
+
+  @Get(":taskSkillId")
+  @ApiOperation({ summary: "Get one active task skill with versions" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "taskSkillId" })
+  @ApiOkResponse({ type: TaskSkillDetailDto })
+  @ApiNotFoundResponse({
+    description: "Workspace or task skill is missing or not visible to the current user.",
+  })
+  getTaskSkill(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("taskSkillId", uuidV4Pipe) taskSkillId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<TaskSkillDetailDto> {
+    return this.taskSkillsService.getTaskSkill(workspaceId, taskSkillId, userId);
   }
 }

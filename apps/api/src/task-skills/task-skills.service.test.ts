@@ -1,14 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { NotFoundException } from "@nestjs/common";
-import type { TaskSkillSummary } from "./task-skills.contracts.js";
-import { TaskSkillSummaryDto } from "./task-skills.dto.js";
+import type { TaskSkillDetail, TaskSkillSummary } from "./task-skills.contracts.js";
+import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
 import type { TaskSkillsReadStore } from "./task-skills.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
 const skillId = "33333333-3333-4333-8333-333333333333";
+const versionId = "44444444-4444-4444-8444-444444444444";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 const updatedAt = new Date("2026-01-02T00:00:00.000Z");
 
@@ -22,6 +23,23 @@ const taskSkill: TaskSkillSummary = {
   archivedAt: null,
   createdAt,
   updatedAt,
+};
+
+const taskSkillDetail: TaskSkillDetail = {
+  ...taskSkill,
+  versions: [
+    {
+      id: versionId,
+      workspaceId,
+      taskSkillId: skillId,
+      version: 1,
+      definition: {
+        subtasks: [{ title: "Lyrics" }],
+      },
+      createdByUserId: userId,
+      createdAt,
+    },
+  ],
 };
 
 test("TaskSkillsService maps visible workspace task skills to DTOs", async () => {
@@ -39,14 +57,31 @@ test("TaskSkillsService maps visible workspace task skills to DTOs", async () =>
   assert.equal(response[0]?.createdByUserId, taskSkill.createdByUserId);
 });
 
-test("TaskSkillsService hides missing or inaccessible workspaces", async () => {
-  const service = new TaskSkillsService(createReadStore({ skills: null }));
+test("TaskSkillsService returns one visible task skill with versions", async () => {
+  const service = new TaskSkillsService(createReadStore({ skill: taskSkillDetail }));
 
-  await assert.rejects(() => service.listActiveTaskSkills(workspaceId, userId), NotFoundException);
+  const response = await service.getTaskSkill(workspaceId, skillId, userId);
+
+  assert.ok(response instanceof TaskSkillDetailDto);
+  assert.equal(response.id, taskSkillDetail.id);
+  assert.equal(response.versions.length, 1);
+  assert.equal(response.versions[0]?.taskSkillId, skillId);
+  assert.deepEqual(response.versions[0]?.definition, taskSkillDetail.versions[0]?.definition);
 });
 
-function createReadStore(options: { skills?: TaskSkillSummary[] | null }): TaskSkillsReadStore {
+test("TaskSkillsService hides missing or inaccessible workspaces", async () => {
+  const service = new TaskSkillsService(createReadStore({ skill: null, skills: null }));
+
+  await assert.rejects(() => service.listActiveTaskSkills(workspaceId, userId), NotFoundException);
+  await assert.rejects(() => service.getTaskSkill(workspaceId, skillId, userId), NotFoundException);
+});
+
+function createReadStore(options: {
+  skill?: TaskSkillDetail | null;
+  skills?: TaskSkillSummary[] | null;
+}): TaskSkillsReadStore {
   return {
     listActiveForWorkspace: async (): Promise<TaskSkillSummary[] | null> => options.skills ?? null,
+    getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
   };
 }
