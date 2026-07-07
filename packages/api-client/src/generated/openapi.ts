@@ -384,6 +384,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/internal/agent/telegram/runs": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Record a Telegram-originated agent request */
+    post: operations["AgentController_createTelegramRun"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -803,6 +820,32 @@ export interface components {
       workspaceId?: string;
       /** Format: uuid */
       defaultProjectId?: string | null;
+    };
+    CreateTelegramAgentRunDto: {
+      /** @example 123456789 */
+      telegramId: string;
+      /** @example -100987654321 */
+      telegramChatId: string;
+      sourceMessageId?: string | null;
+      /** @example @task what is next for the album? */
+      inputText: string;
+    };
+    AgentRunIntakeResponseDto: {
+      /** Format: uuid */
+      agentRunId: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      sourceMessageId?: string | null;
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      /** @example Request recorded. Agent execution is not connected yet. */
+      responseText: string;
+      /** Format: date-time */
+      createdAt: string;
     };
   };
   responses: never;
@@ -1891,6 +1934,60 @@ export interface operations {
       };
       /** @description Telegram bot shared secret is missing or invalid. */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentController_createTelegramRun: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
+        "x-task-bot-secret": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTelegramAgentRunDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentRunIntakeResponseDto"];
+        };
+      };
+      /** @description Agent request payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram bot shared secret is missing or invalid. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description User is not a member of the workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram user or chat is not linked. */
+      404: {
         headers: {
           [name: string]: unknown;
         };

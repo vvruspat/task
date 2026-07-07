@@ -1578,6 +1578,58 @@
         "summary": "Resolve Telegram bot message identity and chat context",
         "tags": ["telegram"]
       }
+    },
+    "/internal/agent/telegram/runs": {
+      "post": {
+        "operationId": "AgentController_createTelegramRun",
+        "parameters": [
+          {
+            "name": "x-task-bot-secret",
+            "in": "header",
+            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTelegramAgentRunDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunIntakeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Agent request payload is invalid."
+          },
+          "401": {
+            "description": "Telegram bot shared secret is missing or invalid."
+          },
+          "403": {
+            "description": "User is not a member of the workspace."
+          },
+          "404": {
+            "description": "Telegram user or chat is not linked."
+          }
+        },
+        "summary": "Record a Telegram-originated agent request",
+        "tags": ["agent"]
+      }
     }
   },
   "info": {
@@ -2654,6 +2706,75 @@
           }
         },
         "required": ["status"]
+      },
+      "CreateTelegramAgentRunDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "telegramChatId": {
+            "type": "string",
+            "example": "-100987654321"
+          },
+          "sourceMessageId": {
+            "type": "string",
+            "nullable": true
+          },
+          "inputText": {
+            "type": "string",
+            "example": "@task what is next for the album?",
+            "minLength": 1
+          }
+        },
+        "required": ["telegramId", "telegramChatId", "inputText"]
+      },
+      "AgentRunIntakeResponseDto": {
+        "type": "object",
+        "properties": {
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["telegram", "web", "mini_app"]
+          },
+          "sourceMessageId": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["running", "waiting_confirmation", "completed", "failed"]
+          },
+          "responseText": {
+            "type": "string",
+            "example": "Request recorded. Agent execution is not connected yet."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "agentRunId",
+          "workspaceId",
+          "userId",
+          "source",
+          "status",
+          "responseText",
+          "createdAt"
+        ]
       }
     }
   }
