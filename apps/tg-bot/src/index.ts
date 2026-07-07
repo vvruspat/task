@@ -69,3 +69,15 @@ export {
   type TelegramUpdateProcessorOptions,
   type TelegramUpdateProcessorResult,
 } from "./update-processor.js";
+
+export {
+  handleTelegramWebhookRequest,
+  type TelegramWebhookAcceptedResult,
+  type TelegramWebhookFailedResult,
+  TelegramWebhookHandlerError,
+  type TelegramWebhookHandlerOptions,
+  type TelegramWebhookHandlingResult,
+  type TelegramWebhookRequest,
+  type TelegramWebhookUnauthorizedResult,
+  telegramWebhookSecretHeaderName,
+} from "./webhook-handler.js";
