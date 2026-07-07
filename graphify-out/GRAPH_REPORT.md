@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-117-tg-bot-config  (2026-07-07)
+# Graph Report - tAsk-issue-119-tg-bot-update-parser  (2026-07-07)
 
 ## Corpus Check
-- 195 files · ~74,517 words
+- 197 files · ~75,867 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1545 nodes · 3172 edges · 83 communities (72 shown, 11 thin omitted)
+- 1579 nodes · 3262 edges · 83 communities (80 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `444b6cce`
+- Built from commit: `1db2aeed`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -122,7 +122,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (83 total, 11 thin omitted)
+## Communities (83 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -185,8 +185,8 @@ Cohesion: 0.08
 Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.08
-Nodes (37): CreateTaskInput, CreateTaskRequest, UpdateTaskAssigneeInput, UpdateTaskAssigneeRequest, UpdateTaskDueDateInput, UpdateTaskDueDateRequest, UpdateTaskStatusInput, UpdateTaskStatusRequest (+29 more)
+Cohesion: 0.11
+Nodes (29): CreateTaskInput, UpdateTaskAssigneeInput, UpdateTaskDueDateInput, UpdateTaskStatusInput, isUnknownRecord(), parseTaskCreateToolInput(), parseTaskGetToolInput(), parseTaskSearchToolInput() (+21 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.10
@@ -245,8 +245,8 @@ Cohesion: 0.33
 Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ### Community 33 - "Community 33"
-Cohesion: 0.08
-Nodes (26): TaskBackendClientError, TaskBackendFetch, TaskBackendFetchInit, TaskBackendFetchResponse, projectDetail, projectSummary, readJsonBody(), readPostInit() (+18 more)
+Cohesion: 0.13
+Nodes (14): ProjectSummaryResponse, TaskBackendClientError, projectDetail, projectSummary, readJsonBody(), readPostInit(), readWriteInit(), requestBody (+6 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.09
@@ -289,8 +289,8 @@ Cohesion: 0.48
 Nodes (5): InviteEntity, WorkspaceMemberEntity, InviteRecord, WorkspaceMemberRecord, WorkspaceMemberRole
 
 ### Community 47 - "Community 47"
-Cohesion: 0.25
-Nodes (10): formatInvalidValue(), parseBackendBaseUrl(), InvalidTelegramBotEnvironmentError, loadTelegramBotConfig(), parseOptionalSecret(), parseRequiredSecret(), parseTelegramBotConfig(), TelegramBotConfig (+2 more)
+Cohesion: 0.10
+Nodes (41): formatInvalidValue(), parseBackendBaseUrl(), InvalidTelegramBotEnvironmentError, loadTelegramBotConfig(), parseOptionalSecret(), parseRequiredSecret(), parseTelegramBotConfig(), TelegramBotConfig (+33 more)
 
 ### Community 49 - "Community 49"
 Cohesion: 0.17
@@ -305,12 +305,12 @@ Cohesion: 0.08
 Nodes (44): CreateTaskInput, TaskDetail, TaskSummary, UpdateTaskAssigneeInput, UpdateTaskDueDateInput, UpdateTaskStatusInput, TasksController, createdAt (+36 more)
 
 ### Community 52 - "Community 52"
-Cohesion: 0.19
-Nodes (8): createCorePersistenceTablesSql, dropCorePersistenceTablesSql, MigrationQueryExecutor, createActivityEventsTableSql, dropActivityEventsTableSql, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, RecordingQueryRunner
+Cohesion: 0.38
+Nodes (3): CreateActivityEventsTable1783296360000, createActivityEventsTableSql, dropActivityEventsTableSql
 
 ### Community 53 - "Community 53"
-Cohesion: 0.12
-Nodes (24): createTaskBackendClient(), CreateTaskCommentInput, GetTaskRequest, ListActiveProjectsRequest, ListActiveTasksRequest, ListTaskCommentsRequest, TaskBackendClientOptions, TaskBackendPostHeaders (+16 more)
+Cohesion: 0.22
+Nodes (11): CreateTaskCommentInput, CommentCreateToolInput, CommentListToolInput, CommentToolHandlers, CommentToolInputError, isUnknownRecord(), parseCommentCreateToolInput(), parseCommentListToolInput() (+3 more)
 
 ### Community 54 - "Community 54"
 Cohesion: 0.19
@@ -321,8 +321,8 @@ Cohesion: 0.27
 Nodes (8): formatInvalidValue(), parseBackendBaseUrl(), InvalidTaskMcpEnvironmentError, loadTaskMcpConfig(), parseOptionalNonEmptyString(), parseTaskMcpConfig(), TaskMcpConfig, TaskMcpEnvironment
 
 ### Community 56 - "Community 56"
-Cohesion: 0.33
-Nodes (7): AgentToolCallEntity, AttachmentEntity, AgentToolCallRecord, AgentToolCallStatus, AttachmentKind, AttachmentRecord, AttachmentTargetType
+Cohesion: 0.23
+Nodes (7): AttachmentEntity, CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, AttachmentKind, AttachmentRecord, AttachmentTargetType
 
 ### Community 57 - "Community 57"
 Cohesion: 0.14
@@ -332,13 +332,17 @@ Nodes (12): applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, crea
 Cohesion: 0.11
 Nodes (15): TaskSkillSummary, TaskSkillSummaryDto, applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, createdAt, createInput (+7 more)
 
+### Community 59 - "Community 59"
+Cohesion: 0.38
+Nodes (3): CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
+
 ### Community 60 - "Community 60"
 Cohesion: 0.23
 Nodes (11): PreviewTaskSkillApplyInput, isUnknownRecord(), parseTaskSkillApplyToolInput(), readOptionalOverrides(), readOptionalStringArray(), readRecord(), readRequiredNonEmptyString(), readRequiredUuid() (+3 more)
 
 ### Community 61 - "Community 61"
-Cohesion: 0.06
-Nodes (54): ApplyTaskSkillOperation, buildProjectTaskAssigneePath(), buildProjectTaskDueDatePath(), buildProjectTaskPath(), buildProjectTasksPath(), buildProjectTaskStatusPath(), buildTaskAttachmentLinksPath(), buildTaskAttachmentsPath() (+46 more)
+Cohesion: 0.05
+Nodes (39): ApplyTaskSkillOperation, buildProjectTaskAssigneePath(), buildProjectTaskDueDatePath(), buildProjectTaskPath(), buildProjectTasksPath(), buildProjectTaskStatusPath(), buildTaskAttachmentLinksPath(), buildTaskAttachmentsPath() (+31 more)
 
 ### Community 62 - "Community 62"
 Cohesion: 0.07
@@ -353,8 +357,8 @@ Cohesion: 0.12
 Nodes (21): CreateTaskCommentInput, TaskComment, CommentsController, createdAt, taskComment, uuidV4Pipe, CreateTaskCommentDto, isUnknownRecord() (+13 more)
 
 ### Community 65 - "Community 65"
-Cohesion: 0.08
-Nodes (32): taskAttachment, ApplyTaskSkillResponse, CreateProjectRequest, CreateTaskCommentRequest, CreateTaskLinkAttachmentRequest, ListTaskAttachmentsRequest, PreviewTaskSkillApplyResponse, ProjectSummaryResponse (+24 more)
+Cohesion: 0.09
+Nodes (29): taskAttachment, CreateProjectRequest, CreateTaskCommentRequest, CreateTaskLinkAttachmentRequest, ListTaskAttachmentsRequest, PreviewTaskSkillApplyResponse, ProjectDetailResponse, TaskBackendClient (+21 more)
 
 ### Community 66 - "Community 66"
 Cohesion: 0.11
@@ -369,44 +373,72 @@ Cohesion: 0.15
 Nodes (13): TaskSkillDetail, TaskSkillApplyForWorkspaceResult, TaskSkillApplyPreviewResult, TaskSkillArchiveResult, TaskSkillCreateResult, TaskSkillDefinitionUpdateResult, TaskSkillMetadataUpdateResult, buildApplySubtasks() (+5 more)
 
 ### Community 69 - "Community 69"
-Cohesion: 0.04
-Nodes (55): attachmentCreateLinkInputSchema, AttachmentCreateLinkMcpArgs, attachmentListInputSchema, AttachmentListMcpArgs, commentCreateInputSchema, CommentCreateMcpArgs, commentListInputSchema, CommentListMcpArgs (+47 more)
+Cohesion: 0.06
+Nodes (51): createAttachmentToolHandlers(), createTaskBackendClient(), normalizeBaseUrl(), TaskBackendFetch, createCommentToolHandlers(), attachmentCreateLinkInputSchema, AttachmentCreateLinkMcpArgs, attachmentListInputSchema (+43 more)
 
 ### Community 70 - "Community 70"
-Cohesion: 0.17
-Nodes (16): CreateProjectInput, ProjectDetailResponse, isUnknownRecord(), parseProjectCreateToolInput(), parseProjectGetToolInput(), parseProjectSearchToolInput(), ProjectCreateToolInput, ProjectGetToolInput (+8 more)
+Cohesion: 0.18
+Nodes (15): CreateProjectInput, isUnknownRecord(), parseProjectCreateToolInput(), parseProjectGetToolInput(), parseProjectSearchToolInput(), ProjectCreateToolInput, ProjectGetToolInput, ProjectSearchToolInput (+7 more)
 
 ### Community 71 - "Community 71"
 Cohesion: 0.15
 Nodes (12): PreviewTaskSkillApplyInput, TaskSkillApplyPreview, TaskSkillApplyPreviewSubtask, TaskSkillApplyPreviewSubtaskSource, TaskSkillApplyResult, TaskSkillVersionSummary, PreviewTaskSkillApplyDto, TaskSkillApplyPreviewDto (+4 more)
 
+### Community 72 - "Community 72"
+Cohesion: 0.08
+Nodes (23): CreateTaskRequest, UpdateTaskAssigneeRequest, UpdateTaskDueDateRequest, UpdateTaskStatusRequest, TaskMcpToolRegistrar, TaskSkillToolRegistrar, applyResponse, attachmentResponse (+15 more)
+
+### Community 73 - "Community 73"
+Cohesion: 0.17
+Nodes (10): CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql, CreateTaskSkillsTables1783296180000, createTaskSkillsTablesSql, dropTaskSkillsTablesSql, apiEntities, apiMigrations (+2 more)
+
 ### Community 74 - "Community 74"
 Cohesion: 0.43
 Nodes (5): components, $defs, operations, paths, webhooks
 
+### Community 75 - "Community 75"
+Cohesion: 0.21
+Nodes (20): isUnknownRecord(), readApplyTaskSkillResponse(), readArray(), readAttachmentKind(), readAttachmentTargetType(), readBoolean(), readNumber(), readOptionalNullableString() (+12 more)
+
 ### Community 76 - "Community 76"
 Cohesion: 0.18
-Nodes (13): AttachmentCreateLinkToolInput, AttachmentListToolInput, AttachmentToolHandlers, AttachmentToolInputError, createAttachmentToolHandlers(), isUnknownRecord(), parseAttachmentCreateLinkToolInput(), parseAttachmentListToolInput() (+5 more)
+Nodes (13): AttachmentCreateLinkToolInput, AttachmentListToolInput, AttachmentToolHandlers, AttachmentToolInputError, isUnknownRecord(), parseAttachmentCreateLinkToolInput(), parseAttachmentListToolInput(), readOptionalNullableString() (+5 more)
 
 ### Community 77 - "Community 77"
 Cohesion: 0.08
 Nodes (25): formatInvalidValue(), AttachmentsModule, CommentsModule, ProjectsModule, HealthResponse, HealthStatus, AppController, HealthResponseDto (+17 more)
 
+### Community 78 - "Community 78"
+Cohesion: 0.17
+Nodes (13): ApplyTaskSkillResponse, TaskBackendFetchInit, TaskBackendFetchResponse, applyResponse, FetchCall, isRegisteredServerToolCollection(), isUnknownRecord(), previewResponse (+5 more)
+
+### Community 79 - "Community 79"
+Cohesion: 0.38
+Nodes (3): CreateInvitesTable1783296600000, createInvitesTableSql, dropInvitesTableSql
+
 ### Community 80 - "Community 80"
-Cohesion: 0.09
-Nodes (16): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateProjectsTable1783296060000, CreateTasksTable1783296120000, CreateTaskSkillsTables1783296180000, CreateCommentsTable1783296240000, CreateAttachmentsTable1783296300000, CreateActivityEventsTable1783296360000 (+8 more)
+Cohesion: 0.10
+Nodes (15): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateTasksTable1783296120000, createTasksTableSql, dropTasksTableSql (+7 more)
+
+### Community 81 - "Community 81"
+Cohesion: 0.83
+Nodes (3): AgentToolCallEntity, AgentToolCallRecord, AgentToolCallStatus
+
+### Community 82 - "Community 82"
+Cohesion: 0.38
+Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql
 
 ## Knowledge Gaps
 - **579 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+574 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `TaskDetailDto` connect `Community 51` to `Community 54`, `Community 71`?**
   _High betweenness centrality (0.007) - this node is a cross-community bridge._
-- **Why does `WorkspaceMemberEntity` connect `Community 46` to `Community 64`, `Community 66`, `Community 67`, `Community 68`, `Community 2`, `Community 80`, `Community 50`, `Community 51`, `Community 63`?**
+- **Why does `WorkspaceMemberEntity` connect `Community 46` to `Community 64`, `Community 66`, `Community 67`, `Community 68`, `Community 2`, `Community 73`, `Community 50`, `Community 51`, `Community 63`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `UpdateTaskSkillMetadataInput` connect `Community 49` to `Community 68`, `Community 71`, `Community 54`, `Community 57`, `Community 58`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
