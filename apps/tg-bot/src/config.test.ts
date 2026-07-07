@@ -16,6 +16,7 @@ test("parseTelegramBotConfig accepts required Telegram bot settings", () => {
     backendBotSharedSecret: "bot-secret",
     backendBaseUrl: "https://api.example.test",
     webhookSecret: null,
+    port: 3001,
   });
 });
 
@@ -30,7 +31,17 @@ test("parseTelegramBotConfig accepts an explicit webhook secret", () => {
     backendBotSharedSecret: "bot-secret",
     backendBaseUrl: "https://api.example.test",
     webhookSecret: "webhook-secret",
+    port: 3001,
   });
+});
+
+test("parseTelegramBotConfig accepts an explicit webhook server port", () => {
+  const config = parseTelegramBotConfig({
+    ...validEnvironment,
+    TELEGRAM_BOT_PORT: "4001",
+  });
+
+  assert.equal(config.port, 4001);
 });
 
 test("parseTelegramBotConfig rejects missing or empty bot tokens", () => {
@@ -98,6 +109,21 @@ test("parseTelegramBotConfig rejects empty webhook secrets", () => {
         parseTelegramBotConfig({
           ...validEnvironment,
           TELEGRAM_WEBHOOK_SECRET: webhookSecret,
+        }),
+      InvalidTelegramBotEnvironmentError,
+    );
+  }
+});
+
+test("parseTelegramBotConfig rejects invalid webhook server ports", () => {
+  const invalidPorts = ["", "0", "65536", "-1", "3001.5", "port"];
+
+  for (const port of invalidPorts) {
+    assert.throws(
+      () =>
+        parseTelegramBotConfig({
+          ...validEnvironment,
+          TELEGRAM_BOT_PORT: port,
         }),
       InvalidTelegramBotEnvironmentError,
     );

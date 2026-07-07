@@ -93,3 +93,12 @@ export {
   type TelegramWebhookHttpResponse,
   type TelegramWebhookHttpUnauthorizedResponse,
 } from "./webhook-http-adapter.js";
+
+export {
+  createTelegramWebhookServer,
+  handleTelegramWebhookNodeRequest,
+  runTelegramWebhookServerFromEnvironment,
+  TelegramWebhookServerError,
+  type TelegramWebhookServerFromEnvironmentOptions,
+  type TelegramWebhookServerOptions,
+} from "./webhook-server.js";
