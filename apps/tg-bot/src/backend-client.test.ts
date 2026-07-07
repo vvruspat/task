@@ -11,6 +11,12 @@ const requestBody = {
   telegramId: "123456789",
   telegramChatId: "-100987654321",
 };
+const agentRunRequestBody = {
+  telegramId: "123456789",
+  telegramChatId: "-100987654321",
+  sourceMessageId: "42",
+  inputText: "@task what is next?",
+};
 
 test("TelegramBackendClient posts Telegram context with bot shared secret", async () => {
   const fetch = new RecordingTelegramBackendFetch({
@@ -40,6 +46,45 @@ test("TelegramBackendClient posts Telegram context with bot shared secret", asyn
       "x-task-bot-secret": "bot-secret",
     },
     body: JSON.stringify(requestBody),
+  });
+});
+
+test("TelegramBackendClient posts Telegram agent runs with bot shared secret", async () => {
+  const fetch = new RecordingTelegramBackendFetch({
+    agentRunId: "11111111-1111-4111-8111-111111111111",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+    source: "telegram",
+    sourceMessageId: "42",
+    status: "completed",
+    responseText: "Request recorded. Agent execution is not connected yet.",
+    createdAt: "2026-07-08T00:00:00.000Z",
+  });
+  const client = createTelegramBackendClient({
+    baseUrl: "https://api.example.test/",
+    botSharedSecret: "bot-secret",
+    fetch: fetch.call,
+  });
+
+  assert.deepEqual(await client.createTelegramAgentRun({ body: agentRunRequestBody }), {
+    agentRunId: "11111111-1111-4111-8111-111111111111",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+    source: "telegram",
+    sourceMessageId: "42",
+    status: "completed",
+    responseText: "Request recorded. Agent execution is not connected yet.",
+    createdAt: "2026-07-08T00:00:00.000Z",
+  });
+  assert.equal(fetch.lastInput, "https://api.example.test/internal/agent/telegram/runs");
+  assert.deepEqual(fetch.lastInit, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+      "x-task-bot-secret": "bot-secret",
+    },
+    body: JSON.stringify(agentRunRequestBody),
   });
 });
 
@@ -83,6 +128,22 @@ test("TelegramBackendClient throws typed errors for non-2xx responses", async ()
   );
 });
 
+test("TelegramBackendClient throws typed errors for agent intake non-2xx responses", async () => {
+  const client = createTelegramBackendClient({
+    baseUrl: "https://api.example.test",
+    botSharedSecret: "bot-secret",
+    fetch: new RecordingTelegramBackendFetch(
+      { status: "failed" },
+      { ok: false, status: 404, statusText: "Not Found" },
+    ).call,
+  });
+
+  await assert.rejects(
+    () => client.createTelegramAgentRun({ body: agentRunRequestBody }),
+    TelegramBackendClientError,
+  );
+});
+
 test("TelegramBackendClient throws typed errors for malformed JSON responses", async () => {
   const client = createTelegramBackendClient({
     baseUrl: "https://api.example.test",
@@ -92,6 +153,28 @@ test("TelegramBackendClient throws typed errors for malformed JSON responses", a
 
   await assert.rejects(
     () => client.resolveTelegramContext({ body: requestBody }),
+    TelegramBackendClientError,
+  );
+});
+
+test("TelegramBackendClient throws typed errors for malformed agent intake responses", async () => {
+  const client = createTelegramBackendClient({
+    baseUrl: "https://api.example.test",
+    botSharedSecret: "bot-secret",
+    fetch: new RecordingTelegramBackendFetch({
+      agentRunId: "11111111-1111-4111-8111-111111111111",
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+      userId: "33333333-3333-4333-8333-333333333333",
+      source: "telegram",
+      sourceMessageId: "42",
+      status: "unknown",
+      responseText: "Request recorded. Agent execution is not connected yet.",
+      createdAt: "2026-07-08T00:00:00.000Z",
+    }).call,
+  });
+
+  await assert.rejects(
+    () => client.createTelegramAgentRun({ body: agentRunRequestBody }),
     TelegramBackendClientError,
   );
 });

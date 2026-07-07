@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   type ResolveTelegramContextRequest,
+  type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
   TelegramBackendClientError,
   type TelegramContextResolutionResponse,
@@ -142,10 +143,18 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
 
     return this.response;
   }
+
+  async createTelegramAgentRun(): Promise<TelegramAgentRunIntakeResponse> {
+    throw new TelegramBackendClientError("Unexpected agent intake request.");
+  }
 }
 
 class FailingTelegramBackendClient implements TelegramBackendClient {
   async resolveTelegramContext(): Promise<TelegramContextResolutionResponse> {
+    throw new TelegramBackendClientError("Backend unavailable.");
+  }
+
+  async createTelegramAgentRun(): Promise<TelegramAgentRunIntakeResponse> {
     throw new TelegramBackendClientError("Backend unavailable.");
   }
 }

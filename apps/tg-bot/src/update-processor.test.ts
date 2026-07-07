@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ResolveTelegramContextRequest,
+  TelegramAgentRunIntakeResponse,
   TelegramBackendClient,
   TelegramContextResolutionResponse,
 } from "./backend-client.js";
+import { TelegramBackendClientError } from "./backend-client.js";
 import type { TelegramReplyAction } from "./message-handler.js";
 import type { TelegramReplySender, TelegramSendMessageResult } from "./telegram-sender.js";
 import { processTelegramUpdate } from "./update-processor.js";
@@ -98,6 +100,10 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
     this.lastRequest = request;
 
     return this.response;
+  }
+
+  async createTelegramAgentRun(): Promise<TelegramAgentRunIntakeResponse> {
+    throw new TelegramBackendClientError("Unexpected agent intake request.");
   }
 }
 

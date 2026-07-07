@@ -1,11 +1,16 @@
 import type { operations } from "@task/api-client";
 
 type ResolveTelegramContextOperation = operations["TelegramController_resolveContext"];
+type CreateTelegramAgentRunOperation = operations["AgentController_createTelegramRun"];
 
 export type ResolveTelegramContextInput =
   ResolveTelegramContextOperation["requestBody"]["content"]["application/json"];
 export type TelegramContextResolutionResponse =
   ResolveTelegramContextOperation["responses"]["200"]["content"]["application/json"];
+export type CreateTelegramAgentRunInput =
+  CreateTelegramAgentRunOperation["requestBody"]["content"]["application/json"];
+export type TelegramAgentRunIntakeResponse =
+  CreateTelegramAgentRunOperation["responses"]["201"]["content"]["application/json"];
 
 export type TelegramBackendFetchInit = {
   method: "POST";
@@ -41,10 +46,17 @@ export type ResolveTelegramContextRequest = {
   body: ResolveTelegramContextInput;
 };
 
+export type CreateTelegramAgentRunRequest = {
+  body: CreateTelegramAgentRunInput;
+};
+
 export type TelegramBackendClient = {
   resolveTelegramContext(
     request: ResolveTelegramContextRequest,
   ): Promise<TelegramContextResolutionResponse>;
+  createTelegramAgentRun(
+    request: CreateTelegramAgentRunRequest,
+  ): Promise<TelegramAgentRunIntakeResponse>;
 };
 
 export class TelegramBackendClientError extends Error {
@@ -70,6 +82,15 @@ export function createTelegramBackendClient(
         readTelegramContextResolutionResponse,
       );
     },
+    createTelegramAgentRun(request: CreateTelegramAgentRunRequest) {
+      return postJson(
+        fetchImplementation,
+        `${baseUrl}/internal/agent/telegram/runs`,
+        options.botSharedSecret,
+        request.body,
+        readTelegramAgentRunIntakeResponse,
+      );
+    },
   };
 }
 
@@ -77,7 +98,7 @@ async function postJson<ResponseBody>(
   fetchImplementation: TelegramBackendFetch,
   url: string,
   botSharedSecret: string,
-  body: ResolveTelegramContextInput,
+  body: ResolveTelegramContextInput | CreateTelegramAgentRunInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(url, {
@@ -131,6 +152,21 @@ function readTelegramContextResolutionResponse(value: unknown): TelegramContextR
   };
 }
 
+function readTelegramAgentRunIntakeResponse(value: unknown): TelegramAgentRunIntakeResponse {
+  const record = readRecord(value, "Telegram agent run intake response");
+
+  return {
+    agentRunId: readString(record, "agentRunId"),
+    workspaceId: readString(record, "workspaceId"),
+    userId: readString(record, "userId"),
+    source: readAgentRunSource(record, "source"),
+    sourceMessageId: readOptionalNullableString(record, "sourceMessageId") ?? null,
+    status: readAgentRunStatus(record, "status"),
+    responseText: readString(record, "responseText"),
+    createdAt: readString(record, "createdAt"),
+  };
+}
+
 function readRecord(value: unknown, label: string): Record<string, unknown> {
   if (!isUnknownRecord(value)) {
     throw new TelegramBackendClientError(`${label} must be an object.`);
@@ -141,6 +177,37 @@ function readRecord(value: unknown, label: string): Record<string, unknown> {
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readAgentRunSource(
+  record: Record<string, unknown>,
+  propertyName: string,
+): TelegramAgentRunIntakeResponse["source"] {
+  const value = record[propertyName];
+
+  if (value !== "telegram" && value !== "web" && value !== "mini_app") {
+    throw new TelegramBackendClientError(`${propertyName} is invalid.`);
+  }
+
+  return value;
+}
+
+function readAgentRunStatus(
+  record: Record<string, unknown>,
+  propertyName: string,
+): TelegramAgentRunIntakeResponse["status"] {
+  const value = record[propertyName];
+
+  if (
+    value !== "running" &&
+    value !== "waiting_confirmation" &&
+    value !== "completed" &&
+    value !== "failed"
+  ) {
+    throw new TelegramBackendClientError(`${propertyName} is invalid.`);
+  }
+
+  return value;
 }
 
 function readResolutionStatus(
