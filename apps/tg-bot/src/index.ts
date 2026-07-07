@@ -32,6 +32,18 @@ export {
 } from "./message-handler.js";
 
 export {
+  createTelegramReplySender,
+  type TelegramBotApiFetch,
+  type TelegramBotApiFetchInit,
+  type TelegramBotApiFetchResponse,
+  type TelegramBotApiPostHeaders,
+  type TelegramReplySender,
+  TelegramReplySenderError,
+  type TelegramReplySenderOptions,
+  type TelegramSendMessageResult,
+} from "./telegram-sender.js";
+
+export {
   parseTelegramMessageContext,
   type TelegramAttachmentContext,
   type TelegramChatContext,
