@@ -8,6 +8,7 @@ import type {
   ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
+  TaskDetailResponse,
   TaskSkillApplyRequest,
   TaskSummaryResponse,
 } from "./backend-client.js";
@@ -196,6 +197,15 @@ test("registerTaskTools registers task tools", async () => {
   const registrar = createRegistrar(toolCalls);
 
   registerTaskTools(registrar, {
+    get: async (input: unknown): Promise<TaskDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        projectId,
+        taskId: rootTaskId,
+        userId,
+      });
+      return taskResponse;
+    },
     search: async (input: unknown): Promise<TaskSummaryResponse[]> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -209,11 +219,23 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["task.search"],
+    ["task.get", "task.search"],
   );
-  assert.equal(toolCalls[0]?.config.title, "Search tasks");
+  assert.equal(toolCalls[0]?.config.title, "Get task");
+  assert.equal(toolCalls[1]?.config.title, "Search tasks");
 
-  const searchCall = toolCalls[0];
+  const getCall = toolCalls[0];
+  assert.ok(getCall !== undefined);
+  const getResult = await getCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(getResult)), taskResponse);
+
+  const searchCall = toolCalls[1];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -301,6 +323,7 @@ function createBackendClientStub(): TaskBackendClient {
     getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],
     listActiveTasks: async (): Promise<TaskSummaryResponse[]> => [taskResponse],
+    getTask: async (): Promise<TaskDetailResponse> => taskResponse,
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,
     applyTaskSkill: async (): Promise<ApplyTaskSkillResponse> => applyResponse,
   };

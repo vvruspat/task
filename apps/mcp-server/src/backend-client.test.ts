@@ -7,6 +7,7 @@ import {
   TaskBackendClientError,
   type TaskBackendFetch,
   type TaskBackendFetchInit,
+  type TaskDetailResponse,
   type TaskSummaryResponse,
 } from "./backend-client.js";
 
@@ -66,6 +67,10 @@ const taskDetail = {
 };
 
 const taskSummary: TaskSummaryResponse = {
+  ...taskDetail,
+};
+
+const taskDetailResponse: TaskDetailResponse = {
   ...taskDetail,
 };
 
@@ -188,6 +193,26 @@ test("listActiveTasks gets typed task summaries with trusted user context", asyn
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
   assert.deepEqual(response, [taskSummary]);
+});
+
+test("getTask gets typed task detail with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, taskDetailResponse);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.getTask({ workspaceId, projectId, taskId: rootTaskId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, taskDetailResponse);
 });
 
 test("applyTaskSkill narrows created task tree responses", async () => {

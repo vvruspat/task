@@ -4,6 +4,7 @@ import type {
   ApplyTaskSkillResponse,
   PreviewTaskSkillApplyResponse,
   TaskBackendClient,
+  TaskDetailResponse,
   TaskSkillApplyRequest,
   TaskSummaryResponse,
 } from "./backend-client.js";
@@ -165,6 +166,9 @@ function createBackendClientStub(calls: TaskSkillApplyRequest[]): TaskBackendCli
       throw new Error("Not implemented.");
     },
     listActiveTasks: async (): Promise<TaskSummaryResponse[]> => {
+      throw new Error("Not implemented.");
+    },
+    getTask: async (): Promise<TaskDetailResponse> => {
       throw new Error("Not implemented.");
     },
     previewTaskSkillApply: async (request): Promise<PreviewTaskSkillApplyResponse> => {

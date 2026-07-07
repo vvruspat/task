@@ -1,4 +1,8 @@
-import type { TaskBackendClient, TaskSummaryResponse } from "./backend-client.js";
+import type {
+  TaskBackendClient,
+  TaskDetailResponse,
+  TaskSummaryResponse,
+} from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -9,8 +13,16 @@ export type TaskSearchToolInput = {
   query?: string;
 };
 
+export type TaskGetToolInput = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+};
+
 export type TaskToolHandlers = {
   search(input: unknown): Promise<TaskSummaryResponse[]>;
+  get(input: unknown): Promise<TaskDetailResponse>;
 };
 
 export class TaskToolInputError extends Error {
@@ -22,6 +34,16 @@ export class TaskToolInputError extends Error {
 
 export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandlers {
   return {
+    get: (input) => {
+      const parsedInput = parseTaskGetToolInput(input);
+
+      return client.getTask({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+      });
+    },
     search: async (input) => {
       const parsedInput = parseTaskSearchToolInput(input);
       const tasks = await client.listActiveTasks({
@@ -38,6 +60,17 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
 
       return tasks.filter((task) => normalizeSearchText(task.title).includes(normalizedQuery));
     },
+  };
+}
+
+export function parseTaskGetToolInput(input: unknown): TaskGetToolInput {
+  const record = readRecord(input, "task get tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
   };
 }
 

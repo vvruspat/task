@@ -7,6 +7,7 @@ import type {
   ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
+  TaskDetailResponse,
   TaskSummaryResponse,
 } from "./backend-client.js";
 import {
@@ -195,6 +196,9 @@ function createBackendClientStub(
     },
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => projects,
     listActiveTasks: async (): Promise<TaskSummaryResponse[]> => {
+      throw new Error("Not implemented.");
+    },
+    getTask: async (): Promise<TaskDetailResponse> => {
       throw new Error("Not implemented.");
     },
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => {
