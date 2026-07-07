@@ -15,6 +15,14 @@ export {
 } from "./backend-client.js";
 
 export {
+  connectTaskMcpServerToStdio,
+  createTaskMcpServer,
+  registerTaskSkillApplyTools,
+  type TaskMcpServerOptions,
+  type TaskSkillToolRegistrar,
+} from "./mcp-server.js";
+
+export {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
   type TaskSkillApplyToolInput,
