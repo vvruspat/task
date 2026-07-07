@@ -36,3 +36,7 @@ export type UpdateTaskStatusInput = {
 export type UpdateTaskAssigneeInput = {
   assigneeUserId: string | null;
 };
+
+export type UpdateTaskDueDateInput = {
+  dueAt: string | null;
+};

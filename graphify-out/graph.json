@@ -790,7 +790,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "attachments_typeorm_task_attachments_store",
-      "community": 66,
+      "community": 50,
       "norm_label": "typeorm-task-attachments.store.ts"
     },
     {
@@ -800,7 +800,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "attachments_typeorm_task_attachments_store_attachmentwriteroles",
-      "community": 66,
+      "community": 50,
       "norm_label": "attachmentwriteroles"
     },
     {
@@ -1570,7 +1570,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 49,
+      "community": 65,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -1580,7 +1580,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 49,
+      "community": 65,
       "norm_label": "data-source.ts"
     },
     {
@@ -1590,7 +1590,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 49,
+      "community": 65,
       "norm_label": "apientities"
     },
     {
@@ -1600,7 +1600,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 49,
+      "community": 65,
       "norm_label": "apimigrations"
     },
     {
@@ -1610,7 +1610,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 49,
+      "community": 65,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 49,
+      "community": 65,
       "norm_label": "createapidatasource()"
     },
     {
@@ -1630,7 +1630,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 67,
+      "community": 64,
       "norm_label": "database.module.ts"
     },
     {
@@ -1640,7 +1640,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 67,
+      "community": 64,
       "norm_label": "apidatasource"
     },
     {
@@ -1660,7 +1660,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_constructor",
-      "community": 18,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -1690,7 +1690,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 67,
+      "community": 64,
       "norm_label": "databasemodule"
     },
     {
@@ -1747,7 +1747,7 @@
       "label": "createOpenApiDocument()",
       "file_type": "code",
       "source_file": "apps/api/src/openapi.ts",
-      "source_location": "L22",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "src_openapi_createopenapidocument",
       "community": 18,
@@ -1780,7 +1780,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_agent_run_entity",
-      "community": 50,
+      "community": 54,
       "norm_label": "agent-run.entity.ts"
     },
     {
@@ -1790,7 +1790,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "entities_agent_run_entity_agentrunentity",
-      "community": 50,
+      "community": 54,
       "norm_label": "agentrunentity"
     },
     {
@@ -1900,7 +1900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_invite_entity",
-      "community": 50,
+      "community": 49,
       "norm_label": "invite.entity.ts"
     },
     {
@@ -1910,7 +1910,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "entities_invite_entity_inviteentity",
-      "community": 50,
+      "community": 49,
       "norm_label": "inviteentity"
     },
     {
@@ -2080,7 +2080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_workspace_member_entity",
-      "community": 50,
+      "community": 49,
       "norm_label": "workspace-member.entity.ts"
     },
     {
@@ -2090,7 +2090,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "entities_workspace_member_entity_workspacememberentity",
-      "community": 50,
+      "community": 49,
       "norm_label": "workspacememberentity"
     },
     {
@@ -2230,7 +2230,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
-      "community": 53,
+      "community": 65,
       "norm_label": "createprojectstable1783296060000"
     },
     {
@@ -2240,7 +2240,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
-      "community": 53,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2250,7 +2250,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
-      "community": 53,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2260,7 +2260,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table",
-      "community": 54,
+      "community": 65,
       "norm_label": "1783296120000-create-tasks-table.ts"
     },
     {
@@ -2270,7 +2270,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstablesql",
-      "community": 54,
+      "community": 65,
       "norm_label": "createtaskstablesql"
     },
     {
@@ -2280,7 +2280,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_droptaskstablesql",
-      "community": 54,
+      "community": 65,
       "norm_label": "droptaskstablesql"
     },
     {
@@ -2410,7 +2410,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 55,
+      "community": 65,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 55,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 55,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2470,7 +2470,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
-      "community": 56,
+      "community": 65,
       "norm_label": "createattachmentstable1783296300000"
     },
     {
@@ -2480,7 +2480,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_up",
-      "community": 56,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2490,7 +2490,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_down",
-      "community": 56,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2500,7 +2500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table",
-      "community": 57,
+      "community": 52,
       "norm_label": "1783296360000-create-activity-events-table.ts"
     },
     {
@@ -2510,7 +2510,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstablesql",
-      "community": 57,
+      "community": 52,
       "norm_label": "createactivityeventstablesql"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_dropactivityeventstablesql",
-      "community": 57,
+      "community": 52,
       "norm_label": "dropactivityeventstablesql"
     },
     {
@@ -2530,7 +2530,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "community": 57,
+      "community": 65,
       "norm_label": "createactivityeventstable1783296360000"
     },
     {
@@ -2540,7 +2540,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
-      "community": 57,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2550,7 +2550,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down",
-      "community": 57,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2560,7 +2560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables",
-      "community": 58,
+      "community": 52,
       "norm_label": "1783296420000-create-agent-run-tables.ts"
     },
     {
@@ -2570,7 +2570,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntablessql",
-      "community": 58,
+      "community": 52,
       "norm_label": "createagentruntablessql"
     },
     {
@@ -2580,7 +2580,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_dropagentruntablessql",
-      "community": 58,
+      "community": 52,
       "norm_label": "dropagentruntablessql"
     },
     {
@@ -2590,7 +2590,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
-      "community": 58,
+      "community": 65,
       "norm_label": "createagentruntables1783296420000"
     },
     {
@@ -2600,7 +2600,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_up",
-      "community": 58,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2610,7 +2610,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_down",
-      "community": 58,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2620,7 +2620,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table",
-      "community": 49,
+      "community": 52,
       "norm_label": "1783296480000-create-confirmation-requests-table.ts"
     },
     {
@@ -2630,7 +2630,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "community": 49,
+      "community": 52,
       "norm_label": "createconfirmationrequeststablesql"
     },
     {
@@ -2640,7 +2640,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "community": 49,
+      "community": 52,
       "norm_label": "dropconfirmationrequeststablesql"
     },
     {
@@ -2650,7 +2650,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "community": 49,
+      "community": 65,
       "norm_label": "createconfirmationrequeststable1783296480000"
     },
     {
@@ -2660,7 +2660,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up",
-      "community": 49,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2670,7 +2670,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_down",
-      "community": 49,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2710,7 +2710,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
-      "community": 59,
+      "community": 65,
       "norm_label": "createtelegramtables1783296540000"
     },
     {
@@ -2720,7 +2720,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_up",
-      "community": 59,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2730,7 +2730,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_down",
-      "community": 59,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2770,7 +2770,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "community": 61,
+      "community": 65,
       "norm_label": "createinvitestable1783296600000"
     },
     {
@@ -2780,7 +2780,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_up",
-      "community": 61,
+      "community": 65,
       "norm_label": ".up()"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_down",
-      "community": 61,
+      "community": 65,
       "norm_label": ".down()"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_activity_events_table_test",
-      "community": 57,
+      "community": 52,
       "norm_label": "create-activity-events-table.test.ts"
     },
     {
@@ -2810,7 +2810,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_agent_run_tables_test",
-      "community": 58,
+      "community": 52,
       "norm_label": "create-agent-run-tables.test.ts"
     },
     {
@@ -2840,7 +2840,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_confirmation_requests_table_test",
-      "community": 49,
+      "community": 52,
       "norm_label": "create-confirmation-requests-table.test.ts"
     },
     {
@@ -2910,7 +2910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_tasks_table_test",
-      "community": 54,
+      "community": 65,
       "norm_label": "create-tasks-table.test.ts"
     },
     {
@@ -2960,7 +2960,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "types_core_persistence_types_workspacememberrole",
-      "community": 50,
+      "community": 49,
       "norm_label": "workspacememberrole"
     },
     {
@@ -2970,7 +2970,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "types_core_persistence_types_workspacememberrecord",
-      "community": 50,
+      "community": 49,
       "norm_label": "workspacememberrecord"
     },
     {
@@ -3080,7 +3080,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunsource",
-      "community": 50,
+      "community": 54,
       "norm_label": "agentrunsource"
     },
     {
@@ -3090,7 +3090,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunstatus",
-      "community": 50,
+      "community": 54,
       "norm_label": "agentrunstatus"
     },
     {
@@ -3100,7 +3100,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunrecord",
-      "community": 50,
+      "community": 54,
       "norm_label": "agentrunrecord"
     },
     {
@@ -3170,7 +3170,7 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "types_core_persistence_types_inviterecord",
-      "community": 50,
+      "community": 49,
       "norm_label": "inviterecord"
     },
     {
@@ -4104,6 +4104,16 @@
       "norm_label": "updatetaskassigneeinput"
     },
     {
+      "label": "UpdateTaskDueDateInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.contracts.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "tasks_tasks_contracts_updatetaskduedateinput",
+      "community": 51,
+      "norm_label": "updatetaskduedateinput"
+    },
+    {
       "label": "tasks.controller.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
@@ -4117,7 +4127,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
-      "source_location": "L31",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "tasks_tasks_controller_test_createdat",
       "community": 51,
@@ -4127,7 +4137,7 @@
       "label": "taskSummary",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
-      "source_location": "L33",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "tasks_tasks_controller_test_tasksummary",
       "community": 51,
@@ -4137,7 +4147,7 @@
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
-      "source_location": "L192",
+      "source_location": "L237",
       "_origin": "ast",
       "id": "tasks_tasks_controller_test_createreadstore",
       "community": 51,
@@ -4157,7 +4167,7 @@
       "label": "uuidV4Pipe",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L35",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "tasks_tasks_controller_uuidv4pipe",
       "community": 51,
@@ -4167,7 +4177,7 @@
       "label": "TasksController",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L40",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller",
       "community": 51,
@@ -4177,7 +4187,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L41",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_constructor",
       "community": 51,
@@ -4187,7 +4197,7 @@
       "label": ".listActiveTasks()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L49",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_listactivetasks",
       "community": 51,
@@ -4197,7 +4207,7 @@
       "label": ".createTask()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L66",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_createtask",
       "community": 51,
@@ -4207,7 +4217,7 @@
       "label": ".updateTaskStatus()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L85",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_updatetaskstatus",
       "community": 51,
@@ -4217,17 +4227,27 @@
       "label": ".updateTaskAssignee()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L105",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_updatetaskassignee",
       "community": 51,
       "norm_label": ".updatetaskassignee()"
     },
     {
+      "label": ".updateTaskDueDate()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "tasks_tasks_controller_taskscontroller_updatetaskduedate",
+      "community": 51,
+      "norm_label": ".updatetaskduedate()"
+    },
+    {
       "label": ".getTask()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
-      "source_location": "L124",
+      "source_location": "L147",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_gettask",
       "community": 51,
@@ -4247,7 +4267,7 @@
       "label": "CreateTaskDto",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "tasks_tasks_dto_createtaskdto",
       "community": 51,
@@ -4257,7 +4277,7 @@
       "label": "ParseCreateTaskBodyPipe",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L34",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parsecreatetaskbodypipe",
       "community": 51,
@@ -4267,7 +4287,7 @@
       "label": ".transform()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
       "community": 51,
@@ -4277,7 +4297,7 @@
       "label": "UpdateTaskStatusDto",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L40",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "tasks_tasks_dto_updatetaskstatusdto",
       "community": 51,
@@ -4287,7 +4307,7 @@
       "label": "ParseUpdateTaskStatusBodyPipe",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L45",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskstatusbodypipe",
       "community": 51,
@@ -4297,7 +4317,7 @@
       "label": ".transform()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L48",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskstatusbodypipe_transform",
       "community": 51,
@@ -4307,7 +4327,7 @@
       "label": "UpdateTaskAssigneeDto",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L53",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "tasks_tasks_dto_updatetaskassigneedto",
       "community": 51,
@@ -4317,7 +4337,7 @@
       "label": "ParseUpdateTaskAssigneeBodyPipe",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L58",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskassigneebodypipe",
       "community": 51,
@@ -4327,9 +4347,39 @@
       "label": ".transform()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L61",
+      "source_location": "L62",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskassigneebodypipe_transform",
+      "community": 51,
+      "norm_label": ".transform()"
+    },
+    {
+      "label": "UpdateTaskDueDateDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_updatetaskduedatedto",
+      "community": 51,
+      "norm_label": "updatetaskduedatedto"
+    },
+    {
+      "label": "ParseUpdateTaskDueDateBodyPipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L72",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_parseupdatetaskduedatebodypipe",
+      "community": 51,
+      "norm_label": "parseupdatetaskduedatebodypipe"
+    },
+    {
+      "label": ".transform()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_parseupdatetaskduedatebodypipe_transform",
       "community": 51,
       "norm_label": ".transform()"
     },
@@ -4337,7 +4387,7 @@
       "label": "TaskSummaryDto",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L66",
+      "source_location": "L80",
       "_origin": "ast",
       "id": "tasks_tasks_dto_tasksummarydto",
       "community": 51,
@@ -4347,7 +4397,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L118",
+      "source_location": "L132",
       "_origin": "ast",
       "id": "tasks_tasks_dto_tasksummarydto_constructor",
       "community": 51,
@@ -4357,7 +4407,7 @@
       "label": "TaskDetailDto",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L139",
+      "source_location": "L153",
       "_origin": "ast",
       "id": "tasks_tasks_dto_taskdetaildto",
       "community": 51,
@@ -4367,7 +4417,7 @@
       "label": "parseCreateTaskInput()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L141",
+      "source_location": "L155",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parsecreatetaskinput",
       "community": 51,
@@ -4377,7 +4427,7 @@
       "label": "parseUpdateTaskStatusInput()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L182",
+      "source_location": "L196",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskstatusinput",
       "community": 51,
@@ -4387,17 +4437,27 @@
       "label": "parseUpdateTaskAssigneeInput()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L192",
+      "source_location": "L206",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskassigneeinput",
       "community": 51,
       "norm_label": "parseupdatetaskassigneeinput()"
     },
     {
+      "label": "parseUpdateTaskDueDateInput()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L216",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_parseupdatetaskduedateinput",
+      "community": 51,
+      "norm_label": "parseupdatetaskduedateinput()"
+    },
+    {
       "label": "isUnknownRecord()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L202",
+      "source_location": "L226",
       "_origin": "ast",
       "id": "tasks_tasks_dto_isunknownrecord",
       "community": 51,
@@ -4407,7 +4467,7 @@
       "label": "readRequiredNonEmptyString()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L206",
+      "source_location": "L230",
       "_origin": "ast",
       "id": "tasks_tasks_dto_readrequirednonemptystring",
       "community": 51,
@@ -4417,7 +4477,7 @@
       "label": "readOptionalNullableString()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L222",
+      "source_location": "L246",
       "_origin": "ast",
       "id": "tasks_tasks_dto_readoptionalnullablestring",
       "community": 51,
@@ -4427,7 +4487,7 @@
       "label": "readOptionalNullableUuid()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L241",
+      "source_location": "L265",
       "_origin": "ast",
       "id": "tasks_tasks_dto_readoptionalnullableuuid",
       "community": 51,
@@ -4437,17 +4497,27 @@
       "label": "readRequiredNullableUuid()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L258",
+      "source_location": "L282",
       "_origin": "ast",
       "id": "tasks_tasks_dto_readrequirednullableuuid",
       "community": 51,
       "norm_label": "readrequirednullableuuid()"
     },
     {
+      "label": "readRequiredNullableDateTime()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L305",
+      "_origin": "ast",
+      "id": "tasks_tasks_dto_readrequirednullabledatetime",
+      "community": 51,
+      "norm_label": "readrequirednullabledatetime()"
+    },
+    {
       "label": "readOptionalNullableDateTime()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L281",
+      "source_location": "L329",
       "_origin": "ast",
       "id": "tasks_tasks_dto_readoptionalnullabledatetime",
       "community": 51,
@@ -4457,7 +4527,7 @@
       "label": "readOptionalRecord()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L300",
+      "source_location": "L348",
       "_origin": "ast",
       "id": "tasks_tasks_dto_readoptionalrecord",
       "community": 51,
@@ -4507,7 +4577,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
-      "source_location": "L26",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "tasks_tasks_service_test_createdat",
       "community": 51,
@@ -4517,7 +4587,7 @@
       "label": "taskSummary",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
-      "source_location": "L28",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "tasks_tasks_service_test_tasksummary",
       "community": 51,
@@ -4527,7 +4597,7 @@
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
-      "source_location": "L222",
+      "source_location": "L258",
       "_origin": "ast",
       "id": "tasks_tasks_service_test_createreadstore",
       "community": 51,
@@ -4547,7 +4617,7 @@
       "label": "TasksService",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice",
       "community": 51,
@@ -4557,7 +4627,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L17",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_constructor",
       "community": 51,
@@ -4567,7 +4637,7 @@
       "label": ".listActiveTasks()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L19",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_listactivetasks",
       "community": 51,
@@ -4577,7 +4647,7 @@
       "label": ".getTask()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L33",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_gettask",
       "community": 51,
@@ -4587,7 +4657,7 @@
       "label": ".createTask()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L48",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_createtask",
       "community": 51,
@@ -4597,7 +4667,7 @@
       "label": ".updateTaskStatus()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L71",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_updatetaskstatus",
       "community": 51,
@@ -4607,11 +4677,21 @@
       "label": ".updateTaskAssignee()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L101",
+      "source_location": "L102",
       "_origin": "ast",
       "id": "tasks_tasks_service_tasksservice_updatetaskassignee",
       "community": 51,
       "norm_label": ".updatetaskassignee()"
+    },
+    {
+      "label": ".updateTaskDueDate()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L132",
+      "_origin": "ast",
+      "id": "tasks_tasks_service_tasksservice_updatetaskduedate",
+      "community": 51,
+      "norm_label": ".updatetaskduedate()"
     },
     {
       "label": "tasks.store.ts",
@@ -4627,7 +4707,7 @@
       "label": "TaskCreateResult",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.store.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "tasks_tasks_store_taskcreateresult",
       "community": 51,
@@ -4637,7 +4717,7 @@
       "label": "TaskUpdateStatusResult",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.store.ts",
-      "source_location": "L24",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "tasks_tasks_store_taskupdatestatusresult",
       "community": 51,
@@ -4647,17 +4727,27 @@
       "label": "TaskUpdateAssigneeResult",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.store.ts",
-      "source_location": "L39",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "tasks_tasks_store_taskupdateassigneeresult",
       "community": 51,
       "norm_label": "taskupdateassigneeresult"
     },
     {
+      "label": "TaskUpdateDueDateResult",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/tasks.store.ts",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "tasks_tasks_store_taskupdateduedateresult",
+      "community": 51,
+      "norm_label": "taskupdateduedateresult"
+    },
+    {
       "label": "TaskReadStore",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/tasks.store.ts",
-      "source_location": "L54",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "tasks_tasks_store_taskreadstore",
       "community": 51,
@@ -4677,7 +4767,7 @@
       "label": "taskWriteRoles",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L27",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_taskwriteroles",
       "community": 51,
@@ -4687,7 +4777,7 @@
       "label": "TypeOrmTaskReadStore",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L30",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore",
       "community": 51,
@@ -4697,7 +4787,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L33",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
       "community": 67,
@@ -4707,7 +4797,7 @@
       "label": ".listActiveForProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L35",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_listactiveforproject",
       "community": 51,
@@ -4717,7 +4807,7 @@
       "label": ".getForProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L55",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_getforproject",
       "community": 51,
@@ -4727,7 +4817,7 @@
       "label": ".createForProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L81",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_createforproject",
       "community": 51,
@@ -4737,7 +4827,7 @@
       "label": ".updateStatusForProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L153",
+      "source_location": "L155",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_updatestatusforproject",
       "community": 51,
@@ -4747,17 +4837,27 @@
       "label": ".updateAssigneeForProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L212",
+      "source_location": "L214",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
       "community": 51,
       "norm_label": ".updateassigneeforproject()"
     },
     {
+      "label": ".updateDueDateForProject()",
+      "file_type": "code",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L274",
+      "_origin": "ast",
+      "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
+      "community": 51,
+      "norm_label": ".updateduedateforproject()"
+    },
+    {
       "label": ".canReadProject()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L272",
+      "source_location": "L322",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_canreadproject",
       "community": 51,
@@ -4767,7 +4867,7 @@
       "label": ".getVisibleTask()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L292",
+      "source_location": "L342",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_getvisibletask",
       "community": 51,
@@ -4777,7 +4877,7 @@
       "label": ".getWorkspaceMembership()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L315",
+      "source_location": "L365",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
       "community": 51,
@@ -4787,7 +4887,7 @@
       "label": ".getInitializedDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L326",
+      "source_location": "L376",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource",
       "community": 51,
@@ -4797,7 +4897,7 @@
       "label": "toTaskSummary()",
       "file_type": "code",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L348",
+      "source_location": "L398",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_totasksummary",
       "community": 51,
@@ -6837,7 +6937,7 @@
       "label": "webhooks",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L266",
+      "source_location": "L283",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
       "community": 33,
@@ -6847,7 +6947,7 @@
       "label": "components",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L267",
+      "source_location": "L284",
       "_origin": "ast",
       "id": "generated_openapi_components",
       "community": 33,
@@ -6857,7 +6957,7 @@
       "label": "$defs",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L548",
+      "source_location": "L569",
       "_origin": "ast",
       "id": "generated_openapi_defs",
       "community": 33,
@@ -6867,7 +6967,7 @@
       "label": "operations",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L549",
+      "source_location": "L570",
       "_origin": "ast",
       "id": "generated_openapi_operations",
       "community": 33,
@@ -16329,8 +16429,19 @@
       "source_file": "apps/api/src/openapi.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_openapi",
-      "target": "tasks_tasks_dto_updatetaskassigneedto",
+      "target": "tasks_tasks_dto_updatetaskassigneedto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "tasks_tasks_dto_updatetaskduedatedto",
       "confidence_score": 1.0
     },
     {
@@ -22173,8 +22284,18 @@
       "source_file": "apps/api/src/tasks/tasks.contracts.ts",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_contracts",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.contracts.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "tasks_tasks_contracts",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22700,9 +22821,9 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
     },
     {
       "relation": "references",
@@ -22711,8 +22832,140 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_taskscontroller_updatetaskassignee",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_controller_test",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_dto_parseupdatetaskassigneebodypipe_transform",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_dto_updatetaskassigneedto",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_service",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L101",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_service_tasksservice_updatetaskassignee",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_service_test",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_tasks_store",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_typeorm_task_read_store",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L212",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
+      "target": "tasks_tasks_contracts_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_taskscontroller_updatetaskduedate",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22723,7 +22976,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "tasks_tasks_controller_test",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22734,7 +22987,7 @@
       "source_location": "L3",
       "weight": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22742,10 +22995,10 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L61",
+      "source_location": "L75",
       "weight": 1.0,
-      "source": "tasks_tasks_dto_parseupdatetaskassigneebodypipe_transform",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "source": "tasks_tasks_dto_parseupdatetaskduedatebodypipe_transform",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22753,10 +23006,10 @@
       "context": "type",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
-      "source_location": "L53",
+      "source_location": "L67",
       "weight": 1.0,
-      "source": "tasks_tasks_dto_updatetaskassigneedto",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "source": "tasks_tasks_dto_updatetaskduedatedto",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22767,7 +23020,7 @@
       "source_location": "L7",
       "weight": 1.0,
       "source": "tasks_tasks_service",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22775,10 +23028,10 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.service.ts",
-      "source_location": "L101",
+      "source_location": "L132",
       "weight": 1.0,
-      "source": "tasks_tasks_service_tasksservice_updatetaskassignee",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "source": "tasks_tasks_service_tasksservice_updatetaskduedate",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22789,7 +23042,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "tasks_tasks_service_test",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22800,7 +23053,7 @@
       "source_location": "L1",
       "weight": 1.0,
       "source": "tasks_tasks_store",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22811,7 +23064,7 @@
       "source_location": "L13",
       "weight": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22819,10 +23072,10 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
-      "source_location": "L212",
+      "source_location": "L274",
       "weight": 1.0,
-      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
-      "target": "tasks_tasks_contracts_updatetaskassigneeinput",
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
+      "target": "tasks_tasks_contracts_updatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -22906,8 +23159,19 @@
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_test",
-      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe",
+      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_test",
+      "target": "tasks_tasks_dto_parseupdatetaskduedatebodypipe",
       "confidence_score": 1.0
     },
     {
@@ -22983,8 +23247,19 @@
       "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_test",
-      "target": "tasks_tasks_store_taskupdateassigneeresult",
+      "target": "tasks_tasks_store_taskupdateassigneeresult"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.test.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_test",
+      "target": "tasks_tasks_store_taskupdateduedateresult",
       "confidence_score": 1.0
     },
     {
@@ -23058,8 +23333,19 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
-      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe",
+      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller",
+      "target": "tasks_tasks_dto_parseupdatetaskduedatebodypipe",
       "confidence_score": 1.0
     },
     {
@@ -23102,8 +23388,19 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller",
-      "target": "tasks_tasks_dto_updatetaskassigneedto",
+      "target": "tasks_tasks_dto_updatetaskassigneedto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller",
+      "target": "tasks_tasks_dto_updatetaskduedatedto",
       "confidence_score": 1.0
     },
     {
@@ -23196,8 +23493,18 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_taskscontroller",
-      "target": "tasks_tasks_controller_taskscontroller_updatetaskassignee",
+      "target": "tasks_tasks_controller_taskscontroller_updatetaskassignee"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_taskscontroller",
+      "target": "tasks_tasks_controller_taskscontroller_updatetaskduedate",
       "confidence_score": 1.0
     },
     {
@@ -23272,7 +23579,18 @@
       "source_file": "apps/api/src/tasks/tasks.controller.ts",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_controller_taskscontroller_updatetaskassignee",
+      "target": "tasks_tasks_dto_taskdetaildto"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.controller.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "tasks_tasks_controller_taskscontroller_updatetaskduedate",
       "target": "tasks_tasks_dto_taskdetaildto",
       "confidence_score": 1.0
     },
@@ -23333,9 +23651,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe"
     },
     {
       "relation": "contains",
@@ -23343,8 +23661,28 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L192",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_parseupdatetaskassigneeinput",
+      "target": "tasks_tasks_dto_parseupdatetaskassigneeinput"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_parseupdatetaskduedatebodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L216",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_parseupdatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -23421,6 +23759,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L305",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_readrequirednullabledatetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L234",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -23453,8 +23801,18 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto",
-      "target": "tasks_tasks_dto_updatetaskassigneedto",
+      "target": "tasks_tasks_dto_updatetaskassigneedto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto",
+      "target": "tasks_tasks_dto_updatetaskduedatedto",
       "confidence_score": 1.0
     },
     {
@@ -23537,9 +23895,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parseupdatetaskassigneebodypipe",
-      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe_transform",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_parseupdatetaskassigneebodypipe_transform"
     },
     {
       "relation": "calls",
@@ -23548,8 +23906,29 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parseupdatetaskassigneebodypipe_transform",
-      "target": "tasks_tasks_dto_parseupdatetaskassigneeinput",
+      "target": "tasks_tasks_dto_parseupdatetaskassigneeinput"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parseupdatetaskduedatebodypipe",
+      "target": "tasks_tasks_dto_parseupdatetaskduedatebodypipe_transform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parseupdatetaskduedatebodypipe_transform",
+      "target": "tasks_tasks_dto_parseupdatetaskduedateinput",
       "confidence_score": 1.0
     },
     {
@@ -23646,7 +24025,18 @@
       "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_tasksservice_updatetaskassignee",
+      "target": "tasks_tasks_dto_taskdetaildto"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "tasks_tasks_service_tasksservice_updatetaskduedate",
       "target": "tasks_tasks_dto_taskdetaildto",
       "confidence_score": 1.0
     },
@@ -23767,9 +24157,9 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L193",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parseupdatetaskassigneeinput",
-      "target": "tasks_tasks_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_dto_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -23778,8 +24168,30 @@
       "source_file": "apps/api/src/tasks/tasks.dto.ts",
       "source_location": "L198",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_dto_parseupdatetaskassigneeinput",
-      "target": "tasks_tasks_dto_readrequirednullableuuid",
+      "target": "tasks_tasks_dto_readrequirednullableuuid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L217",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parseupdatetaskduedateinput",
+      "target": "tasks_tasks_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.dto.ts",
+      "source_location": "L222",
+      "weight": 1.0,
+      "source": "tasks_tasks_dto_parseupdatetaskduedateinput",
+      "target": "tasks_tasks_dto_readrequirednullabledatetime",
       "confidence_score": 1.0
     },
     {
@@ -23993,8 +24405,19 @@
       "source_file": "apps/api/src/tasks/tasks.service.test.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_test",
-      "target": "tasks_tasks_store_taskupdateassigneeresult",
+      "target": "tasks_tasks_store_taskupdateassigneeresult"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "tasks_tasks_service_test",
+      "target": "tasks_tasks_store_taskupdateduedateresult",
       "confidence_score": 1.0
     },
     {
@@ -24086,8 +24509,18 @@
       "source_file": "apps/api/src/tasks/tasks.service.ts",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_service_tasksservice",
-      "target": "tasks_tasks_service_tasksservice_updatetaskassignee",
+      "target": "tasks_tasks_service_tasksservice_updatetaskassignee"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.service.ts",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "tasks_tasks_service_tasksservice",
+      "target": "tasks_tasks_service_tasksservice_updatetaskduedate",
       "confidence_score": 1.0
     },
     {
@@ -24137,8 +24570,18 @@
       "source_file": "apps/api/src/tasks/tasks.store.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_tasks_store",
-      "target": "tasks_tasks_store_taskupdateassigneeresult",
+      "target": "tasks_tasks_store_taskupdateassigneeresult"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/tasks.store.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "tasks_tasks_store",
+      "target": "tasks_tasks_store_taskupdateduedateresult",
       "confidence_score": 1.0
     },
     {
@@ -24213,9 +24656,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store",
-      "target": "tasks_tasks_store_taskupdateassigneeresult",
-      "confidence_score": 1.0
+      "target": "tasks_tasks_store_taskupdateassigneeresult"
     },
     {
       "relation": "references",
@@ -24224,8 +24667,30 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L212",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
-      "target": "tasks_tasks_store_taskupdateassigneeresult",
+      "target": "tasks_tasks_store_taskupdateassigneeresult"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store",
+      "target": "tasks_tasks_store_taskupdateduedateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L274",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
+      "target": "tasks_tasks_store_taskupdateduedateresult",
       "confidence_score": 1.0
     },
     {
@@ -24366,8 +24831,18 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L212",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L274",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
       "confidence_score": 1.0
     },
     {
@@ -24519,9 +24994,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L269",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
-      "target": "tasks_typeorm_task_read_store_totasksummary",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_totasksummary"
     },
     {
       "relation": "calls",
@@ -24530,9 +25005,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L219",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -24541,9 +25016,9 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L230",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
-      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getvisibletask",
-      "confidence_score": 1.0
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getvisibletask"
     },
     {
       "relation": "calls",
@@ -24552,7 +25027,51 @@
       "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
       "source_location": "L220",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateassigneeforproject",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L319",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
+      "target": "tasks_typeorm_task_read_store_totasksummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L281",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L292",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
+      "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getvisibletask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/tasks/typeorm-task-read.store.ts",
+      "source_location": "L282",
+      "weight": 1.0,
+      "source": "tasks_typeorm_task_read_store_typeormtaskreadstore_updateduedateforproject",
       "target": "tasks_typeorm_task_read_store_typeormtaskreadstore_getworkspacemembership",
       "confidence_score": 1.0
     },
@@ -30646,5 +31165,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "02a3a29a594dc43af0a009426d286614e45937fd"
+  "built_at_commit": "77f2a62d785cc839fcac1a189e97cb8446fb4632"
 }

@@ -6,6 +6,7 @@ import type {
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
+  UpdateTaskDueDateInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
@@ -14,6 +15,7 @@ import type {
   TaskCreateResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
+  TaskUpdateDueDateResult,
   TaskUpdateStatusResult,
 } from "./tasks.store.js";
 
@@ -24,6 +26,7 @@ const statusId = "55555555-5555-4555-8555-555555555555";
 const assigneeUserId = "66666666-6666-4666-8666-666666666666";
 const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
+const dueAt = "2026-01-03T12:00:00.000Z";
 
 const taskSummary: TaskSummary = {
   id: taskId,
@@ -129,6 +132,24 @@ test("TasksService updates task assignee for writable workspace members", async 
   assert.equal(response.assigneeUserId, assigneeUserId);
 });
 
+test("TasksService updates task due date for writable workspace members", async () => {
+  const input: UpdateTaskDueDateInput = { dueAt };
+  const service = new TasksService(
+    createReadStore({
+      updateDueDateResult: {
+        status: "updated",
+        task: { ...taskSummary, dueAt: new Date(dueAt) },
+      },
+    }),
+  );
+
+  const response = await service.updateTaskDueDate(workspaceId, projectId, taskId, userId, input);
+
+  assert.ok(response instanceof TaskDetailDto);
+  assert.equal(response.id, taskId);
+  assert.deepEqual(response.dueAt, new Date(dueAt));
+});
+
 test("TasksService hides inaccessible projects and missing tasks", async () => {
   const service = new TasksService(createReadStore({ task: null, tasks: null }));
 
@@ -150,6 +171,10 @@ test("TasksService hides inaccessible projects and missing tasks", async () => {
   );
   await assert.rejects(
     () => service.updateTaskAssignee(workspaceId, projectId, taskId, userId, { assigneeUserId }),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () => service.updateTaskDueDate(workspaceId, projectId, taskId, userId, { dueAt }),
     NotFoundException,
   );
 });
@@ -181,6 +206,17 @@ test("TasksService rejects assignee updates without write permission", async () 
 
   await assert.rejects(
     () => service.updateTaskAssignee(workspaceId, projectId, taskId, userId, { assigneeUserId }),
+    ForbiddenException,
+  );
+});
+
+test("TasksService rejects due date updates without write permission", async () => {
+  const service = new TasksService(
+    createReadStore({ updateDueDateResult: { status: "forbidden" } }),
+  );
+
+  await assert.rejects(
+    () => service.updateTaskDueDate(workspaceId, projectId, taskId, userId, { dueAt }),
     ForbiddenException,
   );
 });
@@ -225,6 +261,7 @@ function createReadStore(options: {
   createResult?: TaskCreateResult;
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
+  updateDueDateResult?: TaskUpdateDueDateResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
@@ -237,5 +274,7 @@ function createReadStore(options: {
       options.updateStatusResult ?? { status: "task_not_found" },
     updateAssigneeForProject: async (): Promise<TaskUpdateAssigneeResult> =>
       options.updateAssigneeResult ?? { status: "task_not_found" },
+    updateDueDateForProject: async (): Promise<TaskUpdateDueDateResult> =>
+      options.updateDueDateResult ?? { status: "task_not_found" },
   };
 }
