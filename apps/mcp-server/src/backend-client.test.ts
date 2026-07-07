@@ -7,6 +7,7 @@ import {
   TaskBackendClientError,
   type TaskBackendFetch,
   type TaskBackendFetchInit,
+  type TaskCommentResponse,
   type TaskDetailResponse,
   type TaskSummaryResponse,
   type WorkspaceStatusResponse,
@@ -28,6 +29,16 @@ const workspaceStatus: WorkspaceStatusResponse = {
   color: "#3b82f6",
   position: "1000",
   isDone: false,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const taskComment: TaskCommentResponse = {
+  id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  workspaceId,
+  taskId: rootTaskId,
+  authorUserId: userId,
+  body: "Bass take is ready for review.",
   createdAt: timestamp,
   updatedAt: timestamp,
 };
@@ -223,6 +234,32 @@ test("listActiveTasks gets typed task summaries with trusted user context", asyn
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
   assert.deepEqual(response, [taskSummary]);
+});
+
+test("listTaskComments gets typed task comments with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [taskComment]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listTaskComments({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}/comments`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.deepEqual(response, [taskComment]);
 });
 
 test("getTask gets typed task detail with trusted user context", async () => {
@@ -496,6 +533,18 @@ test("backend client rejects malformed task list responses", async () => {
   await assert.rejects(
     () => client.listActiveTasks({ workspaceId, projectId, userId }),
     /task metadata must be an object/,
+  );
+});
+
+test("backend client rejects malformed task comment list responses", async () => {
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local",
+    fetch: createJsonFetch([], [{ ...taskComment, body: null }]),
+  });
+
+  await assert.rejects(
+    () => client.listTaskComments({ workspaceId, projectId, taskId: rootTaskId, userId }),
+    /body must be a string/,
   );
 });
 
