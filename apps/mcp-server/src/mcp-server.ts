@@ -49,18 +49,27 @@ const taskSearchInputSchema = {
   query: z.string().min(1).optional(),
 };
 
+const taskGetInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
+
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
 type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
+type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
     | ProjectCreateMcpArgs
-    | TaskSearchMcpArgs,
+    | TaskSearchMcpArgs
+    | TaskGetMcpArgs,
 ) => Promise<CallToolResult>;
 
 export type TaskMcpToolRegistrar = {
@@ -74,7 +83,8 @@ export type TaskMcpToolRegistrar = {
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
-        | typeof taskSearchInputSchema;
+        | typeof taskSearchInputSchema
+        | typeof taskGetInputSchema;
     },
     callback: TaskMcpToolCallback,
   ): unknown;
@@ -140,6 +150,16 @@ export function registerTaskTools(
   registrar: TaskMcpToolRegistrar,
   handlers: TaskToolHandlers,
 ): void {
+  registrar.registerTool(
+    "task.get",
+    {
+      title: "Get task",
+      description: "Get one visible task in a project.",
+      inputSchema: taskGetInputSchema,
+    },
+    async (input) => toToolResult(await handlers.get(input)),
+  );
+
   registrar.registerTool(
     "task.search",
     {

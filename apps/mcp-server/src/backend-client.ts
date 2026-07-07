@@ -6,6 +6,7 @@ type ListActiveProjectsOperation = operations["ProjectsController_listActiveProj
 type GetProjectOperation = operations["ProjectsController_getProject"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ListActiveTasksOperation = operations["TasksController_listActiveTasks"];
+type GetTaskOperation = operations["TasksController_getTask"];
 
 export type PreviewTaskSkillApplyInput =
   PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
@@ -21,7 +22,8 @@ export type ProjectDetailResponse =
   GetProjectOperation["responses"]["200"]["content"]["application/json"];
 export type TaskSummaryResponse =
   ListActiveTasksOperation["responses"]["200"]["content"]["application/json"][number];
-type TaskDetailResponse = components["schemas"]["TaskDetailDto"];
+export type TaskDetailResponse =
+  GetTaskOperation["responses"]["200"]["content"]["application/json"];
 type TaskSkillApplyPreviewSubtaskResponse =
   components["schemas"]["TaskSkillApplyPreviewSubtaskDto"];
 
@@ -92,11 +94,19 @@ export type ListActiveTasksRequest = {
   userId: string;
 };
 
+export type GetTaskRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+};
+
 export type TaskBackendClient = {
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
   listActiveTasks(request: ListActiveTasksRequest): Promise<TaskSummaryResponse[]>;
+  getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   previewTaskSkillApply(request: TaskSkillApplyRequest): Promise<PreviewTaskSkillApplyResponse>;
   applyTaskSkill(request: TaskSkillApplyRequest): Promise<ApplyTaskSkillResponse>;
 };
@@ -150,6 +160,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildProjectTasksPath(request.workspaceId, request.projectId),
         request.userId,
         readTaskSummaryList,
+      ),
+    getTask: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildProjectTaskPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        readTaskDetail,
       ),
     previewTaskSkillApply: (request) =>
       postJson(
@@ -268,6 +286,10 @@ function buildWorkspaceProjectPath(workspaceId: string, projectId: string): stri
 
 function buildProjectTasksPath(workspaceId: string, projectId: string): string {
   return `${buildWorkspaceProjectPath(workspaceId, projectId)}/tasks`;
+}
+
+function buildProjectTaskPath(workspaceId: string, projectId: string, taskId: string): string {
+  return `${buildProjectTasksPath(workspaceId, projectId)}/${encodeURIComponent(taskId)}`;
 }
 
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {

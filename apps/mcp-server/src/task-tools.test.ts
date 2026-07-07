@@ -6,10 +6,12 @@ import type {
   ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
+  TaskDetailResponse,
   TaskSummaryResponse,
 } from "./backend-client.js";
 import {
   createTaskToolHandlers,
+  parseTaskGetToolInput,
   parseTaskSearchToolInput,
   TaskToolInputError,
 } from "./task-tools.js";
@@ -39,6 +41,10 @@ const arrangeTask: TaskSummaryResponse = {
   archivedAt: null,
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const taskDetail: TaskDetailResponse = {
+  ...arrangeTask,
 };
 
 const tasks: TaskSummaryResponse[] = [
@@ -83,6 +89,20 @@ test("parseTaskSearchToolInput validates and normalizes task search payloads", (
   );
 });
 
+test("parseTaskGetToolInput validates task get payloads", () => {
+  assert.deepEqual(parseTaskGetToolInput({ workspaceId, projectId, taskId: firstTaskId, userId }), {
+    workspaceId,
+    projectId,
+    taskId: firstTaskId,
+    userId,
+  });
+
+  assert.throws(
+    () => parseTaskGetToolInput({ workspaceId, projectId, taskId: "bad", userId }),
+    TaskToolInputError,
+  );
+});
+
 test("task search handler lists active tasks when query is absent", async () => {
   const client = createBackendClientStub(tasks);
   const handlers = createTaskToolHandlers(client);
@@ -108,9 +128,28 @@ test("task search handler forwards project identifiers to the backend client", a
   assert.deepEqual(calls, [{ workspaceId, projectId, userId }]);
 });
 
+test("task get handler forwards task identifiers to the backend client", async () => {
+  const calls: Array<{ workspaceId: string; projectId: string; taskId: string; userId: string }> =
+    [];
+  const client = createBackendClientStub(tasks, [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.get({ workspaceId, projectId, taskId: firstTaskId, userId }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [{ workspaceId, projectId, taskId: firstTaskId, userId }]);
+});
+
 function createBackendClientStub(
   responseTasks: TaskSummaryResponse[],
   listActiveTaskCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
+  getTaskCalls: Array<{
+    workspaceId: string;
+    projectId: string;
+    taskId: string;
+    userId: string;
+  }> = [],
 ): TaskBackendClient {
   return {
     createProject: async (): Promise<ProjectDetailResponse> => {
@@ -126,6 +165,11 @@ function createBackendClientStub(
       listActiveTaskCalls.push(request);
 
       return responseTasks;
+    },
+    getTask: async (request): Promise<TaskDetailResponse> => {
+      getTaskCalls.push(request);
+
+      return taskDetail;
     },
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => {
       throw new Error("Not implemented.");
