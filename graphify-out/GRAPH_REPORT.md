@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-91-mcp-project-get  (2026-07-07)
+# Graph Report - tAsk-issue-93-mcp-project-create  (2026-07-07)
 
 ## Corpus Check
-- 185 files · ~64,218 words
+- 185 files · ~64,836 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1344 nodes · 2680 edges · 79 communities (76 shown, 3 thin omitted)
+- 1353 nodes · 2702 edges · 77 communities (74 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d4548e23`
+- Built from commit: `4b5cbb49`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -33,7 +33,6 @@
 - [[_COMMUNITY_Community 15|Community 15]]
 - [[_COMMUNITY_Community 16|Community 16]]
 - [[_COMMUNITY_Community 17|Community 17]]
-- [[_COMMUNITY_Community 18|Community 18]]
 - [[_COMMUNITY_Community 19|Community 19]]
 - [[_COMMUNITY_Community 20|Community 20]]
 - [[_COMMUNITY_Community 21|Community 21]]
@@ -88,7 +87,6 @@
 - [[_COMMUNITY_Community 75|Community 75]]
 - [[_COMMUNITY_Community 76|Community 76]]
 - [[_COMMUNITY_Community 77|Community 77]]
-- [[_COMMUNITY_Community 78|Community 78]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `executeMigrationQueries()` - 34 edges
@@ -111,13 +109,13 @@
   apps/api/src/task-skills/task-skills.dto.ts → apps/api/src/task-skills/task-skills.contracts.ts
 - `TaskSkillApplyResultDto` --references--> `TaskDetailDto`  [EXTRACTED]
   apps/api/src/task-skills/task-skills.dto.ts → apps/api/src/tasks/tasks.dto.ts
-- `runTaskMcpServerFromEnvironment()` --calls--> `loadTaskMcpConfig()`  [EXTRACTED]
-  apps/mcp-server/src/runtime.ts → apps/mcp-server/src/config.ts
+- `runTaskMcpServerFromEnvironment()` --calls--> `createTaskMcpServer()`  [EXTRACTED]
+  apps/mcp-server/src/runtime.ts → apps/mcp-server/src/mcp-server.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (79 total, 3 thin omitted)
+## Communities (77 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -128,8 +126,8 @@ Cohesion: 0.11
 Nodes (17): Backend architecture, Confirmation model, Database, Deployment draft, External references, Frontend architecture, Linting and formatting, LLM and OpenRouter (+9 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.10
-Nodes (20): toWorkspaceSummary(), TypeOrmWorkspaceReadStore, WorkspaceDetail, WorkspaceMember, WorkspaceSummary, createdAt, workspaceSummary, uuidV4Pipe (+12 more)
+Cohesion: 0.08
+Nodes (26): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, toWorkspaceSummary(), TypeOrmWorkspaceReadStore, WorkspaceDetail (+18 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.14
@@ -178,10 +176,6 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 ### Community 17 - "Community 17"
 Cohesion: 0.08
 Nodes (25): dependsOn, outputs, cache, persistent, cache, outputs, dependsOn, outputs (+17 more)
-
-### Community 18 - "Community 18"
-Cohesion: 0.25
-Nodes (8): formatInvalidValue(), ApiConfig, ApiDatabaseConfig, ApiEnvironment, InvalidApiEnvironmentError, parseApiConfig(), parseDatabaseConfig(), parsePort()
 
 ### Community 19 - "Community 19"
 Cohesion: 0.10
@@ -240,8 +234,8 @@ Cohesion: 0.33
 Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ### Community 33 - "Community 33"
-Cohesion: 0.18
-Nodes (9): ProjectDetailResponse, TaskBackendClientError, TaskBackendFetchInit, projectDetail, projectSummary, readJsonBody(), readPostInit(), requestBody (+1 more)
+Cohesion: 0.17
+Nodes (10): ProjectDetailResponse, ProjectSummaryResponse, TaskBackendClientError, TaskBackendFetchInit, projectDetail, projectSummary, readJsonBody(), readPostInit() (+2 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.09
@@ -293,7 +287,7 @@ Nodes (29): ActivityEventEntity, AgentRunEntity, CommentEntity, ConfirmationRequ
 
 ### Community 51 - "Community 51"
 Cohesion: 0.08
-Nodes (44): CreateTaskInput, TaskDetail, TaskSummary, UpdateTaskAssigneeInput, UpdateTaskDueDateInput, UpdateTaskStatusInput, TasksController, createdAt (+36 more)
+Nodes (43): CreateTaskInput, TaskDetail, TaskSummary, UpdateTaskAssigneeInput, UpdateTaskDueDateInput, UpdateTaskStatusInput, TasksController, createdAt (+35 more)
 
 ### Community 52 - "Community 52"
 Cohesion: 0.10
@@ -308,8 +302,8 @@ Cohesion: 0.19
 Nodes (17): PreviewTaskSkillApplyOverrides, isUnknownRecord(), ParseCreateTaskSkillBodyPipe, parseCreateTaskSkillInput(), ParsePreviewTaskSkillApplyBodyPipe, parsePreviewTaskSkillApplyInput(), ParseUpdateTaskSkillDefinitionBodyPipe, parseUpdateTaskSkillDefinitionInput() (+9 more)
 
 ### Community 55 - "Community 55"
-Cohesion: 0.31
-Nodes (7): formatInvalidValue(), InvalidTaskMcpEnvironmentError, loadTaskMcpConfig(), parseBackendBaseUrl(), parseOptionalNonEmptyString(), parseTaskMcpConfig(), TaskMcpConfig
+Cohesion: 0.21
+Nodes (14): formatInvalidValue(), createTaskBackendClient(), TaskBackendFetch, InvalidTaskMcpEnvironmentError, loadTaskMcpConfig(), parseBackendBaseUrl(), parseOptionalNonEmptyString(), parseTaskMcpConfig() (+6 more)
 
 ### Community 56 - "Community 56"
 Cohesion: 0.20
@@ -328,12 +322,12 @@ Cohesion: 0.38
 Nodes (3): CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
 
 ### Community 60 - "Community 60"
-Cohesion: 0.15
-Nodes (16): ApplyTaskSkillResponse, PreviewTaskSkillApplyInput, TaskBackendClient, TaskSkillApplyRequest, isUnknownRecord(), parseTaskSkillApplyToolInput(), readOptionalOverrides(), readOptionalStringArray() (+8 more)
+Cohesion: 0.14
+Nodes (17): ApplyTaskSkillResponse, PreviewTaskSkillApplyInput, TaskBackendClient, TaskSkillApplyRequest, isUnknownRecord(), parseTaskSkillApplyToolInput(), readOptionalOverrides(), readOptionalStringArray() (+9 more)
 
 ### Community 61 - "Community 61"
-Cohesion: 0.12
-Nodes (26): ApplyTaskSkillOperation, buildWorkspaceProjectPath(), buildWorkspaceProjectsPath(), GetProjectOperation, GetProjectRequest, isUnknownRecord(), ListActiveProjectsOperation, ListActiveProjectsRequest (+18 more)
+Cohesion: 0.11
+Nodes (28): ApplyTaskSkillOperation, buildWorkspaceProjectPath(), buildWorkspaceProjectsPath(), CreateProjectOperation, GetProjectOperation, GetProjectRequest, isUnknownRecord(), ListActiveProjectsOperation (+20 more)
 
 ### Community 62 - "Community 62"
 Cohesion: 0.07
@@ -357,19 +351,19 @@ Nodes (22): CreateTaskLinkAttachmentInput, TaskAttachment, AttachmentsController
 
 ### Community 67 - "Community 67"
 Cohesion: 0.05
-Nodes (34): AttachmentsModule, ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, CommentsModule, ApiDataSource (+26 more)
+Nodes (37): formatInvalidValue(), AttachmentsModule, CommentsModule, ApiDataSource, ApiDataSourceProvider, DatabaseModule, ProjectsModule, AppModule (+29 more)
 
 ### Community 68 - "Community 68"
 Cohesion: 0.14
 Nodes (14): TaskSkillDetail, TaskSkillApplyForWorkspaceResult, TaskSkillApplyPreviewResult, TaskSkillArchiveResult, TaskSkillCreateResult, TaskSkillDefinitionUpdateResult, TaskSkillMetadataUpdateResult, TaskSkillsReadStore (+6 more)
 
 ### Community 69 - "Community 69"
-Cohesion: 0.13
-Nodes (25): createTaskBackendClient(), normalizeBaseUrl(), TaskBackendFetch, TaskMcpEnvironment, connectTaskMcpServerToStdio(), createTaskMcpServer(), projectGetInputSchema, ProjectGetMcpArgs (+17 more)
+Cohesion: 0.08
+Nodes (26): createTaskMcpServer(), projectCreateInputSchema, ProjectCreateMcpArgs, projectGetInputSchema, ProjectGetMcpArgs, projectSearchInputSchema, ProjectSearchMcpArgs, registerProjectTools() (+18 more)
 
 ### Community 70 - "Community 70"
-Cohesion: 0.16
-Nodes (15): PreviewTaskSkillApplyResponse, ProjectSummaryResponse, isUnknownRecord(), parseProjectGetToolInput(), parseProjectSearchToolInput(), ProjectGetToolInput, ProjectSearchToolInput, ProjectToolInputError (+7 more)
+Cohesion: 0.13
+Nodes (20): CreateProjectInput, CreateProjectRequest, PreviewTaskSkillApplyResponse, isUnknownRecord(), parseProjectCreateToolInput(), parseProjectGetToolInput(), parseProjectSearchToolInput(), ProjectCreateToolInput (+12 more)
 
 ### Community 71 - "Community 71"
 Cohesion: 0.27
@@ -399,12 +393,8 @@ Nodes (3): AgentToolCallEntity, AgentToolCallRecord, AgentToolCallStatus
 Cohesion: 0.28
 Nodes (5): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppService
 
-### Community 78 - "Community 78"
-Cohesion: 0.18
-Nodes (9): applyResponse, isUnknownRecord(), previewResponse, projectDetailResponse, projectResponse, readBackendRequestInput(), readString(), RegisteredToolCall (+1 more)
-
 ## Knowledge Gaps
-- **527 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+522 more)
+- **530 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+525 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -418,10 +408,10 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `UpdateTaskSkillMetadataInput` connect `Community 49` to `Community 68`, `Community 71`, `Community 54`, `Community 57`, `Community 58`?**
   _High betweenness centrality (0.007) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _527 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _530 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.10459183673469388 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08395989974937343 - nodes in this community are weakly interconnected._

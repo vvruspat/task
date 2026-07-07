@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
+  CreateProjectRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
@@ -10,6 +11,7 @@ import type {
 import {
   createProjectToolHandlers,
   ProjectToolInputError,
+  parseProjectCreateToolInput,
   parseProjectGetToolInput,
   parseProjectSearchToolInput,
 } from "./project-tools.js";
@@ -48,6 +50,36 @@ const projects: ProjectSummaryResponse[] = [
 const projectDetail: ProjectDetailResponse = {
   ...albumProject,
 };
+
+test("parseProjectCreateToolInput validates and normalizes project create payloads", () => {
+  assert.deepEqual(
+    parseProjectCreateToolInput({
+      workspaceId,
+      userId,
+      title: "  Album Release  ",
+      description: "  Release plan  ",
+      status: null,
+      position: " 1000 ",
+    }),
+    {
+      workspaceId,
+      userId,
+      title: "Album Release",
+      description: "Release plan",
+      status: null,
+      position: "1000",
+    },
+  );
+
+  assert.throws(
+    () => parseProjectCreateToolInput({ workspaceId, userId, title: "" }),
+    ProjectToolInputError,
+  );
+  assert.throws(
+    () => parseProjectCreateToolInput({ workspaceId, userId, title: "Album", description: "" }),
+    ProjectToolInputError,
+  );
+});
 
 test("parseProjectGetToolInput validates project get payloads", () => {
   assert.deepEqual(parseProjectGetToolInput({ workspaceId, projectId, userId }), {
@@ -114,11 +146,47 @@ test("project get handler forwards project identifiers to the backend client", a
   assert.deepEqual(calls, [{ workspaceId, projectId, userId }]);
 });
 
+test("project create handler forwards project payloads to the backend client", async () => {
+  const calls: CreateProjectRequest[] = [];
+  const client = createBackendClientStub(projects, [], calls);
+  const handlers = createProjectToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.create({
+      workspaceId,
+      userId,
+      title: "Album Release",
+      description: null,
+      status: "active",
+      position: "1000",
+    }),
+    projectDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      userId,
+      body: {
+        title: "Album Release",
+        description: null,
+        status: "active",
+        position: "1000",
+      },
+    },
+  ]);
+});
+
 function createBackendClientStub(
   projects: ProjectSummaryResponse[],
   getProjectCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
+  createProjectCalls: CreateProjectRequest[] = [],
 ): TaskBackendClient {
   return {
+    createProject: async (request): Promise<ProjectDetailResponse> => {
+      createProjectCalls.push(request);
+
+      return projectDetail;
+    },
     getProject: async (request): Promise<ProjectDetailResponse> => {
       getProjectCalls.push(request);
 

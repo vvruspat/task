@@ -1,4 +1,5 @@
 import type {
+  CreateProjectInput,
   ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
@@ -18,9 +19,19 @@ export type ProjectGetToolInput = {
   userId: string;
 };
 
+export type ProjectCreateToolInput = {
+  workspaceId: string;
+  userId: string;
+  title: string;
+  description?: string | null;
+  status?: string | null;
+  position?: string | null;
+};
+
 export type ProjectToolHandlers = {
   search(input: unknown): Promise<ProjectSummaryResponse[]>;
   get(input: unknown): Promise<ProjectDetailResponse>;
+  create(input: unknown): Promise<ProjectDetailResponse>;
 };
 
 export class ProjectToolInputError extends Error {
@@ -32,6 +43,15 @@ export class ProjectToolInputError extends Error {
 
 export function createProjectToolHandlers(client: TaskBackendClient): ProjectToolHandlers {
   return {
+    create: (input) => {
+      const parsedInput = parseProjectCreateToolInput(input);
+
+      return client.createProject({
+        workspaceId: parsedInput.workspaceId,
+        userId: parsedInput.userId,
+        body: toCreateProjectInput(parsedInput),
+      });
+    },
     get: (input) => {
       const parsedInput = parseProjectGetToolInput(input);
 
@@ -61,6 +81,32 @@ export function createProjectToolHandlers(client: TaskBackendClient): ProjectToo
   };
 }
 
+export function parseProjectCreateToolInput(input: unknown): ProjectCreateToolInput {
+  const record = readRecord(input, "project create tool input");
+  const parsedInput: ProjectCreateToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    userId: readRequiredUuid(record, "userId"),
+    title: readRequiredNonEmptyString(record, "title"),
+  };
+  const description = readOptionalNullableNonEmptyString(record, "description");
+  const status = readOptionalNullableNonEmptyString(record, "status");
+  const position = readOptionalNullableNonEmptyString(record, "position");
+
+  if (description !== undefined) {
+    parsedInput.description = description;
+  }
+
+  if (status !== undefined) {
+    parsedInput.status = status;
+  }
+
+  if (position !== undefined) {
+    parsedInput.position = position;
+  }
+
+  return parsedInput;
+}
+
 export function parseProjectGetToolInput(input: unknown): ProjectGetToolInput {
   const record = readRecord(input, "project get tool input");
 
@@ -69,6 +115,26 @@ export function parseProjectGetToolInput(input: unknown): ProjectGetToolInput {
     projectId: readRequiredUuid(record, "projectId"),
     userId: readRequiredUuid(record, "userId"),
   };
+}
+
+function toCreateProjectInput(input: ProjectCreateToolInput): CreateProjectInput {
+  const body: CreateProjectInput = {
+    title: input.title,
+  };
+
+  if (input.description !== undefined) {
+    body.description = input.description;
+  }
+
+  if (input.status !== undefined) {
+    body.status = input.status;
+  }
+
+  if (input.position !== undefined) {
+    body.position = input.position;
+  }
+
+  return body;
 }
 
 export function parseProjectSearchToolInput(input: unknown): ProjectSearchToolInput {
@@ -136,6 +202,19 @@ function readOptionalNonEmptyString(
 
   if (value === undefined) {
     return undefined;
+  }
+
+  return readRequiredNonEmptyString(record, propertyName);
+}
+
+function readOptionalNullableNonEmptyString(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const value = record[propertyName];
+
+  if (value === undefined || value === null) {
+    return value;
   }
 
   return readRequiredNonEmptyString(record, propertyName);

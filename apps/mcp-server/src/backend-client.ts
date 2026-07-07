@@ -4,6 +4,7 @@ type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTa
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
 type GetProjectOperation = operations["ProjectsController_getProject"];
+type CreateProjectOperation = operations["ProjectsController_createProject"];
 
 export type PreviewTaskSkillApplyInput =
   PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
@@ -11,6 +12,8 @@ export type PreviewTaskSkillApplyResponse =
   PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
 export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type CreateProjectInput =
+  CreateProjectOperation["requestBody"]["content"]["application/json"];
 export type ProjectSummaryResponse =
   ListActiveProjectsOperation["responses"]["200"]["content"]["application/json"][number];
 export type ProjectDetailResponse =
@@ -74,9 +77,16 @@ export type GetProjectRequest = {
   userId: string;
 };
 
+export type CreateProjectRequest = {
+  workspaceId: string;
+  userId: string;
+  body: CreateProjectInput;
+};
+
 export type TaskBackendClient = {
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
+  createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
   previewTaskSkillApply(request: TaskSkillApplyRequest): Promise<PreviewTaskSkillApplyResponse>;
   applyTaskSkill(request: TaskSkillApplyRequest): Promise<ApplyTaskSkillResponse>;
 };
@@ -114,6 +124,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.userId,
         readProjectDetail,
       ),
+    createProject: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceProjectsPath(request.workspaceId),
+        request.userId,
+        request.body,
+        readProjectDetail,
+      ),
     previewTaskSkillApply: (request) =>
       postJson(
         fetchImplementation,
@@ -147,7 +166,7 @@ async function postJson<ResponseBody>(
   baseUrl: string,
   path: string,
   userId: string,
-  body: PreviewTaskSkillApplyInput,
+  body: PreviewTaskSkillApplyInput | CreateProjectInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(`${baseUrl}${path}`, {

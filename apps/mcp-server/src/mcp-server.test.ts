@@ -3,6 +3,7 @@ import test from "node:test";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   ApplyTaskSkillResponse,
+  CreateProjectRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
@@ -83,11 +84,25 @@ const projectDetailResponse: ProjectDetailResponse = {
   ...projectResponse,
 };
 
-test("registerProjectTools registers project search", async () => {
+test("registerProjectTools registers project tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
+  const createCalls: CreateProjectRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerProjectTools(registrar, {
+    create: async (input: unknown): Promise<ProjectDetailResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected project create input.");
+      }
+      createCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        userId: readString(input, "userId"),
+        body: {
+          title: readString(input, "title"),
+        },
+      });
+      return projectDetailResponse;
+    },
     get: async (input: unknown): Promise<ProjectDetailResponse> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -108,12 +123,32 @@ test("registerProjectTools registers project search", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["project.get", "project.search"],
+    ["project.create", "project.get", "project.search"],
   );
-  assert.equal(toolCalls[0]?.config.title, "Get project");
-  assert.equal(toolCalls[1]?.config.title, "Search projects");
+  assert.equal(toolCalls[0]?.config.title, "Create project");
+  assert.equal(toolCalls[1]?.config.title, "Get project");
+  assert.equal(toolCalls[2]?.config.title, "Search projects");
 
-  const getCall = toolCalls[0];
+  const createCall = toolCalls[0];
+  assert.ok(createCall !== undefined);
+  const createResult = await createCall.callback({
+    workspaceId,
+    userId,
+    title: "Album Release",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(createResult)), projectDetailResponse);
+  assert.deepEqual(createCalls, [
+    {
+      workspaceId,
+      userId,
+      body: {
+        title: "Album Release",
+      },
+    },
+  ]);
+
+  const getCall = toolCalls[1];
   assert.ok(getCall !== undefined);
   const getResult = await getCall.callback({
     workspaceId,
@@ -123,7 +158,7 @@ test("registerProjectTools registers project search", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), projectDetailResponse);
 
-  const searchCall = toolCalls[1];
+  const searchCall = toolCalls[2];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -206,6 +241,7 @@ function createRegistrar(calls: RegisteredToolCall[]): TaskMcpToolRegistrar {
 
 function createBackendClientStub(): TaskBackendClient {
   return {
+    createProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,

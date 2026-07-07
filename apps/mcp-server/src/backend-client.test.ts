@@ -136,6 +136,34 @@ test("getProject gets typed project detail with trusted user context", async () 
   assert.deepEqual(response, projectDetail);
 });
 
+test("createProject posts typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, projectDetail, {
+    ok: true,
+    status: 201,
+    statusText: "Created",
+  });
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+  const body = {
+    title: "Album Release",
+    description: "Release plan",
+    status: "active",
+    position: "1000",
+  };
+
+  const response = await client.createProject({ workspaceId, userId, body });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(fetchCalls[0]?.input, `https://api.task.local/workspaces/${workspaceId}/projects`);
+  assert.equal(fetchCalls[0]?.init.method, "POST");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
+  assert.deepEqual(response, projectDetail);
+});
+
 test("applyTaskSkill narrows created task tree responses", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, {
