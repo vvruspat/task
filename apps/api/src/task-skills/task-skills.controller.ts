@@ -16,14 +16,17 @@ import {
 } from "../auth/trusted-current-user.decorator.js";
 import type {
   CreateTaskSkillInput,
+  UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import {
   CreateTaskSkillDto,
   ParseCreateTaskSkillBodyPipe,
+  ParseUpdateTaskSkillDefinitionBodyPipe,
   ParseUpdateTaskSkillMetadataBodyPipe,
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
+  UpdateTaskSkillDefinitionDto,
   UpdateTaskSkillMetadataDto,
 } from "./task-skills.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
@@ -81,6 +84,33 @@ export class TaskSkillsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskSkillDetailDto> {
     return this.taskSkillsService.getTaskSkill(workspaceId, taskSkillId, userId);
+  }
+
+  @Patch(":taskSkillId/definition")
+  @ApiOperation({ summary: "Create a new task skill definition version" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "taskSkillId" })
+  @ApiBody({ type: UpdateTaskSkillDefinitionDto })
+  @ApiOkResponse({ type: TaskSkillDetailDto })
+  @ApiBadRequestResponse({ description: "Task skill definition payload is invalid." })
+  @ApiForbiddenResponse({
+    description: "Current user cannot update task skills in this workspace.",
+  })
+  @ApiNotFoundResponse({
+    description: "Workspace or task skill is missing or not visible to the current user.",
+  })
+  updateTaskSkillDefinition(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("taskSkillId", uuidV4Pipe) taskSkillId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateTaskSkillDefinitionBodyPipe()) input: UpdateTaskSkillDefinitionInput,
+  ): Promise<TaskSkillDetailDto> {
+    return this.taskSkillsService.updateTaskSkillDefinition(
+      workspaceId,
+      taskSkillId,
+      userId,
+      input,
+    );
   }
 
   @Patch(":taskSkillId")

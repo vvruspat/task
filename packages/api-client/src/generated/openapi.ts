@@ -246,6 +246,23 @@ export interface paths {
     patch: operations["TaskSkillsController_updateTaskSkillMetadata"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/task-skills/{taskSkillId}/definition": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Create a new task skill definition version */
+    patch: operations["TaskSkillsController_updateTaskSkillDefinition"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/statuses": {
     parameters: {
       query?: never;
@@ -591,6 +608,11 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
       versions: components["schemas"]["TaskSkillVersionSummaryDto"][];
+    };
+    UpdateTaskSkillDefinitionDto: {
+      definition: {
+        [key: string]: unknown;
+      };
     };
     UpdateTaskSkillMetadataDto: {
       /** @example Song */
@@ -1315,6 +1337,56 @@ export interface operations {
         };
       };
       /** @description Task skill metadata payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update task skills in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or task skill is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_updateTaskSkillDefinition: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        taskSkillId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTaskSkillDefinitionDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillDetailDto"];
+        };
+      };
+      /** @description Task skill definition payload is invalid. */
       400: {
         headers: {
           [name: string]: unknown;

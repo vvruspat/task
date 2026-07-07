@@ -2,6 +2,7 @@ import type {
   CreateTaskSkillInput,
   TaskSkillDetail,
   TaskSkillSummary,
+  UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 
@@ -38,6 +39,21 @@ export type TaskSkillMetadataUpdateResult =
       status: "duplicate_name";
     };
 
+export type TaskSkillDefinitionUpdateResult =
+  | {
+      status: "updated";
+      taskSkill: TaskSkillDetail;
+    }
+  | {
+      status: "workspace_not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "task_skill_not_found";
+    };
+
 export type TaskSkillsReadStore = {
   listActiveForWorkspace(workspaceId: string, userId: string): Promise<TaskSkillSummary[] | null>;
   getActiveForWorkspace(
@@ -56,4 +72,10 @@ export type TaskSkillsReadStore = {
     userId: string,
     input: UpdateTaskSkillMetadataInput,
   ): Promise<TaskSkillMetadataUpdateResult>;
+  updateDefinitionForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: UpdateTaskSkillDefinitionInput,
+  ): Promise<TaskSkillDefinitionUpdateResult>;
 };

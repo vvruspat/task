@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import type {
   CreateTaskSkillInput,
+  UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
@@ -88,6 +89,34 @@ export class TaskSkillsService {
 
     if (result.status === "duplicate_name") {
       throw new BadRequestException("Task skill name already exists in this workspace.");
+    }
+
+    return new TaskSkillDetailDto(result.taskSkill);
+  }
+
+  async updateTaskSkillDefinition(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: UpdateTaskSkillDefinitionInput,
+  ): Promise<TaskSkillDetailDto> {
+    const result = await this.readStore.updateDefinitionForWorkspace(
+      workspaceId,
+      taskSkillId,
+      userId,
+      input,
+    );
+
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    if (result.status === "task_skill_not_found") {
+      throw new NotFoundException("Task skill was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot update task skills in this workspace.");
     }
 
     return new TaskSkillDetailDto(result.taskSkill);

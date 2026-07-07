@@ -36,3 +36,7 @@ export type UpdateTaskSkillMetadataInput = {
   description?: string | null;
   aliases?: string[];
 };
+
+export type UpdateTaskSkillDefinitionInput = {
+  definition: Record<string, unknown>;
+};

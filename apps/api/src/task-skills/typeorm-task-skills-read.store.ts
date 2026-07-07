@@ -15,10 +15,12 @@ import type {
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
+  UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import type {
   TaskSkillCreateResult,
+  TaskSkillDefinitionUpdateResult,
   TaskSkillMetadataUpdateResult,
   TaskSkillsReadStore,
 } from "./task-skills.store.js";
@@ -250,6 +252,85 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
         return {
           ...toTaskSkillSummary(savedSkill),
           versions: versions.map((version) => toTaskSkillVersionSummary(version)),
+        };
+      },
+    );
+
+    if (updated === null) {
+      return { status: "task_skill_not_found" };
+    }
+
+    return { status: "updated", taskSkill: updated };
+  }
+
+  async updateDefinitionForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: UpdateTaskSkillDefinitionInput,
+  ): Promise<TaskSkillDefinitionUpdateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null) {
+      return { status: "workspace_not_found" };
+    }
+
+    if (!taskSkillWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const updated = await dataSource.transaction(
+      async (manager): Promise<TaskSkillDetail | null> => {
+        const skill = await manager.getRepository(TaskSkillEntity).findOneBy({
+          archivedAt: IsNull(),
+          id: taskSkillId,
+          workspaceId,
+        });
+
+        if (skill === null) {
+          return null;
+        }
+
+        const versionRepository = manager.getRepository(TaskSkillVersionEntity);
+        const latestVersion = await versionRepository.findOne({
+          where: { taskSkillId, workspaceId },
+          order: { version: "DESC", createdAt: "DESC" },
+        });
+        const nextVersion = (latestVersion?.version ?? 0) + 1;
+        const version = versionRepository.create({
+          workspaceId,
+          taskSkillId,
+          version: nextVersion,
+          definition: input.definition,
+          createdByUserId: userId,
+        });
+        const savedVersion = await versionRepository.save(version);
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "task_skill.definition_updated",
+          entityType: "task_skill",
+          entityId: skill.id,
+          payload: {
+            name: skill.name,
+            version: savedVersion.version,
+          },
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        const versions = await versionRepository.find({
+          where: { taskSkillId, workspaceId },
+          order: { version: "DESC", createdAt: "DESC" },
+        });
+
+        return {
+          ...toTaskSkillSummary(skill),
+          versions: versions.map((taskSkillVersion) => toTaskSkillVersionSummary(taskSkillVersion)),
         };
       },
     );
