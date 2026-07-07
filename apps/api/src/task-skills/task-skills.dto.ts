@@ -1,5 +1,6 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { TaskDetailDto } from "../tasks/tasks.dto.js";
 import type {
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
@@ -7,6 +8,7 @@ import type {
   TaskSkillApplyPreview,
   TaskSkillApplyPreviewSubtask,
   TaskSkillApplyPreviewSubtaskSource,
+  TaskSkillApplyResult,
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
@@ -138,6 +140,39 @@ export class TaskSkillApplyPreviewDto implements TaskSkillApplyPreview {
     this.taskSkillVersion = preview.taskSkillVersion;
     this.rootTaskTitle = preview.rootTaskTitle;
     this.subtasks = preview.subtasks.map((subtask) => new TaskSkillApplyPreviewSubtaskDto(subtask));
+  }
+}
+
+export class TaskSkillApplyResultDto implements TaskSkillApplyResult {
+  @ApiProperty({ format: "uuid" })
+  readonly workspaceId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly projectId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly taskSkillId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly taskSkillVersionId: string;
+
+  @ApiProperty({ example: 1 })
+  readonly taskSkillVersion: number;
+
+  @ApiProperty({ type: TaskDetailDto })
+  readonly rootTask: TaskDetailDto;
+
+  @ApiProperty({ isArray: true, type: TaskDetailDto })
+  readonly subtasks: TaskDetailDto[];
+
+  constructor(result: TaskSkillApplyResult) {
+    this.workspaceId = result.workspaceId;
+    this.projectId = result.projectId;
+    this.taskSkillId = result.taskSkillId;
+    this.taskSkillVersionId = result.taskSkillVersionId;
+    this.taskSkillVersion = result.taskSkillVersion;
+    this.rootTask = new TaskDetailDto(result.rootTask);
+    this.subtasks = result.subtasks.map((subtask) => new TaskDetailDto(subtask));
   }
 }
 

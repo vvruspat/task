@@ -6,16 +6,19 @@ import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   ActivityEventEntity,
   ProjectEntity,
+  TaskEntity,
   TaskSkillEntity,
   TaskSkillVersionEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
+import type { TaskDetail } from "../tasks/tasks.contracts.js";
 import type {
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   TaskSkillApplyPreview,
   TaskSkillApplyPreviewSubtask,
+  TaskSkillApplyResult,
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
@@ -23,6 +26,7 @@ import type {
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import type {
+  TaskSkillApplyForWorkspaceResult,
   TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
   TaskSkillCreateResult,
@@ -466,22 +470,6 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
       return { status: "invalid_definition" };
     }
 
-    const removeSubtasks = new Set(input.overrides?.removeSubtasks ?? []);
-    const previewSubtasks: TaskSkillApplyPreviewSubtask[] = skillSubtaskTitles
-      .filter((title) => !removeSubtasks.has(title))
-      .map((title) => ({
-        source: "skill",
-        title,
-      }));
-    const previewTitles = new Set(previewSubtasks.map((subtask) => subtask.title));
-
-    for (const title of input.overrides?.addSubtasks ?? []) {
-      if (!previewTitles.has(title)) {
-        previewSubtasks.push({ source: "added", title });
-        previewTitles.add(title);
-      }
-    }
-
     const preview: TaskSkillApplyPreview = {
       workspaceId,
       projectId: input.projectId,
@@ -489,10 +477,132 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
       taskSkillVersionId: latestVersion.id,
       taskSkillVersion: latestVersion.version,
       rootTaskTitle: input.rootTaskTitle,
-      subtasks: previewSubtasks,
+      subtasks: buildApplySubtasks(skillSubtaskTitles, input),
     };
 
     return { status: "previewed", preview };
+  }
+
+  async applyForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: PreviewTaskSkillApplyInput,
+  ): Promise<TaskSkillApplyForWorkspaceResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null) {
+      return { status: "not_found" };
+    }
+
+    if (!taskSkillWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: input.projectId,
+      workspaceId,
+    });
+
+    if (project === null) {
+      return { status: "not_found" };
+    }
+
+    const skill = await dataSource.getRepository(TaskSkillEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: taskSkillId,
+      workspaceId,
+    });
+
+    if (skill === null) {
+      return { status: "not_found" };
+    }
+
+    const latestVersion = await dataSource.getRepository(TaskSkillVersionEntity).findOne({
+      where: { taskSkillId, workspaceId },
+      order: { version: "DESC", createdAt: "DESC" },
+    });
+
+    if (latestVersion === null) {
+      return { status: "invalid_definition" };
+    }
+
+    const skillSubtaskTitles = readDefinitionSubtaskTitles(latestVersion.definition);
+
+    if (skillSubtaskTitles === null) {
+      return { status: "invalid_definition" };
+    }
+
+    const plannedSubtasks = buildApplySubtasks(skillSubtaskTitles, input);
+    const applied = await dataSource.transaction(async (manager): Promise<TaskSkillApplyResult> => {
+      const taskRepository = manager.getRepository(TaskEntity);
+      const rootTask = taskRepository.create({
+        workspaceId,
+        projectId: input.projectId,
+        parentTaskId: null,
+        title: input.rootTaskTitle,
+        description: null,
+        createdByUserId: userId,
+        position: "0",
+        dueAt: null,
+        sourceSkillId: skill.id,
+        sourceSkillVersionId: latestVersion.id,
+        metadata: {},
+      });
+      const savedRootTask = await taskRepository.save(rootTask);
+      const subtaskEntities = plannedSubtasks.map((subtask, index) =>
+        taskRepository.create({
+          workspaceId,
+          projectId: input.projectId,
+          parentTaskId: savedRootTask.id,
+          title: subtask.title,
+          description: null,
+          createdByUserId: userId,
+          position: String(index + 1),
+          dueAt: null,
+          sourceSkillId: skill.id,
+          sourceSkillVersionId: latestVersion.id,
+          metadata: {
+            taskSkillSubtaskSource: subtask.source,
+          },
+        }),
+      );
+      const savedSubtasks = await taskRepository.save(subtaskEntities);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task_skill.applied",
+        entityType: "task",
+        entityId: savedRootTask.id,
+        payload: {
+          projectId: input.projectId,
+          rootTaskTitle: savedRootTask.title,
+          subtaskCount: savedSubtasks.length,
+          taskSkillId: skill.id,
+          taskSkillVersion: latestVersion.version,
+          taskSkillVersionId: latestVersion.id,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return {
+        workspaceId,
+        projectId: input.projectId,
+        taskSkillId: skill.id,
+        taskSkillVersionId: latestVersion.id,
+        taskSkillVersion: latestVersion.version,
+        rootTask: toTaskDetail(savedRootTask),
+        subtasks: savedSubtasks.map((subtask) => toTaskDetail(subtask)),
+      };
+    });
+
+    return { status: "applied", result: applied };
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {
@@ -577,4 +687,49 @@ function readDefinitionSubtaskTitles(definition: Record<string, unknown>): strin
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function buildApplySubtasks(
+  skillSubtaskTitles: string[],
+  input: PreviewTaskSkillApplyInput,
+): TaskSkillApplyPreviewSubtask[] {
+  const removeSubtasks = new Set(input.overrides?.removeSubtasks ?? []);
+  const subtasks: TaskSkillApplyPreviewSubtask[] = skillSubtaskTitles
+    .filter((title) => !removeSubtasks.has(title))
+    .map((title) => ({
+      source: "skill",
+      title,
+    }));
+  const titles = new Set(subtasks.map((subtask) => subtask.title));
+
+  for (const title of input.overrides?.addSubtasks ?? []) {
+    if (!titles.has(title)) {
+      subtasks.push({ source: "added", title });
+      titles.add(title);
+    }
+  }
+
+  return subtasks;
+}
+
+function toTaskDetail(task: TaskEntity): TaskDetail {
+  return {
+    id: task.id,
+    workspaceId: task.workspaceId,
+    projectId: task.projectId,
+    parentTaskId: task.parentTaskId,
+    title: task.title,
+    description: task.description,
+    statusId: task.statusId,
+    assigneeUserId: task.assigneeUserId,
+    createdByUserId: task.createdByUserId,
+    position: task.position,
+    dueAt: task.dueAt,
+    sourceSkillId: task.sourceSkillId,
+    sourceSkillVersionId: task.sourceSkillVersionId,
+    metadata: task.metadata,
+    archivedAt: task.archivedAt,
+    createdAt: task.createdAt,
+    updatedAt: task.updatedAt,
+  };
 }

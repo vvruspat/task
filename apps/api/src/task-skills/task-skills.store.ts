@@ -2,6 +2,7 @@ import type {
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   TaskSkillApplyPreview,
+  TaskSkillApplyResult,
   TaskSkillDetail,
   TaskSkillSummary,
   UpdateTaskSkillDefinitionInput,
@@ -83,6 +84,21 @@ export type TaskSkillApplyPreviewResult =
       status: "invalid_definition";
     };
 
+export type TaskSkillApplyForWorkspaceResult =
+  | {
+      status: "applied";
+      result: TaskSkillApplyResult;
+    }
+  | {
+      status: "not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "invalid_definition";
+    };
+
 export type TaskSkillsReadStore = {
   listActiveForWorkspace(workspaceId: string, userId: string): Promise<TaskSkillSummary[] | null>;
   getActiveForWorkspace(
@@ -118,4 +134,10 @@ export type TaskSkillsReadStore = {
     userId: string,
     input: PreviewTaskSkillApplyInput,
   ): Promise<TaskSkillApplyPreviewResult>;
+  applyForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: PreviewTaskSkillApplyInput,
+  ): Promise<TaskSkillApplyForWorkspaceResult>;
 };

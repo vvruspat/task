@@ -1071,6 +1071,74 @@
         "tags": ["task-skills"]
       }
     },
+    "/workspaces/{workspaceId}/task-skills/{taskSkillId}/apply": {
+      "post": {
+        "operationId": "TaskSkillsController_applyTaskSkill",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskSkillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewTaskSkillApplyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSkillApplyResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task skill apply payload or definition is invalid."
+          },
+          "403": {
+            "description": "Current user cannot apply task skills in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or task skill is missing or not visible to the current user."
+          }
+        },
+        "summary": "Apply one task skill and create a task tree",
+        "tags": ["task-skills"]
+      }
+    },
     "/workspaces/{workspaceId}/task-skills/{taskSkillId}/definition": {
       "patch": {
         "operationId": "TaskSkillsController_updateTaskSkillDefinition",
@@ -2242,6 +2310,49 @@
           "taskSkillVersionId",
           "taskSkillVersion",
           "rootTaskTitle",
+          "subtasks"
+        ]
+      },
+      "TaskSkillApplyResultDto": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskSkillId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskSkillVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskSkillVersion": {
+            "type": "number",
+            "example": 1
+          },
+          "rootTask": {
+            "$ref": "#/components/schemas/TaskDetailDto"
+          },
+          "subtasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDetailDto"
+            }
+          }
+        },
+        "required": [
+          "workspaceId",
+          "projectId",
+          "taskSkillId",
+          "taskSkillVersionId",
+          "taskSkillVersion",
+          "rootTask",
           "subtasks"
         ]
       },
