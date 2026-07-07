@@ -1532,6 +1532,52 @@
         "summary": "Attach a link to a visible task",
         "tags": ["attachments"]
       }
+    },
+    "/internal/telegram/context/resolve": {
+      "post": {
+        "operationId": "TelegramController_resolveContext",
+        "parameters": [
+          {
+            "name": "x-task-bot-secret",
+            "in": "header",
+            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveTelegramContextDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramContextResolutionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram context payload is invalid."
+          },
+          "401": {
+            "description": "Telegram bot shared secret is missing or invalid."
+          }
+        },
+        "summary": "Resolve Telegram bot message identity and chat context",
+        "tags": ["telegram"]
+      }
     }
   },
   "info": {
@@ -2566,6 +2612,48 @@
           }
         },
         "required": ["url"]
+      },
+      "ResolveTelegramContextDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "telegramChatId": {
+            "type": "string",
+            "example": "-100987654321"
+          }
+        },
+        "required": ["telegramId", "telegramChatId"]
+      },
+      "TelegramContextResolutionDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "telegram_user_unlinked",
+              "telegram_chat_unlinked",
+              "user_not_in_chat_workspace"
+            ]
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "defaultProjectId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "required": ["status"]
       }
     }
   }

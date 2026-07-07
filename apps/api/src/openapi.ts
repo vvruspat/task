@@ -28,6 +28,10 @@ import {
   UpdateTaskStatusDto,
 } from "./tasks/tasks.dto.js";
 import {
+  ResolveTelegramContextDto,
+  TelegramContextResolutionDto,
+} from "./telegram/telegram.dto.js";
+import {
   WorkspaceDetailDto,
   WorkspaceMemberDto,
   WorkspaceSummaryDto,
@@ -71,6 +75,8 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       TaskCommentDto,
       CreateTaskLinkAttachmentDto,
       TaskAttachmentDto,
+      ResolveTelegramContextDto,
+      TelegramContextResolutionDto,
     ],
   });
 }

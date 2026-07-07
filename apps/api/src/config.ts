@@ -1,6 +1,7 @@
 export type ApiEnvironment = {
   DATABASE_URL?: string;
   PORT?: string;
+  TELEGRAM_BOT_SHARED_SECRET?: string;
 };
 
 export type ApiDatabaseConfig = {
@@ -8,8 +9,13 @@ export type ApiDatabaseConfig = {
 };
 
 export type ApiConfig = {
+  botAuth: ApiBotAuthConfig | null;
   database: ApiDatabaseConfig | null;
   port: number;
+};
+
+export type ApiBotAuthConfig = {
+  sharedSecret: string;
 };
 
 export class InvalidApiEnvironmentError extends Error {
@@ -27,6 +33,7 @@ const portPattern = /^\d+$/;
 
 export function parseApiConfig(environment: ApiEnvironment): ApiConfig {
   return {
+    botAuth: parseBotAuthConfig(environment.TELEGRAM_BOT_SHARED_SECRET),
     database: parseDatabaseConfig(environment.DATABASE_URL),
     port: parsePort(environment.PORT),
   };
@@ -104,8 +111,26 @@ function parseDatabaseConfig(value: string | undefined): ApiDatabaseConfig | nul
   };
 }
 
+function parseBotAuthConfig(value: string | undefined): ApiBotAuthConfig | null {
+  if (value === undefined) {
+    return null;
+  }
+
+  if (value.trim() !== value || value.length === 0) {
+    throw new InvalidApiEnvironmentError(
+      "TELEGRAM_BOT_SHARED_SECRET",
+      value,
+      "must be a non-empty string without surrounding whitespace",
+    );
+  }
+
+  return {
+    sharedSecret: value,
+  };
+}
+
 function formatInvalidValue(variableName: keyof ApiEnvironment, value: string): string {
-  if (variableName === "DATABASE_URL") {
+  if (variableName === "DATABASE_URL" || variableName === "TELEGRAM_BOT_SHARED_SECRET") {
     return "[redacted]";
   }
 
