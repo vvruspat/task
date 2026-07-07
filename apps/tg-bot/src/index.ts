@@ -1,6 +1,20 @@
 export const tgBotAppPackageName = "@task/tg-bot";
 
 export {
+  createTelegramBackendClient,
+  type ResolveTelegramContextInput,
+  type ResolveTelegramContextRequest,
+  type TelegramBackendClient,
+  TelegramBackendClientError,
+  type TelegramBackendClientOptions,
+  type TelegramBackendFetch,
+  type TelegramBackendFetchInit,
+  type TelegramBackendFetchResponse,
+  type TelegramBackendPostHeaders,
+  type TelegramContextResolutionResponse,
+} from "./backend-client.js";
+
+export {
   InvalidTelegramBotEnvironmentError,
   loadTelegramBotConfig,
   parseTelegramBotConfig,

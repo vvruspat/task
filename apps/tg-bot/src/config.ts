@@ -1,11 +1,13 @@
 export type TelegramBotEnvironment = {
   TELEGRAM_BOT_TOKEN?: string;
+  TASK_API_BOT_SHARED_SECRET?: string;
   TASK_API_BASE_URL?: string;
   TELEGRAM_WEBHOOK_SECRET?: string;
 };
 
 export type TelegramBotConfig = {
   botToken: string;
+  backendBotSharedSecret: string;
   backendBaseUrl: string;
   webhookSecret: string | null;
 };
@@ -26,6 +28,10 @@ export class InvalidTelegramBotEnvironmentError extends Error {
 export function parseTelegramBotConfig(environment: TelegramBotEnvironment): TelegramBotConfig {
   return {
     botToken: parseRequiredSecret("TELEGRAM_BOT_TOKEN", environment.TELEGRAM_BOT_TOKEN),
+    backendBotSharedSecret: parseRequiredSecret(
+      "TASK_API_BOT_SHARED_SECRET",
+      environment.TASK_API_BOT_SHARED_SECRET,
+    ),
     backendBaseUrl: parseBackendBaseUrl(environment.TASK_API_BASE_URL),
     webhookSecret: parseOptionalSecret(
       "TELEGRAM_WEBHOOK_SECRET",
@@ -41,7 +47,7 @@ export function loadTelegramBotConfig(
 }
 
 function parseRequiredSecret(
-  variableName: "TELEGRAM_BOT_TOKEN",
+  variableName: "TELEGRAM_BOT_TOKEN" | "TASK_API_BOT_SHARED_SECRET",
   value: string | undefined,
 ): string {
   if (value === undefined) {
@@ -126,7 +132,11 @@ function formatInvalidValue(
     return "undefined";
   }
 
-  if (variableName === "TELEGRAM_BOT_TOKEN" || variableName === "TELEGRAM_WEBHOOK_SECRET") {
+  if (
+    variableName === "TELEGRAM_BOT_TOKEN" ||
+    variableName === "TASK_API_BOT_SHARED_SECRET" ||
+    variableName === "TELEGRAM_WEBHOOK_SECRET"
+  ) {
     return "[redacted]";
   }
 
