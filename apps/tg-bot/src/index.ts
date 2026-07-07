@@ -1,9 +1,12 @@
 export const tgBotAppPackageName = "@task/tg-bot";
 
 export {
+  type CreateTelegramAgentRunInput,
+  type CreateTelegramAgentRunRequest,
   createTelegramBackendClient,
   type ResolveTelegramContextInput,
   type ResolveTelegramContextRequest,
+  type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
   TelegramBackendClientError,
   type TelegramBackendClientOptions,
