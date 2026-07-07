@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-81-mcp-task-skill-api-client  (2026-07-07)
+# Graph Report - tAsk-issue-83-mcp-task-skill-tool-handlers  (2026-07-07)
 
 ## Corpus Check
-- 174 files · ~59,988 words
+- 176 files · ~60,806 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1225 nodes · 2426 edges · 70 communities (67 shown, 3 thin omitted)
+- 1244 nodes · 2471 edges · 71 communities (68 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d531dcbd`
+- Built from commit: `52bf3adf`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -66,6 +66,7 @@
 - [[_COMMUNITY_Community 53|Community 53]]
 - [[_COMMUNITY_Community 54|Community 54]]
 - [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
 - [[_COMMUNITY_Community 57|Community 57]]
 - [[_COMMUNITY_Community 58|Community 58]]
 - [[_COMMUNITY_Community 59|Community 59]]
@@ -98,7 +99,7 @@
   apps/api/src/generate-openapi.ts → apps/api/src/openapi.ts
 - `TaskSkillDetailDto` --implements--> `TaskSkillDetail`  [EXTRACTED]
   apps/api/src/task-skills/task-skills.dto.ts → apps/api/src/task-skills/task-skills.contracts.ts
-- `UpdateTaskSkillMetadataDto` --implements--> `UpdateTaskSkillMetadataInput`  [EXTRACTED]
+- `CreateTaskSkillDto` --implements--> `CreateTaskSkillInput`  [EXTRACTED]
   apps/api/src/task-skills/task-skills.dto.ts → apps/api/src/task-skills/task-skills.contracts.ts
 - `TaskSkillApplyResultDto` --references--> `TaskDetailDto`  [EXTRACTED]
   apps/api/src/task-skills/task-skills.dto.ts → apps/api/src/tasks/tasks.dto.ts
@@ -108,7 +109,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (70 total, 3 thin omitted)
+## Communities (71 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.09
@@ -231,8 +232,8 @@ Cohesion: 0.33
 Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ### Community 33 - "Community 33"
-Cohesion: 0.09
-Nodes (34): components, $defs, operations, paths, webhooks, ApplyTaskSkillOperation, ApplyTaskSkillResponse, createTaskBackendClient() (+26 more)
+Cohesion: 0.07
+Nodes (48): components, $defs, operations, paths, webhooks, ApplyTaskSkillOperation, ApplyTaskSkillResponse, createTaskBackendClient() (+40 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.09
@@ -276,7 +277,7 @@ Nodes (5): InviteEntity, WorkspaceMemberEntity, InviteRecord, WorkspaceMemberRec
 
 ### Community 49 - "Community 49"
 Cohesion: 0.17
-Nodes (11): CreateTaskSkillInput, UpdateTaskSkillDefinitionInput, UpdateTaskSkillMetadataInput, TaskSkillsController, uuidV4Pipe, CreateTaskSkillDto, TaskSkillDetailDto, UpdateTaskSkillDefinitionDto (+3 more)
+Nodes (11): CreateTaskSkillInput, UpdateTaskSkillDefinitionInput, UpdateTaskSkillMetadataInput, TaskSkillsController, uuidV4Pipe, TaskSkillDetailDto, UpdateTaskSkillDefinitionDto, UpdateTaskSkillMetadataDto (+3 more)
 
 ### Community 50 - "Community 50"
 Cohesion: 0.12
@@ -301,6 +302,10 @@ Nodes (17): PreviewTaskSkillApplyOverrides, isUnknownRecord(), ParseCreateTaskSk
 ### Community 55 - "Community 55"
 Cohesion: 0.38
 Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql
+
+### Community 56 - "Community 56"
+Cohesion: 0.36
+Nodes (5): TaskSkillApplyPreviewSubtask, TaskSkillApplyPreviewSubtaskSource, TaskSkillVersionSummary, TaskSkillApplyPreviewSubtaskDto, TaskSkillVersionSummaryDto
 
 ### Community 57 - "Community 57"
 Cohesion: 0.14
@@ -347,8 +352,8 @@ Cohesion: 0.15
 Nodes (13): TaskSkillDetail, TaskSkillApplyForWorkspaceResult, TaskSkillApplyPreviewResult, TaskSkillArchiveResult, TaskSkillCreateResult, TaskSkillDefinitionUpdateResult, TaskSkillMetadataUpdateResult, buildApplySubtasks() (+5 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 0.15
-Nodes (12): PreviewTaskSkillApplyInput, TaskSkillApplyPreview, TaskSkillApplyPreviewSubtask, TaskSkillApplyPreviewSubtaskSource, TaskSkillApplyResult, TaskSkillVersionSummary, PreviewTaskSkillApplyDto, TaskSkillApplyPreviewDto (+4 more)
+Cohesion: 0.21
+Nodes (7): PreviewTaskSkillApplyInput, TaskSkillApplyPreview, TaskSkillApplyResult, CreateTaskSkillDto, PreviewTaskSkillApplyDto, TaskSkillApplyPreviewDto, TaskSkillApplyResultDto
 
 ### Community 72 - "Community 72"
 Cohesion: 0.38
@@ -359,7 +364,7 @@ Cohesion: 0.23
 Nodes (7): AttachmentEntity, CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, AttachmentKind, AttachmentRecord, AttachmentTargetType
 
 ## Knowledge Gaps
-- **496 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+491 more)
+- **499 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+494 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -369,11 +374,11 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `TaskDetailDto` connect `Community 51` to `Community 54`, `Community 71`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Why does `WorkspaceMemberEntity` connect `Community 46` to `Community 64`, `Community 65`, `Community 66`, `Community 67`, `Community 68`, `Community 2`, `Community 50`, `Community 51`, `Community 63`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `UpdateTaskSkillMetadataInput` connect `Community 49` to `Community 68`, `Community 71`, `Community 54`, `Community 57`, `Community 58`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+- **Why does `UpdateTaskSkillMetadataInput` connect `Community 49` to `Community 68`, `Community 54`, `Community 56`, `Community 57`, `Community 58`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _496 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _499 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

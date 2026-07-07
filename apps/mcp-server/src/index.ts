@@ -13,3 +13,11 @@ export {
   type TaskBackendFetchResponse,
   type TaskSkillApplyRequest,
 } from "./backend-client.js";
+
+export {
+  createTaskSkillToolHandlers,
+  parseTaskSkillApplyToolInput,
+  type TaskSkillApplyToolInput,
+  type TaskSkillToolHandlers,
+  TaskSkillToolInputError,
+} from "./task-skill-tools.js";
