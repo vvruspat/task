@@ -357,7 +357,7 @@
       "label": "AppModule",
       "file_type": "code",
       "source_file": "apps/api/src/app.module.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "src_app_module_appmodule",
       "community": 18,
@@ -402,6 +402,496 @@
       "id": "src_app_service_appservice_gethealth",
       "community": 18,
       "norm_label": ".gethealth()"
+    },
+    {
+      "label": "attachments.contracts.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_contracts",
+      "community": 66,
+      "norm_label": "attachments.contracts.ts"
+    },
+    {
+      "label": "TaskAttachment",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "attachments_attachments_contracts_taskattachment",
+      "community": 66,
+      "norm_label": "taskattachment"
+    },
+    {
+      "label": "CreateTaskLinkAttachmentInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "community": 66,
+      "norm_label": "createtasklinkattachmentinput"
+    },
+    {
+      "label": "attachments.controller.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_test",
+      "community": 66,
+      "norm_label": "attachments.controller.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_test_createdat",
+      "community": 66,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "taskAttachment",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_test_taskattachment",
+      "community": 66,
+      "norm_label": "taskattachment"
+    },
+    {
+      "label": "createAttachmentsStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_test_createattachmentsstore",
+      "community": 66,
+      "norm_label": "createattachmentsstore()"
+    },
+    {
+      "label": "attachments.controller.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller",
+      "community": 66,
+      "norm_label": "attachments.controller.ts"
+    },
+    {
+      "label": "uuidV4Pipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_uuidv4pipe",
+      "community": 66,
+      "norm_label": "uuidv4pipe"
+    },
+    {
+      "label": "AttachmentsController",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_attachmentscontroller",
+      "community": 66,
+      "norm_label": "attachmentscontroller"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_attachmentscontroller_constructor",
+      "community": 66,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listTaskAttachments()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_attachmentscontroller_listtaskattachments",
+      "community": 66,
+      "norm_label": ".listtaskattachments()"
+    },
+    {
+      "label": ".createTaskLinkAttachment()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "attachments_attachments_controller_attachmentscontroller_createtasklinkattachment",
+      "community": 66,
+      "norm_label": ".createtasklinkattachment()"
+    },
+    {
+      "label": "attachments.dto.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto",
+      "community": 66,
+      "norm_label": "attachments.dto.ts"
+    },
+    {
+      "label": "CreateTaskLinkAttachmentDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_createtasklinkattachmentdto",
+      "community": 66,
+      "norm_label": "createtasklinkattachmentdto"
+    },
+    {
+      "label": "ParseCreateTaskLinkAttachmentBodyPipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe",
+      "community": 66,
+      "norm_label": "parsecreatetasklinkattachmentbodypipe"
+    },
+    {
+      "label": ".transform()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe_transform",
+      "community": 66,
+      "norm_label": ".transform()"
+    },
+    {
+      "label": "TaskAttachmentDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_taskattachmentdto",
+      "community": 66,
+      "norm_label": "taskattachmentdto"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_taskattachmentdto_constructor",
+      "community": 66,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "parseCreateTaskLinkAttachmentInput()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L78",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_parsecreatetasklinkattachmentinput",
+      "community": 66,
+      "norm_label": "parsecreatetasklinkattachmentinput()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L94",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_isunknownrecord",
+      "community": 66,
+      "norm_label": "isunknownrecord()"
+    },
+    {
+      "label": "readRequiredUrl()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L98",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_readrequiredurl",
+      "community": 66,
+      "norm_label": "readrequiredurl()"
+    },
+    {
+      "label": "readOptionalNullableString()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L126",
+      "_origin": "ast",
+      "id": "attachments_attachments_dto_readoptionalnullablestring",
+      "community": 66,
+      "norm_label": "readoptionalnullablestring()"
+    },
+    {
+      "label": "attachments.module.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_module",
+      "community": 66,
+      "norm_label": "attachments.module.ts"
+    },
+    {
+      "label": "attachmentsServiceProvider",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "attachments_attachments_module_attachmentsserviceprovider",
+      "community": 66,
+      "norm_label": "attachmentsserviceprovider"
+    },
+    {
+      "label": "AttachmentsModule",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "attachments_attachments_module_attachmentsmodule",
+      "community": 18,
+      "norm_label": "attachmentsmodule"
+    },
+    {
+      "label": "attachments.service.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_test",
+      "community": 66,
+      "norm_label": "attachments.service.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_test_createdat",
+      "community": 66,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "taskAttachment",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_test_taskattachment",
+      "community": 66,
+      "norm_label": "taskattachment"
+    },
+    {
+      "label": "createAttachmentsStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L104",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_test_createattachmentsstore",
+      "community": 66,
+      "norm_label": "createattachmentsstore()"
+    },
+    {
+      "label": "attachments.service.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_service",
+      "community": 66,
+      "norm_label": "attachments.service.ts"
+    },
+    {
+      "label": "AttachmentsService",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_attachmentsservice",
+      "community": 66,
+      "norm_label": "attachmentsservice"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_attachmentsservice_constructor",
+      "community": 66,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listTaskAttachments()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_attachmentsservice_listtaskattachments",
+      "community": 66,
+      "norm_label": ".listtaskattachments()"
+    },
+    {
+      "label": ".createTaskLinkAttachment()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "attachments_attachments_service_attachmentsservice_createtasklinkattachment",
+      "community": 66,
+      "norm_label": ".createtasklinkattachment()"
+    },
+    {
+      "label": "attachments.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_attachments_store",
+      "community": 66,
+      "norm_label": "attachments.store.ts"
+    },
+    {
+      "label": "TaskAttachmentCreateResult",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "attachments_attachments_store_taskattachmentcreateresult",
+      "community": 66,
+      "norm_label": "taskattachmentcreateresult"
+    },
+    {
+      "label": "TaskAttachmentsStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "attachments_attachments_store_taskattachmentsstore",
+      "community": 66,
+      "norm_label": "taskattachmentsstore"
+    },
+    {
+      "label": "typeorm-task-attachments.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store",
+      "community": 66,
+      "norm_label": "typeorm-task-attachments.store.ts"
+    },
+    {
+      "label": "attachmentWriteRoles",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_attachmentwriteroles",
+      "community": 66,
+      "norm_label": "attachmentwriteroles"
+    },
+    {
+      "label": "TypeOrmTaskAttachmentsStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "community": 66,
+      "norm_label": "typeormtaskattachmentsstore"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_constructor",
+      "community": 66,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listForTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_listfortask",
+      "community": 66,
+      "norm_label": ".listfortask()"
+    },
+    {
+      "label": ".createLinkForTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "community": 66,
+      "norm_label": ".createlinkfortask()"
+    },
+    {
+      "label": ".canReadTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_canreadtask",
+      "community": 66,
+      "norm_label": ".canreadtask()"
+    },
+    {
+      "label": ".getVisibleTask()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L127",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getvisibletask",
+      "community": 66,
+      "norm_label": ".getvisibletask()"
+    },
+    {
+      "label": ".getWorkspaceMembership()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getworkspacemembership",
+      "community": 66,
+      "norm_label": ".getworkspacemembership()"
+    },
+    {
+      "label": ".getInitializedDataSource()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L161",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getinitializeddatasource",
+      "community": 66,
+      "norm_label": ".getinitializeddatasource()"
+    },
+    {
+      "label": "toTaskAttachment()",
+      "file_type": "code",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L183",
+      "_origin": "ast",
+      "id": "attachments_typeorm_task_attachments_store_totaskattachment",
+      "community": 66,
+      "norm_label": "totaskattachment()"
     },
     {
       "label": "trusted-current-user.decorator.test.ts",
@@ -880,7 +1370,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 2,
+      "community": 66,
       "norm_label": ".constructor()"
     },
     {
@@ -1140,7 +1630,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 2,
+      "community": 66,
       "norm_label": "database.module.ts"
     },
     {
@@ -1150,7 +1640,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 2,
+      "community": 66,
       "norm_label": "apidatasource"
     },
     {
@@ -1160,7 +1650,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 2,
+      "community": 66,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -1180,7 +1670,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 2,
+      "community": 66,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -1190,7 +1680,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 2,
+      "community": 66,
       "norm_label": ".getdatasource()"
     },
     {
@@ -1200,7 +1690,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 2,
+      "community": 66,
       "norm_label": "databasemodule"
     },
     {
@@ -1257,7 +1747,7 @@
       "label": "createOpenApiDocument()",
       "file_type": "code",
       "source_file": "apps/api/src/openapi.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "src_openapi_createopenapidocument",
       "community": 18,
@@ -3140,7 +3630,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 2,
+      "community": 66,
       "norm_label": ".constructor()"
     },
     {
@@ -3700,7 +4190,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 2,
+      "community": 66,
       "norm_label": ".constructor()"
     },
     {
@@ -3800,7 +4290,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 2,
+      "community": 66,
       "norm_label": ".constructor()"
     },
     {
@@ -5807,7 +6297,7 @@
       "label": "webhooks",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L181",
+      "source_location": "L215",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
       "community": 33,
@@ -5817,7 +6307,7 @@
       "label": "components",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L182",
+      "source_location": "L216",
       "_origin": "ast",
       "id": "generated_openapi_components",
       "community": 33,
@@ -5827,7 +6317,7 @@
       "label": "$defs",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L409",
+      "source_location": "L471",
       "_origin": "ast",
       "id": "generated_openapi_defs",
       "community": 33,
@@ -5837,7 +6327,7 @@
       "label": "operations",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L410",
+      "source_location": "L472",
       "_origin": "ast",
       "id": "generated_openapi_operations",
       "community": 33,
@@ -9954,7 +10444,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "src_app_module",
-      "target": "comments_comments_module",
+      "target": "attachments_attachments_module",
       "confidence_score": 1.0
     },
     {
@@ -9965,8 +10455,30 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "src_app_module",
-      "target": "comments_comments_module_commentsmodule",
+      "target": "attachments_attachments_module_attachmentsmodule",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_module",
+      "target": "comments_comments_module"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_module",
+      "target": "comments_comments_module_commentsmodule"
     },
     {
       "relation": "imports_from",
@@ -10153,6 +10665,1594 @@
       "target": "src_app_service_appservice_gethealth"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "attachments_attachments_contracts",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "attachments_attachments_contracts",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "attachments_attachments_contracts",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "attachments_attachments_contracts",
+      "target": "types_core_persistence_types_attachmentkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "attachments_attachments_contracts",
+      "target": "types_core_persistence_types_attachmenttargettype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "attachments_attachments_service",
+      "target": "attachments_attachments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "attachments_attachments_store",
+      "target": "attachments_attachments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_attachments_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_taskattachmentdto",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_taskattachmentdto_constructor",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "attachments_attachments_store",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_listfortask",
+      "target": "attachments_attachments_contracts_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_attachmentscontroller_createtasklinkattachment",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_createtasklinkattachmentdto",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe_transform",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "attachments_attachments_service",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_attachmentsservice_createtasklinkattachment",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "attachments_attachments_store",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "target": "attachments_attachments_contracts_createtasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_controller_attachmentscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_controller_test_createattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_controller_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_controller_test_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_service_attachmentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_store_taskattachmentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_test",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_controller_attachmentscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_controller_uuidv4pipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_dto_createtasklinkattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "attachments_attachments_service_attachmentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "auth_trusted_current_user_decorator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_attachmentscontroller",
+      "target": "attachments_attachments_controller_attachmentscontroller_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_attachmentscontroller",
+      "target": "attachments_attachments_controller_attachmentscontroller_createtasklinkattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_attachmentscontroller",
+      "target": "attachments_attachments_controller_attachmentscontroller_listtaskattachments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_controller_attachmentscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_attachmentscontroller_constructor",
+      "target": "attachments_attachments_service_attachmentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_attachmentscontroller_listtaskattachments",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.controller.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "attachments_attachments_controller_attachmentscontroller_createtasklinkattachment",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_dto_createtasklinkattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_dto_parsecreatetasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_dto_readrequiredurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_service",
+      "target": "attachments_attachments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "attachments_attachments_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "attachments_attachments_dto_createtasklinkattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe",
+      "target": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe_transform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_parsecreatetasklinkattachmentbodypipe_transform",
+      "target": "attachments_attachments_dto_parsecreatetasklinkattachmentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_taskattachmentdto",
+      "target": "attachments_attachments_dto_taskattachmentdto_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_service",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_attachmentsservice_createtasklinkattachment",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_attachmentsservice_listtaskattachments",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/openapi.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_openapi",
+      "target": "attachments_attachments_dto_taskattachmentdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_parsecreatetasklinkattachmentinput",
+      "target": "attachments_attachments_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_parsecreatetasklinkattachmentinput",
+      "target": "attachments_attachments_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.dto.ts",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "attachments_attachments_dto_parsecreatetasklinkattachmentinput",
+      "target": "attachments_attachments_dto_readrequiredurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_module_attachmentsmodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_module_attachmentsserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_service_attachmentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_typeorm_task_attachments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "attachments_attachments_module",
+      "target": "database_database_module_databasemodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_service_attachmentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_service_test_createattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_service_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_service_test_taskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_store_taskattachmentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_test",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "attachments_attachments_service",
+      "target": "attachments_attachments_service_attachmentsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_service",
+      "target": "attachments_attachments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_attachments_service",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_attachmentsservice",
+      "target": "attachments_attachments_service_attachmentsservice_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_attachmentsservice",
+      "target": "attachments_attachments_service_attachmentsservice_createtasklinkattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_attachmentsservice",
+      "target": "attachments_attachments_service_attachmentsservice_listtaskattachments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.service.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "attachments_attachments_service_attachmentsservice_constructor",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "attachments_attachments_store",
+      "target": "attachments_attachments_store_taskattachmentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/attachments.store.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "attachments_attachments_store",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_attachments_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_attachments_store_taskattachmentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "target": "attachments_attachments_store_taskattachmentcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_attachments_store_taskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_typeorm_task_attachments_store_attachmentwriteroles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L183",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_typeorm_task_attachments_store_totaskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "entities_activity_event_entity_activityevententity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "entities_attachment_entity_attachmententity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "entities_index",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "entities_project_entity_projectentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "entities_task_entity_taskentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "entities_workspace_member_entity_workspacememberentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store",
+      "target": "types_core_persistence_types_workspacememberrole",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_canreadtask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L161",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getvisibletask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_listfortask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_constructor",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_listfortask",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_canreadtask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_listfortask",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "target": "attachments_typeorm_task_attachments_store_totaskattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getvisibletask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_createlinkfortask",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_canreadtask",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getvisibletask",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_canreadtask",
+      "target": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getworkspacemembership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getvisibletask",
+      "target": "entities_task_entity_taskentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/attachments/typeorm-task-attachments.store.ts",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_getworkspacemembership",
+      "target": "entities_workspace_member_entity_workspacememberentity",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -10231,9 +12331,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "auth_trusted_current_user_decorator",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator"
     },
     {
       "relation": "imports_from",
@@ -10275,9 +12375,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser"
     },
     {
       "relation": "imports",
@@ -10319,9 +12419,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid"
     },
     {
       "relation": "imports",
@@ -10362,9 +12462,9 @@
       "source_file": "apps/api/src/comments/comments.contracts.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_contracts",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "contains",
@@ -10372,9 +12472,9 @@
       "source_file": "apps/api/src/comments/comments.contracts.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_contracts",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "imports_from",
@@ -10383,9 +12483,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_contracts",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts"
     },
     {
       "relation": "imports_from",
@@ -10394,9 +12494,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_contracts",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts"
     },
     {
       "relation": "imports_from",
@@ -10405,9 +12505,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_contracts",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts"
     },
     {
       "relation": "imports_from",
@@ -10416,9 +12516,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service",
-      "target": "comments_comments_contracts",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts"
     },
     {
       "relation": "imports_from",
@@ -10427,9 +12527,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_contracts",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts"
     },
     {
       "relation": "imports_from",
@@ -10438,9 +12538,9 @@
       "source_file": "apps/api/src/comments/comments.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_store",
-      "target": "comments_comments_contracts",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts"
     },
     {
       "relation": "imports_from",
@@ -10449,9 +12549,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_comments_contracts",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts"
     },
     {
       "relation": "imports",
@@ -10460,9 +12560,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "imports",
@@ -10471,9 +12571,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "implements",
@@ -10482,9 +12582,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_taskcommentdto",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "references",
@@ -10493,9 +12593,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_taskcommentdto_constructor",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "imports",
@@ -10504,9 +12604,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "imports",
@@ -10515,9 +12615,9 @@
       "source_file": "apps/api/src/comments/comments.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_store",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "imports",
@@ -10526,9 +12626,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "references",
@@ -10537,9 +12637,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
-      "target": "comments_comments_contracts_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_taskcomment"
     },
     {
       "relation": "imports",
@@ -10548,9 +12648,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "references",
@@ -10559,9 +12659,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_commentscontroller_createtaskcomment",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "imports",
@@ -10570,9 +12670,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "imports",
@@ -10581,9 +12681,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "implements",
@@ -10592,9 +12692,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_createtaskcommentdto",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "references",
@@ -10603,9 +12703,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "imports",
@@ -10614,9 +12714,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "references",
@@ -10625,9 +12725,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_commentsservice_createtaskcomment",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "imports",
@@ -10636,9 +12736,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "imports",
@@ -10647,9 +12747,9 @@
       "source_file": "apps/api/src/comments/comments.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_store",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "imports",
@@ -10658,9 +12758,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "references",
@@ -10669,9 +12769,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "target": "comments_comments_contracts_createtaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_contracts_createtaskcommentinput"
     },
     {
       "relation": "imports_from",
@@ -10680,9 +12780,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_controller",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller"
     },
     {
       "relation": "imports",
@@ -10691,9 +12791,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_controller_commentscontroller",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_commentscontroller"
     },
     {
       "relation": "contains",
@@ -10701,9 +12801,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_controller_test_createcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_test_createcommentsstore"
     },
     {
       "relation": "contains",
@@ -10711,9 +12811,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_controller_test_createdat",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_test_createdat"
     },
     {
       "relation": "contains",
@@ -10721,9 +12821,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_controller_test_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_test_taskcomment"
     },
     {
       "relation": "imports_from",
@@ -10732,9 +12832,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_dto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto"
     },
     {
       "relation": "imports",
@@ -10743,9 +12843,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe"
     },
     {
       "relation": "imports_from",
@@ -10754,9 +12854,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_service",
-      "confidence_score": 1.0
+      "target": "comments_comments_service"
     },
     {
       "relation": "imports",
@@ -10765,9 +12865,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_service_commentsservice",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice"
     },
     {
       "relation": "imports_from",
@@ -10776,9 +12876,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_store",
-      "confidence_score": 1.0
+      "target": "comments_comments_store"
     },
     {
       "relation": "imports",
@@ -10787,9 +12887,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_store_taskcommentcreateresult",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentcreateresult"
     },
     {
       "relation": "imports",
@@ -10798,9 +12898,9 @@
       "source_file": "apps/api/src/comments/comments.controller.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_test",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "contains",
@@ -10808,9 +12908,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_controller_commentscontroller",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_commentscontroller"
     },
     {
       "relation": "contains",
@@ -10818,9 +12918,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_controller_uuidv4pipe",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_uuidv4pipe"
     },
     {
       "relation": "imports_from",
@@ -10829,9 +12929,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_dto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto"
     },
     {
       "relation": "imports",
@@ -10840,9 +12940,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_dto_createtaskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_createtaskcommentdto"
     },
     {
       "relation": "imports",
@@ -10851,9 +12951,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe"
     },
     {
       "relation": "imports",
@@ -10862,9 +12962,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "imports_from",
@@ -10873,9 +12973,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_service",
-      "confidence_score": 1.0
+      "target": "comments_comments_service"
     },
     {
       "relation": "imports",
@@ -10884,9 +12984,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller",
-      "target": "comments_comments_service_commentsservice",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice"
     },
     {
       "relation": "imports_from",
@@ -10895,9 +12995,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_controller",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller"
     },
     {
       "relation": "method",
@@ -10905,9 +13005,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_commentscontroller",
-      "target": "comments_comments_controller_commentscontroller_constructor",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_commentscontroller_constructor"
     },
     {
       "relation": "method",
@@ -10915,9 +13015,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_commentscontroller",
-      "target": "comments_comments_controller_commentscontroller_createtaskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_commentscontroller_createtaskcomment"
     },
     {
       "relation": "method",
@@ -10925,9 +13025,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_commentscontroller",
-      "target": "comments_comments_controller_commentscontroller_listtaskcomments",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_commentscontroller_listtaskcomments"
     },
     {
       "relation": "imports",
@@ -10936,9 +13036,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_controller_commentscontroller",
-      "confidence_score": 1.0
+      "target": "comments_comments_controller_commentscontroller"
     },
     {
       "relation": "references",
@@ -10947,9 +13047,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_commentscontroller_constructor",
-      "target": "comments_comments_service_commentsservice",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice"
     },
     {
       "relation": "references",
@@ -10958,9 +13058,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_commentscontroller_listtaskcomments",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "references",
@@ -10969,9 +13069,9 @@
       "source_file": "apps/api/src/comments/comments.controller.ts",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_controller_commentscontroller_createtaskcomment",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "contains",
@@ -10979,9 +13079,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_dto_createtaskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_createtaskcommentdto"
     },
     {
       "relation": "contains",
@@ -10989,9 +13089,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_isunknownrecord"
     },
     {
       "relation": "contains",
@@ -10999,9 +13099,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe"
     },
     {
       "relation": "contains",
@@ -11009,9 +13109,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_dto_parsecreatetaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_parsecreatetaskcommentinput"
     },
     {
       "relation": "contains",
@@ -11019,9 +13119,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_readrequirednonemptystring"
     },
     {
       "relation": "contains",
@@ -11029,9 +13129,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "imports_from",
@@ -11040,9 +13140,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service",
-      "target": "comments_comments_dto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto"
     },
     {
       "relation": "imports_from",
@@ -11051,9 +13151,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_dto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto"
     },
     {
       "relation": "imports_from",
@@ -11062,9 +13162,9 @@
       "source_file": "apps/api/src/openapi.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_openapi",
-      "target": "comments_comments_dto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto"
     },
     {
       "relation": "imports",
@@ -11073,9 +13173,9 @@
       "source_file": "apps/api/src/openapi.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_openapi",
-      "target": "comments_comments_dto_createtaskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_createtaskcommentdto"
     },
     {
       "relation": "method",
@@ -11083,9 +13183,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_parsecreatetaskcommentbodypipe",
-      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform"
     },
     {
       "relation": "calls",
@@ -11094,9 +13194,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_parsecreatetaskcommentbodypipe_transform",
-      "target": "comments_comments_dto_parsecreatetaskcommentinput",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_parsecreatetaskcommentinput"
     },
     {
       "relation": "method",
@@ -11104,9 +13204,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_taskcommentdto",
-      "target": "comments_comments_dto_taskcommentdto_constructor",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto_constructor"
     },
     {
       "relation": "imports",
@@ -11115,9 +13215,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "references",
@@ -11126,9 +13226,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_commentsservice_createtaskcomment",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "references",
@@ -11137,9 +13237,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_commentsservice_listtaskcomments",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "imports",
@@ -11148,9 +13248,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "imports",
@@ -11159,9 +13259,9 @@
       "source_file": "apps/api/src/openapi.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_openapi",
-      "target": "comments_comments_dto_taskcommentdto",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_taskcommentdto"
     },
     {
       "relation": "calls",
@@ -11170,9 +13270,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_parsecreatetaskcommentinput",
-      "target": "comments_comments_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -11181,9 +13281,9 @@
       "source_file": "apps/api/src/comments/comments.dto.ts",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_dto_parsecreatetaskcommentinput",
-      "target": "comments_comments_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "comments_comments_dto_readrequirednonemptystring"
     },
     {
       "relation": "contains",
@@ -11191,9 +13291,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_module_commentsmodule",
-      "confidence_score": 1.0
+      "target": "comments_comments_module_commentsmodule"
     },
     {
       "relation": "contains",
@@ -11201,9 +13301,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_module_commentsserviceprovider",
-      "confidence_score": 1.0
+      "target": "comments_comments_module_commentsserviceprovider"
     },
     {
       "relation": "imports_from",
@@ -11212,9 +13312,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_service",
-      "confidence_score": 1.0
+      "target": "comments_comments_service"
     },
     {
       "relation": "imports",
@@ -11223,9 +13323,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_service_commentsservice",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice"
     },
     {
       "relation": "imports_from",
@@ -11234,9 +13334,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_store",
-      "confidence_score": 1.0
+      "target": "comments_comments_store"
     },
     {
       "relation": "imports",
@@ -11245,9 +13345,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "imports_from",
@@ -11256,9 +13356,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_typeorm_task_comments_store",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store"
     },
     {
       "relation": "imports",
@@ -11267,9 +13367,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore"
     },
     {
       "relation": "imports_from",
@@ -11278,9 +13378,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "database_database_module",
-      "confidence_score": 1.0
+      "target": "database_database_module"
     },
     {
       "relation": "imports",
@@ -11289,9 +13389,9 @@
       "source_file": "apps/api/src/comments/comments.module.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_module",
-      "target": "database_database_module_databasemodule",
-      "confidence_score": 1.0
+      "target": "database_database_module_databasemodule"
     },
     {
       "relation": "imports_from",
@@ -11300,9 +13400,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_service",
-      "confidence_score": 1.0
+      "target": "comments_comments_service"
     },
     {
       "relation": "imports",
@@ -11311,9 +13411,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_service_commentsservice",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice"
     },
     {
       "relation": "contains",
@@ -11321,9 +13421,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_service_test_createcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_test_createcommentsstore"
     },
     {
       "relation": "contains",
@@ -11331,9 +13431,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_service_test_createdat",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_test_createdat"
     },
     {
       "relation": "contains",
@@ -11341,9 +13441,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_service_test_taskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_test_taskcomment"
     },
     {
       "relation": "imports_from",
@@ -11352,9 +13452,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_store",
-      "confidence_score": 1.0
+      "target": "comments_comments_store"
     },
     {
       "relation": "imports",
@@ -11363,9 +13463,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_store_taskcommentcreateresult",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentcreateresult"
     },
     {
       "relation": "imports",
@@ -11374,9 +13474,9 @@
       "source_file": "apps/api/src/comments/comments.service.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_test",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "contains",
@@ -11384,9 +13484,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service",
-      "target": "comments_comments_service_commentsservice",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice"
     },
     {
       "relation": "imports_from",
@@ -11395,9 +13495,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service",
-      "target": "comments_comments_store",
-      "confidence_score": 1.0
+      "target": "comments_comments_store"
     },
     {
       "relation": "imports",
@@ -11406,9 +13506,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "method",
@@ -11416,9 +13516,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_commentsservice",
-      "target": "comments_comments_service_commentsservice_constructor",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice_constructor"
     },
     {
       "relation": "method",
@@ -11426,9 +13526,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_commentsservice",
-      "target": "comments_comments_service_commentsservice_createtaskcomment",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice_createtaskcomment"
     },
     {
       "relation": "method",
@@ -11436,9 +13536,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_commentsservice",
-      "target": "comments_comments_service_commentsservice_listtaskcomments",
-      "confidence_score": 1.0
+      "target": "comments_comments_service_commentsservice_listtaskcomments"
     },
     {
       "relation": "references",
@@ -11447,9 +13547,9 @@
       "source_file": "apps/api/src/comments/comments.service.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_service_commentsservice_constructor",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "contains",
@@ -11457,9 +13557,9 @@
       "source_file": "apps/api/src/comments/comments.store.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_store",
-      "target": "comments_comments_store_taskcommentcreateresult",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentcreateresult"
     },
     {
       "relation": "contains",
@@ -11467,9 +13567,9 @@
       "source_file": "apps/api/src/comments/comments.store.ts",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_comments_store",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "imports_from",
@@ -11478,9 +13578,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_comments_store",
-      "confidence_score": 1.0
+      "target": "comments_comments_store"
     },
     {
       "relation": "imports",
@@ -11489,9 +13589,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_comments_store_taskcommentcreateresult",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentcreateresult"
     },
     {
       "relation": "references",
@@ -11500,9 +13600,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "target": "comments_comments_store_taskcommentcreateresult",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentcreateresult"
     },
     {
       "relation": "imports",
@@ -11511,9 +13611,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "implements",
@@ -11522,9 +13622,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_comments_store_taskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_comments_store_taskcommentsstore"
     },
     {
       "relation": "contains",
@@ -11532,9 +13632,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_typeorm_task_comments_store_commentwriteroles",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_commentwriteroles"
     },
     {
       "relation": "contains",
@@ -11542,9 +13642,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L172",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_typeorm_task_comments_store_totaskcomment",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_totaskcomment"
     },
     {
       "relation": "contains",
@@ -11552,9 +13652,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore"
     },
     {
       "relation": "imports_from",
@@ -11563,9 +13663,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "database_database_module",
-      "confidence_score": 1.0
+      "target": "database_database_module"
     },
     {
       "relation": "imports",
@@ -11574,9 +13674,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "database_database_module_apidatasourceprovider",
-      "confidence_score": 1.0
+      "target": "database_database_module_apidatasourceprovider"
     },
     {
       "relation": "imports",
@@ -11585,9 +13685,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "entities_activity_event_entity_activityevententity",
-      "confidence_score": 1.0
+      "target": "entities_activity_event_entity_activityevententity"
     },
     {
       "relation": "imports",
@@ -11596,9 +13696,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "entities_comment_entity_commententity",
-      "confidence_score": 1.0
+      "target": "entities_comment_entity_commententity"
     },
     {
       "relation": "imports_from",
@@ -11607,9 +13707,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "entities_index",
-      "confidence_score": 1.0
+      "target": "entities_index"
     },
     {
       "relation": "imports",
@@ -11618,9 +13718,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "entities_project_entity_projectentity",
-      "confidence_score": 1.0
+      "target": "entities_project_entity_projectentity"
     },
     {
       "relation": "imports",
@@ -11629,9 +13729,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "entities_task_entity_taskentity",
-      "confidence_score": 1.0
+      "target": "entities_task_entity_taskentity"
     },
     {
       "relation": "imports",
@@ -11640,9 +13740,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "entities_workspace_member_entity_workspacememberentity",
-      "confidence_score": 1.0
+      "target": "entities_workspace_member_entity_workspacememberentity"
     },
     {
       "relation": "imports_from",
@@ -11651,9 +13751,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "imports",
@@ -11662,9 +13762,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store",
-      "target": "types_core_persistence_types_workspacememberrole",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_workspacememberrole"
     },
     {
       "relation": "method",
@@ -11672,9 +13772,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask"
     },
     {
       "relation": "method",
@@ -11682,9 +13782,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor"
     },
     {
       "relation": "method",
@@ -11692,9 +13792,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask"
     },
     {
       "relation": "method",
@@ -11702,9 +13802,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L150",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource"
     },
     {
       "relation": "method",
@@ -11712,9 +13812,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L116",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask"
     },
     {
       "relation": "method",
@@ -11722,9 +13822,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership"
     },
     {
       "relation": "method",
@@ -11732,9 +13832,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask"
     },
     {
       "relation": "references",
@@ -11743,9 +13843,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "target": "database_database_module_apidatasourceprovider",
-      "confidence_score": 1.0
+      "target": "database_database_module_apidatasourceprovider"
     },
     {
       "relation": "calls",
@@ -11754,9 +13854,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask"
     },
     {
       "relation": "calls",
@@ -11765,9 +13865,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -11776,9 +13876,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "target": "comments_typeorm_task_comments_store_totaskcomment",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_totaskcomment"
     },
     {
       "relation": "calls",
@@ -11787,9 +13887,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -11798,9 +13898,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask"
     },
     {
       "relation": "calls",
@@ -11809,9 +13909,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership"
     },
     {
       "relation": "calls",
@@ -11820,9 +13920,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L111",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask"
     },
     {
       "relation": "calls",
@@ -11831,9 +13931,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
-      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
-      "confidence_score": 1.0
+      "target": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership"
     },
     {
       "relation": "references",
@@ -11842,9 +13942,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L116",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
-      "target": "entities_task_entity_taskentity",
-      "confidence_score": 1.0
+      "target": "entities_task_entity_taskentity"
     },
     {
       "relation": "references",
@@ -11853,9 +13953,9 @@
       "source_file": "apps/api/src/comments/typeorm-task-comments.store.ts",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
-      "target": "entities_workspace_member_entity_workspacememberentity",
-      "confidence_score": 1.0
+      "target": "entities_workspace_member_entity_workspacememberentity"
     },
     {
       "relation": "imports_from",
@@ -26192,5 +28292,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9a291185b62a3e7aad871412c540e92c86d6b37f"
+  "built_at_commit": "2d5f928ab09702d556f3813899bfd762ce046ad6"
 }

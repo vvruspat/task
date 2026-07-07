@@ -177,6 +177,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List attachments for a visible task */
+    get: operations["AttachmentsController_listTaskAttachments"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments/links": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Attach a link to a visible task */
+    post: operations["AttachmentsController_createTaskLinkAttachment"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -398,6 +432,34 @@ export interface components {
     CreateTaskCommentDto: {
       /** @example Bass take is ready for review. */
       body: string;
+    };
+    TaskAttachmentDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** @enum {string} */
+      targetType: "task" | "project" | "comment";
+      /** Format: uuid */
+      targetId: string;
+      /** @enum {string} */
+      kind: "file" | "link" | "telegram_file";
+      title?: string | null;
+      url?: string | null;
+      storageKey?: string | null;
+      telegramFileId?: string | null;
+      mimeType?: string | null;
+      sizeBytes?: string | null;
+      /** Format: uuid */
+      createdByUserId: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    CreateTaskLinkAttachmentDto: {
+      /** @example https://example.com/bass-take */
+      url: string;
+      /** @example Bass take reference */
+      title?: string | null;
     };
   };
   responses: never;
@@ -826,6 +888,90 @@ export interface operations {
         content?: never;
       };
       /** @description Current user cannot comment on tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttachmentsController_listTaskAttachments: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskAttachmentDto"][];
+        };
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttachmentsController_createTaskLinkAttachment: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTaskLinkAttachmentDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskAttachmentDto"];
+        };
+      };
+      /** @description Attachment payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot attach links in this workspace. */
       403: {
         headers: {
           [name: string]: unknown;

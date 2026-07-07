@@ -2,6 +2,7 @@ import type { INestApplication } from "@nestjs/common";
 import type { OpenAPIObject } from "@nestjs/swagger";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { HealthResponseDto } from "./app.dto.js";
+import { CreateTaskLinkAttachmentDto, TaskAttachmentDto } from "./attachments/attachments.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
 import { CreateProjectDto, ProjectDetailDto, ProjectSummaryDto } from "./projects/projects.dto.js";
 import { CreateTaskDto, TaskDetailDto, TaskSummaryDto } from "./tasks/tasks.dto.js";
@@ -32,6 +33,8 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       TaskDetailDto,
       CreateTaskCommentDto,
       TaskCommentDto,
+      CreateTaskLinkAttachmentDto,
+      TaskAttachmentDto,
     ],
   });
 }
