@@ -15,13 +15,25 @@ export {
 } from "./backend-client.js";
 
 export {
+  InvalidTaskMcpEnvironmentError,
+  loadTaskMcpConfig,
+  parseTaskMcpConfig,
+  type TaskMcpConfig,
+  type TaskMcpEnvironment,
+} from "./config.js";
+
+export {
   connectTaskMcpServerToStdio,
   createTaskMcpServer,
   registerTaskSkillApplyTools,
   type TaskMcpServerOptions,
   type TaskSkillToolRegistrar,
 } from "./mcp-server.js";
-
+export {
+  type RunTaskMcpServerOptions,
+  runTaskMcpServerFromEnvironment,
+  type TaskMcpServerConnector,
+} from "./runtime.js";
 export {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
