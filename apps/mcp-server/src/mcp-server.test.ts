@@ -5,9 +5,11 @@ import type {
   ApplyTaskSkillResponse,
   CreateProjectRequest,
   CreateTaskRequest,
+  ListTaskAttachmentsRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
+  TaskAttachmentResponse,
   TaskBackendClient,
   TaskCommentResponse,
   TaskDetailResponse,
@@ -20,6 +22,7 @@ import type {
 } from "./backend-client.js";
 import {
   createTaskMcpServer,
+  registerAttachmentTools,
   registerCommentTools,
   registerProjectTools,
   registerStatusTools,
@@ -118,6 +121,22 @@ const commentResponse: TaskCommentResponse = {
   body: "Bass take is ready for review.",
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const attachmentResponse: TaskAttachmentResponse = {
+  id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+  workspaceId,
+  targetType: "task",
+  targetId: rootTaskId,
+  kind: "link",
+  title: "Reference mix",
+  url: "https://example.com/reference",
+  storageKey: null,
+  telegramFileId: null,
+  mimeType: null,
+  sizeBytes: null,
+  createdByUserId: userId,
+  createdAt: timestamp,
 };
 
 const taskResponse: TaskSummaryResponse = {
@@ -349,6 +368,45 @@ test("registerCommentTools registers comment tools", async () => {
   });
 
   assert.deepEqual(JSON.parse(readTextResult(listResult)), [commentResponse]);
+  assert.deepEqual(listCalls, [{ workspaceId, projectId, taskId: rootTaskId, userId }]);
+});
+
+test("registerAttachmentTools registers attachment tools", async () => {
+  const toolCalls: RegisteredToolCall[] = [];
+  const listCalls: ListTaskAttachmentsRequest[] = [];
+  const registrar = createRegistrar(toolCalls);
+
+  registerAttachmentTools(registrar, {
+    list: async (input: unknown): Promise<TaskAttachmentResponse[]> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected attachment list input.");
+      }
+      listCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+      });
+      return [attachmentResponse];
+    },
+  });
+
+  assert.deepEqual(
+    toolCalls.map((call) => call.name),
+    ["attachment.list"],
+  );
+  assert.equal(toolCalls[0]?.config.title, "List attachments");
+
+  const listCall = toolCalls[0];
+  assert.ok(listCall !== undefined);
+  const listResult = await listCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(listResult)), [attachmentResponse]);
   assert.deepEqual(listCalls, [{ workspaceId, projectId, taskId: rootTaskId, userId }]);
 });
 
@@ -646,6 +704,7 @@ function createBackendClientStub(): TaskBackendClient {
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => [statusResponse],
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],
     createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,
+    listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],
     createProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],

@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import * as z from "zod/v4";
+import { type AttachmentToolHandlers, createAttachmentToolHandlers } from "./attachment-tools.js";
 import type { TaskBackendClient } from "./backend-client.js";
 import { type CommentToolHandlers, createCommentToolHandlers } from "./comment-tools.js";
 import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-tools.js";
@@ -47,6 +48,13 @@ const commentCreateInputSchema = {
   taskId: z.string().uuid(),
   userId: z.string().uuid(),
   body: z.string().min(1),
+};
+
+const attachmentListInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
 };
 
 const projectGetInputSchema = {
@@ -118,6 +126,7 @@ type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSche
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
 type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
 type CommentCreateMcpArgs = z.output<z.ZodObject<typeof commentCreateInputSchema>>;
+type AttachmentListMcpArgs = z.output<z.ZodObject<typeof attachmentListInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
@@ -133,6 +142,7 @@ type TaskMcpToolCallback = (
     | StatusListMcpArgs
     | CommentListMcpArgs
     | CommentCreateMcpArgs
+    | AttachmentListMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
     | ProjectCreateMcpArgs
@@ -155,6 +165,7 @@ export type TaskMcpToolRegistrar = {
         | typeof statusListInputSchema
         | typeof commentListInputSchema
         | typeof commentCreateInputSchema
+        | typeof attachmentListInputSchema
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
@@ -187,9 +198,25 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
   registerProjectTools(server, createProjectToolHandlers(options.backendClient));
   registerTaskTools(server, createTaskToolHandlers(options.backendClient));
   registerCommentTools(server, createCommentToolHandlers(options.backendClient));
+  registerAttachmentTools(server, createAttachmentToolHandlers(options.backendClient));
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
 
   return server;
+}
+
+export function registerAttachmentTools(
+  registrar: TaskMcpToolRegistrar,
+  handlers: AttachmentToolHandlers,
+): void {
+  registrar.registerTool(
+    "attachment.list",
+    {
+      title: "List attachments",
+      description: "List attachments for one visible task.",
+      inputSchema: attachmentListInputSchema,
+    },
+    async (input) => toToolResult(await handlers.list(input)),
+  );
 }
 
 export function registerCommentTools(

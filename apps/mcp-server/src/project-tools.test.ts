@@ -6,6 +6,7 @@ import type {
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
+  TaskAttachmentResponse,
   TaskBackendClient,
   TaskCommentResponse,
   TaskDetailResponse,
@@ -193,6 +194,9 @@ function createBackendClientStub(
       throw new Error("Not implemented.");
     },
     createTaskComment: async (): Promise<TaskCommentResponse> => {
+      throw new Error("Not implemented.");
+    },
+    listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => {
       throw new Error("Not implemented.");
     },
     createProject: async (request): Promise<ProjectDetailResponse> => {

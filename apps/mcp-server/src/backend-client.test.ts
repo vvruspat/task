@@ -4,6 +4,7 @@ import {
   createTaskBackendClient,
   type ProjectDetailResponse,
   type ProjectSummaryResponse,
+  type TaskAttachmentResponse,
   TaskBackendClientError,
   type TaskBackendFetch,
   type TaskBackendFetchInit,
@@ -41,6 +42,22 @@ const taskComment: TaskCommentResponse = {
   body: "Bass take is ready for review.",
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const taskAttachment: TaskAttachmentResponse = {
+  id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+  workspaceId,
+  targetType: "task",
+  targetId: rootTaskId,
+  kind: "link",
+  title: "Reference mix",
+  url: "https://example.com/reference",
+  storageKey: null,
+  telegramFileId: null,
+  mimeType: null,
+  sizeBytes: null,
+  createdByUserId: userId,
+  createdAt: timestamp,
 };
 
 const projectSummary: ProjectSummaryResponse = {
@@ -294,6 +311,32 @@ test("createTaskComment posts typed payloads with trusted user context", async (
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
   assert.deepEqual(response, taskComment);
+});
+
+test("listTaskAttachments gets typed task attachments with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [taskAttachment]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listTaskAttachments({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}/attachments`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.deepEqual(response, [taskAttachment]);
 });
 
 test("getTask gets typed task detail with trusted user context", async () => {
