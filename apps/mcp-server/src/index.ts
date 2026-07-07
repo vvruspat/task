@@ -2,6 +2,8 @@ export const mcpServerAppPackageName = "@task/mcp-server";
 
 export {
   type ApplyTaskSkillResponse,
+  type CreateProjectInput,
+  type CreateProjectRequest,
   createTaskBackendClient,
   type GetProjectRequest,
   type ListActiveProjectsRequest,
@@ -39,10 +41,12 @@ export {
 } from "./mcp-server.js";
 export {
   createProjectToolHandlers,
+  type ProjectCreateToolInput,
   type ProjectGetToolInput,
   type ProjectSearchToolInput,
   type ProjectToolHandlers,
   ProjectToolInputError,
+  parseProjectCreateToolInput,
   parseProjectGetToolInput,
   parseProjectSearchToolInput,
 } from "./project-tools.js";
