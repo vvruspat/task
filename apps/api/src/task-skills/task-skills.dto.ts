@@ -1,9 +1,31 @@
+import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
+  CreateTaskSkillInput,
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
 } from "./task-skills.contracts.js";
+
+export class CreateTaskSkillDto implements CreateTaskSkillInput {
+  @ApiProperty({ example: "Song", minLength: 1 })
+  readonly name: string = "";
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
+
+  @ApiPropertyOptional({ isArray: true, type: String })
+  readonly aliases?: string[];
+
+  @ApiProperty({ additionalProperties: true, type: "object" })
+  readonly definition: Record<string, unknown> = {};
+}
+
+export class ParseCreateTaskSkillBodyPipe implements PipeTransform<unknown, CreateTaskSkillInput> {
+  transform(value: unknown): CreateTaskSkillInput {
+    return parseCreateTaskSkillInput(value);
+  }
+}
 
 export class TaskSkillSummaryDto implements TaskSkillSummary {
   @ApiProperty({ format: "uuid" })
@@ -44,6 +66,132 @@ export class TaskSkillSummaryDto implements TaskSkillSummary {
     this.createdAt = skill.createdAt;
     this.updatedAt = skill.updatedAt;
   }
+}
+
+function parseCreateTaskSkillInput(value: unknown): CreateTaskSkillInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task skill payload must be an object.");
+  }
+
+  const name = readRequiredNonEmptyString(value, "name");
+  const description = readOptionalNullableString(value, "description");
+  const aliases = readOptionalStringArray(value, "aliases");
+  const definition = readRequiredDefinition(value, "definition");
+  const input: CreateTaskSkillInput = {
+    definition,
+    name,
+  };
+
+  if (description !== undefined) {
+    input.description = description;
+  }
+
+  if (aliases !== undefined) {
+    input.aliases = aliases;
+  }
+
+  return input;
+}
+
+function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readRequiredNonEmptyString(value: Record<string, unknown>, propertyName: string): string {
+  const propertyValue = value[propertyName];
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Task skill ${propertyName} must be a string.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+
+  if (trimmedValue.length === 0) {
+    throw new BadRequestException(`Task skill ${propertyName} must not be empty.`);
+  }
+
+  return trimmedValue;
+}
+
+function readOptionalNullableString(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === undefined || propertyValue === null) {
+    return propertyValue;
+  }
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Task skill ${propertyName} must be a string or null.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+
+  return trimmedValue.length === 0 ? null : trimmedValue;
+}
+
+function readOptionalStringArray(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string[] | undefined {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === undefined) {
+    return undefined;
+  }
+
+  if (!Array.isArray(propertyValue)) {
+    throw new BadRequestException(`Task skill ${propertyName} must be an array of strings.`);
+  }
+
+  const aliases = propertyValue.map((alias) => {
+    if (typeof alias !== "string") {
+      throw new BadRequestException(`Task skill ${propertyName} must be an array of strings.`);
+    }
+
+    const trimmedAlias = alias.trim();
+
+    if (trimmedAlias.length === 0) {
+      throw new BadRequestException(`Task skill ${propertyName} must not contain empty values.`);
+    }
+
+    return trimmedAlias;
+  });
+
+  return [...new Set(aliases)];
+}
+
+function readRequiredDefinition(
+  value: Record<string, unknown>,
+  propertyName: string,
+): Record<string, unknown> {
+  const propertyValue = value[propertyName];
+
+  if (!isUnknownRecord(propertyValue)) {
+    throw new BadRequestException(`Task skill ${propertyName} must be an object.`);
+  }
+
+  const subtasks = propertyValue["subtasks"];
+
+  if (!Array.isArray(subtasks) || subtasks.length === 0) {
+    throw new BadRequestException("Task skill definition.subtasks must be a non-empty array.");
+  }
+
+  for (const subtask of subtasks) {
+    if (!isUnknownRecord(subtask)) {
+      throw new BadRequestException("Task skill definition.subtasks must contain objects.");
+    }
+
+    const title = subtask["title"];
+
+    if (typeof title !== "string" || title.trim().length === 0) {
+      throw new BadRequestException("Task skill definition.subtasks titles must not be empty.");
+    }
+  }
+
+  return propertyValue;
 }
 
 export class TaskSkillVersionSummaryDto implements TaskSkillVersionSummary {

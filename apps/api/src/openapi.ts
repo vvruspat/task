@@ -7,6 +7,7 @@ import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js
 import { CreateProjectDto, ProjectDetailDto, ProjectSummaryDto } from "./projects/projects.dto.js";
 import { WorkspaceStatusDto } from "./statuses/statuses.dto.js";
 import {
+  CreateTaskSkillDto,
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
   TaskSkillVersionSummaryDto,
@@ -42,6 +43,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       ProjectSummaryDto,
       ProjectDetailDto,
       WorkspaceStatusDto,
+      CreateTaskSkillDto,
       TaskSkillSummaryDto,
       TaskSkillVersionSummaryDto,
       TaskSkillDetailDto,

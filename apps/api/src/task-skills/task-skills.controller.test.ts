@@ -1,9 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { TaskSkillDetail, TaskSkillSummary } from "./task-skills.contracts.js";
+import { BadRequestException } from "@nestjs/common";
+import type {
+  CreateTaskSkillInput,
+  TaskSkillDetail,
+  TaskSkillSummary,
+} from "./task-skills.contracts.js";
 import { TaskSkillsController } from "./task-skills.controller.js";
+import { ParseCreateTaskSkillBodyPipe } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
-import type { TaskSkillsReadStore } from "./task-skills.store.js";
+import type { TaskSkillCreateResult, TaskSkillsReadStore } from "./task-skills.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
@@ -40,6 +46,15 @@ const taskSkillDetail: TaskSkillDetail = {
   ],
 };
 
+const createInput: CreateTaskSkillInput = {
+  name: "Song",
+  description: "Creates a song task tree.",
+  aliases: ["track"],
+  definition: {
+    subtasks: [{ title: "Lyrics" }],
+  },
+};
+
 test("TaskSkillsController uses trusted current user context for task skill list reads", async () => {
   const controller = new TaskSkillsController(
     new TaskSkillsService(createReadStore({ skills: [taskSkill] })),
@@ -63,12 +78,71 @@ test("TaskSkillsController uses trusted current user context for task skill deta
   assert.equal(response.versions[0]?.id, versionId);
 });
 
+test("TaskSkillsController uses trusted current user context for task skill creates", async () => {
+  const controller = new TaskSkillsController(
+    new TaskSkillsService(
+      createReadStore({ createResult: { status: "created", taskSkill: taskSkillDetail } }),
+    ),
+  );
+
+  const response = await controller.createTaskSkill(workspaceId, userId, createInput);
+
+  assert.equal(response.id, skillId);
+  assert.equal(response.createdByUserId, userId);
+  assert.equal(response.versions[0]?.version, 1);
+});
+
+test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads", () => {
+  const pipe = new ParseCreateTaskSkillBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      name: "  Song  ",
+      description: "",
+      aliases: [" track ", "track"],
+      definition: {
+        subtasks: [{ title: " Lyrics " }],
+      },
+    }),
+    {
+      name: "Song",
+      description: null,
+      aliases: ["track"],
+      definition: {
+        subtasks: [{ title: " Lyrics " }],
+      },
+    },
+  );
+
+  assert.throws(
+    () => pipe.transform({ name: "", definition: createInput.definition }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform({ name: "Song" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ name: "Song", definition: { subtasks: [] } }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ name: "Song", definition: { subtasks: [{ title: "" }] } }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ name: "Song", aliases: [1], definition: createInput.definition }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
+  createResult?: TaskSkillCreateResult;
   skill?: TaskSkillDetail | null;
   skills?: TaskSkillSummary[] | null;
 }): TaskSkillsReadStore {
   return {
     listActiveForWorkspace: async (): Promise<TaskSkillSummary[] | null> => options.skills ?? null,
     getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
+    createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
+      options.createResult ?? { status: "workspace_not_found" },
   };
 }
