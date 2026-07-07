@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -14,12 +14,14 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import type { CreateTaskInput } from "./tasks.contracts.js";
+import type { CreateTaskInput, UpdateTaskStatusInput } from "./tasks.contracts.js";
 import {
   CreateTaskDto,
   ParseCreateTaskBodyPipe,
+  ParseUpdateTaskStatusBodyPipe,
   TaskDetailDto,
   TaskSummaryDto,
+  UpdateTaskStatusDto,
 } from "./tasks.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { TasksService } from "./tasks.service.js";
@@ -62,6 +64,26 @@ export class TasksController {
     @Body(new ParseCreateTaskBodyPipe()) input: CreateTaskInput,
   ): Promise<TaskDetailDto> {
     return this.tasksService.createTask(workspaceId, projectId, userId, input);
+  }
+
+  @Patch(":taskId/status")
+  @ApiOperation({ summary: "Update one task status in a visible project" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiParam({ format: "uuid", name: "taskId" })
+  @ApiBody({ type: UpdateTaskStatusDto })
+  @ApiOkResponse({ type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Task status payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update tasks in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace, project, or task is missing or not visible." })
+  updateTaskStatus(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @Param("taskId", uuidV4Pipe) taskId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateTaskStatusBodyPipe()) input: UpdateTaskStatusInput,
+  ): Promise<TaskDetailDto> {
+    return this.tasksService.updateTaskStatus(workspaceId, projectId, taskId, userId, input);
   }
 
   @Get(":taskId")

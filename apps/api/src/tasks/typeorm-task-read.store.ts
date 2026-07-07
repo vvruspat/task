@@ -5,12 +5,18 @@ import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   ActivityEventEntity,
   ProjectEntity,
+  StatusEntity,
   TaskEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
-import type { CreateTaskInput, TaskDetail, TaskSummary } from "./tasks.contracts.js";
-import type { TaskCreateResult, TaskReadStore } from "./tasks.store.js";
+import type {
+  CreateTaskInput,
+  TaskDetail,
+  TaskSummary,
+  UpdateTaskStatusInput,
+} from "./tasks.contracts.js";
+import type { TaskCreateResult, TaskReadStore, TaskUpdateStatusResult } from "./tasks.store.js";
 
 const taskWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
 
@@ -138,6 +144,65 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     return { status: "created", task: toTaskSummary(savedTask) };
   }
 
+  async updateStatusForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: UpdateTaskStatusInput,
+  ): Promise<TaskUpdateStatusResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (input.statusId !== null) {
+      const status = await dataSource.getRepository(StatusEntity).findOneBy({
+        id: input.statusId,
+        workspaceId,
+      });
+
+      if (status === null) {
+        return { status: "invalid_status" };
+      }
+    }
+
+    const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      task.statusId = input.statusId;
+
+      const updatedTask = await manager.getRepository(TaskEntity).save(task);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.status_updated",
+        entityType: "task",
+        entityId: updatedTask.id,
+        payload: {
+          projectId,
+          statusId: input.statusId,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return updatedTask;
+    });
+
+    return { status: "updated", task: toTaskSummary(savedTask) };
+  }
+
   private async canReadProject(
     dataSource: DataSource,
     workspaceId: string,
@@ -156,6 +221,29 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     });
 
     return project !== null;
+  }
+
+  private async getVisibleTask(
+    dataSource: DataSource,
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+  ): Promise<TaskEntity | null> {
+    const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      id: projectId,
+      workspaceId,
+    });
+
+    if (project === null) {
+      return null;
+    }
+
+    return dataSource.getRepository(TaskEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: taskId,
+      projectId,
+      workspaceId,
+    });
   }
 
   private async getWorkspaceMembership(

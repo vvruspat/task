@@ -5,7 +5,12 @@ import { HealthResponseDto } from "./app.dto.js";
 import { CreateTaskLinkAttachmentDto, TaskAttachmentDto } from "./attachments/attachments.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
 import { CreateProjectDto, ProjectDetailDto, ProjectSummaryDto } from "./projects/projects.dto.js";
-import { CreateTaskDto, TaskDetailDto, TaskSummaryDto } from "./tasks/tasks.dto.js";
+import {
+  CreateTaskDto,
+  TaskDetailDto,
+  TaskSummaryDto,
+  UpdateTaskStatusDto,
+} from "./tasks/tasks.dto.js";
 import {
   WorkspaceDetailDto,
   WorkspaceMemberDto,
@@ -29,6 +34,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       ProjectSummaryDto,
       ProjectDetailDto,
       CreateTaskDto,
+      UpdateTaskStatusDto,
       TaskSummaryDto,
       TaskDetailDto,
       CreateTaskCommentDto,
