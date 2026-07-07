@@ -9,3 +9,17 @@ export type TaskSkillSummary = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type TaskSkillVersionSummary = {
+  id: string;
+  workspaceId: string;
+  taskSkillId: string;
+  version: number;
+  definition: Record<string, unknown>;
+  createdByUserId: string;
+  createdAt: Date;
+};
+
+export type TaskSkillDetail = TaskSkillSummary & {
+  versions: TaskSkillVersionSummary[];
+};

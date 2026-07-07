@@ -1,16 +1,16 @@
-# Graph Report - tAsk-issue-65-task-skills-list-api  (2026-07-07)
+# Graph Report - tAsk-issue-67-task-skill-detail-api  (2026-07-07)
 
 ## Corpus Check
-- 172 files · ~49,317 words
+- 172 files · ~50,377 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1088 nodes · 2045 edges · 69 communities (64 shown, 5 thin omitted)
+- 1100 nodes · 2080 edges · 69 communities (64 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f2b4a761`
+- Built from commit: `26bb7a9a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -269,8 +269,8 @@ Cohesion: 0.09
 Nodes (22): description, devDependencies, @biomejs/biome, turbo, @types/node, typescript, license, name (+14 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.14
-Nodes (13): TaskSkillSummary, TaskSkillsController, createdAt, taskSkill, uuidV4Pipe, TaskSkillSummaryDto, taskSkillsServiceProvider, TaskSkillsService (+5 more)
+Cohesion: 0.11
+Nodes (20): TaskSkillDetail, TaskSkillSummary, TaskSkillVersionSummary, TaskSkillsController, createdAt, taskSkill, taskSkillDetail, uuidV4Pipe (+12 more)
 
 ### Community 50 - "Community 50"
 Cohesion: 0.09
@@ -292,10 +292,6 @@ Nodes (3): CreateProjectsTable1783296060000, createProjectsTableSql, dropProject
 Cohesion: 0.26
 Nodes (7): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, apiEntities, apiMigrations, createApiDataSource(), createTypeOrmDataSourceOptions()
 
-### Community 55 - "Community 55"
-Cohesion: 0.38
-Nodes (3): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql
-
 ### Community 56 - "Community 56"
 Cohesion: 0.38
 Nodes (3): CreateAttachmentsTable1783296300000, createAttachmentsTableSql, dropAttachmentsTableSql
@@ -312,6 +308,10 @@ Nodes (3): CreateActivityEventsTable1783296360000, createActivityEventsTableSql,
 Cohesion: 0.38
 Nodes (3): CreateTelegramTables1783296540000, createTelegramTablesSql, dropTelegramTablesSql
 
+### Community 61 - "Community 61"
+Cohesion: 0.38
+Nodes (3): CreateInvitesTable1783296600000, createInvitesTableSql, dropInvitesTableSql
+
 ### Community 62 - "Community 62"
 Cohesion: 0.07
 Nodes (27): files, includes, formatter, enabled, indentStyle, indentWidth, lineWidth, quoteStyle (+19 more)
@@ -326,7 +326,7 @@ Nodes (21): CreateTaskCommentInput, TaskComment, CommentsController, createdAt, 
 
 ### Community 65 - "Community 65"
 Cohesion: 0.27
-Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTaskSkillsTables1783296180000, CreateInvitesTable1783296600000
+Nodes (4): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTaskSkillsTables1783296180000, CreateCommentsTable1783296240000
 
 ### Community 66 - "Community 66"
 Cohesion: 0.11
@@ -341,7 +341,7 @@ Cohesion: 0.38
 Nodes (3): CreateAgentRunTables1783296420000, createAgentRunTablesSql, dropAgentRunTablesSql
 
 ## Knowledge Gaps
-- **467 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+462 more)
+- **469 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+464 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -349,11 +349,11 @@ Nodes (3): CreateAgentRunTables1783296420000, createAgentRunTablesSql, dropAgent
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `WorkspaceMemberEntity` connect `Community 50` to `Community 64`, `Community 66`, `Community 67`, `Community 2`, `Community 49`, `Community 51`, `Community 54`, `Community 63`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **Why does `ApiDataSourceProvider` connect `Community 67` to `Community 64`, `Community 66`, `Community 2`, `Community 49`, `Community 18`, `Community 51`, `Community 63`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _467 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _469 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

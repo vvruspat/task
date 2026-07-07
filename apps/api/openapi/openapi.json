@@ -778,6 +778,58 @@
         "tags": ["task-skills"]
       }
     },
+    "/workspaces/{workspaceId}/task-skills/{taskSkillId}": {
+      "get": {
+        "operationId": "TaskSkillsController_getTaskSkill",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskSkillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSkillDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace or task skill is missing or not visible to the current user."
+          }
+        },
+        "summary": "Get one active task skill with versions",
+        "tags": ["task-skills"]
+      }
+    },
     "/workspaces/{workspaceId}/statuses": {
       "get": {
         "operationId": "StatusesController_listStatuses",
@@ -1662,6 +1714,108 @@
           "createdByUserId",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "TaskSkillVersionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskSkillId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "number",
+            "example": 1
+          },
+          "definition": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "createdByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "taskSkillId",
+          "version",
+          "definition",
+          "createdByUserId",
+          "createdAt"
+        ]
+      },
+      "TaskSkillDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Song"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "archivedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskSkillVersionSummaryDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "name",
+          "aliases",
+          "createdByUserId",
+          "createdAt",
+          "updatedAt",
+          "versions"
         ]
       },
       "WorkspaceStatusDto": {

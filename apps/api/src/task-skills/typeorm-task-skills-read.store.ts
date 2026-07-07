@@ -3,8 +3,16 @@ import type { DataSource } from "typeorm";
 import { IsNull } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
-import { TaskSkillEntity, WorkspaceMemberEntity } from "../persistence/entities/index.js";
-import type { TaskSkillSummary } from "./task-skills.contracts.js";
+import {
+  TaskSkillEntity,
+  TaskSkillVersionEntity,
+  WorkspaceMemberEntity,
+} from "../persistence/entities/index.js";
+import type {
+  TaskSkillDetail,
+  TaskSkillSummary,
+  TaskSkillVersionSummary,
+} from "./task-skills.contracts.js";
 import type { TaskSkillsReadStore } from "./task-skills.store.js";
 
 @Injectable()
@@ -33,6 +41,42 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
     });
 
     return skills.map((skill) => toTaskSkillSummary(skill));
+  }
+
+  async getActiveForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+  ): Promise<TaskSkillDetail | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null) {
+      return null;
+    }
+
+    const skill = await dataSource.getRepository(TaskSkillEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: taskSkillId,
+      workspaceId,
+    });
+
+    if (skill === null) {
+      return null;
+    }
+
+    const versions = await dataSource.getRepository(TaskSkillVersionEntity).find({
+      where: { taskSkillId, workspaceId },
+      order: { version: "DESC", createdAt: "DESC" },
+    });
+
+    return {
+      ...toTaskSkillSummary(skill),
+      versions: versions.map((version) => toTaskSkillVersionSummary(version)),
+    };
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {
@@ -68,5 +112,17 @@ function toTaskSkillSummary(skill: TaskSkillEntity): TaskSkillSummary {
     archivedAt: skill.archivedAt,
     createdAt: skill.createdAt,
     updatedAt: skill.updatedAt,
+  };
+}
+
+function toTaskSkillVersionSummary(version: TaskSkillVersionEntity): TaskSkillVersionSummary {
+  return {
+    id: version.id,
+    workspaceId: version.workspaceId,
+    taskSkillId: version.taskSkillId,
+    version: version.version,
+    definition: version.definition,
+    createdByUserId: version.createdByUserId,
+    createdAt: version.createdAt,
   };
 }
