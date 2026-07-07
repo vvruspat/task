@@ -28,3 +28,7 @@ export type CreateTaskInput = {
   dueAt?: string | null;
   metadata?: Record<string, unknown>;
 };
+
+export type UpdateTaskStatusInput = {
+  statusId: string | null;
+};

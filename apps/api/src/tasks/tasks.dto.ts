@@ -1,6 +1,11 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import type { CreateTaskInput, TaskDetail, TaskSummary } from "./tasks.contracts.js";
+import type {
+  CreateTaskInput,
+  TaskDetail,
+  TaskSummary,
+  UpdateTaskStatusInput,
+} from "./tasks.contracts.js";
 
 const numericStringPattern = /^-?\d+(\.\d+)?$/;
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -28,6 +33,19 @@ export class CreateTaskDto implements CreateTaskInput {
 export class ParseCreateTaskBodyPipe implements PipeTransform<unknown, CreateTaskInput> {
   transform(value: unknown): CreateTaskInput {
     return parseCreateTaskInput(value);
+  }
+}
+
+export class UpdateTaskStatusDto implements UpdateTaskStatusInput {
+  @ApiProperty({ format: "uuid", nullable: true, type: String })
+  readonly statusId: string | null = null;
+}
+
+export class ParseUpdateTaskStatusBodyPipe
+  implements PipeTransform<unknown, UpdateTaskStatusInput>
+{
+  transform(value: unknown): UpdateTaskStatusInput {
+    return parseUpdateTaskStatusInput(value);
   }
 }
 
@@ -147,6 +165,16 @@ function parseCreateTaskInput(value: unknown): CreateTaskInput {
   return input;
 }
 
+function parseUpdateTaskStatusInput(value: unknown): UpdateTaskStatusInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task status payload must be an object.");
+  }
+
+  return {
+    statusId: readRequiredNullableUuid(value, "statusId"),
+  };
+}
+
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -201,6 +229,29 @@ function readOptionalNullableUuid(
   }
 
   return propertyValue;
+}
+
+function readRequiredNullableUuid(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | null {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === null) {
+    return null;
+  }
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Task ${propertyName} must be a UUID v4 string or null.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+
+  if (!uuidV4Pattern.test(trimmedValue)) {
+    throw new BadRequestException(`Task ${propertyName} must be a UUID v4 string or null.`);
+  }
+
+  return trimmedValue;
 }
 
 function readOptionalNullableDateTime(

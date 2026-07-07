@@ -1,4 +1,9 @@
-import type { CreateTaskInput, TaskDetail, TaskSummary } from "./tasks.contracts.js";
+import type {
+  CreateTaskInput,
+  TaskDetail,
+  TaskSummary,
+  UpdateTaskStatusInput,
+} from "./tasks.contracts.js";
 
 export type TaskCreateResult =
   | {
@@ -13,6 +18,21 @@ export type TaskCreateResult =
     }
   | {
       status: "invalid_parent_task";
+    };
+
+export type TaskUpdateStatusResult =
+  | {
+      status: "updated";
+      task: TaskDetail;
+    }
+  | {
+      status: "task_not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "invalid_status";
     };
 
 export type TaskReadStore = {
@@ -33,4 +53,11 @@ export type TaskReadStore = {
     userId: string,
     input: CreateTaskInput,
   ): Promise<TaskCreateResult>;
+  updateStatusForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: UpdateTaskStatusInput,
+  ): Promise<TaskUpdateStatusResult>;
 };

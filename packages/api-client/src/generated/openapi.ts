@@ -142,6 +142,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update one task status in a visible project */
+    patch: operations["TasksController_updateTaskStatus"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}": {
     parameters: {
       query?: never;
@@ -412,6 +429,10 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    UpdateTaskStatusDto: {
+      /** Format: uuid */
+      statusId: string | null;
     };
     TaskCommentDto: {
       /** Format: uuid */
@@ -778,6 +799,57 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace or project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_updateTaskStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTaskStatusDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Task status payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;
