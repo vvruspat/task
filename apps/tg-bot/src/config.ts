@@ -3,6 +3,7 @@ export type TelegramBotEnvironment = {
   TASK_API_BOT_SHARED_SECRET?: string;
   TASK_API_BASE_URL?: string;
   TELEGRAM_WEBHOOK_SECRET?: string;
+  TELEGRAM_BOT_PORT?: string;
 };
 
 export type TelegramBotConfig = {
@@ -10,6 +11,7 @@ export type TelegramBotConfig = {
   backendBotSharedSecret: string;
   backendBaseUrl: string;
   webhookSecret: string | null;
+  port: number;
 };
 
 export class InvalidTelegramBotEnvironmentError extends Error {
@@ -37,6 +39,7 @@ export function parseTelegramBotConfig(environment: TelegramBotEnvironment): Tel
       "TELEGRAM_WEBHOOK_SECRET",
       environment.TELEGRAM_WEBHOOK_SECRET,
     ),
+    port: parsePort(environment.TELEGRAM_BOT_PORT),
   };
 }
 
@@ -124,6 +127,32 @@ function parseBackendBaseUrl(value: string | undefined): string {
   return value.endsWith("/") ? value.slice(0, -1) : value;
 }
 
+function parsePort(value: string | undefined): number {
+  if (value === undefined) {
+    return 3001;
+  }
+
+  if (!portPattern.test(value)) {
+    throw new InvalidTelegramBotEnvironmentError(
+      "TELEGRAM_BOT_PORT",
+      value,
+      "must be an integer between 1 and 65535",
+    );
+  }
+
+  const port = Number(value);
+
+  if (!Number.isInteger(port) || port <= 0 || port > maxPort) {
+    throw new InvalidTelegramBotEnvironmentError(
+      "TELEGRAM_BOT_PORT",
+      value,
+      "must be an integer between 1 and 65535",
+    );
+  }
+
+  return port;
+}
+
 function formatInvalidValue(
   variableName: keyof TelegramBotEnvironment,
   value: string | undefined,
@@ -146,3 +175,6 @@ function formatInvalidValue(
 
   return value;
 }
+
+const maxPort = 65535;
+const portPattern = /^\d+$/;
