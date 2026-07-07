@@ -268,9 +268,33 @@ test("registerCommentTools registers comment tools", async () => {
     taskId: string;
     userId: string;
   }> = [];
+  const createCalls: Array<{
+    workspaceId: string;
+    projectId: string;
+    taskId: string;
+    userId: string;
+    body: {
+      body: string;
+    };
+  }> = [];
   const registrar = createRegistrar(toolCalls);
 
   registerCommentTools(registrar, {
+    create: async (input: unknown): Promise<TaskCommentResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected comment create input.");
+      }
+      createCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          body: readString(input, "body"),
+        },
+      });
+      return commentResponse;
+    },
     list: async (input: unknown): Promise<TaskCommentResponse[]> => {
       if (!isUnknownRecord(input)) {
         throw new Error("Expected comment list input.");
@@ -287,11 +311,35 @@ test("registerCommentTools registers comment tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["comment.list"],
+    ["comment.create", "comment.list"],
   );
-  assert.equal(toolCalls[0]?.config.title, "List comments");
+  assert.equal(toolCalls[0]?.config.title, "Create comment");
+  assert.equal(toolCalls[1]?.config.title, "List comments");
 
-  const listCall = toolCalls[0];
+  const createCall = toolCalls[0];
+  assert.ok(createCall !== undefined);
+  const createResult = await createCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    body: "Bass take is ready for review.",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(createResult)), commentResponse);
+  assert.deepEqual(createCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        body: "Bass take is ready for review.",
+      },
+    },
+  ]);
+
+  const listCall = toolCalls[1];
   assert.ok(listCall !== undefined);
   const listResult = await listCall.callback({
     workspaceId,
@@ -597,6 +645,7 @@ function createBackendClientStub(): TaskBackendClient {
   return {
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => [statusResponse],
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],
+    createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,
     createProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     getProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => [projectResponse],

@@ -660,7 +660,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "attachments_attachments_module_attachmentsmodule",
-      "community": 77,
+      "community": 66,
       "norm_label": "attachmentsmodule"
     },
     {
@@ -1660,7 +1660,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_constructor",
-      "community": 77,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -1740,7 +1740,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_openapi",
-      "community": 51,
+      "community": 71,
       "norm_label": "openapi.ts"
     },
     {
@@ -2440,7 +2440,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table",
-      "community": 72,
+      "community": 75,
       "norm_label": "1783296300000-create-attachments-table.ts"
     },
     {
@@ -2450,7 +2450,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
-      "community": 72,
+      "community": 75,
       "norm_label": "createattachmentstablesql"
     },
     {
@@ -2460,7 +2460,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
-      "community": 72,
+      "community": 75,
       "norm_label": "dropattachmentstablesql"
     },
     {
@@ -2500,7 +2500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table",
-      "community": 75,
+      "community": 72,
       "norm_label": "1783296360000-create-activity-events-table.ts"
     },
     {
@@ -2510,7 +2510,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstablesql",
-      "community": 75,
+      "community": 72,
       "norm_label": "createactivityeventstablesql"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_dropactivityeventstablesql",
-      "community": 75,
+      "community": 72,
       "norm_label": "dropactivityeventstablesql"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_activity_events_table_test",
-      "community": 75,
+      "community": 72,
       "norm_label": "create-activity-events-table.test.ts"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_attachments_table_test",
-      "community": 72,
+      "community": 75,
       "norm_label": "create-attachments-table.test.ts"
     },
     {
@@ -3870,7 +3870,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "statuses_statuses_module_statusesmodule",
-      "community": 77,
+      "community": 67,
       "norm_label": "statusesmodule"
     },
     {
@@ -4050,7 +4050,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts",
-      "community": 76,
+      "community": 71,
       "norm_label": "task-skills.contracts.ts"
     },
     {
@@ -4070,7 +4070,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "community": 76,
+      "community": 71,
       "norm_label": "taskskillversionsummary"
     },
     {
@@ -4120,7 +4120,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtasksource",
-      "community": 76,
+      "community": 71,
       "norm_label": "taskskillapplypreviewsubtasksource"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtask",
-      "community": 76,
+      "community": 71,
       "norm_label": "taskskillapplypreviewsubtask"
     },
     {
@@ -4480,7 +4480,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_updatetaskskillmetadatadto",
-      "community": 49,
+      "community": 71,
       "norm_label": "updatetaskskillmetadatadto"
     },
     {
@@ -4580,7 +4580,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto",
-      "community": 76,
+      "community": 71,
       "norm_label": "taskskillapplypreviewsubtaskdto"
     },
     {
@@ -4590,7 +4590,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto_constructor",
-      "community": 76,
+      "community": 71,
       "norm_label": ".constructor()"
     },
     {
@@ -4770,7 +4770,7 @@
       "source_location": "L449",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "community": 76,
+      "community": 71,
       "norm_label": "taskskillversionsummarydto"
     },
     {
@@ -4780,7 +4780,7 @@
       "source_location": "L471",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
-      "community": 76,
+      "community": 71,
       "norm_label": ".constructor()"
     },
     {
@@ -7117,7 +7117,7 @@
       "label": "createJsonFetch()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
-      "source_location": "L551",
+      "source_location": "L585",
       "_origin": "ast",
       "id": "src_backend_client_test_createjsonfetch",
       "community": 33,
@@ -7127,7 +7127,7 @@
       "label": "readJsonBody()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
-      "source_location": "L568",
+      "source_location": "L602",
       "_origin": "ast",
       "id": "src_backend_client_test_readjsonbody",
       "community": 33,
@@ -7137,7 +7137,7 @@
       "label": "readPostInit()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
-      "source_location": "L572",
+      "source_location": "L606",
       "_origin": "ast",
       "id": "src_backend_client_test_readpostinit",
       "community": 33,
@@ -7147,7 +7147,7 @@
       "label": "readWriteInit()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
-      "source_location": "L582",
+      "source_location": "L616",
       "_origin": "ast",
       "id": "src_backend_client_test_readwriteinit",
       "community": 33,
@@ -7244,10 +7244,20 @@
       "norm_label": "listtaskcommentsoperation"
     },
     {
-      "label": "GetTaskOperation",
+      "label": "CreateTaskCommentOperation",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L11",
+      "_origin": "ast",
+      "id": "src_backend_client_createtaskcommentoperation",
+      "community": 61,
+      "norm_label": "createtaskcommentoperation"
+    },
+    {
+      "label": "GetTaskOperation",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/backend-client.ts",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "src_backend_client_gettaskoperation",
       "community": 61,
@@ -7257,7 +7267,7 @@
       "label": "CreateTaskOperation",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "src_backend_client_createtaskoperation",
       "community": 61,
@@ -7267,7 +7277,7 @@
       "label": "UpdateTaskStatusOperation",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskstatusoperation",
       "community": 61,
@@ -7277,7 +7287,7 @@
       "label": "UpdateTaskAssigneeOperation",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskassigneeoperation",
       "community": 61,
@@ -7287,7 +7297,7 @@
       "label": "UpdateTaskDueDateOperation",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L15",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskduedateoperation",
       "community": 61,
@@ -7297,7 +7307,7 @@
       "label": "PreviewTaskSkillApplyInput",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L17",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyinput",
       "community": 60,
@@ -7307,17 +7317,17 @@
       "label": "PreviewTaskSkillApplyResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L19",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 70,
+      "community": 56,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
       "label": "ApplyTaskSkillResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L21",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskillresponse",
       "community": 60,
@@ -7327,17 +7337,27 @@
       "label": "WorkspaceStatusResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L23",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "src_backend_client_workspacestatusresponse",
       "community": 65,
       "norm_label": "workspacestatusresponse"
     },
     {
+      "label": "CreateTaskCommentInput",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/backend-client.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "src_backend_client_createtaskcommentinput",
+      "community": 53,
+      "norm_label": "createtaskcommentinput"
+    },
+    {
       "label": "CreateProjectInput",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L25",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "src_backend_client_createprojectinput",
       "community": 70,
@@ -7347,7 +7367,7 @@
       "label": "CreateTaskInput",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L27",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_backend_client_createtaskinput",
       "community": 18,
@@ -7357,7 +7377,7 @@
       "label": "UpdateTaskStatusInput",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L28",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskstatusinput",
       "community": 18,
@@ -7367,17 +7387,17 @@
       "label": "UpdateTaskAssigneeInput",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L30",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskassigneeinput",
-      "community": 61,
+      "community": 18,
       "norm_label": "updatetaskassigneeinput"
     },
     {
       "label": "UpdateTaskDueDateInput",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L32",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskduedateinput",
       "community": 18,
@@ -7387,47 +7407,47 @@
       "label": "ProjectSummaryResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L34",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "src_backend_client_projectsummaryresponse",
-      "community": 33,
+      "community": 65,
       "norm_label": "projectsummaryresponse"
     },
     {
       "label": "ProjectDetailResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L36",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "src_backend_client_projectdetailresponse",
-      "community": 65,
+      "community": 70,
       "norm_label": "projectdetailresponse"
     },
     {
       "label": "TaskSummaryResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L38",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "src_backend_client_tasksummaryresponse",
-      "community": 65,
+      "community": 33,
       "norm_label": "tasksummaryresponse"
     },
     {
       "label": "TaskCommentResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L40",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "src_backend_client_taskcommentresponse",
-      "community": 65,
+      "community": 53,
       "norm_label": "taskcommentresponse"
     },
     {
       "label": "TaskDetailResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L42",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "src_backend_client_taskdetailresponse",
       "community": 65,
@@ -7437,7 +7457,7 @@
       "label": "TaskSkillApplyPreviewSubtaskResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L44",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "src_backend_client_taskskillapplypreviewsubtaskresponse",
       "community": 61,
@@ -7447,7 +7467,7 @@
       "label": "TaskBackendFetchInit",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L47",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetchinit",
       "community": 56,
@@ -7457,27 +7477,27 @@
       "label": "TaskBackendGetHeaders",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L63",
+      "source_location": "L66",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendgetheaders",
-      "community": 61,
+      "community": 18,
       "norm_label": "taskbackendgetheaders"
     },
     {
       "label": "TaskBackendPostHeaders",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L68",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendpostheaders",
-      "community": 61,
+      "community": 18,
       "norm_label": "taskbackendpostheaders"
     },
     {
       "label": "TaskBackendFetchResponse",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L72",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetchresponse",
       "community": 56,
@@ -7487,27 +7507,27 @@
       "label": "TaskBackendFetch",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L79",
+      "source_location": "L82",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetch",
-      "community": 55,
+      "community": 56,
       "norm_label": "taskbackendfetch"
     },
     {
       "label": "TaskBackendClientOptions",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L84",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclientoptions",
-      "community": 61,
+      "community": 18,
       "norm_label": "taskbackendclientoptions"
     },
     {
       "label": "TaskSkillApplyRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L89",
+      "source_location": "L92",
       "_origin": "ast",
       "id": "src_backend_client_taskskillapplyrequest",
       "community": 60,
@@ -7517,37 +7537,37 @@
       "label": "ListActiveProjectsRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L96",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "src_backend_client_listactiveprojectsrequest",
-      "community": 61,
+      "community": 18,
       "norm_label": "listactiveprojectsrequest"
     },
     {
       "label": "ListWorkspaceStatusesRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L101",
+      "source_location": "L104",
       "_origin": "ast",
       "id": "src_backend_client_listworkspacestatusesrequest",
-      "community": 61,
+      "community": 18,
       "norm_label": "listworkspacestatusesrequest"
     },
     {
       "label": "GetProjectRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L106",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "src_backend_client_getprojectrequest",
-      "community": 61,
+      "community": 18,
       "norm_label": "getprojectrequest"
     },
     {
       "label": "CreateProjectRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L112",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "src_backend_client_createprojectrequest",
       "community": 70,
@@ -7557,37 +7577,47 @@
       "label": "ListActiveTasksRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L118",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "src_backend_client_listactivetasksrequest",
-      "community": 61,
+      "community": 18,
       "norm_label": "listactivetasksrequest"
     },
     {
       "label": "ListTaskCommentsRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L124",
+      "source_location": "L127",
       "_origin": "ast",
       "id": "src_backend_client_listtaskcommentsrequest",
-      "community": 61,
+      "community": 18,
       "norm_label": "listtaskcommentsrequest"
+    },
+    {
+      "label": "CreateTaskCommentRequest",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/backend-client.ts",
+      "source_location": "L134",
+      "_origin": "ast",
+      "id": "src_backend_client_createtaskcommentrequest",
+      "community": 53,
+      "norm_label": "createtaskcommentrequest"
     },
     {
       "label": "GetTaskRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L131",
+      "source_location": "L142",
       "_origin": "ast",
       "id": "src_backend_client_gettaskrequest",
-      "community": 61,
+      "community": 18,
       "norm_label": "gettaskrequest"
     },
     {
       "label": "CreateTaskRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L138",
+      "source_location": "L149",
       "_origin": "ast",
       "id": "src_backend_client_createtaskrequest",
       "community": 18,
@@ -7597,7 +7627,7 @@
       "label": "UpdateTaskStatusRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L145",
+      "source_location": "L156",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskstatusrequest",
       "community": 18,
@@ -7607,7 +7637,7 @@
       "label": "UpdateTaskAssigneeRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L153",
+      "source_location": "L164",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskassigneerequest",
       "community": 18,
@@ -7617,7 +7647,7 @@
       "label": "UpdateTaskDueDateRequest",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L161",
+      "source_location": "L172",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskduedaterequest",
       "community": 18,
@@ -7627,7 +7657,7 @@
       "label": "TaskBackendClient",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L169",
+      "source_location": "L180",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclient",
       "community": 65,
@@ -7637,7 +7667,7 @@
       "label": "TaskBackendClientError",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L185",
+      "source_location": "L197",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclienterror",
       "community": 33,
@@ -7647,7 +7677,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L189",
+      "source_location": "L201",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclienterror_constructor",
       "community": 33,
@@ -7657,17 +7687,17 @@
       "label": "createTaskBackendClient()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L197",
+      "source_location": "L209",
       "_origin": "ast",
       "id": "src_backend_client_createtaskbackendclient",
-      "community": 55,
+      "community": 56,
       "norm_label": "createtaskbackendclient()"
     },
     {
       "label": "defaultFetch()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L316",
+      "source_location": "L337",
       "_origin": "ast",
       "id": "src_backend_client_defaultfetch",
       "community": 61,
@@ -7677,7 +7707,7 @@
       "label": "postJson()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L323",
+      "source_location": "L344",
       "_origin": "ast",
       "id": "src_backend_client_postjson",
       "community": 61,
@@ -7687,7 +7717,7 @@
       "label": "patchJson()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L334",
+      "source_location": "L355",
       "_origin": "ast",
       "id": "src_backend_client_patchjson",
       "community": 61,
@@ -7697,7 +7727,7 @@
       "label": "writeJson()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L345",
+      "source_location": "L366",
       "_origin": "ast",
       "id": "src_backend_client_writejson",
       "community": 61,
@@ -7707,7 +7737,7 @@
       "label": "getJson()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L384",
+      "source_location": "L406",
       "_origin": "ast",
       "id": "src_backend_client_getjson",
       "community": 61,
@@ -7717,17 +7747,17 @@
       "label": "normalizeBaseUrl()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L413",
+      "source_location": "L435",
       "_origin": "ast",
       "id": "src_backend_client_normalizebaseurl",
-      "community": 61,
+      "community": 56,
       "norm_label": "normalizebaseurl()"
     },
     {
       "label": "buildTaskSkillApplyPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L423",
+      "source_location": "L445",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskskillapplypath",
       "community": 61,
@@ -7737,7 +7767,7 @@
       "label": "buildWorkspaceProjectsPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L431",
+      "source_location": "L453",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectspath",
       "community": 61,
@@ -7747,7 +7777,7 @@
       "label": "buildWorkspaceStatusesPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L435",
+      "source_location": "L457",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacestatusespath",
       "community": 61,
@@ -7757,7 +7787,7 @@
       "label": "buildWorkspaceProjectPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L439",
+      "source_location": "L461",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectpath",
       "community": 61,
@@ -7767,7 +7797,7 @@
       "label": "buildProjectTasksPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L443",
+      "source_location": "L465",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskspath",
       "community": 61,
@@ -7777,7 +7807,7 @@
       "label": "buildProjectTaskPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L447",
+      "source_location": "L469",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskpath",
       "community": 61,
@@ -7787,7 +7817,7 @@
       "label": "buildProjectTaskStatusPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L451",
+      "source_location": "L473",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskstatuspath",
       "community": 61,
@@ -7797,7 +7827,7 @@
       "label": "buildProjectTaskAssigneePath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L459",
+      "source_location": "L481",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskassigneepath",
       "community": 61,
@@ -7807,7 +7837,7 @@
       "label": "buildProjectTaskDueDatePath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L467",
+      "source_location": "L489",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskduedatepath",
       "community": 61,
@@ -7817,7 +7847,7 @@
       "label": "buildTaskCommentsPath()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L475",
+      "source_location": "L497",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskcommentspath",
       "community": 61,
@@ -7827,7 +7857,7 @@
       "label": "readProjectSummaryList()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L479",
+      "source_location": "L501",
       "_origin": "ast",
       "id": "src_backend_client_readprojectsummarylist",
       "community": 61,
@@ -7837,7 +7867,7 @@
       "label": "readWorkspaceStatusList()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L487",
+      "source_location": "L509",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacestatuslist",
       "community": 61,
@@ -7847,7 +7877,7 @@
       "label": "readTaskSummaryList()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L495",
+      "source_location": "L517",
       "_origin": "ast",
       "id": "src_backend_client_readtasksummarylist",
       "community": 61,
@@ -7857,7 +7887,7 @@
       "label": "readTaskCommentList()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L503",
+      "source_location": "L525",
       "_origin": "ast",
       "id": "src_backend_client_readtaskcommentlist",
       "community": 61,
@@ -7867,170 +7897,170 @@
       "label": "readWorkspaceStatus()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L511",
+      "source_location": "L533",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacestatus",
-      "community": 53,
+      "community": 61,
       "norm_label": "readworkspacestatus()"
     },
     {
       "label": "readTaskComment()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L526",
+      "source_location": "L548",
       "_origin": "ast",
       "id": "src_backend_client_readtaskcomment",
-      "community": 53,
+      "community": 61,
       "norm_label": "readtaskcomment()"
     },
     {
       "label": "readProjectDetail()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L540",
+      "source_location": "L562",
       "_origin": "ast",
       "id": "src_backend_client_readprojectdetail",
-      "community": 53,
+      "community": 61,
       "norm_label": "readprojectdetail()"
     },
     {
       "label": "readProjectSummary()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L574",
+      "source_location": "L596",
       "_origin": "ast",
       "id": "src_backend_client_readprojectsummary",
-      "community": 53,
+      "community": 61,
       "norm_label": "readprojectsummary()"
     },
     {
       "label": "readTaskSummary()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L608",
+      "source_location": "L630",
       "_origin": "ast",
       "id": "src_backend_client_readtasksummary",
-      "community": 53,
+      "community": 61,
       "norm_label": "readtasksummary()"
     },
     {
       "label": "readPreviewTaskSkillApplyResponse()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L612",
+      "source_location": "L634",
       "_origin": "ast",
       "id": "src_backend_client_readpreviewtaskskillapplyresponse",
-      "community": 53,
+      "community": 61,
       "norm_label": "readpreviewtaskskillapplyresponse()"
     },
     {
       "label": "readApplyTaskSkillResponse()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L626",
+      "source_location": "L648",
       "_origin": "ast",
       "id": "src_backend_client_readapplytaskskillresponse",
-      "community": 53,
+      "community": 61,
       "norm_label": "readapplytaskskillresponse()"
     },
     {
       "label": "readTaskSkillApplyPreviewSubtask()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L640",
+      "source_location": "L662",
       "_origin": "ast",
       "id": "src_backend_client_readtaskskillapplypreviewsubtask",
-      "community": 53,
+      "community": 61,
       "norm_label": "readtaskskillapplypreviewsubtask()"
     },
     {
       "label": "readTaskDetail()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L654",
+      "source_location": "L676",
       "_origin": "ast",
       "id": "src_backend_client_readtaskdetail",
-      "community": 53,
+      "community": 61,
       "norm_label": "readtaskdetail()"
     },
     {
       "label": "readRecord()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L711",
+      "source_location": "L733",
       "_origin": "ast",
       "id": "src_backend_client_readrecord",
-      "community": 53,
+      "community": 61,
       "norm_label": "readrecord()"
     },
     {
       "label": "isUnknownRecord()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L719",
+      "source_location": "L741",
       "_origin": "ast",
       "id": "src_backend_client_isunknownrecord",
-      "community": 53,
+      "community": 61,
       "norm_label": "isunknownrecord()"
     },
     {
       "label": "readProperty()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L723",
+      "source_location": "L745",
       "_origin": "ast",
       "id": "src_backend_client_readproperty",
-      "community": 53,
+      "community": 61,
       "norm_label": "readproperty()"
     },
     {
       "label": "readString()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L727",
+      "source_location": "L749",
       "_origin": "ast",
       "id": "src_backend_client_readstring",
-      "community": 53,
+      "community": 61,
       "norm_label": "readstring()"
     },
     {
       "label": "readNumber()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L737",
+      "source_location": "L759",
       "_origin": "ast",
       "id": "src_backend_client_readnumber",
-      "community": 53,
+      "community": 61,
       "norm_label": "readnumber()"
     },
     {
       "label": "readBoolean()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L747",
+      "source_location": "L769",
       "_origin": "ast",
       "id": "src_backend_client_readboolean",
-      "community": 53,
+      "community": 61,
       "norm_label": "readboolean()"
     },
     {
       "label": "readArray()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L757",
+      "source_location": "L779",
       "_origin": "ast",
       "id": "src_backend_client_readarray",
-      "community": 53,
+      "community": 61,
       "norm_label": "readarray()"
     },
     {
       "label": "readOptionalNullableString()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/backend-client.ts",
-      "source_location": "L767",
+      "source_location": "L789",
       "_origin": "ast",
       "id": "src_backend_client_readoptionalnullablestring",
-      "community": 53,
+      "community": 61,
       "norm_label": "readoptionalnullablestring()"
     },
     {
@@ -8040,27 +8070,27 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_comment_tools_test",
-      "community": 65,
+      "community": 53,
       "norm_label": "comment-tools.test.ts"
     },
     {
       "label": "taskComment",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
-      "source_location": "L27",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "src_comment_tools_test_taskcomment",
-      "community": 65,
+      "community": 53,
       "norm_label": "taskcomment"
     },
     {
       "label": "createBackendClientStub()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
-      "source_location": "L72",
+      "source_location": "L129",
       "_origin": "ast",
       "id": "src_comment_tools_test_createbackendclientstub",
-      "community": 65,
+      "community": 53,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -8070,98 +8100,138 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_comment_tools",
-      "community": 65,
+      "community": 53,
       "norm_label": "comment-tools.ts"
     },
     {
       "label": "CommentListToolInput",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L5",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "src_comment_tools_commentlisttoolinput",
-      "community": 65,
+      "community": 53,
       "norm_label": "commentlisttoolinput"
+    },
+    {
+      "label": "CommentCreateToolInput",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "src_comment_tools_commentcreatetoolinput",
+      "community": 53,
+      "norm_label": "commentcreatetoolinput"
     },
     {
       "label": "CommentToolHandlers",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L12",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolhandlers",
-      "community": 65,
+      "community": 53,
       "norm_label": "commenttoolhandlers"
     },
     {
       "label": "CommentToolInputError",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L16",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolinputerror",
-      "community": 65,
+      "community": 53,
       "norm_label": "commenttoolinputerror"
     },
     {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L17",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolinputerror_constructor",
-      "community": 65,
+      "community": 53,
       "norm_label": ".constructor()"
     },
     {
       "label": "createCommentToolHandlers()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L23",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_comment_tools_createcommenttoolhandlers",
-      "community": 65,
+      "community": 53,
       "norm_label": "createcommenttoolhandlers()"
+    },
+    {
+      "label": "parseCommentCreateToolInput()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "src_comment_tools_parsecommentcreatetoolinput",
+      "community": 53,
+      "norm_label": "parsecommentcreatetoolinput()"
     },
     {
       "label": "parseCommentListToolInput()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L38",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "src_comment_tools_parsecommentlisttoolinput",
-      "community": 65,
+      "community": 53,
       "norm_label": "parsecommentlisttoolinput()"
+    },
+    {
+      "label": "toCreateTaskCommentInput()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "src_comment_tools_tocreatetaskcommentinput",
+      "community": 53,
+      "norm_label": "tocreatetaskcommentinput()"
     },
     {
       "label": "readRecord()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L49",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "src_comment_tools_readrecord",
-      "community": 65,
+      "community": 53,
       "norm_label": "readrecord()"
     },
     {
       "label": "isUnknownRecord()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L57",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "src_comment_tools_isunknownrecord",
-      "community": 65,
+      "community": 53,
       "norm_label": "isunknownrecord()"
     },
     {
       "label": "readRequiredUuid()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L61",
+      "source_location": "L103",
       "_origin": "ast",
       "id": "src_comment_tools_readrequireduuid",
-      "community": 65,
+      "community": 53,
       "norm_label": "readrequireduuid()"
+    },
+    {
+      "label": "readRequiredNonEmptyString()",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L113",
+      "_origin": "ast",
+      "id": "src_comment_tools_readrequirednonemptystring",
+      "community": 53,
+      "norm_label": "readrequirednonemptystring()"
     },
     {
       "label": "config.test.ts",
@@ -8280,7 +8350,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_index_ts_src_index",
-      "community": 55,
+      "community": 18,
       "norm_label": "index.ts"
     },
     {
@@ -8290,7 +8360,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_main_ts_src_main",
-      "community": 55,
+      "community": 56,
       "norm_label": "main.ts"
     },
     {
@@ -8387,7 +8457,7 @@
       "label": "RegisteredToolCall",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L581",
+      "source_location": "L629",
       "_origin": "ast",
       "id": "src_mcp_server_test_registeredtoolcall",
       "community": 69,
@@ -8397,7 +8467,7 @@
       "label": "createRegistrar()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L587",
+      "source_location": "L635",
       "_origin": "ast",
       "id": "src_mcp_server_test_createregistrar",
       "community": 69,
@@ -8407,7 +8477,7 @@
       "label": "createBackendClientStub()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L596",
+      "source_location": "L644",
       "_origin": "ast",
       "id": "src_mcp_server_test_createbackendclientstub",
       "community": 69,
@@ -8417,7 +8487,7 @@
       "label": "readBackendRequestInput()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L623",
+      "source_location": "L672",
       "_origin": "ast",
       "id": "src_mcp_server_test_readbackendrequestinput",
       "community": 69,
@@ -8427,7 +8497,7 @@
       "label": "isUnknownRecord()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L645",
+      "source_location": "L694",
       "_origin": "ast",
       "id": "src_mcp_server_test_isunknownrecord",
       "community": 69,
@@ -8437,7 +8507,7 @@
       "label": "readString()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L649",
+      "source_location": "L698",
       "_origin": "ast",
       "id": "src_mcp_server_test_readstring",
       "community": 69,
@@ -8447,7 +8517,7 @@
       "label": "readNullableString()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L659",
+      "source_location": "L708",
       "_origin": "ast",
       "id": "src_mcp_server_test_readnullablestring",
       "community": 69,
@@ -8457,7 +8527,7 @@
       "label": "readTextResult()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L669",
+      "source_location": "L718",
       "_origin": "ast",
       "id": "src_mcp_server_test_readtextresult",
       "community": 69,
@@ -8514,10 +8584,20 @@
       "norm_label": "commentlistinputschema"
     },
     {
-      "label": "projectGetInputSchema",
+      "label": "commentCreateInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L44",
+      "_origin": "ast",
+      "id": "src_mcp_server_commentcreateinputschema",
+      "community": 69,
+      "norm_label": "commentcreateinputschema"
+    },
+    {
+      "label": "projectGetInputSchema",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/mcp-server.ts",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "src_mcp_server_projectgetinputschema",
       "community": 69,
@@ -8527,7 +8607,7 @@
       "label": "projectCreateInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L50",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "src_mcp_server_projectcreateinputschema",
       "community": 69,
@@ -8537,7 +8617,7 @@
       "label": "taskSearchInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L59",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "src_mcp_server_tasksearchinputschema",
       "community": 69,
@@ -8547,7 +8627,7 @@
       "label": "taskGetInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L66",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "src_mcp_server_taskgetinputschema",
       "community": 69,
@@ -8557,7 +8637,7 @@
       "label": "taskCreateInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L73",
+      "source_location": "L81",
       "_origin": "ast",
       "id": "src_mcp_server_taskcreateinputschema",
       "community": 69,
@@ -8567,7 +8647,7 @@
       "label": "taskSetStatusInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L85",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "src_mcp_server_tasksetstatusinputschema",
       "community": 69,
@@ -8577,7 +8657,7 @@
       "label": "taskSetAssigneeInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L93",
+      "source_location": "L101",
       "_origin": "ast",
       "id": "src_mcp_server_tasksetassigneeinputschema",
       "community": 69,
@@ -8587,7 +8667,7 @@
       "label": "taskSetDueDateInputSchema",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L101",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "src_mcp_server_tasksetduedateinputschema",
       "community": 69,
@@ -8597,7 +8677,7 @@
       "label": "TaskSkillApplyMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L109",
+      "source_location": "L117",
       "_origin": "ast",
       "id": "src_mcp_server_taskskillapplymcpargs",
       "community": 69,
@@ -8607,7 +8687,7 @@
       "label": "StatusListMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L110",
+      "source_location": "L118",
       "_origin": "ast",
       "id": "src_mcp_server_statuslistmcpargs",
       "community": 69,
@@ -8617,17 +8697,27 @@
       "label": "CommentListMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L111",
+      "source_location": "L119",
       "_origin": "ast",
       "id": "src_mcp_server_commentlistmcpargs",
       "community": 69,
       "norm_label": "commentlistmcpargs"
     },
     {
+      "label": "CommentCreateMcpArgs",
+      "file_type": "code",
+      "source_file": "apps/mcp-server/src/mcp-server.ts",
+      "source_location": "L120",
+      "_origin": "ast",
+      "id": "src_mcp_server_commentcreatemcpargs",
+      "community": 69,
+      "norm_label": "commentcreatemcpargs"
+    },
+    {
       "label": "ProjectSearchMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L112",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "src_mcp_server_projectsearchmcpargs",
       "community": 69,
@@ -8637,7 +8727,7 @@
       "label": "ProjectGetMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L113",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "src_mcp_server_projectgetmcpargs",
       "community": 69,
@@ -8647,7 +8737,7 @@
       "label": "ProjectCreateMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L114",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "src_mcp_server_projectcreatemcpargs",
       "community": 69,
@@ -8657,7 +8747,7 @@
       "label": "TaskSearchMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L115",
+      "source_location": "L124",
       "_origin": "ast",
       "id": "src_mcp_server_tasksearchmcpargs",
       "community": 69,
@@ -8667,7 +8757,7 @@
       "label": "TaskGetMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L116",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "src_mcp_server_taskgetmcpargs",
       "community": 69,
@@ -8677,7 +8767,7 @@
       "label": "TaskCreateMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L117",
+      "source_location": "L126",
       "_origin": "ast",
       "id": "src_mcp_server_taskcreatemcpargs",
       "community": 69,
@@ -8687,7 +8777,7 @@
       "label": "TaskSetStatusMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L118",
+      "source_location": "L127",
       "_origin": "ast",
       "id": "src_mcp_server_tasksetstatusmcpargs",
       "community": 69,
@@ -8697,7 +8787,7 @@
       "label": "TaskSetAssigneeMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L119",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "src_mcp_server_tasksetassigneemcpargs",
       "community": 69,
@@ -8707,7 +8797,7 @@
       "label": "TaskSetDueDateMcpArgs",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L120",
+      "source_location": "L129",
       "_origin": "ast",
       "id": "src_mcp_server_tasksetduedatemcpargs",
       "community": 69,
@@ -8717,7 +8807,7 @@
       "label": "TaskMcpToolCallback",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L121",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "src_mcp_server_taskmcptoolcallback",
       "community": 69,
@@ -8727,7 +8817,7 @@
       "label": "TaskMcpToolRegistrar",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L137",
+      "source_location": "L147",
       "_origin": "ast",
       "id": "src_mcp_server_taskmcptoolregistrar",
       "community": 69,
@@ -8737,7 +8827,7 @@
       "label": "TaskSkillToolRegistrar",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L161",
+      "source_location": "L172",
       "_origin": "ast",
       "id": "src_mcp_server_taskskilltoolregistrar",
       "community": 69,
@@ -8747,7 +8837,7 @@
       "label": "TaskMcpServerOptions",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L163",
+      "source_location": "L174",
       "_origin": "ast",
       "id": "src_mcp_server_taskmcpserveroptions",
       "community": 69,
@@ -8757,7 +8847,7 @@
       "label": "createTaskMcpServer()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L169",
+      "source_location": "L180",
       "_origin": "ast",
       "id": "src_mcp_server_createtaskmcpserver",
       "community": 69,
@@ -8767,7 +8857,7 @@
       "label": "registerCommentTools()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L184",
+      "source_location": "L195",
       "_origin": "ast",
       "id": "src_mcp_server_registercommenttools",
       "community": 69,
@@ -8777,7 +8867,7 @@
       "label": "registerStatusTools()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L199",
+      "source_location": "L220",
       "_origin": "ast",
       "id": "src_mcp_server_registerstatustools",
       "community": 69,
@@ -8787,7 +8877,7 @@
       "label": "registerProjectTools()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L214",
+      "source_location": "L235",
       "_origin": "ast",
       "id": "src_mcp_server_registerprojecttools",
       "community": 69,
@@ -8797,7 +8887,7 @@
       "label": "registerTaskTools()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L249",
+      "source_location": "L270",
       "_origin": "ast",
       "id": "src_mcp_server_registertasktools",
       "community": 69,
@@ -8807,7 +8897,7 @@
       "label": "registerTaskSkillApplyTools()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L314",
+      "source_location": "L335",
       "_origin": "ast",
       "id": "src_mcp_server_registertaskskillapplytools",
       "community": 69,
@@ -8817,17 +8907,17 @@
       "label": "connectTaskMcpServerToStdio()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L339",
+      "source_location": "L360",
       "_origin": "ast",
       "id": "src_mcp_server_connecttaskmcpservertostdio",
-      "community": 55,
+      "community": 56,
       "norm_label": "connecttaskmcpservertostdio()"
     },
     {
       "label": "toToolResult()",
       "file_type": "code",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L343",
+      "source_location": "L364",
       "_origin": "ast",
       "id": "src_mcp_server_totoolresult",
       "community": 69,
@@ -9210,7 +9300,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_runtime",
-      "community": 55,
+      "community": 56,
       "norm_label": "runtime.ts"
     },
     {
@@ -9220,7 +9310,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_runtime_taskmcpserverconnector",
-      "community": 55,
+      "community": 56,
       "norm_label": "taskmcpserverconnector"
     },
     {
@@ -9230,7 +9320,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserveroptions",
-      "community": 55,
+      "community": 56,
       "norm_label": "runtaskmcpserveroptions"
     },
     {
@@ -9240,7 +9330,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserverfromenvironment",
-      "community": 55,
+      "community": 56,
       "norm_label": "runtaskmcpserverfromenvironment()"
     },
     {
@@ -9690,7 +9780,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_task_tools_tasktoolhandlers",
-      "community": 69,
+      "community": 18,
       "norm_label": "tasktoolhandlers"
     },
     {
@@ -35217,9 +35307,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskcommentresponse"
     },
     {
       "relation": "imports",
@@ -35319,9 +35409,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_test",
-      "target": "src_backend_client_test_taskcomment",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_taskcomment"
     },
     {
       "relation": "contains",
@@ -35505,9 +35595,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L475",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client",
-      "target": "src_backend_client_buildtaskcommentspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildtaskcommentspath"
     },
     {
       "relation": "contains",
@@ -35588,6 +35678,36 @@
       "confidence_score": 1.0,
       "source": "src_backend_client",
       "target": "src_backend_client_createtaskbackendclient"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/backend-client.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "src_backend_client",
+      "target": "src_backend_client_createtaskcommentinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/backend-client.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_backend_client",
+      "target": "src_backend_client_createtaskcommentoperation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/backend-client.ts",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "src_backend_client",
+      "target": "src_backend_client_createtaskcommentrequest",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -35735,9 +35855,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client",
-      "target": "src_backend_client_listtaskcommentsoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listtaskcommentsoperation"
     },
     {
       "relation": "contains",
@@ -35745,9 +35865,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L124",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client",
-      "target": "src_backend_client_listtaskcommentsrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listtaskcommentsrequest"
     },
     {
       "relation": "contains",
@@ -35975,9 +36095,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L526",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client",
-      "target": "src_backend_client_readtaskcomment",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskcomment"
     },
     {
       "relation": "contains",
@@ -35985,9 +36105,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L503",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client",
-      "target": "src_backend_client_readtaskcommentlist",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readtaskcommentlist"
     },
     {
       "relation": "contains",
@@ -36135,9 +36255,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskcommentresponse"
     },
     {
       "relation": "contains",
@@ -36296,9 +36416,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools",
-      "target": "src_backend_client",
-      "confidence_score": 1.0
+      "target": "src_backend_client"
     },
     {
       "relation": "imports_from",
@@ -36307,9 +36427,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_backend_client",
-      "confidence_score": 1.0
+      "target": "src_backend_client"
     },
     {
       "relation": "imports_from",
@@ -36483,9 +36603,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_backend_client_previewtaskskillapplyresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_previewtaskskillapplyresponse"
     },
     {
       "relation": "imports",
@@ -36582,9 +36702,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_backend_client_applytaskskillresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_applytaskskillresponse"
     },
     {
       "relation": "imports",
@@ -36681,9 +36801,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_backend_client_workspacestatusresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_workspacestatusresponse"
     },
     {
       "relation": "imports",
@@ -36758,360 +36878,8 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_createprojectinput"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/project-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_project_tools",
-      "target": "src_backend_client_createprojectinput"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_createtaskinput"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools",
-      "target": "src_backend_client_createtaskinput"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_updatetaskstatusinput"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools",
-      "target": "src_backend_client_updatetaskstatusinput"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_updatetaskassigneeinput"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools",
-      "target": "src_backend_client_updatetaskassigneeinput"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_updatetaskduedateinput"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools",
-      "target": "src_backend_client_updatetaskduedateinput"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_projectsummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "src_comment_tools_test",
-      "target": "src_backend_client_projectsummaryresponse",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_mcp_server_test",
-      "target": "src_backend_client_projectsummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/project-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_project_tools",
-      "target": "src_backend_client_projectsummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/project-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_project_tools_test",
-      "target": "src_backend_client_projectsummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/status-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_status_tools_test",
-      "target": "src_backend_client_projectsummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools_test",
-      "target": "src_backend_client_projectsummaryresponse"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_projectdetailresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "src_comment_tools_test",
-      "target": "src_backend_client_projectdetailresponse",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_mcp_server_test",
-      "target": "src_backend_client_projectdetailresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/project-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_project_tools",
-      "target": "src_backend_client_projectdetailresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/project-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_project_tools_test",
-      "target": "src_backend_client_projectdetailresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/status-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_status_tools_test",
-      "target": "src_backend_client_projectdetailresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools_test",
-      "target": "src_backend_client_projectdetailresponse"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_tasksummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "src_comment_tools_test",
-      "target": "src_backend_client_tasksummaryresponse",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/mcp-server.test.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_mcp_server_test",
-      "target": "src_backend_client_tasksummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/project-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_project_tools_test",
-      "target": "src_backend_client_tasksummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/status-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_status_tools_test",
-      "target": "src_backend_client_tasksummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-skill-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_skill_tools_test",
-      "target": "src_backend_client_tasksummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools",
-      "target": "src_backend_client_tasksummaryresponse"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_task_tools_test",
-      "target": "src_backend_client_tasksummaryresponse"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_taskcommentresponse",
+      "target": "src_backend_client_createtaskcommentinput",
       "confidence_score": 1.0
     },
     {
@@ -37122,8 +36890,129 @@
       "source_location": "L1",
       "weight": 1.0,
       "source": "src_comment_tools",
-      "target": "src_backend_client_taskcommentresponse",
+      "target": "src_backend_client_createtaskcommentinput",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_createprojectinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/project-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_project_tools",
+      "target": "src_backend_client_createprojectinput"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_createtaskinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools",
+      "target": "src_backend_client_createtaskinput"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_updatetaskstatusinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools",
+      "target": "src_backend_client_updatetaskstatusinput"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_updatetaskassigneeinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools",
+      "target": "src_backend_client_updatetaskassigneeinput"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_updatetaskduedateinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools",
+      "target": "src_backend_client_updatetaskduedateinput"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "imports",
@@ -37132,9 +37021,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "imports",
@@ -37143,9 +37032,20 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/project-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_project_tools",
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "imports",
@@ -37154,9 +37054,9 @@
       "source_file": "apps/mcp-server/src/project-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_project_tools_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "imports",
@@ -37165,20 +37065,9 @@
       "source_file": "apps/mcp-server/src/status-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_status_tools_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/task-skill-tools.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "src_task_skill_tools_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "imports",
@@ -37187,9 +37076,262 @@
       "source_file": "apps/mcp-server/src/task-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_task_tools_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_projectdetailresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools_test",
+      "target": "src_backend_client_projectdetailresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/mcp-server.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_mcp_server_test",
+      "target": "src_backend_client_projectdetailresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/project-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_project_tools",
+      "target": "src_backend_client_projectdetailresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/project-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_project_tools_test",
+      "target": "src_backend_client_projectdetailresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/status-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_status_tools_test",
+      "target": "src_backend_client_projectdetailresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools_test",
+      "target": "src_backend_client_projectdetailresponse"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools_test",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/mcp-server.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_mcp_server_test",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/project-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_project_tools_test",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/status-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_status_tools_test",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-skill-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_skill_tools_test",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools_test",
+      "target": "src_backend_client_tasksummaryresponse"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_taskcommentresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools",
+      "target": "src_backend_client_taskcommentresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools_test",
+      "target": "src_backend_client_taskcommentresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/mcp-server.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_mcp_server_test",
+      "target": "src_backend_client_taskcommentresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/project-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_project_tools_test",
+      "target": "src_backend_client_taskcommentresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/status-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_status_tools_test",
+      "target": "src_backend_client_taskcommentresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-skill-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_skill_tools_test",
+      "target": "src_backend_client_taskcommentresponse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/task-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_task_tools_test",
+      "target": "src_backend_client_taskcommentresponse"
     },
     {
       "relation": "re_exports",
@@ -37209,9 +37351,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_backend_client_taskdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskdetailresponse"
     },
     {
       "relation": "imports",
@@ -37506,8 +37648,30 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_listtaskcommentsrequest",
+      "target": "src_backend_client_listtaskcommentsrequest"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_backend_client_createtaskcommentrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_comment_tools_test",
+      "target": "src_backend_client_createtaskcommentrequest",
       "confidence_score": 1.0
     },
     {
@@ -37671,9 +37835,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools",
-      "target": "src_backend_client_taskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclient"
     },
     {
       "relation": "imports",
@@ -37682,9 +37846,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_backend_client_taskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclient"
     },
     {
       "relation": "imports",
@@ -37956,9 +38120,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L476",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_buildtaskcommentspath",
-      "target": "src_backend_client_buildprojecttaskpath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildprojecttaskpath"
     },
     {
       "relation": "calls",
@@ -38000,9 +38164,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L527",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskcomment",
-      "target": "src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -38011,9 +38175,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L530",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readtaskcomment",
-      "target": "src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -38341,8 +38505,41 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_comment_tools",
+      "target": "src_comment_tools"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools_test",
+      "target": "src_comment_tools_commenttoolinputerror"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools_test",
+      "target": "src_comment_tools_createcommenttoolhandlers"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "src_comment_tools_test",
+      "target": "src_comment_tools_parsecommentcreatetoolinput",
       "confidence_score": 1.0
     },
     {
@@ -38352,31 +38549,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_comment_tools_commenttoolinputerror",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "source": "src_comment_tools_test",
-      "target": "src_comment_tools_createcommenttoolhandlers",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/comment-tools.test.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "source": "src_comment_tools_test",
-      "target": "src_comment_tools_parsecommentlisttoolinput",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_parsecommentlisttoolinput"
     },
     {
       "relation": "contains",
@@ -38384,9 +38559,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L72",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_comment_tools_test_createbackendclientstub",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_test_createbackendclientstub"
     },
     {
       "relation": "contains",
@@ -38394,9 +38569,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.test.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_test",
-      "target": "src_comment_tools_test_taskcomment",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_test_taskcomment"
     },
     {
       "relation": "re_exports",
@@ -38405,29 +38580,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_comment_tools",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "source": "src_comment_tools",
-      "target": "src_comment_tools_commentlisttoolinput",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L12",
-      "weight": 1.0,
-      "source": "src_comment_tools",
-      "target": "src_comment_tools_commenttoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_comment_tools"
     },
     {
       "relation": "contains",
@@ -38436,8 +38591,38 @@
       "source_location": "L16",
       "weight": 1.0,
       "source": "src_comment_tools",
-      "target": "src_comment_tools_commenttoolinputerror",
+      "target": "src_comment_tools_commentcreatetoolinput",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools",
+      "target": "src_comment_tools_commentlisttoolinput"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools",
+      "target": "src_comment_tools_commenttoolhandlers"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools",
+      "target": "src_comment_tools_commenttoolinputerror"
     },
     {
       "relation": "contains",
@@ -38445,9 +38630,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools",
-      "target": "src_comment_tools_createcommenttoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_createcommenttoolhandlers"
     },
     {
       "relation": "contains",
@@ -38455,8 +38640,18 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools",
-      "target": "src_comment_tools_isunknownrecord",
+      "target": "src_comment_tools_isunknownrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "src_comment_tools",
+      "target": "src_comment_tools_parsecommentcreatetoolinput",
       "confidence_score": 1.0
     },
     {
@@ -38465,9 +38660,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools",
-      "target": "src_comment_tools_parsecommentlisttoolinput",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_parsecommentlisttoolinput"
     },
     {
       "relation": "contains",
@@ -38475,8 +38670,18 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools",
-      "target": "src_comment_tools_readrecord",
+      "target": "src_comment_tools_readrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L113",
+      "weight": 1.0,
+      "source": "src_comment_tools",
+      "target": "src_comment_tools_readrequirednonemptystring",
       "confidence_score": 1.0
     },
     {
@@ -38485,8 +38690,18 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools",
-      "target": "src_comment_tools_readrequireduuid",
+      "target": "src_comment_tools_readrequireduuid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "src_comment_tools",
+      "target": "src_comment_tools_tocreatetaskcommentinput",
       "confidence_score": 1.0
     },
     {
@@ -38496,8 +38711,30 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_comment_tools",
+      "target": "src_comment_tools"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_comment_tools_commentlisttoolinput"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_comment_tools_commentcreatetoolinput",
       "confidence_score": 1.0
     },
     {
@@ -38507,20 +38744,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_comment_tools_commentlisttoolinput",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L41",
-      "weight": 1.0,
-      "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_comment_tools_commenttoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_commenttoolhandlers"
     },
     {
       "relation": "imports",
@@ -38529,9 +38755,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_comment_tools_commenttoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_commenttoolhandlers"
     },
     {
       "relation": "re_exports",
@@ -38540,9 +38766,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_comment_tools_commenttoolinputerror",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_commenttoolinputerror"
     },
     {
       "relation": "method",
@@ -38550,9 +38776,9 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_commenttoolinputerror",
-      "target": "src_comment_tools_commenttoolinputerror_constructor",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_commenttoolinputerror_constructor"
     },
     {
       "relation": "re_exports",
@@ -38561,9 +38787,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_comment_tools_createcommenttoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_createcommenttoolhandlers"
     },
     {
       "relation": "imports",
@@ -38572,9 +38798,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_comment_tools_createcommenttoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_comment_tools_createcommenttoolhandlers"
     },
     {
       "relation": "calls",
@@ -38592,10 +38818,10 @@
       "context": "re-export",
       "confidence": "EXTRACTED",
       "source_file": "apps/mcp-server/src/index.ts",
-      "source_location": "L41",
+      "source_location": "L43",
       "weight": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_comment_tools_parsecommentlisttoolinput",
+      "target": "src_comment_tools_parsecommentcreatetoolinput",
       "confidence_score": 1.0
     },
     {
@@ -38603,9 +38829,9 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L39",
+      "source_location": "L63",
       "weight": 1.0,
-      "source": "src_comment_tools_parsecommentlisttoolinput",
+      "source": "src_comment_tools_parsecommentcreatetoolinput",
       "target": "src_comment_tools_readrecord",
       "confidence_score": 1.0
     },
@@ -38614,11 +38840,55 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/mcp-server/src/comment-tools.ts",
-      "source_location": "L42",
+      "source_location": "L70",
       "weight": 1.0,
-      "source": "src_comment_tools_parsecommentlisttoolinput",
+      "source": "src_comment_tools_parsecommentcreatetoolinput",
+      "target": "src_comment_tools_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "src_comment_tools_parsecommentcreatetoolinput",
       "target": "src_comment_tools_readrequireduuid",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/index.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_mcp_server_src_index_ts_src_index",
+      "target": "src_comment_tools_parsecommentlisttoolinput"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools_parsecommentlisttoolinput",
+      "target": "src_comment_tools_readrecord"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_comment_tools_parsecommentlisttoolinput",
+      "target": "src_comment_tools_readrequireduuid"
     },
     {
       "relation": "calls",
@@ -38627,8 +38897,19 @@
       "source_file": "apps/mcp-server/src/comment-tools.ts",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_comment_tools_readrecord",
-      "target": "src_comment_tools_isunknownrecord",
+      "target": "src_comment_tools_isunknownrecord"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/comment-tools.ts",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "src_comment_tools_readrequireduuid",
+      "target": "src_comment_tools_readrequirednonemptystring",
       "confidence_score": 1.0
     },
     {
@@ -38915,9 +39196,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server_registercommenttools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registercommenttools"
     },
     {
       "relation": "re_exports",
@@ -39509,9 +39790,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_registercommenttools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registercommenttools"
     },
     {
       "relation": "imports",
@@ -39595,9 +39876,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L113",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_commentresponse",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_commentresponse"
     },
     {
       "relation": "contains",
@@ -39765,11 +40046,31 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/mcp-server/src/mcp-server.ts",
-      "source_location": "L37",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_commentlistinputschema",
+      "target": "src_mcp_server_commentcreateinputschema",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/mcp-server.ts",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "src_mcp_server",
+      "target": "src_mcp_server_commentcreatemcpargs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/mcp-server/src/mcp-server.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_mcp_server",
+      "target": "src_mcp_server_commentlistinputschema"
     },
     {
       "relation": "contains",
@@ -39777,9 +40078,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L111",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_commentlistmcpargs",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_commentlistmcpargs"
     },
     {
       "relation": "contains",
@@ -39867,9 +40168,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L184",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_registercommenttools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registercommenttools"
     },
     {
       "relation": "contains",
@@ -40271,9 +40572,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L178",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_createtaskmcpserver",
-      "target": "src_mcp_server_registercommenttools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registercommenttools"
     },
     {
       "relation": "calls",
@@ -46875,5 +47176,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8d50309511e90c49c1db87e6c937c8a20f1e0e8b"
+  "built_at_commit": "6827a25d68066206d261a650c34f5f09a7d1eb70"
 }

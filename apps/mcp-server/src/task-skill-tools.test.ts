@@ -164,6 +164,9 @@ function createBackendClientStub(calls: TaskSkillApplyRequest[]): TaskBackendCli
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");
     },
+    createTaskComment: async (): Promise<TaskCommentResponse> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async () => {
       throw new Error("Not implemented.");
     },
