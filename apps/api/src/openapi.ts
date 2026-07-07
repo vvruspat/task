@@ -8,6 +8,10 @@ import { CreateProjectDto, ProjectDetailDto, ProjectSummaryDto } from "./project
 import { WorkspaceStatusDto } from "./statuses/statuses.dto.js";
 import {
   CreateTaskSkillDto,
+  PreviewTaskSkillApplyDto,
+  PreviewTaskSkillApplyOverridesDto,
+  TaskSkillApplyPreviewDto,
+  TaskSkillApplyPreviewSubtaskDto,
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
   TaskSkillVersionSummaryDto,
@@ -46,6 +50,10 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       ProjectDetailDto,
       WorkspaceStatusDto,
       CreateTaskSkillDto,
+      PreviewTaskSkillApplyDto,
+      PreviewTaskSkillApplyOverridesDto,
+      TaskSkillApplyPreviewSubtaskDto,
+      TaskSkillApplyPreviewDto,
       UpdateTaskSkillDefinitionDto,
       UpdateTaskSkillMetadataDto,
       TaskSkillSummaryDto,

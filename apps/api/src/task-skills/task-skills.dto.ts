@@ -2,12 +2,19 @@ import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
   CreateTaskSkillInput,
+  PreviewTaskSkillApplyInput,
+  PreviewTaskSkillApplyOverrides,
+  TaskSkillApplyPreview,
+  TaskSkillApplyPreviewSubtask,
+  TaskSkillApplyPreviewSubtaskSource,
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
   UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
+
+const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export class CreateTaskSkillDto implements CreateTaskSkillInput {
   @ApiProperty({ example: "Song", minLength: 1 })
@@ -58,6 +65,79 @@ export class ParseUpdateTaskSkillDefinitionBodyPipe
 {
   transform(value: unknown): UpdateTaskSkillDefinitionInput {
     return parseUpdateTaskSkillDefinitionInput(value);
+  }
+}
+
+export class PreviewTaskSkillApplyOverridesDto implements PreviewTaskSkillApplyOverrides {
+  @ApiPropertyOptional({ isArray: true, type: String })
+  readonly removeSubtasks?: string[];
+
+  @ApiPropertyOptional({ isArray: true, type: String })
+  readonly addSubtasks?: string[];
+}
+
+export class PreviewTaskSkillApplyDto implements PreviewTaskSkillApplyInput {
+  @ApiProperty({ format: "uuid" })
+  readonly projectId: string = "";
+
+  @ApiProperty({ example: "Intro", minLength: 1 })
+  readonly rootTaskTitle: string = "";
+
+  @ApiPropertyOptional({ type: PreviewTaskSkillApplyOverridesDto })
+  readonly overrides?: PreviewTaskSkillApplyOverridesDto;
+}
+
+export class ParsePreviewTaskSkillApplyBodyPipe
+  implements PipeTransform<unknown, PreviewTaskSkillApplyInput>
+{
+  transform(value: unknown): PreviewTaskSkillApplyInput {
+    return parsePreviewTaskSkillApplyInput(value);
+  }
+}
+
+export class TaskSkillApplyPreviewSubtaskDto implements TaskSkillApplyPreviewSubtask {
+  @ApiProperty({ example: "Record vocals" })
+  readonly title: string;
+
+  @ApiProperty({ enum: ["skill", "added"] })
+  readonly source: TaskSkillApplyPreviewSubtaskSource;
+
+  constructor(subtask: TaskSkillApplyPreviewSubtask) {
+    this.title = subtask.title;
+    this.source = subtask.source;
+  }
+}
+
+export class TaskSkillApplyPreviewDto implements TaskSkillApplyPreview {
+  @ApiProperty({ format: "uuid" })
+  readonly workspaceId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly projectId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly taskSkillId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly taskSkillVersionId: string;
+
+  @ApiProperty({ example: 1 })
+  readonly taskSkillVersion: number;
+
+  @ApiProperty({ example: "Intro" })
+  readonly rootTaskTitle: string;
+
+  @ApiProperty({ isArray: true, type: TaskSkillApplyPreviewSubtaskDto })
+  readonly subtasks: TaskSkillApplyPreviewSubtaskDto[];
+
+  constructor(preview: TaskSkillApplyPreview) {
+    this.workspaceId = preview.workspaceId;
+    this.projectId = preview.projectId;
+    this.taskSkillId = preview.taskSkillId;
+    this.taskSkillVersionId = preview.taskSkillVersionId;
+    this.taskSkillVersion = preview.taskSkillVersion;
+    this.rootTaskTitle = preview.rootTaskTitle;
+    this.subtasks = preview.subtasks.map((subtask) => new TaskSkillApplyPreviewSubtaskDto(subtask));
   }
 }
 
@@ -171,8 +251,38 @@ function parseUpdateTaskSkillDefinitionInput(value: unknown): UpdateTaskSkillDef
   };
 }
 
+function parsePreviewTaskSkillApplyInput(value: unknown): PreviewTaskSkillApplyInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task skill apply preview payload must be an object.");
+  }
+
+  const projectId = readRequiredUuid(value, "projectId");
+  const rootTaskTitle = readRequiredNonEmptyString(value, "rootTaskTitle");
+  const overrides = readOptionalPreviewOverrides(value, "overrides");
+  const input: PreviewTaskSkillApplyInput = {
+    projectId,
+    rootTaskTitle,
+  };
+
+  if (overrides !== undefined) {
+    input.overrides = overrides;
+  }
+
+  return input;
+}
+
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readRequiredUuid(value: Record<string, unknown>, propertyName: string): string {
+  const propertyValue = readRequiredNonEmptyString(value, propertyName);
+
+  if (!uuidV4Pattern.test(propertyValue)) {
+    throw new BadRequestException(`Task skill ${propertyName} must be a UUID v4 string.`);
+  }
+
+  return propertyValue;
 }
 
 function readRequiredNonEmptyString(value: Record<string, unknown>, propertyName: string): string {
@@ -239,6 +349,35 @@ function readOptionalStringArray(
   });
 
   return [...new Set(aliases)];
+}
+
+function readOptionalPreviewOverrides(
+  value: Record<string, unknown>,
+  propertyName: string,
+): PreviewTaskSkillApplyOverrides | undefined {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === undefined) {
+    return undefined;
+  }
+
+  if (!isUnknownRecord(propertyValue)) {
+    throw new BadRequestException(`Task skill ${propertyName} must be an object.`);
+  }
+
+  const removeSubtasks = readOptionalStringArray(propertyValue, "removeSubtasks");
+  const addSubtasks = readOptionalStringArray(propertyValue, "addSubtasks");
+  const overrides: PreviewTaskSkillApplyOverrides = {};
+
+  if (removeSubtasks !== undefined) {
+    overrides.removeSubtasks = removeSubtasks;
+  }
+
+  if (addSubtasks !== undefined) {
+    overrides.addSubtasks = addSubtasks;
+  }
+
+  return overrides;
 }
 
 function readRequiredDefinition(

@@ -5,6 +5,7 @@ import { IsNull } from "typeorm";
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   ActivityEventEntity,
+  ProjectEntity,
   TaskSkillEntity,
   TaskSkillVersionEntity,
   WorkspaceMemberEntity,
@@ -12,6 +13,9 @@ import {
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import type {
   CreateTaskSkillInput,
+  PreviewTaskSkillApplyInput,
+  TaskSkillApplyPreview,
+  TaskSkillApplyPreviewSubtask,
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
@@ -19,6 +23,7 @@ import type {
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import type {
+  TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
@@ -410,6 +415,86 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
     return { status: "archived", taskSkill: archived };
   }
 
+  async previewApplyForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: PreviewTaskSkillApplyInput,
+  ): Promise<TaskSkillApplyPreviewResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null) {
+      return { status: "not_found" };
+    }
+
+    const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: input.projectId,
+      workspaceId,
+    });
+
+    if (project === null) {
+      return { status: "not_found" };
+    }
+
+    const skill = await dataSource.getRepository(TaskSkillEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: taskSkillId,
+      workspaceId,
+    });
+
+    if (skill === null) {
+      return { status: "not_found" };
+    }
+
+    const latestVersion = await dataSource.getRepository(TaskSkillVersionEntity).findOne({
+      where: { taskSkillId, workspaceId },
+      order: { version: "DESC", createdAt: "DESC" },
+    });
+
+    if (latestVersion === null) {
+      return { status: "invalid_definition" };
+    }
+
+    const skillSubtaskTitles = readDefinitionSubtaskTitles(latestVersion.definition);
+
+    if (skillSubtaskTitles === null) {
+      return { status: "invalid_definition" };
+    }
+
+    const removeSubtasks = new Set(input.overrides?.removeSubtasks ?? []);
+    const previewSubtasks: TaskSkillApplyPreviewSubtask[] = skillSubtaskTitles
+      .filter((title) => !removeSubtasks.has(title))
+      .map((title) => ({
+        source: "skill",
+        title,
+      }));
+    const previewTitles = new Set(previewSubtasks.map((subtask) => subtask.title));
+
+    for (const title of input.overrides?.addSubtasks ?? []) {
+      if (!previewTitles.has(title)) {
+        previewSubtasks.push({ source: "added", title });
+        previewTitles.add(title);
+      }
+    }
+
+    const preview: TaskSkillApplyPreview = {
+      workspaceId,
+      projectId: input.projectId,
+      taskSkillId: skill.id,
+      taskSkillVersionId: latestVersion.id,
+      taskSkillVersion: latestVersion.version,
+      rootTaskTitle: input.rootTaskTitle,
+      subtasks: previewSubtasks,
+    };
+
+    return { status: "previewed", preview };
+  }
+
   private async getInitializedDataSource(): Promise<DataSource> {
     const dataSource = this.dataSourceProvider.getDataSource();
 
@@ -456,4 +541,40 @@ function toTaskSkillVersionSummary(version: TaskSkillVersionEntity): TaskSkillVe
     createdByUserId: version.createdByUserId,
     createdAt: version.createdAt,
   };
+}
+
+function readDefinitionSubtaskTitles(definition: Record<string, unknown>): string[] | null {
+  const subtasks = definition["subtasks"];
+
+  if (!Array.isArray(subtasks) || subtasks.length === 0) {
+    return null;
+  }
+
+  const titles: string[] = [];
+
+  for (const subtask of subtasks) {
+    if (!isUnknownRecord(subtask)) {
+      return null;
+    }
+
+    const title = subtask["title"];
+
+    if (typeof title !== "string") {
+      return null;
+    }
+
+    const trimmedTitle = title.trim();
+
+    if (trimmedTitle.length === 0) {
+      return null;
+    }
+
+    titles.push(trimmedTitle);
+  }
+
+  return titles;
+}
+
+function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }

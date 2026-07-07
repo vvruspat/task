@@ -247,6 +247,23 @@ export interface paths {
     patch: operations["TaskSkillsController_updateTaskSkillMetadata"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/task-skills/{taskSkillId}/preview-apply": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Preview applying one task skill without creating tasks */
+    post: operations["TaskSkillsController_previewTaskSkillApply"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/task-skills/{taskSkillId}/definition": {
     parameters: {
       query?: never;
@@ -609,6 +626,38 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
       versions: components["schemas"]["TaskSkillVersionSummaryDto"][];
+    };
+    PreviewTaskSkillApplyOverridesDto: {
+      removeSubtasks?: string[];
+      addSubtasks?: string[];
+    };
+    PreviewTaskSkillApplyDto: {
+      /** Format: uuid */
+      projectId: string;
+      /** @example Intro */
+      rootTaskTitle: string;
+      overrides?: components["schemas"]["PreviewTaskSkillApplyOverridesDto"];
+    };
+    TaskSkillApplyPreviewSubtaskDto: {
+      /** @example Record vocals */
+      title: string;
+      /** @enum {string} */
+      source: "skill" | "added";
+    };
+    TaskSkillApplyPreviewDto: {
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      projectId: string;
+      /** Format: uuid */
+      taskSkillId: string;
+      /** Format: uuid */
+      taskSkillVersionId: string;
+      /** @example 1 */
+      taskSkillVersion: number;
+      /** @example Intro */
+      rootTaskTitle: string;
+      subtasks: components["schemas"]["TaskSkillApplyPreviewSubtaskDto"][];
     };
     UpdateTaskSkillDefinitionDto: {
       definition: {
@@ -1391,6 +1440,49 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace or task skill is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_previewTaskSkillApply: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        taskSkillId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PreviewTaskSkillApplyDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillApplyPreviewDto"];
+        };
+      };
+      /** @description Task skill apply preview payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task skill is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;
