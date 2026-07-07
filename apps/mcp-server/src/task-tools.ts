@@ -3,6 +3,7 @@ import type {
   TaskBackendClient,
   TaskDetailResponse,
   TaskSummaryResponse,
+  UpdateTaskStatusInput,
 } from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -34,8 +35,17 @@ export type TaskCreateToolInput = {
   metadata?: Record<string, unknown>;
 };
 
+export type TaskSetStatusToolInput = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  statusId: string | null;
+};
+
 export type TaskToolHandlers = {
   create(input: unknown): Promise<TaskDetailResponse>;
+  setStatus(input: unknown): Promise<TaskDetailResponse>;
   search(input: unknown): Promise<TaskSummaryResponse[]>;
   get(input: unknown): Promise<TaskDetailResponse>;
 };
@@ -57,6 +67,17 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
         projectId: parsedInput.projectId,
         userId: parsedInput.userId,
         body: toCreateTaskInput(parsedInput),
+      });
+    },
+    setStatus: (input) => {
+      const parsedInput = parseTaskSetStatusToolInput(input);
+
+      return client.updateTaskStatus({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toUpdateTaskStatusInput(parsedInput),
       });
     },
     get: (input) => {
@@ -85,6 +106,18 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
 
       return tasks.filter((task) => normalizeSearchText(task.title).includes(normalizedQuery));
     },
+  };
+}
+
+export function parseTaskSetStatusToolInput(input: unknown): TaskSetStatusToolInput {
+  const record = readRecord(input, "task set status tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+    statusId: readRequiredNullableUuid(record, "statusId"),
   };
 }
 
@@ -180,6 +213,12 @@ function toCreateTaskInput(input: TaskCreateToolInput): CreateTaskInput {
   return body;
 }
 
+function toUpdateTaskStatusInput(input: TaskSetStatusToolInput): UpdateTaskStatusInput {
+  return {
+    statusId: input.statusId,
+  };
+}
+
 function normalizeSearchText(value: string): string {
   return value.trim().toLocaleLowerCase();
 }
@@ -269,6 +308,29 @@ function readOptionalNullableUuid(
   }
 
   return value;
+}
+
+function readRequiredNullableUuid(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | null {
+  const value = record[propertyName];
+
+  if (value === null) {
+    return null;
+  }
+
+  if (typeof value !== "string") {
+    throw new TaskToolInputError(`${propertyName} must be a UUID v4 string or null.`);
+  }
+
+  const trimmedValue = value.trim();
+
+  if (!uuidV4Pattern.test(trimmedValue)) {
+    throw new TaskToolInputError(`${propertyName} must be a UUID v4 string or null.`);
+  }
+
+  return trimmedValue;
 }
 
 function readOptionalNullableNumericString(

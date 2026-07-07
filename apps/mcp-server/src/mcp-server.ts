@@ -68,6 +68,14 @@ const taskCreateInputSchema = {
   metadata: z.record(z.string(), z.unknown()).optional(),
 };
 
+const taskSetStatusInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  statusId: z.string().uuid().nullable(),
+};
+
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
@@ -75,6 +83,7 @@ type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema
 type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskCreateMcpArgs = z.output<z.ZodObject<typeof taskCreateInputSchema>>;
+type TaskSetStatusMcpArgs = z.output<z.ZodObject<typeof taskSetStatusInputSchema>>;
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
@@ -83,7 +92,8 @@ type TaskMcpToolCallback = (
     | ProjectCreateMcpArgs
     | TaskSearchMcpArgs
     | TaskGetMcpArgs
-    | TaskCreateMcpArgs,
+    | TaskCreateMcpArgs
+    | TaskSetStatusMcpArgs,
 ) => Promise<CallToolResult>;
 
 export type TaskMcpToolRegistrar = {
@@ -99,7 +109,8 @@ export type TaskMcpToolRegistrar = {
         | typeof projectCreateInputSchema
         | typeof taskSearchInputSchema
         | typeof taskGetInputSchema
-        | typeof taskCreateInputSchema;
+        | typeof taskCreateInputSchema
+        | typeof taskSetStatusInputSchema;
     },
     callback: TaskMcpToolCallback,
   ): unknown;
@@ -173,6 +184,16 @@ export function registerTaskTools(
       inputSchema: taskCreateInputSchema,
     },
     async (input) => toToolResult(await handlers.create(input)),
+  );
+
+  registrar.registerTool(
+    "task.set_status",
+    {
+      title: "Set task status",
+      description: "Set or clear one visible task status.",
+      inputSchema: taskSetStatusInputSchema,
+    },
+    async (input) => toToolResult(await handlers.setStatus(input)),
   );
 
   registrar.registerTool(

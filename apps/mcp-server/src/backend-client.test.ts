@@ -248,6 +248,36 @@ test("createTask posts typed payloads with trusted user context", async () => {
   assert.deepEqual(response, taskDetailResponse);
 });
 
+test("updateTaskStatus patches typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, taskDetailResponse);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+  const body = {
+    statusId: null,
+  };
+
+  const response = await client.updateTaskStatus({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    body,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}/status`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "PATCH");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
+  assert.deepEqual(response, taskDetailResponse);
+});
+
 test("applyTaskSkill narrows created task tree responses", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, {
@@ -385,7 +415,7 @@ function createJsonFetch(
 }
 
 function readJsonBody(init: TaskBackendFetchInit | undefined): unknown {
-  return JSON.parse(readPostInit(init).body);
+  return JSON.parse(readWriteInit(init).body);
 }
 
 function readPostInit(
@@ -393,6 +423,16 @@ function readPostInit(
 ): Extract<TaskBackendFetchInit, { method: "POST" }> {
   if (init?.method !== "POST") {
     throw new Error("Expected POST fetch init.");
+  }
+
+  return init;
+}
+
+function readWriteInit(
+  init: TaskBackendFetchInit | undefined,
+): Extract<TaskBackendFetchInit, { method: "POST" | "PATCH" }> {
+  if (init?.method !== "POST" && init?.method !== "PATCH") {
+    throw new Error("Expected write fetch init.");
   }
 
   return init;

@@ -12,6 +12,7 @@ import type {
   TaskDetailResponse,
   TaskSkillApplyRequest,
   TaskSummaryResponse,
+  UpdateTaskStatusRequest,
 } from "./backend-client.js";
 import {
   createTaskMcpServer,
@@ -27,6 +28,7 @@ const taskSkillId = "33333333-3333-4333-8333-333333333333";
 const taskSkillVersionId = "44444444-4444-4444-8444-444444444444";
 const userId = "55555555-5555-4555-8555-555555555555";
 const rootTaskId = "66666666-6666-4666-8666-666666666666";
+const statusId = "88888888-8888-4888-8888-888888888888";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
 const toolInput = {
@@ -196,6 +198,7 @@ test("registerProjectTools registers project tools", async () => {
 test("registerTaskTools registers task tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const createCalls: CreateTaskRequest[] = [];
+  const statusCalls: UpdateTaskStatusRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerTaskTools(registrar, {
@@ -209,6 +212,21 @@ test("registerTaskTools registers task tools", async () => {
         userId: readString(input, "userId"),
         body: {
           title: readString(input, "title"),
+        },
+      });
+      return taskResponse;
+    },
+    setStatus: async (input: unknown): Promise<TaskDetailResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected task status input.");
+      }
+      statusCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          statusId: null,
         },
       });
       return taskResponse;
@@ -235,11 +253,12 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["task.create", "task.get", "task.search"],
+    ["task.create", "task.set_status", "task.get", "task.search"],
   );
   assert.equal(toolCalls[0]?.config.title, "Create task");
-  assert.equal(toolCalls[1]?.config.title, "Get task");
-  assert.equal(toolCalls[2]?.config.title, "Search tasks");
+  assert.equal(toolCalls[1]?.config.title, "Set task status");
+  assert.equal(toolCalls[2]?.config.title, "Get task");
+  assert.equal(toolCalls[3]?.config.title, "Search tasks");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -262,7 +281,30 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const getCall = toolCalls[1];
+  const statusCall = toolCalls[1];
+  assert.ok(statusCall !== undefined);
+  const statusResult = await statusCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    statusId: null,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(statusResult)), taskResponse);
+  assert.deepEqual(statusCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        statusId: null,
+      },
+    },
+  ]);
+
+  const getCall = toolCalls[2];
   assert.ok(getCall !== undefined);
   const getResult = await getCall.callback({
     workspaceId,
@@ -273,7 +315,7 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), taskResponse);
 
-  const searchCall = toolCalls[2];
+  const searchCall = toolCalls[3];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -363,6 +405,10 @@ function createBackendClientStub(): TaskBackendClient {
     listActiveTasks: async (): Promise<TaskSummaryResponse[]> => [taskResponse],
     getTask: async (): Promise<TaskDetailResponse> => taskResponse,
     createTask: async (): Promise<TaskDetailResponse> => taskResponse,
+    updateTaskStatus: async (): Promise<TaskDetailResponse> => ({
+      ...taskResponse,
+      statusId,
+    }),
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,
     applyTaskSkill: async (): Promise<ApplyTaskSkillResponse> => applyResponse,
   };
