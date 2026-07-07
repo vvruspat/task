@@ -154,6 +154,9 @@ test("task skill tool handlers forward apply inputs to the backend client", asyn
 
 function createBackendClientStub(calls: TaskSkillApplyRequest[]): TaskBackendClient {
   return {
+    listActiveProjects: async () => {
+      throw new Error("Not implemented.");
+    },
     previewTaskSkillApply: async (request): Promise<PreviewTaskSkillApplyResponse> => {
       calls.push(request);
 

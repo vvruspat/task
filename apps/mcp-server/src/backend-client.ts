@@ -2,6 +2,7 @@ import type { components, operations } from "@task/api-client";
 
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
+type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
 
 export type PreviewTaskSkillApplyInput =
   PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
@@ -9,14 +10,30 @@ export type PreviewTaskSkillApplyResponse =
   PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
 export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type ProjectSummaryResponse =
+  ListActiveProjectsOperation["responses"]["200"]["content"]["application/json"][number];
 type TaskDetailResponse = components["schemas"]["TaskDetailDto"];
 type TaskSkillApplyPreviewSubtaskResponse =
   components["schemas"]["TaskSkillApplyPreviewSubtaskDto"];
 
-export type TaskBackendFetchInit = {
-  method: "POST";
-  headers: Record<string, string>;
-  body: string;
+export type TaskBackendFetchInit =
+  | {
+      method: "GET";
+      headers: TaskBackendGetHeaders;
+    }
+  | {
+      method: "POST";
+      headers: TaskBackendPostHeaders;
+      body: string;
+    };
+
+export type TaskBackendGetHeaders = {
+  accept: string;
+  "x-task-user-id": string;
+};
+
+export type TaskBackendPostHeaders = TaskBackendGetHeaders & {
+  "content-type": string;
 };
 
 export type TaskBackendFetchResponse = {
@@ -43,7 +60,13 @@ export type TaskSkillApplyRequest = {
   body: PreviewTaskSkillApplyInput;
 };
 
+export type ListActiveProjectsRequest = {
+  workspaceId: string;
+  userId: string;
+};
+
 export type TaskBackendClient = {
+  listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   previewTaskSkillApply(request: TaskSkillApplyRequest): Promise<PreviewTaskSkillApplyResponse>;
   applyTaskSkill(request: TaskSkillApplyRequest): Promise<ApplyTaskSkillResponse>;
 };
@@ -65,6 +88,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
   const fetchImplementation = options.fetch ?? defaultFetch;
 
   return {
+    listActiveProjects: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceProjectsPath(request.workspaceId),
+        request.userId,
+        readProjectSummaryList,
+      ),
     previewTaskSkillApply: (request) =>
       postJson(
         fetchImplementation,
@@ -125,6 +156,35 @@ async function postJson<ResponseBody>(
   return readResponse(responseBody);
 }
 
+async function getJson<ResponseBody>(
+  fetchImplementation: TaskBackendFetch,
+  baseUrl: string,
+  path: string,
+  userId: string,
+  readResponse: (value: unknown) => ResponseBody,
+): Promise<ResponseBody> {
+  const response = await fetchImplementation(`${baseUrl}${path}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      "x-task-user-id": userId,
+    },
+  });
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new TaskBackendClientError(
+      response.status,
+      response.statusText.length === 0
+        ? `Backend request failed with ${response.status}`
+        : response.statusText,
+      responseBody,
+    );
+  }
+
+  return readResponse(responseBody);
+}
+
 function normalizeBaseUrl(baseUrl: string): string {
   const trimmedBaseUrl = baseUrl.trim();
 
@@ -141,6 +201,52 @@ function buildTaskSkillApplyPath(
   action: "apply" | "preview-apply",
 ): string {
   return `/workspaces/${encodeURIComponent(workspaceId)}/task-skills/${encodeURIComponent(taskSkillId)}/${action}`;
+}
+
+function buildWorkspaceProjectsPath(workspaceId: string): string {
+  return `/workspaces/${encodeURIComponent(workspaceId)}/projects`;
+}
+
+function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("project summary list must be an array.");
+  }
+
+  return value.map(readProjectSummary);
+}
+
+function readProjectSummary(value: unknown): ProjectSummaryResponse {
+  const record = readRecord(value, "project summary");
+  const project: ProjectSummaryResponse = {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    title: readString(record, "title"),
+    createdByUserId: readString(record, "createdByUserId"),
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
+  const description = readOptionalNullableString(record, "description");
+  const status = readOptionalNullableString(record, "status");
+  const position = readOptionalNullableString(record, "position");
+  const archivedAt = readOptionalNullableString(record, "archivedAt");
+
+  if (description !== undefined) {
+    project.description = description;
+  }
+
+  if (status !== undefined) {
+    project.status = status;
+  }
+
+  if (position !== undefined) {
+    project.position = position;
+  }
+
+  if (archivedAt !== undefined) {
+    project.archivedAt = archivedAt;
+  }
+
+  return project;
 }
 
 function readPreviewTaskSkillApplyResponse(value: unknown): PreviewTaskSkillApplyResponse {
