@@ -3,6 +3,8 @@ import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
 import type {
   CreateTaskSkillInput,
+  PreviewTaskSkillApplyInput,
+  TaskSkillApplyPreview,
   TaskSkillDetail,
   TaskSkillSummary,
   UpdateTaskSkillDefinitionInput,
@@ -11,11 +13,13 @@ import type {
 import { TaskSkillsController } from "./task-skills.controller.js";
 import {
   ParseCreateTaskSkillBodyPipe,
+  ParsePreviewTaskSkillApplyBodyPipe,
   ParseUpdateTaskSkillDefinitionBodyPipe,
   ParseUpdateTaskSkillMetadataBodyPipe,
 } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
 import type {
+  TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
@@ -25,6 +29,7 @@ import type {
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
+const projectId = "66666666-6666-4666-8666-666666666666";
 const skillId = "33333333-3333-4333-8333-333333333333";
 const versionId = "44444444-4444-4444-8444-444444444444";
 const nextVersionId = "55555555-5555-4555-8555-555555555555";
@@ -102,6 +107,25 @@ const definitionUpdateInput: UpdateTaskSkillDefinitionInput = {
   definition: {
     subtasks: [{ title: "Record vocals" }],
   },
+};
+
+const previewInput: PreviewTaskSkillApplyInput = {
+  projectId,
+  rootTaskTitle: "Intro",
+  overrides: {
+    removeSubtasks: ["Lyrics"],
+    addSubtasks: ["Strings"],
+  },
+};
+
+const applyPreview: TaskSkillApplyPreview = {
+  workspaceId,
+  projectId,
+  taskSkillId: skillId,
+  taskSkillVersionId: versionId,
+  taskSkillVersion: 1,
+  rootTaskTitle: "Intro",
+  subtasks: [{ title: "Strings", source: "added" }],
 };
 
 test("TaskSkillsController uses trusted current user context for task skill list reads", async () => {
@@ -204,6 +228,33 @@ test("TaskSkillsController uses trusted current user context for task skill arch
   assert.equal(response.versions[0]?.version, 1);
 });
 
+test("TaskSkillsController uses trusted current user context for task skill apply previews", async () => {
+  const controller = new TaskSkillsController(
+    new TaskSkillsService(
+      createReadStore({
+        applyPreviewResult: {
+          status: "previewed",
+          preview: applyPreview,
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.previewTaskSkillApply(
+    workspaceId,
+    skillId,
+    userId,
+    previewInput,
+  );
+
+  assert.equal(response.taskSkillId, skillId);
+  assert.equal(response.taskSkillVersion, 1);
+  assert.deepEqual(
+    response.subtasks.map((subtask) => subtask.title),
+    ["Strings"],
+  );
+});
+
 test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads", () => {
   const pipe = new ParseCreateTaskSkillBodyPipe();
 
@@ -297,8 +348,52 @@ test("ParseUpdateTaskSkillDefinitionBodyPipe validates task skill definition pay
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParsePreviewTaskSkillApplyBodyPipe validates and normalizes preview payloads", () => {
+  const pipe = new ParsePreviewTaskSkillApplyBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      projectId,
+      rootTaskTitle: " Intro ",
+      overrides: {
+        removeSubtasks: [" Lyrics ", "Lyrics"],
+        addSubtasks: [" Strings "],
+      },
+    }),
+    {
+      projectId,
+      rootTaskTitle: "Intro",
+      overrides: {
+        removeSubtasks: ["Lyrics"],
+        addSubtasks: ["Strings"],
+      },
+    },
+  );
+
+  assert.throws(() => pipe.transform({ projectId, rootTaskTitle: "" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ projectId: "bad", rootTaskTitle: "Intro" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ projectId, rootTaskTitle: "Intro", overrides: [] }),
+    BadRequestException,
+  );
+  assert.throws(
+    () =>
+      pipe.transform({
+        projectId,
+        rootTaskTitle: "Intro",
+        overrides: { addSubtasks: [1] },
+      }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
   archiveResult?: TaskSkillArchiveResult;
+  applyPreviewResult?: TaskSkillApplyPreviewResult;
   createResult?: TaskSkillCreateResult;
   definitionUpdateResult?: TaskSkillDefinitionUpdateResult;
   metadataUpdateResult?: TaskSkillMetadataUpdateResult;
@@ -310,6 +405,8 @@ function createReadStore(options: {
     getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
     archiveForWorkspace: async (): Promise<TaskSkillArchiveResult> =>
       options.archiveResult ?? { status: "workspace_not_found" },
+    previewApplyForWorkspace: async (): Promise<TaskSkillApplyPreviewResult> =>
+      options.applyPreviewResult ?? { status: "not_found" },
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
     updateDefinitionForWorkspace: async (): Promise<TaskSkillDefinitionUpdateResult> =>

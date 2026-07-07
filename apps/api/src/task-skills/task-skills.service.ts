@@ -6,10 +6,15 @@ import {
 } from "@nestjs/common";
 import type {
   CreateTaskSkillInput,
+  PreviewTaskSkillApplyInput,
   UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
-import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
+import {
+  TaskSkillApplyPreviewDto,
+  TaskSkillDetailDto,
+  TaskSkillSummaryDto,
+} from "./task-skills.dto.js";
 import type { TaskSkillsReadStore } from "./task-skills.store.js";
 
 @Injectable()
@@ -142,5 +147,29 @@ export class TaskSkillsService {
     }
 
     return new TaskSkillDetailDto(result.taskSkill);
+  }
+
+  async previewTaskSkillApply(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: PreviewTaskSkillApplyInput,
+  ): Promise<TaskSkillApplyPreviewDto> {
+    const result = await this.readStore.previewApplyForWorkspace(
+      workspaceId,
+      taskSkillId,
+      userId,
+      input,
+    );
+
+    if (result.status === "not_found") {
+      throw new NotFoundException("Task skill apply preview target was not found.");
+    }
+
+    if (result.status === "invalid_definition") {
+      throw new BadRequestException("Task skill definition cannot be previewed.");
+    }
+
+    return new TaskSkillApplyPreviewDto(result.preview);
   }
 }

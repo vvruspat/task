@@ -3,6 +3,8 @@ import test from "node:test";
 import { BadRequestException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import type {
   CreateTaskSkillInput,
+  PreviewTaskSkillApplyInput,
+  TaskSkillApplyPreview,
   TaskSkillDetail,
   TaskSkillSummary,
   UpdateTaskSkillDefinitionInput,
@@ -11,6 +13,7 @@ import type {
 import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
 import type {
+  TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
@@ -20,6 +23,7 @@ import type {
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
+const projectId = "66666666-6666-4666-8666-666666666666";
 const skillId = "33333333-3333-4333-8333-333333333333";
 const versionId = "44444444-4444-4444-8444-444444444444";
 const nextVersionId = "55555555-5555-4555-8555-555555555555";
@@ -98,6 +102,25 @@ const definitionUpdateInput: UpdateTaskSkillDefinitionInput = {
   definition: {
     subtasks: [{ title: "Record vocals" }],
   },
+};
+
+const previewInput: PreviewTaskSkillApplyInput = {
+  projectId,
+  rootTaskTitle: "Intro",
+  overrides: {
+    removeSubtasks: ["Lyrics"],
+    addSubtasks: ["Strings"],
+  },
+};
+
+const applyPreview: TaskSkillApplyPreview = {
+  workspaceId,
+  projectId,
+  taskSkillId: skillId,
+  taskSkillVersionId: versionId,
+  taskSkillVersion: 1,
+  rootTaskTitle: "Intro",
+  subtasks: [{ title: "Strings", source: "added" }],
 };
 
 test("TaskSkillsService maps visible workspace task skills to DTOs", async () => {
@@ -199,6 +222,26 @@ test("TaskSkillsService archives task skills for writable workspace members", as
   assert.equal(response.versions[0]?.version, 1);
 });
 
+test("TaskSkillsService previews task skill application for visible projects", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({
+      applyPreviewResult: {
+        status: "previewed",
+        preview: applyPreview,
+      },
+    }),
+  );
+
+  const response = await service.previewTaskSkillApply(workspaceId, skillId, userId, previewInput);
+
+  assert.equal(response.projectId, projectId);
+  assert.equal(response.taskSkillVersion, 1);
+  assert.deepEqual(
+    response.subtasks.map((subtask) => subtask.source),
+    ["added"],
+  );
+});
+
 test("TaskSkillsService hides missing task skills during metadata updates", async () => {
   const service = new TaskSkillsService(
     createReadStore({ metadataUpdateResult: { status: "task_skill_not_found" } }),
@@ -229,6 +272,28 @@ test("TaskSkillsService hides missing task skills during archives", async () => 
   await assert.rejects(
     () => service.archiveTaskSkill(workspaceId, skillId, userId),
     NotFoundException,
+  );
+});
+
+test("TaskSkillsService hides missing apply preview targets", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ applyPreviewResult: { status: "not_found" } }),
+  );
+
+  await assert.rejects(
+    () => service.previewTaskSkillApply(workspaceId, skillId, userId, previewInput),
+    NotFoundException,
+  );
+});
+
+test("TaskSkillsService rejects invalid task skill definitions during apply previews", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ applyPreviewResult: { status: "invalid_definition" } }),
+  );
+
+  await assert.rejects(
+    () => service.previewTaskSkillApply(workspaceId, skillId, userId, previewInput),
+    BadRequestException,
   );
 });
 
@@ -330,6 +395,7 @@ test("TaskSkillsService rejects duplicate task skill names during metadata updat
 
 function createReadStore(options: {
   archiveResult?: TaskSkillArchiveResult;
+  applyPreviewResult?: TaskSkillApplyPreviewResult;
   createResult?: TaskSkillCreateResult;
   definitionUpdateResult?: TaskSkillDefinitionUpdateResult;
   metadataUpdateResult?: TaskSkillMetadataUpdateResult;
@@ -341,6 +407,8 @@ function createReadStore(options: {
     getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
     archiveForWorkspace: async (): Promise<TaskSkillArchiveResult> =>
       options.archiveResult ?? { status: "workspace_not_found" },
+    previewApplyForWorkspace: async (): Promise<TaskSkillApplyPreviewResult> =>
+      options.applyPreviewResult ?? { status: "not_found" },
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
     updateDefinitionForWorkspace: async (): Promise<TaskSkillDefinitionUpdateResult> =>

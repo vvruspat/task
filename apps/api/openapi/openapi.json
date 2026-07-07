@@ -1006,6 +1006,71 @@
         "tags": ["task-skills"]
       }
     },
+    "/workspaces/{workspaceId}/task-skills/{taskSkillId}/preview-apply": {
+      "post": {
+        "operationId": "TaskSkillsController_previewTaskSkillApply",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskSkillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewTaskSkillApplyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSkillApplyPreviewDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task skill apply preview payload is invalid."
+          },
+          "404": {
+            "description": "Workspace, project, or task skill is missing or not visible to the current user."
+          }
+        },
+        "summary": "Preview applying one task skill without creating tasks",
+        "tags": ["task-skills"]
+      }
+    },
     "/workspaces/{workspaceId}/task-skills/{taskSkillId}/definition": {
       "patch": {
         "operationId": "TaskSkillsController_updateTaskSkillDefinition",
@@ -2085,6 +2150,99 @@
           "createdAt",
           "updatedAt",
           "versions"
+        ]
+      },
+      "PreviewTaskSkillApplyOverridesDto": {
+        "type": "object",
+        "properties": {
+          "removeSubtasks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "addSubtasks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PreviewTaskSkillApplyDto": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rootTaskTitle": {
+            "type": "string",
+            "example": "Intro",
+            "minLength": 1
+          },
+          "overrides": {
+            "$ref": "#/components/schemas/PreviewTaskSkillApplyOverridesDto"
+          }
+        },
+        "required": ["projectId", "rootTaskTitle"]
+      },
+      "TaskSkillApplyPreviewSubtaskDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Record vocals"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["skill", "added"]
+          }
+        },
+        "required": ["title", "source"]
+      },
+      "TaskSkillApplyPreviewDto": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskSkillId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskSkillVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskSkillVersion": {
+            "type": "number",
+            "example": 1
+          },
+          "rootTaskTitle": {
+            "type": "string",
+            "example": "Intro"
+          },
+          "subtasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskSkillApplyPreviewSubtaskDto"
+            }
+          }
+        },
+        "required": [
+          "workspaceId",
+          "projectId",
+          "taskSkillId",
+          "taskSkillVersionId",
+          "taskSkillVersion",
+          "rootTaskTitle",
+          "subtasks"
         ]
       },
       "UpdateTaskSkillDefinitionDto": {

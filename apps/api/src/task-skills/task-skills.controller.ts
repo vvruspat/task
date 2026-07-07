@@ -16,14 +16,18 @@ import {
 } from "../auth/trusted-current-user.decorator.js";
 import type {
   CreateTaskSkillInput,
+  PreviewTaskSkillApplyInput,
   UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import {
   CreateTaskSkillDto,
   ParseCreateTaskSkillBodyPipe,
+  ParsePreviewTaskSkillApplyBodyPipe,
   ParseUpdateTaskSkillDefinitionBodyPipe,
   ParseUpdateTaskSkillMetadataBodyPipe,
+  PreviewTaskSkillApplyDto,
+  TaskSkillApplyPreviewDto,
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
   UpdateTaskSkillDefinitionDto,
@@ -103,6 +107,25 @@ export class TaskSkillsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskSkillDetailDto> {
     return this.taskSkillsService.archiveTaskSkill(workspaceId, taskSkillId, userId);
+  }
+
+  @Post(":taskSkillId/preview-apply")
+  @ApiOperation({ summary: "Preview applying one task skill without creating tasks" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "taskSkillId" })
+  @ApiBody({ type: PreviewTaskSkillApplyDto })
+  @ApiOkResponse({ type: TaskSkillApplyPreviewDto })
+  @ApiBadRequestResponse({ description: "Task skill apply preview payload is invalid." })
+  @ApiNotFoundResponse({
+    description: "Workspace, project, or task skill is missing or not visible to the current user.",
+  })
+  previewTaskSkillApply(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("taskSkillId", uuidV4Pipe) taskSkillId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParsePreviewTaskSkillApplyBodyPipe()) input: PreviewTaskSkillApplyInput,
+  ): Promise<TaskSkillApplyPreviewDto> {
+    return this.taskSkillsService.previewTaskSkillApply(workspaceId, taskSkillId, userId, input);
   }
 
   @Patch(":taskSkillId/definition")

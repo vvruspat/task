@@ -40,3 +40,31 @@ export type UpdateTaskSkillMetadataInput = {
 export type UpdateTaskSkillDefinitionInput = {
   definition: Record<string, unknown>;
 };
+
+export type TaskSkillApplyPreviewSubtaskSource = "skill" | "added";
+
+export type TaskSkillApplyPreviewSubtask = {
+  title: string;
+  source: TaskSkillApplyPreviewSubtaskSource;
+};
+
+export type TaskSkillApplyPreview = {
+  workspaceId: string;
+  projectId: string;
+  taskSkillId: string;
+  taskSkillVersionId: string;
+  taskSkillVersion: number;
+  rootTaskTitle: string;
+  subtasks: TaskSkillApplyPreviewSubtask[];
+};
+
+export type PreviewTaskSkillApplyOverrides = {
+  removeSubtasks?: string[];
+  addSubtasks?: string[];
+};
+
+export type PreviewTaskSkillApplyInput = {
+  projectId: string;
+  rootTaskTitle: string;
+  overrides?: PreviewTaskSkillApplyOverrides;
+};
