@@ -174,6 +174,9 @@ function createBackendClientStub(calls: TaskSkillApplyRequest[]): TaskBackendCli
     createTask: async (): Promise<TaskDetailResponse> => {
       throw new Error("Not implemented.");
     },
+    updateTaskStatus: async (): Promise<TaskDetailResponse> => {
+      throw new Error("Not implemented.");
+    },
     previewTaskSkillApply: async (request): Promise<PreviewTaskSkillApplyResponse> => {
       calls.push(request);
 

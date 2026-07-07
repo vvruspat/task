@@ -9,12 +9,14 @@ import type {
   TaskBackendClient,
   TaskDetailResponse,
   TaskSummaryResponse,
+  UpdateTaskStatusRequest,
 } from "./backend-client.js";
 import {
   createTaskToolHandlers,
   parseTaskCreateToolInput,
   parseTaskGetToolInput,
   parseTaskSearchToolInput,
+  parseTaskSetStatusToolInput,
   TaskToolInputError,
 } from "./task-tools.js";
 
@@ -23,6 +25,7 @@ const projectId = "22222222-2222-4222-8222-222222222222";
 const userId = "55555555-5555-4555-8555-555555555555";
 const firstTaskId = "66666666-6666-4666-8666-666666666666";
 const secondTaskId = "77777777-7777-4777-8777-777777777777";
+const statusId = "88888888-8888-4888-8888-888888888888";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
 const arrangeTask: TaskSummaryResponse = {
@@ -170,6 +173,58 @@ test("parseTaskCreateToolInput validates and normalizes task create payloads", (
   );
 });
 
+test("parseTaskSetStatusToolInput validates task status payloads", () => {
+  assert.deepEqual(
+    parseTaskSetStatusToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      statusId: ` ${statusId} `,
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      statusId,
+    },
+  );
+
+  assert.deepEqual(
+    parseTaskSetStatusToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      statusId: null,
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      statusId: null,
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseTaskSetStatusToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        statusId: "bad",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSetStatusToolInput({ workspaceId, projectId, taskId: firstTaskId, userId }),
+    TaskToolInputError,
+  );
+});
+
 test("task search handler lists active tasks when query is absent", async () => {
   const client = createBackendClientStub(tasks);
   const handlers = createTaskToolHandlers(client);
@@ -244,6 +299,34 @@ test("task create handler forwards task payloads to the backend client", async (
   ]);
 });
 
+test("task set status handler forwards status payloads to the backend client", async () => {
+  const calls: UpdateTaskStatusRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.setStatus({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      statusId: null,
+    }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      body: {
+        statusId: null,
+      },
+    },
+  ]);
+});
+
 function createBackendClientStub(
   responseTasks: TaskSummaryResponse[],
   listActiveTaskCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
@@ -254,6 +337,7 @@ function createBackendClientStub(
     userId: string;
   }> = [],
   createTaskCalls: CreateTaskRequest[] = [],
+  updateTaskStatusCalls: UpdateTaskStatusRequest[] = [],
 ): TaskBackendClient {
   return {
     createProject: async (): Promise<ProjectDetailResponse> => {
@@ -277,6 +361,11 @@ function createBackendClientStub(
     },
     createTask: async (request): Promise<TaskDetailResponse> => {
       createTaskCalls.push(request);
+
+      return taskDetail;
+    },
+    updateTaskStatus: async (request): Promise<TaskDetailResponse> => {
+      updateTaskStatusCalls.push(request);
 
       return taskDetail;
     },

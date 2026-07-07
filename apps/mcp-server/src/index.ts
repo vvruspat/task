@@ -26,6 +26,8 @@ export {
   type TaskDetailResponse,
   type TaskSkillApplyRequest,
   type TaskSummaryResponse,
+  type UpdateTaskStatusInput,
+  type UpdateTaskStatusRequest,
 } from "./backend-client.js";
 
 export {
@@ -74,9 +76,11 @@ export {
   parseTaskCreateToolInput,
   parseTaskGetToolInput,
   parseTaskSearchToolInput,
+  parseTaskSetStatusToolInput,
   type TaskCreateToolInput,
   type TaskGetToolInput,
   type TaskSearchToolInput,
+  type TaskSetStatusToolInput,
   type TaskToolHandlers,
   TaskToolInputError,
 } from "./task-tools.js";
