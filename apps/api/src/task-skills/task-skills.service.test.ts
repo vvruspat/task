@@ -5,10 +5,15 @@ import type {
   CreateTaskSkillInput,
   TaskSkillDetail,
   TaskSkillSummary,
+  UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
-import type { TaskSkillCreateResult, TaskSkillsReadStore } from "./task-skills.store.js";
+import type {
+  TaskSkillCreateResult,
+  TaskSkillMetadataUpdateResult,
+  TaskSkillsReadStore,
+} from "./task-skills.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
@@ -55,6 +60,12 @@ const createInput: CreateTaskSkillInput = {
   },
 };
 
+const metadataUpdateInput: UpdateTaskSkillMetadataInput = {
+  name: "Single",
+  description: "Updated skill metadata.",
+  aliases: ["track", "single"],
+};
+
 test("TaskSkillsService maps visible workspace task skills to DTOs", async () => {
   const service = new TaskSkillsService(createReadStore({ skills: [taskSkill] }));
 
@@ -94,15 +105,54 @@ test("TaskSkillsService creates task skills for writable workspace members", asy
   assert.equal(response.versions[0]?.version, 1);
 });
 
+test("TaskSkillsService updates task skill metadata for writable workspace members", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({
+      metadataUpdateResult: { status: "updated", taskSkill: taskSkillDetail },
+    }),
+  );
+
+  const response = await service.updateTaskSkillMetadata(
+    workspaceId,
+    skillId,
+    userId,
+    metadataUpdateInput,
+  );
+
+  assert.ok(response instanceof TaskSkillDetailDto);
+  assert.equal(response.id, taskSkillDetail.id);
+  assert.equal(response.versions[0]?.version, 1);
+});
+
+test("TaskSkillsService hides missing task skills during metadata updates", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ metadataUpdateResult: { status: "task_skill_not_found" } }),
+  );
+
+  await assert.rejects(
+    () => service.updateTaskSkillMetadata(workspaceId, skillId, userId, metadataUpdateInput),
+    NotFoundException,
+  );
+});
+
 test("TaskSkillsService hides missing or inaccessible workspaces", async () => {
   const service = new TaskSkillsService(
-    createReadStore({ createResult: { status: "workspace_not_found" }, skill: null, skills: null }),
+    createReadStore({
+      createResult: { status: "workspace_not_found" },
+      metadataUpdateResult: { status: "workspace_not_found" },
+      skill: null,
+      skills: null,
+    }),
   );
 
   await assert.rejects(() => service.listActiveTaskSkills(workspaceId, userId), NotFoundException);
   await assert.rejects(() => service.getTaskSkill(workspaceId, skillId, userId), NotFoundException);
   await assert.rejects(
     () => service.createTaskSkill(workspaceId, userId, createInput),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () => service.updateTaskSkillMetadata(workspaceId, skillId, userId, metadataUpdateInput),
     NotFoundException,
   );
 });
@@ -112,6 +162,17 @@ test("TaskSkillsService rejects task skill creation without write permission", a
 
   await assert.rejects(
     () => service.createTaskSkill(workspaceId, userId, createInput),
+    ForbiddenException,
+  );
+});
+
+test("TaskSkillsService rejects task skill metadata updates without write permission", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ metadataUpdateResult: { status: "forbidden" } }),
+  );
+
+  await assert.rejects(
+    () => service.updateTaskSkillMetadata(workspaceId, skillId, userId, metadataUpdateInput),
     ForbiddenException,
   );
 });
@@ -127,8 +188,20 @@ test("TaskSkillsService rejects duplicate task skill names", async () => {
   );
 });
 
+test("TaskSkillsService rejects duplicate task skill names during metadata updates", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ metadataUpdateResult: { status: "duplicate_name" } }),
+  );
+
+  await assert.rejects(
+    () => service.updateTaskSkillMetadata(workspaceId, skillId, userId, metadataUpdateInput),
+    BadRequestException,
+  );
+});
+
 function createReadStore(options: {
   createResult?: TaskSkillCreateResult;
+  metadataUpdateResult?: TaskSkillMetadataUpdateResult;
   skill?: TaskSkillDetail | null;
   skills?: TaskSkillSummary[] | null;
 }): TaskSkillsReadStore {
@@ -137,5 +210,7 @@ function createReadStore(options: {
     getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
+    updateMetadataForWorkspace: async (): Promise<TaskSkillMetadataUpdateResult> =>
+      options.metadataUpdateResult ?? { status: "workspace_not_found" },
   };
 }

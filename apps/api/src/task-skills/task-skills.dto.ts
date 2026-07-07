@@ -5,6 +5,7 @@ import type {
   TaskSkillDetail,
   TaskSkillSummary,
   TaskSkillVersionSummary,
+  UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 
 export class CreateTaskSkillDto implements CreateTaskSkillInput {
@@ -24,6 +25,25 @@ export class CreateTaskSkillDto implements CreateTaskSkillInput {
 export class ParseCreateTaskSkillBodyPipe implements PipeTransform<unknown, CreateTaskSkillInput> {
   transform(value: unknown): CreateTaskSkillInput {
     return parseCreateTaskSkillInput(value);
+  }
+}
+
+export class UpdateTaskSkillMetadataDto implements UpdateTaskSkillMetadataInput {
+  @ApiPropertyOptional({ example: "Song", minLength: 1 })
+  readonly name?: string;
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
+
+  @ApiPropertyOptional({ isArray: true, type: String })
+  readonly aliases?: string[];
+}
+
+export class ParseUpdateTaskSkillMetadataBodyPipe
+  implements PipeTransform<unknown, UpdateTaskSkillMetadataInput>
+{
+  transform(value: unknown): UpdateTaskSkillMetadataInput {
+    return parseUpdateTaskSkillMetadataInput(value);
   }
 }
 
@@ -88,6 +108,40 @@ function parseCreateTaskSkillInput(value: unknown): CreateTaskSkillInput {
 
   if (aliases !== undefined) {
     input.aliases = aliases;
+  }
+
+  return input;
+}
+
+function parseUpdateTaskSkillMetadataInput(value: unknown): UpdateTaskSkillMetadataInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task skill payload must be an object.");
+  }
+
+  const input: UpdateTaskSkillMetadataInput = {};
+
+  if ("name" in value) {
+    input.name = readRequiredNonEmptyString(value, "name");
+  }
+
+  if ("description" in value) {
+    const description = readOptionalNullableString(value, "description");
+
+    if (description !== undefined) {
+      input.description = description;
+    }
+  }
+
+  if ("aliases" in value) {
+    const aliases = readOptionalStringArray(value, "aliases");
+
+    if (aliases !== undefined) {
+      input.aliases = aliases;
+    }
+  }
+
+  if (input.name === undefined && input.description === undefined && input.aliases === undefined) {
+    throw new BadRequestException("Task skill metadata payload must include a field to update.");
   }
 
   return input;

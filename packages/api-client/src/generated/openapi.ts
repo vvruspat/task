@@ -242,7 +242,8 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
-    patch?: never;
+    /** Update task skill metadata in a visible workspace */
+    patch: operations["TaskSkillsController_updateTaskSkillMetadata"];
     trace?: never;
   };
   "/workspaces/{workspaceId}/statuses": {
@@ -590,6 +591,12 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
       versions: components["schemas"]["TaskSkillVersionSummaryDto"][];
+    };
+    UpdateTaskSkillMetadataDto: {
+      /** @example Song */
+      name?: string;
+      description?: string | null;
+      aliases?: string[];
     };
     WorkspaceStatusDto: {
       /** Format: uuid */
@@ -1270,6 +1277,56 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["TaskSkillDetailDto"];
         };
+      };
+      /** @description Workspace or task skill is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_updateTaskSkillMetadata: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        taskSkillId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTaskSkillMetadataDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillDetailDto"];
+        };
+      };
+      /** @description Task skill metadata payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update task skills in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
       /** @description Workspace or task skill is missing or not visible to the current user. */
       404: {

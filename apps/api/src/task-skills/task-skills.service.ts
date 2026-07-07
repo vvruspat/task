@@ -4,7 +4,10 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import type { CreateTaskSkillInput } from "./task-skills.contracts.js";
+import type {
+  CreateTaskSkillInput,
+  UpdateTaskSkillMetadataInput,
+} from "./task-skills.contracts.js";
 import { TaskSkillDetailDto, TaskSkillSummaryDto } from "./task-skills.dto.js";
 import type { TaskSkillsReadStore } from "./task-skills.store.js";
 
@@ -49,6 +52,38 @@ export class TaskSkillsService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot create task skills in this workspace.");
+    }
+
+    if (result.status === "duplicate_name") {
+      throw new BadRequestException("Task skill name already exists in this workspace.");
+    }
+
+    return new TaskSkillDetailDto(result.taskSkill);
+  }
+
+  async updateTaskSkillMetadata(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: UpdateTaskSkillMetadataInput,
+  ): Promise<TaskSkillDetailDto> {
+    const result = await this.readStore.updateMetadataForWorkspace(
+      workspaceId,
+      taskSkillId,
+      userId,
+      input,
+    );
+
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    if (result.status === "task_skill_not_found") {
+      throw new NotFoundException("Task skill was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot update task skills in this workspace.");
     }
 
     if (result.status === "duplicate_name") {

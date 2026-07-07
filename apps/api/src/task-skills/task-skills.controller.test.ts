@@ -5,11 +5,19 @@ import type {
   CreateTaskSkillInput,
   TaskSkillDetail,
   TaskSkillSummary,
+  UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import { TaskSkillsController } from "./task-skills.controller.js";
-import { ParseCreateTaskSkillBodyPipe } from "./task-skills.dto.js";
+import {
+  ParseCreateTaskSkillBodyPipe,
+  ParseUpdateTaskSkillMetadataBodyPipe,
+} from "./task-skills.dto.js";
 import { TaskSkillsService } from "./task-skills.service.js";
-import type { TaskSkillCreateResult, TaskSkillsReadStore } from "./task-skills.store.js";
+import type {
+  TaskSkillCreateResult,
+  TaskSkillMetadataUpdateResult,
+  TaskSkillsReadStore,
+} from "./task-skills.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
@@ -55,6 +63,12 @@ const createInput: CreateTaskSkillInput = {
   },
 };
 
+const metadataUpdateInput: UpdateTaskSkillMetadataInput = {
+  name: "Single",
+  description: "Updated skill metadata.",
+  aliases: ["track", "single"],
+};
+
 test("TaskSkillsController uses trusted current user context for task skill list reads", async () => {
   const controller = new TaskSkillsController(
     new TaskSkillsService(createReadStore({ skills: [taskSkill] })),
@@ -90,6 +104,26 @@ test("TaskSkillsController uses trusted current user context for task skill crea
   assert.equal(response.id, skillId);
   assert.equal(response.createdByUserId, userId);
   assert.equal(response.versions[0]?.version, 1);
+});
+
+test("TaskSkillsController uses trusted current user context for task skill metadata updates", async () => {
+  const controller = new TaskSkillsController(
+    new TaskSkillsService(
+      createReadStore({
+        metadataUpdateResult: { status: "updated", taskSkill: taskSkillDetail },
+      }),
+    ),
+  );
+
+  const response = await controller.updateTaskSkillMetadata(
+    workspaceId,
+    skillId,
+    userId,
+    metadataUpdateInput,
+  );
+
+  assert.equal(response.id, skillId);
+  assert.equal(response.versions[0]?.taskSkillId, skillId);
 });
 
 test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads", () => {
@@ -134,8 +168,35 @@ test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads"
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseUpdateTaskSkillMetadataBodyPipe validates and normalizes task skill payloads", () => {
+  const pipe = new ParseUpdateTaskSkillMetadataBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      name: "  Single  ",
+      description: "",
+      aliases: [" single ", "single", "track"],
+    }),
+    {
+      name: "Single",
+      description: null,
+      aliases: ["single", "track"],
+    },
+  );
+
+  assert.deepEqual(pipe.transform({ description: null }), { description: null });
+  assert.deepEqual(pipe.transform({ aliases: [] }), { aliases: [] });
+
+  assert.throws(() => pipe.transform({}), BadRequestException);
+  assert.throws(() => pipe.transform({ name: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ description: 1 }), BadRequestException);
+  assert.throws(() => pipe.transform({ aliases: [1] }), BadRequestException);
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
   createResult?: TaskSkillCreateResult;
+  metadataUpdateResult?: TaskSkillMetadataUpdateResult;
   skill?: TaskSkillDetail | null;
   skills?: TaskSkillSummary[] | null;
 }): TaskSkillsReadStore {
@@ -144,5 +205,7 @@ function createReadStore(options: {
     getActiveForWorkspace: async (): Promise<TaskSkillDetail | null> => options.skill ?? null,
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
+    updateMetadataForWorkspace: async (): Promise<TaskSkillMetadataUpdateResult> =>
+      options.metadataUpdateResult ?? { status: "workspace_not_found" },
   };
 }

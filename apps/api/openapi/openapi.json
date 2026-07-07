@@ -885,6 +885,72 @@
         },
         "summary": "Get one active task skill with versions",
         "tags": ["task-skills"]
+      },
+      "patch": {
+        "operationId": "TaskSkillsController_updateTaskSkillMetadata",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskSkillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskSkillMetadataDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSkillDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task skill metadata payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot update task skills in this workspace."
+          },
+          "404": {
+            "description": "Workspace or task skill is missing or not visible to the current user."
+          }
+        },
+        "summary": "Update task skill metadata in a visible workspace",
+        "tags": ["task-skills"]
       }
     },
     "/workspaces/{workspaceId}/statuses": {
@@ -1899,6 +1965,26 @@
           "updatedAt",
           "versions"
         ]
+      },
+      "UpdateTaskSkillMetadataDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Song",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "WorkspaceStatusDto": {
         "type": "object",

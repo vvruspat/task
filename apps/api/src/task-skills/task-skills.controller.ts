@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -14,12 +14,17 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import type { CreateTaskSkillInput } from "./task-skills.contracts.js";
+import type {
+  CreateTaskSkillInput,
+  UpdateTaskSkillMetadataInput,
+} from "./task-skills.contracts.js";
 import {
   CreateTaskSkillDto,
   ParseCreateTaskSkillBodyPipe,
+  ParseUpdateTaskSkillMetadataBodyPipe,
   TaskSkillDetailDto,
   TaskSkillSummaryDto,
+  UpdateTaskSkillMetadataDto,
 } from "./task-skills.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { TaskSkillsService } from "./task-skills.service.js";
@@ -76,5 +81,27 @@ export class TaskSkillsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskSkillDetailDto> {
     return this.taskSkillsService.getTaskSkill(workspaceId, taskSkillId, userId);
+  }
+
+  @Patch(":taskSkillId")
+  @ApiOperation({ summary: "Update task skill metadata in a visible workspace" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "taskSkillId" })
+  @ApiBody({ type: UpdateTaskSkillMetadataDto })
+  @ApiOkResponse({ type: TaskSkillDetailDto })
+  @ApiBadRequestResponse({ description: "Task skill metadata payload is invalid." })
+  @ApiForbiddenResponse({
+    description: "Current user cannot update task skills in this workspace.",
+  })
+  @ApiNotFoundResponse({
+    description: "Workspace or task skill is missing or not visible to the current user.",
+  })
+  updateTaskSkillMetadata(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("taskSkillId", uuidV4Pipe) taskSkillId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateTaskSkillMetadataBodyPipe()) input: UpdateTaskSkillMetadataInput,
+  ): Promise<TaskSkillDetailDto> {
+    return this.taskSkillsService.updateTaskSkillMetadata(workspaceId, taskSkillId, userId, input);
   }
 }
