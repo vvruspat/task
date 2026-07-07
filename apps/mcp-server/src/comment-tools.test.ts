@@ -154,6 +154,9 @@ function createBackendClientStub(
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => {
       throw new Error("Not implemented.");
     },
+    createTaskLinkAttachment: async (): Promise<TaskAttachmentResponse> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async (): Promise<ProjectDetailResponse> => {
       throw new Error("Not implemented.");
     },

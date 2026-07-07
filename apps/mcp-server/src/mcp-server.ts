@@ -57,6 +57,15 @@ const attachmentListInputSchema = {
   userId: z.string().uuid(),
 };
 
+const attachmentCreateLinkInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  url: z.string().url(),
+  title: z.string().nullable().optional(),
+};
+
 const projectGetInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -127,6 +136,7 @@ type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
 type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
 type CommentCreateMcpArgs = z.output<z.ZodObject<typeof commentCreateInputSchema>>;
 type AttachmentListMcpArgs = z.output<z.ZodObject<typeof attachmentListInputSchema>>;
+type AttachmentCreateLinkMcpArgs = z.output<z.ZodObject<typeof attachmentCreateLinkInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
@@ -143,6 +153,7 @@ type TaskMcpToolCallback = (
     | CommentListMcpArgs
     | CommentCreateMcpArgs
     | AttachmentListMcpArgs
+    | AttachmentCreateLinkMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
     | ProjectCreateMcpArgs
@@ -166,6 +177,7 @@ export type TaskMcpToolRegistrar = {
         | typeof commentListInputSchema
         | typeof commentCreateInputSchema
         | typeof attachmentListInputSchema
+        | typeof attachmentCreateLinkInputSchema
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
@@ -208,6 +220,16 @@ export function registerAttachmentTools(
   registrar: TaskMcpToolRegistrar,
   handlers: AttachmentToolHandlers,
 ): void {
+  registrar.registerTool(
+    "attachment.create_link",
+    {
+      title: "Create link attachment",
+      description: "Attach one http or https link to a writable task.",
+      inputSchema: attachmentCreateLinkInputSchema,
+    },
+    async (input) => toToolResult(await handlers.createLink(input)),
+  );
+
   registrar.registerTool(
     "attachment.list",
     {

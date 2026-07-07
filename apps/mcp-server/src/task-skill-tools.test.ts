@@ -171,6 +171,9 @@ function createBackendClientStub(calls: TaskSkillApplyRequest[]): TaskBackendCli
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => {
       throw new Error("Not implemented.");
     },
+    createTaskLinkAttachment: async (): Promise<TaskAttachmentResponse> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async () => {
       throw new Error("Not implemented.");
     },

@@ -10,6 +10,8 @@ type ListActiveTasksOperation = operations["TasksController_listActiveTasks"];
 type ListTaskCommentsOperation = operations["CommentsController_listTaskComments"];
 type CreateTaskCommentOperation = operations["CommentsController_createTaskComment"];
 type ListTaskAttachmentsOperation = operations["AttachmentsController_listTaskAttachments"];
+type CreateTaskLinkAttachmentOperation =
+  operations["AttachmentsController_createTaskLinkAttachment"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
@@ -26,6 +28,8 @@ export type WorkspaceStatusResponse =
   ListWorkspaceStatusesOperation["responses"]["200"]["content"]["application/json"][number];
 export type CreateTaskCommentInput =
   CreateTaskCommentOperation["requestBody"]["content"]["application/json"];
+export type CreateTaskLinkAttachmentInput =
+  CreateTaskLinkAttachmentOperation["requestBody"]["content"]["application/json"];
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
@@ -149,6 +153,14 @@ export type ListTaskAttachmentsRequest = {
   userId: string;
 };
 
+export type CreateTaskLinkAttachmentRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  body: CreateTaskLinkAttachmentInput;
+};
+
 export type GetTaskRequest = {
   workspaceId: string;
   projectId: string;
@@ -196,6 +208,9 @@ export type TaskBackendClient = {
   listTaskComments(request: ListTaskCommentsRequest): Promise<TaskCommentResponse[]>;
   createTaskComment(request: CreateTaskCommentRequest): Promise<TaskCommentResponse>;
   listTaskAttachments(request: ListTaskAttachmentsRequest): Promise<TaskAttachmentResponse[]>;
+  createTaskLinkAttachment(
+    request: CreateTaskLinkAttachmentRequest,
+  ): Promise<TaskAttachmentResponse>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
   updateTaskStatus(request: UpdateTaskStatusRequest): Promise<TaskDetailResponse>;
@@ -288,6 +303,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.userId,
         readTaskAttachmentList,
       ),
+    createTaskLinkAttachment: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskAttachmentLinksPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        request.body,
+        readTaskAttachment,
+      ),
     getTask: (request) =>
       getJson(
         fetchImplementation,
@@ -365,7 +389,12 @@ async function postJson<ResponseBody>(
   baseUrl: string,
   path: string,
   userId: string,
-  body: PreviewTaskSkillApplyInput | CreateProjectInput | CreateTaskInput | CreateTaskCommentInput,
+  body:
+    | PreviewTaskSkillApplyInput
+    | CreateProjectInput
+    | CreateTaskInput
+    | CreateTaskCommentInput
+    | CreateTaskLinkAttachmentInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   return writeJson(fetchImplementation, baseUrl, path, userId, "POST", body, readResponse);
@@ -393,6 +422,7 @@ async function writeJson<ResponseBody>(
     | CreateProjectInput
     | CreateTaskInput
     | CreateTaskCommentInput
+    | CreateTaskLinkAttachmentInput
     | UpdateTaskStatusInput
     | UpdateTaskAssigneeInput
     | UpdateTaskDueDateInput,
@@ -519,6 +549,14 @@ function buildTaskCommentsPath(workspaceId: string, projectId: string, taskId: s
 
 function buildTaskAttachmentsPath(workspaceId: string, projectId: string, taskId: string): string {
   return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/attachments`;
+}
+
+function buildTaskAttachmentLinksPath(
+  workspaceId: string,
+  projectId: string,
+  taskId: string,
+): string {
+  return `${buildTaskAttachmentsPath(workspaceId, projectId, taskId)}/links`;
 }
 
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {
