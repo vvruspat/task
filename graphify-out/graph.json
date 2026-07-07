@@ -4070,7 +4070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts",
-      "community": 71,
+      "community": 82,
       "norm_label": "task-skills.contracts.ts"
     },
     {
@@ -4090,7 +4090,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "community": 71,
+      "community": 82,
       "norm_label": "taskskillversionsummary"
     },
     {
@@ -4140,7 +4140,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtasksource",
-      "community": 71,
+      "community": 82,
       "norm_label": "taskskillapplypreviewsubtasksource"
     },
     {
@@ -4150,7 +4150,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtask",
-      "community": 71,
+      "community": 82,
       "norm_label": "taskskillapplypreviewsubtask"
     },
     {
@@ -4380,7 +4380,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_listactivetaskskills",
-      "community": 58,
+      "community": 49,
       "norm_label": ".listactivetaskskills()"
     },
     {
@@ -4500,7 +4500,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_updatetaskskillmetadatadto",
-      "community": 71,
+      "community": 49,
       "norm_label": "updatetaskskillmetadatadto"
     },
     {
@@ -4530,7 +4530,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_updatetaskskilldefinitiondto",
-      "community": 49,
+      "community": 71,
       "norm_label": "updatetaskskilldefinitiondto"
     },
     {
@@ -4600,7 +4600,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto",
-      "community": 71,
+      "community": 82,
       "norm_label": "taskskillapplypreviewsubtaskdto"
     },
     {
@@ -4610,7 +4610,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto_constructor",
-      "community": 71,
+      "community": 82,
       "norm_label": ".constructor()"
     },
     {
@@ -4790,7 +4790,7 @@
       "source_location": "L449",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "community": 71,
+      "community": 82,
       "norm_label": "taskskillversionsummarydto"
     },
     {
@@ -4800,7 +4800,7 @@
       "source_location": "L471",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
-      "community": 71,
+      "community": 82,
       "norm_label": ".constructor()"
     },
     {
@@ -11517,7 +11517,7 @@
       "label": "RecordingTelegramBackendClient",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
-      "source_location": "L128",
+      "source_location": "L133",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient",
       "community": 47,
@@ -11527,7 +11527,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
-      "source_location": "L131",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient_constructor",
       "community": 47,
@@ -11537,7 +11537,7 @@
       "label": ".resolveTelegramContext()",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
-      "source_location": "L133",
+      "source_location": "L138",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
       "community": 47,
@@ -11547,7 +11547,7 @@
       "label": "FailingTelegramBackendClient",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
-      "source_location": "L142",
+      "source_location": "L147",
       "_origin": "ast",
       "id": "src_message_handler_test_failingtelegrambackendclient",
       "community": 47,
@@ -11557,7 +11557,7 @@
       "label": ".resolveTelegramContext()",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
-      "source_location": "L143",
+      "source_location": "L148",
       "_origin": "ast",
       "id": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
       "community": 47,
@@ -11597,7 +11597,7 @@
       "label": "TelegramResolvedMessageAction",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.ts",
-      "source_location": "L22",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "src_message_handler_telegramresolvedmessageaction",
       "community": 47,
@@ -11607,7 +11607,7 @@
       "label": "TelegramResolvedContext",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.ts",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "src_message_handler_telegramresolvedcontext",
       "community": 47,
@@ -11617,7 +11617,7 @@
       "label": "TelegramMessageHandlerAction",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_message_handler_telegrammessagehandleraction",
       "community": 47,
@@ -11627,7 +11627,7 @@
       "label": "handleTelegramUpdate()",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.ts",
-      "source_location": "L37",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "src_message_handler_handletelegramupdate",
       "community": 47,
@@ -11637,7 +11637,7 @@
       "label": "createReply()",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.ts",
-      "source_location": "L101",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "src_message_handler_createreply",
       "community": 47,
@@ -11647,7 +11647,7 @@
       "label": "readResolvedContext()",
       "file_type": "code",
       "source_file": "apps/tg-bot/src/message-handler.ts",
-      "source_location": "L109",
+      "source_location": "L119",
       "_origin": "ast",
       "id": "src_message_handler_readresolvedcontext",
       "community": 47,
@@ -46667,9 +46667,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
-      "target": "tg_bot_package_dependencies",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_dependencies"
     },
     {
       "relation": "contains",
@@ -46677,9 +46677,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
-      "target": "tg_bot_package_description",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_description"
     },
     {
       "relation": "contains",
@@ -46687,9 +46687,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
-      "target": "tg_bot_package_name",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_name"
     },
     {
       "relation": "contains",
@@ -46697,9 +46697,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
-      "target": "tg_bot_package_private",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_private"
     },
     {
       "relation": "contains",
@@ -46707,9 +46707,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
-      "target": "tg_bot_package_scripts",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_scripts"
     },
     {
       "relation": "contains",
@@ -46717,9 +46717,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
-      "target": "tg_bot_package_type",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_type"
     },
     {
       "relation": "contains",
@@ -46727,9 +46727,9 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "users_alexander_documents_task_issue_123_tg_bot_backend_context_client_apps_tg_bot_package_json",
-      "target": "tg_bot_package_version",
-      "confidence_score": 1.0
+      "target": "tg_bot_package_version"
     },
     {
       "relation": "contains",
@@ -47147,9 +47147,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_backend_client_telegramcontextresolutionresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegramcontextresolutionresponse"
     },
     {
       "relation": "imports",
@@ -47158,9 +47158,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_backend_client_telegramcontextresolutionresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegramcontextresolutionresponse"
     },
     {
       "relation": "references",
@@ -47169,9 +47169,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L143",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
-      "target": "src_backend_client_telegramcontextresolutionresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegramcontextresolutionresponse"
     },
     {
       "relation": "references",
@@ -47180,9 +47180,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L131",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_recordingtelegrambackendclient_constructor",
-      "target": "src_backend_client_telegramcontextresolutionresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegramcontextresolutionresponse"
     },
     {
       "relation": "references",
@@ -47191,9 +47191,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L133",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
-      "target": "src_backend_client_telegramcontextresolutionresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegramcontextresolutionresponse"
     },
     {
       "relation": "re_exports",
@@ -47268,9 +47268,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_backend_client_resolvetelegramcontextrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_resolvetelegramcontextrequest"
     },
     {
       "relation": "references",
@@ -47279,9 +47279,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L129",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_recordingtelegrambackendclient",
-      "target": "src_backend_client_resolvetelegramcontextrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_resolvetelegramcontextrequest"
     },
     {
       "relation": "references",
@@ -47290,9 +47290,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L133",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
-      "target": "src_backend_client_resolvetelegramcontextrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_resolvetelegramcontextrequest"
     },
     {
       "relation": "re_exports",
@@ -47312,9 +47312,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_backend_client_telegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclient"
     },
     {
       "relation": "imports",
@@ -47323,9 +47323,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_backend_client_telegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclient"
     },
     {
       "relation": "implements",
@@ -47334,9 +47334,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_failingtelegrambackendclient",
-      "target": "src_backend_client_telegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclient"
     },
     {
       "relation": "implements",
@@ -47345,9 +47345,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L128",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_recordingtelegrambackendclient",
-      "target": "src_backend_client_telegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclient"
     },
     {
       "relation": "re_exports",
@@ -47377,9 +47377,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_backend_client_telegrambackendclienterror",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclienterror"
     },
     {
       "relation": "imports",
@@ -47388,9 +47388,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_backend_client_telegrambackendclienterror",
-      "confidence_score": 1.0
+      "target": "src_backend_client_telegrambackendclienterror"
     },
     {
       "relation": "re_exports",
@@ -47718,9 +47718,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_message_handler",
-      "confidence_score": 1.0
+      "target": "src_message_handler"
     },
     {
       "relation": "re_exports",
@@ -47729,9 +47729,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_message_handler_handletelegramupdate",
-      "confidence_score": 1.0
+      "target": "src_message_handler_handletelegramupdate"
     },
     {
       "relation": "re_exports",
@@ -47740,9 +47740,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_message_handler_telegrammessagehandleraction",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegrammessagehandleraction"
     },
     {
       "relation": "re_exports",
@@ -47751,9 +47751,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_message_handler_telegrammessagehandleroptions",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegrammessagehandleroptions"
     },
     {
       "relation": "re_exports",
@@ -47762,9 +47762,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_message_handler_telegramreplyaction",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegramreplyaction"
     },
     {
       "relation": "re_exports",
@@ -47773,9 +47773,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_message_handler_telegramresolvedcontext",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegramresolvedcontext"
     },
     {
       "relation": "re_exports",
@@ -47784,9 +47784,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_message_handler_telegramresolvedmessageaction",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegramresolvedmessageaction"
     },
     {
       "relation": "re_exports",
@@ -47905,9 +47905,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_message_handler",
-      "confidence_score": 1.0
+      "target": "src_message_handler"
     },
     {
       "relation": "imports",
@@ -47916,9 +47916,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_message_handler_handletelegramupdate",
-      "confidence_score": 1.0
+      "target": "src_message_handler_handletelegramupdate"
     },
     {
       "relation": "contains",
@@ -47926,9 +47926,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_message_handler_test_failingtelegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_message_handler_test_failingtelegrambackendclient"
     },
     {
       "relation": "contains",
@@ -47936,9 +47936,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L128",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_message_handler_test_recordingtelegrambackendclient",
-      "confidence_score": 1.0
+      "target": "src_message_handler_test_recordingtelegrambackendclient"
     },
     {
       "relation": "contains",
@@ -47946,9 +47946,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test",
-      "target": "src_message_handler_test_telegramupdate",
-      "confidence_score": 1.0
+      "target": "src_message_handler_test_telegramupdate"
     },
     {
       "relation": "method",
@@ -47956,9 +47956,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L131",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_recordingtelegrambackendclient",
-      "target": "src_message_handler_test_recordingtelegrambackendclient_constructor",
-      "confidence_score": 1.0
+      "target": "src_message_handler_test_recordingtelegrambackendclient_constructor"
     },
     {
       "relation": "method",
@@ -47966,9 +47966,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L133",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_recordingtelegrambackendclient",
-      "target": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
-      "confidence_score": 1.0
+      "target": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext"
     },
     {
       "relation": "method",
@@ -47976,9 +47976,9 @@
       "source_file": "apps/tg-bot/src/message-handler.test.ts",
       "source_location": "L143",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_test_failingtelegrambackendclient",
-      "target": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
-      "confidence_score": 1.0
+      "target": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext"
     },
     {
       "relation": "contains",
@@ -47986,9 +47986,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_createreply",
-      "confidence_score": 1.0
+      "target": "src_message_handler_createreply"
     },
     {
       "relation": "contains",
@@ -47996,9 +47996,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_handletelegramupdate",
-      "confidence_score": 1.0
+      "target": "src_message_handler_handletelegramupdate"
     },
     {
       "relation": "contains",
@@ -48006,9 +48006,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_readresolvedcontext",
-      "confidence_score": 1.0
+      "target": "src_message_handler_readresolvedcontext"
     },
     {
       "relation": "contains",
@@ -48016,9 +48016,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_telegrammessagehandleraction",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegrammessagehandleraction"
     },
     {
       "relation": "contains",
@@ -48026,9 +48026,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_telegrammessagehandleroptions",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegrammessagehandleroptions"
     },
     {
       "relation": "contains",
@@ -48036,9 +48036,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_telegramreplyaction",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegramreplyaction"
     },
     {
       "relation": "contains",
@@ -48046,9 +48046,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_telegramresolvedcontext",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegramresolvedcontext"
     },
     {
       "relation": "contains",
@@ -48056,9 +48056,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_message_handler_telegramresolvedmessageaction",
-      "confidence_score": 1.0
+      "target": "src_message_handler_telegramresolvedmessageaction"
     },
     {
       "relation": "imports_from",
@@ -48067,9 +48067,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_telegram_update",
-      "confidence_score": 1.0
+      "target": "src_telegram_update"
     },
     {
       "relation": "imports",
@@ -48078,9 +48078,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_telegram_update_parsetelegrammessagecontext",
-      "confidence_score": 1.0
+      "target": "src_telegram_update_parsetelegrammessagecontext"
     },
     {
       "relation": "imports",
@@ -48089,9 +48089,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_telegram_update_telegrammessagecontext",
-      "confidence_score": 1.0
+      "target": "src_telegram_update_telegrammessagecontext"
     },
     {
       "relation": "imports",
@@ -48100,9 +48100,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler",
-      "target": "src_telegram_update_telegramupdateparseerror",
-      "confidence_score": 1.0
+      "target": "src_telegram_update_telegramupdateparseerror"
     },
     {
       "relation": "calls",
@@ -48111,9 +48111,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_handletelegramupdate",
-      "target": "src_message_handler_createreply",
-      "confidence_score": 1.0
+      "target": "src_message_handler_createreply"
     },
     {
       "relation": "calls",
@@ -48122,9 +48122,9 @@
       "source_file": "apps/tg-bot/src/message-handler.ts",
       "source_location": "L97",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_message_handler_handletelegramupdate",
-      "target": "src_message_handler_readresolvedcontext",
-      "confidence_score": 1.0
+      "target": "src_message_handler_readresolvedcontext"
     },
     {
       "relation": "calls",
@@ -53331,5 +53331,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c2f35fba252607ce216d8a3e2ba4be9fbd50958d"
+  "built_at_commit": "8c9e78c02cf533d09bc5f24744f7b523109fa312"
 }

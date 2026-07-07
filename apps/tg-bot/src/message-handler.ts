@@ -15,6 +15,7 @@ export type TelegramMessageHandlerOptions = {
 
 export type TelegramReplyAction = {
   kind: "reply";
+  telegramChatId: string | null;
   replyToMessageId: string | null;
   text: string;
 };
@@ -44,7 +45,7 @@ export async function handleTelegramUpdate(
     message = parseTelegramMessageContext(update);
   } catch (error) {
     if (error instanceof TelegramUpdateParseError) {
-      return createReply(null, "Не смог прочитать сообщение Telegram.");
+      return createReply(null, null, "Не смог прочитать сообщение Telegram.");
     }
 
     throw error;
@@ -62,6 +63,7 @@ export async function handleTelegramUpdate(
   } catch (error) {
     if (error instanceof TelegramBackendClientError) {
       return createReply(
+        message.chat.telegramChatId,
         message.messageId,
         "Сейчас не удалось проверить доступ в tAsk. Попробуй позже.",
       );
@@ -72,6 +74,7 @@ export async function handleTelegramUpdate(
 
   if (context.status === "telegram_user_unlinked") {
     return createReply(
+      message.chat.telegramChatId,
       message.messageId,
       "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
     );
@@ -79,6 +82,7 @@ export async function handleTelegramUpdate(
 
   if (context.status === "telegram_chat_unlinked") {
     return createReply(
+      message.chat.telegramChatId,
       message.messageId,
       "Этот чат ещё не привязан к workspace tAsk. Попроси администратора привязать чат.",
     );
@@ -86,6 +90,7 @@ export async function handleTelegramUpdate(
 
   if (context.status === "user_not_in_chat_workspace") {
     return createReply(
+      message.chat.telegramChatId,
       message.messageId,
       "Ты не состоишь в workspace, к которому привязан этот чат.",
     );
@@ -98,9 +103,14 @@ export async function handleTelegramUpdate(
   };
 }
 
-function createReply(replyToMessageId: string | null, text: string): TelegramReplyAction {
+function createReply(
+  telegramChatId: string | null,
+  replyToMessageId: string | null,
+  text: string,
+): TelegramReplyAction {
   return {
     kind: "reply",
+    telegramChatId,
     replyToMessageId,
     text,
   };
