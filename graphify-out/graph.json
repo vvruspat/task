@@ -1570,7 +1570,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 80,
+      "community": 73,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -1580,7 +1580,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 80,
+      "community": 73,
       "norm_label": "data-source.ts"
     },
     {
@@ -1590,7 +1590,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 80,
+      "community": 73,
       "norm_label": "apientities"
     },
     {
@@ -1600,7 +1600,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 80,
+      "community": 73,
       "norm_label": "apimigrations"
     },
     {
@@ -1610,7 +1610,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 80,
+      "community": 73,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 80,
+      "community": 73,
       "norm_label": "createapidatasource()"
     },
     {
@@ -1800,7 +1800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_agent_tool_call_entity",
-      "community": 56,
+      "community": 81,
       "norm_label": "agent-tool-call.entity.ts"
     },
     {
@@ -1810,7 +1810,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "entities_agent_tool_call_entity_agenttoolcallentity",
-      "community": 56,
+      "community": 81,
       "norm_label": "agenttoolcallentity"
     },
     {
@@ -2120,7 +2120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables",
-      "community": 52,
+      "community": 80,
       "norm_label": "1783296000000-create-core-persistence-tables.ts"
     },
     {
@@ -2130,7 +2130,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_migrationqueryexecutor",
-      "community": 52,
+      "community": 80,
       "norm_label": "migrationqueryexecutor"
     },
     {
@@ -2140,7 +2140,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_createcorepersistencetablessql",
-      "community": 52,
+      "community": 80,
       "norm_label": "createcorepersistencetablessql"
     },
     {
@@ -2150,7 +2150,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "migrations_1783296000000_create_core_persistence_tables_dropcorepersistencetablessql",
-      "community": 52,
+      "community": 80,
       "norm_label": "dropcorepersistencetablessql"
     },
     {
@@ -2230,7 +2230,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
-      "community": 80,
+      "community": 73,
       "norm_label": "createprojectstable1783296060000"
     },
     {
@@ -2240,7 +2240,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
-      "community": 80,
+      "community": 73,
       "norm_label": ".up()"
     },
     {
@@ -2250,7 +2250,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
-      "community": 80,
+      "community": 73,
       "norm_label": ".down()"
     },
     {
@@ -2260,7 +2260,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table",
-      "community": 78,
+      "community": 80,
       "norm_label": "1783296120000-create-tasks-table.ts"
     },
     {
@@ -2270,7 +2270,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstablesql",
-      "community": 78,
+      "community": 80,
       "norm_label": "createtaskstablesql"
     },
     {
@@ -2280,7 +2280,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_droptaskstablesql",
-      "community": 78,
+      "community": 80,
       "norm_label": "droptaskstablesql"
     },
     {
@@ -2320,7 +2320,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables",
-      "community": 81,
+      "community": 73,
       "norm_label": "1783296180000-create-task-skills-tables.ts"
     },
     {
@@ -2330,7 +2330,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstablessql",
-      "community": 81,
+      "community": 73,
       "norm_label": "createtaskskillstablessql"
     },
     {
@@ -2340,7 +2340,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_droptaskskillstablessql",
-      "community": 81,
+      "community": 73,
       "norm_label": "droptaskskillstablessql"
     },
     {
@@ -2350,7 +2350,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
-      "community": 80,
+      "community": 73,
       "norm_label": "createtaskskillstables1783296180000"
     },
     {
@@ -2360,7 +2360,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_up",
-      "community": 80,
+      "community": 73,
       "norm_label": ".up()"
     },
     {
@@ -2370,7 +2370,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_down",
-      "community": 80,
+      "community": 73,
       "norm_label": ".down()"
     },
     {
@@ -2410,7 +2410,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 80,
+      "community": 82,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 80,
+      "community": 82,
       "norm_label": ".up()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 80,
+      "community": 82,
       "norm_label": ".down()"
     },
     {
@@ -2440,7 +2440,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table",
-      "community": 72,
+      "community": 80,
       "norm_label": "1783296300000-create-attachments-table.ts"
     },
     {
@@ -2450,7 +2450,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
-      "community": 72,
+      "community": 80,
       "norm_label": "createattachmentstablesql"
     },
     {
@@ -2460,7 +2460,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
-      "community": 72,
+      "community": 80,
       "norm_label": "dropattachmentstablesql"
     },
     {
@@ -2530,7 +2530,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "community": 80,
+      "community": 52,
       "norm_label": "createactivityeventstable1783296360000"
     },
     {
@@ -2540,7 +2540,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
-      "community": 80,
+      "community": 52,
       "norm_label": ".up()"
     },
     {
@@ -2550,7 +2550,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down",
-      "community": 80,
+      "community": 52,
       "norm_label": ".down()"
     },
     {
@@ -2560,7 +2560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables",
-      "community": 75,
+      "community": 80,
       "norm_label": "1783296420000-create-agent-run-tables.ts"
     },
     {
@@ -2570,7 +2570,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntablessql",
-      "community": 75,
+      "community": 80,
       "norm_label": "createagentruntablessql"
     },
     {
@@ -2580,7 +2580,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_dropagentruntablessql",
-      "community": 75,
+      "community": 80,
       "norm_label": "dropagentruntablessql"
     },
     {
@@ -2620,7 +2620,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table",
-      "community": 52,
+      "community": 56,
       "norm_label": "1783296480000-create-confirmation-requests-table.ts"
     },
     {
@@ -2630,7 +2630,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "community": 52,
+      "community": 56,
       "norm_label": "createconfirmationrequeststablesql"
     },
     {
@@ -2640,7 +2640,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "community": 52,
+      "community": 56,
       "norm_label": "dropconfirmationrequeststablesql"
     },
     {
@@ -2650,7 +2650,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "community": 80,
+      "community": 56,
       "norm_label": "createconfirmationrequeststable1783296480000"
     },
     {
@@ -2660,7 +2660,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up",
-      "community": 80,
+      "community": 56,
       "norm_label": ".up()"
     },
     {
@@ -2670,7 +2670,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_down",
-      "community": 80,
+      "community": 56,
       "norm_label": ".down()"
     },
     {
@@ -2710,7 +2710,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
-      "community": 80,
+      "community": 59,
       "norm_label": "createtelegramtables1783296540000"
     },
     {
@@ -2720,7 +2720,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_up",
-      "community": 80,
+      "community": 59,
       "norm_label": ".up()"
     },
     {
@@ -2730,7 +2730,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_down",
-      "community": 80,
+      "community": 59,
       "norm_label": ".down()"
     },
     {
@@ -2770,7 +2770,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000",
-      "community": 80,
+      "community": 79,
       "norm_label": "createinvitestable1783296600000"
     },
     {
@@ -2780,7 +2780,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_up",
-      "community": 80,
+      "community": 79,
       "norm_label": ".up()"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestable1783296600000_down",
-      "community": 80,
+      "community": 79,
       "norm_label": ".down()"
     },
     {
@@ -2810,7 +2810,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_agent_run_tables_test",
-      "community": 75,
+      "community": 80,
       "norm_label": "create-agent-run-tables.test.ts"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_attachments_table_test",
-      "community": 72,
+      "community": 80,
       "norm_label": "create-attachments-table.test.ts"
     },
     {
@@ -2840,7 +2840,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_confirmation_requests_table_test",
-      "community": 52,
+      "community": 56,
       "norm_label": "create-confirmation-requests-table.test.ts"
     },
     {
@@ -2850,7 +2850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_core_persistence_tables_test",
-      "community": 52,
+      "community": 80,
       "norm_label": "create-core-persistence-tables.test.ts"
     },
     {
@@ -2860,7 +2860,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "migrations_create_core_persistence_tables_test_recordingqueryrunner",
-      "community": 52,
+      "community": 80,
       "norm_label": "recordingqueryrunner"
     },
     {
@@ -2870,7 +2870,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "migrations_create_core_persistence_tables_test_recordingqueryrunner_query",
-      "community": 52,
+      "community": 80,
       "norm_label": ".query()"
     },
     {
@@ -2900,7 +2900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_task_skills_tables_test",
-      "community": 81,
+      "community": 73,
       "norm_label": "create-task-skills-tables.test.ts"
     },
     {
@@ -2910,7 +2910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_tasks_table_test",
-      "community": 78,
+      "community": 80,
       "norm_label": "create-tasks-table.test.ts"
     },
     {
@@ -3110,7 +3110,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "types_core_persistence_types_agenttoolcallstatus",
-      "community": 56,
+      "community": 81,
       "norm_label": "agenttoolcallstatus"
     },
     {
@@ -3120,7 +3120,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "types_core_persistence_types_agenttoolcallrecord",
-      "community": 56,
+      "community": 81,
       "norm_label": "agenttoolcallrecord"
     },
     {
@@ -7120,7 +7120,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_attachment_tools_createattachmenttoolhandlers",
-      "community": 76,
+      "community": 69,
       "norm_label": "createattachmenttoolhandlers()"
     },
     {
@@ -7540,7 +7540,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskillresponse",
-      "community": 65,
+      "community": 78,
       "norm_label": "applytaskskillresponse"
     },
     {
@@ -7630,7 +7630,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_backend_client_projectsummaryresponse",
-      "community": 65,
+      "community": 33,
       "norm_label": "projectsummaryresponse"
     },
     {
@@ -7640,7 +7640,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_backend_client_projectdetailresponse",
-      "community": 70,
+      "community": 65,
       "norm_label": "projectdetailresponse"
     },
     {
@@ -7660,7 +7660,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_backend_client_taskcommentresponse",
-      "community": 53,
+      "community": 65,
       "norm_label": "taskcommentresponse"
     },
     {
@@ -7670,7 +7670,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_backend_client_taskattachmentresponse",
-      "community": 65,
+      "community": 76,
       "norm_label": "taskattachmentresponse"
     },
     {
@@ -7700,7 +7700,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetchinit",
-      "community": 33,
+      "community": 78,
       "norm_label": "taskbackendfetchinit"
     },
     {
@@ -7720,7 +7720,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendpostheaders",
-      "community": 53,
+      "community": 61,
       "norm_label": "taskbackendpostheaders"
     },
     {
@@ -7730,7 +7730,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetchresponse",
-      "community": 33,
+      "community": 78,
       "norm_label": "taskbackendfetchresponse"
     },
     {
@@ -7740,7 +7740,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetch",
-      "community": 33,
+      "community": 69,
       "norm_label": "taskbackendfetch"
     },
     {
@@ -7750,7 +7750,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclientoptions",
-      "community": 53,
+      "community": 61,
       "norm_label": "taskbackendclientoptions"
     },
     {
@@ -7770,7 +7770,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_backend_client_listactiveprojectsrequest",
-      "community": 53,
+      "community": 61,
       "norm_label": "listactiveprojectsrequest"
     },
     {
@@ -7810,7 +7810,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_backend_client_listactivetasksrequest",
-      "community": 53,
+      "community": 61,
       "norm_label": "listactivetasksrequest"
     },
     {
@@ -7820,7 +7820,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_backend_client_listtaskcommentsrequest",
-      "community": 53,
+      "community": 61,
       "norm_label": "listtaskcommentsrequest"
     },
     {
@@ -7860,7 +7860,7 @@
       "source_location": "L164",
       "_origin": "ast",
       "id": "src_backend_client_gettaskrequest",
-      "community": 53,
+      "community": 61,
       "norm_label": "gettaskrequest"
     },
     {
@@ -7870,7 +7870,7 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "src_backend_client_createtaskrequest",
-      "community": 18,
+      "community": 72,
       "norm_label": "createtaskrequest"
     },
     {
@@ -7880,7 +7880,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskstatusrequest",
-      "community": 18,
+      "community": 72,
       "norm_label": "updatetaskstatusrequest"
     },
     {
@@ -7890,7 +7890,7 @@
       "source_location": "L186",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskassigneerequest",
-      "community": 18,
+      "community": 72,
       "norm_label": "updatetaskassigneerequest"
     },
     {
@@ -7900,7 +7900,7 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskduedaterequest",
-      "community": 18,
+      "community": 72,
       "norm_label": "updatetaskduedaterequest"
     },
     {
@@ -7940,7 +7940,7 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_backend_client_createtaskbackendclient",
-      "community": 53,
+      "community": 69,
       "norm_label": "createtaskbackendclient()"
     },
     {
@@ -8000,7 +8000,7 @@
       "source_location": "L484",
       "_origin": "ast",
       "id": "src_backend_client_normalizebaseurl",
-      "community": 61,
+      "community": 69,
       "norm_label": "normalizebaseurl()"
     },
     {
@@ -8180,7 +8180,7 @@
       "source_location": "L602",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacestatus",
-      "community": 61,
+      "community": 75,
       "norm_label": "readworkspacestatus()"
     },
     {
@@ -8190,7 +8190,7 @@
       "source_location": "L617",
       "_origin": "ast",
       "id": "src_backend_client_readtaskcomment",
-      "community": 61,
+      "community": 75,
       "norm_label": "readtaskcomment()"
     },
     {
@@ -8200,7 +8200,7 @@
       "source_location": "L631",
       "_origin": "ast",
       "id": "src_backend_client_readtaskattachment",
-      "community": 61,
+      "community": 75,
       "norm_label": "readtaskattachment()"
     },
     {
@@ -8210,7 +8210,7 @@
       "source_location": "L678",
       "_origin": "ast",
       "id": "src_backend_client_readattachmenttargettype",
-      "community": 61,
+      "community": 75,
       "norm_label": "readattachmenttargettype()"
     },
     {
@@ -8220,7 +8220,7 @@
       "source_location": "L686",
       "_origin": "ast",
       "id": "src_backend_client_readattachmentkind",
-      "community": 61,
+      "community": 75,
       "norm_label": "readattachmentkind()"
     },
     {
@@ -8230,7 +8230,7 @@
       "source_location": "L694",
       "_origin": "ast",
       "id": "src_backend_client_readprojectdetail",
-      "community": 61,
+      "community": 75,
       "norm_label": "readprojectdetail()"
     },
     {
@@ -8240,7 +8240,7 @@
       "source_location": "L728",
       "_origin": "ast",
       "id": "src_backend_client_readprojectsummary",
-      "community": 61,
+      "community": 75,
       "norm_label": "readprojectsummary()"
     },
     {
@@ -8250,7 +8250,7 @@
       "source_location": "L762",
       "_origin": "ast",
       "id": "src_backend_client_readtasksummary",
-      "community": 61,
+      "community": 75,
       "norm_label": "readtasksummary()"
     },
     {
@@ -8260,7 +8260,7 @@
       "source_location": "L766",
       "_origin": "ast",
       "id": "src_backend_client_readpreviewtaskskillapplyresponse",
-      "community": 61,
+      "community": 75,
       "norm_label": "readpreviewtaskskillapplyresponse()"
     },
     {
@@ -8270,7 +8270,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "src_backend_client_readapplytaskskillresponse",
-      "community": 61,
+      "community": 75,
       "norm_label": "readapplytaskskillresponse()"
     },
     {
@@ -8280,7 +8280,7 @@
       "source_location": "L794",
       "_origin": "ast",
       "id": "src_backend_client_readtaskskillapplypreviewsubtask",
-      "community": 61,
+      "community": 75,
       "norm_label": "readtaskskillapplypreviewsubtask()"
     },
     {
@@ -8290,7 +8290,7 @@
       "source_location": "L808",
       "_origin": "ast",
       "id": "src_backend_client_readtaskdetail",
-      "community": 61,
+      "community": 75,
       "norm_label": "readtaskdetail()"
     },
     {
@@ -8300,7 +8300,7 @@
       "source_location": "L865",
       "_origin": "ast",
       "id": "src_backend_client_readrecord",
-      "community": 61,
+      "community": 75,
       "norm_label": "readrecord()"
     },
     {
@@ -8310,7 +8310,7 @@
       "source_location": "L873",
       "_origin": "ast",
       "id": "src_backend_client_isunknownrecord",
-      "community": 61,
+      "community": 75,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -8320,7 +8320,7 @@
       "source_location": "L877",
       "_origin": "ast",
       "id": "src_backend_client_readproperty",
-      "community": 61,
+      "community": 75,
       "norm_label": "readproperty()"
     },
     {
@@ -8330,7 +8330,7 @@
       "source_location": "L881",
       "_origin": "ast",
       "id": "src_backend_client_readstring",
-      "community": 61,
+      "community": 75,
       "norm_label": "readstring()"
     },
     {
@@ -8340,7 +8340,7 @@
       "source_location": "L891",
       "_origin": "ast",
       "id": "src_backend_client_readnumber",
-      "community": 61,
+      "community": 75,
       "norm_label": "readnumber()"
     },
     {
@@ -8350,7 +8350,7 @@
       "source_location": "L901",
       "_origin": "ast",
       "id": "src_backend_client_readboolean",
-      "community": 61,
+      "community": 75,
       "norm_label": "readboolean()"
     },
     {
@@ -8360,7 +8360,7 @@
       "source_location": "L911",
       "_origin": "ast",
       "id": "src_backend_client_readarray",
-      "community": 61,
+      "community": 75,
       "norm_label": "readarray()"
     },
     {
@@ -8370,7 +8370,7 @@
       "source_location": "L921",
       "_origin": "ast",
       "id": "src_backend_client_readoptionalnullablestring",
-      "community": 61,
+      "community": 75,
       "norm_label": "readoptionalnullablestring()"
     },
     {
@@ -8470,7 +8470,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_comment_tools_createcommenttoolhandlers",
-      "community": 53,
+      "community": 69,
       "norm_label": "createcommenttoolhandlers()"
     },
     {
@@ -8660,7 +8660,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_index_ts_src_index",
-      "community": 53,
+      "community": 69,
       "norm_label": "index.ts"
     },
     {
@@ -8670,7 +8670,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_main_ts_src_main",
-      "community": 53,
+      "community": 69,
       "norm_label": "main.ts"
     },
     {
@@ -8680,7 +8680,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_mcp_server_test",
-      "community": 69,
+      "community": 72,
       "norm_label": "mcp-server.test.ts"
     },
     {
@@ -8690,7 +8690,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_mcp_server_test_toolinput",
-      "community": 69,
+      "community": 72,
       "norm_label": "toolinput"
     },
     {
@@ -8700,7 +8700,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_mcp_server_test_previewresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "previewresponse"
     },
     {
@@ -8710,7 +8710,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_mcp_server_test_applyresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "applyresponse"
     },
     {
@@ -8720,7 +8720,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_mcp_server_test_projectresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "projectresponse"
     },
     {
@@ -8730,7 +8730,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "src_mcp_server_test_projectdetailresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "projectdetailresponse"
     },
     {
@@ -8740,7 +8740,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_mcp_server_test_statusresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "statusresponse"
     },
     {
@@ -8750,7 +8750,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "src_mcp_server_test_commentresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "commentresponse"
     },
     {
@@ -8760,7 +8760,7 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "src_mcp_server_test_attachmentresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "attachmentresponse"
     },
     {
@@ -8770,7 +8770,7 @@
       "source_location": "L143",
       "_origin": "ast",
       "id": "src_mcp_server_test_taskresponse",
-      "community": 69,
+      "community": 72,
       "norm_label": "taskresponse"
     },
     {
@@ -8780,7 +8780,7 @@
       "source_location": "L731",
       "_origin": "ast",
       "id": "src_mcp_server_test_registeredtoolcall",
-      "community": 69,
+      "community": 72,
       "norm_label": "registeredtoolcall"
     },
     {
@@ -8790,7 +8790,7 @@
       "source_location": "L737",
       "_origin": "ast",
       "id": "src_mcp_server_test_createregistrar",
-      "community": 69,
+      "community": 72,
       "norm_label": "createregistrar()"
     },
     {
@@ -8800,7 +8800,7 @@
       "source_location": "L746",
       "_origin": "ast",
       "id": "src_mcp_server_test_createbackendclientstub",
-      "community": 69,
+      "community": 72,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -8810,7 +8810,7 @@
       "source_location": "L776",
       "_origin": "ast",
       "id": "src_mcp_server_test_readbackendrequestinput",
-      "community": 69,
+      "community": 72,
       "norm_label": "readbackendrequestinput()"
     },
     {
@@ -8820,7 +8820,7 @@
       "source_location": "L798",
       "_origin": "ast",
       "id": "src_mcp_server_test_isunknownrecord",
-      "community": 69,
+      "community": 72,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -8830,7 +8830,7 @@
       "source_location": "L802",
       "_origin": "ast",
       "id": "src_mcp_server_test_readstring",
-      "community": 69,
+      "community": 72,
       "norm_label": "readstring()"
     },
     {
@@ -8840,7 +8840,7 @@
       "source_location": "L812",
       "_origin": "ast",
       "id": "src_mcp_server_test_readnullablestring",
-      "community": 69,
+      "community": 72,
       "norm_label": "readnullablestring()"
     },
     {
@@ -8850,7 +8850,7 @@
       "source_location": "L822",
       "_origin": "ast",
       "id": "src_mcp_server_test_readtextresult",
-      "community": 69,
+      "community": 72,
       "norm_label": "readtextresult()"
     },
     {
@@ -9180,7 +9180,7 @@
       "source_location": "L168",
       "_origin": "ast",
       "id": "src_mcp_server_taskmcptoolregistrar",
-      "community": 69,
+      "community": 72,
       "norm_label": "taskmcptoolregistrar"
     },
     {
@@ -9190,7 +9190,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "src_mcp_server_taskskilltoolregistrar",
-      "community": 69,
+      "community": 72,
       "norm_label": "taskskilltoolregistrar"
     },
     {
@@ -9280,7 +9280,7 @@
       "source_location": "L409",
       "_origin": "ast",
       "id": "src_mcp_server_connecttaskmcpservertostdio",
-      "community": 53,
+      "community": 69,
       "norm_label": "connecttaskmcpservertostdio()"
     },
     {
@@ -9420,7 +9420,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_project_tools_createprojecttoolhandlers",
-      "community": 65,
+      "community": 69,
       "norm_label": "createprojecttoolhandlers()"
     },
     {
@@ -9540,7 +9540,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_runtime_test",
-      "community": 33,
+      "community": 78,
       "norm_label": "runtime.test.ts"
     },
     {
@@ -9550,7 +9550,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_runtime_test_fetchcall",
-      "community": 33,
+      "community": 78,
       "norm_label": "fetchcall"
     },
     {
@@ -9560,7 +9560,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_runtime_test_registeredservertool",
-      "community": 33,
+      "community": 78,
       "norm_label": "registeredservertool"
     },
     {
@@ -9570,7 +9570,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_runtime_test_registeredservertoolcollection",
-      "community": 33,
+      "community": 78,
       "norm_label": "registeredservertoolcollection"
     },
     {
@@ -9580,7 +9580,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "src_runtime_test_createfetchstub",
-      "community": 33,
+      "community": 78,
       "norm_label": "createfetchstub()"
     },
     {
@@ -9590,7 +9590,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_runtime_test_readregisteredtool",
-      "community": 33,
+      "community": 78,
       "norm_label": "readregisteredtool()"
     },
     {
@@ -9600,7 +9600,7 @@
       "source_location": "L123",
       "_origin": "ast",
       "id": "src_runtime_test_readregisteredtools",
-      "community": 33,
+      "community": 78,
       "norm_label": "readregisteredtools()"
     },
     {
@@ -9610,7 +9610,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_runtime_test_readproperty",
-      "community": 33,
+      "community": 78,
       "norm_label": "readproperty()"
     },
     {
@@ -9620,7 +9620,7 @@
       "source_location": "L141",
       "_origin": "ast",
       "id": "src_runtime_test_isregisteredservertoolcollection",
-      "community": 33,
+      "community": 78,
       "norm_label": "isregisteredservertoolcollection()"
     },
     {
@@ -9630,7 +9630,7 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "src_runtime_test_isunknownrecord",
-      "community": 33,
+      "community": 78,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -9640,7 +9640,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "src_runtime_test_readtextresult",
-      "community": 33,
+      "community": 78,
       "norm_label": "readtextresult()"
     },
     {
@@ -9650,7 +9650,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "src_runtime_test_previewresponse",
-      "community": 33,
+      "community": 78,
       "norm_label": "previewresponse"
     },
     {
@@ -9660,7 +9660,7 @@
       "source_location": "L169",
       "_origin": "ast",
       "id": "src_runtime_test_applyresponse",
-      "community": 33,
+      "community": 78,
       "norm_label": "applyresponse"
     },
     {
@@ -9670,7 +9670,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_runtime",
-      "community": 53,
+      "community": 69,
       "norm_label": "runtime.ts"
     },
     {
@@ -9680,7 +9680,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_runtime_taskmcpserverconnector",
-      "community": 53,
+      "community": 69,
       "norm_label": "taskmcpserverconnector"
     },
     {
@@ -9690,7 +9690,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserveroptions",
-      "community": 53,
+      "community": 69,
       "norm_label": "runtaskmcpserveroptions"
     },
     {
@@ -9700,7 +9700,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserverfromenvironment",
-      "community": 53,
+      "community": 69,
       "norm_label": "runtaskmcpserverfromenvironment()"
     },
     {
@@ -9940,7 +9940,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_task_skill_tools_createtaskskilltoolhandlers",
-      "community": 65,
+      "community": 69,
       "norm_label": "createtaskskilltoolhandlers()"
     },
     {
@@ -10030,7 +10030,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_task_tools_test",
-      "community": 18,
+      "community": 72,
       "norm_label": "task-tools.test.ts"
     },
     {
@@ -10040,7 +10040,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_task_tools_test_arrangetask",
-      "community": 18,
+      "community": 72,
       "norm_label": "arrangetask"
     },
     {
@@ -10050,7 +10050,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_task_tools_test_taskdetail",
-      "community": 18,
+      "community": 72,
       "norm_label": "taskdetail"
     },
     {
@@ -10060,7 +10060,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_task_tools_test_tasks",
-      "community": 18,
+      "community": 72,
       "norm_label": "tasks"
     },
     {
@@ -10070,7 +10070,7 @@
       "source_location": "L499",
       "_origin": "ast",
       "id": "src_task_tools_test_createbackendclientstub",
-      "community": 18,
+      "community": 72,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -10160,7 +10160,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_task_tools_tasktoolinputerror",
-      "community": 18,
+      "community": 72,
       "norm_label": "tasktoolinputerror"
     },
     {
@@ -10170,7 +10170,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_task_tools_tasktoolinputerror_constructor",
-      "community": 18,
+      "community": 72,
       "norm_label": ".constructor()"
     },
     {
@@ -10519,7 +10519,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "tg_bot_package",
+      "id": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_package_json",
       "community": 39,
       "norm_label": "package.json"
     },
@@ -10784,12 +10784,352 @@
       "norm_label": "index.ts"
     },
     {
+      "label": "telegram-update.test.ts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_telegram_update_test",
+      "community": 47,
+      "norm_label": "telegram-update.test.ts"
+    },
+    {
+      "label": "telegram-update.ts",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_telegram_update",
+      "community": 47,
+      "norm_label": "telegram-update.ts"
+    },
+    {
+      "label": "TelegramUserContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegramusercontext",
+      "community": 47,
+      "norm_label": "telegramusercontext"
+    },
+    {
+      "label": "TelegramChatContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegramchatcontext",
+      "community": 47,
+      "norm_label": "telegramchatcontext"
+    },
+    {
+      "label": "TelegramMessageEntityContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegrammessageentitycontext",
+      "community": 47,
+      "norm_label": "telegrammessageentitycontext"
+    },
+    {
+      "label": "TelegramDocumentAttachmentContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegramdocumentattachmentcontext",
+      "community": 47,
+      "norm_label": "telegramdocumentattachmentcontext"
+    },
+    {
+      "label": "TelegramPhotoAttachmentContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegramphotoattachmentcontext",
+      "community": 47,
+      "norm_label": "telegramphotoattachmentcontext"
+    },
+    {
+      "label": "TelegramAttachmentContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegramattachmentcontext",
+      "community": 47,
+      "norm_label": "telegramattachmentcontext"
+    },
+    {
+      "label": "TelegramMessageContext",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegrammessagecontext",
+      "community": 47,
+      "norm_label": "telegrammessagecontext"
+    },
+    {
+      "label": "TelegramUpdateParseError",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegramupdateparseerror",
+      "community": 47,
+      "norm_label": "telegramupdateparseerror"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "src_telegram_update_telegramupdateparseerror_constructor",
+      "community": 47,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "parseTelegramMessageContext()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "src_telegram_update_parsetelegrammessagecontext",
+      "community": 47,
+      "norm_label": "parsetelegrammessagecontext()"
+    },
+    {
+      "label": "readTelegramUser()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "src_telegram_update_readtelegramuser",
+      "community": 47,
+      "norm_label": "readtelegramuser()"
+    },
+    {
+      "label": "readTelegramChat()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L92",
+      "_origin": "ast",
+      "id": "src_telegram_update_readtelegramchat",
+      "community": 47,
+      "norm_label": "readtelegramchat()"
+    },
+    {
+      "label": "readOptionalText()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "src_telegram_update_readoptionaltext",
+      "community": 47,
+      "norm_label": "readoptionaltext()"
+    },
+    {
+      "label": "readMessageEntities()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L117",
+      "_origin": "ast",
+      "id": "src_telegram_update_readmessageentities",
+      "community": 47,
+      "norm_label": "readmessageentities()"
+    },
+    {
+      "label": "readMessageEntity()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "src_telegram_update_readmessageentity",
+      "community": 47,
+      "norm_label": "readmessageentity()"
+    },
+    {
+      "label": "readReplyToMessageId()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L139",
+      "_origin": "ast",
+      "id": "src_telegram_update_readreplytomessageid",
+      "community": 47,
+      "norm_label": "readreplytomessageid()"
+    },
+    {
+      "label": "readAttachments()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L151",
+      "_origin": "ast",
+      "id": "src_telegram_update_readattachments",
+      "community": 47,
+      "norm_label": "readattachments()"
+    },
+    {
+      "label": "readDocumentAttachment()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L167",
+      "_origin": "ast",
+      "id": "src_telegram_update_readdocumentattachment",
+      "community": 47,
+      "norm_label": "readdocumentattachment()"
+    },
+    {
+      "label": "readPhotoAttachment()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L180",
+      "_origin": "ast",
+      "id": "src_telegram_update_readphotoattachment",
+      "community": 47,
+      "norm_label": "readphotoattachment()"
+    },
+    {
+      "label": "readRequiredProperty()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L193",
+      "_origin": "ast",
+      "id": "src_telegram_update_readrequiredproperty",
+      "community": 47,
+      "norm_label": "readrequiredproperty()"
+    },
+    {
+      "label": "readProperty()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L203",
+      "_origin": "ast",
+      "id": "src_telegram_update_readproperty",
+      "community": 47,
+      "norm_label": "readproperty()"
+    },
+    {
+      "label": "readRecord()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L207",
+      "_origin": "ast",
+      "id": "src_telegram_update_readrecord",
+      "community": 47,
+      "norm_label": "readrecord()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L215",
+      "_origin": "ast",
+      "id": "src_telegram_update_isunknownrecord",
+      "community": 47,
+      "norm_label": "isunknownrecord()"
+    },
+    {
+      "label": "readString()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L219",
+      "_origin": "ast",
+      "id": "src_telegram_update_readstring",
+      "community": 47,
+      "norm_label": "readstring()"
+    },
+    {
+      "label": "readBoolean()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L229",
+      "_origin": "ast",
+      "id": "src_telegram_update_readboolean",
+      "community": 47,
+      "norm_label": "readboolean()"
+    },
+    {
+      "label": "readTelegramIntegerAsString()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L239",
+      "_origin": "ast",
+      "id": "src_telegram_update_readtelegramintegerasstring",
+      "community": 47,
+      "norm_label": "readtelegramintegerasstring()"
+    },
+    {
+      "label": "readNonNegativeInteger()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L252",
+      "_origin": "ast",
+      "id": "src_telegram_update_readnonnegativeinteger",
+      "community": 47,
+      "norm_label": "readnonnegativeinteger()"
+    },
+    {
+      "label": "isSafeInteger()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L262",
+      "_origin": "ast",
+      "id": "src_telegram_update_issafeinteger",
+      "community": 47,
+      "norm_label": "issafeinteger()"
+    },
+    {
+      "label": "readOptionalIntegerString()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L266",
+      "_origin": "ast",
+      "id": "src_telegram_update_readoptionalintegerstring",
+      "community": 47,
+      "norm_label": "readoptionalintegerstring()"
+    },
+    {
+      "label": "readOptionalNullableString()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L283",
+      "_origin": "ast",
+      "id": "src_telegram_update_readoptionalnullablestring",
+      "community": 47,
+      "norm_label": "readoptionalnullablestring()"
+    },
+    {
+      "label": "readOptionalNullableStringAsNull()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L300",
+      "_origin": "ast",
+      "id": "src_telegram_update_readoptionalnullablestringasnull",
+      "community": 47,
+      "norm_label": "readoptionalnullablestringasnull()"
+    },
+    {
+      "label": "readOptionalArray()",
+      "file_type": "code",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L307",
+      "_origin": "ast",
+      "id": "src_telegram_update_readoptionalarray",
+      "community": 47,
+      "norm_label": "readoptionalarray()"
+    },
+    {
       "label": "tsconfig.json",
       "file_type": "code",
       "source_file": "apps/tg-bot/tsconfig.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "tg_bot_tsconfig",
+      "id": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_tsconfig_json",
       "community": 43,
       "norm_label": "tsconfig.json"
     },
@@ -40421,9 +40761,9 @@
       "source_file": "apps/mcp-server/src/config.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_config_ts_src_config",
-      "target": "apps_mcp_server_src_config_ts_src_config_parsebackendbaseurl",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_config_ts_src_config_parsebackendbaseurl"
     },
     {
       "relation": "contains",
@@ -40579,9 +40919,9 @@
       "source_file": "apps/mcp-server/src/config.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_parsetaskmcpconfig",
-      "target": "apps_mcp_server_src_config_ts_src_config_parsebackendbaseurl",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_config_ts_src_config_parsebackendbaseurl"
     },
     {
       "relation": "calls",
@@ -44290,7 +44630,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L5",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_package_json",
       "target": "tg_bot_package_description",
       "confidence_score": 1.0
     },
@@ -44300,7 +44640,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L2",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_package_json",
       "target": "tg_bot_package_name",
       "confidence_score": 1.0
     },
@@ -44310,7 +44650,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_package_json",
       "target": "tg_bot_package_private",
       "confidence_score": 1.0
     },
@@ -44320,7 +44660,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_package_json",
       "target": "tg_bot_package_scripts",
       "confidence_score": 1.0
     },
@@ -44330,7 +44670,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_package_json",
       "target": "tg_bot_package_type",
       "confidence_score": 1.0
     },
@@ -44340,7 +44680,7 @@
       "source_file": "apps/tg-bot/package.json",
       "source_location": "L3",
       "weight": 1.0,
-      "source": "tg_bot_package",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_package_json",
       "target": "tg_bot_package_version",
       "confidence_score": 1.0
     },
@@ -44411,9 +44751,9 @@
       "source_file": "apps/tg-bot/src/config.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_test_ts_src_config_test",
-      "target": "src_config_invalidtelegrambotenvironmenterror",
-      "confidence_score": 1.0
+      "target": "src_config_invalidtelegrambotenvironmenterror"
     },
     {
       "relation": "imports",
@@ -44422,9 +44762,9 @@
       "source_file": "apps/tg-bot/src/config.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_test_ts_src_config_test",
-      "target": "src_config_parsetelegrambotconfig",
-      "confidence_score": 1.0
+      "target": "src_config_parsetelegrambotconfig"
     },
     {
       "relation": "contains",
@@ -44432,9 +44772,9 @@
       "source_file": "apps/tg-bot/src/config.test.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_test_ts_src_config_test",
-      "target": "src_config_test_validenvironment",
-      "confidence_score": 1.0
+      "target": "src_config_test_validenvironment"
     },
     {
       "relation": "contains",
@@ -44442,9 +44782,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L121",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "apps_tg_bot_src_config_ts_src_config_formatinvalidvalue",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_config_ts_src_config_formatinvalidvalue"
     },
     {
       "relation": "contains",
@@ -44452,9 +44792,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "apps_tg_bot_src_config_ts_src_config_parsebackendbaseurl",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_config_ts_src_config_parsebackendbaseurl"
     },
     {
       "relation": "contains",
@@ -44462,9 +44802,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "src_config_invalidtelegrambotenvironmenterror",
-      "confidence_score": 1.0
+      "target": "src_config_invalidtelegrambotenvironmenterror"
     },
     {
       "relation": "contains",
@@ -44472,9 +44812,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "src_config_loadtelegrambotconfig",
-      "confidence_score": 1.0
+      "target": "src_config_loadtelegrambotconfig"
     },
     {
       "relation": "contains",
@@ -44482,9 +44822,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "src_config_parseoptionalsecret",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalsecret"
     },
     {
       "relation": "contains",
@@ -44492,9 +44832,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "src_config_parserequiredsecret",
-      "confidence_score": 1.0
+      "target": "src_config_parserequiredsecret"
     },
     {
       "relation": "contains",
@@ -44502,9 +44842,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "src_config_parsetelegrambotconfig",
-      "confidence_score": 1.0
+      "target": "src_config_parsetelegrambotconfig"
     },
     {
       "relation": "contains",
@@ -44512,9 +44852,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "src_config_telegrambotconfig",
-      "confidence_score": 1.0
+      "target": "src_config_telegrambotconfig"
     },
     {
       "relation": "contains",
@@ -44522,9 +44862,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_config_ts_src_config",
-      "target": "src_config_telegrambotenvironment",
-      "confidence_score": 1.0
+      "target": "src_config_telegrambotenvironment"
     },
     {
       "relation": "re_exports",
@@ -44533,9 +44873,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_config_telegrambotenvironment",
-      "confidence_score": 1.0
+      "target": "src_config_telegrambotenvironment"
     },
     {
       "relation": "re_exports",
@@ -44544,9 +44884,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_config_telegrambotconfig",
-      "confidence_score": 1.0
+      "target": "src_config_telegrambotconfig"
     },
     {
       "relation": "re_exports",
@@ -44555,9 +44895,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_config_invalidtelegrambotenvironmenterror",
-      "confidence_score": 1.0
+      "target": "src_config_invalidtelegrambotenvironmenterror"
     },
     {
       "relation": "method",
@@ -44565,9 +44905,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_invalidtelegrambotenvironmenterror",
-      "target": "src_config_invalidtelegrambotenvironmenterror_constructor",
-      "confidence_score": 1.0
+      "target": "src_config_invalidtelegrambotenvironmenterror_constructor"
     },
     {
       "relation": "calls",
@@ -44576,9 +44916,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_invalidtelegrambotenvironmenterror_constructor",
-      "target": "apps_tg_bot_src_config_ts_src_config_formatinvalidvalue",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_config_ts_src_config_formatinvalidvalue"
     },
     {
       "relation": "re_exports",
@@ -44587,9 +44927,9 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_config_parsetelegrambotconfig",
-      "confidence_score": 1.0
+      "target": "src_config_parsetelegrambotconfig"
     },
     {
       "relation": "calls",
@@ -44598,9 +44938,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_loadtelegrambotconfig",
-      "target": "src_config_parsetelegrambotconfig",
-      "confidence_score": 1.0
+      "target": "src_config_parsetelegrambotconfig"
     },
     {
       "relation": "calls",
@@ -44609,9 +44949,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_parsetelegrambotconfig",
-      "target": "apps_tg_bot_src_config_ts_src_config_parsebackendbaseurl",
-      "confidence_score": 1.0
+      "target": "apps_tg_bot_src_config_ts_src_config_parsebackendbaseurl"
     },
     {
       "relation": "calls",
@@ -44620,9 +44960,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_parsetelegrambotconfig",
-      "target": "src_config_parseoptionalsecret",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalsecret"
     },
     {
       "relation": "calls",
@@ -44631,9 +44971,9 @@
       "source_file": "apps/tg-bot/src/config.ts",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_parsetelegrambotconfig",
-      "target": "src_config_parserequiredsecret",
-      "confidence_score": 1.0
+      "target": "src_config_parserequiredsecret"
     },
     {
       "relation": "re_exports",
@@ -44642,8 +44982,966 @@
       "source_file": "apps/tg-bot/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_tg_bot_src_index_ts_src_index",
-      "target": "src_config_loadtelegrambotconfig",
+      "target": "src_config_loadtelegrambotconfig"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_parsetelegrammessagecontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegramattachmentcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegramchatcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegramdocumentattachmentcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegrammessagecontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegrammessageentitycontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegramphotoattachmentcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegramupdateparseerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_tg_bot_src_index_ts_src_index",
+      "target": "src_telegram_update_telegramusercontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_telegram_update_test",
+      "target": "src_telegram_update",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_telegram_update_test",
+      "target": "src_telegram_update_parsetelegrammessagecontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_telegram_update_test",
+      "target": "src_telegram_update_telegramupdateparseerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L262",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_issafeinteger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L215",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_parsetelegrammessagecontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L151",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readattachments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L229",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readboolean",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L167",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readdocumentattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readmessageentities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readmessageentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L252",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readnonnegativeinteger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L307",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readoptionalarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L266",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readoptionalintegerstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L283",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L300",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readoptionalnullablestringasnull",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L102",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readoptionaltext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L180",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readphotoattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L203",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L207",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readreplytomessageid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L193",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readrequiredproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L219",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readtelegramchat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L239",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readtelegramintegerasstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_readtelegramuser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegramattachmentcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegramchatcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegramdocumentattachmentcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegrammessagecontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegrammessageentitycontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegramphotoattachmentcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegramupdateparseerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_telegram_update",
+      "target": "src_telegram_update_telegramusercontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "src_telegram_update_telegramupdateparseerror",
+      "target": "src_telegram_update_telegramupdateparseerror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readattachments",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readmessageentities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readoptionaltext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readreplytomessageid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readrequiredproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readtelegramchat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readtelegramintegerasstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "src_telegram_update_parsetelegrammessagecontext",
+      "target": "src_telegram_update_readtelegramuser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramuser",
+      "target": "src_telegram_update_readboolean",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramuser",
+      "target": "src_telegram_update_readoptionalnullablestringasnull",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramuser",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramuser",
+      "target": "src_telegram_update_readtelegramintegerasstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramchat",
+      "target": "src_telegram_update_readoptionalnullablestringasnull",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramchat",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramchat",
+      "target": "src_telegram_update_readstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramchat",
+      "target": "src_telegram_update_readtelegramintegerasstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "src_telegram_update_readoptionaltext",
+      "target": "src_telegram_update_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L119",
+      "weight": 1.0,
+      "source": "src_telegram_update_readmessageentities",
+      "target": "src_telegram_update_readoptionalarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "src_telegram_update_readmessageentity",
+      "target": "src_telegram_update_readnonnegativeinteger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "src_telegram_update_readmessageentity",
+      "target": "src_telegram_update_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "src_telegram_update_readmessageentity",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "src_telegram_update_readmessageentity",
+      "target": "src_telegram_update_readstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "src_telegram_update_readreplytomessageid",
+      "target": "src_telegram_update_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L146",
+      "weight": 1.0,
+      "source": "src_telegram_update_readreplytomessageid",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "src_telegram_update_readreplytomessageid",
+      "target": "src_telegram_update_readtelegramintegerasstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L157",
+      "weight": 1.0,
+      "source": "src_telegram_update_readattachments",
+      "target": "src_telegram_update_readdocumentattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L154",
+      "weight": 1.0,
+      "source": "src_telegram_update_readattachments",
+      "target": "src_telegram_update_readoptionalarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L161",
+      "weight": 1.0,
+      "source": "src_telegram_update_readattachments",
+      "target": "src_telegram_update_readphotoattachment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "src_telegram_update_readattachments",
+      "target": "src_telegram_update_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "src_telegram_update_readdocumentattachment",
+      "target": "src_telegram_update_readoptionalintegerstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L173",
+      "weight": 1.0,
+      "source": "src_telegram_update_readdocumentattachment",
+      "target": "src_telegram_update_readoptionalnullablestringasnull",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L168",
+      "weight": 1.0,
+      "source": "src_telegram_update_readdocumentattachment",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L172",
+      "weight": 1.0,
+      "source": "src_telegram_update_readdocumentattachment",
+      "target": "src_telegram_update_readstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L187",
+      "weight": 1.0,
+      "source": "src_telegram_update_readphotoattachment",
+      "target": "src_telegram_update_readnonnegativeinteger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L189",
+      "weight": 1.0,
+      "source": "src_telegram_update_readphotoattachment",
+      "target": "src_telegram_update_readoptionalintegerstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L186",
+      "weight": 1.0,
+      "source": "src_telegram_update_readphotoattachment",
+      "target": "src_telegram_update_readoptionalnullablestringasnull",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L181",
+      "weight": 1.0,
+      "source": "src_telegram_update_readphotoattachment",
+      "target": "src_telegram_update_readrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L185",
+      "weight": 1.0,
+      "source": "src_telegram_update_readphotoattachment",
+      "target": "src_telegram_update_readstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L194",
+      "weight": 1.0,
+      "source": "src_telegram_update_readrequiredproperty",
+      "target": "src_telegram_update_readproperty",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L208",
+      "weight": 1.0,
+      "source": "src_telegram_update_readrecord",
+      "target": "src_telegram_update_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L245",
+      "weight": 1.0,
+      "source": "src_telegram_update_readtelegramintegerasstring",
+      "target": "src_telegram_update_issafeinteger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L255",
+      "weight": 1.0,
+      "source": "src_telegram_update_readnonnegativeinteger",
+      "target": "src_telegram_update_issafeinteger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L276",
+      "weight": 1.0,
+      "source": "src_telegram_update_readoptionalintegerstring",
+      "target": "src_telegram_update_issafeinteger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/tg-bot/src/telegram-update.ts",
+      "source_location": "L304",
+      "weight": 1.0,
+      "source": "src_telegram_update_readoptionalnullablestringasnull",
+      "target": "src_telegram_update_readoptionalnullablestring",
       "confidence_score": 1.0
     },
     {
@@ -44652,7 +45950,7 @@
       "source_file": "apps/tg-bot/tsconfig.json",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "tg_bot_tsconfig",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_tsconfig_json",
       "target": "tg_bot_tsconfig_compileroptions",
       "confidence_score": 1.0
     },
@@ -44662,7 +45960,7 @@
       "source_file": "apps/tg-bot/tsconfig.json",
       "source_location": "L3",
       "weight": 1.0,
-      "source": "tg_bot_tsconfig",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_tsconfig_json",
       "target": "tg_bot_tsconfig_extends",
       "confidence_score": 1.0
     },
@@ -44672,7 +45970,7 @@
       "source_file": "apps/tg-bot/tsconfig.json",
       "source_location": "L11",
       "weight": 1.0,
-      "source": "tg_bot_tsconfig",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_tsconfig_json",
       "target": "tg_bot_tsconfig_include",
       "confidence_score": 1.0
     },
@@ -44682,7 +45980,7 @@
       "source_file": "apps/tg-bot/tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
-      "source": "tg_bot_tsconfig",
+      "source": "users_alexander_documents_task_issue_117_tg_bot_config_apps_tg_bot_tsconfig_json",
       "target": "tg_bot_tsconfig_schema",
       "confidence_score": 1.0
     },
@@ -44732,9 +46030,9 @@
       "source_file": "apps/tg-bot/tsconfig.json",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tg_bot_tsconfig_compileroptions",
-      "target": "tg_bot_tsconfig_compileroptions_types",
-      "confidence_score": 1.0
+      "target": "tg_bot_tsconfig_compileroptions_types"
     },
     {
       "relation": "contains",
@@ -48992,5 +50290,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "444b6cce584421cbb8e80bddd5c00bc06aef88d7"
+  "built_at_commit": "1db2aeed7f40c84502e67b63c412e5927dd284d6"
 }
