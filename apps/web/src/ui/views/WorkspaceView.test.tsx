@@ -10,6 +10,8 @@ import {
   buildMyTaskSummary,
   buildProjectOverviewRows,
   buildProjectOverviewSummary,
+  buildSettingsSummary,
+  buildSettingsWorkspaceRows,
   buildTaskTableRows,
   buildTaskTableSummary,
   buildTemplateSkillRows,
@@ -19,11 +21,13 @@ import {
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
+type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 
 const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const firstProjectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 const secondProjectId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+const secondWorkspaceId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
 const firstStatusId = "44444444-4444-4444-8444-444444444444";
 const secondStatusId = "55555555-5555-4555-8555-555555555555";
 const unknownStatusId = "66666666-6666-4666-8666-666666666666";
@@ -218,6 +222,78 @@ test("buildMatrixSummary counts parent, child, due, and unassigned tasks", () =>
       parentTaskCount: 1,
       subtaskCount: 2,
       unassignedTaskCount: 2,
+    },
+  );
+});
+
+test("buildSettingsWorkspaceRows maps loaded workspace rows", () => {
+  assert.deepEqual(
+    buildSettingsWorkspaceRows([
+      workspaceSummary({
+        name: "Studio",
+        slug: "studio",
+        updatedAt: "2026-07-05T10:00:00.000Z",
+      }),
+    ]),
+    [
+      {
+        id: workspaceId,
+        name: "Studio",
+        slug: "studio",
+        updatedAtLabel: "2026-07-05",
+      },
+    ],
+  );
+});
+
+test("buildSettingsSummary maps selected labels and loaded counts", () => {
+  assert.deepEqual(
+    buildSettingsSummary({
+      projects: [
+        projectSummary({ id: firstProjectId, title: "Album one" }),
+        projectSummary({ id: secondProjectId, title: "Album two" }),
+      ],
+      selectedProjectId: secondProjectId,
+      selectedWorkspaceId: secondWorkspaceId,
+      skills: [taskSkillSummary()],
+      statuses: [workspaceStatus(), workspaceStatus({ id: secondStatusId })],
+      tasks: [taskSummary(), taskSummary()],
+      workspaces: [
+        workspaceSummary({ id: workspaceId, name: "Studio" }),
+        workspaceSummary({ id: secondWorkspaceId, name: "Label" }),
+      ],
+    }),
+    {
+      projectCount: 2,
+      selectedProjectLabel: "Album two",
+      selectedWorkspaceLabel: "Label",
+      skillCount: 1,
+      statusCount: 2,
+      taskCount: 2,
+      workspaceCount: 2,
+    },
+  );
+});
+
+test("buildSettingsSummary falls back when selected context is absent", () => {
+  assert.deepEqual(
+    buildSettingsSummary({
+      projects: [],
+      selectedProjectId: null,
+      selectedWorkspaceId: null,
+      skills: [],
+      statuses: [],
+      tasks: [],
+      workspaces: [],
+    }),
+    {
+      projectCount: 0,
+      selectedProjectLabel: "No selected project",
+      selectedWorkspaceLabel: "No selected workspace",
+      skillCount: 0,
+      statusCount: 0,
+      taskCount: 0,
+      workspaceCount: 0,
     },
   );
 });
@@ -540,6 +616,17 @@ function workspaceStatus(overrides: Partial<WorkspaceStatus> = {}): WorkspaceSta
     position: "1000",
     updatedAt: "2026-07-01T10:00:00.000Z",
     workspaceId,
+    ...overrides,
+  };
+}
+
+function workspaceSummary(overrides: Partial<WorkspaceSummary> = {}): WorkspaceSummary {
+  return {
+    createdAt: "2026-07-01T09:00:00.000Z",
+    id: workspaceId,
+    name: "Workspace",
+    slug: "workspace",
+    updatedAt: "2026-07-01T10:00:00.000Z",
     ...overrides,
   };
 }

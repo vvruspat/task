@@ -4,6 +4,7 @@ import type { ComponentType, ReactElement, SVGProps } from "react";
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
 type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
+type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
@@ -17,16 +18,22 @@ type WorkspaceViewProps = {
     icon: IconComponent;
   };
   skills: TaskSkillSummary[];
+  selectedProjectId: string | null;
+  selectedWorkspaceId: string | null;
   statuses: WorkspaceStatus[];
   tasks: TaskSummary[];
+  workspaces: WorkspaceSummary[];
 };
 
 export default function WorkspaceView({
   projects,
   route,
+  selectedProjectId,
+  selectedWorkspaceId,
   skills,
   statuses,
   tasks,
+  workspaces,
 }: WorkspaceViewProps): ReactElement {
   const visibleRows = route.id === "templates" ? skills.length : tasks.length;
 
@@ -48,6 +55,20 @@ export default function WorkspaceView({
 
   if (route.id === "templates") {
     return <TemplatesView skills={skills} />;
+  }
+
+  if (route.id === "settings") {
+    return (
+      <SettingsView
+        projects={projects}
+        selectedProjectId={selectedProjectId}
+        selectedWorkspaceId={selectedWorkspaceId}
+        skills={skills}
+        statuses={statuses}
+        tasks={tasks}
+        workspaces={workspaces}
+      />
+    );
   }
 
   return (
@@ -182,6 +203,23 @@ export type MatrixSummary = {
   parentTaskCount: number;
   subtaskCount: number;
   unassignedTaskCount: number;
+};
+
+export type SettingsWorkspaceRow = {
+  id: string;
+  name: string;
+  slug: string;
+  updatedAtLabel: string;
+};
+
+export type SettingsSummary = {
+  projectCount: number;
+  selectedProjectLabel: string;
+  selectedWorkspaceLabel: string;
+  skillCount: number;
+  statusCount: number;
+  taskCount: number;
+  workspaceCount: number;
 };
 
 export type ProjectOverviewSummary = {
@@ -356,6 +394,39 @@ export function buildMatrixSummary(tasks: TaskSummary[]): MatrixSummary {
     parentTaskCount: parentTasks.length,
     subtaskCount,
     unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
+  };
+}
+
+export function buildSettingsWorkspaceRows(workspaces: WorkspaceSummary[]): SettingsWorkspaceRow[] {
+  return workspaces.map((workspace) => ({
+    id: workspace.id,
+    name: workspace.name,
+    slug: workspace.slug,
+    updatedAtLabel: formatDateLabel(workspace.updatedAt),
+  }));
+}
+
+export function buildSettingsSummary(input: {
+  projects: ProjectSummary[];
+  selectedProjectId: string | null;
+  selectedWorkspaceId: string | null;
+  skills: TaskSkillSummary[];
+  statuses: WorkspaceStatus[];
+  tasks: TaskSummary[];
+  workspaces: WorkspaceSummary[];
+}): SettingsSummary {
+  return {
+    projectCount: input.projects.length,
+    selectedProjectLabel:
+      input.projects.find((project) => project.id === input.selectedProjectId)?.title ??
+      "No selected project",
+    selectedWorkspaceLabel:
+      input.workspaces.find((workspace) => workspace.id === input.selectedWorkspaceId)?.name ??
+      "No selected workspace",
+    skillCount: input.skills.length,
+    statusCount: input.statuses.length,
+    taskCount: input.tasks.length,
+    workspaceCount: input.workspaces.length,
   };
 }
 
@@ -793,6 +864,93 @@ function TemplatesView({ skills }: { skills: TaskSkillSummary[] }): ReactElement
           <div>
             <dt>No description</dt>
             <dd>{summary.skillsWithoutDescriptionCount}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  );
+}
+
+function SettingsView({
+  projects,
+  selectedProjectId,
+  selectedWorkspaceId,
+  skills,
+  statuses,
+  tasks,
+  workspaces,
+}: {
+  projects: ProjectSummary[];
+  selectedProjectId: string | null;
+  selectedWorkspaceId: string | null;
+  skills: TaskSkillSummary[];
+  statuses: WorkspaceStatus[];
+  tasks: TaskSummary[];
+  workspaces: WorkspaceSummary[];
+}): ReactElement {
+  const rows = buildSettingsWorkspaceRows(workspaces);
+  const summary = buildSettingsSummary({
+    projects,
+    selectedProjectId,
+    selectedWorkspaceId,
+    skills,
+    statuses,
+    tasks,
+    workspaces,
+  });
+
+  return (
+    <div className="content-grid">
+      <section className="panel wide-panel" aria-labelledby="settings-view-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Settings</p>
+            <h3 id="settings-view-title">Workspace context</h3>
+          </div>
+        </div>
+
+        <div className="settings-workspace-list">
+          {rows.map((workspace) => (
+            <article className="settings-workspace-row" key={workspace.id}>
+              <div>
+                <h4>{workspace.name}</h4>
+                <p>{workspace.slug}</p>
+              </div>
+              <time dateTime={workspace.updatedAtLabel}>{workspace.updatedAtLabel}</time>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel" aria-labelledby="settings-summary-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Summary</p>
+            <h3 id="settings-summary-title">Loaded context</h3>
+          </div>
+        </div>
+        <p className="agent-line">{summary.selectedWorkspaceLabel}</p>
+        <p className="agent-line">{summary.selectedProjectLabel}</p>
+        <dl className="metric-list">
+          <div>
+            <dt>Workspaces</dt>
+            <dd>{summary.workspaceCount}</dd>
+          </div>
+          <div>
+            <dt>Projects</dt>
+            <dd>{summary.projectCount}</dd>
+          </div>
+          <div>
+            <dt>Tasks</dt>
+            <dd>{summary.taskCount}</dd>
+          </div>
+          <div>
+            <dt>Statuses</dt>
+            <dd>{summary.statusCount}</dd>
+          </div>
+          <div>
+            <dt>Skills</dt>
+            <dd>{summary.skillCount}</dd>
           </div>
         </dl>
       </section>
