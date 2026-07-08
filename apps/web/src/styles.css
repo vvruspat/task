@@ -360,6 +360,69 @@ h1 {
   border-top: 1px solid #ece6dc;
 }
 
+.project-overview-list {
+  display: grid;
+}
+
+.project-overview-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(360px, 1.3fr) auto;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 0;
+  border-top: 1px solid #ece6dc;
+}
+
+.project-overview-row h4 {
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+
+.project-overview-row p {
+  margin-bottom: 0;
+  color: #59645e;
+  line-height: 1.45;
+}
+
+.project-overview-row dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.project-overview-metric {
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f4f0e8;
+}
+
+.project-overview-row dt {
+  color: #59645e;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.project-overview-row dd {
+  margin: 3px 0 0;
+  color: #17211c;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.project-overview-row > span {
+  justify-self: end;
+  min-height: 30px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #2d3a33;
+  background: #e7f0ea;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 .view-surface {
   overflow-x: auto;
   border: 1px solid #d8d1c4;
@@ -482,6 +545,14 @@ h1 {
     justify-content: flex-start;
     max-width: none;
   }
+
+  .project-overview-row {
+    grid-template-columns: 1fr;
+  }
+
+  .project-overview-row > span {
+    justify-self: start;
+  }
 }
 
 @media (max-width: 560px) {
@@ -503,5 +574,9 @@ h1 {
   .project-create-form,
   .task-create-form {
     grid-template-columns: 1fr;
+  }
+
+  .project-overview-row dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
