@@ -436,9 +436,12 @@ export function App(): ReactElement {
             <LazyWorkspaceView
               route={activeRoute}
               projects={data.projects}
+              selectedProjectId={data.selectedProjectId}
+              selectedWorkspaceId={data.selectedWorkspaceId}
               skills={data.skills}
               statuses={data.statuses}
               tasks={data.tasks}
+              workspaces={data.workspaces}
             />
           )}
         </Suspense>
