@@ -1,20 +1,27 @@
-import type { components } from "./generated/openapi.js";
+import type { components, operations } from "./generated/openapi.js";
 
 export type HealthResponse = components["schemas"]["HealthResponseDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
+export type TaskDetail = components["schemas"]["TaskDetailDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
 export type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 
+type CreateTaskOperation = operations["TasksController_createTask"];
+
+export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
+
 export type TaskApiRequestHeaders = {
   accept: "application/json";
+  "content-type"?: "application/json";
   "x-task-user-id"?: string;
 };
 
 export type TaskApiRequestInit = {
+  body?: string;
   headers: TaskApiRequestHeaders;
-  method: "GET";
+  method: "GET" | "POST";
 };
 
 export type TaskApiResponse = {
@@ -41,7 +48,12 @@ export type ProjectScopedInput = WorkspaceScopedInput & {
   projectId: string;
 };
 
+export type CreateTaskRequestInput = ProjectScopedInput & {
+  body: CreateTaskInput;
+};
+
 export type TaskApiClient = {
+  createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   getHealth(): Promise<HealthResponse>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
   listStatuses(input: WorkspaceScopedInput): Promise<WorkspaceStatus[]>;
@@ -76,15 +88,36 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
   const baseUrl = normalizeBaseUrl(options.baseUrl);
 
   return {
-    getHealth: () => request(options.fetch, baseUrl, "/health", healthResponseParser, null, false),
+    createTask: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks`,
+        taskDetailParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    getHealth: () =>
+      request(options.fetch, baseUrl, "/health", healthResponseParser, {
+        method: "GET",
+        requiresTrustedUserId: false,
+        trustedUserId: null,
+      }),
     listProjects: (input) =>
       request(
         options.fetch,
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/projects`,
         projectSummaryArrayParser,
-        options.trustedUserId,
-        true,
+        {
+          method: "GET",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
       ),
     listStatuses: (input) =>
       request(
@@ -92,8 +125,11 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/statuses`,
         workspaceStatusArrayParser,
-        options.trustedUserId,
-        true,
+        {
+          method: "GET",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
       ),
     listTaskSkills: (input) =>
       request(
@@ -101,8 +137,11 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/task-skills`,
         taskSkillSummaryArrayParser,
-        options.trustedUserId,
-        true,
+        {
+          method: "GET",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
       ),
     listTasks: (input) =>
       request(
@@ -110,41 +149,54 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks`,
         taskSummaryArrayParser,
-        options.trustedUserId,
-        true,
+        {
+          method: "GET",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
       ),
     listWorkspaces: () =>
-      request(
-        options.fetch,
-        baseUrl,
-        "/workspaces",
-        workspaceSummaryArrayParser,
-        options.trustedUserId,
-        true,
-      ),
+      request(options.fetch, baseUrl, "/workspaces", workspaceSummaryArrayParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
   };
 }
+
+type RequestOptions = {
+  body?: unknown;
+  method: TaskApiRequestInit["method"];
+  requiresTrustedUserId: boolean;
+  trustedUserId: string | null | undefined;
+};
 
 async function request<TResponse>(
   fetcher: TaskApiFetch,
   baseUrl: string,
   path: string,
   parser: ResponseParser<TResponse>,
-  trustedUserId: string | null | undefined,
-  requiresTrustedUserId: boolean,
+  options: RequestOptions,
 ): Promise<TResponse> {
   const headers: TaskApiRequestHeaders = {
     accept: "application/json",
   };
 
-  if (requiresTrustedUserId) {
-    headers["x-task-user-id"] = readTrustedUserId(trustedUserId);
+  if (options.requiresTrustedUserId) {
+    headers["x-task-user-id"] = readTrustedUserId(options.trustedUserId);
   }
 
-  const response = await fetcher(`${baseUrl}${path}`, {
+  const init: TaskApiRequestInit = {
     headers,
-    method: "GET",
-  });
+    method: options.method,
+  };
+
+  if (options.body !== undefined) {
+    headers["content-type"] = "application/json";
+    init.body = JSON.stringify(options.body);
+  }
+
+  const response = await fetcher(`${baseUrl}${path}`, init);
 
   if (!response.ok) {
     const body = await readErrorBody(response);
@@ -213,6 +265,11 @@ const taskSummaryArrayParser: ResponseParser<TaskSummary[]> = {
   label: "task summary list",
 };
 
+const taskDetailParser: ResponseParser<TaskDetail> = {
+  isValid: isTaskDetail,
+  label: "task detail",
+};
+
 const taskSkillSummaryArrayParser: ResponseParser<TaskSkillSummary[]> = {
   isValid: (value): value is TaskSkillSummary[] => isArrayOf(value, isTaskSkillSummary),
   label: "task skill summary list",
@@ -265,6 +322,10 @@ function isProjectSummary(value: unknown): value is ProjectSummary {
 }
 
 function isTaskSummary(value: unknown): value is TaskSummary {
+  return isTaskDetail(value);
+}
+
+function isTaskDetail(value: unknown): value is TaskDetail {
   return (
     isJsonObject(value) &&
     hasString(value, "id") &&
