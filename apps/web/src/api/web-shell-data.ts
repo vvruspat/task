@@ -3,6 +3,7 @@ import {
   type ProjectSummary,
   type TaskApiClient,
   type TaskApiFetch,
+  type TaskDetail,
   type TaskSkillSummary,
   type TaskSummary,
   type WorkspaceStatus,
@@ -25,6 +26,17 @@ export type WebShellData = {
 };
 
 export type WebShellDataLoader = () => Promise<WebShellData>;
+
+export type WebShellTaskCreator = (input: WebShellTaskCreateInput) => Promise<TaskDetail>;
+
+export type WebShellTaskCreateInput = {
+  title: string;
+};
+
+export type WebShellTaskCreateTarget = {
+  projectId: string;
+  workspaceId: string;
+};
 
 export type WebShellConfigResult =
   | {
@@ -81,6 +93,20 @@ export function createWebShellDataLoader(options: {
   return () => loadWebShellData(client);
 }
 
+export function createWebShellTaskCreator(options: {
+  config: WebShellConfig;
+  fetch: TaskApiFetch;
+  target: WebShellTaskCreateTarget;
+}): WebShellTaskCreator {
+  const client = createTaskApiClient({
+    baseUrl: options.config.apiBaseUrl,
+    fetch: options.fetch,
+    trustedUserId: options.config.trustedUserId,
+  });
+
+  return (input) => createWebShellTask(client, options.target, input);
+}
+
 export async function loadWebShellData(client: TaskApiClient): Promise<WebShellData> {
   const workspaces = await client.listWorkspaces();
   const selectedWorkspaceId = workspaces[0]?.id ?? null;
@@ -120,4 +146,24 @@ export async function loadWebShellData(client: TaskApiClient): Promise<WebShellD
     tasks,
     workspaces,
   };
+}
+
+export async function createWebShellTask(
+  client: TaskApiClient,
+  target: WebShellTaskCreateTarget,
+  input: WebShellTaskCreateInput,
+): Promise<TaskDetail> {
+  const title = input.title.trim();
+
+  if (title.length === 0) {
+    throw new Error("Task title is required.");
+  }
+
+  return client.createTask({
+    body: {
+      title,
+    },
+    projectId: target.projectId,
+    workspaceId: target.workspaceId,
+  });
 }

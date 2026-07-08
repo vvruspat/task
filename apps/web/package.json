@@ -11,7 +11,7 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tsc -p tsconfig.test.json && node --test \"dist/**/*.test.js\""
+    "test": "npm run build -w @task/api-client && tsc -p tsconfig.test.json && node --test \"dist/**/*.test.js\""
   },
   "dependencies": {
     "@task/api-client": "file:../../packages/api-client",

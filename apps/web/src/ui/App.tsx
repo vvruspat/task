@@ -19,6 +19,7 @@ import type { ComponentType, ReactElement, SVGProps } from "react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import {
   createWebShellDataLoader,
+  createWebShellTaskCreator,
   parseWebShellConfig,
   type WebShellData,
   type WebShellEnvironment,
@@ -110,6 +111,18 @@ type WebShellLoadState =
       status: "loading";
     };
 
+type TaskCreateState =
+  | {
+      status: "idle";
+    }
+  | {
+      status: "submitting";
+    }
+  | {
+      message: string;
+      status: "error" | "success";
+    };
+
 const webShellEnvironment: WebShellEnvironment = {
   VITE_TASK_API_BASE_URL: import.meta.env.VITE_TASK_API_BASE_URL,
   VITE_TASK_TRUSTED_USER_ID: import.meta.env.VITE_TASK_TRUSTED_USER_ID,
@@ -117,6 +130,7 @@ const webShellEnvironment: WebShellEnvironment = {
 
 export function App(): ReactElement {
   const [activeRouteId, setActiveRouteId] = useState(routes[0]?.id ?? "my-tasks");
+  const [taskCreateState, setTaskCreateState] = useState<TaskCreateState>({ status: "idle" });
   const [loadState, setLoadState] = useState<WebShellLoadState>(() => {
     const configResult = parseWebShellConfig(webShellEnvironment);
 
@@ -137,6 +151,10 @@ export function App(): ReactElement {
   );
   const data = loadState.status === "loaded" ? loadState.data : emptyWebShellData;
   const dueSoonCount = data.tasks.filter((task) => task.dueAt !== null).length;
+  const canCreateTask =
+    loadState.status === "loaded" &&
+    data.selectedWorkspaceId !== null &&
+    data.selectedProjectId !== null;
 
   useEffect(() => {
     const configResult = parseWebShellConfig(webShellEnvironment);
@@ -178,6 +196,72 @@ export function App(): ReactElement {
   if (activeRoute === undefined) {
     throw new Error("Application routes are not configured.");
   }
+
+  const handleCreateTask = async (title: string): Promise<void> => {
+    if (loadState.status !== "loaded") {
+      setTaskCreateState({
+        message: "Workspace data must finish loading before creating tasks.",
+        status: "error",
+      });
+      return;
+    }
+
+    if (loadState.data.selectedWorkspaceId === null || loadState.data.selectedProjectId === null) {
+      setTaskCreateState({
+        message: "Create a workspace project before adding tasks.",
+        status: "error",
+      });
+      return;
+    }
+
+    const configResult = parseWebShellConfig(webShellEnvironment);
+
+    if (configResult.status === "missing_config") {
+      setTaskCreateState({
+        message: configResult.message,
+        status: "error",
+      });
+      return;
+    }
+
+    setTaskCreateState({ status: "submitting" });
+
+    try {
+      const browserFetch: TaskApiFetch = async (url, init) => fetch(url, init);
+      const createTask = createWebShellTaskCreator({
+        config: configResult.config,
+        fetch: browserFetch,
+        target: {
+          projectId: loadState.data.selectedProjectId,
+          workspaceId: loadState.data.selectedWorkspaceId,
+        },
+      });
+      const createdTask = await createTask({ title });
+
+      setLoadState((currentState) => {
+        if (currentState.status !== "loaded") {
+          return currentState;
+        }
+
+        return {
+          data: {
+            ...currentState.data,
+            tasks: [createdTask, ...currentState.data.tasks],
+          },
+          status: "loaded",
+        };
+      });
+      setTaskCreateState({
+        message: `Created ${createdTask.title}.`,
+        status: "success",
+      });
+    } catch (error: unknown) {
+      setTaskCreateState({
+        message: readErrorMessage(error),
+        status: "error",
+      });
+    }
+  };
 
   return (
     <main className="app-shell">
@@ -264,7 +348,14 @@ export function App(): ReactElement {
 
         <Suspense fallback={<div className="loading-state">Loading view</div>}>
           {activeRoute.id === "my-tasks" ? (
-            <LazyDashboardView projects={data.projects} skills={data.skills} tasks={data.tasks} />
+            <LazyDashboardView
+              createTaskDisabled={!canCreateTask}
+              createTaskState={taskCreateState}
+              onCreateTask={handleCreateTask}
+              projects={data.projects}
+              skills={data.skills}
+              tasks={data.tasks}
+            />
           ) : (
             <LazyWorkspaceView
               route={activeRoute}
