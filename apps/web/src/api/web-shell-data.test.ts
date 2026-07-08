@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  CreateProjectRequestInput,
   CreateTaskRequestInput,
+  ProjectDetail,
   ProjectSummary,
   TaskApiClient,
   TaskDetail,
@@ -190,9 +192,15 @@ type ApiData = {
 
 class RecordingTaskApiClient implements TaskApiClient {
   readonly calls: string[] = [];
+  readonly createProjectCalls: CreateProjectRequestInput[] = [];
   readonly createTaskCalls: CreateTaskRequestInput[] = [];
 
   constructor(private readonly data: ApiData) {}
+
+  async createProject(input: CreateProjectRequestInput): Promise<ProjectDetail> {
+    this.createProjectCalls.push(input);
+    return projectSummary();
+  }
 
   async createTask(input: CreateTaskRequestInput): Promise<TaskDetail> {
     this.createTaskCalls.push(input);
