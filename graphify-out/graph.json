@@ -290,7 +290,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_contracts",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.contracts.ts"
     },
     {
@@ -330,7 +330,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller_test",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.controller.test.ts"
     },
     {
@@ -400,7 +400,7 @@
       "source_location": "L147",
       "_origin": "ast",
       "id": "agent_agent_controller_test_staticagentruntime",
-      "community": 52,
+      "community": 93,
       "norm_label": "staticagentruntime"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "agent_agent_controller_test_agentruntimeresult",
-      "community": 52,
+      "community": 55,
       "norm_label": "agentruntimeresult"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "agent_agent_controller_test_persistedagentrun",
-      "community": 52,
+      "community": 55,
       "norm_label": "persistedagentrun"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.controller.ts"
     },
     {
@@ -1150,7 +1150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service_test",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.service.test.ts"
     },
     {
@@ -1160,7 +1160,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "agent_agent_service_test_input",
-      "community": 52,
+      "community": 55,
       "norm_label": "input"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_location": "L325",
       "_origin": "ast",
       "id": "agent_agent_service_test_persistedagentrun",
-      "community": 52,
+      "community": 55,
       "norm_label": "persistedagentrun"
     },
     {
@@ -1270,7 +1270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.service.ts"
     },
     {
@@ -1310,7 +1310,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice_listworkspaceruns",
-      "community": 8,
+      "community": 52,
       "norm_label": ".listworkspaceruns()"
     },
     {
@@ -1330,7 +1330,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "agent_agent_service_mapagentruntosummary",
-      "community": 52,
+      "community": 55,
       "norm_label": "mapagentruntosummary()"
     },
     {
@@ -1340,7 +1340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_store",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.store.ts"
     },
     {
@@ -1360,7 +1360,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "agent_agent_store_persisttelegramagentruninput",
-      "community": 52,
+      "community": 55,
       "norm_label": "persisttelegramagentruninput"
     },
     {
@@ -1370,7 +1370,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "agent_agent_store_findtelegramagentruninput",
-      "community": 52,
+      "community": 55,
       "norm_label": "findtelegramagentruninput"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "agent_agent_store_agentrunstore",
-      "community": 52,
+      "community": 55,
       "norm_label": "agentrunstore"
     },
     {
@@ -1390,7 +1390,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store",
-      "community": 52,
+      "community": 55,
       "norm_label": "typeorm-agent-run.store.ts"
     },
     {
@@ -1400,7 +1400,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore",
-      "community": 55,
+      "community": 122,
       "norm_label": "typeormagentrunstore"
     },
     {
@@ -1410,7 +1410,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_constructor",
-      "community": 55,
+      "community": 122,
       "norm_label": ".constructor()"
     },
     {
@@ -1420,7 +1420,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_resolvetelegramruncontext",
-      "community": 55,
+      "community": 122,
       "norm_label": ".resolvetelegramruncontext()"
     },
     {
@@ -1430,7 +1430,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_listforworkspace",
-      "community": 55,
+      "community": 122,
       "norm_label": ".listforworkspace()"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_findtelegramrunbysource",
-      "community": 55,
+      "community": 122,
       "norm_label": ".findtelegramrunbysource()"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_createtelegramrun",
-      "community": 55,
+      "community": 122,
       "norm_label": ".createtelegramrun()"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_getinitializeddatasource",
-      "community": 55,
+      "community": 122,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -2600,7 +2600,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -3420,7 +3420,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -3560,7 +3560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 99,
+      "community": 66,
       "norm_label": "database.module.ts"
     },
     {
@@ -3570,7 +3570,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 99,
+      "community": 66,
       "norm_label": "apidatasource"
     },
     {
@@ -3580,7 +3580,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 99,
+      "community": 67,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -3600,7 +3600,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 99,
+      "community": 67,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -3610,7 +3610,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 99,
+      "community": 67,
       "norm_label": ".getdatasource()"
     },
     {
@@ -3620,7 +3620,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 99,
+      "community": 67,
       "norm_label": "databasemodule"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table",
-      "community": 86,
+      "community": 112,
       "norm_label": "1783296060000-create-projects-table.ts"
     },
     {
@@ -4140,7 +4140,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
-      "community": 86,
+      "community": 112,
       "norm_label": "createprojectstablesql"
     },
     {
@@ -4150,7 +4150,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
-      "community": 86,
+      "community": 112,
       "norm_label": "dropprojectstablesql"
     },
     {
@@ -4190,7 +4190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table",
-      "community": 123,
+      "community": 86,
       "norm_label": "1783296120000-create-tasks-table.ts"
     },
     {
@@ -4200,7 +4200,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstablesql",
-      "community": 123,
+      "community": 86,
       "norm_label": "createtaskstablesql"
     },
     {
@@ -4210,7 +4210,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_droptaskstablesql",
-      "community": 123,
+      "community": 86,
       "norm_label": "droptaskstablesql"
     },
     {
@@ -4310,7 +4310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table",
-      "community": 86,
+      "community": 114,
       "norm_label": "1783296240000-create-comments-table.ts"
     },
     {
@@ -4320,7 +4320,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstablesql",
-      "community": 86,
+      "community": 114,
       "norm_label": "createcommentstablesql"
     },
     {
@@ -4330,7 +4330,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_dropcommentstablesql",
-      "community": 86,
+      "community": 114,
       "norm_label": "dropcommentstablesql"
     },
     {
@@ -4550,7 +4550,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table",
-      "community": 112,
+      "community": 86,
       "norm_label": "1783296480000-create-confirmation-requests-table.ts"
     },
     {
@@ -4560,7 +4560,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "community": 112,
+      "community": 86,
       "norm_label": "createconfirmationrequeststablesql"
     },
     {
@@ -4570,7 +4570,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "community": 112,
+      "community": 86,
       "norm_label": "dropconfirmationrequeststablesql"
     },
     {
@@ -4830,7 +4830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_comments_table_test",
-      "community": 86,
+      "community": 114,
       "norm_label": "create-comments-table.test.ts"
     },
     {
@@ -4840,7 +4840,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_confirmation_requests_table_test",
-      "community": 112,
+      "community": 86,
       "norm_label": "create-confirmation-requests-table.test.ts"
     },
     {
@@ -4890,7 +4890,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_projects_table_test",
-      "community": 86,
+      "community": 112,
       "norm_label": "create-projects-table.test.ts"
     },
     {
@@ -4910,7 +4910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_tasks_table_test",
-      "community": 123,
+      "community": 86,
       "norm_label": "create-tasks-table.test.ts"
     },
     {
@@ -5090,7 +5090,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunstatus",
-      "community": 8,
+      "community": 122,
       "norm_label": "agentrunstatus"
     },
     {
@@ -5630,7 +5630,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -5870,7 +5870,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "statuses_statuses_module_statusesmodule",
-      "community": 77,
+      "community": 67,
       "norm_label": "statusesmodule"
     },
     {
@@ -7210,7 +7210,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -8110,7 +8110,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -8650,7 +8650,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -9430,7 +9430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_attachment_tools_test",
-      "community": 84,
+      "community": 76,
       "norm_label": "attachment-tools.test.ts"
     },
     {
@@ -9440,7 +9440,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_attachment_tools_test_taskattachment",
-      "community": 84,
+      "community": 76,
       "norm_label": "taskattachment"
     },
     {
@@ -9450,7 +9450,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_attachment_tools_test_createbackendclientstub",
-      "community": 84,
+      "community": 76,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -9520,7 +9520,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_attachment_tools_createattachmenttoolhandlers",
-      "community": 84,
+      "community": 76,
       "norm_label": "createattachmenttoolhandlers()"
     },
     {
@@ -10080,7 +10080,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 56,
+      "community": 76,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
@@ -10090,7 +10090,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskillresponse",
-      "community": 56,
+      "community": 76,
       "norm_label": "applytaskskillresponse"
     },
     {
@@ -10130,7 +10130,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_backend_client_workspacestatusresponse",
-      "community": 70,
+      "community": 76,
       "norm_label": "workspacestatusresponse"
     },
     {
@@ -10270,7 +10270,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_backend_client_projectdetailresponse",
-      "community": 84,
+      "community": 76,
       "norm_label": "projectdetailresponse"
     },
     {
@@ -10300,7 +10300,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_backend_client_taskattachmentresponse",
-      "community": 84,
+      "community": 76,
       "norm_label": "taskattachmentresponse"
     },
     {
@@ -10390,7 +10390,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "src_backend_client_taskskillapplyrequest",
-      "community": 69,
+      "community": 56,
       "norm_label": "taskskillapplyrequest"
     },
     {
@@ -10430,7 +10430,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "src_backend_client_getworkspacerequest",
-      "community": 69,
+      "community": 95,
       "norm_label": "getworkspacerequest"
     },
     {
@@ -10440,7 +10440,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "src_backend_client_listworkspacemembersrequest",
-      "community": 69,
+      "community": 95,
       "norm_label": "listworkspacemembersrequest"
     },
     {
@@ -10520,7 +10520,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "src_backend_client_createprojectrequest",
-      "community": 70,
+      "community": 76,
       "norm_label": "createprojectrequest"
     },
     {
@@ -10560,7 +10560,7 @@
       "source_location": "L223",
       "_origin": "ast",
       "id": "src_backend_client_listtaskattachmentsrequest",
-      "community": 84,
+      "community": 76,
       "norm_label": "listtaskattachmentsrequest"
     },
     {
@@ -10570,7 +10570,7 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "src_backend_client_createtasklinkattachmentrequest",
-      "community": 84,
+      "community": 76,
       "norm_label": "createtasklinkattachmentrequest"
     },
     {
@@ -10630,7 +10630,7 @@
       "source_location": "L276",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclient",
-      "community": 76,
+      "community": 120,
       "norm_label": "taskbackendclient"
     },
     {
@@ -10740,7 +10740,7 @@
       "source_location": "L674",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskskillspath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildtaskskillspath()"
     },
     {
@@ -10750,7 +10750,7 @@
       "source_location": "L678",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskskillpath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildtaskskillpath()"
     },
     {
@@ -10760,7 +10760,7 @@
       "source_location": "L682",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacespath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildworkspacespath()"
     },
     {
@@ -10770,7 +10770,7 @@
       "source_location": "L686",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacepath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildworkspacepath()"
     },
     {
@@ -10780,7 +10780,7 @@
       "source_location": "L690",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacememberspath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildworkspacememberspath()"
     },
     {
@@ -10790,7 +10790,7 @@
       "source_location": "L694",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectspath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildworkspaceprojectspath()"
     },
     {
@@ -10800,7 +10800,7 @@
       "source_location": "L698",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacestatusespath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildworkspacestatusespath()"
     },
     {
@@ -10810,7 +10810,7 @@
       "source_location": "L702",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceconfirmationspath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildworkspaceconfirmationspath()"
     },
     {
@@ -10820,7 +10820,7 @@
       "source_location": "L706",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceconfirmationpath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildworkspaceconfirmationpath()"
     },
     {
@@ -10830,7 +10830,7 @@
       "source_location": "L713",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceconfirmationcancelpath",
-      "community": 61,
+      "community": 106,
       "norm_label": "buildworkspaceconfirmationcancelpath()"
     },
     {
@@ -10840,7 +10840,7 @@
       "source_location": "L720",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectpath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildworkspaceprojectpath()"
     },
     {
@@ -10850,7 +10850,7 @@
       "source_location": "L724",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskspath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildprojecttaskspath()"
     },
     {
@@ -10860,7 +10860,7 @@
       "source_location": "L728",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskpath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildprojecttaskpath()"
     },
     {
@@ -10870,7 +10870,7 @@
       "source_location": "L732",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskstatuspath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildprojecttaskstatuspath()"
     },
     {
@@ -10880,7 +10880,7 @@
       "source_location": "L740",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskassigneepath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildprojecttaskassigneepath()"
     },
     {
@@ -10890,7 +10890,7 @@
       "source_location": "L748",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskduedatepath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildprojecttaskduedatepath()"
     },
     {
@@ -10900,7 +10900,7 @@
       "source_location": "L756",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskcommentspath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildtaskcommentspath()"
     },
     {
@@ -10910,7 +10910,7 @@
       "source_location": "L760",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskattachmentspath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildtaskattachmentspath()"
     },
     {
@@ -10920,7 +10920,7 @@
       "source_location": "L764",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskattachmentlinkspath",
-      "community": 61,
+      "community": 103,
       "norm_label": "buildtaskattachmentlinkspath()"
     },
     {
@@ -11120,7 +11120,7 @@
       "source_location": "L985",
       "_origin": "ast",
       "id": "src_backend_client_readtaskattachment",
-      "community": 98,
+      "community": 116,
       "norm_label": "readtaskattachment()"
     },
     {
@@ -11130,7 +11130,7 @@
       "source_location": "L1032",
       "_origin": "ast",
       "id": "src_backend_client_readattachmenttargettype",
-      "community": 98,
+      "community": 116,
       "norm_label": "readattachmenttargettype()"
     },
     {
@@ -11140,7 +11140,7 @@
       "source_location": "L1040",
       "_origin": "ast",
       "id": "src_backend_client_readattachmentkind",
-      "community": 98,
+      "community": 116,
       "norm_label": "readattachmentkind()"
     },
     {
@@ -11850,7 +11850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_mcp_server_test",
-      "community": 69,
+      "community": 95,
       "norm_label": "mcp-server.test.ts"
     },
     {
@@ -11860,7 +11860,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_mcp_server_test_workspaceresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "workspaceresponse"
     },
     {
@@ -11870,7 +11870,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_mcp_server_test_workspacememberresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "workspacememberresponse"
     },
     {
@@ -11880,7 +11880,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_mcp_server_test_workspacedetailresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "workspacedetailresponse"
     },
     {
@@ -11890,7 +11890,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_mcp_server_test_toolinput",
-      "community": 69,
+      "community": 95,
       "norm_label": "toolinput"
     },
     {
@@ -11900,7 +11900,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_mcp_server_test_previewresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "previewresponse"
     },
     {
@@ -11910,7 +11910,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_mcp_server_test_applyresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "applyresponse"
     },
     {
@@ -11920,7 +11920,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_mcp_server_test_projectresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "projectresponse"
     },
     {
@@ -11930,7 +11930,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "src_mcp_server_test_projectdetailresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "projectdetailresponse"
     },
     {
@@ -11940,7 +11940,7 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "src_mcp_server_test_statusresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "statusresponse"
     },
     {
@@ -11950,7 +11950,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "src_mcp_server_test_taskskillresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "taskskillresponse"
     },
     {
@@ -11960,7 +11960,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "src_mcp_server_test_taskskilldetailresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "taskskilldetailresponse"
     },
     {
@@ -11970,7 +11970,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_mcp_server_test_confirmationrequestresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "confirmationrequestresponse"
     },
     {
@@ -11980,7 +11980,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_mcp_server_test_commentresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "commentresponse"
     },
     {
@@ -11990,7 +11990,7 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "src_mcp_server_test_attachmentresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "attachmentresponse"
     },
     {
@@ -12000,7 +12000,7 @@
       "source_location": "L225",
       "_origin": "ast",
       "id": "src_mcp_server_test_taskresponse",
-      "community": 69,
+      "community": 95,
       "norm_label": "taskresponse"
     },
     {
@@ -12010,7 +12010,7 @@
       "source_location": "L998",
       "_origin": "ast",
       "id": "src_mcp_server_test_registeredtoolcall",
-      "community": 69,
+      "community": 95,
       "norm_label": "registeredtoolcall"
     },
     {
@@ -12020,7 +12020,7 @@
       "source_location": "L1004",
       "_origin": "ast",
       "id": "src_mcp_server_test_createregistrar",
-      "community": 69,
+      "community": 95,
       "norm_label": "createregistrar()"
     },
     {
@@ -12030,7 +12030,7 @@
       "source_location": "L1013",
       "_origin": "ast",
       "id": "src_mcp_server_test_createbackendclientstub",
-      "community": 69,
+      "community": 95,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -12040,7 +12040,7 @@
       "source_location": "L1059",
       "_origin": "ast",
       "id": "src_mcp_server_test_readbackendrequestinput",
-      "community": 69,
+      "community": 95,
       "norm_label": "readbackendrequestinput()"
     },
     {
@@ -12050,7 +12050,7 @@
       "source_location": "L1081",
       "_origin": "ast",
       "id": "src_mcp_server_test_isunknownrecord",
-      "community": 69,
+      "community": 95,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -12060,7 +12060,7 @@
       "source_location": "L1085",
       "_origin": "ast",
       "id": "src_mcp_server_test_readstring",
-      "community": 69,
+      "community": 95,
       "norm_label": "readstring()"
     },
     {
@@ -12070,7 +12070,7 @@
       "source_location": "L1095",
       "_origin": "ast",
       "id": "src_mcp_server_test_readnullablestring",
-      "community": 69,
+      "community": 95,
       "norm_label": "readnullablestring()"
     },
     {
@@ -12080,7 +12080,7 @@
       "source_location": "L1105",
       "_origin": "ast",
       "id": "src_mcp_server_test_readtextresult",
-      "community": 69,
+      "community": 95,
       "norm_label": "readtextresult()"
     },
     {
@@ -12550,7 +12550,7 @@
       "source_location": "L233",
       "_origin": "ast",
       "id": "src_mcp_server_taskmcptoolregistrar",
-      "community": 69,
+      "community": 95,
       "norm_label": "taskmcptoolregistrar"
     },
     {
@@ -12560,7 +12560,7 @@
       "source_location": "L267",
       "_origin": "ast",
       "id": "src_mcp_server_taskskilltoolregistrar",
-      "community": 69,
+      "community": 95,
       "norm_label": "taskskilltoolregistrar"
     },
     {
@@ -12580,7 +12580,7 @@
       "source_location": "L275",
       "_origin": "ast",
       "id": "src_mcp_server_createtaskmcpserver",
-      "community": 69,
+      "community": 95,
       "norm_label": "createtaskmcpserver()"
     },
     {
@@ -12590,7 +12590,7 @@
       "source_location": "L293",
       "_origin": "ast",
       "id": "src_mcp_server_registerworkspacetools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registerworkspacetools()"
     },
     {
@@ -12600,7 +12600,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "src_mcp_server_registerattachmenttools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registerattachmenttools()"
     },
     {
@@ -12610,7 +12610,7 @@
       "source_location": "L343",
       "_origin": "ast",
       "id": "src_mcp_server_registercommenttools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registercommenttools()"
     },
     {
@@ -12620,7 +12620,7 @@
       "source_location": "L368",
       "_origin": "ast",
       "id": "src_mcp_server_registerstatustools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registerstatustools()"
     },
     {
@@ -12630,7 +12630,7 @@
       "source_location": "L383",
       "_origin": "ast",
       "id": "src_mcp_server_registerprojecttools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registerprojecttools()"
     },
     {
@@ -12640,7 +12640,7 @@
       "source_location": "L418",
       "_origin": "ast",
       "id": "src_mcp_server_registertasktools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registertasktools()"
     },
     {
@@ -12650,7 +12650,7 @@
       "source_location": "L483",
       "_origin": "ast",
       "id": "src_mcp_server_registertaskskillapplytools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registertaskskillapplytools()"
     },
     {
@@ -12660,7 +12660,7 @@
       "source_location": "L528",
       "_origin": "ast",
       "id": "src_mcp_server_registerconfirmationtools",
-      "community": 69,
+      "community": 95,
       "norm_label": "registerconfirmationtools()"
     },
     {
@@ -12690,7 +12690,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_project_tools_test",
-      "community": 70,
+      "community": 76,
       "norm_label": "project-tools.test.ts"
     },
     {
@@ -12700,7 +12700,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_project_tools_test_albumproject",
-      "community": 70,
+      "community": 76,
       "norm_label": "albumproject"
     },
     {
@@ -12710,7 +12710,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_project_tools_test_projects",
-      "community": 70,
+      "community": 76,
       "norm_label": "projects"
     },
     {
@@ -12720,7 +12720,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_project_tools_test_projectdetail",
-      "community": 70,
+      "community": 76,
       "norm_label": "projectdetail"
     },
     {
@@ -12730,7 +12730,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_project_tools_test_createbackendclientstub",
-      "community": 70,
+      "community": 76,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -13340,7 +13340,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_task_skill_tools_taskskilltoolhandlers",
-      "community": 69,
+      "community": 56,
       "norm_label": "taskskilltoolhandlers"
     },
     {
@@ -22109,7 +22109,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_skill_md",
+      "id": "graphify_skill",
       "community": 4,
       "norm_label": "skill.md"
     },
@@ -22349,7 +22349,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
+      "id": "references_add_watch",
       "community": 11,
       "norm_label": "add-watch.md"
     },
@@ -22389,7 +22389,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
+      "id": "references_exports",
       "community": 7,
       "norm_label": "exports.md"
     },
@@ -22479,7 +22479,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
+      "id": "references_extraction_spec",
       "community": 16,
       "norm_label": "extraction-spec.md"
     },
@@ -22499,7 +22499,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
+      "id": "references_github_and_merge",
       "community": 14,
       "norm_label": "github-and-merge.md"
     },
@@ -22529,7 +22529,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
+      "id": "references_hooks",
       "community": 12,
       "norm_label": "hooks.md"
     },
@@ -22569,7 +22569,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
+      "id": "references_query",
       "community": 9,
       "norm_label": "query.md"
     },
@@ -22629,7 +22629,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
+      "id": "references_transcribe",
       "community": 15,
       "norm_label": "transcribe.md"
     },
@@ -22659,7 +22659,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
+      "id": "references_update",
       "community": 13,
       "norm_label": "update.md"
     },
@@ -22692,6 +22692,66 @@
       "id": "references_update_for_cluster_only",
       "community": 13,
       "norm_label": "for --cluster-only"
+    },
+    {
+      "label": "memory_maintenance.md",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance",
+      "community": 109,
+      "norm_label": "memory_maintenance.md"
+    },
+    {
+      "label": "Memory Maintenance",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_memory_maintenance",
+      "community": 109,
+      "norm_label": "memory maintenance"
+    },
+    {
+      "label": "Discovery Model",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_discovery_model",
+      "community": 109,
+      "norm_label": "discovery model"
+    },
+    {
+      "label": "Style",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_style",
+      "community": 109,
+      "norm_label": "style"
+    },
+    {
+      "label": "Add/update threshold",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_add_update_threshold",
+      "community": 109,
+      "norm_label": "add/update threshold"
+    },
+    {
+      "label": "Maintenance Actions",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_maintenance_actions",
+      "community": 109,
+      "norm_label": "maintenance actions"
     },
     {
       "label": "AGENTS.md",
@@ -22849,7 +22909,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_readme_md",
+      "id": "docs_readme",
       "community": 10,
       "norm_label": "readme.md"
     },
@@ -22889,7 +22949,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_agent_mcp_design_md",
+      "id": "docs_agent_mcp_design",
       "community": 5,
       "norm_label": "agent-mcp-design.md"
     },
@@ -23089,7 +23149,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_data_model_md",
+      "id": "docs_data_model",
       "community": 0,
       "norm_label": "data-model.md"
     },
@@ -23309,7 +23369,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_product_model_md",
+      "id": "docs_product_model",
       "community": 3,
       "norm_label": "product-model.md"
     },
@@ -51563,9 +51623,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_confirmationrequestdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestdetailresponse"
     },
     {
       "relation": "imports",
@@ -51574,9 +51634,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_confirmationrequestsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestsummaryresponse"
     },
     {
       "relation": "imports",
@@ -51585,9 +51645,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -51727,9 +51787,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_confirmationrequestsummary"
     },
     {
       "relation": "contains",
@@ -51737,9 +51797,9 @@
       "source_file": "apps/mcp-server/src/backend-client.test.ts",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_test_ts_src_backend_client_test",
-      "target": "src_backend_client_test_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_test_createconfirmationrequestinput"
     },
     {
       "relation": "contains",
@@ -52195,9 +52255,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L713",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildworkspaceconfirmationcancelpath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspaceconfirmationcancelpath"
     },
     {
       "relation": "contains",
@@ -52205,9 +52265,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L706",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildworkspaceconfirmationpath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspaceconfirmationpath"
     },
     {
       "relation": "contains",
@@ -52215,9 +52275,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L702",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_buildworkspaceconfirmationspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspaceconfirmationspath"
     },
     {
       "relation": "contains",
@@ -52285,9 +52345,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L178",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_cancelconfirmationrequestrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_cancelconfirmationrequestrequest"
     },
     {
       "relation": "contains",
@@ -52295,9 +52355,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_confirmationrequestdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestdetailresponse"
     },
     {
       "relation": "contains",
@@ -52305,9 +52365,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_confirmationrequestsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestsummaryresponse"
     },
     {
       "relation": "contains",
@@ -52315,9 +52375,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestinput"
     },
     {
       "relation": "contains",
@@ -52325,9 +52385,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createconfirmationrequestoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestoperation"
     },
     {
       "relation": "contains",
@@ -52335,9 +52395,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L172",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_createconfirmationrequestrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestrequest"
     },
     {
       "relation": "contains",
@@ -52485,9 +52545,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_getconfirmationrequestoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_getconfirmationrequestoperation"
     },
     {
       "relation": "contains",
@@ -52495,9 +52555,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L166",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_getconfirmationrequestrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_getconfirmationrequestrequest"
     },
     {
       "relation": "contains",
@@ -52645,9 +52705,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listpendingconfirmationrequestsoperation",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listpendingconfirmationrequestsoperation"
     },
     {
       "relation": "contains",
@@ -52655,9 +52715,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L161",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_listpendingconfirmationrequestsrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listpendingconfirmationrequestsrequest"
     },
     {
       "relation": "contains",
@@ -52885,9 +52945,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L967",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readconfirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readconfirmationrequestdetail"
     },
     {
       "relation": "contains",
@@ -52895,9 +52955,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L940",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readconfirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readconfirmationrequestsummary"
     },
     {
       "relation": "contains",
@@ -52905,9 +52965,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L812",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_backend_client_ts_src_backend_client",
-      "target": "src_backend_client_readconfirmationrequestsummarylist",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readconfirmationrequestsummarylist"
     },
     {
       "relation": "contains",
@@ -53531,9 +53591,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_previewtaskskillapplyresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_previewtaskskillapplyresponse"
     },
     {
       "relation": "imports",
@@ -53641,9 +53701,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_applytaskskillresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_applytaskskillresponse"
     },
     {
       "relation": "imports",
@@ -53729,9 +53789,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_workspacesummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_workspacesummaryresponse"
     },
     {
       "relation": "imports",
@@ -53784,9 +53844,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_workspacedetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_workspacedetailresponse"
     },
     {
       "relation": "imports",
@@ -53839,9 +53899,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_workspacememberresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_workspacememberresponse"
     },
     {
       "relation": "imports",
@@ -53905,9 +53965,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_workspacestatusresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_workspacestatusresponse"
     },
     {
       "relation": "imports",
@@ -53982,9 +54042,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_confirmationrequestsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestsummaryresponse"
     },
     {
       "relation": "imports",
@@ -53993,9 +54053,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_backend_client_confirmationrequestsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestsummaryresponse"
     },
     {
       "relation": "imports",
@@ -54004,9 +54064,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_confirmationrequestsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestsummaryresponse"
     },
     {
       "relation": "imports",
@@ -54015,9 +54075,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_backend_client_confirmationrequestsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestsummaryresponse"
     },
     {
       "relation": "re_exports",
@@ -54026,9 +54086,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_confirmationrequestdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestdetailresponse"
     },
     {
       "relation": "imports",
@@ -54037,9 +54097,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_backend_client_confirmationrequestdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestdetailresponse"
     },
     {
       "relation": "imports",
@@ -54048,9 +54108,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_confirmationrequestdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestdetailresponse"
     },
     {
       "relation": "imports",
@@ -54059,9 +54119,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_backend_client_confirmationrequestdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_confirmationrequestdetailresponse"
     },
     {
       "relation": "re_exports",
@@ -54070,9 +54130,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -54081,9 +54141,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_backend_client_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -54092,9 +54152,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestinput"
     },
     {
       "relation": "re_exports",
@@ -54114,9 +54174,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_taskskillsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskskillsummaryresponse"
     },
     {
       "relation": "imports",
@@ -54169,9 +54229,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_taskskilldetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskskilldetailresponse"
     },
     {
       "relation": "imports",
@@ -54378,9 +54438,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_projectsummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectsummaryresponse"
     },
     {
       "relation": "imports",
@@ -54466,9 +54526,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_projectdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_projectdetailresponse"
     },
     {
       "relation": "imports",
@@ -54554,9 +54614,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_tasksummaryresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_tasksummaryresponse"
     },
     {
       "relation": "imports",
@@ -54664,9 +54724,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_taskcommentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskcommentresponse"
     },
     {
       "relation": "imports",
@@ -54752,9 +54812,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_taskattachmentresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskattachmentresponse"
     },
     {
       "relation": "imports",
@@ -54840,9 +54900,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_taskdetailresponse",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskdetailresponse"
     },
     {
       "relation": "imports",
@@ -55148,9 +55208,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_listpendingconfirmationrequestsrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_listpendingconfirmationrequestsrequest"
     },
     {
       "relation": "re_exports",
@@ -55159,9 +55219,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_getconfirmationrequestrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_getconfirmationrequestrequest"
     },
     {
       "relation": "re_exports",
@@ -55170,9 +55230,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_createconfirmationrequestrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_createconfirmationrequestrequest"
     },
     {
       "relation": "re_exports",
@@ -55181,9 +55241,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_backend_client_cancelconfirmationrequestrequest",
-      "confidence_score": 1.0
+      "target": "src_backend_client_cancelconfirmationrequestrequest"
     },
     {
       "relation": "re_exports",
@@ -55511,9 +55571,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_backend_client_taskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclient"
     },
     {
       "relation": "imports",
@@ -55522,9 +55582,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_backend_client_taskbackendclient",
-      "confidence_score": 1.0
+      "target": "src_backend_client_taskbackendclient"
     },
     {
       "relation": "imports",
@@ -55785,9 +55845,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L703",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_buildworkspaceconfirmationspath",
-      "target": "src_backend_client_buildworkspacepath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspacepath"
     },
     {
       "relation": "calls",
@@ -55840,9 +55900,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L710",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_buildworkspaceconfirmationpath",
-      "target": "src_backend_client_buildworkspaceconfirmationspath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspaceconfirmationspath"
     },
     {
       "relation": "calls",
@@ -55851,9 +55911,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L717",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_buildworkspaceconfirmationcancelpath",
-      "target": "src_backend_client_buildworkspaceconfirmationpath",
-      "confidence_score": 1.0
+      "target": "src_backend_client_buildworkspaceconfirmationpath"
     },
     {
       "relation": "calls",
@@ -56192,9 +56252,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L968",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readconfirmationrequestdetail",
-      "target": "src_backend_client_readconfirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readconfirmationrequestsummary"
     },
     {
       "relation": "calls",
@@ -56203,9 +56263,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L941",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readconfirmationrequestsummary",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord"
     },
     {
       "relation": "calls",
@@ -56214,9 +56274,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L942",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readconfirmationrequestsummary",
-      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "confidence_score": 1.0
+      "target": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring"
     },
     {
       "relation": "calls",
@@ -56225,9 +56285,9 @@
       "source_file": "apps/mcp-server/src/backend-client.ts",
       "source_location": "L959",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_backend_client_readconfirmationrequestsummary",
-      "target": "src_backend_client_readproperty",
-      "confidence_score": 1.0
+      "target": "src_backend_client_readproperty"
     },
     {
       "relation": "calls",
@@ -57290,9 +57350,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools"
     },
     {
       "relation": "imports",
@@ -57301,9 +57361,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_confirmationtoolinputerror",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationtoolinputerror"
     },
     {
       "relation": "imports",
@@ -57312,9 +57372,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_createconfirmationtoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_createconfirmationtoolhandlers"
     },
     {
       "relation": "imports",
@@ -57323,9 +57383,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_parseconfirmationcanceltoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationcanceltoolinput"
     },
     {
       "relation": "imports",
@@ -57334,9 +57394,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationcreatetoolinput"
     },
     {
       "relation": "imports",
@@ -57345,9 +57405,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_parseconfirmationgettoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationgettoolinput"
     },
     {
       "relation": "imports",
@@ -57356,9 +57416,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_parseconfirmationlistpendingtoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationlistpendingtoolinput"
     },
     {
       "relation": "contains",
@@ -57366,9 +57426,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_test_confirmationrequest",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_test_confirmationrequest"
     },
     {
       "relation": "contains",
@@ -57376,9 +57436,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L203",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_test_createbackendclientstub",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_test_createbackendclientstub"
     },
     {
       "relation": "contains",
@@ -57386,9 +57446,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.test.ts",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_test",
-      "target": "src_confirmation_tools_test_createinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_test_createinput"
     },
     {
       "relation": "re_exports",
@@ -57397,9 +57457,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools"
     },
     {
       "relation": "contains",
@@ -57407,9 +57467,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_confirmationcanceltoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationcanceltoolinput"
     },
     {
       "relation": "contains",
@@ -57417,9 +57477,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_confirmationcreatetoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationcreatetoolinput"
     },
     {
       "relation": "contains",
@@ -57427,9 +57487,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_confirmationgettoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationgettoolinput"
     },
     {
       "relation": "contains",
@@ -57437,9 +57497,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_confirmationlistpendingtoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationlistpendingtoolinput"
     },
     {
       "relation": "contains",
@@ -57447,9 +57507,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_confirmationtoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationtoolhandlers"
     },
     {
       "relation": "contains",
@@ -57457,9 +57517,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_confirmationtoolinputerror",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationtoolinputerror"
     },
     {
       "relation": "contains",
@@ -57467,9 +57527,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_createconfirmationtoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_createconfirmationtoolhandlers"
     },
     {
       "relation": "contains",
@@ -57477,9 +57537,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_isunknownrecord"
     },
     {
       "relation": "contains",
@@ -57487,9 +57547,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L126",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_parseconfirmationcanceltoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationcanceltoolinput"
     },
     {
       "relation": "contains",
@@ -57497,9 +57557,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L113",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationcreatetoolinput"
     },
     {
       "relation": "contains",
@@ -57507,9 +57567,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L103",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_parseconfirmationgettoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationgettoolinput"
     },
     {
       "relation": "contains",
@@ -57517,9 +57577,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_parseconfirmationlistpendingtoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationlistpendingtoolinput"
     },
     {
       "relation": "contains",
@@ -57527,9 +57587,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L147",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_readrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrecord"
     },
     {
       "relation": "contains",
@@ -57537,9 +57597,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L198",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_readrequireddatetime",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequireddatetime"
     },
     {
       "relation": "contains",
@@ -57547,9 +57607,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequirednonemptystring"
     },
     {
       "relation": "contains",
@@ -57557,9 +57617,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L185",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_readrequiredrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequiredrecord"
     },
     {
       "relation": "contains",
@@ -57567,9 +57627,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L159",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_readrequireduuid",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequireduuid"
     },
     {
       "relation": "contains",
@@ -57577,9 +57637,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L136",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools",
-      "target": "src_confirmation_tools_tocreateconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_tocreateconfirmationrequestinput"
     },
     {
       "relation": "imports_from",
@@ -57588,9 +57648,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_confirmation_tools",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools"
     },
     {
       "relation": "re_exports",
@@ -57599,9 +57659,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_confirmationlistpendingtoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationlistpendingtoolinput"
     },
     {
       "relation": "re_exports",
@@ -57610,9 +57670,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_confirmationgettoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationgettoolinput"
     },
     {
       "relation": "re_exports",
@@ -57621,9 +57681,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_confirmationcreatetoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationcreatetoolinput"
     },
     {
       "relation": "re_exports",
@@ -57632,9 +57692,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_confirmationcanceltoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationcanceltoolinput"
     },
     {
       "relation": "re_exports",
@@ -57643,9 +57703,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_confirmationtoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationtoolhandlers"
     },
     {
       "relation": "imports",
@@ -57654,9 +57714,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_confirmation_tools_confirmationtoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationtoolhandlers"
     },
     {
       "relation": "re_exports",
@@ -57665,9 +57725,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_confirmationtoolinputerror",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationtoolinputerror"
     },
     {
       "relation": "method",
@@ -57675,9 +57735,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_confirmationtoolinputerror",
-      "target": "src_confirmation_tools_confirmationtoolinputerror_constructor",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_confirmationtoolinputerror_constructor"
     },
     {
       "relation": "re_exports",
@@ -57686,9 +57746,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_createconfirmationtoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_createconfirmationtoolhandlers"
     },
     {
       "relation": "imports",
@@ -57697,9 +57757,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_confirmation_tools_createconfirmationtoolhandlers",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_createconfirmationtoolhandlers"
     },
     {
       "relation": "calls",
@@ -57719,9 +57779,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_parseconfirmationlistpendingtoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationlistpendingtoolinput"
     },
     {
       "relation": "calls",
@@ -57730,9 +57790,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationlistpendingtoolinput",
-      "target": "src_confirmation_tools_readrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrecord"
     },
     {
       "relation": "calls",
@@ -57741,9 +57801,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationlistpendingtoolinput",
-      "target": "src_confirmation_tools_readrequireduuid",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequireduuid"
     },
     {
       "relation": "re_exports",
@@ -57752,9 +57812,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_parseconfirmationgettoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationgettoolinput"
     },
     {
       "relation": "calls",
@@ -57763,9 +57823,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L104",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationgettoolinput",
-      "target": "src_confirmation_tools_readrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrecord"
     },
     {
       "relation": "calls",
@@ -57774,9 +57834,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationgettoolinput",
-      "target": "src_confirmation_tools_readrequireduuid",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequireduuid"
     },
     {
       "relation": "re_exports",
@@ -57785,9 +57845,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationcreatetoolinput"
     },
     {
       "relation": "calls",
@@ -57796,9 +57856,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "target": "src_confirmation_tools_readrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrecord"
     },
     {
       "relation": "calls",
@@ -57807,9 +57867,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "target": "src_confirmation_tools_readrequireddatetime",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequireddatetime"
     },
     {
       "relation": "calls",
@@ -57818,9 +57878,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L120",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "target": "src_confirmation_tools_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequirednonemptystring"
     },
     {
       "relation": "calls",
@@ -57829,9 +57889,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L121",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "target": "src_confirmation_tools_readrequiredrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequiredrecord"
     },
     {
       "relation": "calls",
@@ -57840,9 +57900,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "target": "src_confirmation_tools_readrequireduuid",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequireduuid"
     },
     {
       "relation": "re_exports",
@@ -57851,9 +57911,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_confirmation_tools_parseconfirmationcanceltoolinput",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_parseconfirmationcanceltoolinput"
     },
     {
       "relation": "calls",
@@ -57862,9 +57922,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L127",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationcanceltoolinput",
-      "target": "src_confirmation_tools_readrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrecord"
     },
     {
       "relation": "calls",
@@ -57873,9 +57933,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_parseconfirmationcanceltoolinput",
-      "target": "src_confirmation_tools_readrequireduuid",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequireduuid"
     },
     {
       "relation": "calls",
@@ -57884,9 +57944,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L148",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_readrecord",
-      "target": "src_confirmation_tools_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -57895,9 +57955,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L191",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_readrequiredrecord",
-      "target": "src_confirmation_tools_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -57906,9 +57966,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L160",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_readrequireduuid",
-      "target": "src_confirmation_tools_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequirednonemptystring"
     },
     {
       "relation": "calls",
@@ -57917,9 +57977,9 @@
       "source_file": "apps/mcp-server/src/confirmation-tools.ts",
       "source_location": "L199",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_confirmation_tools_readrequireddatetime",
-      "target": "src_confirmation_tools_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "src_confirmation_tools_readrequirednonemptystring"
     },
     {
       "relation": "re_exports",
@@ -57983,9 +58043,9 @@
       "source_file": "apps/mcp-server/src/index.ts",
       "source_location": "L104",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_mcp_server_src_index_ts_src_index",
-      "target": "src_mcp_server_registerconfirmationtools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registerconfirmationtools"
     },
     {
       "relation": "re_exports",
@@ -58720,9 +58780,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_registerconfirmationtools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registerconfirmationtools"
     },
     {
       "relation": "imports",
@@ -58837,9 +58897,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.test.ts",
       "source_location": "L184",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_test",
-      "target": "src_mcp_server_test_confirmationrequestresponse",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_test_confirmationrequestresponse"
     },
     {
       "relation": "contains",
@@ -59150,9 +59210,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_confirmationcreateinputschema",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_confirmationcreateinputschema"
     },
     {
       "relation": "contains",
@@ -59160,9 +59220,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L190",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_confirmationcreatemcpargs",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_confirmationcreatemcpargs"
     },
     {
       "relation": "contains",
@@ -59170,9 +59230,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_confirmationgetinputschema",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_confirmationgetinputschema"
     },
     {
       "relation": "contains",
@@ -59180,9 +59240,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L189",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_confirmationgetmcpargs",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_confirmationgetmcpargs"
     },
     {
       "relation": "contains",
@@ -59190,9 +59250,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_confirmationlistpendinginputschema",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_confirmationlistpendinginputschema"
     },
     {
       "relation": "contains",
@@ -59200,9 +59260,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L186",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_confirmationlistpendingmcpargs",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_confirmationlistpendingmcpargs"
     },
     {
       "relation": "contains",
@@ -59310,9 +59370,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L528",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server",
-      "target": "src_mcp_server_registerconfirmationtools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registerconfirmationtools"
     },
     {
       "relation": "contains",
@@ -59859,9 +59919,9 @@
       "source_file": "apps/mcp-server/src/mcp-server.ts",
       "source_location": "L288",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_mcp_server_createtaskmcpserver",
-      "target": "src_mcp_server_registerconfirmationtools",
-      "confidence_score": 1.0
+      "target": "src_mcp_server_registerconfirmationtools"
     },
     {
       "relation": "calls",
@@ -75442,7 +75502,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_skill_md",
+      "source": "graphify_skill",
       "target": "graphify_skill_graphify",
       "confidence_score": 1.0
     },
@@ -75672,7 +75732,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
+      "source": "references_add_watch",
       "target": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
       "confidence_score": 1.0
     },
@@ -75702,7 +75762,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
+      "source": "references_exports",
       "target": "references_exports_graphify_reference_extra_exports_and_benchmark",
       "confidence_score": 1.0
     },
@@ -75782,7 +75842,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
+      "source": "references_extraction_spec",
       "target": "references_extraction_spec_graphify_reference_extraction_subagent_prompt_compact",
       "confidence_score": 1.0
     },
@@ -75792,7 +75852,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
+      "source": "references_github_and_merge",
       "target": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
       "confidence_score": 1.0
     },
@@ -75812,7 +75872,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
+      "source": "references_hooks",
       "target": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
       "confidence_score": 1.0
     },
@@ -75842,7 +75902,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
+      "source": "references_query",
       "target": "references_query_graphify_reference_query_path_explain",
       "confidence_score": 1.0
     },
@@ -75892,7 +75952,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
+      "source": "references_transcribe",
       "target": "references_transcribe_graphify_reference_transcribe_video_and_audio",
       "confidence_score": 1.0
     },
@@ -75912,7 +75972,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
+      "source": "references_update",
       "target": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "confidence_score": 1.0
     },
@@ -75935,6 +75995,56 @@
       "confidence_score": 1.0,
       "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "target": "references_update_for_update_incremental_re_extraction"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance",
+      "target": "memories_memory_maintenance_memory_maintenance",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_add_update_threshold",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_discovery_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_maintenance_actions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_style",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -76082,7 +76192,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_readme_md",
+      "source": "docs_readme",
       "target": "docs_readme_task_docs",
       "confidence_score": 1.0
     },
@@ -76112,7 +76222,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_agent_mcp_design_md",
+      "source": "docs_agent_mcp_design",
       "target": "docs_agent_mcp_design_agent_and_mcp_design",
       "confidence_score": 1.0
     },
@@ -76302,7 +76412,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_data_model_md",
+      "source": "docs_data_model",
       "target": "docs_data_model_data_model_draft",
       "confidence_score": 1.0
     },
@@ -76512,7 +76622,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_product_model_md",
+      "source": "docs_product_model",
       "target": "docs_product_model_product_model",
       "confidence_score": 1.0
     },
@@ -76808,5 +76918,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4319df54e3acc4d8a8ce54af9b3cc12398a79e77"
+  "built_at_commit": "bf1946c269aee60b16bf10075859d935c09e401a"
 }
