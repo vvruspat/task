@@ -6,9 +6,12 @@ import {
   buildProjectOverviewSummary,
   buildTaskTableRows,
   buildTaskTableSummary,
+  buildTemplateSkillRows,
+  buildTemplateSkillSummary,
 } from "./WorkspaceView.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
+type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
 
 const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
@@ -156,6 +159,59 @@ test("buildTaskTableSummary counts loaded task table states", () => {
   );
 });
 
+test("buildTemplateSkillRows maps loaded task skills into template rows", () => {
+  assert.deepEqual(
+    buildTemplateSkillRows([
+      taskSkillSummary({
+        aliases: ["song", "track"],
+        description: "Creates a song task tree",
+        name: "Song",
+        updatedAt: "2026-07-05T10:00:00.000Z",
+      }),
+      taskSkillSummary({
+        aliases: [],
+        description: null,
+        name: "Release",
+        updatedAt: "2026-07-06T10:00:00.000Z",
+      }),
+    ]),
+    [
+      {
+        aliasLabel: "song, track",
+        description: "Creates a song task tree",
+        id: "99999999-9999-4999-8999-999999999999",
+        name: "Song",
+        updatedAtLabel: "2026-07-05",
+      },
+      {
+        aliasLabel: "No aliases",
+        description: "No description",
+        id: "99999999-9999-4999-8999-999999999999",
+        name: "Release",
+        updatedAtLabel: "2026-07-06",
+      },
+    ],
+  );
+});
+
+test("buildTemplateSkillSummary counts aliases and missing descriptions", () => {
+  const skillWithOmittedDescription = taskSkillSummary({ aliases: ["clip"] });
+  delete skillWithOmittedDescription.description;
+
+  assert.deepEqual(
+    buildTemplateSkillSummary([
+      taskSkillSummary({ aliases: ["song"], description: "Creates songs" }),
+      taskSkillSummary({ aliases: [], description: null }),
+      skillWithOmittedDescription,
+    ]),
+    {
+      skillCount: 3,
+      skillsWithAliasesCount: 2,
+      skillsWithoutDescriptionCount: 2,
+    },
+  );
+});
+
 function projectSummary(overrides: Partial<ProjectSummary> = {}): ProjectSummary {
   return {
     archivedAt: null,
@@ -166,6 +222,21 @@ function projectSummary(overrides: Partial<ProjectSummary> = {}): ProjectSummary
     position: "1000",
     status: null,
     title: "Album",
+    updatedAt: "2026-07-01T10:00:00.000Z",
+    workspaceId,
+    ...overrides,
+  };
+}
+
+function taskSkillSummary(overrides: Partial<TaskSkillSummary> = {}): TaskSkillSummary {
+  return {
+    aliases: [],
+    archivedAt: null,
+    createdAt: "2026-07-01T09:00:00.000Z",
+    createdByUserId: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+    description: null,
+    id: "99999999-9999-4999-8999-999999999999",
+    name: "Skill",
     updatedAt: "2026-07-01T10:00:00.000Z",
     workspaceId,
     ...overrides,
