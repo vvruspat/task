@@ -5,6 +5,10 @@ import * as z from "zod/v4";
 import { type AttachmentToolHandlers, createAttachmentToolHandlers } from "./attachment-tools.js";
 import type { TaskBackendClient } from "./backend-client.js";
 import { type CommentToolHandlers, createCommentToolHandlers } from "./comment-tools.js";
+import {
+  type ConfirmationToolHandlers,
+  createConfirmationToolHandlers,
+} from "./confirmation-tools.js";
 import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-tools.js";
 import { createStatusToolHandlers, type StatusToolHandlers } from "./status-tools.js";
 import { createTaskSkillToolHandlers, type TaskSkillToolHandlers } from "./task-skill-tools.js";
@@ -46,6 +50,28 @@ const taskSkillGetInputSchema = {
   taskSkillId: z.string().uuid(),
   userId: z.string().uuid(),
 };
+
+const confirmationListPendingInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
+
+const confirmationGetInputSchema = {
+  workspaceId: z.string().uuid(),
+  confirmationRequestId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
+
+const confirmationCreateInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+  agentRunId: z.string().uuid(),
+  kind: z.string().min(1),
+  preview: z.record(z.string(), z.unknown()),
+  expiresAt: z.string().datetime(),
+};
+
+const confirmationCancelInputSchema = confirmationGetInputSchema;
 
 const projectSearchInputSchema = {
   workspaceId: z.string().uuid(),
@@ -157,6 +183,11 @@ const taskSetDueDateInputSchema = {
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type TaskSkillSearchMcpArgs = z.output<z.ZodObject<typeof taskSkillSearchInputSchema>>;
 type TaskSkillGetMcpArgs = z.output<z.ZodObject<typeof taskSkillGetInputSchema>>;
+type ConfirmationListPendingMcpArgs = z.output<
+  z.ZodObject<typeof confirmationListPendingInputSchema>
+>;
+type ConfirmationGetMcpArgs = z.output<z.ZodObject<typeof confirmationGetInputSchema>>;
+type ConfirmationCreateMcpArgs = z.output<z.ZodObject<typeof confirmationCreateInputSchema>>;
 type WorkspaceGetCurrentMcpArgs = z.output<z.ZodObject<typeof workspaceGetCurrentInputSchema>>;
 type WorkspaceMemberListMcpArgs = z.output<z.ZodObject<typeof workspaceMemberListInputSchema>>;
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
@@ -178,6 +209,9 @@ type TaskMcpToolCallback = (
     | TaskSkillApplyMcpArgs
     | TaskSkillSearchMcpArgs
     | TaskSkillGetMcpArgs
+    | ConfirmationListPendingMcpArgs
+    | ConfirmationGetMcpArgs
+    | ConfirmationCreateMcpArgs
     | WorkspaceGetCurrentMcpArgs
     | WorkspaceMemberListMcpArgs
     | StatusListMcpArgs
@@ -206,6 +240,9 @@ export type TaskMcpToolRegistrar = {
         | typeof taskSkillApplyInputSchema
         | typeof taskSkillSearchInputSchema
         | typeof taskSkillGetInputSchema
+        | typeof confirmationListPendingInputSchema
+        | typeof confirmationGetInputSchema
+        | typeof confirmationCreateInputSchema
         | typeof workspaceGetCurrentInputSchema
         | typeof workspaceMemberListInputSchema
         | typeof statusListInputSchema
@@ -248,6 +285,7 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
   registerCommentTools(server, createCommentToolHandlers(options.backendClient));
   registerAttachmentTools(server, createAttachmentToolHandlers(options.backendClient));
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
+  registerConfirmationTools(server, createConfirmationToolHandlers(options.backendClient));
 
   return server;
 }
@@ -484,6 +522,51 @@ export function registerTaskSkillApplyTools(
       inputSchema: taskSkillApplyInputSchema,
     },
     async (input) => toToolResult(await handlers.apply(input)),
+  );
+}
+
+export function registerConfirmationTools(
+  registrar: TaskMcpToolRegistrar,
+  handlers: ConfirmationToolHandlers,
+): void {
+  registrar.registerTool(
+    "confirmation.list_pending",
+    {
+      title: "List pending confirmations",
+      description: "List pending confirmation requests for one visible workspace.",
+      inputSchema: confirmationListPendingInputSchema,
+    },
+    async (input) => toToolResult(await handlers.listPending(input)),
+  );
+
+  registrar.registerTool(
+    "confirmation.get",
+    {
+      title: "Get confirmation",
+      description: "Get one visible confirmation request.",
+      inputSchema: confirmationGetInputSchema,
+    },
+    async (input) => toToolResult(await handlers.get(input)),
+  );
+
+  registrar.registerTool(
+    "confirmation.create",
+    {
+      title: "Create confirmation",
+      description: "Create a pending confirmation request for one agent run.",
+      inputSchema: confirmationCreateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.create(input)),
+  );
+
+  registrar.registerTool(
+    "confirmation.cancel",
+    {
+      title: "Cancel confirmation",
+      description: "Cancel one pending confirmation request.",
+      inputSchema: confirmationCancelInputSchema,
+    },
+    async (input) => toToolResult(await handlers.cancel(input)),
   );
 }
 

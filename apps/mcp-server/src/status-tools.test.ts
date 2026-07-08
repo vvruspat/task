@@ -80,6 +80,18 @@ function createBackendClientStub(
 
       return statuses;
     },
+    listPendingConfirmationRequests: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    getConfirmationRequest: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    createConfirmationRequest: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    cancelConfirmationRequest: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     listTaskSkills: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
