@@ -1,4 +1,4 @@
-import type { components } from "@task/api-client";
+import type { TaskApiFetch } from "@task/api-client";
 import {
   Bot,
   CalendarClock,
@@ -16,14 +16,16 @@ import {
   Table2,
 } from "lucide-react";
 import type { ComponentType, ReactElement, SVGProps } from "react";
-import { lazy, Suspense, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import {
+  createWebShellDataLoader,
+  parseWebShellConfig,
+  type WebShellData,
+  type WebShellEnvironment,
+} from "../api/web-shell-data.js";
 
 const LazyDashboardView = lazy(() => import("./views/DashboardView.js"));
 const LazyWorkspaceView = lazy(() => import("./views/WorkspaceView.js"));
-
-type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
-type TaskSummary = components["schemas"]["TaskSummaryDto"];
-type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -85,94 +87,93 @@ const routes: AppRoute[] = [
   },
 ];
 
-const sampleProjects: ProjectSummary[] = [
-  {
-    id: "11111111-1111-4111-8111-111111111111",
-    workspaceId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
-    title: "Album release",
-    description: "Production board for the next release.",
-    status: "active",
-    position: "1000",
-    createdByUserId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
-    archivedAt: null,
-    createdAt: "2026-07-08T10:00:00.000Z",
-    updatedAt: "2026-07-08T10:00:00.000Z",
-  },
-  {
-    id: "22222222-2222-4222-8222-222222222222",
-    workspaceId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
-    title: "Live rehearsal",
-    description: "Set list preparation and stage notes.",
-    status: "active",
-    position: "2000",
-    createdByUserId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
-    archivedAt: null,
-    createdAt: "2026-07-08T10:00:00.000Z",
-    updatedAt: "2026-07-08T10:00:00.000Z",
-  },
-];
+const emptyWebShellData: WebShellData = {
+  projects: [],
+  selectedProjectId: null,
+  selectedWorkspaceId: null,
+  skills: [],
+  statuses: [],
+  tasks: [],
+  workspaces: [],
+};
 
-const sampleTasks: TaskSummary[] = [
-  {
-    id: "33333333-3333-4333-8333-333333333333",
-    workspaceId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
-    projectId: "11111111-1111-4111-8111-111111111111",
-    parentTaskId: null,
-    title: "Intro",
-    description: "Create the intro song structure.",
-    statusId: null,
-    assigneeUserId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
-    createdByUserId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
-    position: "1000",
-    dueAt: "2026-07-18T10:00:00.000Z",
-    sourceSkillId: "55555555-5555-4555-8555-555555555555",
-    sourceSkillVersionId: null,
-    metadata: {},
-    archivedAt: null,
-    createdAt: "2026-07-08T10:00:00.000Z",
-    updatedAt: "2026-07-08T10:00:00.000Z",
-  },
-  {
-    id: "44444444-4444-4444-8444-444444444444",
-    workspaceId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
-    projectId: "11111111-1111-4111-8111-111111111111",
-    parentTaskId: "33333333-3333-4333-8333-333333333333",
-    title: "Bass",
-    description: "Record and review bass part.",
-    statusId: null,
-    assigneeUserId: null,
-    createdByUserId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
-    position: "2000",
-    dueAt: null,
-    sourceSkillId: "55555555-5555-4555-8555-555555555555",
-    sourceSkillVersionId: null,
-    metadata: {},
-    archivedAt: null,
-    createdAt: "2026-07-08T10:00:00.000Z",
-    updatedAt: "2026-07-08T10:00:00.000Z",
-  },
-];
+type WebShellLoadState =
+  | {
+      data: WebShellData;
+      status: "loaded";
+    }
+  | {
+      message: string;
+      status: "error" | "missing_config";
+    }
+  | {
+      status: "loading";
+    };
 
-const sampleSkills: TaskSkillSummary[] = [
-  {
-    id: "55555555-5555-4555-8555-555555555555",
-    workspaceId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
-    name: "Song",
-    description: "Default song production task tree.",
-    aliases: ["track", "single"],
-    createdByUserId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
-    archivedAt: null,
-    createdAt: "2026-07-08T10:00:00.000Z",
-    updatedAt: "2026-07-08T10:00:00.000Z",
-  },
-];
+const webShellEnvironment: WebShellEnvironment = {
+  VITE_TASK_API_BASE_URL: import.meta.env.VITE_TASK_API_BASE_URL,
+  VITE_TASK_TRUSTED_USER_ID: import.meta.env.VITE_TASK_TRUSTED_USER_ID,
+};
 
 export function App(): ReactElement {
   const [activeRouteId, setActiveRouteId] = useState(routes[0]?.id ?? "my-tasks");
+  const [loadState, setLoadState] = useState<WebShellLoadState>(() => {
+    const configResult = parseWebShellConfig(webShellEnvironment);
+
+    if (configResult.status === "missing_config") {
+      return {
+        message: configResult.message,
+        status: "missing_config",
+      };
+    }
+
+    return {
+      status: "loading",
+    };
+  });
   const activeRoute = useMemo(
     () => routes.find((route) => route.id === activeRouteId) ?? routes[0],
     [activeRouteId],
   );
+  const data = loadState.status === "loaded" ? loadState.data : emptyWebShellData;
+  const dueSoonCount = data.tasks.filter((task) => task.dueAt !== null).length;
+
+  useEffect(() => {
+    const configResult = parseWebShellConfig(webShellEnvironment);
+
+    if (configResult.status === "missing_config") {
+      return;
+    }
+
+    let isCurrent = true;
+    const browserFetch: TaskApiFetch = async (url, init) => fetch(url, init);
+    const loadData = createWebShellDataLoader({
+      config: configResult.config,
+      fetch: browserFetch,
+    });
+
+    void loadData()
+      .then((loadedData) => {
+        if (isCurrent) {
+          setLoadState({
+            data: loadedData,
+            status: "loaded",
+          });
+        }
+      })
+      .catch((error: unknown) => {
+        if (isCurrent) {
+          setLoadState({
+            message: readErrorMessage(error),
+            status: "error",
+          });
+        }
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, []);
 
   if (activeRoute === undefined) {
     throw new Error("Application routes are not configured.");
@@ -234,39 +235,74 @@ export function App(): ReactElement {
           <ul className="status-strip" aria-label="Workspace status summary">
             <li>
               <ListTodo aria-hidden="true" />
-              {sampleTasks.length} tasks
+              {data.tasks.length} tasks
             </li>
             <li>
               <FolderKanban aria-hidden="true" />
-              {sampleProjects.length} projects
+              {data.projects.length} projects
             </li>
             <li>
               <Sparkles aria-hidden="true" />
-              {sampleSkills.length} skill
+              {data.skills.length} skills
             </li>
             <li>
-              <CalendarClock aria-hidden="true" />1 due soon
+              <CalendarClock aria-hidden="true" />
+              {dueSoonCount} due soon
             </li>
           </ul>
         </section>
 
+        {loadState.status !== "loaded" ? <ShellStatePanel state={loadState} /> : null}
+        {loadState.status === "loaded" && data.workspaces.length === 0 ? (
+          <ShellStatePanel
+            state={{
+              message: "No visible workspaces were returned for this user.",
+              status: "missing_config",
+            }}
+          />
+        ) : null}
+
         <Suspense fallback={<div className="loading-state">Loading view</div>}>
           {activeRoute.id === "my-tasks" ? (
-            <LazyDashboardView
-              projects={sampleProjects}
-              skills={sampleSkills}
-              tasks={sampleTasks}
-            />
+            <LazyDashboardView projects={data.projects} skills={data.skills} tasks={data.tasks} />
           ) : (
             <LazyWorkspaceView
               route={activeRoute}
-              projects={sampleProjects}
-              skills={sampleSkills}
-              tasks={sampleTasks}
+              projects={data.projects}
+              skills={data.skills}
+              tasks={data.tasks}
             />
           )}
         </Suspense>
       </section>
     </main>
   );
+}
+
+function ShellStatePanel({
+  state,
+}: {
+  state: Exclude<WebShellLoadState, { status: "loaded" }>;
+}): ReactElement {
+  const title =
+    state.status === "loading"
+      ? "Loading workspace data"
+      : state.status === "error"
+        ? "Workspace data failed"
+        : "Workspace data unavailable";
+  const message =
+    state.status === "loading"
+      ? "Reading workspaces, projects, tasks, and task skills."
+      : state.message;
+
+  return (
+    <section className={`state-panel ${state.status}`} aria-live="polite">
+      <h3>{title}</h3>
+      <p>{message}</p>
+    </section>
+  );
+}
+
+function readErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Workspace data could not be loaded.";
 }

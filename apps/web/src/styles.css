@@ -372,6 +372,34 @@ h1 {
   color: #59645e;
 }
 
+.state-panel {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid #d8d1c4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.state-panel h3 {
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.state-panel p {
+  margin-bottom: 0;
+  color: #59645e;
+}
+
+.state-panel.error {
+  border-color: #c9684f;
+  background: #fff7f3;
+}
+
+.state-panel.missing_config {
+  border-color: #d6b650;
+  background: #fff9df;
+}
+
 @media (max-width: 900px) {
   .app-shell {
     grid-template-columns: 1fr;
