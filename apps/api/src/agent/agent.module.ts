@@ -11,6 +11,7 @@ import {
 } from "./agent.runtime.js";
 import { AgentService } from "./agent.service.js";
 import type { AgentRunStore } from "./agent.store.js";
+import { AgentRunsController } from "./agent-runs.controller.js";
 import { TypeOrmAgentRunStore } from "./typeorm-agent-run.store.js";
 
 const agentRuntimeProvider: Provider<AgentRuntime> = {
@@ -33,7 +34,7 @@ const agentServiceProvider: Provider<AgentService> = {
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [AgentController],
+  controllers: [AgentController, AgentRunsController],
   providers: [
     BotSharedSecretGuard,
     agentRuntimeProvider,

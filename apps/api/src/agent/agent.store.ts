@@ -38,6 +38,7 @@ export type AgentRunStore = {
   resolveTelegramRunContext(
     input: CreateTelegramAgentRunInput,
   ): Promise<TelegramAgentRunContextResult>;
+  listForWorkspace(workspaceId: string, userId: string): Promise<AgentRunRecord[] | null>;
   findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunRecord | null>;
   createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunRecord>;
 };

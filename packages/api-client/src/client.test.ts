@@ -79,6 +79,20 @@ test("createTaskApiClient builds project-scoped endpoint paths", async () => {
   );
 });
 
+test("createTaskApiClient lists workspace agent runs with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single([agentRunSummary()]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.listAgentRuns({ workspaceId }), [agentRunSummary()]);
+  assert.equal(fetcher.calls[0]?.url, `https://task.example/workspaces/${workspaceId}/agent/runs`);
+  assert.equal(fetcher.calls[0]?.init.method, "GET");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+});
+
 test("createTaskApiClient posts task creation payloads with trusted user context", async () => {
   const fetcher = new RecordingFetch(single(taskSummary()));
   const client = createTaskApiClient({
@@ -132,6 +146,21 @@ test("createTaskApiClient rejects protected requests without trusted user contex
   });
 
   await assert.rejects(() => client.listWorkspaces(), {
+    message: "Task API trustedUserId is required for workspace requests.",
+    name: "TaskApiClientError",
+    status: null,
+  });
+  assert.equal(fetcher.calls.length, 0);
+});
+
+test("createTaskApiClient rejects agent run listing without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single([agentRunSummary()]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+  });
+
+  await assert.rejects(() => client.listAgentRuns({ workspaceId }), {
     message: "Task API trustedUserId is required for workspace requests.",
     name: "TaskApiClientError",
     status: null,
@@ -201,7 +230,12 @@ test("createTaskApiClient throws typed errors for non-2xx responses", async () =
 
 test("createTaskApiClient rejects malformed success responses", async () => {
   const fetcher = new RecordingFetch(
-    sequence([[{ id: workspaceId }], { id: workspaceId }, { id: workspaceId }]),
+    sequence([
+      [{ id: workspaceId }],
+      { id: workspaceId },
+      { id: workspaceId },
+      [{ id: workspaceId }],
+    ]),
   );
   const client = createTaskApiClient({
     baseUrl: "https://task.example",
@@ -230,6 +264,11 @@ test("createTaskApiClient rejects malformed success responses", async () => {
       status: 200,
     },
   );
+  await assert.rejects(() => client.listAgentRuns({ workspaceId }), {
+    message: "Task API returned malformed agent run summary list.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
 });
 
 type FetchCall = {
@@ -327,6 +366,23 @@ function projectSummary(): unknown {
     archivedAt: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function agentRunSummary(): unknown {
+  return {
+    id: "11111111-1111-4111-8111-111111111111",
+    workspaceId,
+    userId: trustedUserId,
+    source: "telegram",
+    sourceMessageId: "42",
+    model: "openai/gpt-4.1-mini",
+    inputText: "@task what is next?",
+    finalResponse: "Already handled.",
+    status: "completed",
+    error: null,
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:01:00.000Z",
   };
 }
 

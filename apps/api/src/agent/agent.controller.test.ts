@@ -10,6 +10,7 @@ import type {
   PersistTelegramAgentRunInput,
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
+import { AgentRunsController } from "./agent-runs.controller.js";
 
 test("AgentController forwards Telegram agent run requests to the service", async () => {
   const store = new RecordingAgentRunStore({
@@ -41,8 +42,44 @@ test("AgentController forwards Telegram agent run requests to the service", asyn
   assert.deepEqual(store.lastContextInput, input);
 });
 
+test("AgentRunsController forwards workspace agent run list requests to the service", async () => {
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+  const controller = new AgentRunsController(new AgentService(store, new StaticAgentRuntime()));
+  const runs = await controller.listWorkspaceRuns(
+    "22222222-2222-4222-8222-222222222222",
+    "33333333-3333-4333-8333-333333333333",
+  );
+
+  assert.deepEqual(
+    { ...runs[0] },
+    {
+      id: "11111111-1111-4111-8111-111111111111",
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+      userId: "33333333-3333-4333-8333-333333333333",
+      source: "telegram",
+      sourceMessageId: "42",
+      model: null,
+      inputText: "@task what is next?",
+      finalResponse: "Request recorded. Agent execution is not connected yet.",
+      status: "completed",
+      error: null,
+      createdAt: "2026-07-08T00:00:00.000Z",
+      updatedAt: "2026-07-08T00:00:00.000Z",
+    },
+  );
+  assert.deepEqual(store.lastListInput, {
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+});
+
 class RecordingAgentRunStore implements AgentRunStore {
   lastContextInput: CreateTelegramAgentRunInput | null = null;
+  lastListInput: { workspaceId: string; userId: string } | null = null;
 
   constructor(private readonly contextResult: TelegramAgentRunContextResult) {}
 
@@ -58,6 +95,31 @@ class RecordingAgentRunStore implements AgentRunStore {
     _input: FindTelegramAgentRunInput,
   ): Promise<PersistedAgentRun | null> {
     return null;
+  }
+
+  async listForWorkspace(workspaceId: string, userId: string): Promise<PersistedAgentRun[]> {
+    this.lastListInput = { workspaceId, userId };
+
+    return [
+      {
+        id: "11111111-1111-4111-8111-111111111111",
+        workspaceId,
+        userId,
+        source: "telegram",
+        sourceThreadId: "-100987654321",
+        sourceMessageId: "42",
+        model: null,
+        inputText: "@task what is next?",
+        normalizedIntent: { kind: "pending_agent_runtime" },
+        finalResponse: "Request recorded. Agent execution is not connected yet.",
+        status: "completed",
+        tokenUsage: null,
+        cost: null,
+        error: null,
+        createdAt: new Date("2026-07-08T00:00:00.000Z"),
+        updatedAt: new Date("2026-07-08T00:00:00.000Z"),
+      },
+    ];
   }
 
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<PersistedAgentRun> {

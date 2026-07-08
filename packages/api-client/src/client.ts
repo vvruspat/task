@@ -1,5 +1,6 @@
 import type { components, operations } from "./generated/openapi.js";
 
+export type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
 export type HealthResponse = components["schemas"]["HealthResponseDto"];
 export type ProjectDetail = components["schemas"]["ProjectDetailDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
@@ -64,6 +65,7 @@ export type TaskApiClient = {
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   getHealth(): Promise<HealthResponse>;
+  listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
   listStatuses(input: WorkspaceScopedInput): Promise<WorkspaceStatus[]>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
@@ -129,6 +131,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: false,
         trustedUserId: null,
       }),
+    listAgentRuns: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/agent/runs`,
+        agentRunSummaryArrayParser,
+        {
+          method: "GET",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     listProjects: (input) =>
       request(
         options.fetch,
@@ -277,6 +291,11 @@ const healthResponseParser: ResponseParser<HealthResponse> = {
   label: "health response",
 };
 
+const agentRunSummaryArrayParser: ResponseParser<AgentRunSummary[]> = {
+  isValid: (value): value is AgentRunSummary[] => isArrayOf(value, isAgentRunSummary),
+  label: "agent run summary list",
+};
+
 const projectSummaryArrayParser: ResponseParser<ProjectSummary[]> = {
   isValid: (value): value is ProjectSummary[] => isArrayOf(value, isProjectSummary),
   label: "project summary list",
@@ -327,6 +346,24 @@ function isWorkspaceSummary(value: unknown): value is WorkspaceSummary {
     hasString(value, "id") &&
     hasString(value, "name") &&
     hasString(value, "slug") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
+}
+
+function isAgentRunSummary(value: unknown): value is AgentRunSummary {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "userId") &&
+    isAgentRunSource(readProperty(value, "source")) &&
+    hasOptionalNullableString(value, "sourceMessageId") &&
+    hasOptionalNullableString(value, "model") &&
+    hasString(value, "inputText") &&
+    hasOptionalNullableString(value, "finalResponse") &&
+    isAgentRunStatus(readProperty(value, "status")) &&
+    hasOptionalNullableString(value, "error") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")
   );
@@ -421,6 +458,19 @@ function isArrayOf<TValue>(
 
 function isString(value: unknown): value is string {
   return typeof value === "string";
+}
+
+function isAgentRunSource(value: unknown): boolean {
+  return value === "telegram" || value === "web" || value === "mini_app";
+}
+
+function isAgentRunStatus(value: unknown): boolean {
+  return (
+    value === "running" ||
+    value === "waiting_confirmation" ||
+    value === "completed" ||
+    value === "failed"
+  );
 }
 
 function hasString(value: JsonObject, key: string): boolean {

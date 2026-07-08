@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  AgentRunSummary,
   CreateProjectRequestInput,
   CreateTaskRequestInput,
   ProjectDetail,
@@ -272,6 +273,10 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async getHealth(): Promise<never> {
     throw new Error("getHealth is not used by the web shell loader.");
+  }
+
+  async listAgentRuns(_input: { workspaceId: string }): Promise<AgentRunSummary[]> {
+    throw new Error("listAgentRuns is not used by the web shell loader.");
   }
 
   async listProjects(input: { workspaceId: string }): Promise<ProjectSummary[]> {
