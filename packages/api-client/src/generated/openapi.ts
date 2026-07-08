@@ -419,6 +419,23 @@ export interface paths {
     patch: operations["ConfirmationsController_cancelConfirmationRequest"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/confirmations/{confirmationRequestId}/confirm": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Confirm one pending confirmation request */
+    patch: operations["ConfirmationsController_confirmConfirmationRequest"];
+    trace?: never;
+  };
   "/internal/telegram/context/resolve": {
     parameters: {
       query?: never;
@@ -2185,6 +2202,45 @@ export interface operations {
         };
       };
       /** @description Current user cannot cancel confirmation requests in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or pending confirmation request is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ConfirmationsController_confirmConfirmationRequest: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        confirmationRequestId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConfirmationRequestDetailDto"];
+        };
+      };
+      /** @description Current user cannot confirm confirmation requests in this workspace. */
       403: {
         headers: {
           [name: string]: unknown;

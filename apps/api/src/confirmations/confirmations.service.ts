@@ -80,4 +80,26 @@ export class ConfirmationsService {
 
     return new ConfirmationRequestDetailDto(result.confirmationRequest);
   }
+
+  async confirmConfirmationRequest(
+    workspaceId: string,
+    confirmationRequestId: string,
+    userId: string,
+  ): Promise<ConfirmationRequestDetailDto> {
+    const result = await this.store.confirmForWorkspace(workspaceId, confirmationRequestId, userId);
+
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot confirm confirmation requests.");
+    }
+
+    if (result.status === "confirmation_request_not_found") {
+      throw new NotFoundException("Confirmation request was not found.");
+    }
+
+    return new ConfirmationRequestDetailDto(result.confirmationRequest);
+  }
 }

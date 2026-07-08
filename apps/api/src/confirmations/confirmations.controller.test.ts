@@ -11,6 +11,7 @@ import { ParseCreateConfirmationRequestBodyPipe } from "./confirmations.dto.js";
 import { ConfirmationsService } from "./confirmations.service.js";
 import type {
   ConfirmationRequestCancelResult,
+  ConfirmationRequestConfirmResult,
   ConfirmationRequestCreateResult,
   ConfirmationRequestsStore,
 } from "./confirmations.store.js";
@@ -136,6 +137,33 @@ test("ConfirmationsController uses trusted current user context for cancels", as
   assert.deepEqual(calls, [{ workspaceId, confirmationRequestId, userId }]);
 });
 
+test("ConfirmationsController uses trusted current user context for confirms", async () => {
+  const calls: Array<{ workspaceId: string; confirmationRequestId: string; userId: string }> = [];
+  const controller = new ConfirmationsController(
+    new ConfirmationsService(
+      createStore({
+        confirmCalls: calls,
+        confirmResult: {
+          status: "confirmed",
+          confirmationRequest: {
+            ...confirmationRequest,
+            status: "confirmed",
+          },
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.confirmConfirmationRequest(
+    workspaceId,
+    confirmationRequestId,
+    userId,
+  );
+
+  assert.equal(response.status, "confirmed");
+  assert.deepEqual(calls, [{ workspaceId, confirmationRequestId, userId }]);
+});
+
 test("ParseCreateConfirmationRequestBodyPipe validates and normalizes payloads", () => {
   const pipe = new ParseCreateConfirmationRequestBodyPipe();
 
@@ -176,10 +204,12 @@ function createStore(
       input: CreateConfirmationRequestInput;
     }>;
     cancelCalls?: Array<{ workspaceId: string; confirmationRequestId: string; userId: string }>;
+    confirmCalls?: Array<{ workspaceId: string; confirmationRequestId: string; userId: string }>;
     requests?: ConfirmationRequestSummary[] | null;
     request?: ConfirmationRequestDetail | null;
     createResult?: ConfirmationRequestCreateResult;
     cancelResult?: ConfirmationRequestCancelResult;
+    confirmResult?: ConfirmationRequestConfirmResult;
   } = {},
 ): ConfirmationRequestsStore {
   return {
@@ -239,6 +269,27 @@ function createStore(
           confirmationRequest: {
             ...confirmationRequest,
             status: "cancelled",
+          },
+        }
+      );
+    },
+    confirmForWorkspace: async (
+      requestWorkspaceId,
+      requestConfirmationRequestId,
+      requestUserId,
+    ): Promise<ConfirmationRequestConfirmResult> => {
+      options.confirmCalls?.push({
+        workspaceId: requestWorkspaceId,
+        confirmationRequestId: requestConfirmationRequestId,
+        userId: requestUserId,
+      });
+
+      return (
+        options.confirmResult ?? {
+          status: "confirmed",
+          confirmationRequest: {
+            ...confirmationRequest,
+            status: "confirmed",
           },
         }
       );

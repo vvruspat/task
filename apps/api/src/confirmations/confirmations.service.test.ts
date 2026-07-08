@@ -13,6 +13,7 @@ import {
 import { ConfirmationsService } from "./confirmations.service.js";
 import type {
   ConfirmationRequestCancelResult,
+  ConfirmationRequestConfirmResult,
   ConfirmationRequestCreateResult,
   ConfirmationRequestsStore,
 } from "./confirmations.store.js";
@@ -112,6 +113,29 @@ test("ConfirmationsService cancels pending confirmation requests", async () => {
   assert.equal(response.status, "cancelled");
 });
 
+test("ConfirmationsService confirms pending confirmation requests", async () => {
+  const service = new ConfirmationsService(
+    createStore({
+      confirmResult: {
+        status: "confirmed",
+        confirmationRequest: {
+          ...confirmationRequestDetail,
+          status: "confirmed",
+        },
+      },
+    }),
+  );
+
+  const response = await service.confirmConfirmationRequest(
+    workspaceId,
+    confirmationRequestId,
+    userId,
+  );
+
+  assert.equal(response.id, confirmationRequestId);
+  assert.equal(response.status, "confirmed");
+});
+
 test("ConfirmationsService hides missing workspaces and requests", async () => {
   const missingWorkspaceService = new ConfirmationsService(createStore({ requests: null }));
   const missingRequestService = new ConfirmationsService(createStore({ request: null }));
@@ -126,7 +150,7 @@ test("ConfirmationsService hides missing workspaces and requests", async () => {
   );
 });
 
-test("ConfirmationsService maps create and cancel boundary failures", async () => {
+test("ConfirmationsService maps create, cancel, and confirm boundary failures", async () => {
   const forbiddenCreateService = new ConfirmationsService(
     createStore({ createResult: { status: "forbidden" } }),
   );
@@ -138,6 +162,12 @@ test("ConfirmationsService maps create and cancel boundary failures", async () =
   );
   const missingCancelService = new ConfirmationsService(
     createStore({ cancelResult: { status: "confirmation_request_not_found" } }),
+  );
+  const forbiddenConfirmService = new ConfirmationsService(
+    createStore({ confirmResult: { status: "forbidden" } }),
+  );
+  const missingConfirmService = new ConfirmationsService(
+    createStore({ confirmResult: { status: "confirmation_request_not_found" } }),
   );
 
   await assert.rejects(
@@ -158,6 +188,20 @@ test("ConfirmationsService maps create and cancel boundary failures", async () =
       missingCancelService.cancelConfirmationRequest(workspaceId, confirmationRequestId, userId),
     NotFoundException,
   );
+  await assert.rejects(
+    () =>
+      forbiddenConfirmService.confirmConfirmationRequest(
+        workspaceId,
+        confirmationRequestId,
+        userId,
+      ),
+    ForbiddenException,
+  );
+  await assert.rejects(
+    () =>
+      missingConfirmService.confirmConfirmationRequest(workspaceId, confirmationRequestId, userId),
+    NotFoundException,
+  );
 });
 
 function createStore(
@@ -166,6 +210,7 @@ function createStore(
     request?: ConfirmationRequestDetail | null;
     createResult?: ConfirmationRequestCreateResult;
     cancelResult?: ConfirmationRequestCancelResult;
+    confirmResult?: ConfirmationRequestConfirmResult;
   } = {},
 ): ConfirmationRequestsStore {
   return {
@@ -184,6 +229,14 @@ function createStore(
         confirmationRequest: {
           ...confirmationRequestDetail,
           status: "cancelled",
+        },
+      },
+    confirmForWorkspace: async (): Promise<ConfirmationRequestConfirmResult> =>
+      options.confirmResult ?? {
+        status: "confirmed",
+        confirmationRequest: {
+          ...confirmationRequestDetail,
+          status: "confirmed",
         },
       },
   };

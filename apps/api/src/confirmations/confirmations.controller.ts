@@ -106,4 +106,27 @@ export class ConfirmationsController {
       userId,
     );
   }
+
+  @Patch(":confirmationRequestId/confirm")
+  @ApiOperation({ summary: "Confirm one pending confirmation request" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "confirmationRequestId" })
+  @ApiOkResponse({ type: ConfirmationRequestDetailDto })
+  @ApiForbiddenResponse({
+    description: "Current user cannot confirm confirmation requests in this workspace.",
+  })
+  @ApiNotFoundResponse({
+    description: "Workspace or pending confirmation request is missing or not visible.",
+  })
+  confirmConfirmationRequest(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("confirmationRequestId", uuidV4Pipe) confirmationRequestId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<ConfirmationRequestDetailDto> {
+    return this.confirmationsService.confirmConfirmationRequest(
+      workspaceId,
+      confirmationRequestId,
+      userId,
+    );
+  }
 }

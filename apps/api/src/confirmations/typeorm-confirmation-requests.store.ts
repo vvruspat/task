@@ -18,6 +18,7 @@ import type {
 } from "./confirmations.contracts.js";
 import type {
   ConfirmationRequestCancelResult,
+  ConfirmationRequestConfirmResult,
   ConfirmationRequestCreateResult,
   ConfirmationRequestsStore,
 } from "./confirmations.store.js";
@@ -136,6 +137,47 @@ export class TypeOrmConfirmationRequestsStore implements ConfirmationRequestsSto
     confirmationRequestId: string,
     userId: string,
   ): Promise<ConfirmationRequestCancelResult> {
+    return this.transitionPendingForWorkspace(
+      workspaceId,
+      confirmationRequestId,
+      userId,
+      "cancelled",
+    );
+  }
+
+  async confirmForWorkspace(
+    workspaceId: string,
+    confirmationRequestId: string,
+    userId: string,
+  ): Promise<ConfirmationRequestConfirmResult> {
+    return this.transitionPendingForWorkspace(
+      workspaceId,
+      confirmationRequestId,
+      userId,
+      "confirmed",
+    );
+  }
+
+  private async transitionPendingForWorkspace(
+    workspaceId: string,
+    confirmationRequestId: string,
+    userId: string,
+    status: "cancelled",
+  ): Promise<ConfirmationRequestCancelResult>;
+
+  private async transitionPendingForWorkspace(
+    workspaceId: string,
+    confirmationRequestId: string,
+    userId: string,
+    status: "confirmed",
+  ): Promise<ConfirmationRequestConfirmResult>;
+
+  private async transitionPendingForWorkspace(
+    workspaceId: string,
+    confirmationRequestId: string,
+    userId: string,
+    status: "cancelled" | "confirmed",
+  ): Promise<ConfirmationRequestCancelResult | ConfirmationRequestConfirmResult> {
     const dataSource = await this.getInitializedDataSource();
     const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
       workspaceId,
@@ -162,11 +204,11 @@ export class TypeOrmConfirmationRequestsStore implements ConfirmationRequestsSto
       return { status: "confirmation_request_not_found" };
     }
 
-    request.status = "cancelled";
+    request.status = status;
     const savedRequest = await repository.save(request);
 
     return {
-      status: "cancelled",
+      status,
       confirmationRequest: toConfirmationRequestDetail(savedRequest),
     };
   }
