@@ -1,6 +1,7 @@
 import type { components, operations } from "./generated/openapi.js";
 
 export type HealthResponse = components["schemas"]["HealthResponseDto"];
+export type ProjectDetail = components["schemas"]["ProjectDetailDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 export type TaskDetail = components["schemas"]["TaskDetailDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
@@ -8,8 +9,11 @@ export type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 
+type CreateProjectOperation = operations["ProjectsController_createProject"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 
+export type CreateProjectInput =
+  CreateProjectOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
 
 export type TaskApiRequestHeaders = {
@@ -48,11 +52,16 @@ export type ProjectScopedInput = WorkspaceScopedInput & {
   projectId: string;
 };
 
+export type CreateProjectRequestInput = WorkspaceScopedInput & {
+  body: CreateProjectInput;
+};
+
 export type CreateTaskRequestInput = ProjectScopedInput & {
   body: CreateTaskInput;
 };
 
 export type TaskApiClient = {
+  createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   getHealth(): Promise<HealthResponse>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
@@ -88,6 +97,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
   const baseUrl = normalizeBaseUrl(options.baseUrl);
 
   return {
+    createProject: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects`,
+        projectDetailParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     createTask: (input) =>
       request(
         options.fetch,
@@ -260,6 +282,11 @@ const projectSummaryArrayParser: ResponseParser<ProjectSummary[]> = {
   label: "project summary list",
 };
 
+const projectDetailParser: ResponseParser<ProjectDetail> = {
+  isValid: isProjectDetail,
+  label: "project detail",
+};
+
 const taskSummaryArrayParser: ResponseParser<TaskSummary[]> = {
   isValid: (value): value is TaskSummary[] => isArrayOf(value, isTaskSummary),
   label: "task summary list",
@@ -306,6 +333,10 @@ function isWorkspaceSummary(value: unknown): value is WorkspaceSummary {
 }
 
 function isProjectSummary(value: unknown): value is ProjectSummary {
+  return isProjectDetail(value);
+}
+
+function isProjectDetail(value: unknown): value is ProjectDetail {
   return (
     isJsonObject(value) &&
     hasString(value, "id") &&
