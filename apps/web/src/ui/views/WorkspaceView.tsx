@@ -109,6 +109,22 @@ export type ProjectOverviewRow = {
   unassignedTaskCount: number;
 };
 
+export type MyTaskRow = {
+  assigneeLabel: string;
+  dueDateLabel: string;
+  id: string;
+  projectTitle: string;
+  title: string;
+  updatedAtLabel: string;
+};
+
+export type MyTaskSummary = {
+  assignedTaskCount: number;
+  dueTaskCount: number;
+  recentlyUpdatedTaskCount: number;
+  taskCount: number;
+};
+
 export type ProjectOverviewSummary = {
   dueSoonTaskCount: number;
   projectCount: number;
@@ -145,6 +161,26 @@ export type TemplateSkillSummary = {
   skillsWithAliasesCount: number;
   skillsWithoutDescriptionCount: number;
 };
+
+export function buildMyTaskRows(projects: ProjectSummary[], tasks: TaskSummary[]): MyTaskRow[] {
+  return [...tasks].sort(compareMyTasks).map((task) => ({
+    assigneeLabel: isTaskUnassigned(task) ? "Unassigned" : "Assigned",
+    dueDateLabel: formatOptionalDateLabel(task.dueAt),
+    id: task.id,
+    projectTitle: projects.find((project) => project.id === task.projectId)?.title ?? "Unknown",
+    title: task.title,
+    updatedAtLabel: formatDateLabel(task.updatedAt),
+  }));
+}
+
+export function buildMyTaskSummary(tasks: TaskSummary[]): MyTaskSummary {
+  return {
+    assignedTaskCount: tasks.filter((task) => !isTaskUnassigned(task)).length,
+    dueTaskCount: tasks.filter((task) => hasDateValue(task.dueAt)).length,
+    recentlyUpdatedTaskCount: countRecentlyUpdatedTasks(tasks),
+    taskCount: tasks.length,
+  };
+}
 
 export function buildProjectOverviewRows(
   projects: ProjectSummary[],
@@ -430,6 +466,36 @@ function TemplatesView({ skills }: { skills: TaskSkillSummary[] }): ReactElement
 
 function countDueSoonTasks(tasks: TaskSummary[]): number {
   return tasks.filter((task) => hasDateValue(task.dueAt)).length;
+}
+
+function countRecentlyUpdatedTasks(tasks: TaskSummary[]): number {
+  const latestUpdate = tasks.reduce<string | null>(
+    (currentLatest, task) =>
+      currentLatest === null ? task.updatedAt : maxIsoTimestamp(currentLatest, task.updatedAt),
+    null,
+  );
+
+  if (latestUpdate === null) {
+    return 0;
+  }
+
+  const latestUpdateDate = formatDateLabel(latestUpdate);
+  return tasks.filter((task) => formatDateLabel(task.updatedAt) === latestUpdateDate).length;
+}
+
+function compareMyTasks(firstTask: TaskSummary, secondTask: TaskSummary): number {
+  const firstDueRank = hasDateValue(firstTask.dueAt) ? 0 : 1;
+  const secondDueRank = hasDateValue(secondTask.dueAt) ? 0 : 1;
+
+  if (firstDueRank !== secondDueRank) {
+    return firstDueRank - secondDueRank;
+  }
+
+  if (hasDateValue(firstTask.dueAt) && hasDateValue(secondTask.dueAt)) {
+    return firstTask.dueAt.localeCompare(secondTask.dueAt);
+  }
+
+  return secondTask.updatedAt.localeCompare(firstTask.updatedAt);
 }
 
 function formatDateLabel(value: string): string {

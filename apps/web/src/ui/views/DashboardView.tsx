@@ -1,7 +1,8 @@
 import type { components } from "@task/api-client";
-import { ArrowRight, CircleDot, Clock3, Plus } from "lucide-react";
+import { ArrowRight, Clock3, Plus } from "lucide-react";
 import type { FormEvent, ReactElement } from "react";
 import { useState } from "react";
+import { buildMyTaskRows, buildMyTaskSummary } from "./WorkspaceView.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
@@ -51,6 +52,8 @@ export default function DashboardView({
   const projectSubmitDisabled =
     createProjectDisabled || isCreatingProject || trimmedProjectTitle.length === 0;
   const submitDisabled = createTaskDisabled || isSubmitting || trimmedTitle.length === 0;
+  const myTaskRows = buildMyTaskRows(projects, tasks);
+  const myTaskSummary = buildMyTaskSummary(tasks);
 
   const handleProjectSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -74,11 +77,11 @@ export default function DashboardView({
 
   return (
     <div className="content-grid">
-      <section className="panel wide-panel" aria-labelledby="task-queue-title">
+      <section className="panel wide-panel" aria-labelledby="my-tasks-view-title">
         <div className="panel-header">
           <div>
-            <p className="eyebrow">Queue</p>
-            <h3 id="task-queue-title">Assigned work</h3>
+            <p className="eyebrow">My Tasks</p>
+            <h3 id="my-tasks-view-title">Personal queue</h3>
           </div>
           <button className="icon-button" title="Open task table" type="button">
             <ArrowRight aria-hidden="true" />
@@ -111,15 +114,34 @@ export default function DashboardView({
               : "Creates a task in the selected project."}
           </p>
         )}
-        <div className="task-list">
-          {tasks.map((task) => (
-            <article className="task-row" key={task.id}>
-              <CircleDot aria-hidden="true" className="state-icon" />
+        <dl className="metric-list my-task-metrics" aria-label="My Tasks summary">
+          <div>
+            <dt>Tasks</dt>
+            <dd>{myTaskSummary.taskCount}</dd>
+          </div>
+          <div>
+            <dt>Assigned</dt>
+            <dd>{myTaskSummary.assignedTaskCount}</dd>
+          </div>
+          <div>
+            <dt>Due</dt>
+            <dd>{myTaskSummary.dueTaskCount}</dd>
+          </div>
+          <div>
+            <dt>Recent</dt>
+            <dd>{myTaskSummary.recentlyUpdatedTaskCount}</dd>
+          </div>
+        </dl>
+        <div className="my-task-list">
+          {myTaskRows.map((task) => (
+            <article className="my-task-row" key={task.id}>
               <div>
                 <h4>{task.title}</h4>
-                <p>{task.description ?? "No description"}</p>
+                <p>{task.projectTitle}</p>
               </div>
-              <span>{task.dueAt === null ? "No due date" : "Due soon"}</span>
+              <span>{task.assigneeLabel}</span>
+              <span>{task.dueDateLabel}</span>
+              <time dateTime={task.updatedAtLabel}>{task.updatedAtLabel}</time>
             </article>
           ))}
         </div>
