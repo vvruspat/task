@@ -1,4 +1,5 @@
 import {
+  type AgentRunSummary,
   createTaskApiClient,
   type ProjectDetail,
   type ProjectSummary,
@@ -17,6 +18,7 @@ export type WebShellConfig = {
 };
 
 export type WebShellData = {
+  agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];
   selectedProjectId: string | null;
   selectedWorkspaceId: string | null;
@@ -157,6 +159,7 @@ export async function loadWebShellData(client: TaskApiClient): Promise<WebShellD
 
   if (selectedWorkspaceId === null) {
     return {
+      agentRuns: [],
       projects: [],
       selectedProjectId: null,
       selectedWorkspaceId,
@@ -167,7 +170,8 @@ export async function loadWebShellData(client: TaskApiClient): Promise<WebShellD
     };
   }
 
-  const [projects, skills, statuses] = await Promise.all([
+  const [agentRuns, projects, skills, statuses] = await Promise.all([
+    client.listAgentRuns({ workspaceId: selectedWorkspaceId }),
     client.listProjects({ workspaceId: selectedWorkspaceId }),
     client.listTaskSkills({ workspaceId: selectedWorkspaceId }),
     client.listStatuses({ workspaceId: selectedWorkspaceId }),
@@ -182,6 +186,7 @@ export async function loadWebShellData(client: TaskApiClient): Promise<WebShellD
         });
 
   return {
+    agentRuns,
     projects,
     selectedProjectId,
     selectedWorkspaceId,

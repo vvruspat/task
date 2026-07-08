@@ -1,6 +1,7 @@
 import type { components } from "@task/api-client";
 import type { ComponentType, ReactElement, SVGProps } from "react";
 
+type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
 type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
@@ -10,6 +11,7 @@ type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 type WorkspaceViewProps = {
+  agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];
   route: {
     id: string;
@@ -26,6 +28,7 @@ type WorkspaceViewProps = {
 };
 
 export default function WorkspaceView({
+  agentRuns,
   projects,
   route,
   selectedProjectId,
@@ -60,6 +63,7 @@ export default function WorkspaceView({
   if (route.id === "agent") {
     return (
       <AgentHistoryView
+        agentRuns={agentRuns}
         projects={projects}
         selectedProjectId={selectedProjectId}
         selectedWorkspaceId={selectedWorkspaceId}
@@ -244,6 +248,14 @@ export type AgentHistorySummary = {
   skillCount: number;
   statusCount: number;
   taskCount: number;
+};
+
+export type AgentHistoryRunRow = {
+  detail: string;
+  id: string;
+  statusLabel: string;
+  title: string;
+  updatedAtLabel: string;
 };
 
 export type ProjectOverviewSummary = {
@@ -455,6 +467,7 @@ export function buildSettingsSummary(input: {
 }
 
 export function buildAgentHistorySummary(input: {
+  agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];
   selectedProjectId: string | null;
   selectedWorkspaceId: string | null;
@@ -465,7 +478,7 @@ export function buildAgentHistorySummary(input: {
 }): AgentHistorySummary {
   return {
     projectCount: input.projects.length,
-    runCount: 0,
+    runCount: input.agentRuns.length,
     selectedProjectLabel:
       input.projects.find((project) => project.id === input.selectedProjectId)?.title ??
       "No selected project",
@@ -476,6 +489,16 @@ export function buildAgentHistorySummary(input: {
     statusCount: input.statuses.length,
     taskCount: input.tasks.length,
   };
+}
+
+export function buildAgentHistoryRows(agentRuns: AgentRunSummary[]): AgentHistoryRunRow[] {
+  return agentRuns.map((run) => ({
+    detail: `${run.source} - ${formatDateLabel(run.createdAt)}`,
+    id: run.id,
+    statusLabel: run.status,
+    title: run.inputText,
+    updatedAtLabel: formatDateLabel(run.updatedAt),
+  }));
 }
 
 export function buildProjectOverviewRows(
@@ -920,6 +943,7 @@ function TemplatesView({ skills }: { skills: TaskSkillSummary[] }): ReactElement
 }
 
 function AgentHistoryView({
+  agentRuns,
   projects,
   selectedProjectId,
   selectedWorkspaceId,
@@ -928,6 +952,7 @@ function AgentHistoryView({
   tasks,
   workspaces,
 }: {
+  agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];
   selectedProjectId: string | null;
   selectedWorkspaceId: string | null;
@@ -936,7 +961,9 @@ function AgentHistoryView({
   tasks: TaskSummary[];
   workspaces: WorkspaceSummary[];
 }): ReactElement {
+  const rows = buildAgentHistoryRows(agentRuns);
   const summary = buildAgentHistorySummary({
+    agentRuns,
     projects,
     selectedProjectId,
     selectedWorkspaceId,
@@ -957,29 +984,27 @@ function AgentHistoryView({
         </div>
 
         <div className="agent-history-list">
-          <article className="agent-history-row">
-            <div>
-              <h4>Selected workspace</h4>
-              <p>{summary.selectedWorkspaceLabel}</p>
-            </div>
-            <span>{summary.projectCount} projects</span>
-          </article>
-          <article className="agent-history-row">
-            <div>
-              <h4>Selected project</h4>
-              <p>{summary.selectedProjectLabel}</p>
-            </div>
-            <span>{summary.taskCount} tasks</span>
-          </article>
-          <article className="agent-history-row">
-            <div>
-              <h4>Available tools context</h4>
-              <p>
-                {summary.skillCount} skills, {summary.statusCount} statuses
-              </p>
-            </div>
-            <span>No runs loaded</span>
-          </article>
+          {rows.length === 0 ? (
+            <article className="agent-history-row">
+              <div>
+                <h4>No agent runs loaded</h4>
+                <p>{summary.selectedWorkspaceLabel}</p>
+              </div>
+              <span>{summary.selectedProjectLabel}</span>
+            </article>
+          ) : (
+            rows.map((run) => (
+              <article className="agent-history-row" key={run.id}>
+                <div>
+                  <h4>{run.title}</h4>
+                  <p>{run.detail}</p>
+                </div>
+                <span>
+                  {run.statusLabel} - {run.updatedAtLabel}
+                </span>
+              </article>
+            ))
+          )}
         </div>
       </section>
 
@@ -990,7 +1015,7 @@ function AgentHistoryView({
             <h3 id="agent-history-summary-title">Audit load</h3>
           </div>
         </div>
-        <p className="agent-line">No agent runs loaded for this workspace.</p>
+        <p className="agent-line">{summary.selectedWorkspaceLabel}</p>
         <dl className="metric-list">
           <div>
             <dt>Runs</dt>

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { components } from "@task/api-client";
 import {
+  buildAgentHistoryRows,
   buildAgentHistorySummary,
   buildKanbanColumns,
   buildKanbanSummary,
@@ -20,6 +21,7 @@ import {
 } from "./WorkspaceView.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
+type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
 type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
 type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
@@ -302,6 +304,7 @@ test("buildSettingsSummary falls back when selected context is absent", () => {
 test("buildAgentHistorySummary maps selected context and audit counts", () => {
   assert.deepEqual(
     buildAgentHistorySummary({
+      agentRuns: [agentRunSummary()],
       projects: [
         projectSummary({ id: firstProjectId, title: "Album one" }),
         projectSummary({ id: secondProjectId, title: "Album two" }),
@@ -315,7 +318,7 @@ test("buildAgentHistorySummary maps selected context and audit counts", () => {
     }),
     {
       projectCount: 2,
-      runCount: 0,
+      runCount: 1,
       selectedProjectLabel: "Album one",
       selectedWorkspaceLabel: "Studio",
       skillCount: 2,
@@ -328,6 +331,7 @@ test("buildAgentHistorySummary maps selected context and audit counts", () => {
 test("buildAgentHistorySummary falls back when context is absent", () => {
   assert.deepEqual(
     buildAgentHistorySummary({
+      agentRuns: [],
       projects: [],
       selectedProjectId: null,
       selectedWorkspaceId: null,
@@ -345,6 +349,29 @@ test("buildAgentHistorySummary falls back when context is absent", () => {
       statusCount: 0,
       taskCount: 0,
     },
+  );
+});
+
+test("buildAgentHistoryRows maps loaded run summaries", () => {
+  assert.deepEqual(
+    buildAgentHistoryRows([
+      agentRunSummary({
+        createdAt: "2026-07-05T09:00:00.000Z",
+        inputText: "@task prepare label update",
+        source: "telegram",
+        status: "waiting_confirmation",
+        updatedAt: "2026-07-06T10:00:00.000Z",
+      }),
+    ]),
+    [
+      {
+        detail: "telegram - 2026-07-05",
+        id: "11111111-1111-4111-8111-111111111111",
+        statusLabel: "waiting_confirmation",
+        title: "@task prepare label update",
+        updatedAtLabel: "2026-07-06",
+      },
+    ],
   );
 });
 
@@ -636,6 +663,24 @@ function projectSummary(overrides: Partial<ProjectSummary> = {}): ProjectSummary
     status: null,
     title: "Album",
     updatedAt: "2026-07-01T10:00:00.000Z",
+    workspaceId,
+    ...overrides,
+  };
+}
+
+function agentRunSummary(overrides: Partial<AgentRunSummary> = {}): AgentRunSummary {
+  return {
+    createdAt: "2026-07-01T09:00:00.000Z",
+    error: null,
+    finalResponse: "Done.",
+    id: "11111111-1111-4111-8111-111111111111",
+    inputText: "@task summarize the plan",
+    model: "openai/gpt-5",
+    source: "web",
+    sourceMessageId: null,
+    status: "completed",
+    updatedAt: "2026-07-01T10:00:00.000Z",
+    userId: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
     workspaceId,
     ...overrides,
   };

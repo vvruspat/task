@@ -90,6 +90,7 @@ const routes: AppRoute[] = [
 ];
 
 const emptyWebShellData: WebShellData = {
+  agentRuns: [],
   projects: [],
   selectedProjectId: null,
   selectedWorkspaceId: null,
@@ -434,6 +435,7 @@ export function App(): ReactElement {
             />
           ) : (
             <LazyWorkspaceView
+              agentRuns={data.agentRuns}
               route={activeRoute}
               projects={data.projects}
               selectedProjectId={data.selectedProjectId}
