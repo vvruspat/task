@@ -15,6 +15,8 @@ export {
   type CancelConfirmationRequestRequest,
   type ConfirmationRequestDetailResponse,
   type ConfirmationRequestSummaryResponse,
+  type ConfirmConfirmationRequestRequest,
+  type ConfirmConfirmationRequestResponse,
   type CreateConfirmationRequestInput,
   type CreateConfirmationRequestRequest,
   type CreateProjectInput,
@@ -89,6 +91,7 @@ export {
 } from "./config.js";
 export {
   type ConfirmationCancelToolInput,
+  type ConfirmationCommitToolInput,
   type ConfirmationCreateToolInput,
   type ConfirmationGetToolInput,
   type ConfirmationListPendingToolInput,
@@ -96,6 +99,7 @@ export {
   ConfirmationToolInputError,
   createConfirmationToolHandlers,
   parseConfirmationCancelToolInput,
+  parseConfirmationCommitToolInput,
   parseConfirmationCreateToolInput,
   parseConfirmationGetToolInput,
   parseConfirmationListPendingToolInput,

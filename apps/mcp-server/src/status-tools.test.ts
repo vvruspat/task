@@ -92,6 +92,9 @@ function createBackendClientStub(
     cancelConfirmationRequest: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
+    confirmConfirmationRequest: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     listTaskSkills: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },

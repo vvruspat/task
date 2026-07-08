@@ -1,6 +1,7 @@
 import type {
   ConfirmationRequestDetailResponse,
   ConfirmationRequestSummaryResponse,
+  ConfirmConfirmationRequestResponse,
   CreateConfirmationRequestInput,
   TaskBackendClient,
 } from "./backend-client.js";
@@ -33,11 +34,14 @@ export type ConfirmationCancelToolInput = {
   userId: string;
 };
 
+export type ConfirmationCommitToolInput = ConfirmationCancelToolInput;
+
 export type ConfirmationToolHandlers = {
   listPending(input: unknown): Promise<ConfirmationRequestSummaryResponse[]>;
   get(input: unknown): Promise<ConfirmationRequestDetailResponse>;
   create(input: unknown): Promise<ConfirmationRequestDetailResponse>;
   cancel(input: unknown): Promise<ConfirmationRequestDetailResponse>;
+  commit(input: unknown): Promise<ConfirmConfirmationRequestResponse>;
 };
 
 export class ConfirmationToolInputError extends Error {
@@ -86,6 +90,15 @@ export function createConfirmationToolHandlers(
         userId: parsedInput.userId,
       });
     },
+    commit: (input) => {
+      const parsedInput = parseConfirmationCommitToolInput(input);
+
+      return client.confirmConfirmationRequest({
+        workspaceId: parsedInput.workspaceId,
+        confirmationRequestId: parsedInput.confirmationRequestId,
+        userId: parsedInput.userId,
+      });
+    },
   };
 }
 
@@ -125,6 +138,16 @@ export function parseConfirmationCreateToolInput(input: unknown): ConfirmationCr
 
 export function parseConfirmationCancelToolInput(input: unknown): ConfirmationCancelToolInput {
   const record = readRecord(input, "confirmation cancel tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    confirmationRequestId: readRequiredUuid(record, "confirmationRequestId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+}
+
+export function parseConfirmationCommitToolInput(input: unknown): ConfirmationCommitToolInput {
+  const record = readRecord(input, "confirmation commit tool input");
 
   return {
     workspaceId: readRequiredUuid(record, "workspaceId"),
