@@ -365,6 +365,88 @@ test("createTaskSkill posts typed payloads with trusted user context", async () 
   assert.deepEqual(response, taskSkillDetail);
 });
 
+test("updateTaskSkillMetadata patches typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const updatedTaskSkill: TaskSkillDetailResponse = {
+    ...taskSkillDetail,
+    name: "Updated song",
+    aliases: ["single"],
+  };
+  const updateInput = {
+    name: "Updated song",
+    aliases: ["single"],
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, updatedTaskSkill);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.updateTaskSkillMetadata({
+    workspaceId,
+    taskSkillId,
+    userId,
+    body: updateInput,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/task-skills/${taskSkillId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "PATCH");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetchCalls[0]?.init.body, JSON.stringify(updateInput));
+  assert.deepEqual(response, updatedTaskSkill);
+});
+
+test("updateTaskSkillDefinition patches typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const updateInput = {
+    definition: {
+      subtasks: [{ title: "Arrange" }],
+    },
+  };
+  const updatedTaskSkill: TaskSkillDetailResponse = {
+    ...taskSkillDetail,
+    versions: [
+      {
+        id: taskSkillVersionId,
+        workspaceId,
+        taskSkillId,
+        version: 2,
+        definition: updateInput.definition,
+        createdByUserId: userId,
+        createdAt: timestamp,
+      },
+    ],
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, updatedTaskSkill);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.updateTaskSkillDefinition({
+    workspaceId,
+    taskSkillId,
+    userId,
+    body: updateInput,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/task-skills/${taskSkillId}/definition`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "PATCH");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetchCalls[0]?.init.body, JSON.stringify(updateInput));
+  assert.deepEqual(response, updatedTaskSkill);
+});
+
 test("listPendingConfirmationRequests gets typed confirmations with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, [confirmationRequestSummary]);

@@ -3,6 +3,9 @@ import type { components, operations } from "@task/api-client";
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
 type CreateTaskSkillOperation = operations["TaskSkillsController_createTaskSkill"];
+type UpdateTaskSkillMetadataOperation = operations["TaskSkillsController_updateTaskSkillMetadata"];
+type UpdateTaskSkillDefinitionOperation =
+  operations["TaskSkillsController_updateTaskSkillDefinition"];
 type ListWorkspacesOperation = operations["WorkspacesController_listWorkspaces"];
 type GetWorkspaceOperation = operations["WorkspacesController_getWorkspace"];
 type ListWorkspaceMembersOperation = operations["WorkspacesController_listMembers"];
@@ -41,6 +44,14 @@ export type CreateTaskSkillInput =
   CreateTaskSkillOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskSkillResponse =
   CreateTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type UpdateTaskSkillMetadataInput =
+  UpdateTaskSkillMetadataOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskSkillMetadataResponse =
+  UpdateTaskSkillMetadataOperation["responses"]["200"]["content"]["application/json"];
+export type UpdateTaskSkillDefinitionInput =
+  UpdateTaskSkillDefinitionOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskSkillDefinitionResponse =
+  UpdateTaskSkillDefinitionOperation["responses"]["200"]["content"]["application/json"];
 export type WorkspaceSummaryResponse =
   ListWorkspacesOperation["responses"]["200"]["content"]["application/json"][number];
 export type WorkspaceDetailResponse =
@@ -142,6 +153,20 @@ export type CreateTaskSkillRequest = {
   workspaceId: string;
   userId: string;
   body: CreateTaskSkillInput;
+};
+
+export type UpdateTaskSkillMetadataRequest = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+  body: UpdateTaskSkillMetadataInput;
+};
+
+export type UpdateTaskSkillDefinitionRequest = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+  body: UpdateTaskSkillDefinitionInput;
 };
 
 export type ListActiveProjectsRequest = {
@@ -317,6 +342,12 @@ export type TaskBackendClient = {
   listTaskSkills(request: ListTaskSkillsRequest): Promise<TaskSkillSummaryResponse[]>;
   getTaskSkill(request: GetTaskSkillRequest): Promise<TaskSkillDetailResponse>;
   createTaskSkill(request: CreateTaskSkillRequest): Promise<CreateTaskSkillResponse>;
+  updateTaskSkillMetadata(
+    request: UpdateTaskSkillMetadataRequest,
+  ): Promise<UpdateTaskSkillMetadataResponse>;
+  updateTaskSkillDefinition(
+    request: UpdateTaskSkillDefinitionRequest,
+  ): Promise<UpdateTaskSkillDefinitionResponse>;
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
@@ -449,6 +480,24 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         fetchImplementation,
         baseUrl,
         buildTaskSkillsPath(request.workspaceId),
+        request.userId,
+        request.body,
+        readTaskSkillDetail,
+      ),
+    updateTaskSkillMetadata: (request) =>
+      patchJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSkillPath(request.workspaceId, request.taskSkillId),
+        request.userId,
+        request.body,
+        readTaskSkillDetail,
+      ),
+    updateTaskSkillDefinition: (request) =>
+      patchJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSkillDefinitionPath(request.workspaceId, request.taskSkillId),
         request.userId,
         request.body,
         readTaskSkillDetail,
@@ -619,6 +668,8 @@ async function patchJson<ResponseBody>(
     | UpdateTaskStatusInput
     | UpdateTaskAssigneeInput
     | UpdateTaskDueDateInput
+    | UpdateTaskSkillMetadataInput
+    | UpdateTaskSkillDefinitionInput
     | Record<string, never>,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
@@ -642,6 +693,8 @@ async function writeJson<ResponseBody>(
     | UpdateTaskStatusInput
     | UpdateTaskAssigneeInput
     | UpdateTaskDueDateInput
+    | UpdateTaskSkillMetadataInput
+    | UpdateTaskSkillDefinitionInput
     | Record<string, never>,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
@@ -722,6 +775,10 @@ function buildTaskSkillsPath(workspaceId: string): string {
 
 function buildTaskSkillPath(workspaceId: string, taskSkillId: string): string {
   return `${buildTaskSkillsPath(workspaceId)}/${encodeURIComponent(taskSkillId)}`;
+}
+
+function buildTaskSkillDefinitionPath(workspaceId: string, taskSkillId: string): string {
+  return `${buildTaskSkillPath(workspaceId, taskSkillId)}/definition`;
 }
 
 function buildWorkspacesPath(): string {

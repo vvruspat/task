@@ -7,6 +7,9 @@ import type {
   TaskBackendClient,
   TaskSkillDetailResponse,
   TaskSkillSummaryResponse,
+  UpdateTaskSkillDefinitionResponse,
+  UpdateTaskSkillMetadataInput,
+  UpdateTaskSkillMetadataResponse,
 } from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -44,10 +47,28 @@ export type TaskSkillCreateToolInput = {
   definition: Record<string, unknown>;
 };
 
+export type TaskSkillUpdateMetadataToolInput = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+  name?: string;
+  description?: string | null;
+  aliases?: string[];
+};
+
+export type TaskSkillUpdateDefinitionToolInput = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+  definition: Record<string, unknown>;
+};
+
 export type TaskSkillToolHandlers = {
   search(input: unknown): Promise<TaskSkillSummaryResponse[]>;
   get(input: unknown): Promise<TaskSkillDetailResponse>;
   create(input: unknown): Promise<CreateTaskSkillResponse>;
+  updateMetadata(input: unknown): Promise<UpdateTaskSkillMetadataResponse>;
+  updateDefinition(input: unknown): Promise<UpdateTaskSkillDefinitionResponse>;
   previewApply(input: unknown): Promise<PreviewTaskSkillApplyResponse>;
   apply(input: unknown): Promise<ApplyTaskSkillResponse>;
 };
@@ -98,6 +119,28 @@ export function createTaskSkillToolHandlers(client: TaskBackendClient): TaskSkil
         workspaceId: parsedInput.workspaceId,
         userId: parsedInput.userId,
         body: toCreateTaskSkillInput(parsedInput),
+      });
+    },
+    updateMetadata: (input) => {
+      const parsedInput = parseTaskSkillUpdateMetadataToolInput(input);
+
+      return client.updateTaskSkillMetadata({
+        workspaceId: parsedInput.workspaceId,
+        taskSkillId: parsedInput.taskSkillId,
+        userId: parsedInput.userId,
+        body: toUpdateTaskSkillMetadataInput(parsedInput),
+      });
+    },
+    updateDefinition: (input) => {
+      const parsedInput = parseTaskSkillUpdateDefinitionToolInput(input);
+
+      return client.updateTaskSkillDefinition({
+        workspaceId: parsedInput.workspaceId,
+        taskSkillId: parsedInput.taskSkillId,
+        userId: parsedInput.userId,
+        body: {
+          definition: parsedInput.definition,
+        },
       });
     },
     previewApply: (input) => {
@@ -160,6 +203,62 @@ export function parseTaskSkillCreateToolInput(input: unknown): TaskSkillCreateTo
   return parsedInput;
 }
 
+export function parseTaskSkillUpdateMetadataToolInput(
+  input: unknown,
+): TaskSkillUpdateMetadataToolInput {
+  const record = readRecord(input, "task skill update metadata tool input");
+  const parsedInput: TaskSkillUpdateMetadataToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    taskSkillId: readRequiredUuid(record, "taskSkillId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+
+  if ("name" in record) {
+    parsedInput.name = readRequiredNonEmptyString(record, "name");
+  }
+
+  if ("description" in record) {
+    const description = readOptionalNullableString(record, "description");
+
+    if (description !== undefined) {
+      parsedInput.description = description;
+    }
+  }
+
+  if ("aliases" in record) {
+    const aliases = readOptionalStringArray(record, "aliases");
+
+    if (aliases !== undefined) {
+      parsedInput.aliases = aliases;
+    }
+  }
+
+  if (
+    parsedInput.name === undefined &&
+    parsedInput.description === undefined &&
+    parsedInput.aliases === undefined
+  ) {
+    throw new TaskSkillToolInputError(
+      "task skill update metadata tool input must include a metadata field.",
+    );
+  }
+
+  return parsedInput;
+}
+
+export function parseTaskSkillUpdateDefinitionToolInput(
+  input: unknown,
+): TaskSkillUpdateDefinitionToolInput {
+  const record = readRecord(input, "task skill update definition tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    taskSkillId: readRequiredUuid(record, "taskSkillId"),
+    userId: readRequiredUuid(record, "userId"),
+    definition: readRequiredRecord(record, "definition"),
+  };
+}
+
 export function parseTaskSkillApplyToolInput(input: unknown): TaskSkillApplyToolInput {
   const record = readRecord(input, "task skill apply tool input");
   const parsedInput: TaskSkillApplyToolInput = {
@@ -206,6 +305,26 @@ function toCreateTaskSkillInput(input: TaskSkillCreateToolInput): CreateTaskSkil
     name: input.name,
     definition: input.definition,
   };
+
+  if (input.description !== undefined) {
+    body.description = input.description;
+  }
+
+  if (input.aliases !== undefined) {
+    body.aliases = input.aliases;
+  }
+
+  return body;
+}
+
+function toUpdateTaskSkillMetadataInput(
+  input: TaskSkillUpdateMetadataToolInput,
+): UpdateTaskSkillMetadataInput {
+  const body: UpdateTaskSkillMetadataInput = {};
+
+  if (input.name !== undefined) {
+    body.name = input.name;
+  }
 
   if (input.description !== undefined) {
     body.description = input.description;
