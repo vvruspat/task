@@ -79,6 +79,41 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
   ) {}
 
   async handleTelegramRequest(request: TelegramAgentRuntimeRequest): Promise<AgentRuntimeResult> {
+    const models = this.getCandidateModels();
+    const errors: string[] = [];
+    let failedResult: AgentRuntimeResult | null = null;
+
+    for (const model of models) {
+      const result = await this.tryComplete(request, model);
+
+      if (result.status === "completed") {
+        return result;
+      }
+
+      failedResult = result;
+      errors.push(`${model}: ${result.error ?? "OpenRouter runtime failed."}`);
+    }
+
+    if (errors.length === 1 && failedResult !== null) {
+      return failedResult;
+    }
+
+    const lastModel = models[models.length - 1] ?? this.config.model;
+    return buildFailedRuntimeResult(lastModel, errors.join(" | "));
+  }
+
+  private getCandidateModels(): string[] {
+    if (this.config.fallbackModel === null || this.config.fallbackModel === this.config.model) {
+      return [this.config.model];
+    }
+
+    return [this.config.model, this.config.fallbackModel];
+  }
+
+  private async tryComplete(
+    request: TelegramAgentRuntimeRequest,
+    model: string,
+  ): Promise<AgentRuntimeResult> {
     try {
       const response = await this.fetcher(openRouterChatCompletionsEndpoint, {
         method: "POST",
@@ -89,7 +124,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           "X-Title": this.config.appTitle,
         },
         body: JSON.stringify({
-          model: this.config.model,
+          model,
           messages: [
             {
               role: "system",
@@ -107,7 +142,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
 
       if (!response.ok) {
         return buildFailedRuntimeResult(
-          this.config.model,
+          model,
           `OpenRouter request failed with status ${response.status}: ${await readOpenRouterError(response)}`,
         );
       }
@@ -117,13 +152,13 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
 
       if (content === null) {
         return buildFailedRuntimeResult(
-          this.config.model,
+          model,
           "OpenRouter response did not include assistant content.",
         );
       }
 
       return {
-        model: this.config.model,
+        model,
         normalizedIntent: {
           kind: "openrouter_chat_completion",
           source: "telegram",
@@ -135,7 +170,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         error: null,
       };
     } catch (error: unknown) {
-      return buildFailedRuntimeResult(this.config.model, readRuntimeErrorMessage(error));
+      return buildFailedRuntimeResult(model, readRuntimeErrorMessage(error));
     }
   }
 }
