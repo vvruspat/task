@@ -132,6 +132,9 @@ function createBackendClientStub(): TaskBackendClient {
     getTaskSkill: async () => {
       throw new Error("getTaskSkill is not used by workspace tools.");
     },
+    createTaskSkill: async () => {
+      throw new Error("createTaskSkill is not used by workspace tools.");
+    },
     listActiveProjects: async () => [],
     getProject: async () => {
       throw new Error("getProject is not used by workspace tools.");

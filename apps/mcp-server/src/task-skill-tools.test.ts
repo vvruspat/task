@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
+  CreateTaskSkillRequest,
   PreviewTaskSkillApplyResponse,
   TaskAttachmentResponse,
   TaskBackendClient,
@@ -16,6 +17,7 @@ import type {
 import {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
+  parseTaskSkillCreateToolInput,
   parseTaskSkillGetToolInput,
   parseTaskSkillSearchToolInput,
   TaskSkillToolInputError,
@@ -38,6 +40,17 @@ const toolInput = {
   overrides: {
     removeSubtasks: [" Lyrics ", "Lyrics"],
     addSubtasks: [" Strings "],
+  },
+};
+
+const createInput = {
+  workspaceId,
+  userId,
+  name: " Song ",
+  description: " Song production template ",
+  aliases: [" track ", "track"],
+  definition: {
+    subtasks: [{ title: "Lyrics" }],
   },
 };
 
@@ -144,6 +157,42 @@ test("parseTaskSkillGetToolInput validates skill identifiers", () => {
   );
 });
 
+test("parseTaskSkillCreateToolInput validates and normalizes create payloads", () => {
+  assert.deepEqual(parseTaskSkillCreateToolInput(createInput), {
+    workspaceId,
+    userId,
+    name: "Song",
+    description: "Song production template",
+    aliases: ["track"],
+    definition: {
+      subtasks: [{ title: "Lyrics" }],
+    },
+  });
+  assert.deepEqual(parseTaskSkillCreateToolInput({ ...createInput, description: null }), {
+    workspaceId,
+    userId,
+    name: "Song",
+    description: null,
+    aliases: ["track"],
+    definition: {
+      subtasks: [{ title: "Lyrics" }],
+    },
+  });
+  assert.throws(() => parseTaskSkillCreateToolInput(null), TaskSkillToolInputError);
+  assert.throws(
+    () => parseTaskSkillCreateToolInput({ ...createInput, name: "" }),
+    TaskSkillToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSkillCreateToolInput({ ...createInput, definition: [] }),
+    TaskSkillToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSkillCreateToolInput({ ...createInput, aliases: [""] }),
+    TaskSkillToolInputError,
+  );
+});
+
 test("parseTaskSkillApplyToolInput validates and normalizes tool payloads", () => {
   assert.deepEqual(parseTaskSkillApplyToolInput(toolInput), {
     workspaceId,
@@ -221,6 +270,31 @@ test("task skill get handler forwards identifiers to the backend client", async 
   assert.deepEqual(calls, [{ workspaceId, taskSkillId, userId }]);
 });
 
+test("task skill create handler forwards payloads to the backend client", async () => {
+  const calls: CreateTaskSkillRequest[] = [];
+  const handlers = createTaskSkillToolHandlers(
+    createBackendClientStub([], {
+      createTaskSkillCalls: calls,
+    }),
+  );
+
+  assert.deepEqual(await handlers.create(createInput), taskSkillDetail);
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      userId,
+      body: {
+        name: "Song",
+        description: "Song production template",
+        aliases: ["track"],
+        definition: {
+          subtasks: [{ title: "Lyrics" }],
+        },
+      },
+    },
+  ]);
+});
+
 test("task skill tool handlers forward preview inputs to the backend client", async () => {
   const calls: TaskSkillApplyRequest[] = [];
   const handlers = createTaskSkillToolHandlers(createBackendClientStub(calls));
@@ -274,6 +348,7 @@ test("task skill tool handlers forward apply inputs to the backend client", asyn
 function createBackendClientStub(
   calls: TaskSkillApplyRequest[],
   options: {
+    createTaskSkillCalls?: CreateTaskSkillRequest[];
     getTaskSkillCalls?: Array<{ workspaceId: string; taskSkillId: string; userId: string }>;
     listTaskSkillCalls?: Array<{ workspaceId: string; userId: string }>;
     taskSkills?: TaskSkillSummaryResponse[];
@@ -314,6 +389,11 @@ function createBackendClientStub(
     },
     getTaskSkill: async (request): Promise<TaskSkillDetailResponse> => {
       options.getTaskSkillCalls?.push(request);
+
+      return taskSkillDetail;
+    },
+    createTaskSkill: async (request): Promise<TaskSkillDetailResponse> => {
+      options.createTaskSkillCalls?.push(request);
 
       return taskSkillDetail;
     },

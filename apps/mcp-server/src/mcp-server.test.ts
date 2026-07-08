@@ -834,6 +834,19 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
       });
       return taskSkillDetailResponse;
     },
+    create: async (input: unknown): Promise<TaskSkillDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        userId,
+        name: "Song",
+        description: "Song production template",
+        aliases: ["track"],
+        definition: {
+          subtasks: [{ title: "Lyrics" }],
+        },
+      });
+      return taskSkillDetailResponse;
+    },
     previewApply: async (input: unknown): Promise<PreviewTaskSkillApplyResponse> => {
       backendCalls.push(readBackendRequestInput(input));
       return previewResponse;
@@ -846,12 +859,13 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["skill.search", "skill.get", "skill.preview_apply", "skill.apply"],
+    ["skill.search", "skill.get", "skill.create", "skill.preview_apply", "skill.apply"],
   );
   assert.equal(toolCalls[0]?.config.title, "Search task skills");
   assert.equal(toolCalls[1]?.config.title, "Get task skill");
-  assert.equal(toolCalls[2]?.config.title, "Preview task skill application");
-  assert.equal(toolCalls[3]?.config.title, "Apply task skill");
+  assert.equal(toolCalls[2]?.config.title, "Create task skill");
+  assert.equal(toolCalls[3]?.config.title, "Preview task skill application");
+  assert.equal(toolCalls[4]?.config.title, "Apply task skill");
 
   const previewCall = toolCalls[0];
   assert.ok(previewCall !== undefined);
@@ -873,7 +887,22 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), taskSkillDetailResponse);
 
-  const previewApplyCall = toolCalls[2];
+  const createCall = toolCalls[2];
+  assert.ok(createCall !== undefined);
+  const createResult = await createCall.callback({
+    workspaceId,
+    userId,
+    name: "Song",
+    description: "Song production template",
+    aliases: ["track"],
+    definition: {
+      subtasks: [{ title: "Lyrics" }],
+    },
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(createResult)), taskSkillDetailResponse);
+
+  const previewApplyCall = toolCalls[3];
   assert.ok(previewApplyCall !== undefined);
   const previewResult = await previewApplyCall.callback(toolInput);
 
@@ -888,7 +917,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     },
   });
 
-  const applyCall = toolCalls[3];
+  const applyCall = toolCalls[4];
   assert.ok(applyCall !== undefined);
   const applyResult = await applyCall.callback(toolInput);
 
@@ -1057,6 +1086,7 @@ function createBackendClientStub(): TaskBackendClient {
     }),
     listTaskSkills: async (): Promise<TaskSkillSummaryResponse[]> => [taskSkillResponse],
     getTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
+    createTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],
     createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],

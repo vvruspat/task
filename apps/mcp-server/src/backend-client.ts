@@ -2,6 +2,7 @@ import type { components, operations } from "@task/api-client";
 
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
+type CreateTaskSkillOperation = operations["TaskSkillsController_createTaskSkill"];
 type ListWorkspacesOperation = operations["WorkspacesController_listWorkspaces"];
 type GetWorkspaceOperation = operations["WorkspacesController_getWorkspace"];
 type ListWorkspaceMembersOperation = operations["WorkspacesController_listMembers"];
@@ -36,6 +37,10 @@ export type PreviewTaskSkillApplyResponse =
   PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
 export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type CreateTaskSkillInput =
+  CreateTaskSkillOperation["requestBody"]["content"]["application/json"];
+export type CreateTaskSkillResponse =
+  CreateTaskSkillOperation["responses"]["201"]["content"]["application/json"];
 export type WorkspaceSummaryResponse =
   ListWorkspacesOperation["responses"]["200"]["content"]["application/json"][number];
 export type WorkspaceDetailResponse =
@@ -131,6 +136,12 @@ export type TaskSkillApplyRequest = {
   taskSkillId: string;
   userId: string;
   body: PreviewTaskSkillApplyInput;
+};
+
+export type CreateTaskSkillRequest = {
+  workspaceId: string;
+  userId: string;
+  body: CreateTaskSkillInput;
 };
 
 export type ListActiveProjectsRequest = {
@@ -305,6 +316,7 @@ export type TaskBackendClient = {
   ): Promise<ConfirmConfirmationRequestResponse>;
   listTaskSkills(request: ListTaskSkillsRequest): Promise<TaskSkillSummaryResponse[]>;
   getTaskSkill(request: GetTaskSkillRequest): Promise<TaskSkillDetailResponse>;
+  createTaskSkill(request: CreateTaskSkillRequest): Promise<CreateTaskSkillResponse>;
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
@@ -430,6 +442,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         baseUrl,
         buildTaskSkillPath(request.workspaceId, request.taskSkillId),
         request.userId,
+        readTaskSkillDetail,
+      ),
+    createTaskSkill: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSkillsPath(request.workspaceId),
+        request.userId,
+        request.body,
         readTaskSkillDetail,
       ),
     listActiveProjects: (request) =>
@@ -578,6 +599,7 @@ async function postJson<ResponseBody>(
   userId: string,
   body:
     | PreviewTaskSkillApplyInput
+    | CreateTaskSkillInput
     | CreateProjectInput
     | CreateTaskInput
     | CreateTaskCommentInput
@@ -611,6 +633,7 @@ async function writeJson<ResponseBody>(
   method: "POST" | "PATCH",
   body:
     | PreviewTaskSkillApplyInput
+    | CreateTaskSkillInput
     | CreateProjectInput
     | CreateTaskInput
     | CreateTaskCommentInput
