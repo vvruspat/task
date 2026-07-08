@@ -1,5 +1,6 @@
 import type {
   ApplyTaskSkillResponse,
+  ArchiveTaskSkillResponse,
   CreateTaskSkillInput,
   CreateTaskSkillResponse,
   PreviewTaskSkillApplyInput,
@@ -38,6 +39,8 @@ export type TaskSkillGetToolInput = {
   userId: string;
 };
 
+export type TaskSkillArchiveToolInput = TaskSkillGetToolInput;
+
 export type TaskSkillCreateToolInput = {
   workspaceId: string;
   userId: string;
@@ -67,6 +70,7 @@ export type TaskSkillToolHandlers = {
   search(input: unknown): Promise<TaskSkillSummaryResponse[]>;
   get(input: unknown): Promise<TaskSkillDetailResponse>;
   create(input: unknown): Promise<CreateTaskSkillResponse>;
+  archive(input: unknown): Promise<ArchiveTaskSkillResponse>;
   updateMetadata(input: unknown): Promise<UpdateTaskSkillMetadataResponse>;
   updateDefinition(input: unknown): Promise<UpdateTaskSkillDefinitionResponse>;
   previewApply(input: unknown): Promise<PreviewTaskSkillApplyResponse>;
@@ -119,6 +123,15 @@ export function createTaskSkillToolHandlers(client: TaskBackendClient): TaskSkil
         workspaceId: parsedInput.workspaceId,
         userId: parsedInput.userId,
         body: toCreateTaskSkillInput(parsedInput),
+      });
+    },
+    archive: (input) => {
+      const parsedInput = parseTaskSkillArchiveToolInput(input);
+
+      return client.archiveTaskSkill({
+        workspaceId: parsedInput.workspaceId,
+        taskSkillId: parsedInput.taskSkillId,
+        userId: parsedInput.userId,
       });
     },
     updateMetadata: (input) => {
@@ -201,6 +214,16 @@ export function parseTaskSkillCreateToolInput(input: unknown): TaskSkillCreateTo
   }
 
   return parsedInput;
+}
+
+export function parseTaskSkillArchiveToolInput(input: unknown): TaskSkillArchiveToolInput {
+  const record = readRecord(input, "task skill archive tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    taskSkillId: readRequiredUuid(record, "taskSkillId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
 }
 
 export function parseTaskSkillUpdateMetadataToolInput(

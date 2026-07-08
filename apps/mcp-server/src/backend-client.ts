@@ -3,6 +3,7 @@ import type { components, operations } from "@task/api-client";
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
 type CreateTaskSkillOperation = operations["TaskSkillsController_createTaskSkill"];
+type ArchiveTaskSkillOperation = operations["TaskSkillsController_archiveTaskSkill"];
 type UpdateTaskSkillMetadataOperation = operations["TaskSkillsController_updateTaskSkillMetadata"];
 type UpdateTaskSkillDefinitionOperation =
   operations["TaskSkillsController_updateTaskSkillDefinition"];
@@ -44,6 +45,8 @@ export type CreateTaskSkillInput =
   CreateTaskSkillOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskSkillResponse =
   CreateTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type ArchiveTaskSkillResponse =
+  ArchiveTaskSkillOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateTaskSkillMetadataInput =
   UpdateTaskSkillMetadataOperation["requestBody"]["content"]["application/json"];
 export type UpdateTaskSkillMetadataResponse =
@@ -114,6 +117,10 @@ export type TaskBackendFetchInit =
       method: "PATCH";
       headers: TaskBackendPostHeaders;
       body: string;
+    }
+  | {
+      method: "DELETE";
+      headers: TaskBackendGetHeaders;
     };
 
 export type TaskBackendGetHeaders = {
@@ -167,6 +174,12 @@ export type UpdateTaskSkillDefinitionRequest = {
   taskSkillId: string;
   userId: string;
   body: UpdateTaskSkillDefinitionInput;
+};
+
+export type ArchiveTaskSkillRequest = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
 };
 
 export type ListActiveProjectsRequest = {
@@ -342,6 +355,7 @@ export type TaskBackendClient = {
   listTaskSkills(request: ListTaskSkillsRequest): Promise<TaskSkillSummaryResponse[]>;
   getTaskSkill(request: GetTaskSkillRequest): Promise<TaskSkillDetailResponse>;
   createTaskSkill(request: CreateTaskSkillRequest): Promise<CreateTaskSkillResponse>;
+  archiveTaskSkill(request: ArchiveTaskSkillRequest): Promise<ArchiveTaskSkillResponse>;
   updateTaskSkillMetadata(
     request: UpdateTaskSkillMetadataRequest,
   ): Promise<UpdateTaskSkillMetadataResponse>;
@@ -482,6 +496,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildTaskSkillsPath(request.workspaceId),
         request.userId,
         request.body,
+        readTaskSkillDetail,
+      ),
+    archiveTaskSkill: (request) =>
+      deleteJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSkillPath(request.workspaceId, request.taskSkillId),
+        request.userId,
         readTaskSkillDetail,
       ),
     updateTaskSkillMetadata: (request) =>
@@ -674,6 +696,35 @@ async function patchJson<ResponseBody>(
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   return writeJson(fetchImplementation, baseUrl, path, userId, "PATCH", body, readResponse);
+}
+
+async function deleteJson<ResponseBody>(
+  fetchImplementation: TaskBackendFetch,
+  baseUrl: string,
+  path: string,
+  userId: string,
+  readResponse: (value: unknown) => ResponseBody,
+): Promise<ResponseBody> {
+  const response = await fetchImplementation(`${baseUrl}${path}`, {
+    method: "DELETE",
+    headers: {
+      accept: "application/json",
+      "x-task-user-id": userId,
+    },
+  });
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new TaskBackendClientError(
+      response.status,
+      response.statusText.length === 0
+        ? `Backend request failed with ${response.status}`
+        : response.statusText,
+      responseBody,
+    );
+  }
+
+  return readResponse(responseBody);
 }
 
 async function writeJson<ResponseBody>(

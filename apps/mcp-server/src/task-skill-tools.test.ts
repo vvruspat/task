@@ -19,6 +19,7 @@ import type {
 import {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
+  parseTaskSkillArchiveToolInput,
   parseTaskSkillCreateToolInput,
   parseTaskSkillGetToolInput,
   parseTaskSkillSearchToolInput,
@@ -149,6 +150,21 @@ test("parseTaskSkillSearchToolInput validates and normalizes search payloads", (
 test("parseTaskSkillGetToolInput validates skill identifiers", () => {
   assert.deepEqual(
     parseTaskSkillGetToolInput({
+      workspaceId,
+      taskSkillId,
+      userId,
+    }),
+    {
+      workspaceId,
+      taskSkillId,
+      userId,
+    },
+  );
+});
+
+test("parseTaskSkillArchiveToolInput validates skill identifiers", () => {
+  assert.deepEqual(
+    parseTaskSkillArchiveToolInput({
       workspaceId,
       taskSkillId,
       userId,
@@ -365,6 +381,23 @@ test("task skill create handler forwards payloads to the backend client", async 
   ]);
 });
 
+test("task skill archive handler forwards identifiers to the backend client", async () => {
+  const calls: Array<{ workspaceId: string; taskSkillId: string; userId: string }> = [];
+  const archivedTaskSkill: TaskSkillDetailResponse = {
+    ...taskSkillDetail,
+    archivedAt: timestamp,
+  };
+  const handlers = createTaskSkillToolHandlers(
+    createBackendClientStub([], {
+      archiveTaskSkillCalls: calls,
+      taskSkillDetailResponse: archivedTaskSkill,
+    }),
+  );
+
+  assert.deepEqual(await handlers.archive({ workspaceId, taskSkillId, userId }), archivedTaskSkill);
+  assert.deepEqual(calls, [{ workspaceId, taskSkillId, userId }]);
+});
+
 test("task skill update metadata handler forwards payloads to the backend client", async () => {
   const calls: UpdateTaskSkillMetadataRequest[] = [];
   const handlers = createTaskSkillToolHandlers(
@@ -482,11 +515,13 @@ test("task skill tool handlers forward apply inputs to the backend client", asyn
 function createBackendClientStub(
   calls: TaskSkillApplyRequest[],
   options: {
+    archiveTaskSkillCalls?: Array<{ workspaceId: string; taskSkillId: string; userId: string }>;
     createTaskSkillCalls?: CreateTaskSkillRequest[];
     getTaskSkillCalls?: Array<{ workspaceId: string; taskSkillId: string; userId: string }>;
     listTaskSkillCalls?: Array<{ workspaceId: string; userId: string }>;
     updateTaskSkillMetadataCalls?: UpdateTaskSkillMetadataRequest[];
     updateTaskSkillDefinitionCalls?: UpdateTaskSkillDefinitionRequest[];
+    taskSkillDetailResponse?: TaskSkillDetailResponse;
     taskSkills?: TaskSkillSummaryResponse[];
   } = {},
 ): TaskBackendClient {
@@ -526,22 +561,27 @@ function createBackendClientStub(
     getTaskSkill: async (request): Promise<TaskSkillDetailResponse> => {
       options.getTaskSkillCalls?.push(request);
 
-      return taskSkillDetail;
+      return options.taskSkillDetailResponse ?? taskSkillDetail;
     },
     createTaskSkill: async (request): Promise<TaskSkillDetailResponse> => {
       options.createTaskSkillCalls?.push(request);
 
-      return taskSkillDetail;
+      return options.taskSkillDetailResponse ?? taskSkillDetail;
+    },
+    archiveTaskSkill: async (request): Promise<TaskSkillDetailResponse> => {
+      options.archiveTaskSkillCalls?.push(request);
+
+      return options.taskSkillDetailResponse ?? taskSkillDetail;
     },
     updateTaskSkillMetadata: async (request): Promise<TaskSkillDetailResponse> => {
       options.updateTaskSkillMetadataCalls?.push(request);
 
-      return taskSkillDetail;
+      return options.taskSkillDetailResponse ?? taskSkillDetail;
     },
     updateTaskSkillDefinition: async (request): Promise<TaskSkillDetailResponse> => {
       options.updateTaskSkillDefinitionCalls?.push(request);
 
-      return taskSkillDetail;
+      return options.taskSkillDetailResponse ?? taskSkillDetail;
     },
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");

@@ -365,6 +365,34 @@ test("createTaskSkill posts typed payloads with trusted user context", async () 
   assert.deepEqual(response, taskSkillDetail);
 });
 
+test("archiveTaskSkill deletes one active skill with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const archivedTaskSkill: TaskSkillDetailResponse = {
+    ...taskSkillDetail,
+    archivedAt: timestamp,
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, archivedTaskSkill);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.archiveTaskSkill({
+    workspaceId,
+    taskSkillId,
+    userId,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/task-skills/${taskSkillId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "DELETE");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, archivedTaskSkill);
+});
+
 test("updateTaskSkillMetadata patches typed payloads with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const updatedTaskSkill: TaskSkillDetailResponse = {

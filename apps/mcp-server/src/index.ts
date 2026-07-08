@@ -12,6 +12,8 @@ export {
 
 export {
   type ApplyTaskSkillResponse,
+  type ArchiveTaskSkillRequest,
+  type ArchiveTaskSkillResponse,
   type CancelConfirmationRequestRequest,
   type ConfirmationRequestDetailResponse,
   type ConfirmationRequestSummaryResponse,
@@ -155,12 +157,14 @@ export {
 export {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
+  parseTaskSkillArchiveToolInput,
   parseTaskSkillCreateToolInput,
   parseTaskSkillGetToolInput,
   parseTaskSkillSearchToolInput,
   parseTaskSkillUpdateDefinitionToolInput,
   parseTaskSkillUpdateMetadataToolInput,
   type TaskSkillApplyToolInput,
+  type TaskSkillArchiveToolInput,
   type TaskSkillCreateToolInput,
   type TaskSkillGetToolInput,
   type TaskSkillSearchToolInput,
