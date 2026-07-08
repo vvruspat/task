@@ -3,6 +3,8 @@ import type {
   PreviewTaskSkillApplyInput,
   PreviewTaskSkillApplyResponse,
   TaskBackendClient,
+  TaskSkillDetailResponse,
+  TaskSkillSummaryResponse,
 } from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -19,7 +21,21 @@ export type TaskSkillApplyToolInput = {
   };
 };
 
+export type TaskSkillSearchToolInput = {
+  workspaceId: string;
+  userId: string;
+  query?: string;
+};
+
+export type TaskSkillGetToolInput = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+};
+
 export type TaskSkillToolHandlers = {
+  search(input: unknown): Promise<TaskSkillSummaryResponse[]>;
+  get(input: unknown): Promise<TaskSkillDetailResponse>;
   previewApply(input: unknown): Promise<PreviewTaskSkillApplyResponse>;
   apply(input: unknown): Promise<ApplyTaskSkillResponse>;
 };
@@ -33,6 +49,36 @@ export class TaskSkillToolInputError extends Error {
 
 export function createTaskSkillToolHandlers(client: TaskBackendClient): TaskSkillToolHandlers {
   return {
+    search: async (input) => {
+      const parsedInput = parseTaskSkillSearchToolInput(input);
+      const skills = await client.listTaskSkills({
+        workspaceId: parsedInput.workspaceId,
+        userId: parsedInput.userId,
+      });
+
+      if (parsedInput.query === undefined) {
+        return skills;
+      }
+
+      const normalizedQuery = normalizeSearchText(parsedInput.query);
+
+      return skills.filter((skill) => {
+        if (normalizeSearchText(skill.name).includes(normalizedQuery)) {
+          return true;
+        }
+
+        return skill.aliases.some((alias) => normalizeSearchText(alias).includes(normalizedQuery));
+      });
+    },
+    get: (input) => {
+      const parsedInput = parseTaskSkillGetToolInput(input);
+
+      return client.getTaskSkill({
+        workspaceId: parsedInput.workspaceId,
+        taskSkillId: parsedInput.taskSkillId,
+        userId: parsedInput.userId,
+      });
+    },
     previewApply: (input) => {
       const parsedInput = parseTaskSkillApplyToolInput(input);
 
@@ -43,6 +89,31 @@ export function createTaskSkillToolHandlers(client: TaskBackendClient): TaskSkil
 
       return client.applyTaskSkill(toBackendRequest(parsedInput));
     },
+  };
+}
+
+export function parseTaskSkillSearchToolInput(input: unknown): TaskSkillSearchToolInput {
+  const record = readRecord(input, "task skill search tool input");
+  const parsedInput: TaskSkillSearchToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+  const query = readOptionalNonEmptyString(record, "query");
+
+  if (query !== undefined) {
+    parsedInput.query = query;
+  }
+
+  return parsedInput;
+}
+
+export function parseTaskSkillGetToolInput(input: unknown): TaskSkillGetToolInput {
+  const record = readRecord(input, "task skill get tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    taskSkillId: readRequiredUuid(record, "taskSkillId"),
+    userId: readRequiredUuid(record, "userId"),
   };
 }
 
@@ -123,6 +194,23 @@ function readRequiredNonEmptyString(record: Record<string, unknown>, propertyNam
   }
 
   return trimmedValue;
+}
+
+function readOptionalNonEmptyString(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | undefined {
+  const value = record[propertyName];
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return readRequiredNonEmptyString(record, propertyName);
+}
+
+function normalizeSearchText(value: string): string {
+  return value.trim().toLocaleLowerCase();
 }
 
 function readOptionalOverrides(

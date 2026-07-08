@@ -6,6 +6,8 @@ type ListWorkspacesOperation = operations["WorkspacesController_listWorkspaces"]
 type GetWorkspaceOperation = operations["WorkspacesController_getWorkspace"];
 type ListWorkspaceMembersOperation = operations["WorkspacesController_listMembers"];
 type ListWorkspaceStatusesOperation = operations["StatusesController_listStatuses"];
+type ListActiveTaskSkillsOperation = operations["TaskSkillsController_listActiveTaskSkills"];
+type GetTaskSkillOperation = operations["TaskSkillsController_getTaskSkill"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
 type GetProjectOperation = operations["ProjectsController_getProject"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
@@ -35,6 +37,10 @@ export type WorkspaceMemberResponse =
   ListWorkspaceMembersOperation["responses"]["200"]["content"]["application/json"][number];
 export type WorkspaceStatusResponse =
   ListWorkspaceStatusesOperation["responses"]["200"]["content"]["application/json"][number];
+export type TaskSkillSummaryResponse =
+  ListActiveTaskSkillsOperation["responses"]["200"]["content"]["application/json"][number];
+export type TaskSkillDetailResponse =
+  GetTaskSkillOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTaskCommentInput =
   CreateTaskCommentOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskLinkAttachmentInput =
@@ -136,6 +142,17 @@ export type ListWorkspaceMembersRequest = {
   userId: string;
 };
 
+export type ListTaskSkillsRequest = {
+  workspaceId: string;
+  userId: string;
+};
+
+export type GetTaskSkillRequest = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+};
+
 export type GetProjectRequest = {
   workspaceId: string;
   projectId: string;
@@ -227,6 +244,8 @@ export type TaskBackendClient = {
   getWorkspace(request: GetWorkspaceRequest): Promise<WorkspaceDetailResponse>;
   listWorkspaceMembers(request: ListWorkspaceMembersRequest): Promise<WorkspaceMemberResponse[]>;
   listWorkspaceStatuses(request: ListWorkspaceStatusesRequest): Promise<WorkspaceStatusResponse[]>;
+  listTaskSkills(request: ListTaskSkillsRequest): Promise<TaskSkillSummaryResponse[]>;
+  getTaskSkill(request: GetTaskSkillRequest): Promise<TaskSkillDetailResponse>;
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
@@ -294,6 +313,22 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildWorkspaceStatusesPath(request.workspaceId),
         request.userId,
         readWorkspaceStatusList,
+      ),
+    listTaskSkills: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSkillsPath(request.workspaceId),
+        request.userId,
+        readTaskSkillSummaryList,
+      ),
+    getTaskSkill: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSkillPath(request.workspaceId, request.taskSkillId),
+        request.userId,
+        readTaskSkillDetail,
       ),
     listActiveProjects: (request) =>
       getJson(
@@ -549,6 +584,14 @@ function buildTaskSkillApplyPath(
   return `/workspaces/${encodeURIComponent(workspaceId)}/task-skills/${encodeURIComponent(taskSkillId)}/${action}`;
 }
 
+function buildTaskSkillsPath(workspaceId: string): string {
+  return `${buildWorkspacePath(workspaceId)}/task-skills`;
+}
+
+function buildTaskSkillPath(workspaceId: string, taskSkillId: string): string {
+  return `${buildTaskSkillsPath(workspaceId)}/${encodeURIComponent(taskSkillId)}`;
+}
+
 function buildWorkspacesPath(): string {
   return "/workspaces";
 }
@@ -653,6 +696,14 @@ function readWorkspaceStatusList(value: unknown): WorkspaceStatusResponse[] {
   return value.map(readWorkspaceStatus);
 }
 
+function readTaskSkillSummaryList(value: unknown): TaskSkillSummaryResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("task skill summary list must be an array.");
+  }
+
+  return value.map(readTaskSkillSummary);
+}
+
 function readTaskSummaryList(value: unknown): TaskSummaryResponse[] {
   if (!Array.isArray(value)) {
     throw new Error("task summary list must be an array.");
@@ -731,6 +782,45 @@ function readWorkspaceStatus(value: unknown): WorkspaceStatusResponse {
     isDone: readBoolean(record, "isDone"),
     createdAt: readString(record, "createdAt"),
     updatedAt: readString(record, "updatedAt"),
+  };
+}
+
+function readTaskSkillSummary(value: unknown): TaskSkillSummaryResponse {
+  const record = readRecord(value, "task skill summary");
+
+  return {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    name: readString(record, "name"),
+    description: readOptionalNullableString(record, "description") ?? null,
+    aliases: readArray(record, "aliases").map(readStringValue),
+    createdByUserId: readString(record, "createdByUserId"),
+    archivedAt: readOptionalNullableString(record, "archivedAt") ?? null,
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
+}
+
+function readTaskSkillDetail(value: unknown): TaskSkillDetailResponse {
+  const record = readRecord(value, "task skill detail");
+
+  return {
+    ...readTaskSkillSummary(record),
+    versions: readArray(record, "versions").map(readTaskSkillVersionSummary),
+  };
+}
+
+function readTaskSkillVersionSummary(value: unknown): TaskSkillDetailResponse["versions"][number] {
+  const record = readRecord(value, "task skill version summary");
+
+  return {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    taskSkillId: readString(record, "taskSkillId"),
+    version: readNumber(record, "version"),
+    definition: readRecord(readProperty(record, "definition"), "task skill definition"),
+    createdByUserId: readString(record, "createdByUserId"),
+    createdAt: readString(record, "createdAt"),
   };
 }
 
@@ -1003,6 +1093,14 @@ function readString(record: Record<string, unknown>, propertyName: string): stri
 
   if (typeof value !== "string") {
     throw new Error(`${propertyName} must be a string.`);
+  }
+
+  return value;
+}
+
+function readStringValue(value: unknown): string {
+  if (typeof value !== "string") {
+    throw new Error("value must be a string.");
   }
 
   return value;

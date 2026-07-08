@@ -35,6 +35,18 @@ const taskSkillApplyInputSchema = {
     .optional(),
 };
 
+const taskSkillSearchInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+  query: z.string().min(1).optional(),
+};
+
+const taskSkillGetInputSchema = {
+  workspaceId: z.string().uuid(),
+  taskSkillId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
+
 const projectSearchInputSchema = {
   workspaceId: z.string().uuid(),
   userId: z.string().uuid(),
@@ -143,6 +155,8 @@ const taskSetDueDateInputSchema = {
 };
 
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
+type TaskSkillSearchMcpArgs = z.output<z.ZodObject<typeof taskSkillSearchInputSchema>>;
+type TaskSkillGetMcpArgs = z.output<z.ZodObject<typeof taskSkillGetInputSchema>>;
 type WorkspaceGetCurrentMcpArgs = z.output<z.ZodObject<typeof workspaceGetCurrentInputSchema>>;
 type WorkspaceMemberListMcpArgs = z.output<z.ZodObject<typeof workspaceMemberListInputSchema>>;
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
@@ -162,6 +176,8 @@ type TaskSetDueDateMcpArgs = z.output<z.ZodObject<typeof taskSetDueDateInputSche
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
+    | TaskSkillSearchMcpArgs
+    | TaskSkillGetMcpArgs
     | WorkspaceGetCurrentMcpArgs
     | WorkspaceMemberListMcpArgs
     | StatusListMcpArgs
@@ -188,6 +204,8 @@ export type TaskMcpToolRegistrar = {
       description: string;
       inputSchema:
         | typeof taskSkillApplyInputSchema
+        | typeof taskSkillSearchInputSchema
+        | typeof taskSkillGetInputSchema
         | typeof workspaceGetCurrentInputSchema
         | typeof workspaceMemberListInputSchema
         | typeof statusListInputSchema
@@ -428,6 +446,26 @@ export function registerTaskSkillApplyTools(
   registrar: TaskMcpToolRegistrar,
   handlers: TaskSkillToolHandlers,
 ): void {
+  registrar.registerTool(
+    "skill.search",
+    {
+      title: "Search task skills",
+      description: "Search active task skills in a visible workspace by name or alias.",
+      inputSchema: taskSkillSearchInputSchema,
+    },
+    async (input) => toToolResult(await handlers.search(input)),
+  );
+
+  registrar.registerTool(
+    "skill.get",
+    {
+      title: "Get task skill",
+      description: "Get one visible task skill with versions.",
+      inputSchema: taskSkillGetInputSchema,
+    },
+    async (input) => toToolResult(await handlers.get(input)),
+  );
+
   registrar.registerTool(
     "skill.preview_apply",
     {

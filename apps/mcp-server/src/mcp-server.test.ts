@@ -17,6 +17,8 @@ import type {
   TaskCommentResponse,
   TaskDetailResponse,
   TaskSkillApplyRequest,
+  TaskSkillDetailResponse,
+  TaskSkillSummaryResponse,
   TaskSummaryResponse,
   UpdateTaskAssigneeRequest,
   UpdateTaskDueDateRequest,
@@ -143,6 +145,35 @@ const statusResponse: WorkspaceStatusResponse = {
   isDone: false,
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const taskSkillResponse: TaskSkillSummaryResponse = {
+  id: taskSkillId,
+  workspaceId,
+  name: "Song",
+  description: "Song production template",
+  aliases: ["track"],
+  createdByUserId: userId,
+  archivedAt: null,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const taskSkillDetailResponse: TaskSkillDetailResponse = {
+  ...taskSkillResponse,
+  versions: [
+    {
+      id: taskSkillVersionId,
+      workspaceId,
+      taskSkillId,
+      version: 1,
+      definition: {
+        subtasks: [{ title: "Lyrics" }],
+      },
+      createdByUserId: userId,
+      createdAt: timestamp,
+    },
+  ],
 };
 
 const commentResponse: TaskCommentResponse = {
@@ -767,6 +798,22 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
   const registrar = createRegistrar(toolCalls);
 
   registerTaskSkillApplyTools(registrar, {
+    search: async (input: unknown): Promise<TaskSkillSummaryResponse[]> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        userId,
+        query: "song",
+      });
+      return [taskSkillResponse];
+    },
+    get: async (input: unknown): Promise<TaskSkillDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        taskSkillId,
+        userId,
+      });
+      return taskSkillDetailResponse;
+    },
     previewApply: async (input: unknown): Promise<PreviewTaskSkillApplyResponse> => {
       backendCalls.push(readBackendRequestInput(input));
       return previewResponse;
@@ -779,14 +826,36 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["skill.preview_apply", "skill.apply"],
+    ["skill.search", "skill.get", "skill.preview_apply", "skill.apply"],
   );
-  assert.equal(toolCalls[0]?.config.title, "Preview task skill application");
-  assert.equal(toolCalls[1]?.config.title, "Apply task skill");
+  assert.equal(toolCalls[0]?.config.title, "Search task skills");
+  assert.equal(toolCalls[1]?.config.title, "Get task skill");
+  assert.equal(toolCalls[2]?.config.title, "Preview task skill application");
+  assert.equal(toolCalls[3]?.config.title, "Apply task skill");
 
   const previewCall = toolCalls[0];
   assert.ok(previewCall !== undefined);
-  const previewResult = await previewCall.callback(toolInput);
+  const searchResult = await previewCall.callback({
+    workspaceId,
+    userId,
+    query: "song",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(searchResult)), [taskSkillResponse]);
+
+  const getCall = toolCalls[1];
+  assert.ok(getCall !== undefined);
+  const getResult = await getCall.callback({
+    workspaceId,
+    taskSkillId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(getResult)), taskSkillDetailResponse);
+
+  const previewApplyCall = toolCalls[2];
+  assert.ok(previewApplyCall !== undefined);
+  const previewResult = await previewApplyCall.callback(toolInput);
 
   assert.deepEqual(JSON.parse(readTextResult(previewResult)), previewResponse);
   assert.deepEqual(backendCalls[0], {
@@ -799,7 +868,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     },
   });
 
-  const applyCall = toolCalls[1];
+  const applyCall = toolCalls[3];
   assert.ok(applyCall !== undefined);
   const applyResult = await applyCall.callback(toolInput);
 
@@ -837,6 +906,8 @@ function createBackendClientStub(): TaskBackendClient {
     getWorkspace: async (): Promise<WorkspaceDetailResponse> => workspaceDetailResponse,
     listWorkspaceMembers: async (): Promise<WorkspaceMemberResponse[]> => [workspaceMemberResponse],
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => [statusResponse],
+    listTaskSkills: async (): Promise<TaskSkillSummaryResponse[]> => [taskSkillResponse],
+    getTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],
     createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],
