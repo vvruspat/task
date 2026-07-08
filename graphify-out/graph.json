@@ -240,7 +240,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_contracts",
-      "community": 103,
+      "community": 55,
       "norm_label": "agent.contracts.ts"
     },
     {
@@ -270,7 +270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller_test",
-      "community": 103,
+      "community": 55,
       "norm_label": "agent.controller.test.ts"
     },
     {
@@ -330,7 +330,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "agent_agent_controller_test_staticagentruntime",
-      "community": 103,
+      "community": 79,
       "norm_label": "staticagentruntime"
     },
     {
@@ -350,7 +350,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "agent_agent_controller_test_agentruntimeresult",
-      "community": 103,
+      "community": 55,
       "norm_label": "agentruntimeresult"
     },
     {
@@ -360,7 +360,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "agent_agent_controller_test_persistedagentrun",
-      "community": 103,
+      "community": 55,
       "norm_label": "persistedagentrun"
     },
     {
@@ -370,7 +370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller",
-      "community": 103,
+      "community": 55,
       "norm_label": "agent.controller.ts"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "agent_agent_dto_createtelegramagentrundto",
-      "community": 8,
+      "community": 55,
       "norm_label": "createtelegramagentrundto"
     },
     {
@@ -720,7 +720,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "agent_agent_runtime_agentruntimetoken",
-      "community": 82,
+      "community": 103,
       "norm_label": "agentruntimetoken"
     },
     {
@@ -760,7 +760,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "agent_agent_runtime_agentruntime",
-      "community": 103,
+      "community": 79,
       "norm_label": "agentruntime"
     },
     {
@@ -1060,7 +1060,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service_test",
-      "community": 79,
+      "community": 55,
       "norm_label": "agent.service.test.ts"
     },
     {
@@ -1070,7 +1070,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "agent_agent_service_test_input",
-      "community": 79,
+      "community": 55,
       "norm_label": "input"
     },
     {
@@ -1160,7 +1160,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "agent_agent_service_test_persistedagentrun",
-      "community": 79,
+      "community": 55,
       "norm_label": "persistedagentrun"
     },
     {
@@ -1170,7 +1170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service",
-      "community": 103,
+      "community": 55,
       "norm_label": "agent.service.ts"
     },
     {
@@ -1180,7 +1180,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice",
-      "community": 103,
+      "community": 55,
       "norm_label": "agentservice"
     },
     {
@@ -1190,7 +1190,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice_constructor",
-      "community": 103,
+      "community": 79,
       "norm_label": ".constructor()"
     },
     {
@@ -1200,7 +1200,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice_createtelegramrun",
-      "community": 103,
+      "community": 55,
       "norm_label": ".createtelegramrun()"
     },
     {
@@ -1210,7 +1210,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "agent_agent_service_mapagentruntointakeresponse",
-      "community": 103,
+      "community": 55,
       "norm_label": "mapagentruntointakeresponse()"
     },
     {
@@ -1220,7 +1220,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_store",
-      "community": 103,
+      "community": 55,
       "norm_label": "agent.store.ts"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "agent_agent_store_agentrunstore",
-      "community": 103,
+      "community": 55,
       "norm_label": "agentrunstore"
     },
     {
@@ -1270,7 +1270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store",
-      "community": 103,
+      "community": 55,
       "norm_label": "typeorm-agent-run.store.ts"
     },
     {
@@ -1280,7 +1280,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore",
-      "community": 55,
+      "community": 81,
       "norm_label": "typeormagentrunstore"
     },
     {
@@ -1290,7 +1290,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_constructor",
-      "community": 55,
+      "community": 81,
       "norm_label": ".constructor()"
     },
     {
@@ -1300,7 +1300,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_resolvetelegramruncontext",
-      "community": 55,
+      "community": 81,
       "norm_label": ".resolvetelegramruncontext()"
     },
     {
@@ -1310,7 +1310,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_findtelegramrunbysource",
-      "community": 55,
+      "community": 81,
       "norm_label": ".findtelegramrunbysource()"
     },
     {
@@ -1320,7 +1320,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_createtelegramrun",
-      "community": 55,
+      "community": 81,
       "norm_label": ".createtelegramrun()"
     },
     {
@@ -1330,7 +1330,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_getinitializeddatasource",
-      "community": 55,
+      "community": 81,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "attachments_attachments_contracts",
-      "community": 50,
+      "community": 94,
       "norm_label": "attachments.contracts.ts"
     },
     {
@@ -1920,7 +1920,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_constructor",
-      "community": 63,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -2470,7 +2470,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 63,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 63,
+      "community": 46,
       "norm_label": "database.module.ts"
     },
     {
@@ -2810,7 +2810,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 63,
+      "community": 46,
       "norm_label": "apidatasource"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 63,
+      "community": 46,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -2840,7 +2840,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 63,
+      "community": 46,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -2850,7 +2850,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 63,
+      "community": 46,
       "norm_label": ".getdatasource()"
     },
     {
@@ -2860,7 +2860,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 63,
+      "community": 46,
       "norm_label": "databasemodule"
     },
     {
@@ -2950,7 +2950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_agent_run_entity",
-      "community": 50,
+      "community": 86,
       "norm_label": "agent-run.entity.ts"
     },
     {
@@ -2960,7 +2960,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "entities_agent_run_entity_agentrunentity",
-      "community": 50,
+      "community": 86,
       "norm_label": "agentrunentity"
     },
     {
@@ -2970,7 +2970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_agent_tool_call_entity",
-      "community": 81,
+      "community": 50,
       "norm_label": "agent-tool-call.entity.ts"
     },
     {
@@ -2980,7 +2980,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "entities_agent_tool_call_entity_agenttoolcallentity",
-      "community": 81,
+      "community": 50,
       "norm_label": "agenttoolcallentity"
     },
     {
@@ -3370,7 +3370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table",
-      "community": 86,
+      "community": 73,
       "norm_label": "1783296060000-create-projects-table.ts"
     },
     {
@@ -3380,7 +3380,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
-      "community": 86,
+      "community": 73,
       "norm_label": "createprojectstablesql"
     },
     {
@@ -3390,7 +3390,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
-      "community": 86,
+      "community": 73,
       "norm_label": "dropprojectstablesql"
     },
     {
@@ -3550,7 +3550,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table",
-      "community": 104,
+      "community": 73,
       "norm_label": "1783296240000-create-comments-table.ts"
     },
     {
@@ -3560,7 +3560,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstablesql",
-      "community": 104,
+      "community": 73,
       "norm_label": "createcommentstablesql"
     },
     {
@@ -3570,7 +3570,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_dropcommentstablesql",
-      "community": 104,
+      "community": 73,
       "norm_label": "dropcommentstablesql"
     },
     {
@@ -3790,7 +3790,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table",
-      "community": 93,
+      "community": 73,
       "norm_label": "1783296480000-create-confirmation-requests-table.ts"
     },
     {
@@ -3800,7 +3800,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "community": 93,
+      "community": 73,
       "norm_label": "createconfirmationrequeststablesql"
     },
     {
@@ -3810,7 +3810,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "community": 93,
+      "community": 73,
       "norm_label": "dropconfirmationrequeststablesql"
     },
     {
@@ -3910,7 +3910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table",
-      "community": 73,
+      "community": 93,
       "norm_label": "1783296600000-create-invites-table.ts"
     },
     {
@@ -3920,7 +3920,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestablesql",
-      "community": 73,
+      "community": 93,
       "norm_label": "createinvitestablesql"
     },
     {
@@ -3930,7 +3930,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_dropinvitestablesql",
-      "community": 73,
+      "community": 93,
       "norm_label": "dropinvitestablesql"
     },
     {
@@ -3970,7 +3970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id",
-      "community": 73,
+      "community": 99,
       "norm_label": "1783296660000-add-agent-run-source-thread-id.ts"
     },
     {
@@ -3980,7 +3980,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadidsql",
-      "community": 73,
+      "community": 99,
       "norm_label": "addagentrunsourcethreadidsql"
     },
     {
@@ -3990,7 +3990,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_dropagentrunsourcethreadidsql",
-      "community": 73,
+      "community": 99,
       "norm_label": "dropagentrunsourcethreadidsql"
     },
     {
@@ -4030,7 +4030,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_add_agent_run_source_thread_id_test",
-      "community": 73,
+      "community": 99,
       "norm_label": "add-agent-run-source-thread-id.test.ts"
     },
     {
@@ -4070,7 +4070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_comments_table_test",
-      "community": 104,
+      "community": 73,
       "norm_label": "create-comments-table.test.ts"
     },
     {
@@ -4080,7 +4080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_confirmation_requests_table_test",
-      "community": 93,
+      "community": 73,
       "norm_label": "create-confirmation-requests-table.test.ts"
     },
     {
@@ -4120,7 +4120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_invites_table_test",
-      "community": 73,
+      "community": 93,
       "norm_label": "create-invites-table.test.ts"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_projects_table_test",
-      "community": 86,
+      "community": 73,
       "norm_label": "create-projects-table.test.ts"
     },
     {
@@ -4320,7 +4320,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunsource",
-      "community": 50,
+      "community": 86,
       "norm_label": "agentrunsource"
     },
     {
@@ -4340,7 +4340,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunrecord",
-      "community": 50,
+      "community": 86,
       "norm_label": "agentrunrecord"
     },
     {
@@ -4350,7 +4350,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "types_core_persistence_types_agenttoolcallstatus",
-      "community": 81,
+      "community": 50,
       "norm_label": "agenttoolcallstatus"
     },
     {
@@ -4360,7 +4360,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "types_core_persistence_types_agenttoolcallrecord",
-      "community": 81,
+      "community": 50,
       "norm_label": "agenttoolcallrecord"
     },
     {
@@ -4870,7 +4870,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 63,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -6450,7 +6450,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
-      "community": 63,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -7350,7 +7350,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 63,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -7890,7 +7890,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 63,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -15407,7 +15407,7 @@
       "label": "ShellStatePanel()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/App.tsx",
-      "source_location": "L449",
+      "source_location": "L450",
       "_origin": "ast",
       "id": "ui_app_shellstatepanel",
       "community": 100,
@@ -15417,7 +15417,7 @@
       "label": "readErrorMessage()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/App.tsx",
-      "source_location": "L473",
+      "source_location": "L474",
       "_origin": "ast",
       "id": "ui_app_readerrormessage",
       "community": 100,
@@ -15507,7 +15507,7 @@
       "label": "ProjectSummary",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
-      "source_location": "L15",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "views_workspaceview_test_projectsummary",
       "community": 83,
@@ -15517,7 +15517,7 @@
       "label": "TaskSkillSummary",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
-      "source_location": "L16",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "views_workspaceview_test_taskskillsummary",
       "community": 83,
@@ -15527,11 +15527,21 @@
       "label": "TaskSummary",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
-      "source_location": "L17",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "views_workspaceview_test_tasksummary",
       "community": 83,
       "norm_label": "tasksummary"
+    },
+    {
+      "label": "WorkspaceStatus",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "views_workspaceview_test_workspacestatus",
+      "community": 83,
+      "norm_label": "workspacestatus"
     },
     {
       "label": "WorkspaceView.tsx",
@@ -15574,10 +15584,20 @@
       "norm_label": "taskskillsummary"
     },
     {
+      "label": "WorkspaceStatus",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "views_workspaceview_workspacestatus",
+      "community": 83,
+      "norm_label": "workspacestatus"
+    },
+    {
       "label": "IconComponent",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L8",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "views_workspaceview_iconcomponent",
       "community": 83,
@@ -15587,7 +15607,7 @@
       "label": "WorkspaceViewProps",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "views_workspaceview_workspaceviewprops",
       "community": 83,
@@ -15597,7 +15617,7 @@
       "label": "WorkspaceView()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "views_workspaceview_workspaceview",
       "community": 83,
@@ -15607,7 +15627,7 @@
       "label": "ProjectOverviewRow",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L101",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "views_workspaceview_projectoverviewrow",
       "community": 83,
@@ -15617,7 +15637,7 @@
       "label": "MyTaskRow",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L112",
+      "source_location": "L119",
       "_origin": "ast",
       "id": "views_workspaceview_mytaskrow",
       "community": 83,
@@ -15627,17 +15647,47 @@
       "label": "MyTaskSummary",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L121",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "views_workspaceview_mytasksummary",
       "community": 83,
       "norm_label": "mytasksummary"
     },
     {
+      "label": "KanbanTaskCard",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L135",
+      "_origin": "ast",
+      "id": "views_workspaceview_kanbantaskcard",
+      "community": 83,
+      "norm_label": "kanbantaskcard"
+    },
+    {
+      "label": "KanbanColumn",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L144",
+      "_origin": "ast",
+      "id": "views_workspaceview_kanbancolumn",
+      "community": 83,
+      "norm_label": "kanbancolumn"
+    },
+    {
+      "label": "KanbanSummary",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L153",
+      "_origin": "ast",
+      "id": "views_workspaceview_kanbansummary",
+      "community": 83,
+      "norm_label": "kanbansummary"
+    },
+    {
       "label": "ProjectOverviewSummary",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L128",
+      "source_location": "L160",
       "_origin": "ast",
       "id": "views_workspaceview_projectoverviewsummary",
       "community": 83,
@@ -15647,7 +15697,7 @@
       "label": "TaskTableRow",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L135",
+      "source_location": "L167",
       "_origin": "ast",
       "id": "views_workspaceview_tasktablerow",
       "community": 83,
@@ -15657,7 +15707,7 @@
       "label": "TaskTableSummary",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L145",
+      "source_location": "L177",
       "_origin": "ast",
       "id": "views_workspaceview_tasktablesummary",
       "community": 83,
@@ -15667,7 +15717,7 @@
       "label": "TemplateSkillRow",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L151",
+      "source_location": "L183",
       "_origin": "ast",
       "id": "views_workspaceview_templateskillrow",
       "community": 83,
@@ -15677,7 +15727,7 @@
       "label": "TemplateSkillSummary",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L159",
+      "source_location": "L191",
       "_origin": "ast",
       "id": "views_workspaceview_templateskillsummary",
       "community": 83,
@@ -15687,7 +15737,7 @@
       "label": "buildMyTaskRows()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L165",
+      "source_location": "L197",
       "_origin": "ast",
       "id": "views_workspaceview_buildmytaskrows",
       "community": 83,
@@ -15697,17 +15747,37 @@
       "label": "buildMyTaskSummary()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L176",
+      "source_location": "L208",
       "_origin": "ast",
       "id": "views_workspaceview_buildmytasksummary",
       "community": 83,
       "norm_label": "buildmytasksummary()"
     },
     {
+      "label": "buildKanbanColumns()",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L217",
+      "_origin": "ast",
+      "id": "views_workspaceview_buildkanbancolumns",
+      "community": 83,
+      "norm_label": "buildkanbancolumns()"
+    },
+    {
+      "label": "buildKanbanSummary()",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L264",
+      "_origin": "ast",
+      "id": "views_workspaceview_buildkanbansummary",
+      "community": 83,
+      "norm_label": "buildkanbansummary()"
+    },
+    {
       "label": "buildProjectOverviewRows()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L185",
+      "source_location": "L286",
       "_origin": "ast",
       "id": "views_workspaceview_buildprojectoverviewrows",
       "community": 83,
@@ -15717,7 +15787,7 @@
       "label": "buildProjectOverviewSummary()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L209",
+      "source_location": "L310",
       "_origin": "ast",
       "id": "views_workspaceview_buildprojectoverviewsummary",
       "community": 83,
@@ -15727,7 +15797,7 @@
       "label": "buildTaskTableRows()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L221",
+      "source_location": "L322",
       "_origin": "ast",
       "id": "views_workspaceview_buildtasktablerows",
       "community": 83,
@@ -15737,7 +15807,7 @@
       "label": "buildTaskTableSummary()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L236",
+      "source_location": "L337",
       "_origin": "ast",
       "id": "views_workspaceview_buildtasktablesummary",
       "community": 83,
@@ -15747,7 +15817,7 @@
       "label": "buildTemplateSkillRows()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L244",
+      "source_location": "L345",
       "_origin": "ast",
       "id": "views_workspaceview_buildtemplateskillrows",
       "community": 83,
@@ -15757,17 +15827,27 @@
       "label": "buildTemplateSkillSummary()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L254",
+      "source_location": "L355",
       "_origin": "ast",
       "id": "views_workspaceview_buildtemplateskillsummary",
       "community": 83,
       "norm_label": "buildtemplateskillsummary()"
     },
     {
+      "label": "KanbanView()",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L364",
+      "_origin": "ast",
+      "id": "views_workspaceview_kanbanview",
+      "community": 83,
+      "norm_label": "kanbanview()"
+    },
+    {
       "label": "ProjectsView()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L263",
+      "source_location": "L447",
       "_origin": "ast",
       "id": "views_workspaceview_projectsview",
       "community": 83,
@@ -15777,7 +15857,7 @@
       "label": "TaskTableView()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L343",
+      "source_location": "L527",
       "_origin": "ast",
       "id": "views_workspaceview_tasktableview",
       "community": 83,
@@ -15787,7 +15867,7 @@
       "label": "TemplatesView()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L412",
+      "source_location": "L596",
       "_origin": "ast",
       "id": "views_workspaceview_templatesview",
       "community": 83,
@@ -15797,7 +15877,7 @@
       "label": "countDueSoonTasks()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L467",
+      "source_location": "L651",
       "_origin": "ast",
       "id": "views_workspaceview_countduesoontasks",
       "community": 83,
@@ -15807,7 +15887,7 @@
       "label": "countRecentlyUpdatedTasks()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L471",
+      "source_location": "L655",
       "_origin": "ast",
       "id": "views_workspaceview_countrecentlyupdatedtasks",
       "community": 83,
@@ -15817,17 +15897,37 @@
       "label": "compareMyTasks()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L486",
+      "source_location": "L670",
       "_origin": "ast",
       "id": "views_workspaceview_comparemytasks",
       "community": 83,
       "norm_label": "comparemytasks()"
     },
     {
+      "label": "buildKanbanTaskCards()",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L685",
+      "_origin": "ast",
+      "id": "views_workspaceview_buildkanbantaskcards",
+      "community": 83,
+      "norm_label": "buildkanbantaskcards()"
+    },
+    {
+      "label": "compareStatusPosition()",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L698",
+      "_origin": "ast",
+      "id": "views_workspaceview_comparestatusposition",
+      "community": 83,
+      "norm_label": "comparestatusposition()"
+    },
+    {
       "label": "formatDateLabel()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L501",
+      "source_location": "L705",
       "_origin": "ast",
       "id": "views_workspaceview_formatdatelabel",
       "community": 83,
@@ -15837,7 +15937,7 @@
       "label": "formatOptionalDateLabel()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L505",
+      "source_location": "L709",
       "_origin": "ast",
       "id": "views_workspaceview_formatoptionaldatelabel",
       "community": 83,
@@ -15847,7 +15947,7 @@
       "label": "maxIsoTimestamp()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L509",
+      "source_location": "L713",
       "_origin": "ast",
       "id": "views_workspaceview_maxisotimestamp",
       "community": 83,
@@ -15857,7 +15957,7 @@
       "label": "readParentTaskLabel()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L513",
+      "source_location": "L717",
       "_origin": "ast",
       "id": "views_workspaceview_readparenttasklabel",
       "community": 83,
@@ -15867,7 +15967,7 @@
       "label": "hasDateValue()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L521",
+      "source_location": "L725",
       "_origin": "ast",
       "id": "views_workspaceview_hasdatevalue",
       "community": 83,
@@ -15877,17 +15977,27 @@
       "label": "hasTextValue()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L525",
+      "source_location": "L729",
       "_origin": "ast",
       "id": "views_workspaceview_hastextvalue",
       "community": 83,
       "norm_label": "hastextvalue()"
     },
     {
+      "label": "hasStatusValue()",
+      "file_type": "code",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L733",
+      "_origin": "ast",
+      "id": "views_workspaceview_hasstatusvalue",
+      "community": 83,
+      "norm_label": "hasstatusvalue()"
+    },
+    {
       "label": "isTaskUnassigned()",
       "file_type": "code",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
-      "source_location": "L529",
+      "source_location": "L737",
       "_origin": "ast",
       "id": "views_workspaceview_istaskunassigned",
       "community": 83,
@@ -61788,6 +61898,28 @@
       "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "source": "views_workspaceview_test",
+      "target": "views_workspaceview_buildkanbancolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "views_workspaceview_test",
+      "target": "views_workspaceview_buildkanbansummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "views_workspaceview_test",
       "target": "views_workspaceview_buildmytaskrows"
@@ -61900,6 +62032,16 @@
       "target": "views_workspaceview_test_tasksummary"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.test.tsx",
+      "source_location": "L439",
+      "weight": 1.0,
+      "source": "views_workspaceview_test",
+      "target": "views_workspaceview_test_workspacestatus",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -61909,6 +62051,36 @@
       "confidence_score": 1.0,
       "source": "views_workspaceview",
       "target": "generated_openapi_components"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L217",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_buildkanbancolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L264",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_buildkanbansummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L685",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_buildkanbantaskcards",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -62004,6 +62176,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L698",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_comparestatusposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
       "source_location": "L226",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -62054,6 +62236,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L733",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_hasstatusvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
       "source_location": "L459",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -62079,6 +62271,46 @@
       "confidence_score": 1.0,
       "source": "views_workspaceview",
       "target": "views_workspaceview_istaskunassigned"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L144",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_kanbancolumn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_kanbansummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_kanbantaskcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L364",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_kanbanview",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -62244,6 +62476,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "views_workspaceview",
+      "target": "views_workspaceview_workspacestatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
       "source_location": "L21",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -62270,6 +62512,39 @@
       "confidence_score": 1.0,
       "source": "views_workspaceview_buildmytasksummary",
       "target": "views_workspaceview_countrecentlyupdatedtasks"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L248",
+      "weight": 1.0,
+      "source": "views_workspaceview_buildkanbancolumns",
+      "target": "views_workspaceview_buildkanbantaskcards",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L373",
+      "weight": 1.0,
+      "source": "views_workspaceview_kanbanview",
+      "target": "views_workspaceview_buildkanbancolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/ui/views/WorkspaceView.tsx",
+      "source_location": "L374",
+      "weight": 1.0,
+      "source": "views_workspaceview_kanbanview",
+      "target": "views_workspaceview_buildkanbansummary",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -68086,5 +68361,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d8d27a3f72c73e4fcedf601996dfffb7504925e3"
+  "built_at_commit": "cfb8251c054ad151baeae1714dd7fb6db1229aee"
 }

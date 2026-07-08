@@ -464,6 +464,96 @@ h1 {
   color: #59645e;
 }
 
+.kanban-board {
+  display: grid;
+  grid-auto-columns: minmax(230px, 1fr);
+  grid-auto-flow: column;
+  gap: 12px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.kanban-column {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #d8d1c4;
+  border-radius: 8px;
+  background: #f8f5ef;
+}
+
+.kanban-column-header {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.kanban-column-header span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.kanban-column-header h4 {
+  overflow: hidden;
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kanban-column-header strong {
+  color: #59645e;
+  font-size: 0.82rem;
+}
+
+.kanban-card-list {
+  display: grid;
+  gap: 10px;
+}
+
+.kanban-card {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #ece6dc;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.kanban-card h5 {
+  overflow: hidden;
+  margin-bottom: 4px;
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kanban-card p {
+  overflow: hidden;
+  margin-bottom: 10px;
+  color: #59645e;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kanban-card div {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.kanban-card span,
+.kanban-card time {
+  overflow: hidden;
+  color: #2d3a33;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .template-skill-list {
   display: grid;
 }
@@ -663,6 +753,12 @@ h1 {
 
   .my-task-row time {
     justify-self: start;
+  }
+
+  .kanban-board {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+    overflow-x: visible;
   }
 
   .template-skill-row {

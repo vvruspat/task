@@ -4,6 +4,7 @@ import type { ComponentType, ReactElement, SVGProps } from "react";
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
 type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
+type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -16,6 +17,7 @@ type WorkspaceViewProps = {
     icon: IconComponent;
   };
   skills: TaskSkillSummary[];
+  statuses: WorkspaceStatus[];
   tasks: TaskSummary[];
 };
 
@@ -23,9 +25,14 @@ export default function WorkspaceView({
   projects,
   route,
   skills,
+  statuses,
   tasks,
 }: WorkspaceViewProps): ReactElement {
   const visibleRows = route.id === "templates" ? skills.length : tasks.length;
+
+  if (route.id === "kanban") {
+    return <KanbanView projects={projects} statuses={statuses} tasks={tasks} />;
+  }
 
   if (route.id === "projects") {
     return <ProjectsView projects={projects} tasks={tasks} />;
@@ -125,6 +132,31 @@ export type MyTaskSummary = {
   taskCount: number;
 };
 
+export type KanbanTaskCard = {
+  assigneeLabel: string;
+  dueDateLabel: string;
+  id: string;
+  projectTitle: string;
+  title: string;
+  updatedAtLabel: string;
+};
+
+export type KanbanColumn = {
+  color: string;
+  id: string;
+  isDone: boolean;
+  name: string;
+  taskCount: number;
+  tasks: KanbanTaskCard[];
+};
+
+export type KanbanSummary = {
+  columnCount: number;
+  doneTaskCount: number;
+  taskCount: number;
+  unsetTaskCount: number;
+};
+
 export type ProjectOverviewSummary = {
   dueSoonTaskCount: number;
   projectCount: number;
@@ -179,6 +211,75 @@ export function buildMyTaskSummary(tasks: TaskSummary[]): MyTaskSummary {
     dueTaskCount: tasks.filter((task) => hasDateValue(task.dueAt)).length,
     recentlyUpdatedTaskCount: countRecentlyUpdatedTasks(tasks),
     taskCount: tasks.length,
+  };
+}
+
+export function buildKanbanColumns(
+  projects: ProjectSummary[],
+  statuses: WorkspaceStatus[],
+  tasks: TaskSummary[],
+): KanbanColumn[] {
+  const sortedStatuses = [...statuses].sort(compareStatusPosition);
+  const knownStatusIds = new Set(sortedStatuses.map((status) => status.id));
+  const columns = sortedStatuses.map((status) => {
+    const statusTasks = tasks.filter((task) => task.statusId === status.id);
+
+    return {
+      color: status.color,
+      id: status.id,
+      isDone: status.isDone,
+      name: status.name,
+      taskCount: statusTasks.length,
+      tasks: buildKanbanTaskCards(projects, statusTasks),
+    };
+  });
+  const unknownStatusTasks = tasks.filter(
+    (task) => hasStatusValue(task.statusId) && !knownStatusIds.has(task.statusId),
+  );
+  const unsetStatusTasks = tasks.filter((task) => !hasStatusValue(task.statusId));
+
+  if (unknownStatusTasks.length > 0) {
+    columns.push({
+      color: "#d8d1c4",
+      id: "unknown-status",
+      isDone: false,
+      name: "Unknown status",
+      taskCount: unknownStatusTasks.length,
+      tasks: buildKanbanTaskCards(projects, unknownStatusTasks),
+    });
+  }
+
+  columns.push({
+    color: "#d8d1c4",
+    id: "unset-status",
+    isDone: false,
+    name: "Unset",
+    taskCount: unsetStatusTasks.length,
+    tasks: buildKanbanTaskCards(projects, unsetStatusTasks),
+  });
+
+  return columns;
+}
+
+export function buildKanbanSummary(
+  statuses: WorkspaceStatus[],
+  tasks: TaskSummary[],
+): KanbanSummary {
+  const doneStatusIds = new Set(
+    statuses.filter((status) => status.isDone).map((status) => status.id),
+  );
+  const knownStatusIds = new Set(statuses.map((status) => status.id));
+  const hasUnknownStatusTasks = tasks.some(
+    (task) => hasStatusValue(task.statusId) && !knownStatusIds.has(task.statusId),
+  );
+
+  return {
+    columnCount: statuses.length + 1 + (hasUnknownStatusTasks ? 1 : 0),
+    doneTaskCount: tasks.filter(
+      (task) => hasStatusValue(task.statusId) && doneStatusIds.has(task.statusId),
+    ).length,
+    taskCount: tasks.length,
+    unsetTaskCount: tasks.filter((task) => !hasStatusValue(task.statusId)).length,
   };
 }
 
@@ -258,6 +359,89 @@ export function buildTemplateSkillSummary(skills: TaskSkillSummary[]): TemplateS
     skillsWithoutDescriptionCount: skills.filter((skill) => !hasTextValue(skill.description))
       .length,
   };
+}
+
+function KanbanView({
+  projects,
+  statuses,
+  tasks,
+}: {
+  projects: ProjectSummary[];
+  statuses: WorkspaceStatus[];
+  tasks: TaskSummary[];
+}): ReactElement {
+  const columns = buildKanbanColumns(projects, statuses, tasks);
+  const summary = buildKanbanSummary(statuses, tasks);
+
+  return (
+    <div className="content-grid">
+      <section className="panel wide-panel" aria-labelledby="kanban-view-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Kanban</p>
+            <h3 id="kanban-view-title">Status board</h3>
+          </div>
+        </div>
+
+        <div className="kanban-board">
+          {columns.map((column) => (
+            <section
+              className="kanban-column"
+              key={column.id}
+              aria-labelledby={`${column.id}-title`}
+            >
+              <div className="kanban-column-header">
+                <span style={{ backgroundColor: column.color }} aria-hidden="true" />
+                <h4 id={`${column.id}-title`}>{column.name}</h4>
+                <strong>{column.taskCount}</strong>
+              </div>
+              <div className="kanban-card-list">
+                {column.tasks.map((task) => (
+                  <article className="kanban-card" key={task.id}>
+                    <h5>{task.title}</h5>
+                    <p>{task.projectTitle}</p>
+                    <div>
+                      <span>{task.assigneeLabel}</span>
+                      <span>{task.dueDateLabel}</span>
+                      <time dateTime={task.updatedAtLabel}>{task.updatedAtLabel}</time>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel" aria-labelledby="kanban-summary-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Summary</p>
+            <h3 id="kanban-summary-title">Board load</h3>
+          </div>
+        </div>
+        <p className="agent-line">Columns use workspace statuses loaded by the web shell.</p>
+        <dl className="metric-list">
+          <div>
+            <dt>Columns</dt>
+            <dd>{summary.columnCount}</dd>
+          </div>
+          <div>
+            <dt>Tasks</dt>
+            <dd>{summary.taskCount}</dd>
+          </div>
+          <div>
+            <dt>Done</dt>
+            <dd>{summary.doneTaskCount}</dd>
+          </div>
+          <div>
+            <dt>Unset</dt>
+            <dd>{summary.unsetTaskCount}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  );
 }
 
 function ProjectsView({
@@ -498,6 +682,26 @@ function compareMyTasks(firstTask: TaskSummary, secondTask: TaskSummary): number
   return secondTask.updatedAt.localeCompare(firstTask.updatedAt);
 }
 
+function buildKanbanTaskCards(projects: ProjectSummary[], tasks: TaskSummary[]): KanbanTaskCard[] {
+  return [...tasks]
+    .sort((firstTask, secondTask) => secondTask.updatedAt.localeCompare(firstTask.updatedAt))
+    .map((task) => ({
+      assigneeLabel: isTaskUnassigned(task) ? "Unassigned" : "Assigned",
+      dueDateLabel: formatOptionalDateLabel(task.dueAt),
+      id: task.id,
+      projectTitle: projects.find((project) => project.id === task.projectId)?.title ?? "Unknown",
+      title: task.title,
+      updatedAtLabel: formatDateLabel(task.updatedAt),
+    }));
+}
+
+function compareStatusPosition(
+  firstStatus: WorkspaceStatus,
+  secondStatus: WorkspaceStatus,
+): number {
+  return firstStatus.position.localeCompare(secondStatus.position, "en", { numeric: true });
+}
+
 function formatDateLabel(value: string): string {
   return value.slice(0, 10);
 }
@@ -524,6 +728,10 @@ function hasDateValue(value: string | null | undefined): value is string {
 
 function hasTextValue(value: string | null | undefined): value is string {
   return value !== null && value !== undefined && value.trim().length > 0;
+}
+
+function hasStatusValue(value: string | null | undefined): value is string {
+  return value !== null && value !== undefined;
 }
 
 function isTaskUnassigned(task: TaskSummary): boolean {
