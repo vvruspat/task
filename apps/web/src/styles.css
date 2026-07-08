@@ -423,6 +423,48 @@ h1 {
   font-weight: 800;
 }
 
+.template-skill-list {
+  display: grid;
+}
+
+.template-skill-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.8fr) 110px;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 0;
+  border-top: 1px solid #ece6dc;
+}
+
+.template-skill-row h4 {
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+
+.template-skill-row p {
+  margin-bottom: 0;
+  color: #59645e;
+  line-height: 1.45;
+}
+
+.template-skill-row > span {
+  min-width: 0;
+  overflow: hidden;
+  color: #2d3a33;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.template-skill-row time {
+  justify-self: end;
+  color: #59645e;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
 .view-surface {
   overflow-x: auto;
   border: 1px solid #d8d1c4;
@@ -571,6 +613,14 @@ h1 {
   }
 
   .project-overview-row > span {
+    justify-self: start;
+  }
+
+  .template-skill-row {
+    grid-template-columns: 1fr;
+  }
+
+  .template-skill-row time {
     justify-self: start;
   }
 }
