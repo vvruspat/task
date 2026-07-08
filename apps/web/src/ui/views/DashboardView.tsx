@@ -7,7 +7,7 @@ type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
 type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 
-type TaskCreateState =
+type FormSubmissionState =
   | {
       status: "idle";
     }
@@ -20,8 +20,11 @@ type TaskCreateState =
     };
 
 type DashboardViewProps = {
+  createProjectDisabled: boolean;
+  createProjectState: FormSubmissionState;
   createTaskDisabled: boolean;
-  createTaskState: TaskCreateState;
+  createTaskState: FormSubmissionState;
+  onCreateProject(title: string): Promise<void>;
   onCreateTask(title: string): Promise<void>;
   projects: ProjectSummary[];
   skills: TaskSkillSummary[];
@@ -29,19 +32,37 @@ type DashboardViewProps = {
 };
 
 export default function DashboardView({
+  createProjectDisabled,
+  createProjectState,
   createTaskDisabled,
   createTaskState,
+  onCreateProject,
   onCreateTask,
   projects,
   skills,
   tasks,
 }: DashboardViewProps): ReactElement {
+  const [projectTitle, setProjectTitle] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
+  const trimmedProjectTitle = projectTitle.trim();
   const trimmedTitle = taskTitle.trim();
+  const isCreatingProject = createProjectState.status === "submitting";
   const isSubmitting = createTaskState.status === "submitting";
+  const projectSubmitDisabled =
+    createProjectDisabled || isCreatingProject || trimmedProjectTitle.length === 0;
   const submitDisabled = createTaskDisabled || isSubmitting || trimmedTitle.length === 0;
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+  const handleProjectSubmit = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+
+    if (projectSubmitDisabled) {
+      return;
+    }
+
+    void onCreateProject(trimmedProjectTitle);
+  };
+
+  const handleTaskSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
     if (submitDisabled) {
@@ -63,7 +84,7 @@ export default function DashboardView({
             <ArrowRight aria-hidden="true" />
           </button>
         </div>
-        <form className="task-create-form" onSubmit={handleSubmit}>
+        <form className="task-create-form" onSubmit={handleTaskSubmit}>
           <label>
             <span>Task title</span>
             <input
@@ -111,6 +132,36 @@ export default function DashboardView({
             <h3 id="project-title">Active</h3>
           </div>
         </div>
+        <form className="project-create-form" onSubmit={handleProjectSubmit}>
+          <label>
+            <span>Project title</span>
+            <input
+              aria-describedby="project-create-state"
+              disabled={createProjectDisabled || isCreatingProject}
+              onChange={(event) => setProjectTitle(event.currentTarget.value)}
+              placeholder="Create project"
+              value={projectTitle}
+            />
+          </label>
+          <button className="primary-action" disabled={projectSubmitDisabled} type="submit">
+            <Plus aria-hidden="true" />
+            <span>{isCreatingProject ? "Creating" : "Create"}</span>
+          </button>
+        </form>
+        {createProjectState.status === "error" || createProjectState.status === "success" ? (
+          <p
+            className={`project-create-state ${createProjectState.status}`}
+            id="project-create-state"
+          >
+            {createProjectState.message}
+          </p>
+        ) : (
+          <p className="project-create-state" id="project-create-state">
+            {createProjectDisabled
+              ? "Load a workspace before creating projects."
+              : "Creates a project in the selected workspace."}
+          </p>
+        )}
         <div className="stacked-list">
           {projects.map((project) => (
             <article className="mini-row" key={project.id}>

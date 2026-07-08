@@ -1,5 +1,6 @@
 import {
   createTaskApiClient,
+  type ProjectDetail,
   type ProjectSummary,
   type TaskApiClient,
   type TaskApiFetch,
@@ -26,6 +27,16 @@ export type WebShellData = {
 };
 
 export type WebShellDataLoader = () => Promise<WebShellData>;
+
+export type WebShellProjectCreator = (input: WebShellProjectCreateInput) => Promise<ProjectDetail>;
+
+export type WebShellProjectCreateInput = {
+  title: string;
+};
+
+export type WebShellProjectCreateTarget = {
+  workspaceId: string;
+};
 
 export type WebShellTaskCreator = (input: WebShellTaskCreateInput) => Promise<TaskDetail>;
 
@@ -93,6 +104,20 @@ export function createWebShellDataLoader(options: {
   return () => loadWebShellData(client);
 }
 
+export function createWebShellProjectCreator(options: {
+  config: WebShellConfig;
+  fetch: TaskApiFetch;
+  target: WebShellProjectCreateTarget;
+}): WebShellProjectCreator {
+  const client = createTaskApiClient({
+    baseUrl: options.config.apiBaseUrl,
+    fetch: options.fetch,
+    trustedUserId: options.config.trustedUserId,
+  });
+
+  return (input) => createWebShellProject(client, options.target, input);
+}
+
 export function createWebShellTaskCreator(options: {
   config: WebShellConfig;
   fetch: TaskApiFetch;
@@ -105,6 +130,25 @@ export function createWebShellTaskCreator(options: {
   });
 
   return (input) => createWebShellTask(client, options.target, input);
+}
+
+export async function createWebShellProject(
+  client: TaskApiClient,
+  target: WebShellProjectCreateTarget,
+  input: WebShellProjectCreateInput,
+): Promise<ProjectDetail> {
+  const title = input.title.trim();
+
+  if (title.length === 0) {
+    throw new Error("Project title is required.");
+  }
+
+  return client.createProject({
+    body: {
+      title,
+    },
+    workspaceId: target.workspaceId,
+  });
 }
 
 export async function loadWebShellData(client: TaskApiClient): Promise<WebShellData> {

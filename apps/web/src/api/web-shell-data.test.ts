@@ -12,7 +12,12 @@ import type {
   WorkspaceStatus,
   WorkspaceSummary,
 } from "@task/api-client";
-import { createWebShellTask, loadWebShellData, parseWebShellConfig } from "./web-shell-data.js";
+import {
+  createWebShellProject,
+  createWebShellTask,
+  loadWebShellData,
+  parseWebShellConfig,
+} from "./web-shell-data.js";
 
 const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const projectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
@@ -154,6 +159,37 @@ test("createWebShellTask posts trimmed task titles to the selected project", asy
   ]);
 });
 
+test("createWebShellProject posts trimmed project titles to the selected workspace", async () => {
+  const client = new RecordingTaskApiClient({
+    projects: [],
+    skills: [],
+    statuses: [],
+    tasks: [],
+    workspaces: [workspaceSummary()],
+  });
+
+  assert.deepEqual(
+    await createWebShellProject(
+      client,
+      {
+        workspaceId,
+      },
+      {
+        title: "  Album release  ",
+      },
+    ),
+    projectSummary(),
+  );
+  assert.deepEqual(client.createProjectCalls, [
+    {
+      body: {
+        title: "Album release",
+      },
+      workspaceId,
+    },
+  ]);
+});
+
 test("createWebShellTask rejects empty task titles without calling the client", async () => {
   const client = new RecordingTaskApiClient({
     projects: [],
@@ -180,6 +216,33 @@ test("createWebShellTask rejects empty task titles without calling the client", 
     },
   );
   assert.deepEqual(client.createTaskCalls, []);
+});
+
+test("createWebShellProject rejects empty project titles without calling the client", async () => {
+  const client = new RecordingTaskApiClient({
+    projects: [],
+    skills: [],
+    statuses: [],
+    tasks: [],
+    workspaces: [],
+  });
+
+  await assert.rejects(
+    () =>
+      createWebShellProject(
+        client,
+        {
+          workspaceId,
+        },
+        {
+          title: "   ",
+        },
+      ),
+    {
+      message: "Project title is required.",
+    },
+  );
+  assert.deepEqual(client.createProjectCalls, []);
 });
 
 type ApiData = {
