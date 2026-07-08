@@ -148,6 +148,73 @@ test("OpenRouterAgentRuntime stores failed runs for malformed success responses"
   });
 });
 
+test("OpenRouterAgentRuntime retries with fallback model after primary failure", async () => {
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(429, { error: { message: "rate limited" } }),
+    jsonResponse(200, {
+      choices: [{ message: { content: "Fallback handled it." } }],
+      usage: {
+        total_tokens: 9,
+      },
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(
+    {
+      ...config,
+      fallbackModel: "anthropic/claude-3.5-sonnet",
+    },
+    fetcher.fetch,
+  );
+
+  assert.deepEqual(await runtime.handleTelegramRequest(request), {
+    model: "anthropic/claude-3.5-sonnet",
+    normalizedIntent: {
+      kind: "openrouter_chat_completion",
+      source: "telegram",
+    },
+    finalResponse: "Fallback handled it.",
+    status: "completed",
+    tokenUsage: {
+      total_tokens: 9,
+    },
+    cost: null,
+    error: null,
+  });
+  assert.equal(fetcher.calls.length, 2);
+  assert.deepEqual(
+    fetcher.calls.map((call) => readRequestModel(call.init.body)),
+    ["openai/gpt-4.1-mini", "anthropic/claude-3.5-sonnet"],
+  );
+});
+
+test("OpenRouterAgentRuntime stores combined failure context after fallback failure", async () => {
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(429, { error: { message: "rate limited" } }),
+    jsonResponse(200, { choices: [] }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(
+    {
+      ...config,
+      fallbackModel: "anthropic/claude-3.5-sonnet",
+    },
+    fetcher.fetch,
+  );
+
+  assert.deepEqual(await runtime.handleTelegramRequest(request), {
+    model: "anthropic/claude-3.5-sonnet",
+    normalizedIntent: {
+      kind: "openrouter_chat_completion",
+      source: "telegram",
+    },
+    finalResponse: "Agent execution failed before producing a response.",
+    status: "failed",
+    tokenUsage: null,
+    cost: null,
+    error:
+      "openai/gpt-4.1-mini: OpenRouter request failed with status 429: rate limited | anthropic/claude-3.5-sonnet: OpenRouter response did not include assistant content.",
+  });
+});
+
 test("OpenRouterAgentRuntime stores failed runs for fetch failures", async () => {
   const runtime = new OpenRouterAgentRuntime(config, async () => {
     throw new Error("network unavailable");
@@ -174,8 +241,9 @@ type OpenRouterFetchCall = {
 
 class RecordingOpenRouterFetch {
   readonly calls: OpenRouterFetchCall[] = [];
+  private responseIndex = 0;
 
-  constructor(private readonly response: OpenRouterFetchResponse) {}
+  constructor(private readonly responses: OpenRouterFetchResponse | OpenRouterFetchResponse[]) {}
 
   readonly fetch: OpenRouterFetch = async (
     url: string,
@@ -183,7 +251,18 @@ class RecordingOpenRouterFetch {
   ): Promise<OpenRouterFetchResponse> => {
     this.calls.push({ url, init });
 
-    return this.response;
+    if (!Array.isArray(this.responses)) {
+      return this.responses;
+    }
+
+    const response = this.responses[this.responseIndex];
+    this.responseIndex += 1;
+
+    if (response === undefined) {
+      throw new Error("No recorded OpenRouter response for fetch call.");
+    }
+
+    return response;
   };
 }
 
@@ -213,4 +292,22 @@ function getOnlyCall(fetcher: RecordingOpenRouterFetch): OpenRouterFetchCall {
 
 function parseRequestBody(value: string): unknown {
   return JSON.parse(value);
+}
+
+function readRequestModel(value: string): unknown {
+  const body = parseRequestBody(value);
+
+  if (!isOpenRouterRequestBody(body)) {
+    throw new Error("Expected OpenRouter request body to be an object.");
+  }
+
+  return body.model;
+}
+
+type OpenRouterRequestBody = {
+  model?: unknown;
+};
+
+function isOpenRouterRequestBody(value: unknown): value is OpenRouterRequestBody {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }

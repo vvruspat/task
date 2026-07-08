@@ -370,7 +370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller",
-      "community": 8,
+      "community": 55,
       "norm_label": "agent.controller.ts"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "agent_agent_dto_createtelegramagentrundto",
-      "community": 8,
+      "community": 55,
       "norm_label": "createtelegramagentrundto"
     },
     {
@@ -607,7 +607,7 @@
       "label": "OpenRouterFetchCall",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
-      "source_location": "L170",
+      "source_location": "L237",
       "_origin": "ast",
       "id": "agent_agent_runtime_test_openrouterfetchcall",
       "community": 93,
@@ -617,7 +617,7 @@
       "label": "RecordingOpenRouterFetch",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
-      "source_location": "L175",
+      "source_location": "L242",
       "_origin": "ast",
       "id": "agent_agent_runtime_test_recordingopenrouterfetch",
       "community": 93,
@@ -627,7 +627,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
-      "source_location": "L178",
+      "source_location": "L246",
       "_origin": "ast",
       "id": "agent_agent_runtime_test_recordingopenrouterfetch_constructor",
       "community": 93,
@@ -637,7 +637,7 @@
       "label": ".fetch()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
-      "source_location": "L180",
+      "source_location": "L248",
       "_origin": "ast",
       "id": "agent_agent_runtime_test_recordingopenrouterfetch_fetch",
       "community": 93,
@@ -647,7 +647,7 @@
       "label": "jsonResponse()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
-      "source_location": "L190",
+      "source_location": "L269",
       "_origin": "ast",
       "id": "agent_agent_runtime_test_jsonresponse",
       "community": 93,
@@ -657,7 +657,7 @@
       "label": "getOnlyCall()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
-      "source_location": "L203",
+      "source_location": "L282",
       "_origin": "ast",
       "id": "agent_agent_runtime_test_getonlycall",
       "community": 93,
@@ -667,11 +667,41 @@
       "label": "parseRequestBody()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
-      "source_location": "L214",
+      "source_location": "L293",
       "_origin": "ast",
       "id": "agent_agent_runtime_test_parserequestbody",
       "community": 93,
       "norm_label": "parserequestbody()"
+    },
+    {
+      "label": "readRequestModel()",
+      "file_type": "code",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L297",
+      "_origin": "ast",
+      "id": "agent_agent_runtime_test_readrequestmodel",
+      "community": 93,
+      "norm_label": "readrequestmodel()"
+    },
+    {
+      "label": "OpenRouterRequestBody",
+      "file_type": "code",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L307",
+      "_origin": "ast",
+      "id": "agent_agent_runtime_test_openrouterrequestbody",
+      "community": 93,
+      "norm_label": "openrouterrequestbody"
+    },
+    {
+      "label": "isOpenRouterRequestBody()",
+      "file_type": "code",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L311",
+      "_origin": "ast",
+      "id": "agent_agent_runtime_test_isopenrouterrequestbody",
+      "community": 93,
+      "norm_label": "isopenrouterrequestbody()"
     },
     {
       "label": "agent.runtime.ts",
@@ -780,7 +810,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "agent_agent_runtime_stubagentruntime",
-      "community": 95,
+      "community": 101,
       "norm_label": "stubagentruntime"
     },
     {
@@ -790,7 +820,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "agent_agent_runtime_stubagentruntime_handletelegramrequest",
-      "community": 95,
+      "community": 101,
       "norm_label": ".handletelegramrequest()"
     },
     {
@@ -824,10 +854,30 @@
       "norm_label": ".handletelegramrequest()"
     },
     {
+      "label": ".getCandidateModels()",
+      "file_type": "code",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L105",
+      "_origin": "ast",
+      "id": "agent_agent_runtime_openrouteragentruntime_getcandidatemodels",
+      "community": 82,
+      "norm_label": ".getcandidatemodels()"
+    },
+    {
+      "label": ".tryComplete()",
+      "file_type": "code",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L113",
+      "_origin": "ast",
+      "id": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "community": 82,
+      "norm_label": ".trycomplete()"
+    },
+    {
       "label": "defaultOpenRouterFetch()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L143",
+      "source_location": "L178",
       "_origin": "ast",
       "id": "agent_agent_runtime_defaultopenrouterfetch",
       "community": 93,
@@ -837,7 +887,7 @@
       "label": "buildFailedRuntimeResult()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L150",
+      "source_location": "L185",
       "_origin": "ast",
       "id": "agent_agent_runtime_buildfailedruntimeresult",
       "community": 82,
@@ -847,7 +897,7 @@
       "label": "readOpenRouterAssistantContent()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L165",
+      "source_location": "L200",
       "_origin": "ast",
       "id": "agent_agent_runtime_readopenrouterassistantcontent",
       "community": 82,
@@ -857,7 +907,7 @@
       "label": "readOpenRouterUsage()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L191",
+      "source_location": "L226",
       "_origin": "ast",
       "id": "agent_agent_runtime_readopenrouterusage",
       "community": 82,
@@ -867,7 +917,7 @@
       "label": "readOpenRouterError()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L199",
+      "source_location": "L234",
       "_origin": "ast",
       "id": "agent_agent_runtime_readopenroutererror",
       "community": 82,
@@ -877,7 +927,7 @@
       "label": "readOpenRouterErrorMessage()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L214",
+      "source_location": "L249",
       "_origin": "ast",
       "id": "agent_agent_runtime_readopenroutererrormessage",
       "community": 82,
@@ -887,7 +937,7 @@
       "label": "readRuntimeErrorMessage()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L224",
+      "source_location": "L259",
       "_origin": "ast",
       "id": "agent_agent_runtime_readruntimeerrormessage",
       "community": 82,
@@ -897,7 +947,7 @@
       "label": "isRecord()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L228",
+      "source_location": "L263",
       "_origin": "ast",
       "id": "agent_agent_runtime_isrecord",
       "community": 82,
@@ -907,7 +957,7 @@
       "label": "OpenRouterCompletionResponse",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L232",
+      "source_location": "L267",
       "_origin": "ast",
       "id": "agent_agent_runtime_openroutercompletionresponse",
       "community": 82,
@@ -917,7 +967,7 @@
       "label": "OpenRouterChoice",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L237",
+      "source_location": "L272",
       "_origin": "ast",
       "id": "agent_agent_runtime_openrouterchoice",
       "community": 82,
@@ -927,7 +977,7 @@
       "label": "OpenRouterMessage",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L241",
+      "source_location": "L276",
       "_origin": "ast",
       "id": "agent_agent_runtime_openroutermessage",
       "community": 82,
@@ -937,7 +987,7 @@
       "label": "OpenRouterErrorResponse",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L245",
+      "source_location": "L280",
       "_origin": "ast",
       "id": "agent_agent_runtime_openroutererrorresponse",
       "community": 82,
@@ -947,7 +997,7 @@
       "label": "OpenRouterError",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L249",
+      "source_location": "L284",
       "_origin": "ast",
       "id": "agent_agent_runtime_openroutererror",
       "community": 82,
@@ -957,7 +1007,7 @@
       "label": "isOpenRouterCompletionResponse()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L253",
+      "source_location": "L288",
       "_origin": "ast",
       "id": "agent_agent_runtime_isopenroutercompletionresponse",
       "community": 82,
@@ -967,7 +1017,7 @@
       "label": "isOpenRouterChoice()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L257",
+      "source_location": "L292",
       "_origin": "ast",
       "id": "agent_agent_runtime_isopenrouterchoice",
       "community": 82,
@@ -977,7 +1027,7 @@
       "label": "isOpenRouterMessage()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L261",
+      "source_location": "L296",
       "_origin": "ast",
       "id": "agent_agent_runtime_isopenroutermessage",
       "community": 82,
@@ -987,7 +1037,7 @@
       "label": "isOpenRouterErrorResponse()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L265",
+      "source_location": "L300",
       "_origin": "ast",
       "id": "agent_agent_runtime_isopenroutererrorresponse",
       "community": 82,
@@ -997,7 +1047,7 @@
       "label": "isOpenRouterError()",
       "file_type": "code",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
-      "source_location": "L269",
+      "source_location": "L304",
       "_origin": "ast",
       "id": "agent_agent_runtime_isopenroutererror",
       "community": 82,
@@ -1010,7 +1060,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service_test",
-      "community": 55,
+      "community": 95,
       "norm_label": "agent.service.test.ts"
     },
     {
@@ -1020,7 +1070,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "agent_agent_service_test_input",
-      "community": 55,
+      "community": 95,
       "norm_label": "input"
     },
     {
@@ -1110,7 +1160,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "agent_agent_service_test_persistedagentrun",
-      "community": 55,
+      "community": 95,
       "norm_label": "persistedagentrun"
     },
     {
@@ -1130,7 +1180,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice",
-      "community": 101,
+      "community": 55,
       "norm_label": "agentservice"
     },
     {
@@ -1140,7 +1190,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice_constructor",
-      "community": 101,
+      "community": 55,
       "norm_label": ".constructor()"
     },
     {
@@ -1150,7 +1200,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice_createtelegramrun",
-      "community": 101,
+      "community": 55,
       "norm_label": ".createtelegramrun()"
     },
     {
@@ -1160,7 +1210,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "agent_agent_service_mapagentruntointakeresponse",
-      "community": 101,
+      "community": 55,
       "norm_label": "mapagentruntointakeresponse()"
     },
     {
@@ -2750,7 +2800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 68,
+      "community": 67,
       "norm_label": "database.module.ts"
     },
     {
@@ -2760,7 +2810,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 68,
+      "community": 67,
       "norm_label": "apidatasource"
     },
     {
@@ -2810,7 +2860,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 68,
+      "community": 67,
       "norm_label": "databasemodule"
     },
     {
@@ -2860,7 +2910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_openapi",
-      "community": 51,
+      "community": 71,
       "norm_label": "openapi.ts"
     },
     {
@@ -2900,7 +2950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_agent_run_entity",
-      "community": 98,
+      "community": 52,
       "norm_label": "agent-run.entity.ts"
     },
     {
@@ -2910,7 +2960,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "entities_agent_run_entity_agentrunentity",
-      "community": 98,
+      "community": 52,
       "norm_label": "agentrunentity"
     },
     {
@@ -3320,7 +3370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table",
-      "community": 33,
+      "community": 80,
       "norm_label": "1783296060000-create-projects-table.ts"
     },
     {
@@ -3330,7 +3380,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
-      "community": 33,
+      "community": 80,
       "norm_label": "createprojectstablesql"
     },
     {
@@ -3340,7 +3390,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
-      "community": 33,
+      "community": 80,
       "norm_label": "dropprojectstablesql"
     },
     {
@@ -3380,7 +3430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table",
-      "community": 80,
+      "community": 100,
       "norm_label": "1783296120000-create-tasks-table.ts"
     },
     {
@@ -3390,7 +3440,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstablesql",
-      "community": 80,
+      "community": 100,
       "norm_label": "createtaskstablesql"
     },
     {
@@ -3400,7 +3450,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_droptaskstablesql",
-      "community": 80,
+      "community": 100,
       "norm_label": "droptaskstablesql"
     },
     {
@@ -3440,7 +3490,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables",
-      "community": 52,
+      "community": 80,
       "norm_label": "1783296180000-create-task-skills-tables.ts"
     },
     {
@@ -3450,7 +3500,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstablessql",
-      "community": 52,
+      "community": 80,
       "norm_label": "createtaskskillstablessql"
     },
     {
@@ -3460,7 +3510,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_droptaskskillstablessql",
-      "community": 52,
+      "community": 80,
       "norm_label": "droptaskskillstablessql"
     },
     {
@@ -3560,7 +3610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table",
-      "community": 80,
+      "community": 102,
       "norm_label": "1783296300000-create-attachments-table.ts"
     },
     {
@@ -3570,7 +3620,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
-      "community": 80,
+      "community": 102,
       "norm_label": "createattachmentstablesql"
     },
     {
@@ -3580,7 +3630,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
-      "community": 80,
+      "community": 102,
       "norm_label": "dropattachmentstablesql"
     },
     {
@@ -4010,7 +4060,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_attachments_table_test",
-      "community": 80,
+      "community": 102,
       "norm_label": "create-attachments-table.test.ts"
     },
     {
@@ -4080,7 +4130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_projects_table_test",
-      "community": 33,
+      "community": 80,
       "norm_label": "create-projects-table.test.ts"
     },
     {
@@ -4090,7 +4140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_task_skills_tables_test",
-      "community": 52,
+      "community": 80,
       "norm_label": "create-task-skills-tables.test.ts"
     },
     {
@@ -4100,7 +4150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_tasks_table_test",
-      "community": 80,
+      "community": 100,
       "norm_label": "create-tasks-table.test.ts"
     },
     {
@@ -4270,7 +4320,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunsource",
-      "community": 98,
+      "community": 52,
       "norm_label": "agentrunsource"
     },
     {
@@ -4280,7 +4330,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunstatus",
-      "community": 98,
+      "community": 8,
       "norm_label": "agentrunstatus"
     },
     {
@@ -4290,7 +4340,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunrecord",
-      "community": 98,
+      "community": 52,
       "norm_label": "agentrunrecord"
     },
     {
@@ -5240,7 +5290,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts",
-      "community": 54,
+      "community": 33,
       "norm_label": "task-skills.contracts.ts"
     },
     {
@@ -5260,7 +5310,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "community": 54,
+      "community": 33,
       "norm_label": "taskskillversionsummary"
     },
     {
@@ -5270,7 +5320,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskilldetail",
-      "community": 49,
+      "community": 68,
       "norm_label": "taskskilldetail"
     },
     {
@@ -5310,7 +5360,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtasksource",
-      "community": 54,
+      "community": 33,
       "norm_label": "taskskillapplypreviewsubtasksource"
     },
     {
@@ -5320,7 +5370,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtask",
-      "community": 54,
+      "community": 33,
       "norm_label": "taskskillapplypreviewsubtask"
     },
     {
@@ -5640,7 +5690,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_createtaskskilldto",
-      "community": 49,
+      "community": 71,
       "norm_label": "createtaskskilldto"
     },
     {
@@ -5650,7 +5700,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
-      "community": 49,
+      "community": 54,
       "norm_label": "parsecreatetaskskillbodypipe"
     },
     {
@@ -5660,7 +5710,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe_transform",
-      "community": 49,
+      "community": 54,
       "norm_label": ".transform()"
     },
     {
@@ -5680,7 +5730,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskillmetadatabodypipe",
-      "community": 49,
+      "community": 54,
       "norm_label": "parseupdatetaskskillmetadatabodypipe"
     },
     {
@@ -5690,7 +5740,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskillmetadatabodypipe_transform",
-      "community": 49,
+      "community": 54,
       "norm_label": ".transform()"
     },
     {
@@ -5770,7 +5820,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto",
-      "community": 54,
+      "community": 33,
       "norm_label": "taskskillapplypreviewsubtaskdto"
     },
     {
@@ -5780,7 +5830,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto_constructor",
-      "community": 54,
+      "community": 33,
       "norm_label": ".constructor()"
     },
     {
@@ -5960,7 +6010,7 @@
       "source_location": "L449",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "community": 54,
+      "community": 33,
       "norm_label": "taskskillversionsummarydto"
     },
     {
@@ -5970,7 +6020,7 @@
       "source_location": "L471",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
-      "community": 54,
+      "community": 33,
       "norm_label": ".constructor()"
     },
     {
@@ -5990,7 +6040,7 @@
       "source_location": "L486",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskilldetaildto_constructor",
-      "community": 49,
+      "community": 68,
       "norm_label": ".constructor()"
     },
     {
@@ -6000,7 +6050,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "task_skills_task_skills_module",
-      "community": 68,
+      "community": 49,
       "norm_label": "task-skills.module.ts"
     },
     {
@@ -6010,7 +6060,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "task_skills_task_skills_module_taskskillsserviceprovider",
-      "community": 68,
+      "community": 49,
       "norm_label": "taskskillsserviceprovider"
     },
     {
@@ -6200,7 +6250,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_constructor",
-      "community": 68,
+      "community": 49,
       "norm_label": ".constructor()"
     },
     {
@@ -6360,7 +6410,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillsreadstore",
-      "community": 68,
+      "community": 49,
       "norm_label": "taskskillsreadstore"
     },
     {
@@ -20787,6 +20837,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L311",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_test",
+      "target": "agent_agent_runtime_test_isopenrouterrequestbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
       "source_location": "L162",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -20807,11 +20867,31 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L307",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_test",
+      "target": "agent_agent_runtime_test_openrouterrequestbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
       "source_location": "L186",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "agent_agent_runtime_test",
       "target": "agent_agent_runtime_test_parserequestbody"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L297",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_test",
+      "target": "agent_agent_runtime_test_readrequestmodel",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -20885,6 +20965,28 @@
       "weight": 1.0,
       "source": "agent_agent_runtime_defaultopenrouterfetch",
       "target": "agent_agent_runtime_test_recordingopenrouterfetch_fetch"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L298",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_test_readrequestmodel",
+      "target": "agent_agent_runtime_test_parserequestbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.test.ts",
+      "source_location": "L300",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_test_readrequestmodel",
+      "target": "agent_agent_runtime_test_isopenrouterrequestbody",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -21409,11 +21511,31 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime",
+      "target": "agent_agent_runtime_openrouteragentruntime_getcandidatemodels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
       "source_location": "L80",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "agent_agent_runtime_openrouteragentruntime",
       "target": "agent_agent_runtime_openrouteragentruntime_handletelegramrequest"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L113",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime",
+      "target": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -21436,6 +21558,28 @@
       "confidence_score": 1.0,
       "source": "agent_agent_runtime_openrouteragentruntime_handletelegramrequest",
       "target": "agent_agent_runtime_buildfailedruntimeresult"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime_handletelegramrequest",
+      "target": "agent_agent_runtime_openrouteragentruntime_getcandidatemodels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime_handletelegramrequest",
+      "target": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -21480,6 +21624,61 @@
       "confidence_score": 1.0,
       "source": "agent_agent_runtime_openrouteragentruntime_handletelegramrequest",
       "target": "agent_agent_runtime_readruntimeerrormessage"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L144",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "target": "agent_agent_runtime_buildfailedruntimeresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L151",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "target": "agent_agent_runtime_readopenrouterassistantcontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L146",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "target": "agent_agent_runtime_readopenroutererror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L168",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "target": "agent_agent_runtime_readopenrouterusage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/agent/agent.runtime.ts",
+      "source_location": "L173",
+      "weight": 1.0,
+      "source": "agent_agent_runtime_openrouteragentruntime_trycomplete",
+      "target": "agent_agent_runtime_readruntimeerrormessage",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -26470,9 +26669,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L225",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_config_ts_src_config",
-      "target": "src_config_parseoptionalopenrouterapptitle",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalopenrouterapptitle"
     },
     {
       "relation": "contains",
@@ -26480,9 +26679,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L206",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_config_ts_src_config",
-      "target": "src_config_parseoptionalopenroutermodel",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalopenroutermodel"
     },
     {
       "relation": "contains",
@@ -26490,9 +26689,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L241",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_config_ts_src_config",
-      "target": "src_config_parseoptionalopenroutersiteurl",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalopenroutersiteurl"
     },
     {
       "relation": "imports",
@@ -26643,9 +26842,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L199",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_parseopenrouterconfig",
-      "target": "src_config_parseoptionalopenrouterapptitle",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalopenrouterapptitle"
     },
     {
       "relation": "calls",
@@ -26654,9 +26853,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L200",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_parseopenrouterconfig",
-      "target": "src_config_parseoptionalopenroutermodel",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalopenroutermodel"
     },
     {
       "relation": "calls",
@@ -26665,9 +26864,9 @@
       "source_file": "apps/api/src/config.ts",
       "source_location": "L202",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_config_parseopenrouterconfig",
-      "target": "src_config_parseoptionalopenroutersiteurl",
-      "confidence_score": 1.0
+      "target": "src_config_parseoptionalopenroutersiteurl"
     },
     {
       "relation": "imports",
@@ -62490,5 +62689,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c51b92494884183d3b7dbf290aca908300a23535"
+  "built_at_commit": "bef832a4152adffaabb59f306e16311cf95c0a6d"
 }
