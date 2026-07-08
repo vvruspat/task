@@ -80,6 +80,12 @@ function createBackendClientStub(
 
       return statuses;
     },
+    listTaskSkills: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    getTaskSkill: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");
     },

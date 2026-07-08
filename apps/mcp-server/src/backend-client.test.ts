@@ -10,6 +10,8 @@ import {
   type TaskBackendFetchInit,
   type TaskCommentResponse,
   type TaskDetailResponse,
+  type TaskSkillDetailResponse,
+  type TaskSkillSummaryResponse,
   type TaskSummaryResponse,
   type WorkspaceDetailResponse,
   type WorkspaceMemberResponse,
@@ -60,6 +62,35 @@ const workspaceStatus: WorkspaceStatusResponse = {
   isDone: false,
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const taskSkillSummary: TaskSkillSummaryResponse = {
+  id: taskSkillId,
+  workspaceId,
+  name: "Song",
+  description: "Song production template",
+  aliases: ["track"],
+  createdByUserId: userId,
+  archivedAt: null,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const taskSkillDetail: TaskSkillDetailResponse = {
+  ...taskSkillSummary,
+  versions: [
+    {
+      id: taskSkillVersionId,
+      workspaceId,
+      taskSkillId,
+      version: 1,
+      definition: {
+        subtasks: [{ title: "Lyrics" }],
+      },
+      createdByUserId: userId,
+      createdAt: timestamp,
+    },
+  ],
 };
 
 const taskComment: TaskCommentResponse = {
@@ -226,6 +257,46 @@ test("listWorkspaceMembers gets typed workspace members with trusted user contex
   assert.equal(fetchCalls[0]?.init.method, "GET");
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.deepEqual(response, [workspaceMember]);
+});
+
+test("listTaskSkills gets typed task skill summaries with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [taskSkillSummary]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listTaskSkills({ workspaceId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/task-skills`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, [taskSkillSummary]);
+});
+
+test("getTaskSkill gets typed task skill details with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, taskSkillDetail);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.getTaskSkill({ workspaceId, taskSkillId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/task-skills/${taskSkillId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, taskSkillDetail);
 });
 
 test("listActiveProjects gets typed project summaries with trusted user context", async () => {
