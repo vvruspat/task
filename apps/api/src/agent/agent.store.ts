@@ -1,10 +1,12 @@
 import type { AgentRunRecord } from "../persistence/types/core-persistence.types.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
+import type { AgentRuntimeResult } from "./agent.runtime.js";
 
-export type AgentRunCreateResult =
+export type TelegramAgentRunContextResult =
   | {
-      status: "created";
-      run: AgentRunRecord;
+      status: "resolved";
+      workspaceId: string;
+      userId: string;
     }
   | {
       status: "telegram_user_unlinked";
@@ -16,6 +18,17 @@ export type AgentRunCreateResult =
       status: "user_not_in_chat_workspace";
     };
 
+export type PersistTelegramAgentRunInput = {
+  workspaceId: string;
+  userId: string;
+  sourceMessageId: string | null;
+  inputText: string;
+  runtimeResult: AgentRuntimeResult;
+};
+
 export type AgentRunStore = {
-  createTelegramRun(input: CreateTelegramAgentRunInput): Promise<AgentRunCreateResult>;
+  resolveTelegramRunContext(
+    input: CreateTelegramAgentRunInput,
+  ): Promise<TelegramAgentRunContextResult>;
+  createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunRecord>;
 };

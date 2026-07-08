@@ -9,8 +9,11 @@ import {
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
-import { agentRuntimeNotConnectedResponse } from "./agent.service.js";
-import type { AgentRunCreateResult, AgentRunStore } from "./agent.store.js";
+import type {
+  AgentRunStore,
+  PersistTelegramAgentRunInput,
+  TelegramAgentRunContextResult,
+} from "./agent.store.js";
 
 @Injectable()
 export class TypeOrmAgentRunStore implements AgentRunStore {
@@ -18,7 +21,9 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
 
   constructor(private readonly dataSourceProvider: ApiDataSourceProvider) {}
 
-  async createTelegramRun(input: CreateTelegramAgentRunInput): Promise<AgentRunCreateResult> {
+  async resolveTelegramRunContext(
+    input: CreateTelegramAgentRunInput,
+  ): Promise<TelegramAgentRunContextResult> {
     const dataSource = await this.getInitializedDataSource();
     const identity = await dataSource.getRepository(TelegramIdentityEntity).findOneBy({
       telegramId: input.telegramId,
@@ -45,27 +50,31 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
       return { status: "user_not_in_chat_workspace" };
     }
 
-    const repository = dataSource.getRepository(AgentRunEntity);
-    const run = repository.create({
+    return {
+      status: "resolved",
       workspaceId: chat.workspaceId,
       userId: identity.userId,
-      source: "telegram",
-      sourceMessageId: input.sourceMessageId ?? null,
-      model: null,
-      inputText: input.inputText,
-      normalizedIntent: { kind: "pending_agent_runtime" },
-      finalResponse: agentRuntimeNotConnectedResponse,
-      status: "completed",
-      tokenUsage: null,
-      cost: null,
-      error: null,
-    });
-    const savedRun = await repository.save(run);
-
-    return {
-      status: "created",
-      run: savedRun,
     };
+  }
+
+  async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunEntity> {
+    const dataSource = await this.getInitializedDataSource();
+    const repository = dataSource.getRepository(AgentRunEntity);
+    const run = repository.create({
+      workspaceId: input.workspaceId,
+      userId: input.userId,
+      source: "telegram",
+      sourceMessageId: input.sourceMessageId,
+      model: input.runtimeResult.model,
+      inputText: input.inputText,
+      normalizedIntent: input.runtimeResult.normalizedIntent,
+      finalResponse: input.runtimeResult.finalResponse,
+      status: input.runtimeResult.status,
+      tokenUsage: input.runtimeResult.tokenUsage,
+      cost: input.runtimeResult.cost,
+      error: input.runtimeResult.error,
+    });
+    return repository.save(run);
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {
