@@ -1,0 +1,273 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import {
+  createTaskApiClient,
+  TaskApiClientError,
+  type TaskApiFetch,
+  type TaskApiRequestInit,
+} from "./client.js";
+
+const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const projectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+const trustedUserId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+
+test("createTaskApiClient fetches health without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single({ status: "ok", service: "api", version: "0.0.0" }));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example/api/",
+    fetch: fetcher.fetch,
+  });
+
+  assert.deepEqual(await client.getHealth(), {
+    status: "ok",
+    service: "api",
+    version: "0.0.0",
+  });
+  assert.equal(fetcher.calls[0]?.url, "https://task.example/api/health");
+  assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], undefined);
+});
+
+test("createTaskApiClient sends trusted user context for workspace requests", async () => {
+  const fetcher = new RecordingFetch(single([workspaceSummary()]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.listWorkspaces(), [workspaceSummary()]);
+  assert.equal(fetcher.calls[0]?.url, "https://task.example/workspaces");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+});
+
+test("createTaskApiClient builds project-scoped endpoint paths", async () => {
+  const fetcher = new RecordingFetch(single([taskSummary()]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.listTasks({ projectId, workspaceId }), [taskSummary()]);
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks`,
+  );
+});
+
+test("createTaskApiClient validates supported list responses", async () => {
+  const fetcher = new RecordingFetch(
+    sequence([[projectSummary()], [taskSkillSummary()], [workspaceStatus()]]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.listProjects({ workspaceId }), [projectSummary()]);
+  assert.deepEqual(await client.listTaskSkills({ workspaceId }), [taskSkillSummary()]);
+  assert.deepEqual(await client.listStatuses({ workspaceId }), [workspaceStatus()]);
+});
+
+test("createTaskApiClient rejects protected requests without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single([]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+  });
+
+  await assert.rejects(() => client.listWorkspaces(), {
+    message: "Task API trustedUserId is required for workspace requests.",
+    name: "TaskApiClientError",
+    status: null,
+  });
+  assert.equal(fetcher.calls.length, 0);
+});
+
+test("createTaskApiClient throws typed errors for non-2xx responses", async () => {
+  const fetcher = new RecordingFetch(single([]), {
+    ok: false,
+    status: 403,
+    text: "Forbidden",
+  });
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await assert.rejects(
+    async () => client.listWorkspaces(),
+    (error: unknown): boolean => {
+      assert.ok(error instanceof TaskApiClientError);
+      assert.equal(error.message, "Task API request failed with status 403.");
+      assert.equal(error.status, 403);
+      assert.equal(error.responseBody, "Forbidden");
+      return true;
+    },
+  );
+});
+
+test("createTaskApiClient rejects malformed success responses", async () => {
+  const fetcher = new RecordingFetch(single([{ id: workspaceId }]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await assert.rejects(() => client.listWorkspaces(), {
+    message: "Task API returned malformed workspace summary list.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
+});
+
+type FetchCall = {
+  init: TaskApiRequestInit;
+  url: string;
+};
+
+type MockResponseOptions = {
+  ok?: boolean;
+  status?: number;
+  statusText?: string;
+  text?: string;
+};
+
+class RecordingFetch {
+  readonly calls: FetchCall[] = [];
+  private responseIndex = 0;
+
+  constructor(
+    private readonly bodies: RecordedBodies,
+    private readonly options: MockResponseOptions = {},
+  ) {}
+
+  readonly fetch: TaskApiFetch = async (url: string, init: TaskApiRequestInit) => {
+    this.calls.push({ url, init });
+
+    return {
+      json: async (): Promise<unknown> => this.readBody(),
+      ok: this.options.ok ?? true,
+      status: this.options.status ?? 200,
+      statusText: this.options.statusText ?? "OK",
+      text: async (): Promise<string> => this.options.text ?? "",
+    };
+  };
+
+  private readBody(): unknown {
+    if (this.bodies.kind === "single") {
+      return this.bodies.body;
+    }
+
+    const body = this.bodies.bodies[this.responseIndex];
+    this.responseIndex += 1;
+
+    if (body === undefined) {
+      throw new Error("No recorded response body for fetch call.");
+    }
+
+    return body;
+  }
+}
+
+type RecordedBodies =
+  | {
+      body: unknown;
+      kind: "single";
+    }
+  | {
+      bodies: unknown[];
+      kind: "sequence";
+    };
+
+function single(body: unknown): RecordedBodies {
+  return {
+    body,
+    kind: "single",
+  };
+}
+
+function sequence(bodies: unknown[]): RecordedBodies {
+  return {
+    bodies,
+    kind: "sequence",
+  };
+}
+
+function workspaceSummary(): unknown {
+  return {
+    id: workspaceId,
+    name: "Studio",
+    slug: "studio",
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function projectSummary(): unknown {
+  return {
+    id: projectId,
+    workspaceId,
+    title: "Album release",
+    description: null,
+    status: "active",
+    position: "1000",
+    createdByUserId: trustedUserId,
+    archivedAt: null,
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function taskSummary(): unknown {
+  return {
+    id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    workspaceId,
+    projectId,
+    parentTaskId: null,
+    title: "Intro",
+    description: null,
+    statusId: null,
+    assigneeUserId: null,
+    createdByUserId: trustedUserId,
+    position: "1000",
+    dueAt: null,
+    sourceSkillId: null,
+    sourceSkillVersionId: null,
+    metadata: {},
+    archivedAt: null,
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function taskSkillSummary(): unknown {
+  return {
+    id: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+    workspaceId,
+    name: "Song",
+    description: null,
+    aliases: ["track"],
+    createdByUserId: trustedUserId,
+    archivedAt: null,
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function workspaceStatus(): unknown {
+  return {
+    id: "ffffffff-ffff-4fff-8fff-ffffffffffff",
+    workspaceId,
+    name: "In progress",
+    color: "#3b82f6",
+    position: "1000",
+    isDone: false,
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
