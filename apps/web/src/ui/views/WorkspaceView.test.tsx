@@ -4,6 +4,8 @@ import type { components } from "@task/api-client";
 import {
   buildKanbanColumns,
   buildKanbanSummary,
+  buildMatrixColumns,
+  buildMatrixSummary,
   buildMyTaskRows,
   buildMyTaskSummary,
   buildProjectOverviewRows,
@@ -25,6 +27,9 @@ const secondProjectId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
 const firstStatusId = "44444444-4444-4444-8444-444444444444";
 const secondStatusId = "55555555-5555-4555-8555-555555555555";
 const unknownStatusId = "66666666-6666-4666-8666-666666666666";
+const firstParentTaskId = "77777777-7777-4777-8777-777777777777";
+const secondParentTaskId = "88888888-8888-4888-8888-888888888888";
+const unmatchedParentTaskId = "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee";
 
 test("buildKanbanColumns orders statuses and groups known, unknown, and unset tasks", () => {
   assert.deepEqual(
@@ -124,6 +129,95 @@ test("buildKanbanSummary counts columns, done tasks, and unset tasks", () => {
       doneTaskCount: 1,
       taskCount: 4,
       unsetTaskCount: 1,
+    },
+  );
+});
+
+test("buildMatrixColumns orders parents and groups child tasks", () => {
+  assert.deepEqual(
+    buildMatrixColumns([
+      taskSummary({
+        id: secondParentTaskId,
+        position: "2000",
+        title: "Song B",
+        updatedAt: "2026-07-05T10:00:00.000Z",
+      }),
+      taskSummary({
+        id: firstParentTaskId,
+        position: "1000",
+        title: "Song A",
+        updatedAt: "2026-07-04T10:00:00.000Z",
+      }),
+      taskSummary({
+        id: "11111111-1111-4111-8111-111111111111",
+        parentTaskId: firstParentTaskId,
+        position: "2000",
+        title: "Mix",
+      }),
+      taskSummary({
+        id: "22222222-2222-4222-8222-222222222222",
+        parentTaskId: firstParentTaskId,
+        position: "1000",
+        title: "Record",
+      }),
+      taskSummary({
+        id: "33333333-3333-4333-8333-333333333333",
+        parentTaskId: unmatchedParentTaskId,
+        title: "Lost subtask",
+      }),
+    ]).map((column) => ({
+      childCount: column.childCount,
+      id: column.id,
+      title: column.title,
+      cellTitles: column.cells.map((cell) => cell.title),
+    })),
+    [
+      {
+        cellTitles: ["Record", "Mix"],
+        childCount: 2,
+        id: firstParentTaskId,
+        title: "Song A",
+      },
+      {
+        cellTitles: [],
+        childCount: 0,
+        id: secondParentTaskId,
+        title: "Song B",
+      },
+      {
+        cellTitles: ["Lost subtask"],
+        childCount: 1,
+        id: "unmatched-parent",
+        title: "Unmatched parent",
+      },
+    ],
+  );
+});
+
+test("buildMatrixSummary counts parent, child, due, and unassigned tasks", () => {
+  assert.deepEqual(
+    buildMatrixSummary([
+      taskSummary({
+        assigneeUserId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        dueAt: "2026-07-09T10:00:00.000Z",
+        id: firstParentTaskId,
+      }),
+      taskSummary({
+        assigneeUserId: null,
+        id: "11111111-1111-4111-8111-111111111111",
+        parentTaskId: firstParentTaskId,
+      }),
+      taskSummary({
+        dueAt: "2026-07-10T10:00:00.000Z",
+        id: "22222222-2222-4222-8222-222222222222",
+        parentTaskId: unmatchedParentTaskId,
+      }),
+    ]),
+    {
+      dueTaskCount: 2,
+      parentTaskCount: 1,
+      subtaskCount: 2,
+      unassignedTaskCount: 2,
     },
   );
 });

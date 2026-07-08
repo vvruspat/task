@@ -34,6 +34,10 @@ export default function WorkspaceView({
     return <KanbanView projects={projects} statuses={statuses} tasks={tasks} />;
   }
 
+  if (route.id === "matrix") {
+    return <MatrixView tasks={tasks} />;
+  }
+
   if (route.id === "projects") {
     return <ProjectsView projects={projects} tasks={tasks} />;
   }
@@ -155,6 +159,29 @@ export type KanbanSummary = {
   doneTaskCount: number;
   taskCount: number;
   unsetTaskCount: number;
+};
+
+export type MatrixCell = {
+  assigneeLabel: string;
+  dueDateLabel: string;
+  id: string;
+  title: string;
+  updatedAtLabel: string;
+};
+
+export type MatrixColumn = {
+  childCount: number;
+  id: string;
+  title: string;
+  updatedAtLabel: string;
+  cells: MatrixCell[];
+};
+
+export type MatrixSummary = {
+  dueTaskCount: number;
+  parentTaskCount: number;
+  subtaskCount: number;
+  unassignedTaskCount: number;
 };
 
 export type ProjectOverviewSummary = {
@@ -280,6 +307,55 @@ export function buildKanbanSummary(
     ).length,
     taskCount: tasks.length,
     unsetTaskCount: tasks.filter((task) => !hasStatusValue(task.statusId)).length,
+  };
+}
+
+export function buildMatrixColumns(tasks: TaskSummary[]): MatrixColumn[] {
+  const parentTasks = [...tasks]
+    .filter((task) => !hasParentTaskValue(task.parentTaskId))
+    .sort(compareTaskPosition);
+  const parentTaskIds = new Set(parentTasks.map((task) => task.id));
+  const columns = parentTasks.map((parentTask) => {
+    const childTasks = tasks
+      .filter((task) => task.parentTaskId === parentTask.id)
+      .sort(compareTaskPosition);
+
+    return {
+      cells: buildMatrixCells(childTasks),
+      childCount: childTasks.length,
+      id: parentTask.id,
+      title: parentTask.title,
+      updatedAtLabel: formatDateLabel(parentTask.updatedAt),
+    };
+  });
+  const unmatchedTasks = tasks
+    .filter(
+      (task) => hasParentTaskValue(task.parentTaskId) && !parentTaskIds.has(task.parentTaskId),
+    )
+    .sort(compareTaskPosition);
+
+  if (unmatchedTasks.length > 0) {
+    columns.push({
+      cells: buildMatrixCells(unmatchedTasks),
+      childCount: unmatchedTasks.length,
+      id: "unmatched-parent",
+      title: "Unmatched parent",
+      updatedAtLabel: readLatestTaskUpdateLabel(unmatchedTasks),
+    });
+  }
+
+  return columns;
+}
+
+export function buildMatrixSummary(tasks: TaskSummary[]): MatrixSummary {
+  const parentTasks = tasks.filter((task) => !hasParentTaskValue(task.parentTaskId));
+  const subtaskCount = tasks.length - parentTasks.length;
+
+  return {
+    dueTaskCount: countDueSoonTasks(tasks),
+    parentTaskCount: parentTasks.length,
+    subtaskCount,
+    unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
   };
 }
 
@@ -437,6 +513,82 @@ function KanbanView({
           <div>
             <dt>Unset</dt>
             <dd>{summary.unsetTaskCount}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  );
+}
+
+function MatrixView({ tasks }: { tasks: TaskSummary[] }): ReactElement {
+  const columns = buildMatrixColumns(tasks);
+  const summary = buildMatrixSummary(tasks);
+
+  return (
+    <div className="content-grid">
+      <section className="panel wide-panel" aria-labelledby="matrix-view-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Matrix</p>
+            <h3 id="matrix-view-title">Parent task grid</h3>
+          </div>
+        </div>
+
+        <div className="matrix-grid">
+          {columns.map((column) => (
+            <section
+              className="matrix-column"
+              key={column.id}
+              aria-labelledby={`${column.id}-title`}
+            >
+              <div className="matrix-column-header">
+                <h4 id={`${column.id}-title`}>{column.title}</h4>
+                <span>{column.childCount} subtasks</span>
+                <time dateTime={column.updatedAtLabel}>{column.updatedAtLabel}</time>
+              </div>
+              <div className="matrix-cell-list">
+                {column.cells.map((cell) => (
+                  <article className="matrix-cell" key={cell.id}>
+                    <h5>{cell.title}</h5>
+                    <div>
+                      <span>{cell.assigneeLabel}</span>
+                      <span>{cell.dueDateLabel}</span>
+                      <time dateTime={cell.updatedAtLabel}>{cell.updatedAtLabel}</time>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel" aria-labelledby="matrix-summary-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Summary</p>
+            <h3 id="matrix-summary-title">Task tree</h3>
+          </div>
+        </div>
+        <p className="agent-line">
+          Columns use parent and subtask relationships from loaded tasks.
+        </p>
+        <dl className="metric-list">
+          <div>
+            <dt>Parents</dt>
+            <dd>{summary.parentTaskCount}</dd>
+          </div>
+          <div>
+            <dt>Subtasks</dt>
+            <dd>{summary.subtaskCount}</dd>
+          </div>
+          <div>
+            <dt>Due</dt>
+            <dd>{summary.dueTaskCount}</dd>
+          </div>
+          <div>
+            <dt>Unassigned</dt>
+            <dd>{summary.unassignedTaskCount}</dd>
           </div>
         </dl>
       </section>
@@ -695,6 +847,38 @@ function buildKanbanTaskCards(projects: ProjectSummary[], tasks: TaskSummary[]):
     }));
 }
 
+function buildMatrixCells(tasks: TaskSummary[]): MatrixCell[] {
+  return tasks.map((task) => ({
+    assigneeLabel: isTaskUnassigned(task) ? "Unassigned" : "Assigned",
+    dueDateLabel: formatOptionalDateLabel(task.dueAt),
+    id: task.id,
+    title: task.title,
+    updatedAtLabel: formatDateLabel(task.updatedAt),
+  }));
+}
+
+function readLatestTaskUpdateLabel(tasks: TaskSummary[]): string {
+  const latestUpdate = tasks.reduce<string | null>(
+    (currentLatest, task) =>
+      currentLatest === null ? task.updatedAt : maxIsoTimestamp(currentLatest, task.updatedAt),
+    null,
+  );
+
+  return latestUpdate === null ? "Unknown" : formatDateLabel(latestUpdate);
+}
+
+function compareTaskPosition(firstTask: TaskSummary, secondTask: TaskSummary): number {
+  const positionComparison = firstTask.position.localeCompare(secondTask.position, "en", {
+    numeric: true,
+  });
+
+  if (positionComparison !== 0) {
+    return positionComparison;
+  }
+
+  return firstTask.updatedAt.localeCompare(secondTask.updatedAt);
+}
+
 function compareStatusPosition(
   firstStatus: WorkspaceStatus,
   secondStatus: WorkspaceStatus,
@@ -731,6 +915,10 @@ function hasTextValue(value: string | null | undefined): value is string {
 }
 
 function hasStatusValue(value: string | null | undefined): value is string {
+  return value !== null && value !== undefined;
+}
+
+function hasParentTaskValue(value: string | null | undefined): value is string {
   return value !== null && value !== undefined;
 }
 
