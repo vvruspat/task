@@ -34,6 +34,21 @@ export type ConfirmationRequestCancelResult =
       status: "confirmation_request_not_found";
     };
 
+export type ConfirmationRequestConfirmResult =
+  | {
+      status: "confirmed";
+      confirmationRequest: ConfirmationRequestDetail;
+    }
+  | {
+      status: "workspace_not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "confirmation_request_not_found";
+    };
+
 export type ConfirmationRequestsStore = {
   listPendingForWorkspace(
     workspaceId: string,
@@ -54,4 +69,9 @@ export type ConfirmationRequestsStore = {
     confirmationRequestId: string,
     userId: string,
   ): Promise<ConfirmationRequestCancelResult>;
+  confirmForWorkspace(
+    workspaceId: string,
+    confirmationRequestId: string,
+    userId: string,
+  ): Promise<ConfirmationRequestConfirmResult>;
 };

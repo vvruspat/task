@@ -1743,6 +1743,61 @@
         "tags": ["confirmations"]
       }
     },
+    "/workspaces/{workspaceId}/confirmations/{confirmationRequestId}/confirm": {
+      "patch": {
+        "operationId": "ConfirmationsController_confirmConfirmationRequest",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "confirmationRequestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmationRequestDetailDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot confirm confirmation requests in this workspace."
+          },
+          "404": {
+            "description": "Workspace or pending confirmation request is missing or not visible."
+          }
+        },
+        "summary": "Confirm one pending confirmation request",
+        "tags": ["confirmations"]
+      }
+    },
     "/internal/telegram/context/resolve": {
       "post": {
         "operationId": "TelegramController_resolveContext",
