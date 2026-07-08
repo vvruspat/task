@@ -631,6 +631,45 @@ h1 {
   white-space: nowrap;
 }
 
+.agent-history-list {
+  display: grid;
+}
+
+.agent-history-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 130px;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 0;
+  border-top: 1px solid #ece6dc;
+}
+
+.agent-history-row h4 {
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+
+.agent-history-row p {
+  overflow: hidden;
+  margin-bottom: 0;
+  color: #59645e;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agent-history-row > span {
+  justify-self: end;
+  min-width: 0;
+  overflow: hidden;
+  color: #2d3a33;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .settings-workspace-list {
   display: grid;
 }
@@ -877,6 +916,14 @@ h1 {
     grid-auto-flow: row;
     grid-template-columns: 1fr;
     overflow-x: visible;
+  }
+
+  .agent-history-row {
+    grid-template-columns: 1fr;
+  }
+
+  .agent-history-row > span {
+    justify-self: start;
   }
 
   .settings-workspace-row {

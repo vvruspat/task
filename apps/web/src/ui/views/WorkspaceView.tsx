@@ -57,6 +57,20 @@ export default function WorkspaceView({
     return <TemplatesView skills={skills} />;
   }
 
+  if (route.id === "agent") {
+    return (
+      <AgentHistoryView
+        projects={projects}
+        selectedProjectId={selectedProjectId}
+        selectedWorkspaceId={selectedWorkspaceId}
+        skills={skills}
+        statuses={statuses}
+        tasks={tasks}
+        workspaces={workspaces}
+      />
+    );
+  }
+
   if (route.id === "settings") {
     return (
       <SettingsView
@@ -220,6 +234,16 @@ export type SettingsSummary = {
   statusCount: number;
   taskCount: number;
   workspaceCount: number;
+};
+
+export type AgentHistorySummary = {
+  projectCount: number;
+  runCount: number;
+  selectedProjectLabel: string;
+  selectedWorkspaceLabel: string;
+  skillCount: number;
+  statusCount: number;
+  taskCount: number;
 };
 
 export type ProjectOverviewSummary = {
@@ -427,6 +451,30 @@ export function buildSettingsSummary(input: {
     statusCount: input.statuses.length,
     taskCount: input.tasks.length,
     workspaceCount: input.workspaces.length,
+  };
+}
+
+export function buildAgentHistorySummary(input: {
+  projects: ProjectSummary[];
+  selectedProjectId: string | null;
+  selectedWorkspaceId: string | null;
+  skills: TaskSkillSummary[];
+  statuses: WorkspaceStatus[];
+  tasks: TaskSummary[];
+  workspaces: WorkspaceSummary[];
+}): AgentHistorySummary {
+  return {
+    projectCount: input.projects.length,
+    runCount: 0,
+    selectedProjectLabel:
+      input.projects.find((project) => project.id === input.selectedProjectId)?.title ??
+      "No selected project",
+    selectedWorkspaceLabel:
+      input.workspaces.find((workspace) => workspace.id === input.selectedWorkspaceId)?.name ??
+      "No selected workspace",
+    skillCount: input.skills.length,
+    statusCount: input.statuses.length,
+    taskCount: input.tasks.length,
   };
 }
 
@@ -864,6 +912,105 @@ function TemplatesView({ skills }: { skills: TaskSkillSummary[] }): ReactElement
           <div>
             <dt>No description</dt>
             <dd>{summary.skillsWithoutDescriptionCount}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  );
+}
+
+function AgentHistoryView({
+  projects,
+  selectedProjectId,
+  selectedWorkspaceId,
+  skills,
+  statuses,
+  tasks,
+  workspaces,
+}: {
+  projects: ProjectSummary[];
+  selectedProjectId: string | null;
+  selectedWorkspaceId: string | null;
+  skills: TaskSkillSummary[];
+  statuses: WorkspaceStatus[];
+  tasks: TaskSummary[];
+  workspaces: WorkspaceSummary[];
+}): ReactElement {
+  const summary = buildAgentHistorySummary({
+    projects,
+    selectedProjectId,
+    selectedWorkspaceId,
+    skills,
+    statuses,
+    tasks,
+    workspaces,
+  });
+
+  return (
+    <div className="content-grid">
+      <section className="panel wide-panel" aria-labelledby="agent-history-view-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Agent</p>
+            <h3 id="agent-history-view-title">Agent run audit</h3>
+          </div>
+        </div>
+
+        <div className="agent-history-list">
+          <article className="agent-history-row">
+            <div>
+              <h4>Selected workspace</h4>
+              <p>{summary.selectedWorkspaceLabel}</p>
+            </div>
+            <span>{summary.projectCount} projects</span>
+          </article>
+          <article className="agent-history-row">
+            <div>
+              <h4>Selected project</h4>
+              <p>{summary.selectedProjectLabel}</p>
+            </div>
+            <span>{summary.taskCount} tasks</span>
+          </article>
+          <article className="agent-history-row">
+            <div>
+              <h4>Available tools context</h4>
+              <p>
+                {summary.skillCount} skills, {summary.statusCount} statuses
+              </p>
+            </div>
+            <span>No runs loaded</span>
+          </article>
+        </div>
+      </section>
+
+      <section className="panel" aria-labelledby="agent-history-summary-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Summary</p>
+            <h3 id="agent-history-summary-title">Audit load</h3>
+          </div>
+        </div>
+        <p className="agent-line">No agent runs loaded for this workspace.</p>
+        <dl className="metric-list">
+          <div>
+            <dt>Runs</dt>
+            <dd>{summary.runCount}</dd>
+          </div>
+          <div>
+            <dt>Projects</dt>
+            <dd>{summary.projectCount}</dd>
+          </div>
+          <div>
+            <dt>Tasks</dt>
+            <dd>{summary.taskCount}</dd>
+          </div>
+          <div>
+            <dt>Skills</dt>
+            <dd>{summary.skillCount}</dd>
+          </div>
+          <div>
+            <dt>Statuses</dt>
+            <dd>{summary.statusCount}</dd>
           </div>
         </dl>
       </section>
