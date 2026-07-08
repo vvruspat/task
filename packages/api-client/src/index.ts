@@ -1,6 +1,8 @@
 export const apiClientPackageName = "@task/api-client";
 
 export {
+  type CreateTaskInput,
+  type CreateTaskRequestInput,
   createTaskApiClient,
   type HealthResponse,
   type ProjectScopedInput,
@@ -12,6 +14,7 @@ export {
   type TaskApiRequestHeaders,
   type TaskApiRequestInit,
   type TaskApiResponse,
+  type TaskDetail,
   type TaskSkillSummary,
   type TaskSummary,
   type WorkspaceScopedInput,

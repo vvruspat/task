@@ -56,6 +56,36 @@ test("createTaskApiClient builds project-scoped endpoint paths", async () => {
   );
 });
 
+test("createTaskApiClient posts task creation payloads with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(taskSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const body = {
+    description: "Open the release.",
+    dueAt: "2026-07-18T10:00:00.000Z",
+    metadata: {
+      source: "web",
+    },
+    parentTaskId: null,
+    position: "1000",
+    title: "Intro",
+  };
+
+  assert.deepEqual(await client.createTask({ body, projectId, workspaceId }), taskSummary());
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "POST");
+  assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
+});
+
 test("createTaskApiClient validates supported list responses", async () => {
   const fetcher = new RecordingFetch(
     sequence([[projectSummary()], [taskSkillSummary()], [workspaceStatus()]]),
@@ -86,6 +116,24 @@ test("createTaskApiClient rejects protected requests without trusted user contex
   assert.equal(fetcher.calls.length, 0);
 });
 
+test("createTaskApiClient rejects task creation without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(taskSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+  });
+
+  await assert.rejects(
+    () => client.createTask({ body: { title: "Intro" }, projectId, workspaceId }),
+    {
+      message: "Task API trustedUserId is required for workspace requests.",
+      name: "TaskApiClientError",
+      status: null,
+    },
+  );
+  assert.equal(fetcher.calls.length, 0);
+});
+
 test("createTaskApiClient throws typed errors for non-2xx responses", async () => {
   const fetcher = new RecordingFetch(single([]), {
     ok: false,
@@ -111,7 +159,7 @@ test("createTaskApiClient throws typed errors for non-2xx responses", async () =
 });
 
 test("createTaskApiClient rejects malformed success responses", async () => {
-  const fetcher = new RecordingFetch(single([{ id: workspaceId }]));
+  const fetcher = new RecordingFetch(sequence([[{ id: workspaceId }], { id: workspaceId }]));
   const client = createTaskApiClient({
     baseUrl: "https://task.example",
     fetch: fetcher.fetch,
@@ -123,6 +171,14 @@ test("createTaskApiClient rejects malformed success responses", async () => {
     name: "TaskApiClientError",
     status: 200,
   });
+  await assert.rejects(
+    () => client.createTask({ body: { title: "Intro" }, projectId, workspaceId }),
+    {
+      message: "Task API returned malformed task detail.",
+      name: "TaskApiClientError",
+      status: 200,
+    },
+  );
 });
 
 type FetchCall = {

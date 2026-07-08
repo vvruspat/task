@@ -3,6 +3,7 @@ import test from "node:test";
 import type {
   ProjectSummary,
   TaskApiClient,
+  TaskDetail,
   TaskSkillSummary,
   TaskSummary,
   WorkspaceStatus,
@@ -129,6 +130,10 @@ class RecordingTaskApiClient implements TaskApiClient {
   readonly calls: string[] = [];
 
   constructor(private readonly data: ApiData) {}
+
+  async createTask(): Promise<TaskDetail> {
+    throw new Error("createTask is not used by the web shell loader.");
+  }
 
   async getHealth(): Promise<never> {
     throw new Error("getHealth is not used by the web shell loader.");
