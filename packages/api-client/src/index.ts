@@ -1,3 +1,21 @@
 export const apiClientPackageName = "@task/api-client";
 
+export {
+  createTaskApiClient,
+  type HealthResponse,
+  type ProjectScopedInput,
+  type ProjectSummary,
+  type TaskApiClient,
+  TaskApiClientError,
+  type TaskApiClientOptions,
+  type TaskApiFetch,
+  type TaskApiRequestHeaders,
+  type TaskApiRequestInit,
+  type TaskApiResponse,
+  type TaskSkillSummary,
+  type TaskSummary,
+  type WorkspaceScopedInput,
+  type WorkspaceStatus,
+  type WorkspaceSummary,
+} from "./client.js";
 export type { components, operations, paths } from "./generated/openapi.js";

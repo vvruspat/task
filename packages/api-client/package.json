@@ -21,7 +21,7 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node -e \"console.log('No tests yet for @task/api-client')\"",
+    "test": "npm run build && node --test \"dist/**/*.test.js\"",
     "generate:api-client": "openapi-typescript ../../apps/api/openapi/openapi.json -o src/generated/openapi.ts && biome format --write src/generated/openapi.ts"
   },
   "devDependencies": {
