@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import type {
+  CloneTaskSkillInput,
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   UpdateTaskSkillDefinitionInput,
@@ -59,6 +60,33 @@ export class TaskSkillsService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot create task skills in this workspace.");
+    }
+
+    if (result.status === "duplicate_name") {
+      throw new BadRequestException("Task skill name already exists in this workspace.");
+    }
+
+    return new TaskSkillDetailDto(result.taskSkill);
+  }
+
+  async cloneTaskSkill(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: CloneTaskSkillInput,
+  ): Promise<TaskSkillDetailDto> {
+    const result = await this.readStore.cloneForWorkspace(workspaceId, taskSkillId, userId, input);
+
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    if (result.status === "task_skill_not_found") {
+      throw new NotFoundException("Task skill was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot clone task skills in this workspace.");
     }
 
     if (result.status === "duplicate_name") {

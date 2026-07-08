@@ -15,13 +15,16 @@ import {
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
 import type {
+  CloneTaskSkillInput,
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   UpdateTaskSkillDefinitionInput,
   UpdateTaskSkillMetadataInput,
 } from "./task-skills.contracts.js";
 import {
+  CloneTaskSkillDto,
   CreateTaskSkillDto,
+  ParseCloneTaskSkillBodyPipe,
   ParseCreateTaskSkillBodyPipe,
   ParsePreviewTaskSkillApplyBodyPipe,
   ParseUpdateTaskSkillDefinitionBodyPipe,
@@ -73,6 +76,28 @@ export class TaskSkillsController {
     @Body(new ParseCreateTaskSkillBodyPipe()) input: CreateTaskSkillInput,
   ): Promise<TaskSkillDetailDto> {
     return this.taskSkillsService.createTaskSkill(workspaceId, userId, input);
+  }
+
+  @Post(":taskSkillId/clone")
+  @ApiOperation({ summary: "Clone one active task skill" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "taskSkillId" })
+  @ApiBody({ type: CloneTaskSkillDto })
+  @ApiCreatedResponse({ type: TaskSkillDetailDto })
+  @ApiBadRequestResponse({ description: "Task skill clone payload is invalid." })
+  @ApiForbiddenResponse({
+    description: "Current user cannot clone task skills in this workspace.",
+  })
+  @ApiNotFoundResponse({
+    description: "Workspace or active task skill is missing or not visible to the current user.",
+  })
+  cloneTaskSkill(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("taskSkillId", uuidV4Pipe) taskSkillId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseCloneTaskSkillBodyPipe()) input: CloneTaskSkillInput,
+  ): Promise<TaskSkillDetailDto> {
+    return this.taskSkillsService.cloneTaskSkill(workspaceId, taskSkillId, userId, input);
   }
 
   @Get(":taskSkillId")

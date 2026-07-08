@@ -14,6 +14,7 @@ import {
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import type { TaskDetail } from "../tasks/tasks.contracts.js";
 import type {
+  CloneTaskSkillInput,
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   TaskSkillApplyPreview,
@@ -29,6 +30,7 @@ import type {
   TaskSkillApplyForWorkspaceResult,
   TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
+  TaskSkillCloneResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
   TaskSkillMetadataUpdateResult,
@@ -169,6 +171,100 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
     });
 
     return { status: "created", taskSkill: created };
+  }
+
+  async cloneForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: CloneTaskSkillInput,
+  ): Promise<TaskSkillCloneResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null) {
+      return { status: "workspace_not_found" };
+    }
+
+    if (!taskSkillWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const skillRepository = dataSource.getRepository(TaskSkillEntity);
+    const sourceSkill = await skillRepository.findOneBy({
+      archivedAt: IsNull(),
+      id: taskSkillId,
+      workspaceId,
+    });
+
+    if (sourceSkill === null) {
+      return { status: "task_skill_not_found" };
+    }
+
+    const existingSkill = await skillRepository.findOneBy({
+      name: input.name,
+      workspaceId,
+    });
+
+    if (existingSkill !== null) {
+      return { status: "duplicate_name" };
+    }
+
+    const latestVersion = await dataSource.getRepository(TaskSkillVersionEntity).findOne({
+      where: { taskSkillId, workspaceId },
+      order: { version: "DESC", createdAt: "DESC" },
+    });
+
+    if (latestVersion === null) {
+      return { status: "task_skill_not_found" };
+    }
+
+    const cloned = await dataSource.transaction(async (manager): Promise<TaskSkillDetail> => {
+      const transactionalSkillRepository = manager.getRepository(TaskSkillEntity);
+      const versionRepository = manager.getRepository(TaskSkillVersionEntity);
+      const skill = transactionalSkillRepository.create({
+        workspaceId,
+        name: input.name,
+        description: input.description === undefined ? sourceSkill.description : input.description,
+        aliases: input.aliases === undefined ? sourceSkill.aliases : input.aliases,
+        createdByUserId: userId,
+      });
+      const savedSkill = await transactionalSkillRepository.save(skill);
+      const version = versionRepository.create({
+        workspaceId,
+        taskSkillId: savedSkill.id,
+        version: 1,
+        definition: latestVersion.definition,
+        createdByUserId: userId,
+      });
+      const savedVersion = await versionRepository.save(version);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task_skill.cloned",
+        entityType: "task_skill",
+        entityId: savedSkill.id,
+        payload: {
+          name: savedSkill.name,
+          sourceTaskSkillId: sourceSkill.id,
+          sourceTaskSkillVersionId: latestVersion.id,
+          sourceTaskSkillVersion: latestVersion.version,
+          version: savedVersion.version,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return {
+        ...toTaskSkillSummary(savedSkill),
+        versions: [toTaskSkillVersionSummary(savedVersion)],
+      };
+    });
+
+    return { status: "cloned", taskSkill: cloned };
   }
 
   async updateMetadataForWorkspace(

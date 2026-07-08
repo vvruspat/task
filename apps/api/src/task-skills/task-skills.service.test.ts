@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import type {
+  CloneTaskSkillInput,
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   TaskSkillApplyPreview,
@@ -17,6 +18,7 @@ import type {
   TaskSkillApplyForWorkspaceResult,
   TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
+  TaskSkillCloneResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
   TaskSkillMetadataUpdateResult,
@@ -94,6 +96,12 @@ const createInput: CreateTaskSkillInput = {
   definition: {
     subtasks: [{ title: "Lyrics" }],
   },
+};
+
+const cloneInput: CloneTaskSkillInput = {
+  name: "Song copy",
+  description: null,
+  aliases: ["copy"],
 };
 
 const metadataUpdateInput: UpdateTaskSkillMetadataInput = {
@@ -214,6 +222,18 @@ test("TaskSkillsService creates task skills for writable workspace members", asy
   assert.equal(response.versions[0]?.version, 1);
 });
 
+test("TaskSkillsService clones task skills for writable workspace members", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ cloneResult: { status: "cloned", taskSkill: taskSkillDetail } }),
+  );
+
+  const response = await service.cloneTaskSkill(workspaceId, skillId, userId, cloneInput);
+
+  assert.ok(response instanceof TaskSkillDetailDto);
+  assert.equal(response.id, taskSkillDetail.id);
+  assert.equal(response.versions[0]?.version, 1);
+});
+
 test("TaskSkillsService updates task skill metadata for writable workspace members", async () => {
   const service = new TaskSkillsService(
     createReadStore({
@@ -326,6 +346,17 @@ test("TaskSkillsService hides missing task skills during metadata updates", asyn
   );
 });
 
+test("TaskSkillsService hides missing task skills during clones", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ cloneResult: { status: "task_skill_not_found" } }),
+  );
+
+  await assert.rejects(
+    () => service.cloneTaskSkill(workspaceId, skillId, userId, cloneInput),
+    NotFoundException,
+  );
+});
+
 test("TaskSkillsService hides missing task skills during definition updates", async () => {
   const service = new TaskSkillsService(
     createReadStore({ definitionUpdateResult: { status: "task_skill_not_found" } }),
@@ -403,6 +434,7 @@ test("TaskSkillsService hides missing or inaccessible workspaces", async () => {
   const service = new TaskSkillsService(
     createReadStore({
       archiveResult: { status: "workspace_not_found" },
+      cloneResult: { status: "workspace_not_found" },
       createResult: { status: "workspace_not_found" },
       definitionUpdateResult: { status: "workspace_not_found" },
       metadataUpdateResult: { status: "workspace_not_found" },
@@ -415,6 +447,10 @@ test("TaskSkillsService hides missing or inaccessible workspaces", async () => {
   await assert.rejects(() => service.getTaskSkill(workspaceId, skillId, userId), NotFoundException);
   await assert.rejects(
     () => service.createTaskSkill(workspaceId, userId, createInput),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () => service.cloneTaskSkill(workspaceId, skillId, userId, cloneInput),
     NotFoundException,
   );
   await assert.rejects(
@@ -436,6 +472,15 @@ test("TaskSkillsService rejects task skill creation without write permission", a
 
   await assert.rejects(
     () => service.createTaskSkill(workspaceId, userId, createInput),
+    ForbiddenException,
+  );
+});
+
+test("TaskSkillsService rejects task skill clones without write permission", async () => {
+  const service = new TaskSkillsService(createReadStore({ cloneResult: { status: "forbidden" } }));
+
+  await assert.rejects(
+    () => service.cloneTaskSkill(workspaceId, skillId, userId, cloneInput),
     ForbiddenException,
   );
 });
@@ -484,6 +529,17 @@ test("TaskSkillsService rejects duplicate task skill names", async () => {
   );
 });
 
+test("TaskSkillsService rejects duplicate task skill names during clones", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ cloneResult: { status: "duplicate_name" } }),
+  );
+
+  await assert.rejects(
+    () => service.cloneTaskSkill(workspaceId, skillId, userId, cloneInput),
+    BadRequestException,
+  );
+});
+
 test("TaskSkillsService rejects duplicate task skill names during metadata updates", async () => {
   const service = new TaskSkillsService(
     createReadStore({ metadataUpdateResult: { status: "duplicate_name" } }),
@@ -499,6 +555,7 @@ function createReadStore(options: {
   archiveResult?: TaskSkillArchiveResult;
   applyResult?: TaskSkillApplyForWorkspaceResult;
   applyPreviewResult?: TaskSkillApplyPreviewResult;
+  cloneResult?: TaskSkillCloneResult;
   createResult?: TaskSkillCreateResult;
   definitionUpdateResult?: TaskSkillDefinitionUpdateResult;
   metadataUpdateResult?: TaskSkillMetadataUpdateResult;
@@ -514,6 +571,8 @@ function createReadStore(options: {
       options.applyPreviewResult ?? { status: "not_found" },
     applyForWorkspace: async (): Promise<TaskSkillApplyForWorkspaceResult> =>
       options.applyResult ?? { status: "not_found" },
+    cloneForWorkspace: async (): Promise<TaskSkillCloneResult> =>
+      options.cloneResult ?? { status: "workspace_not_found" },
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
     updateDefinitionForWorkspace: async (): Promise<TaskSkillDefinitionUpdateResult> =>

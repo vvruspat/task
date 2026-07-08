@@ -228,6 +228,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/task-skills/{taskSkillId}/clone": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Clone one active task skill */
+    post: operations["TaskSkillsController_cloneTaskSkill"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/task-skills/{taskSkillId}": {
     parameters: {
       query?: never;
@@ -763,6 +780,12 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
       versions: components["schemas"]["TaskSkillVersionSummaryDto"][];
+    };
+    CloneTaskSkillDto: {
+      /** @example Song copy */
+      name: string;
+      description?: string | null;
+      aliases?: string[];
     };
     PreviewTaskSkillApplyOverridesDto: {
       removeSubtasks?: string[];
@@ -1595,6 +1618,56 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSkillsController_cloneTaskSkill: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        taskSkillId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CloneTaskSkillDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSkillDetailDto"];
+        };
+      };
+      /** @description Task skill clone payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot clone task skills in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or active task skill is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;

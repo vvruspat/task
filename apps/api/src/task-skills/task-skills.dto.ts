@@ -2,6 +2,7 @@ import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { TaskDetailDto } from "../tasks/tasks.dto.js";
 import type {
+  CloneTaskSkillInput,
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   PreviewTaskSkillApplyOverrides,
@@ -35,6 +36,23 @@ export class CreateTaskSkillDto implements CreateTaskSkillInput {
 export class ParseCreateTaskSkillBodyPipe implements PipeTransform<unknown, CreateTaskSkillInput> {
   transform(value: unknown): CreateTaskSkillInput {
     return parseCreateTaskSkillInput(value);
+  }
+}
+
+export class CloneTaskSkillDto implements CloneTaskSkillInput {
+  @ApiProperty({ example: "Song copy", minLength: 1 })
+  readonly name: string = "";
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
+
+  @ApiPropertyOptional({ isArray: true, type: String })
+  readonly aliases?: string[];
+}
+
+export class ParseCloneTaskSkillBodyPipe implements PipeTransform<unknown, CloneTaskSkillInput> {
+  transform(value: unknown): CloneTaskSkillInput {
+    return parseCloneTaskSkillInput(value);
   }
 }
 
@@ -228,6 +246,29 @@ function parseCreateTaskSkillInput(value: unknown): CreateTaskSkillInput {
   const definition = readRequiredDefinition(value, "definition");
   const input: CreateTaskSkillInput = {
     definition,
+    name,
+  };
+
+  if (description !== undefined) {
+    input.description = description;
+  }
+
+  if (aliases !== undefined) {
+    input.aliases = aliases;
+  }
+
+  return input;
+}
+
+function parseCloneTaskSkillInput(value: unknown): CloneTaskSkillInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task skill clone payload must be an object.");
+  }
+
+  const name = readRequiredNonEmptyString(value, "name");
+  const description = readOptionalNullableString(value, "description");
+  const aliases = readOptionalStringArray(value, "aliases");
+  const input: CloneTaskSkillInput = {
     name,
   };
 

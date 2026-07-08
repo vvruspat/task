@@ -33,6 +33,12 @@ export type CreateTaskSkillInput = {
   definition: Record<string, unknown>;
 };
 
+export type CloneTaskSkillInput = {
+  name: string;
+  description?: string | null;
+  aliases?: string[];
+};
+
 export type UpdateTaskSkillMetadataInput = {
   name?: string;
   description?: string | null;
