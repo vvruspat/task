@@ -135,6 +135,9 @@ function createBackendClientStub(): TaskBackendClient {
     createTaskSkill: async () => {
       throw new Error("createTaskSkill is not used by workspace tools.");
     },
+    archiveTaskSkill: async () => {
+      throw new Error("archiveTaskSkill is not used by workspace tools.");
+    },
     updateTaskSkillMetadata: async () => {
       throw new Error("updateTaskSkillMetadata is not used by workspace tools.");
     },

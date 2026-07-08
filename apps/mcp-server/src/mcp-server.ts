@@ -550,6 +550,16 @@ export function registerTaskSkillApplyTools(
   );
 
   registrar.registerTool(
+    "skill.archive",
+    {
+      title: "Archive task skill",
+      description: "Archive one active task skill in a visible workspace.",
+      inputSchema: taskSkillGetInputSchema,
+    },
+    async (input) => toToolResult(await handlers.archive(input)),
+  );
+
+  registrar.registerTool(
     "skill.update_metadata",
     {
       title: "Update task skill metadata",
