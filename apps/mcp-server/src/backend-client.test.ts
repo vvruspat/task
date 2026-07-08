@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  type ConfirmationRequestDetailResponse,
+  type ConfirmationRequestSummaryResponse,
+  type CreateConfirmationRequestInput,
   createTaskBackendClient,
   type ProjectDetailResponse,
   type ProjectSummaryResponse,
@@ -26,6 +29,8 @@ const taskSkillVersionId = "44444444-4444-4444-8444-444444444444";
 const userId = "55555555-5555-4555-8555-555555555555";
 const rootTaskId = "66666666-6666-4666-8666-666666666666";
 const subtaskId = "77777777-7777-4777-8777-777777777777";
+const confirmationRequestId = "12121212-1212-4121-8121-121212121212";
+const agentRunId = "13131313-1313-4131-8131-131313131313";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
 const workspaceSummary: WorkspaceSummaryResponse = {
@@ -91,6 +96,32 @@ const taskSkillDetail: TaskSkillDetailResponse = {
       createdAt: timestamp,
     },
   ],
+};
+
+const confirmationRequestSummary: ConfirmationRequestSummaryResponse = {
+  id: confirmationRequestId,
+  workspaceId,
+  agentRunId,
+  userId,
+  kind: "task_skill.apply",
+  preview: {
+    rootTaskTitle: "Intro",
+  },
+  status: "pending",
+  expiresAt: timestamp,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const confirmationRequestDetail: ConfirmationRequestDetailResponse = confirmationRequestSummary;
+
+const createConfirmationRequestInput: CreateConfirmationRequestInput = {
+  agentRunId,
+  kind: "task_skill.apply",
+  preview: {
+    rootTaskTitle: "Intro",
+  },
+  expiresAt: timestamp,
 };
 
 const taskComment: TaskCommentResponse = {
@@ -297,6 +328,106 @@ test("getTaskSkill gets typed task skill details with trusted user context", asy
   assert.equal(fetchCalls[0]?.init.method, "GET");
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.deepEqual(response, taskSkillDetail);
+});
+
+test("listPendingConfirmationRequests gets typed confirmations with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [confirmationRequestSummary]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listPendingConfirmationRequests({ workspaceId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/confirmations`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, [confirmationRequestSummary]);
+});
+
+test("getConfirmationRequest gets one typed confirmation with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, confirmationRequestDetail);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.getConfirmationRequest({
+    workspaceId,
+    confirmationRequestId,
+    userId,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/confirmations/${confirmationRequestId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, confirmationRequestDetail);
+});
+
+test("createConfirmationRequest posts typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, confirmationRequestDetail);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.createConfirmationRequest({
+    workspaceId,
+    userId,
+    body: createConfirmationRequestInput,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/confirmations`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "POST");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetchCalls[0]?.init.body, JSON.stringify(createConfirmationRequestInput));
+  assert.deepEqual(response, confirmationRequestDetail);
+});
+
+test("cancelConfirmationRequest patches one pending confirmation with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const cancelledConfirmation: ConfirmationRequestDetailResponse = {
+    ...confirmationRequestDetail,
+    status: "cancelled",
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, cancelledConfirmation);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.cancelConfirmationRequest({
+    workspaceId,
+    confirmationRequestId,
+    userId,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/confirmations/${confirmationRequestId}/cancel`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "PATCH");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetchCalls[0]?.init.body, "{}");
+  assert.deepEqual(response, cancelledConfirmation);
 });
 
 test("listActiveProjects gets typed project summaries with trusted user context", async () => {

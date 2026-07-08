@@ -199,6 +199,18 @@ function createBackendClientStub(
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
       throw new Error("Not implemented.");
     },
+    listPendingConfirmationRequests: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    getConfirmationRequest: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    createConfirmationRequest: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    cancelConfirmationRequest: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     listTaskSkills: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },

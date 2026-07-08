@@ -3,6 +3,8 @@ import test from "node:test";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   ApplyTaskSkillResponse,
+  ConfirmationRequestDetailResponse,
+  ConfirmationRequestSummaryResponse,
   CreateProjectRequest,
   CreateTaskLinkAttachmentRequest,
   CreateTaskRequest,
@@ -32,6 +34,7 @@ import {
   createTaskMcpServer,
   registerAttachmentTools,
   registerCommentTools,
+  registerConfirmationTools,
   registerProjectTools,
   registerStatusTools,
   registerTaskSkillApplyTools,
@@ -51,6 +54,8 @@ const assigneeUserId = "99999999-9999-4999-8999-999999999999";
 const timestamp = "2026-01-01T00:00:00.000Z";
 const dueAt = "2026-01-03T12:00:00.000Z";
 const commentId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const confirmationRequestId = "12121212-1212-4121-8121-121212121212";
+const agentRunId = "13131313-1313-4131-8131-131313131313";
 
 const workspaceResponse: WorkspaceSummaryResponse = {
   id: workspaceId,
@@ -174,6 +179,21 @@ const taskSkillDetailResponse: TaskSkillDetailResponse = {
       createdAt: timestamp,
     },
   ],
+};
+
+const confirmationRequestResponse: ConfirmationRequestDetailResponse = {
+  id: confirmationRequestId,
+  workspaceId,
+  agentRunId,
+  userId,
+  kind: "task_skill.apply",
+  preview: {
+    rootTaskTitle: "Intro",
+  },
+  status: "pending",
+  expiresAt: timestamp,
+  createdAt: timestamp,
+  updatedAt: timestamp,
 };
 
 const commentResponse: TaskCommentResponse = {
@@ -875,6 +895,96 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
   assert.deepEqual(JSON.parse(readTextResult(applyResult)), applyResponse);
 });
 
+test("registerConfirmationTools registers confirmation request tools", async () => {
+  const toolCalls: RegisteredToolCall[] = [];
+  const registrar = createRegistrar(toolCalls);
+  const cancelledResponse: ConfirmationRequestDetailResponse = {
+    ...confirmationRequestResponse,
+    status: "cancelled",
+  };
+
+  registerConfirmationTools(registrar, {
+    listPending: async (input: unknown): Promise<ConfirmationRequestSummaryResponse[]> => {
+      assert.deepEqual(input, { workspaceId, userId });
+      return [confirmationRequestResponse];
+    },
+    get: async (input: unknown): Promise<ConfirmationRequestDetailResponse> => {
+      assert.deepEqual(input, { workspaceId, confirmationRequestId, userId });
+      return confirmationRequestResponse;
+    },
+    create: async (input: unknown): Promise<ConfirmationRequestDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        userId,
+        agentRunId,
+        kind: "task_skill.apply",
+        preview: {
+          rootTaskTitle: "Intro",
+        },
+        expiresAt: timestamp,
+      });
+      return confirmationRequestResponse;
+    },
+    cancel: async (input: unknown): Promise<ConfirmationRequestDetailResponse> => {
+      assert.deepEqual(input, { workspaceId, confirmationRequestId, userId });
+      return cancelledResponse;
+    },
+  });
+
+  assert.deepEqual(
+    toolCalls.map((call) => call.name),
+    ["confirmation.list_pending", "confirmation.get", "confirmation.create", "confirmation.cancel"],
+  );
+  assert.equal(toolCalls[0]?.config.title, "List pending confirmations");
+  assert.equal(toolCalls[1]?.config.title, "Get confirmation");
+  assert.equal(toolCalls[2]?.config.title, "Create confirmation");
+  assert.equal(toolCalls[3]?.config.title, "Cancel confirmation");
+
+  const listCall = toolCalls[0];
+  assert.ok(listCall !== undefined);
+  assert.deepEqual(JSON.parse(readTextResult(await listCall.callback({ workspaceId, userId }))), [
+    confirmationRequestResponse,
+  ]);
+
+  const getCall = toolCalls[1];
+  assert.ok(getCall !== undefined);
+  assert.deepEqual(
+    JSON.parse(
+      readTextResult(await getCall.callback({ workspaceId, confirmationRequestId, userId })),
+    ),
+    confirmationRequestResponse,
+  );
+
+  const createCall = toolCalls[2];
+  assert.ok(createCall !== undefined);
+  assert.deepEqual(
+    JSON.parse(
+      readTextResult(
+        await createCall.callback({
+          workspaceId,
+          userId,
+          agentRunId,
+          kind: "task_skill.apply",
+          preview: {
+            rootTaskTitle: "Intro",
+          },
+          expiresAt: timestamp,
+        }),
+      ),
+    ),
+    confirmationRequestResponse,
+  );
+
+  const cancelCall = toolCalls[3];
+  assert.ok(cancelCall !== undefined);
+  assert.deepEqual(
+    JSON.parse(
+      readTextResult(await cancelCall.callback({ workspaceId, confirmationRequestId, userId })),
+    ),
+    cancelledResponse,
+  );
+});
+
 test("createTaskMcpServer returns an MCP server with task skill tools registered", () => {
   const server = createTaskMcpServer({
     backendClient: createBackendClientStub(),
@@ -906,6 +1016,17 @@ function createBackendClientStub(): TaskBackendClient {
     getWorkspace: async (): Promise<WorkspaceDetailResponse> => workspaceDetailResponse,
     listWorkspaceMembers: async (): Promise<WorkspaceMemberResponse[]> => [workspaceMemberResponse],
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => [statusResponse],
+    listPendingConfirmationRequests: async (): Promise<ConfirmationRequestSummaryResponse[]> => [
+      confirmationRequestResponse,
+    ],
+    getConfirmationRequest: async (): Promise<ConfirmationRequestDetailResponse> =>
+      confirmationRequestResponse,
+    createConfirmationRequest: async (): Promise<ConfirmationRequestDetailResponse> =>
+      confirmationRequestResponse,
+    cancelConfirmationRequest: async (): Promise<ConfirmationRequestDetailResponse> => ({
+      ...confirmationRequestResponse,
+      status: "cancelled",
+    }),
     listTaskSkills: async (): Promise<TaskSkillSummaryResponse[]> => [taskSkillResponse],
     getTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],

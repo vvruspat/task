@@ -115,6 +115,16 @@ function createBackendClientStub(): TaskBackendClient {
     getWorkspace: async (): Promise<WorkspaceDetailResponse> => workspaceDetail,
     listWorkspaceMembers: async (): Promise<WorkspaceMemberResponse[]> => [],
     listWorkspaceStatuses: async () => [],
+    listPendingConfirmationRequests: async () => [],
+    getConfirmationRequest: async () => {
+      throw new Error("getConfirmationRequest is not used by workspace tools.");
+    },
+    createConfirmationRequest: async () => {
+      throw new Error("createConfirmationRequest is not used by workspace tools.");
+    },
+    cancelConfirmationRequest: async () => {
+      throw new Error("cancelConfirmationRequest is not used by workspace tools.");
+    },
     listTaskSkills: async () => [],
     getTaskSkill: async () => {
       throw new Error("getTaskSkill is not used by workspace tools.");

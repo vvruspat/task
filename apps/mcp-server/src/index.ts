@@ -12,6 +12,11 @@ export {
 
 export {
   type ApplyTaskSkillResponse,
+  type CancelConfirmationRequestRequest,
+  type ConfirmationRequestDetailResponse,
+  type ConfirmationRequestSummaryResponse,
+  type CreateConfirmationRequestInput,
+  type CreateConfirmationRequestRequest,
   type CreateProjectInput,
   type CreateProjectRequest,
   type CreateTaskCommentInput,
@@ -21,12 +26,14 @@ export {
   type CreateTaskLinkAttachmentRequest,
   type CreateTaskRequest,
   createTaskBackendClient,
+  type GetConfirmationRequestRequest,
   type GetProjectRequest,
   type GetTaskRequest,
   type GetTaskSkillRequest,
   type GetWorkspaceRequest,
   type ListActiveProjectsRequest,
   type ListActiveTasksRequest,
+  type ListPendingConfirmationRequestsRequest,
   type ListTaskAttachmentsRequest,
   type ListTaskCommentsRequest,
   type ListTaskSkillsRequest,
@@ -73,7 +80,6 @@ export {
   parseCommentCreateToolInput,
   parseCommentListToolInput,
 } from "./comment-tools.js";
-
 export {
   InvalidTaskMcpEnvironmentError,
   loadTaskMcpConfig,
@@ -81,12 +87,26 @@ export {
   type TaskMcpConfig,
   type TaskMcpEnvironment,
 } from "./config.js";
+export {
+  type ConfirmationCancelToolInput,
+  type ConfirmationCreateToolInput,
+  type ConfirmationGetToolInput,
+  type ConfirmationListPendingToolInput,
+  type ConfirmationToolHandlers,
+  ConfirmationToolInputError,
+  createConfirmationToolHandlers,
+  parseConfirmationCancelToolInput,
+  parseConfirmationCreateToolInput,
+  parseConfirmationGetToolInput,
+  parseConfirmationListPendingToolInput,
+} from "./confirmation-tools.js";
 
 export {
   connectTaskMcpServerToStdio,
   createTaskMcpServer,
   registerAttachmentTools,
   registerCommentTools,
+  registerConfirmationTools,
   registerProjectTools,
   registerStatusTools,
   registerTaskSkillApplyTools,

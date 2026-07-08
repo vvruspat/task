@@ -6,6 +6,11 @@ type ListWorkspacesOperation = operations["WorkspacesController_listWorkspaces"]
 type GetWorkspaceOperation = operations["WorkspacesController_getWorkspace"];
 type ListWorkspaceMembersOperation = operations["WorkspacesController_listMembers"];
 type ListWorkspaceStatusesOperation = operations["StatusesController_listStatuses"];
+type ListPendingConfirmationRequestsOperation =
+  operations["ConfirmationsController_listPendingConfirmationRequests"];
+type GetConfirmationRequestOperation = operations["ConfirmationsController_getConfirmationRequest"];
+type CreateConfirmationRequestOperation =
+  operations["ConfirmationsController_createConfirmationRequest"];
 type ListActiveTaskSkillsOperation = operations["TaskSkillsController_listActiveTaskSkills"];
 type GetTaskSkillOperation = operations["TaskSkillsController_getTaskSkill"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
@@ -37,6 +42,12 @@ export type WorkspaceMemberResponse =
   ListWorkspaceMembersOperation["responses"]["200"]["content"]["application/json"][number];
 export type WorkspaceStatusResponse =
   ListWorkspaceStatusesOperation["responses"]["200"]["content"]["application/json"][number];
+export type ConfirmationRequestSummaryResponse =
+  ListPendingConfirmationRequestsOperation["responses"]["200"]["content"]["application/json"][number];
+export type ConfirmationRequestDetailResponse =
+  GetConfirmationRequestOperation["responses"]["200"]["content"]["application/json"];
+export type CreateConfirmationRequestInput =
+  CreateConfirmationRequestOperation["requestBody"]["content"]["application/json"];
 export type TaskSkillSummaryResponse =
   ListActiveTaskSkillsOperation["responses"]["200"]["content"]["application/json"][number];
 export type TaskSkillDetailResponse =
@@ -147,6 +158,29 @@ export type ListTaskSkillsRequest = {
   userId: string;
 };
 
+export type ListPendingConfirmationRequestsRequest = {
+  workspaceId: string;
+  userId: string;
+};
+
+export type GetConfirmationRequestRequest = {
+  workspaceId: string;
+  confirmationRequestId: string;
+  userId: string;
+};
+
+export type CreateConfirmationRequestRequest = {
+  workspaceId: string;
+  userId: string;
+  body: CreateConfirmationRequestInput;
+};
+
+export type CancelConfirmationRequestRequest = {
+  workspaceId: string;
+  confirmationRequestId: string;
+  userId: string;
+};
+
 export type GetTaskSkillRequest = {
   workspaceId: string;
   taskSkillId: string;
@@ -244,6 +278,18 @@ export type TaskBackendClient = {
   getWorkspace(request: GetWorkspaceRequest): Promise<WorkspaceDetailResponse>;
   listWorkspaceMembers(request: ListWorkspaceMembersRequest): Promise<WorkspaceMemberResponse[]>;
   listWorkspaceStatuses(request: ListWorkspaceStatusesRequest): Promise<WorkspaceStatusResponse[]>;
+  listPendingConfirmationRequests(
+    request: ListPendingConfirmationRequestsRequest,
+  ): Promise<ConfirmationRequestSummaryResponse[]>;
+  getConfirmationRequest(
+    request: GetConfirmationRequestRequest,
+  ): Promise<ConfirmationRequestDetailResponse>;
+  createConfirmationRequest(
+    request: CreateConfirmationRequestRequest,
+  ): Promise<ConfirmationRequestDetailResponse>;
+  cancelConfirmationRequest(
+    request: CancelConfirmationRequestRequest,
+  ): Promise<ConfirmationRequestDetailResponse>;
   listTaskSkills(request: ListTaskSkillsRequest): Promise<TaskSkillSummaryResponse[]>;
   getTaskSkill(request: GetTaskSkillRequest): Promise<TaskSkillDetailResponse>;
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
@@ -313,6 +359,40 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildWorkspaceStatusesPath(request.workspaceId),
         request.userId,
         readWorkspaceStatusList,
+      ),
+    listPendingConfirmationRequests: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceConfirmationsPath(request.workspaceId),
+        request.userId,
+        readConfirmationRequestSummaryList,
+      ),
+    getConfirmationRequest: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceConfirmationPath(request.workspaceId, request.confirmationRequestId),
+        request.userId,
+        readConfirmationRequestDetail,
+      ),
+    createConfirmationRequest: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceConfirmationsPath(request.workspaceId),
+        request.userId,
+        request.body,
+        readConfirmationRequestDetail,
+      ),
+    cancelConfirmationRequest: (request) =>
+      patchJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceConfirmationCancelPath(request.workspaceId, request.confirmationRequestId),
+        request.userId,
+        {},
+        readConfirmationRequestDetail,
       ),
     listTaskSkills: (request) =>
       getJson(
@@ -479,7 +559,8 @@ async function postJson<ResponseBody>(
     | CreateProjectInput
     | CreateTaskInput
     | CreateTaskCommentInput
-    | CreateTaskLinkAttachmentInput,
+    | CreateTaskLinkAttachmentInput
+    | CreateConfirmationRequestInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   return writeJson(fetchImplementation, baseUrl, path, userId, "POST", body, readResponse);
@@ -490,7 +571,11 @@ async function patchJson<ResponseBody>(
   baseUrl: string,
   path: string,
   userId: string,
-  body: UpdateTaskStatusInput | UpdateTaskAssigneeInput | UpdateTaskDueDateInput,
+  body:
+    | UpdateTaskStatusInput
+    | UpdateTaskAssigneeInput
+    | UpdateTaskDueDateInput
+    | Record<string, never>,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   return writeJson(fetchImplementation, baseUrl, path, userId, "PATCH", body, readResponse);
@@ -508,9 +593,11 @@ async function writeJson<ResponseBody>(
     | CreateTaskInput
     | CreateTaskCommentInput
     | CreateTaskLinkAttachmentInput
+    | CreateConfirmationRequestInput
     | UpdateTaskStatusInput
     | UpdateTaskAssigneeInput
-    | UpdateTaskDueDateInput,
+    | UpdateTaskDueDateInput
+    | Record<string, never>,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(`${baseUrl}${path}`, {
@@ -612,6 +699,24 @@ function buildWorkspaceStatusesPath(workspaceId: string): string {
   return `${buildWorkspacePath(workspaceId)}/statuses`;
 }
 
+function buildWorkspaceConfirmationsPath(workspaceId: string): string {
+  return `${buildWorkspacePath(workspaceId)}/confirmations`;
+}
+
+function buildWorkspaceConfirmationPath(
+  workspaceId: string,
+  confirmationRequestId: string,
+): string {
+  return `${buildWorkspaceConfirmationsPath(workspaceId)}/${encodeURIComponent(confirmationRequestId)}`;
+}
+
+function buildWorkspaceConfirmationCancelPath(
+  workspaceId: string,
+  confirmationRequestId: string,
+): string {
+  return `${buildWorkspaceConfirmationPath(workspaceId, confirmationRequestId)}/cancel`;
+}
+
 function buildWorkspaceProjectPath(workspaceId: string, projectId: string): string {
   return `${buildWorkspaceProjectsPath(workspaceId)}/${encodeURIComponent(projectId)}`;
 }
@@ -702,6 +807,14 @@ function readTaskSkillSummaryList(value: unknown): TaskSkillSummaryResponse[] {
   }
 
   return value.map(readTaskSkillSummary);
+}
+
+function readConfirmationRequestSummaryList(value: unknown): ConfirmationRequestSummaryResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("confirmation request summary list must be an array.");
+  }
+
+  return value.map(readConfirmationRequestSummary);
 }
 
 function readTaskSummaryList(value: unknown): TaskSummaryResponse[] {
@@ -822,6 +935,37 @@ function readTaskSkillVersionSummary(value: unknown): TaskSkillDetailResponse["v
     createdByUserId: readString(record, "createdByUserId"),
     createdAt: readString(record, "createdAt"),
   };
+}
+
+function readConfirmationRequestSummary(value: unknown): ConfirmationRequestSummaryResponse {
+  const record = readRecord(value, "confirmation request summary");
+  const status = readString(record, "status");
+
+  if (
+    status !== "pending" &&
+    status !== "confirmed" &&
+    status !== "cancelled" &&
+    status !== "expired"
+  ) {
+    throw new Error("Confirmation request status is invalid.");
+  }
+
+  return {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    agentRunId: readString(record, "agentRunId"),
+    userId: readString(record, "userId"),
+    kind: readString(record, "kind"),
+    preview: readRecord(readProperty(record, "preview"), "confirmation request preview"),
+    status,
+    expiresAt: readString(record, "expiresAt"),
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
+}
+
+function readConfirmationRequestDetail(value: unknown): ConfirmationRequestDetailResponse {
+  return readConfirmationRequestSummary(value);
 }
 
 function readTaskComment(value: unknown): TaskCommentResponse {
