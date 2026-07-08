@@ -2,6 +2,9 @@ import type { components, operations } from "@task/api-client";
 
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
+type ListWorkspacesOperation = operations["WorkspacesController_listWorkspaces"];
+type GetWorkspaceOperation = operations["WorkspacesController_getWorkspace"];
+type ListWorkspaceMembersOperation = operations["WorkspacesController_listMembers"];
 type ListWorkspaceStatusesOperation = operations["StatusesController_listStatuses"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
 type GetProjectOperation = operations["ProjectsController_getProject"];
@@ -24,6 +27,12 @@ export type PreviewTaskSkillApplyResponse =
   PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
 export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type WorkspaceSummaryResponse =
+  ListWorkspacesOperation["responses"]["200"]["content"]["application/json"][number];
+export type WorkspaceDetailResponse =
+  GetWorkspaceOperation["responses"]["200"]["content"]["application/json"];
+export type WorkspaceMemberResponse =
+  ListWorkspaceMembersOperation["responses"]["200"]["content"]["application/json"][number];
 export type WorkspaceStatusResponse =
   ListWorkspaceStatusesOperation["responses"]["200"]["content"]["application/json"][number];
 export type CreateTaskCommentInput =
@@ -109,6 +118,20 @@ export type ListActiveProjectsRequest = {
 };
 
 export type ListWorkspaceStatusesRequest = {
+  workspaceId: string;
+  userId: string;
+};
+
+export type ListWorkspacesRequest = {
+  userId: string;
+};
+
+export type GetWorkspaceRequest = {
+  workspaceId: string;
+  userId: string;
+};
+
+export type ListWorkspaceMembersRequest = {
   workspaceId: string;
   userId: string;
 };
@@ -200,6 +223,9 @@ export type UpdateTaskDueDateRequest = {
 };
 
 export type TaskBackendClient = {
+  listWorkspaces(request: ListWorkspacesRequest): Promise<WorkspaceSummaryResponse[]>;
+  getWorkspace(request: GetWorkspaceRequest): Promise<WorkspaceDetailResponse>;
+  listWorkspaceMembers(request: ListWorkspaceMembersRequest): Promise<WorkspaceMemberResponse[]>;
   listWorkspaceStatuses(request: ListWorkspaceStatusesRequest): Promise<WorkspaceStatusResponse[]>;
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
@@ -237,6 +263,30 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
   const fetchImplementation = options.fetch ?? defaultFetch;
 
   return {
+    listWorkspaces: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspacesPath(),
+        request.userId,
+        readWorkspaceList,
+      ),
+    getWorkspace: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspacePath(request.workspaceId),
+        request.userId,
+        readWorkspaceDetail,
+      ),
+    listWorkspaceMembers: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceMembersPath(request.workspaceId),
+        request.userId,
+        readWorkspaceMemberList,
+      ),
     listWorkspaceStatuses: (request) =>
       getJson(
         fetchImplementation,
@@ -499,12 +549,24 @@ function buildTaskSkillApplyPath(
   return `/workspaces/${encodeURIComponent(workspaceId)}/task-skills/${encodeURIComponent(taskSkillId)}/${action}`;
 }
 
+function buildWorkspacesPath(): string {
+  return "/workspaces";
+}
+
+function buildWorkspacePath(workspaceId: string): string {
+  return `${buildWorkspacesPath()}/${encodeURIComponent(workspaceId)}`;
+}
+
+function buildWorkspaceMembersPath(workspaceId: string): string {
+  return `${buildWorkspacePath(workspaceId)}/members`;
+}
+
 function buildWorkspaceProjectsPath(workspaceId: string): string {
-  return `/workspaces/${encodeURIComponent(workspaceId)}/projects`;
+  return `${buildWorkspacePath(workspaceId)}/projects`;
 }
 
 function buildWorkspaceStatusesPath(workspaceId: string): string {
-  return `/workspaces/${encodeURIComponent(workspaceId)}/statuses`;
+  return `${buildWorkspacePath(workspaceId)}/statuses`;
 }
 
 function buildWorkspaceProjectPath(workspaceId: string, projectId: string): string {
@@ -567,6 +629,22 @@ function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {
   return value.map(readProjectSummary);
 }
 
+function readWorkspaceList(value: unknown): WorkspaceSummaryResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("workspace summary list must be an array.");
+  }
+
+  return value.map(readWorkspaceSummary);
+}
+
+function readWorkspaceMemberList(value: unknown): WorkspaceMemberResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("workspace member list must be an array.");
+  }
+
+  return value.map(readWorkspaceMember);
+}
+
 function readWorkspaceStatusList(value: unknown): WorkspaceStatusResponse[] {
   if (!Array.isArray(value)) {
     throw new Error("workspace status list must be an array.");
@@ -597,6 +675,48 @@ function readTaskAttachmentList(value: unknown): TaskAttachmentResponse[] {
   }
 
   return value.map(readTaskAttachment);
+}
+
+function readWorkspaceSummary(value: unknown): WorkspaceSummaryResponse {
+  const record = readRecord(value, "workspace summary");
+
+  return {
+    id: readString(record, "id"),
+    name: readString(record, "name"),
+    slug: readString(record, "slug"),
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
+}
+
+function readWorkspaceDetail(value: unknown): WorkspaceDetailResponse {
+  const record = readRecord(value, "workspace detail");
+
+  return {
+    ...readWorkspaceSummary(record),
+    members: readArray(record, "members").map(readWorkspaceMember),
+  };
+}
+
+function readWorkspaceMember(value: unknown): WorkspaceMemberResponse {
+  const record = readRecord(value, "workspace member");
+  const role = readString(record, "role");
+
+  if (role !== "owner" && role !== "admin" && role !== "member" && role !== "guest") {
+    throw new Error("Workspace member role is invalid.");
+  }
+
+  return {
+    id: readString(record, "id"),
+    workspaceId: readString(record, "workspaceId"),
+    userId: readString(record, "userId"),
+    role,
+    displayName: readString(record, "displayName"),
+    email: readOptionalNullableString(record, "email") ?? null,
+    avatarUrl: readOptionalNullableString(record, "avatarUrl") ?? null,
+    createdAt: readString(record, "createdAt"),
+    updatedAt: readString(record, "updatedAt"),
+  };
 }
 
 function readWorkspaceStatus(value: unknown): WorkspaceStatusResponse {

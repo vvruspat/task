@@ -6,7 +6,9 @@ import type {
   CreateProjectRequest,
   CreateTaskLinkAttachmentRequest,
   CreateTaskRequest,
+  GetWorkspaceRequest,
   ListTaskAttachmentsRequest,
+  ListWorkspaceMembersRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
@@ -19,7 +21,10 @@ import type {
   UpdateTaskAssigneeRequest,
   UpdateTaskDueDateRequest,
   UpdateTaskStatusRequest,
+  WorkspaceDetailResponse,
+  WorkspaceMemberResponse,
   WorkspaceStatusResponse,
+  WorkspaceSummaryResponse,
 } from "./backend-client.js";
 import {
   createTaskMcpServer,
@@ -29,6 +34,7 @@ import {
   registerStatusTools,
   registerTaskSkillApplyTools,
   registerTaskTools,
+  registerWorkspaceTools,
   type TaskMcpToolRegistrar,
 } from "./mcp-server.js";
 
@@ -43,6 +49,31 @@ const assigneeUserId = "99999999-9999-4999-8999-999999999999";
 const timestamp = "2026-01-01T00:00:00.000Z";
 const dueAt = "2026-01-03T12:00:00.000Z";
 const commentId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+
+const workspaceResponse: WorkspaceSummaryResponse = {
+  id: workspaceId,
+  name: "Studio",
+  slug: "studio",
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const workspaceMemberResponse: WorkspaceMemberResponse = {
+  id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+  workspaceId,
+  userId,
+  role: "admin",
+  displayName: "Alex",
+  email: "alex@example.com",
+  avatarUrl: null,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const workspaceDetailResponse: WorkspaceDetailResponse = {
+  ...workspaceResponse,
+  members: [workspaceMemberResponse],
+};
 
 const toolInput = {
   workspaceId,
@@ -159,6 +190,63 @@ const taskResponse: TaskSummaryResponse = {
   createdAt: timestamp,
   updatedAt: timestamp,
 };
+
+test("registerWorkspaceTools registers workspace context tools", async () => {
+  const toolCalls: RegisteredToolCall[] = [];
+  const getCurrentCalls: GetWorkspaceRequest[] = [];
+  const memberCalls: ListWorkspaceMembersRequest[] = [];
+  const registrar = createRegistrar(toolCalls);
+
+  registerWorkspaceTools(registrar, {
+    getCurrent: async (input: unknown): Promise<WorkspaceDetailResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected workspace get current input.");
+      }
+      getCurrentCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        userId: readString(input, "userId"),
+      });
+      return workspaceDetailResponse;
+    },
+    listMembers: async (input: unknown): Promise<WorkspaceMemberResponse[]> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected workspace member list input.");
+      }
+      memberCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        userId: readString(input, "userId"),
+      });
+      return [workspaceMemberResponse];
+    },
+  });
+
+  assert.deepEqual(
+    toolCalls.map((call) => call.name),
+    ["workspace.get_current", "user.list_workspace_members"],
+  );
+  assert.equal(toolCalls[0]?.config.title, "Get current workspace");
+  assert.equal(toolCalls[1]?.config.title, "List workspace members");
+
+  const getCurrentCall = toolCalls[0];
+  assert.ok(getCurrentCall !== undefined);
+  const getCurrentResult = await getCurrentCall.callback({
+    workspaceId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(getCurrentResult)), workspaceDetailResponse);
+  assert.deepEqual(getCurrentCalls, [{ workspaceId, userId }]);
+
+  const memberCall = toolCalls[1];
+  assert.ok(memberCall !== undefined);
+  const memberResult = await memberCall.callback({
+    workspaceId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(memberResult)), [workspaceMemberResponse]);
+  assert.deepEqual(memberCalls, [{ workspaceId, userId }]);
+});
 
 test("registerProjectTools registers project tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
@@ -745,6 +833,9 @@ function createRegistrar(calls: RegisteredToolCall[]): TaskMcpToolRegistrar {
 
 function createBackendClientStub(): TaskBackendClient {
   return {
+    listWorkspaces: async (): Promise<WorkspaceSummaryResponse[]> => [workspaceResponse],
+    getWorkspace: async (): Promise<WorkspaceDetailResponse> => workspaceDetailResponse,
+    listWorkspaceMembers: async (): Promise<WorkspaceMemberResponse[]> => [workspaceMemberResponse],
     listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => [statusResponse],
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],
     createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,

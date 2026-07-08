@@ -9,6 +9,17 @@ import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-t
 import { createStatusToolHandlers, type StatusToolHandlers } from "./status-tools.js";
 import { createTaskSkillToolHandlers, type TaskSkillToolHandlers } from "./task-skill-tools.js";
 import { createTaskToolHandlers, type TaskToolHandlers } from "./task-tools.js";
+import { createWorkspaceToolHandlers, type WorkspaceToolHandlers } from "./workspace-tools.js";
+
+const workspaceGetCurrentInputSchema = {
+  userId: z.string().uuid(),
+  workspaceId: z.string().uuid().optional(),
+};
+
+const workspaceMemberListInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
 
 const taskSkillApplyInputSchema = {
   workspaceId: z.string().uuid(),
@@ -132,6 +143,8 @@ const taskSetDueDateInputSchema = {
 };
 
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
+type WorkspaceGetCurrentMcpArgs = z.output<z.ZodObject<typeof workspaceGetCurrentInputSchema>>;
+type WorkspaceMemberListMcpArgs = z.output<z.ZodObject<typeof workspaceMemberListInputSchema>>;
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
 type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
 type CommentCreateMcpArgs = z.output<z.ZodObject<typeof commentCreateInputSchema>>;
@@ -149,6 +162,8 @@ type TaskSetDueDateMcpArgs = z.output<z.ZodObject<typeof taskSetDueDateInputSche
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
+    | WorkspaceGetCurrentMcpArgs
+    | WorkspaceMemberListMcpArgs
     | StatusListMcpArgs
     | CommentListMcpArgs
     | CommentCreateMcpArgs
@@ -173,6 +188,8 @@ export type TaskMcpToolRegistrar = {
       description: string;
       inputSchema:
         | typeof taskSkillApplyInputSchema
+        | typeof workspaceGetCurrentInputSchema
+        | typeof workspaceMemberListInputSchema
         | typeof statusListInputSchema
         | typeof commentListInputSchema
         | typeof commentCreateInputSchema
@@ -206,6 +223,7 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
     version: options.version ?? "0.0.0",
   });
 
+  registerWorkspaceTools(server, createWorkspaceToolHandlers(options.backendClient));
   registerStatusTools(server, createStatusToolHandlers(options.backendClient));
   registerProjectTools(server, createProjectToolHandlers(options.backendClient));
   registerTaskTools(server, createTaskToolHandlers(options.backendClient));
@@ -214,6 +232,31 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
 
   return server;
+}
+
+export function registerWorkspaceTools(
+  registrar: TaskMcpToolRegistrar,
+  handlers: WorkspaceToolHandlers,
+): void {
+  registrar.registerTool(
+    "workspace.get_current",
+    {
+      title: "Get current workspace",
+      description: "Get one visible workspace by id, or the first visible workspace for a user.",
+      inputSchema: workspaceGetCurrentInputSchema,
+    },
+    async (input) => toToolResult(await handlers.getCurrent(input)),
+  );
+
+  registrar.registerTool(
+    "user.list_workspace_members",
+    {
+      title: "List workspace members",
+      description: "List members for one visible workspace.",
+      inputSchema: workspaceMemberListInputSchema,
+    },
+    async (input) => toToolResult(await handlers.listMembers(input)),
+  );
 }
 
 export function registerAttachmentTools(

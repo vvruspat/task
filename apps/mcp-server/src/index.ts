@@ -23,11 +23,14 @@ export {
   createTaskBackendClient,
   type GetProjectRequest,
   type GetTaskRequest,
+  type GetWorkspaceRequest,
   type ListActiveProjectsRequest,
   type ListActiveTasksRequest,
   type ListTaskAttachmentsRequest,
   type ListTaskCommentsRequest,
+  type ListWorkspaceMembersRequest,
   type ListWorkspaceStatusesRequest,
+  type ListWorkspacesRequest,
   type PreviewTaskSkillApplyInput,
   type PreviewTaskSkillApplyResponse,
   type ProjectDetailResponse,
@@ -51,7 +54,10 @@ export {
   type UpdateTaskDueDateRequest,
   type UpdateTaskStatusInput,
   type UpdateTaskStatusRequest,
+  type WorkspaceDetailResponse,
+  type WorkspaceMemberResponse,
   type WorkspaceStatusResponse,
+  type WorkspaceSummaryResponse,
 } from "./backend-client.js";
 
 export {
@@ -81,6 +87,7 @@ export {
   registerStatusTools,
   registerTaskSkillApplyTools,
   registerTaskTools,
+  registerWorkspaceTools,
   type TaskMcpServerOptions,
   type TaskMcpToolRegistrar,
   type TaskSkillToolRegistrar,
@@ -132,3 +139,12 @@ export {
   type TaskToolHandlers,
   TaskToolInputError,
 } from "./task-tools.js";
+export {
+  createWorkspaceToolHandlers,
+  parseWorkspaceGetCurrentToolInput,
+  parseWorkspaceMemberListToolInput,
+  type WorkspaceGetCurrentToolInput,
+  type WorkspaceMemberListToolInput,
+  type WorkspaceToolHandlers,
+  WorkspaceToolInputError,
+} from "./workspace-tools.js";
