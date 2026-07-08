@@ -214,6 +214,12 @@ function createBackendClientStub(
     createTaskSkill: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
+    updateTaskSkillMetadata: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    updateTaskSkillDefinition: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     listTaskAttachments: async (request): Promise<TaskAttachmentResponse[]> => {
       listTaskAttachmentsCalls.push(request);
 

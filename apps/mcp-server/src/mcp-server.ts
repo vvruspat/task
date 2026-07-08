@@ -60,6 +60,22 @@ const taskSkillCreateInputSchema = {
   definition: z.record(z.string(), z.unknown()),
 };
 
+const taskSkillUpdateMetadataInputSchema = {
+  workspaceId: z.string().uuid(),
+  taskSkillId: z.string().uuid(),
+  userId: z.string().uuid(),
+  name: z.string().min(1).optional(),
+  description: z.string().min(1).nullable().optional(),
+  aliases: z.array(z.string().min(1)).optional(),
+};
+
+const taskSkillUpdateDefinitionInputSchema = {
+  workspaceId: z.string().uuid(),
+  taskSkillId: z.string().uuid(),
+  userId: z.string().uuid(),
+  definition: z.record(z.string(), z.unknown()),
+};
+
 const confirmationListPendingInputSchema = {
   workspaceId: z.string().uuid(),
   userId: z.string().uuid(),
@@ -191,6 +207,12 @@ const taskSetDueDateInputSchema = {
 
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
 type TaskSkillCreateMcpArgs = z.output<z.ZodObject<typeof taskSkillCreateInputSchema>>;
+type TaskSkillUpdateMetadataMcpArgs = z.output<
+  z.ZodObject<typeof taskSkillUpdateMetadataInputSchema>
+>;
+type TaskSkillUpdateDefinitionMcpArgs = z.output<
+  z.ZodObject<typeof taskSkillUpdateDefinitionInputSchema>
+>;
 type TaskSkillSearchMcpArgs = z.output<z.ZodObject<typeof taskSkillSearchInputSchema>>;
 type TaskSkillGetMcpArgs = z.output<z.ZodObject<typeof taskSkillGetInputSchema>>;
 type ConfirmationListPendingMcpArgs = z.output<
@@ -218,6 +240,8 @@ type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
     | TaskSkillCreateMcpArgs
+    | TaskSkillUpdateMetadataMcpArgs
+    | TaskSkillUpdateDefinitionMcpArgs
     | TaskSkillSearchMcpArgs
     | TaskSkillGetMcpArgs
     | ConfirmationListPendingMcpArgs
@@ -523,6 +547,26 @@ export function registerTaskSkillApplyTools(
       inputSchema: taskSkillCreateInputSchema,
     },
     async (input) => toToolResult(await handlers.create(input)),
+  );
+
+  registrar.registerTool(
+    "skill.update_metadata",
+    {
+      title: "Update task skill metadata",
+      description: "Update one visible task skill name, description, or aliases.",
+      inputSchema: taskSkillUpdateMetadataInputSchema,
+    },
+    async (input) => toToolResult(await handlers.updateMetadata(input)),
+  );
+
+  registrar.registerTool(
+    "skill.update_definition",
+    {
+      title: "Update task skill definition",
+      description: "Replace one visible task skill definition.",
+      inputSchema: taskSkillUpdateDefinitionInputSchema,
+    },
+    async (input) => toToolResult(await handlers.updateDefinition(input)),
   );
 
   registrar.registerTool(

@@ -847,6 +847,31 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
       });
       return taskSkillDetailResponse;
     },
+    updateMetadata: async (input: unknown): Promise<TaskSkillDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        taskSkillId,
+        userId,
+        name: "Updated song",
+        aliases: ["single"],
+      });
+      return {
+        ...taskSkillDetailResponse,
+        name: "Updated song",
+        aliases: ["single"],
+      };
+    },
+    updateDefinition: async (input: unknown): Promise<TaskSkillDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        taskSkillId,
+        userId,
+        definition: {
+          subtasks: [{ title: "Arrange" }],
+        },
+      });
+      return taskSkillDetailResponse;
+    },
     previewApply: async (input: unknown): Promise<PreviewTaskSkillApplyResponse> => {
       backendCalls.push(readBackendRequestInput(input));
       return previewResponse;
@@ -859,13 +884,23 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["skill.search", "skill.get", "skill.create", "skill.preview_apply", "skill.apply"],
+    [
+      "skill.search",
+      "skill.get",
+      "skill.create",
+      "skill.update_metadata",
+      "skill.update_definition",
+      "skill.preview_apply",
+      "skill.apply",
+    ],
   );
   assert.equal(toolCalls[0]?.config.title, "Search task skills");
   assert.equal(toolCalls[1]?.config.title, "Get task skill");
   assert.equal(toolCalls[2]?.config.title, "Create task skill");
-  assert.equal(toolCalls[3]?.config.title, "Preview task skill application");
-  assert.equal(toolCalls[4]?.config.title, "Apply task skill");
+  assert.equal(toolCalls[3]?.config.title, "Update task skill metadata");
+  assert.equal(toolCalls[4]?.config.title, "Update task skill definition");
+  assert.equal(toolCalls[5]?.config.title, "Preview task skill application");
+  assert.equal(toolCalls[6]?.config.title, "Apply task skill");
 
   const previewCall = toolCalls[0];
   assert.ok(previewCall !== undefined);
@@ -902,7 +937,36 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
 
   assert.deepEqual(JSON.parse(readTextResult(createResult)), taskSkillDetailResponse);
 
-  const previewApplyCall = toolCalls[3];
+  const updateMetadataCall = toolCalls[3];
+  assert.ok(updateMetadataCall !== undefined);
+  const updateMetadataResult = await updateMetadataCall.callback({
+    workspaceId,
+    taskSkillId,
+    userId,
+    name: "Updated song",
+    aliases: ["single"],
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(updateMetadataResult)), {
+    ...taskSkillDetailResponse,
+    name: "Updated song",
+    aliases: ["single"],
+  });
+
+  const updateDefinitionCall = toolCalls[4];
+  assert.ok(updateDefinitionCall !== undefined);
+  const updateDefinitionResult = await updateDefinitionCall.callback({
+    workspaceId,
+    taskSkillId,
+    userId,
+    definition: {
+      subtasks: [{ title: "Arrange" }],
+    },
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(updateDefinitionResult)), taskSkillDetailResponse);
+
+  const previewApplyCall = toolCalls[5];
   assert.ok(previewApplyCall !== undefined);
   const previewResult = await previewApplyCall.callback(toolInput);
 
@@ -917,7 +981,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     },
   });
 
-  const applyCall = toolCalls[4];
+  const applyCall = toolCalls[6];
   assert.ok(applyCall !== undefined);
   const applyResult = await applyCall.callback(toolInput);
 
@@ -1087,6 +1151,9 @@ function createBackendClientStub(): TaskBackendClient {
     listTaskSkills: async (): Promise<TaskSkillSummaryResponse[]> => [taskSkillResponse],
     getTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
     createTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
+    updateTaskSkillMetadata: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
+    updateTaskSkillDefinition: async (): Promise<TaskSkillDetailResponse> =>
+      taskSkillDetailResponse,
     listTaskComments: async (): Promise<TaskCommentResponse[]> => [commentResponse],
     createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],
