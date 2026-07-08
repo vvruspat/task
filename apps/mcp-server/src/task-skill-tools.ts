@@ -1,5 +1,7 @@
 import type {
   ApplyTaskSkillResponse,
+  CreateTaskSkillInput,
+  CreateTaskSkillResponse,
   PreviewTaskSkillApplyInput,
   PreviewTaskSkillApplyResponse,
   TaskBackendClient,
@@ -33,9 +35,19 @@ export type TaskSkillGetToolInput = {
   userId: string;
 };
 
+export type TaskSkillCreateToolInput = {
+  workspaceId: string;
+  userId: string;
+  name: string;
+  description?: string | null;
+  aliases?: string[];
+  definition: Record<string, unknown>;
+};
+
 export type TaskSkillToolHandlers = {
   search(input: unknown): Promise<TaskSkillSummaryResponse[]>;
   get(input: unknown): Promise<TaskSkillDetailResponse>;
+  create(input: unknown): Promise<CreateTaskSkillResponse>;
   previewApply(input: unknown): Promise<PreviewTaskSkillApplyResponse>;
   apply(input: unknown): Promise<ApplyTaskSkillResponse>;
 };
@@ -79,6 +91,15 @@ export function createTaskSkillToolHandlers(client: TaskBackendClient): TaskSkil
         userId: parsedInput.userId,
       });
     },
+    create: (input) => {
+      const parsedInput = parseTaskSkillCreateToolInput(input);
+
+      return client.createTaskSkill({
+        workspaceId: parsedInput.workspaceId,
+        userId: parsedInput.userId,
+        body: toCreateTaskSkillInput(parsedInput),
+      });
+    },
     previewApply: (input) => {
       const parsedInput = parseTaskSkillApplyToolInput(input);
 
@@ -115,6 +136,28 @@ export function parseTaskSkillGetToolInput(input: unknown): TaskSkillGetToolInpu
     taskSkillId: readRequiredUuid(record, "taskSkillId"),
     userId: readRequiredUuid(record, "userId"),
   };
+}
+
+export function parseTaskSkillCreateToolInput(input: unknown): TaskSkillCreateToolInput {
+  const record = readRecord(input, "task skill create tool input");
+  const parsedInput: TaskSkillCreateToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    userId: readRequiredUuid(record, "userId"),
+    name: readRequiredNonEmptyString(record, "name"),
+    definition: readRequiredRecord(record, "definition"),
+  };
+  const description = readOptionalNullableString(record, "description");
+  const aliases = readOptionalStringArray(record, "aliases");
+
+  if (description !== undefined) {
+    parsedInput.description = description;
+  }
+
+  if (aliases !== undefined) {
+    parsedInput.aliases = aliases;
+  }
+
+  return parsedInput;
 }
 
 export function parseTaskSkillApplyToolInput(input: unknown): TaskSkillApplyToolInput {
@@ -156,6 +199,23 @@ function toBackendRequest(input: TaskSkillApplyToolInput): {
     userId: input.userId,
     body,
   };
+}
+
+function toCreateTaskSkillInput(input: TaskSkillCreateToolInput): CreateTaskSkillInput {
+  const body: CreateTaskSkillInput = {
+    name: input.name,
+    definition: input.definition,
+  };
+
+  if (input.description !== undefined) {
+    body.description = input.description;
+  }
+
+  if (input.aliases !== undefined) {
+    body.aliases = input.aliases;
+  }
+
+  return body;
 }
 
 function readRecord(value: unknown, label: string): Record<string, unknown> {
@@ -209,8 +269,34 @@ function readOptionalNonEmptyString(
   return readRequiredNonEmptyString(record, propertyName);
 }
 
+function readOptionalNullableString(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const value = record[propertyName];
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (value === null) {
+    return null;
+  }
+
+  return readRequiredNonEmptyString(record, propertyName);
+}
+
 function normalizeSearchText(value: string): string {
   return value.trim().toLocaleLowerCase();
+}
+
+function readRequiredRecord(
+  record: Record<string, unknown>,
+  propertyName: string,
+): Record<string, unknown> {
+  const value = record[propertyName];
+
+  return readRecord(value, propertyName);
 }
 
 function readOptionalOverrides(

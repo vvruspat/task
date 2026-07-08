@@ -51,6 +51,15 @@ const taskSkillGetInputSchema = {
   userId: z.string().uuid(),
 };
 
+const taskSkillCreateInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+  name: z.string().min(1),
+  description: z.string().min(1).nullable().optional(),
+  aliases: z.array(z.string().min(1)).optional(),
+  definition: z.record(z.string(), z.unknown()),
+};
+
 const confirmationListPendingInputSchema = {
   workspaceId: z.string().uuid(),
   userId: z.string().uuid(),
@@ -181,6 +190,7 @@ const taskSetDueDateInputSchema = {
 };
 
 type TaskSkillApplyMcpArgs = z.output<z.ZodObject<typeof taskSkillApplyInputSchema>>;
+type TaskSkillCreateMcpArgs = z.output<z.ZodObject<typeof taskSkillCreateInputSchema>>;
 type TaskSkillSearchMcpArgs = z.output<z.ZodObject<typeof taskSkillSearchInputSchema>>;
 type TaskSkillGetMcpArgs = z.output<z.ZodObject<typeof taskSkillGetInputSchema>>;
 type ConfirmationListPendingMcpArgs = z.output<
@@ -207,6 +217,7 @@ type TaskSetDueDateMcpArgs = z.output<z.ZodObject<typeof taskSetDueDateInputSche
 type TaskMcpToolCallback = (
   args:
     | TaskSkillApplyMcpArgs
+    | TaskSkillCreateMcpArgs
     | TaskSkillSearchMcpArgs
     | TaskSkillGetMcpArgs
     | ConfirmationListPendingMcpArgs
@@ -502,6 +513,16 @@ export function registerTaskSkillApplyTools(
       inputSchema: taskSkillGetInputSchema,
     },
     async (input) => toToolResult(await handlers.get(input)),
+  );
+
+  registrar.registerTool(
+    "skill.create",
+    {
+      title: "Create task skill",
+      description: "Create a workspace-scoped task skill template.",
+      inputSchema: taskSkillCreateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.create(input)),
   );
 
   registrar.registerTool(
