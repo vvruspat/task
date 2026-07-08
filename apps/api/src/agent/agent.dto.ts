@@ -1,7 +1,11 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type { AgentRunStatus } from "../persistence/types/core-persistence.types.js";
-import type { AgentRunIntakeResponse, CreateTelegramAgentRunInput } from "./agent.contracts.js";
+import type {
+  AgentRunIntakeResponse,
+  AgentRunSummary,
+  CreateTelegramAgentRunInput,
+} from "./agent.contracts.js";
 
 const telegramUserIdPattern = /^\d+$/u;
 const telegramChatIdPattern = /^-?\d+$/u;
@@ -64,6 +68,59 @@ export class AgentRunIntakeResponseDto implements AgentRunIntakeResponse {
     this.status = response.status;
     this.responseText = response.responseText;
     this.createdAt = response.createdAt;
+  }
+}
+
+export class AgentRunSummaryDto implements AgentRunSummary {
+  @ApiProperty({ format: "uuid" })
+  readonly id: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly workspaceId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly userId: string;
+
+  @ApiProperty({ enum: ["telegram", "web", "mini_app"] })
+  readonly source: AgentRunSummary["source"];
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly sourceMessageId: string | null;
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly model: string | null;
+
+  @ApiProperty({ example: "@task what is next for the album?" })
+  readonly inputText: string;
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly finalResponse: string | null;
+
+  @ApiProperty({ enum: ["running", "waiting_confirmation", "completed", "failed"] })
+  readonly status: AgentRunStatus;
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly error: string | null;
+
+  @ApiProperty({ format: "date-time" })
+  readonly createdAt: string;
+
+  @ApiProperty({ format: "date-time" })
+  readonly updatedAt: string;
+
+  constructor(summary: AgentRunSummary) {
+    this.id = summary.id;
+    this.workspaceId = summary.workspaceId;
+    this.userId = summary.userId;
+    this.source = summary.source;
+    this.sourceMessageId = summary.sourceMessageId;
+    this.model = summary.model;
+    this.inputText = summary.inputText;
+    this.finalResponse = summary.finalResponse;
+    this.status = summary.status;
+    this.error = summary.error;
+    this.createdAt = summary.createdAt;
+    this.updatedAt = summary.updatedAt;
   }
 }
 

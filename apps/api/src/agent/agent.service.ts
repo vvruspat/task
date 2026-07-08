@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
-import { AgentRunIntakeResponseDto } from "./agent.dto.js";
+import { AgentRunIntakeResponseDto, AgentRunSummaryDto } from "./agent.dto.js";
 import type { AgentRuntime } from "./agent.runtime.js";
 import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import type { AgentRunStore } from "./agent.store.js";
@@ -58,6 +58,16 @@ export class AgentService {
 
     return mapAgentRunToIntakeResponse(run);
   }
+
+  async listWorkspaceRuns(workspaceId: string, userId: string): Promise<AgentRunSummaryDto[]> {
+    const runs = await this.agentRunStore.listForWorkspace(workspaceId, userId);
+
+    if (runs === null) {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    return runs.map((run) => mapAgentRunToSummary(run));
+  }
 }
 
 function mapAgentRunToIntakeResponse(run: {
@@ -79,5 +89,35 @@ function mapAgentRunToIntakeResponse(run: {
     status: run.status,
     responseText: run.finalResponse ?? agentRuntimeNotConnectedResponse,
     createdAt: run.createdAt.toISOString(),
+  });
+}
+
+function mapAgentRunToSummary(run: {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  source: "telegram" | "web" | "mini_app";
+  sourceMessageId: string | null;
+  model: string | null;
+  inputText: string;
+  finalResponse: string | null;
+  status: "running" | "waiting_confirmation" | "completed" | "failed";
+  error: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}): AgentRunSummaryDto {
+  return new AgentRunSummaryDto({
+    id: run.id,
+    workspaceId: run.workspaceId,
+    userId: run.userId,
+    source: run.source,
+    sourceMessageId: run.sourceMessageId,
+    model: run.model,
+    inputText: run.inputText,
+    finalResponse: run.finalResponse,
+    status: run.status,
+    error: run.error,
+    createdAt: run.createdAt.toISOString(),
+    updatedAt: run.updatedAt.toISOString(),
   });
 }

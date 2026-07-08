@@ -401,6 +401,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/agent/runs": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List agent run history in a visible workspace */
+    get: operations["AgentRunsController_listWorkspaceRuns"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -846,6 +863,28 @@ export interface components {
       responseText: string;
       /** Format: date-time */
       createdAt: string;
+    };
+    AgentRunSummaryDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      sourceMessageId?: string | null;
+      model?: string | null;
+      /** @example @task what is next for the album? */
+      inputText: string;
+      finalResponse?: string | null;
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
     };
   };
   responses: never;
@@ -1987,6 +2026,37 @@ export interface operations {
         content?: never;
       };
       /** @description Telegram user or chat is not linked. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentRunsController_listWorkspaceRuns: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentRunSummaryDto"][];
+        };
+      };
+      /** @description Workspace is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;

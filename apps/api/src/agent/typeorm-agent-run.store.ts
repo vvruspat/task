@@ -16,6 +16,8 @@ import type {
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
 
+const agentRunHistoryLimit = 50;
+
 @Injectable()
 export class TypeOrmAgentRunStore implements AgentRunStore {
   private initialization: Promise<DataSource> | null = null;
@@ -56,6 +58,29 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
       workspaceId: chat.workspaceId,
       userId: identity.userId,
     };
+  }
+
+  async listForWorkspace(workspaceId: string, userId: string): Promise<AgentRunEntity[] | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      userId,
+      workspaceId,
+    });
+
+    if (membership === null) {
+      return null;
+    }
+
+    return dataSource.getRepository(AgentRunEntity).find({
+      order: {
+        createdAt: "DESC",
+      },
+      take: agentRunHistoryLimit,
+      where: {
+        userId,
+        workspaceId,
+      },
+    });
   }
 
   async findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunEntity | null> {
