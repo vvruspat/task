@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { components } from "@task/api-client";
 import {
+  buildMyTaskRows,
+  buildMyTaskSummary,
   buildProjectOverviewRows,
   buildProjectOverviewSummary,
   buildTaskTableRows,
@@ -17,6 +19,89 @@ type TaskSummary = components["schemas"]["TaskSummaryDto"];
 const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const firstProjectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 const secondProjectId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+
+test("buildMyTaskRows sorts due tasks first and maps loaded task fields", () => {
+  assert.deepEqual(
+    buildMyTaskRows(
+      [projectSummary({ id: firstProjectId, title: "Album one" })],
+      [
+        taskSummary({
+          id: "11111111-1111-4111-8111-111111111111",
+          projectId: secondProjectId,
+          title: "Mix outro",
+          updatedAt: "2026-07-06T10:00:00.000Z",
+        }),
+        taskSummary({
+          assigneeUserId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          dueAt: "2026-07-09T10:00:00.000Z",
+          id: "22222222-2222-4222-8222-222222222222",
+          title: "Record vocals",
+          updatedAt: "2026-07-04T10:00:00.000Z",
+        }),
+        taskSummary({
+          dueAt: "2026-07-08T10:00:00.000Z",
+          id: "33333333-3333-4333-8333-333333333333",
+          title: "Edit drums",
+          updatedAt: "2026-07-05T10:00:00.000Z",
+        }),
+      ],
+    ),
+    [
+      {
+        assigneeLabel: "Unassigned",
+        dueDateLabel: "2026-07-08",
+        id: "33333333-3333-4333-8333-333333333333",
+        projectTitle: "Album one",
+        title: "Edit drums",
+        updatedAtLabel: "2026-07-05",
+      },
+      {
+        assigneeLabel: "Assigned",
+        dueDateLabel: "2026-07-09",
+        id: "22222222-2222-4222-8222-222222222222",
+        projectTitle: "Album one",
+        title: "Record vocals",
+        updatedAtLabel: "2026-07-04",
+      },
+      {
+        assigneeLabel: "Unassigned",
+        dueDateLabel: "No due date",
+        id: "11111111-1111-4111-8111-111111111111",
+        projectTitle: "Unknown",
+        title: "Mix outro",
+        updatedAtLabel: "2026-07-06",
+      },
+    ],
+  );
+});
+
+test("buildMyTaskSummary counts assigned, due, and latest-day tasks", () => {
+  assert.deepEqual(
+    buildMyTaskSummary([
+      taskSummary({
+        assigneeUserId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        dueAt: "2026-07-09T10:00:00.000Z",
+        updatedAt: "2026-07-05T10:00:00.000Z",
+      }),
+      taskSummary({
+        assigneeUserId: null,
+        dueAt: null,
+        updatedAt: "2026-07-06T09:00:00.000Z",
+      }),
+      taskSummary({
+        assigneeUserId: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+        dueAt: "2026-07-10T10:00:00.000Z",
+        updatedAt: "2026-07-06T12:00:00.000Z",
+      }),
+    ]),
+    {
+      assignedTaskCount: 2,
+      dueTaskCount: 2,
+      recentlyUpdatedTaskCount: 2,
+      taskCount: 3,
+    },
+  );
+});
 
 test("buildProjectOverviewRows summarizes project task activity", () => {
   assert.deepEqual(

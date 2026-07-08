@@ -423,6 +423,47 @@ h1 {
   font-weight: 800;
 }
 
+.my-task-list {
+  display: grid;
+}
+
+.my-task-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 110px 110px 110px;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 0;
+  border-top: 1px solid #ece6dc;
+}
+
+.my-task-row h4 {
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+
+.my-task-row p {
+  margin-bottom: 0;
+  color: #59645e;
+  line-height: 1.45;
+}
+
+.my-task-row > span,
+.my-task-row time {
+  min-width: 0;
+  overflow: hidden;
+  color: #2d3a33;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.my-task-row time {
+  justify-self: end;
+  color: #59645e;
+}
+
 .template-skill-list {
   display: grid;
 }
@@ -613,6 +654,14 @@ h1 {
   }
 
   .project-overview-row > span {
+    justify-self: start;
+  }
+
+  .my-task-row {
+    grid-template-columns: 1fr;
+  }
+
+  .my-task-row time {
     justify-self: start;
   }
 
