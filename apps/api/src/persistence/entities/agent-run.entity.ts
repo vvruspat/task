@@ -22,6 +22,14 @@ import type {
 @Index("idx_agent_runs_workspace_id_created_at", ["workspaceId", "createdAt"])
 @Index("idx_agent_runs_workspace_id_user_id", ["workspaceId", "userId"])
 @Index("idx_agent_runs_workspace_id_status", ["workspaceId", "status"])
+@Index(
+  "uq_agent_runs_telegram_source_message",
+  ["workspaceId", "userId", "source", "sourceThreadId", "sourceMessageId"],
+  {
+    unique: true,
+    where: `"source_thread_id" IS NOT NULL AND "source_message_id" IS NOT NULL`,
+  },
+)
 export class AgentRunEntity implements AgentRunRecord {
   @PrimaryGeneratedColumn("uuid")
   id = "";
@@ -34,6 +42,9 @@ export class AgentRunEntity implements AgentRunRecord {
 
   @Column({ type: "text" })
   source: AgentRunSource = "web";
+
+  @Column({ name: "source_thread_id", nullable: true, type: "text" })
+  sourceThreadId: string | null = null;
 
   @Column({ name: "source_message_id", nullable: true, type: "text" })
   sourceMessageId: string | null = null;

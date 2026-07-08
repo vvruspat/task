@@ -21,14 +21,23 @@ export type TelegramAgentRunContextResult =
 export type PersistTelegramAgentRunInput = {
   workspaceId: string;
   userId: string;
+  sourceThreadId: string | null;
   sourceMessageId: string | null;
   inputText: string;
   runtimeResult: AgentRuntimeResult;
+};
+
+export type FindTelegramAgentRunInput = {
+  workspaceId: string;
+  userId: string;
+  sourceThreadId: string;
+  sourceMessageId: string;
 };
 
 export type AgentRunStore = {
   resolveTelegramRunContext(
     input: CreateTelegramAgentRunInput,
   ): Promise<TelegramAgentRunContextResult>;
+  findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunRecord | null>;
   createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunRecord>;
 };

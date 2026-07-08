@@ -6,6 +6,7 @@ import type { AgentRuntime, TelegramAgentRuntimeRequest } from "./agent.runtime.
 import { AgentService } from "./agent.service.js";
 import type {
   AgentRunStore,
+  FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
@@ -53,12 +54,19 @@ class RecordingAgentRunStore implements AgentRunStore {
     return this.contextResult;
   }
 
+  async findTelegramRunBySource(
+    _input: FindTelegramAgentRunInput,
+  ): Promise<PersistedAgentRun | null> {
+    return null;
+  }
+
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<PersistedAgentRun> {
     return {
       id: "11111111-1111-4111-8111-111111111111",
       workspaceId: input.workspaceId,
       userId: input.userId,
       source: "telegram",
+      sourceThreadId: input.sourceThreadId,
       sourceMessageId: input.sourceMessageId,
       model: input.runtimeResult.model,
       inputText: input.inputText,

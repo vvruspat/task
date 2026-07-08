@@ -173,6 +173,9 @@ test("agent run columns, checks, and indexes metadata are registered", () => {
   const normalizedIntentColumn = storage.columns.find(
     (column) => column.target === AgentRunEntity && column.propertyName === "normalizedIntent",
   );
+  const sourceThreadIdColumn = storage.columns.find(
+    (column) => column.target === AgentRunEntity && column.propertyName === "sourceThreadId",
+  );
   const tokenUsageColumn = storage.columns.find(
     (column) => column.target === AgentRunEntity && column.propertyName === "tokenUsage",
   );
@@ -187,6 +190,9 @@ test("agent run columns, checks, and indexes metadata are registered", () => {
 
   assert.equal(normalizedIntentColumn?.options.type, "jsonb");
   assert.equal(normalizedIntentColumn?.options.nullable, true);
+  assert.equal(sourceThreadIdColumn?.options.name, "source_thread_id");
+  assert.equal(sourceThreadIdColumn?.options.type, "text");
+  assert.equal(sourceThreadIdColumn?.options.nullable, true);
   assert.equal(tokenUsageColumn?.options.type, "jsonb");
   assert.equal(tokenUsageColumn?.options.nullable, true);
   assert.deepEqual(runChecks, ["chk_agent_runs_source", "chk_agent_runs_status"]);
@@ -194,6 +200,7 @@ test("agent run columns, checks, and indexes metadata are registered", () => {
     "idx_agent_runs_workspace_id_created_at",
     "idx_agent_runs_workspace_id_status",
     "idx_agent_runs_workspace_id_user_id",
+    "uq_agent_runs_telegram_source_message",
   ]);
 });
 

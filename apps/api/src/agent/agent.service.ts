@@ -27,6 +27,19 @@ export class AgentService {
       throw new ForbiddenException("Telegram user is not a member of the chat workspace.");
     }
 
+    if (input.sourceMessageId !== undefined && input.sourceMessageId !== null) {
+      const existingRun = await this.agentRunStore.findTelegramRunBySource({
+        workspaceId: context.workspaceId,
+        userId: context.userId,
+        sourceThreadId: input.telegramChatId,
+        sourceMessageId: input.sourceMessageId,
+      });
+
+      if (existingRun !== null) {
+        return mapAgentRunToIntakeResponse(existingRun);
+      }
+    }
+
     const runtimeResult = await this.agentRuntime.handleTelegramRequest({
       input,
       context: {
@@ -37,20 +50,34 @@ export class AgentService {
     const run = await this.agentRunStore.createTelegramRun({
       workspaceId: context.workspaceId,
       userId: context.userId,
+      sourceThreadId: input.telegramChatId,
       sourceMessageId: input.sourceMessageId ?? null,
       inputText: input.inputText,
       runtimeResult,
     });
 
-    return new AgentRunIntakeResponseDto({
-      agentRunId: run.id,
-      workspaceId: run.workspaceId,
-      userId: run.userId,
-      source: run.source,
-      sourceMessageId: run.sourceMessageId,
-      status: run.status,
-      responseText: run.finalResponse ?? agentRuntimeNotConnectedResponse,
-      createdAt: run.createdAt.toISOString(),
-    });
+    return mapAgentRunToIntakeResponse(run);
   }
+}
+
+function mapAgentRunToIntakeResponse(run: {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  source: "telegram" | "web" | "mini_app";
+  sourceMessageId: string | null;
+  status: "running" | "waiting_confirmation" | "completed" | "failed";
+  finalResponse: string | null;
+  createdAt: Date;
+}): AgentRunIntakeResponseDto {
+  return new AgentRunIntakeResponseDto({
+    agentRunId: run.id,
+    workspaceId: run.workspaceId,
+    userId: run.userId,
+    source: run.source,
+    sourceMessageId: run.sourceMessageId,
+    status: run.status,
+    responseText: run.finalResponse ?? agentRuntimeNotConnectedResponse,
+    createdAt: run.createdAt.toISOString(),
+  });
 }
