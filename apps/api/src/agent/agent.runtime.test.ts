@@ -23,7 +23,10 @@ const request = {
 
 const config = {
   apiKey: "openrouter-secret",
+  appTitle: "tAsk",
+  fallbackModel: null,
   model: "openai/gpt-4.1-mini",
+  siteUrl: null,
 };
 
 test("OpenRouterAgentRuntime sends chat completions and maps assistant content", async () => {
@@ -61,7 +64,8 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.equal(call.init.method, "POST");
   assert.equal(call.init.headers.Authorization, "Bearer openrouter-secret");
   assert.equal(call.init.headers["Content-Type"], "application/json");
-  assert.equal(call.init.headers["X-OpenRouter-Title"], "tAsk");
+  assert.equal(call.init.headers["X-Title"], "tAsk");
+  assert.equal(call.init.headers["HTTP-Referer"], undefined);
   assert.deepEqual(parseRequestBody(call.init.body), {
     model: "openai/gpt-4.1-mini",
     messages: [
@@ -76,6 +80,30 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
     ],
     stream: false,
   });
+});
+
+test("OpenRouterAgentRuntime sends configured attribution headers", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, {
+      choices: [{ message: { content: "Done." } }],
+    }),
+  );
+  const runtime = new OpenRouterAgentRuntime(
+    {
+      apiKey: "openrouter-secret",
+      appTitle: "tAsk Staging",
+      fallbackModel: "anthropic/claude-3.5-sonnet",
+      model: "openai/gpt-4.1-mini",
+      siteUrl: "https://task.example",
+    },
+    fetcher.fetch,
+  );
+
+  await runtime.handleTelegramRequest(request);
+
+  const call = getOnlyCall(fetcher);
+  assert.equal(call.init.headers["HTTP-Referer"], "https://task.example");
+  assert.equal(call.init.headers["X-Title"], "tAsk Staging");
 });
 
 test("OpenRouterAgentRuntime stores failed runs for non-OK OpenRouter responses", async () => {

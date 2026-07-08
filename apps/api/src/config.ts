@@ -1,7 +1,10 @@
 export type ApiEnvironment = {
   DATABASE_URL?: string;
   OPENROUTER_API_KEY?: string;
+  OPENROUTER_APP_TITLE?: string;
+  OPENROUTER_FALLBACK_MODEL?: string;
   OPENROUTER_MODEL?: string;
+  OPENROUTER_SITE_URL?: string;
   PORT?: string;
   TELEGRAM_BOT_SHARED_SECRET?: string;
 };
@@ -23,7 +26,10 @@ export type ApiBotAuthConfig = {
 
 export type ApiOpenRouterConfig = {
   apiKey: string;
+  appTitle: string;
+  fallbackModel: string | null;
   model: string;
+  siteUrl: string | null;
 };
 
 export class InvalidApiEnvironmentError extends Error {
@@ -36,6 +42,7 @@ export class InvalidApiEnvironmentError extends Error {
 }
 
 const defaultPort = 3000;
+const defaultOpenRouterAppTitle = "tAsk";
 const maxPort = 65_535;
 const portPattern = /^\d+$/;
 
@@ -43,7 +50,7 @@ export function parseApiConfig(environment: ApiEnvironment): ApiConfig {
   return {
     botAuth: parseBotAuthConfig(environment.TELEGRAM_BOT_SHARED_SECRET),
     database: parseDatabaseConfig(environment.DATABASE_URL),
-    openRouter: parseOpenRouterConfig(environment.OPENROUTER_API_KEY, environment.OPENROUTER_MODEL),
+    openRouter: parseOpenRouterConfig(environment),
     port: parsePort(environment.PORT),
   };
 }
@@ -138,11 +145,20 @@ function parseBotAuthConfig(value: string | undefined): ApiBotAuthConfig | null 
   };
 }
 
-function parseOpenRouterConfig(
-  apiKey: string | undefined,
-  model: string | undefined,
-): ApiOpenRouterConfig | null {
-  if (apiKey === undefined && model === undefined) {
+function parseOpenRouterConfig(environment: ApiEnvironment): ApiOpenRouterConfig | null {
+  const apiKey = environment.OPENROUTER_API_KEY;
+  const appTitle = environment.OPENROUTER_APP_TITLE;
+  const fallbackModel = environment.OPENROUTER_FALLBACK_MODEL;
+  const model = environment.OPENROUTER_MODEL;
+  const siteUrl = environment.OPENROUTER_SITE_URL;
+
+  if (
+    apiKey === undefined &&
+    appTitle === undefined &&
+    fallbackModel === undefined &&
+    model === undefined &&
+    siteUrl === undefined
+  ) {
     return null;
   }
 
@@ -180,8 +196,74 @@ function parseOpenRouterConfig(
 
   return {
     apiKey,
+    appTitle: parseOptionalOpenRouterAppTitle(appTitle),
+    fallbackModel: parseOptionalOpenRouterModel("OPENROUTER_FALLBACK_MODEL", fallbackModel),
     model,
+    siteUrl: parseOptionalOpenRouterSiteUrl(siteUrl),
   };
+}
+
+function parseOptionalOpenRouterModel(
+  variableName: "OPENROUTER_FALLBACK_MODEL",
+  value: string | undefined,
+): string | null {
+  if (value === undefined) {
+    return null;
+  }
+
+  if (value.trim() !== value || value.length === 0 || /\s/u.test(value)) {
+    throw new InvalidApiEnvironmentError(
+      variableName,
+      value,
+      "must be a non-empty model identifier without whitespace",
+    );
+  }
+
+  return value;
+}
+
+function parseOptionalOpenRouterAppTitle(value: string | undefined): string {
+  if (value === undefined) {
+    return defaultOpenRouterAppTitle;
+  }
+
+  if (value.trim() !== value || value.length === 0) {
+    throw new InvalidApiEnvironmentError(
+      "OPENROUTER_APP_TITLE",
+      value,
+      "must be a non-empty string without surrounding whitespace",
+    );
+  }
+
+  return value;
+}
+
+function parseOptionalOpenRouterSiteUrl(value: string | undefined): string | null {
+  if (value === undefined) {
+    return null;
+  }
+
+  if (value.trim() !== value || value.length === 0) {
+    throw new InvalidApiEnvironmentError(
+      "OPENROUTER_SITE_URL",
+      value,
+      "must be an HTTPS URL without surrounding whitespace",
+    );
+  }
+
+  let url: URL;
+
+  try {
+    url = new URL(value);
+  } catch {
+    throw new InvalidApiEnvironmentError("OPENROUTER_SITE_URL", value, "must be an HTTPS URL");
+  }
+
+  if (url.protocol !== "https:") {
+    throw new InvalidApiEnvironmentError("OPENROUTER_SITE_URL", value, "must use https://");
+  }
+
+  return value;
 }
 
 function formatInvalidValue(variableName: keyof ApiEnvironment, value: string): string {

@@ -41,7 +41,8 @@ export type OpenRouterFetchInit = {
 export type OpenRouterFetchHeaders = {
   Authorization: string;
   "Content-Type": string;
-  "X-OpenRouter-Title": string;
+  "HTTP-Referer"?: string;
+  "X-Title": string;
 };
 
 export type OpenRouterFetchResponse = {
@@ -84,7 +85,8 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         headers: {
           Authorization: `Bearer ${this.config.apiKey}`,
           "Content-Type": "application/json",
-          "X-OpenRouter-Title": "tAsk",
+          ...(this.config.siteUrl === null ? {} : { "HTTP-Referer": this.config.siteUrl }),
+          "X-Title": this.config.appTitle,
         },
         body: JSON.stringify({
           model: this.config.model,

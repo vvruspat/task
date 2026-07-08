@@ -70,7 +70,28 @@ test("parseApiConfig accepts valid OpenRouter settings", () => {
 
   assert.deepEqual(config.openRouter, {
     apiKey: "openrouter-secret",
+    appTitle: "tAsk",
+    fallbackModel: null,
     model: "openai/gpt-4.1-mini",
+    siteUrl: null,
+  });
+});
+
+test("parseApiConfig accepts optional OpenRouter runtime metadata", () => {
+  const config = parseApiConfig({
+    OPENROUTER_API_KEY: "openrouter-secret",
+    OPENROUTER_APP_TITLE: "tAsk Staging",
+    OPENROUTER_FALLBACK_MODEL: "anthropic/claude-3.5-sonnet",
+    OPENROUTER_MODEL: "openai/gpt-4.1-mini",
+    OPENROUTER_SITE_URL: "https://task.example",
+  });
+
+  assert.deepEqual(config.openRouter, {
+    apiKey: "openrouter-secret",
+    appTitle: "tAsk Staging",
+    fallbackModel: "anthropic/claude-3.5-sonnet",
+    model: "openai/gpt-4.1-mini",
+    siteUrl: "https://task.example",
   });
 });
 
@@ -81,6 +102,14 @@ test("parseApiConfig rejects partial OpenRouter settings", () => {
   );
   assert.throws(
     () => parseApiConfig({ OPENROUTER_MODEL: "openai/gpt-4.1-mini" }),
+    InvalidApiEnvironmentError,
+  );
+  assert.throws(
+    () => parseApiConfig({ OPENROUTER_APP_TITLE: "tAsk Staging" }),
+    InvalidApiEnvironmentError,
+  );
+  assert.throws(
+    () => parseApiConfig({ OPENROUTER_SITE_URL: "https://task.example" }),
     InvalidApiEnvironmentError,
   );
 });
@@ -107,6 +136,46 @@ test("parseApiConfig rejects invalid OpenRouter settings", () => {
         parseApiConfig({
           OPENROUTER_API_KEY: "openrouter-secret",
           OPENROUTER_MODEL: model,
+        }),
+      InvalidApiEnvironmentError,
+    );
+  }
+
+  for (const fallbackModel of invalidModels) {
+    assert.throws(
+      () =>
+        parseApiConfig({
+          OPENROUTER_API_KEY: "openrouter-secret",
+          OPENROUTER_FALLBACK_MODEL: fallbackModel,
+          OPENROUTER_MODEL: "openai/gpt-4.1-mini",
+        }),
+      InvalidApiEnvironmentError,
+    );
+  }
+
+  const invalidAppTitles = ["", " tAsk", "tAsk "];
+
+  for (const appTitle of invalidAppTitles) {
+    assert.throws(
+      () =>
+        parseApiConfig({
+          OPENROUTER_API_KEY: "openrouter-secret",
+          OPENROUTER_APP_TITLE: appTitle,
+          OPENROUTER_MODEL: "openai/gpt-4.1-mini",
+        }),
+      InvalidApiEnvironmentError,
+    );
+  }
+
+  const invalidSiteUrls = ["", " https://task.example", "http://task.example", "not-a-url"];
+
+  for (const siteUrl of invalidSiteUrls) {
+    assert.throws(
+      () =>
+        parseApiConfig({
+          OPENROUTER_API_KEY: "openrouter-secret",
+          OPENROUTER_MODEL: "openai/gpt-4.1-mini",
+          OPENROUTER_SITE_URL: siteUrl,
         }),
       InvalidApiEnvironmentError,
     );
