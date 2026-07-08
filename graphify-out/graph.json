@@ -290,7 +290,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_contracts",
-      "community": 55,
+      "community": 52,
       "norm_label": "agent.contracts.ts"
     },
     {
@@ -330,7 +330,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller_test",
-      "community": 55,
+      "community": 52,
       "norm_label": "agent.controller.test.ts"
     },
     {
@@ -400,7 +400,7 @@
       "source_location": "L147",
       "_origin": "ast",
       "id": "agent_agent_controller_test_staticagentruntime",
-      "community": 93,
+      "community": 52,
       "norm_label": "staticagentruntime"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "agent_agent_controller_test_agentruntimeresult",
-      "community": 55,
+      "community": 52,
       "norm_label": "agentruntimeresult"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "agent_agent_controller_test_persistedagentrun",
-      "community": 55,
+      "community": 52,
       "norm_label": "persistedagentrun"
     },
     {
@@ -450,7 +450,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "agent_agent_controller_agentcontroller",
-      "community": 52,
+      "community": 55,
       "norm_label": "agentcontroller"
     },
     {
@@ -460,7 +460,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "agent_agent_controller_agentcontroller_constructor",
-      "community": 52,
+      "community": 55,
       "norm_label": ".constructor()"
     },
     {
@@ -470,7 +470,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "agent_agent_controller_agentcontroller_createtelegramrun",
-      "community": 52,
+      "community": 55,
       "norm_label": ".createtelegramrun()"
     },
     {
@@ -1150,7 +1150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service_test",
-      "community": 55,
+      "community": 52,
       "norm_label": "agent.service.test.ts"
     },
     {
@@ -1160,7 +1160,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "agent_agent_service_test_input",
-      "community": 55,
+      "community": 52,
       "norm_label": "input"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_location": "L325",
       "_origin": "ast",
       "id": "agent_agent_service_test_persistedagentrun",
-      "community": 55,
+      "community": 52,
       "norm_label": "persistedagentrun"
     },
     {
@@ -1270,7 +1270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service",
-      "community": 55,
+      "community": 52,
       "norm_label": "agent.service.ts"
     },
     {
@@ -1310,7 +1310,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice_listworkspaceruns",
-      "community": 52,
+      "community": 8,
       "norm_label": ".listworkspaceruns()"
     },
     {
@@ -1330,7 +1330,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "agent_agent_service_mapagentruntosummary",
-      "community": 55,
+      "community": 52,
       "norm_label": "mapagentruntosummary()"
     },
     {
@@ -1340,7 +1340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_store",
-      "community": 55,
+      "community": 52,
       "norm_label": "agent.store.ts"
     },
     {
@@ -1360,7 +1360,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "agent_agent_store_persisttelegramagentruninput",
-      "community": 55,
+      "community": 52,
       "norm_label": "persisttelegramagentruninput"
     },
     {
@@ -1370,7 +1370,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "agent_agent_store_findtelegramagentruninput",
-      "community": 55,
+      "community": 52,
       "norm_label": "findtelegramagentruninput"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "agent_agent_store_agentrunstore",
-      "community": 55,
+      "community": 52,
       "norm_label": "agentrunstore"
     },
     {
@@ -1390,7 +1390,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store",
-      "community": 55,
+      "community": 52,
       "norm_label": "typeorm-agent-run.store.ts"
     },
     {
@@ -1410,7 +1410,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_constructor",
-      "community": 95,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -2130,7 +2130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_test",
-      "community": 67,
+      "community": 106,
       "norm_label": "trusted-current-user.decorator.test.ts"
     },
     {
@@ -2140,7 +2140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator",
-      "community": 67,
+      "community": 106,
       "norm_label": "trusted-current-user.decorator.ts"
     },
     {
@@ -2150,7 +2150,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "community": 67,
+      "community": 106,
       "norm_label": "apitrustedcurrentuser()"
     },
     {
@@ -2160,7 +2160,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "community": 67,
+      "community": 106,
       "norm_label": "trustedcurrentuserid"
     },
     {
@@ -2170,7 +2170,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "community": 67,
+      "community": 106,
       "norm_label": "parsetrustedcurrentuserid()"
     },
     {
@@ -2180,7 +2180,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "community": 67,
+      "community": 106,
       "norm_label": "trustedcurrentuserheader"
     },
     {
@@ -2190,7 +2190,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
-      "community": 67,
+      "community": 106,
       "norm_label": "trustedcurrentuserrequest"
     },
     {
@@ -2270,7 +2270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "comments_comments_controller",
-      "community": 64,
+      "community": 106,
       "norm_label": "comments.controller.ts"
     },
     {
@@ -2280,7 +2280,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "comments_comments_controller_uuidv4pipe",
-      "community": 64,
+      "community": 106,
       "norm_label": "uuidv4pipe"
     },
     {
@@ -2290,7 +2290,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller",
-      "community": 64,
+      "community": 109,
       "norm_label": "commentscontroller"
     },
     {
@@ -2300,7 +2300,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller_constructor",
-      "community": 64,
+      "community": 109,
       "norm_label": ".constructor()"
     },
     {
@@ -2310,7 +2310,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller_listtaskcomments",
-      "community": 64,
+      "community": 109,
       "norm_label": ".listtaskcomments()"
     },
     {
@@ -2320,7 +2320,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller_createtaskcomment",
-      "community": 64,
+      "community": 109,
       "norm_label": ".createtaskcomment()"
     },
     {
@@ -2370,7 +2370,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "comments_comments_dto_taskcommentdto",
-      "community": 64,
+      "community": 109,
       "norm_label": "taskcommentdto"
     },
     {
@@ -2380,7 +2380,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "comments_comments_dto_taskcommentdto_constructor",
-      "community": 64,
+      "community": 109,
       "norm_label": ".constructor()"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "comments_comments_module",
-      "community": 64,
+      "community": 117,
       "norm_label": "comments.module.ts"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "comments_comments_module_commentsserviceprovider",
-      "community": 64,
+      "community": 117,
       "norm_label": "commentsserviceprovider"
     },
     {
@@ -2500,7 +2500,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice",
-      "community": 64,
+      "community": 109,
       "norm_label": "commentsservice"
     },
     {
@@ -2510,7 +2510,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice_constructor",
-      "community": 64,
+      "community": 109,
       "norm_label": ".constructor()"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice_listtaskcomments",
-      "community": 64,
+      "community": 109,
       "norm_label": ".listtaskcomments()"
     },
     {
@@ -2530,7 +2530,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice_createtaskcomment",
-      "community": 64,
+      "community": 109,
       "norm_label": ".createtaskcomment()"
     },
     {
@@ -2590,7 +2590,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "community": 64,
+      "community": 114,
       "norm_label": "typeormtaskcommentsstore"
     },
     {
@@ -2600,7 +2600,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 67,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -2610,7 +2610,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
-      "community": 64,
+      "community": 114,
       "norm_label": ".listfortask()"
     },
     {
@@ -2620,7 +2620,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "community": 64,
+      "community": 114,
       "norm_label": ".createfortask()"
     },
     {
@@ -2630,7 +2630,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
-      "community": 64,
+      "community": 114,
       "norm_label": ".canreadtask()"
     },
     {
@@ -2640,7 +2640,7 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
-      "community": 64,
+      "community": 114,
       "norm_label": ".getvisibletask()"
     },
     {
@@ -2650,7 +2650,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
-      "community": 64,
+      "community": 114,
       "norm_label": ".getworkspacemembership()"
     },
     {
@@ -2660,7 +2660,7 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
-      "community": 64,
+      "community": 114,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -2670,7 +2670,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_totaskcomment",
-      "community": 64,
+      "community": 114,
       "norm_label": "totaskcomment()"
     },
     {
@@ -3420,7 +3420,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor",
-      "community": 67,
+      "community": 99,
       "norm_label": ".constructor()"
     },
     {
@@ -3500,7 +3500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 108,
+      "community": 66,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -3510,7 +3510,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 108,
+      "community": 66,
       "norm_label": "data-source.ts"
     },
     {
@@ -3520,7 +3520,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 108,
+      "community": 66,
       "norm_label": "apientities"
     },
     {
@@ -3530,7 +3530,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 108,
+      "community": 66,
       "norm_label": "apimigrations"
     },
     {
@@ -3540,7 +3540,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 108,
+      "community": 66,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -3550,7 +3550,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 108,
+      "community": 66,
       "norm_label": "createapidatasource()"
     },
     {
@@ -3560,7 +3560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 108,
+      "community": 117,
       "norm_label": "database.module.ts"
     },
     {
@@ -3570,7 +3570,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 108,
+      "community": 117,
       "norm_label": "apidatasource"
     },
     {
@@ -3580,7 +3580,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 67,
+      "community": 103,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -3600,7 +3600,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 67,
+      "community": 103,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -3610,7 +3610,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 67,
+      "community": 103,
       "norm_label": ".getdatasource()"
     },
     {
@@ -3620,7 +3620,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 108,
+      "community": 117,
       "norm_label": "databasemodule"
     },
     {
@@ -3710,7 +3710,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entities_agent_run_entity",
-      "community": 95,
+      "community": 122,
       "norm_label": "agent-run.entity.ts"
     },
     {
@@ -3720,7 +3720,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "entities_agent_run_entity_agentrunentity",
-      "community": 95,
+      "community": 122,
       "norm_label": "agentrunentity"
     },
     {
@@ -4190,7 +4190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table",
-      "community": 86,
+      "community": 123,
       "norm_label": "1783296120000-create-tasks-table.ts"
     },
     {
@@ -4200,7 +4200,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstablesql",
-      "community": 86,
+      "community": 123,
       "norm_label": "createtaskstablesql"
     },
     {
@@ -4210,7 +4210,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_droptaskstablesql",
-      "community": 86,
+      "community": 123,
       "norm_label": "droptaskstablesql"
     },
     {
@@ -4280,7 +4280,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
-      "community": 108,
+      "community": 66,
       "norm_label": "createtaskskillstables1783296180000"
     },
     {
@@ -4290,7 +4290,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_up",
-      "community": 108,
+      "community": 66,
       "norm_label": ".up()"
     },
     {
@@ -4300,7 +4300,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_down",
-      "community": 108,
+      "community": 66,
       "norm_label": ".down()"
     },
     {
@@ -4310,7 +4310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table",
-      "community": 109,
+      "community": 86,
       "norm_label": "1783296240000-create-comments-table.ts"
     },
     {
@@ -4320,7 +4320,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstablesql",
-      "community": 109,
+      "community": 86,
       "norm_label": "createcommentstablesql"
     },
     {
@@ -4330,7 +4330,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_dropcommentstablesql",
-      "community": 109,
+      "community": 86,
       "norm_label": "dropcommentstablesql"
     },
     {
@@ -4340,7 +4340,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 109,
+      "community": 66,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -4350,7 +4350,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 109,
+      "community": 66,
       "norm_label": ".up()"
     },
     {
@@ -4360,7 +4360,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 109,
+      "community": 66,
       "norm_label": ".down()"
     },
     {
@@ -4460,7 +4460,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "community": 110,
+      "community": 66,
       "norm_label": "createactivityeventstable1783296360000"
     },
     {
@@ -4470,7 +4470,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
-      "community": 110,
+      "community": 66,
       "norm_label": ".up()"
     },
     {
@@ -4480,7 +4480,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down",
-      "community": 110,
+      "community": 66,
       "norm_label": ".down()"
     },
     {
@@ -4580,7 +4580,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "community": 112,
+      "community": 66,
       "norm_label": "createconfirmationrequeststable1783296480000"
     },
     {
@@ -4590,7 +4590,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up",
-      "community": 112,
+      "community": 66,
       "norm_label": ".up()"
     },
     {
@@ -4600,7 +4600,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_down",
-      "community": 112,
+      "community": 66,
       "norm_label": ".down()"
     },
     {
@@ -4640,7 +4640,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
-      "community": 113,
+      "community": 66,
       "norm_label": "createtelegramtables1783296540000"
     },
     {
@@ -4650,7 +4650,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_up",
-      "community": 113,
+      "community": 66,
       "norm_label": ".up()"
     },
     {
@@ -4660,7 +4660,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_down",
-      "community": 113,
+      "community": 66,
       "norm_label": ".down()"
     },
     {
@@ -4670,7 +4670,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table",
-      "community": 66,
+      "community": 124,
       "norm_label": "1783296600000-create-invites-table.ts"
     },
     {
@@ -4680,7 +4680,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestablesql",
-      "community": 66,
+      "community": 124,
       "norm_label": "createinvitestablesql"
     },
     {
@@ -4690,7 +4690,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_dropinvitestablesql",
-      "community": 66,
+      "community": 124,
       "norm_label": "dropinvitestablesql"
     },
     {
@@ -4760,7 +4760,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000",
-      "community": 115,
+      "community": 66,
       "norm_label": "addagentrunsourcethreadid1783296660000"
     },
     {
@@ -4770,7 +4770,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000_up",
-      "community": 115,
+      "community": 66,
       "norm_label": ".up()"
     },
     {
@@ -4780,7 +4780,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000_down",
-      "community": 115,
+      "community": 66,
       "norm_label": ".down()"
     },
     {
@@ -4830,7 +4830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_comments_table_test",
-      "community": 109,
+      "community": 86,
       "norm_label": "create-comments-table.test.ts"
     },
     {
@@ -4880,7 +4880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_invites_table_test",
-      "community": 66,
+      "community": 124,
       "norm_label": "create-invites-table.test.ts"
     },
     {
@@ -4910,7 +4910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_tasks_table_test",
-      "community": 86,
+      "community": 123,
       "norm_label": "create-tasks-table.test.ts"
     },
     {
@@ -5080,7 +5080,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunsource",
-      "community": 95,
+      "community": 122,
       "norm_label": "agentrunsource"
     },
     {
@@ -5090,7 +5090,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunstatus",
-      "community": 95,
+      "community": 8,
       "norm_label": "agentrunstatus"
     },
     {
@@ -5100,7 +5100,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunrecord",
-      "community": 95,
+      "community": 122,
       "norm_label": "agentrunrecord"
     },
     {
@@ -5630,7 +5630,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 67,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -5770,7 +5770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_controller",
-      "community": 67,
+      "community": 106,
       "norm_label": "statuses.controller.ts"
     },
     {
@@ -5780,7 +5780,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "statuses_statuses_controller_uuidv4pipe",
-      "community": 67,
+      "community": 106,
       "norm_label": "uuidv4pipe"
     },
     {
@@ -5850,7 +5850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_module",
-      "community": 67,
+      "community": 117,
       "norm_label": "statuses.module.ts"
     },
     {
@@ -5860,7 +5860,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "statuses_statuses_module_statusesserviceprovider",
-      "community": 67,
+      "community": 117,
       "norm_label": "statusesserviceprovider"
     },
     {
@@ -6000,7 +6000,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore",
-      "community": 67,
+      "community": 103,
       "norm_label": "typeormstatusesreadstore"
     },
     {
@@ -6010,7 +6010,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_constructor",
-      "community": 67,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -6020,7 +6020,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_listforworkspace",
-      "community": 67,
+      "community": 103,
       "norm_label": ".listforworkspace()"
     },
     {
@@ -6030,7 +6030,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_getinitializeddatasource",
-      "community": 67,
+      "community": 103,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -7210,7 +7210,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
-      "community": 67,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -8110,7 +8110,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 67,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -8650,7 +8650,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 67,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -9460,7 +9460,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_attachment_tools",
-      "community": 76,
+      "community": 84,
       "norm_label": "attachment-tools.ts"
     },
     {
@@ -9470,7 +9470,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmentlisttoolinput",
-      "community": 76,
+      "community": 84,
       "norm_label": "attachmentlisttoolinput"
     },
     {
@@ -9480,7 +9480,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmentcreatelinktoolinput",
-      "community": 76,
+      "community": 84,
       "norm_label": "attachmentcreatelinktoolinput"
     },
     {
@@ -9490,7 +9490,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmenttoolhandlers",
-      "community": 76,
+      "community": 84,
       "norm_label": "attachmenttoolhandlers"
     },
     {
@@ -9500,7 +9500,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmenttoolinputerror",
-      "community": 76,
+      "community": 84,
       "norm_label": "attachmenttoolinputerror"
     },
     {
@@ -9510,7 +9510,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmenttoolinputerror_constructor",
-      "community": 76,
+      "community": 84,
       "norm_label": ".constructor()"
     },
     {
@@ -9520,7 +9520,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_attachment_tools_createattachmenttoolhandlers",
-      "community": 76,
+      "community": 84,
       "norm_label": "createattachmenttoolhandlers()"
     },
     {
@@ -9530,7 +9530,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_attachment_tools_parseattachmentcreatelinktoolinput",
-      "community": 76,
+      "community": 84,
       "norm_label": "parseattachmentcreatelinktoolinput()"
     },
     {
@@ -9540,7 +9540,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_attachment_tools_parseattachmentlisttoolinput",
-      "community": 76,
+      "community": 84,
       "norm_label": "parseattachmentlisttoolinput()"
     },
     {
@@ -9550,7 +9550,7 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_attachment_tools_tocreatetasklinkattachmentinput",
-      "community": 76,
+      "community": 84,
       "norm_label": "tocreatetasklinkattachmentinput()"
     },
     {
@@ -9560,7 +9560,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_attachment_tools_readrecord",
-      "community": 76,
+      "community": 84,
       "norm_label": "readrecord()"
     },
     {
@@ -9570,7 +9570,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "src_attachment_tools_isunknownrecord",
-      "community": 76,
+      "community": 84,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -9580,7 +9580,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "src_attachment_tools_readrequireduuid",
-      "community": 76,
+      "community": 84,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -9590,7 +9590,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_attachment_tools_readrequiredurl",
-      "community": 76,
+      "community": 84,
       "norm_label": "readrequiredurl()"
     },
     {
@@ -9600,7 +9600,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "src_attachment_tools_readoptionalnullablestring",
-      "community": 76,
+      "community": 84,
       "norm_label": "readoptionalnullablestring()"
     },
     {
@@ -10030,7 +10030,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 70,
+      "community": 76,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
@@ -10040,7 +10040,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskillresponse",
-      "community": 70,
+      "community": 78,
       "norm_label": "applytaskskillresponse"
     },
     {
@@ -10110,7 +10110,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_backend_client_createtaskcommentinput",
-      "community": 103,
+      "community": 65,
       "norm_label": "createtaskcommentinput"
     },
     {
@@ -10120,7 +10120,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_backend_client_createtasklinkattachmentinput",
-      "community": 76,
+      "community": 84,
       "norm_label": "createtasklinkattachmentinput"
     },
     {
@@ -10190,7 +10190,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_backend_client_projectdetailresponse",
-      "community": 103,
+      "community": 76,
       "norm_label": "projectdetailresponse"
     },
     {
@@ -10210,7 +10210,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_backend_client_taskcommentresponse",
-      "community": 103,
+      "community": 76,
       "norm_label": "taskcommentresponse"
     },
     {
@@ -10220,7 +10220,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_backend_client_taskattachmentresponse",
-      "community": 76,
+      "community": 84,
       "norm_label": "taskattachmentresponse"
     },
     {
@@ -10230,7 +10230,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_backend_client_taskdetailresponse",
-      "community": 56,
+      "community": 76,
       "norm_label": "taskdetailresponse"
     },
     {
@@ -10260,7 +10260,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendgetheaders",
-      "community": 61,
+      "community": 65,
       "norm_label": "taskbackendgetheaders"
     },
     {
@@ -10270,7 +10270,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendpostheaders",
-      "community": 61,
+      "community": 65,
       "norm_label": "taskbackendpostheaders"
     },
     {
@@ -10300,7 +10300,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclientoptions",
-      "community": 61,
+      "community": 65,
       "norm_label": "taskbackendclientoptions"
     },
     {
@@ -10320,7 +10320,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_backend_client_listactiveprojectsrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "listactiveprojectsrequest"
     },
     {
@@ -10330,7 +10330,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "src_backend_client_listworkspacestatusesrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "listworkspacestatusesrequest"
     },
     {
@@ -10340,7 +10340,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_backend_client_listworkspacesrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "listworkspacesrequest"
     },
     {
@@ -10370,7 +10370,7 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "src_backend_client_listtaskskillsrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "listtaskskillsrequest"
     },
     {
@@ -10380,7 +10380,7 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "src_backend_client_gettaskskillrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "gettaskskillrequest"
     },
     {
@@ -10390,7 +10390,7 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_backend_client_getprojectrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "getprojectrequest"
     },
     {
@@ -10400,7 +10400,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "src_backend_client_createprojectrequest",
-      "community": 70,
+      "community": 76,
       "norm_label": "createprojectrequest"
     },
     {
@@ -10410,7 +10410,7 @@
       "source_location": "L168",
       "_origin": "ast",
       "id": "src_backend_client_listactivetasksrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "listactivetasksrequest"
     },
     {
@@ -10420,7 +10420,7 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_backend_client_listtaskcommentsrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "listtaskcommentsrequest"
     },
     {
@@ -10430,7 +10430,7 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "src_backend_client_createtaskcommentrequest",
-      "community": 103,
+      "community": 76,
       "norm_label": "createtaskcommentrequest"
     },
     {
@@ -10440,7 +10440,7 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_backend_client_listtaskattachmentsrequest",
-      "community": 92,
+      "community": 76,
       "norm_label": "listtaskattachmentsrequest"
     },
     {
@@ -10450,7 +10450,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "src_backend_client_createtasklinkattachmentrequest",
-      "community": 92,
+      "community": 76,
       "norm_label": "createtasklinkattachmentrequest"
     },
     {
@@ -10460,7 +10460,7 @@
       "source_location": "L204",
       "_origin": "ast",
       "id": "src_backend_client_gettaskrequest",
-      "community": 61,
+      "community": 65,
       "norm_label": "gettaskrequest"
     },
     {
@@ -10510,7 +10510,7 @@
       "source_location": "L242",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclient",
-      "community": 120,
+      "community": 76,
       "norm_label": "taskbackendclient"
     },
     {
@@ -11130,7 +11130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_comment_tools_test",
-      "community": 103,
+      "community": 76,
       "norm_label": "comment-tools.test.ts"
     },
     {
@@ -11140,7 +11140,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_comment_tools_test_taskcomment",
-      "community": 103,
+      "community": 76,
       "norm_label": "taskcomment"
     },
     {
@@ -11150,7 +11150,7 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_comment_tools_test_createbackendclientstub",
-      "community": 103,
+      "community": 76,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -11160,7 +11160,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_comment_tools",
-      "community": 103,
+      "community": 65,
       "norm_label": "comment-tools.ts"
     },
     {
@@ -11170,7 +11170,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_comment_tools_commentlisttoolinput",
-      "community": 103,
+      "community": 65,
       "norm_label": "commentlisttoolinput"
     },
     {
@@ -11180,7 +11180,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_comment_tools_commentcreatetoolinput",
-      "community": 103,
+      "community": 65,
       "norm_label": "commentcreatetoolinput"
     },
     {
@@ -11190,7 +11190,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolhandlers",
-      "community": 103,
+      "community": 65,
       "norm_label": "commenttoolhandlers"
     },
     {
@@ -11200,7 +11200,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolinputerror",
-      "community": 103,
+      "community": 65,
       "norm_label": "commenttoolinputerror"
     },
     {
@@ -11210,7 +11210,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolinputerror_constructor",
-      "community": 103,
+      "community": 65,
       "norm_label": ".constructor()"
     },
     {
@@ -11220,7 +11220,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_comment_tools_createcommenttoolhandlers",
-      "community": 103,
+      "community": 65,
       "norm_label": "createcommenttoolhandlers()"
     },
     {
@@ -11230,7 +11230,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_comment_tools_parsecommentcreatetoolinput",
-      "community": 103,
+      "community": 65,
       "norm_label": "parsecommentcreatetoolinput()"
     },
     {
@@ -11240,7 +11240,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_comment_tools_parsecommentlisttoolinput",
-      "community": 103,
+      "community": 65,
       "norm_label": "parsecommentlisttoolinput()"
     },
     {
@@ -11250,7 +11250,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_comment_tools_tocreatetaskcommentinput",
-      "community": 103,
+      "community": 65,
       "norm_label": "tocreatetaskcommentinput()"
     },
     {
@@ -11260,7 +11260,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_comment_tools_readrecord",
-      "community": 103,
+      "community": 65,
       "norm_label": "readrecord()"
     },
     {
@@ -11270,7 +11270,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_comment_tools_isunknownrecord",
-      "community": 103,
+      "community": 65,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -11280,7 +11280,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_comment_tools_readrequireduuid",
-      "community": 103,
+      "community": 65,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -11290,7 +11290,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "src_comment_tools_readrequirednonemptystring",
-      "community": 103,
+      "community": 65,
       "norm_label": "readrequirednonemptystring()"
     },
     {
@@ -11410,7 +11410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_index_ts_src_index",
-      "community": 18,
+      "community": 65,
       "norm_label": "index.ts"
     },
     {
@@ -12190,7 +12190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_project_tools_test",
-      "community": 70,
+      "community": 76,
       "norm_label": "project-tools.test.ts"
     },
     {
@@ -12200,7 +12200,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_project_tools_test_albumproject",
-      "community": 70,
+      "community": 76,
       "norm_label": "albumproject"
     },
     {
@@ -12210,7 +12210,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_project_tools_test_projects",
-      "community": 70,
+      "community": 76,
       "norm_label": "projects"
     },
     {
@@ -12220,7 +12220,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_project_tools_test_projectdetail",
-      "community": 70,
+      "community": 76,
       "norm_label": "projectdetail"
     },
     {
@@ -12230,7 +12230,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_project_tools_test_createbackendclientstub",
-      "community": 70,
+      "community": 76,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -13120,7 +13120,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_task_tools_tasktoolhandlers",
-      "community": 18,
+      "community": 69,
       "norm_label": "tasktoolhandlers"
     },
     {
@@ -13930,7 +13930,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_backend_client_telegramcontextresolutionresponse",
-      "community": 90,
+      "community": 89,
       "norm_label": "telegramcontextresolutionresponse"
     },
     {
@@ -13950,7 +13950,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_backend_client_telegramagentrunintakeresponse",
-      "community": 90,
+      "community": 89,
       "norm_label": "telegramagentrunintakeresponse"
     },
     {
@@ -14010,7 +14010,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_backend_client_resolvetelegramcontextrequest",
-      "community": 90,
+      "community": 89,
       "norm_label": "resolvetelegramcontextrequest"
     },
     {
@@ -14020,7 +14020,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_backend_client_createtelegramagentrunrequest",
-      "community": 90,
+      "community": 89,
       "norm_label": "createtelegramagentrunrequest"
     },
     {
@@ -14030,7 +14030,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendclient",
-      "community": 90,
+      "community": 89,
       "norm_label": "telegrambackendclient"
     },
     {
@@ -14060,7 +14060,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_backend_client_createtelegrambackendclient",
-      "community": 84,
+      "community": 85,
       "norm_label": "createtelegrambackendclient()"
     },
     {
@@ -14330,7 +14330,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_main_ts_src_main",
-      "community": 84,
+      "community": 87,
       "norm_label": "main.ts"
     },
     {
@@ -14340,7 +14340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_message_handler_test",
-      "community": 90,
+      "community": 89,
       "norm_label": "message-handler.test.ts"
     },
     {
@@ -14350,7 +14350,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_message_handler_test_telegramupdate",
-      "community": 90,
+      "community": 89,
       "norm_label": "telegramupdate"
     },
     {
@@ -14360,7 +14360,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient",
-      "community": 90,
+      "community": 89,
       "norm_label": "recordingtelegrambackendclient"
     },
     {
@@ -14370,7 +14370,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient_constructor",
-      "community": 90,
+      "community": 89,
       "norm_label": ".constructor()"
     },
     {
@@ -14380,7 +14380,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient_resolvetelegramcontext",
-      "community": 90,
+      "community": 89,
       "norm_label": ".resolvetelegramcontext()"
     },
     {
@@ -14390,7 +14390,7 @@
       "source_location": "L147",
       "_origin": "ast",
       "id": "src_message_handler_test_recordingtelegrambackendclient_createtelegramagentrun",
-      "community": 90,
+      "community": 89,
       "norm_label": ".createtelegramagentrun()"
     },
     {
@@ -14400,7 +14400,7 @@
       "source_location": "L152",
       "_origin": "ast",
       "id": "src_message_handler_test_failingtelegrambackendclient",
-      "community": 90,
+      "community": 89,
       "norm_label": "failingtelegrambackendclient"
     },
     {
@@ -14410,7 +14410,7 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "src_message_handler_test_failingtelegrambackendclient_resolvetelegramcontext",
-      "community": 90,
+      "community": 89,
       "norm_label": ".resolvetelegramcontext()"
     },
     {
@@ -14420,7 +14420,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "src_message_handler_test_failingtelegrambackendclient_createtelegramagentrun",
-      "community": 90,
+      "community": 89,
       "norm_label": ".createtelegramagentrun()"
     },
     {
@@ -14520,7 +14520,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_runtime_test_ts_src_runtime_test",
-      "community": 102,
+      "community": 85,
       "norm_label": "runtime.test.ts"
     },
     {
@@ -14530,7 +14530,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_runtime_test_telegramupdate",
-      "community": 102,
+      "community": 85,
       "norm_label": "telegramupdate"
     },
     {
@@ -14540,7 +14540,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_runtime_test_environment",
-      "community": 102,
+      "community": 85,
       "norm_label": "environment"
     },
     {
@@ -14610,7 +14610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_runtime_ts_src_runtime",
-      "community": 84,
+      "community": 85,
       "norm_label": "runtime.ts"
     },
     {
@@ -14630,7 +14630,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntimeoptions",
-      "community": 84,
+      "community": 85,
       "norm_label": "createtelegrambotruntimeoptions"
     },
     {
@@ -14640,7 +14640,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntimefromenvironmentoptions",
-      "community": 84,
+      "community": 85,
       "norm_label": "createtelegrambotruntimefromenvironmentoptions"
     },
     {
@@ -14650,7 +14650,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntime",
-      "community": 84,
+      "community": 85,
       "norm_label": "createtelegrambotruntime()"
     },
     {
@@ -14660,7 +14660,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntimefromenvironment",
-      "community": 84,
+      "community": 85,
       "norm_label": "createtelegrambotruntimefromenvironment()"
     },
     {
@@ -15300,7 +15300,7 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "src_update_processor_test_recordingtelegrambackendclient",
-      "community": 90,
+      "community": 89,
       "norm_label": "recordingtelegrambackendclient"
     },
     {
@@ -15310,7 +15310,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "src_update_processor_test_recordingtelegrambackendclient_constructor",
-      "community": 90,
+      "community": 89,
       "norm_label": ".constructor()"
     },
     {
@@ -15320,7 +15320,7 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "src_update_processor_test_recordingtelegrambackendclient_resolvetelegramcontext",
-      "community": 90,
+      "community": 89,
       "norm_label": ".resolvetelegramcontext()"
     },
     {
@@ -15330,7 +15330,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "src_update_processor_test_recordingtelegrambackendclient_createtelegramagentrun",
-      "community": 90,
+      "community": 89,
       "norm_label": ".createtelegramagentrun()"
     },
     {
@@ -15950,7 +15950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_webhook_server",
-      "community": 84,
+      "community": 87,
       "norm_label": "webhook-server.ts"
     },
     {
@@ -15960,7 +15960,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_webhook_server_telegramwebhookserveroptions",
-      "community": 84,
+      "community": 87,
       "norm_label": "telegramwebhookserveroptions"
     },
     {
@@ -15970,7 +15970,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_webhook_server_telegramwebhookserverfromenvironmentoptions",
-      "community": 84,
+      "community": 87,
       "norm_label": "telegramwebhookserverfromenvironmentoptions"
     },
     {
@@ -15980,7 +15980,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_webhook_server_telegramwebhookservererror",
-      "community": 84,
+      "community": 87,
       "norm_label": "telegramwebhookservererror"
     },
     {
@@ -15990,7 +15990,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_webhook_server_telegramwebhookservererror_constructor",
-      "community": 84,
+      "community": 87,
       "norm_label": ".constructor()"
     },
     {
@@ -16000,7 +16000,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_webhook_server_createtelegramwebhookserver",
-      "community": 84,
+      "community": 87,
       "norm_label": "createtelegramwebhookserver()"
     },
     {
@@ -16010,7 +16010,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_webhook_server_runtelegramwebhookserverfromenvironment",
-      "community": 84,
+      "community": 87,
       "norm_label": "runtelegramwebhookserverfromenvironment()"
     },
     {
@@ -16020,7 +16020,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_webhook_server_handletelegramwebhooknoderequest",
-      "community": 84,
+      "community": 87,
       "norm_label": "handletelegramwebhooknoderequest()"
     },
     {
@@ -16030,7 +16030,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "src_webhook_server_normalizeheaders",
-      "community": 84,
+      "community": 87,
       "norm_label": "normalizeheaders()"
     },
     {
@@ -16040,7 +16040,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_webhook_server_readjsonbody",
-      "community": 84,
+      "community": 87,
       "norm_label": "readjsonbody()"
     },
     {
@@ -16050,7 +16050,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "src_webhook_server_readrequestbody",
-      "community": 84,
+      "community": 87,
       "norm_label": "readrequestbody()"
     },
     {
@@ -16060,7 +16060,7 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "src_webhook_server_writejsonresponse",
-      "community": 84,
+      "community": 87,
       "norm_label": "writejsonresponse()"
     },
     {
@@ -16070,7 +16070,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_webhook_server_listen",
-      "community": 84,
+      "community": 87,
       "norm_label": "listen()"
     },
     {
@@ -17430,7 +17430,7 @@
       "source_location": "L424",
       "_origin": "ast",
       "id": "views_workspaceview_buildmatrixsummary",
-      "community": 105,
+      "community": 80,
       "norm_label": "buildmatrixsummary()"
     },
     {
@@ -17550,7 +17550,7 @@
       "source_location": "L665",
       "_origin": "ast",
       "id": "views_workspaceview_matrixview",
-      "community": 105,
+      "community": 80,
       "norm_label": "matrixview()"
     },
     {
@@ -17620,7 +17620,7 @@
       "source_location": "L1137",
       "_origin": "ast",
       "id": "views_workspaceview_countrecentlyupdatedtasks",
-      "community": 80,
+      "community": 79,
       "norm_label": "countrecentlyupdatedtasks()"
     },
     {
@@ -18900,7 +18900,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_client_healthresponse",
-      "community": 106,
+      "community": 33,
       "norm_label": "healthresponse"
     },
     {
@@ -19000,7 +19000,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_client_createprojectinput",
-      "community": 106,
+      "community": 33,
       "norm_label": "createprojectinput"
     },
     {
@@ -19010,7 +19010,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_client_createtaskinput",
-      "community": 106,
+      "community": 33,
       "norm_label": "createtaskinput"
     },
     {
@@ -19020,7 +19020,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_client_taskapirequestheaders",
-      "community": 106,
+      "community": 33,
       "norm_label": "taskapirequestheaders"
     },
     {
@@ -19040,7 +19040,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_client_taskapiresponse",
-      "community": 106,
+      "community": 33,
       "norm_label": "taskapiresponse"
     },
     {
@@ -19060,7 +19060,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_client_taskapiclientoptions",
-      "community": 106,
+      "community": 33,
       "norm_label": "taskapiclientoptions"
     },
     {
@@ -19070,7 +19070,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_client_workspacescopedinput",
-      "community": 106,
+      "community": 33,
       "norm_label": "workspacescopedinput"
     },
     {
@@ -19080,7 +19080,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_client_projectscopedinput",
-      "community": 106,
+      "community": 33,
       "norm_label": "projectscopedinput"
     },
     {
@@ -19140,7 +19140,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_client_taskapiclienterror",
-      "community": 72,
+      "community": 33,
       "norm_label": "taskapiclienterror"
     },
     {
@@ -19150,7 +19150,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_client_taskapiclienterror_constructor",
-      "community": 72,
+      "community": 33,
       "norm_label": ".constructor()"
     },
     {
@@ -19320,7 +19320,7 @@
       "source_location": "L334",
       "_origin": "ast",
       "id": "src_client_ishealthresponse",
-      "community": 33,
+      "community": 90,
       "norm_label": "ishealthresponse()"
     },
     {
@@ -19330,7 +19330,7 @@
       "source_location": "L343",
       "_origin": "ast",
       "id": "src_client_isworkspacesummary",
-      "community": 33,
+      "community": 90,
       "norm_label": "isworkspacesummary()"
     },
     {
@@ -19340,7 +19340,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "src_client_isagentrunsummary",
-      "community": 33,
+      "community": 90,
       "norm_label": "isagentrunsummary()"
     },
     {
@@ -19350,7 +19350,7 @@
       "source_location": "L372",
       "_origin": "ast",
       "id": "src_client_isprojectsummary",
-      "community": 33,
+      "community": 90,
       "norm_label": "isprojectsummary()"
     },
     {
@@ -19360,7 +19360,7 @@
       "source_location": "L376",
       "_origin": "ast",
       "id": "src_client_isprojectdetail",
-      "community": 33,
+      "community": 90,
       "norm_label": "isprojectdetail()"
     },
     {
@@ -19370,7 +19370,7 @@
       "source_location": "L392",
       "_origin": "ast",
       "id": "src_client_istasksummary",
-      "community": 33,
+      "community": 90,
       "norm_label": "istasksummary()"
     },
     {
@@ -19380,7 +19380,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "src_client_istaskdetail",
-      "community": 33,
+      "community": 90,
       "norm_label": "istaskdetail()"
     },
     {
@@ -19390,7 +19390,7 @@
       "source_location": "L419",
       "_origin": "ast",
       "id": "src_client_istaskskillsummary",
-      "community": 33,
+      "community": 90,
       "norm_label": "istaskskillsummary()"
     },
     {
@@ -19400,7 +19400,7 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "src_client_isworkspacestatus",
-      "community": 33,
+      "community": 90,
       "norm_label": "isworkspacestatus()"
     },
     {
@@ -19410,7 +19410,7 @@
       "source_location": "L448",
       "_origin": "ast",
       "id": "src_client_isjsonobject",
-      "community": 33,
+      "community": 90,
       "norm_label": "isjsonobject()"
     },
     {
@@ -19420,7 +19420,7 @@
       "source_location": "L452",
       "_origin": "ast",
       "id": "src_client_isarrayof",
-      "community": 33,
+      "community": 90,
       "norm_label": "isarrayof()"
     },
     {
@@ -19440,7 +19440,7 @@
       "source_location": "L463",
       "_origin": "ast",
       "id": "src_client_isagentrunsource",
-      "community": 33,
+      "community": 90,
       "norm_label": "isagentrunsource()"
     },
     {
@@ -19450,7 +19450,7 @@
       "source_location": "L467",
       "_origin": "ast",
       "id": "src_client_isagentrunstatus",
-      "community": 33,
+      "community": 90,
       "norm_label": "isagentrunstatus()"
     },
     {
@@ -19460,7 +19460,7 @@
       "source_location": "L476",
       "_origin": "ast",
       "id": "src_client_hasstring",
-      "community": 33,
+      "community": 90,
       "norm_label": "hasstring()"
     },
     {
@@ -19470,7 +19470,7 @@
       "source_location": "L480",
       "_origin": "ast",
       "id": "src_client_hasoptionalnullablestring",
-      "community": 33,
+      "community": 90,
       "norm_label": "hasoptionalnullablestring()"
     },
     {
@@ -19480,7 +19480,7 @@
       "source_location": "L485",
       "_origin": "ast",
       "id": "src_client_readstring",
-      "community": 33,
+      "community": 90,
       "norm_label": "readstring()"
     },
     {
@@ -19490,7 +19490,7 @@
       "source_location": "L490",
       "_origin": "ast",
       "id": "src_client_readproperty",
-      "community": 33,
+      "community": 90,
       "norm_label": "readproperty()"
     },
     {
@@ -19500,7 +19500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "generated_openapi",
-      "community": 106,
+      "community": 33,
       "norm_label": "openapi.ts"
     },
     {
@@ -19510,7 +19510,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "generated_openapi_paths",
-      "community": 106,
+      "community": 33,
       "norm_label": "paths"
     },
     {
@@ -19520,7 +19520,7 @@
       "source_location": "L474",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
-      "community": 106,
+      "community": 33,
       "norm_label": "webhooks"
     },
     {
@@ -19530,7 +19530,7 @@
       "source_location": "L475",
       "_origin": "ast",
       "id": "generated_openapi_components",
-      "community": 79,
+      "community": 33,
       "norm_label": "components"
     },
     {
@@ -19540,7 +19540,7 @@
       "source_location": "L1005",
       "_origin": "ast",
       "id": "generated_openapi_defs",
-      "community": 106,
+      "community": 33,
       "norm_label": "$defs"
     },
     {
@@ -19550,7 +19550,7 @@
       "source_location": "L1006",
       "_origin": "ast",
       "id": "generated_openapi_operations",
-      "community": 106,
+      "community": 33,
       "norm_label": "operations"
     },
     {
@@ -19560,7 +19560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "packages_api_client_src_index_ts_src_index",
-      "community": 106,
+      "community": 33,
       "norm_label": "index.ts"
     },
     {
@@ -21609,7 +21609,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_skill_md",
+      "id": "graphify_skill",
       "community": 4,
       "norm_label": "skill.md"
     },
@@ -21849,7 +21849,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
+      "id": "references_add_watch",
       "community": 11,
       "norm_label": "add-watch.md"
     },
@@ -21889,7 +21889,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
+      "id": "references_exports",
       "community": 7,
       "norm_label": "exports.md"
     },
@@ -21979,7 +21979,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
+      "id": "references_extraction_spec",
       "community": 16,
       "norm_label": "extraction-spec.md"
     },
@@ -21999,7 +21999,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
+      "id": "references_github_and_merge",
       "community": 14,
       "norm_label": "github-and-merge.md"
     },
@@ -22029,7 +22029,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
+      "id": "references_hooks",
       "community": 12,
       "norm_label": "hooks.md"
     },
@@ -22069,7 +22069,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
+      "id": "references_query",
       "community": 9,
       "norm_label": "query.md"
     },
@@ -22129,7 +22129,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
+      "id": "references_transcribe",
       "community": 15,
       "norm_label": "transcribe.md"
     },
@@ -22159,7 +22159,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
+      "id": "references_update",
       "community": 13,
       "norm_label": "update.md"
     },
@@ -22192,6 +22192,66 @@
       "id": "references_update_for_cluster_only",
       "community": 13,
       "norm_label": "for --cluster-only"
+    },
+    {
+      "label": "memory_maintenance.md",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance",
+      "community": 118,
+      "norm_label": "memory_maintenance.md"
+    },
+    {
+      "label": "Memory Maintenance",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_memory_maintenance",
+      "community": 118,
+      "norm_label": "memory maintenance"
+    },
+    {
+      "label": "Discovery Model",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_discovery_model",
+      "community": 118,
+      "norm_label": "discovery model"
+    },
+    {
+      "label": "Style",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_style",
+      "community": 118,
+      "norm_label": "style"
+    },
+    {
+      "label": "Add/update threshold",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_add_update_threshold",
+      "community": 118,
+      "norm_label": "add/update threshold"
+    },
+    {
+      "label": "Maintenance Actions",
+      "file_type": "document",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "memories_memory_maintenance_maintenance_actions",
+      "community": 118,
+      "norm_label": "maintenance actions"
     },
     {
       "label": "AGENTS.md",
@@ -22349,7 +22409,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_readme_md",
+      "id": "docs_readme",
       "community": 10,
       "norm_label": "readme.md"
     },
@@ -22389,7 +22449,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_agent_mcp_design_md",
+      "id": "docs_agent_mcp_design",
       "community": 5,
       "norm_label": "agent-mcp-design.md"
     },
@@ -22589,7 +22649,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_data_model_md",
+      "id": "docs_data_model",
       "community": 0,
       "norm_label": "data-model.md"
     },
@@ -22809,7 +22869,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_alexander_documents_task_docs_product_model_md",
+      "id": "docs_product_model",
       "community": 3,
       "norm_label": "product-model.md"
     },
@@ -27172,9 +27232,9 @@
       "source_file": "apps/api/src/app.module.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_module",
-      "target": "confirmations_confirmations_module",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_module"
     },
     {
       "relation": "imports",
@@ -27183,9 +27243,9 @@
       "source_file": "apps/api/src/app.module.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_module",
-      "target": "confirmations_confirmations_module_confirmationsmodule",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_module_confirmationsmodule"
     },
     {
       "relation": "imports_from",
@@ -29104,9 +29164,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "auth_trusted_current_user_decorator",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator"
     },
     {
       "relation": "imports_from",
@@ -29181,9 +29241,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser"
     },
     {
       "relation": "imports",
@@ -29258,9 +29318,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "confidence_score": 1.0
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid"
     },
     {
       "relation": "imports",
@@ -31181,9 +31241,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_contracts",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "contains",
@@ -31191,9 +31251,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_contracts",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "contains",
@@ -31201,9 +31261,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_contracts",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports_from",
@@ -31212,9 +31272,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_contracts",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "imports",
@@ -31223,9 +31283,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_contracts",
-      "target": "types_core_persistence_types_confirmationrequeststatus",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequeststatus"
     },
     {
       "relation": "imports_from",
@@ -31234,9 +31294,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_contracts",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts"
     },
     {
       "relation": "imports_from",
@@ -31245,9 +31305,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_contracts",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts"
     },
     {
       "relation": "imports_from",
@@ -31256,9 +31316,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_contracts",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts"
     },
     {
       "relation": "imports_from",
@@ -31267,9 +31327,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_contracts",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts"
     },
     {
       "relation": "imports_from",
@@ -31278,9 +31338,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_contracts",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts"
     },
     {
       "relation": "imports_from",
@@ -31289,9 +31349,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_store",
-      "target": "confirmations_confirmations_contracts",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts"
     },
     {
       "relation": "imports_from",
@@ -31300,9 +31360,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_contracts",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts"
     },
     {
       "relation": "imports",
@@ -31311,9 +31371,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "imports",
@@ -31322,9 +31382,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "implements",
@@ -31333,9 +31393,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "references",
@@ -31344,9 +31404,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_confirmationrequestsummarydto_constructor",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "imports",
@@ -31355,9 +31415,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "imports",
@@ -31366,9 +31426,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_store",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "imports",
@@ -31377,9 +31437,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "references",
@@ -31388,9 +31448,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace",
-      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary"
     },
     {
       "relation": "imports",
@@ -31399,9 +31459,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "imports",
@@ -31410,9 +31470,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "implements",
@@ -31421,9 +31481,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "imports",
@@ -31432,9 +31492,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "imports",
@@ -31443,9 +31503,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_store",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "imports",
@@ -31454,9 +31514,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "references",
@@ -31465,9 +31525,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
-      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail"
     },
     {
       "relation": "imports",
@@ -31476,9 +31536,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "references",
@@ -31487,9 +31547,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -31498,9 +31558,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -31509,9 +31569,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "implements",
@@ -31520,9 +31580,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_createconfirmationrequestdto",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "references",
@@ -31531,9 +31591,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -31542,9 +31602,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "references",
@@ -31553,9 +31613,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -31564,9 +31624,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -31575,9 +31635,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.store.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_store",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports",
@@ -31586,9 +31646,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "references",
@@ -31597,9 +31657,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L87",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
-      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput"
     },
     {
       "relation": "imports_from",
@@ -31608,9 +31668,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_controller",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller"
     },
     {
       "relation": "imports",
@@ -31619,9 +31679,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_controller_confirmationscontroller",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller"
     },
     {
       "relation": "contains",
@@ -31629,9 +31689,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_controller_test_confirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_test_confirmationrequest"
     },
     {
       "relation": "contains",
@@ -31639,9 +31699,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_controller_test_createdat",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_test_createdat"
     },
     {
       "relation": "contains",
@@ -31649,9 +31709,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_controller_test_createinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_test_createinput"
     },
     {
       "relation": "contains",
@@ -31659,9 +31719,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_controller_test_createstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_test_createstore"
     },
     {
       "relation": "contains",
@@ -31669,9 +31729,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_controller_test_expiresat",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_test_expiresat"
     },
     {
       "relation": "imports_from",
@@ -31680,9 +31740,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_dto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto"
     },
     {
       "relation": "imports",
@@ -31691,9 +31751,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe"
     },
     {
       "relation": "imports_from",
@@ -31702,9 +31762,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_service",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service"
     },
     {
       "relation": "imports",
@@ -31713,9 +31773,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_service_confirmationsservice",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice"
     },
     {
       "relation": "imports_from",
@@ -31724,9 +31784,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_store",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store"
     },
     {
       "relation": "imports",
@@ -31735,9 +31795,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult"
     },
     {
       "relation": "imports",
@@ -31746,9 +31806,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult"
     },
     {
       "relation": "imports",
@@ -31757,9 +31817,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_test",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "contains",
@@ -31767,9 +31827,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_controller_confirmationscontroller",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller"
     },
     {
       "relation": "contains",
@@ -31777,9 +31837,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_controller_uuidv4pipe",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_uuidv4pipe"
     },
     {
       "relation": "imports_from",
@@ -31788,9 +31848,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_dto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto"
     },
     {
       "relation": "imports",
@@ -31799,9 +31859,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "imports",
@@ -31810,9 +31870,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto"
     },
     {
       "relation": "imports",
@@ -31821,9 +31881,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_dto_createconfirmationrequestdto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_createconfirmationrequestdto"
     },
     {
       "relation": "imports",
@@ -31832,9 +31892,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe"
     },
     {
       "relation": "imports_from",
@@ -31843,9 +31903,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_service",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service"
     },
     {
       "relation": "imports",
@@ -31854,9 +31914,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller",
-      "target": "confirmations_confirmations_service_confirmationsservice",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice"
     },
     {
       "relation": "imports_from",
@@ -31865,9 +31925,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_controller",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller"
     },
     {
       "relation": "method",
@@ -31875,9 +31935,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller",
-      "target": "confirmations_confirmations_controller_confirmationscontroller_cancelconfirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller_cancelconfirmationrequest"
     },
     {
       "relation": "method",
@@ -31885,9 +31945,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller",
-      "target": "confirmations_confirmations_controller_confirmationscontroller_constructor",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller_constructor"
     },
     {
       "relation": "method",
@@ -31895,9 +31955,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller",
-      "target": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest"
     },
     {
       "relation": "method",
@@ -31905,9 +31965,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller",
-      "target": "confirmations_confirmations_controller_confirmationscontroller_getconfirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller_getconfirmationrequest"
     },
     {
       "relation": "method",
@@ -31915,9 +31975,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller",
-      "target": "confirmations_confirmations_controller_confirmationscontroller_listpendingconfirmationrequests",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller_listpendingconfirmationrequests"
     },
     {
       "relation": "imports",
@@ -31926,9 +31986,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_controller_confirmationscontroller",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_controller_confirmationscontroller"
     },
     {
       "relation": "references",
@@ -31937,9 +31997,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller_constructor",
-      "target": "confirmations_confirmations_service_confirmationsservice",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice"
     },
     {
       "relation": "references",
@@ -31948,9 +32008,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller_listpendingconfirmationrequests",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto"
     },
     {
       "relation": "references",
@@ -31959,9 +32019,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "references",
@@ -31970,9 +32030,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller_getconfirmationrequest",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "references",
@@ -31981,9 +32041,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_controller_confirmationscontroller_cancelconfirmationrequest",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "contains",
@@ -31991,9 +32051,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "contains",
@@ -32001,9 +32061,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto"
     },
     {
       "relation": "contains",
@@ -32011,9 +32071,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_createconfirmationrequestdto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_createconfirmationrequestdto"
     },
     {
       "relation": "contains",
@@ -32021,9 +32081,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_isunknownrecord"
     },
     {
       "relation": "contains",
@@ -32031,9 +32091,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe"
     },
     {
       "relation": "contains",
@@ -32041,9 +32101,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput"
     },
     {
       "relation": "contains",
@@ -32051,9 +32111,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_readrequireddatetime",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequireddatetime"
     },
     {
       "relation": "contains",
@@ -32061,9 +32121,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L110",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring"
     },
     {
       "relation": "contains",
@@ -32071,9 +32131,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L126",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_readrequiredrecord",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequiredrecord"
     },
     {
       "relation": "contains",
@@ -32081,9 +32141,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L100",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "confirmations_confirmations_dto_readrequireduuid",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequireduuid"
     },
     {
       "relation": "imports_from",
@@ -32092,9 +32152,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "imports",
@@ -32103,9 +32163,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto",
-      "target": "types_core_persistence_types_confirmationrequeststatus",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequeststatus"
     },
     {
       "relation": "imports_from",
@@ -32114,9 +32174,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_dto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto"
     },
     {
       "relation": "imports_from",
@@ -32125,9 +32185,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_dto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto"
     },
     {
       "relation": "method",
@@ -32135,9 +32195,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
-      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform"
     },
     {
       "relation": "calls",
@@ -32146,9 +32206,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform",
-      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput"
     },
     {
       "relation": "inherits",
@@ -32157,9 +32217,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L80",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto"
     },
     {
       "relation": "method",
@@ -32167,9 +32227,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto_constructor",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto_constructor"
     },
     {
       "relation": "references",
@@ -32178,9 +32238,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "target": "types_core_persistence_types_confirmationrequeststatus",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequeststatus"
     },
     {
       "relation": "imports",
@@ -32189,9 +32249,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto"
     },
     {
       "relation": "references",
@@ -32200,9 +32260,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice_listpendingconfirmationrequests",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto"
     },
     {
       "relation": "imports",
@@ -32211,9 +32271,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto"
     },
     {
       "relation": "imports",
@@ -32222,9 +32282,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "references",
@@ -32233,9 +32293,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice_cancelconfirmationrequest",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "references",
@@ -32244,9 +32304,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "references",
@@ -32255,9 +32315,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice_getconfirmationrequest",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "imports",
@@ -32266,9 +32326,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto"
     },
     {
       "relation": "calls",
@@ -32277,9 +32337,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
-      "target": "confirmations_confirmations_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -32288,9 +32348,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
-      "target": "confirmations_confirmations_dto_readrequireddatetime",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequireddatetime"
     },
     {
       "relation": "calls",
@@ -32299,9 +32359,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
-      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring"
     },
     {
       "relation": "calls",
@@ -32310,9 +32370,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
-      "target": "confirmations_confirmations_dto_readrequiredrecord",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequiredrecord"
     },
     {
       "relation": "calls",
@@ -32321,9 +32381,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
-      "target": "confirmations_confirmations_dto_readrequireduuid",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequireduuid"
     },
     {
       "relation": "calls",
@@ -32332,9 +32392,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L132",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_readrequiredrecord",
-      "target": "confirmations_confirmations_dto_isunknownrecord",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_isunknownrecord"
     },
     {
       "relation": "calls",
@@ -32343,9 +32403,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_readrequireduuid",
-      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring"
     },
     {
       "relation": "calls",
@@ -32354,9 +32414,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
       "source_location": "L140",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_dto_readrequireddatetime",
-      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring"
     },
     {
       "relation": "contains",
@@ -32364,9 +32424,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_module_confirmationsmodule",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_module_confirmationsmodule"
     },
     {
       "relation": "contains",
@@ -32374,9 +32434,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_module_confirmationsserviceprovider",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_module_confirmationsserviceprovider"
     },
     {
       "relation": "imports_from",
@@ -32385,9 +32445,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_service",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service"
     },
     {
       "relation": "imports",
@@ -32396,9 +32456,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_service_confirmationsservice",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice"
     },
     {
       "relation": "imports_from",
@@ -32407,9 +32467,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_store",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store"
     },
     {
       "relation": "imports",
@@ -32418,9 +32478,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "imports_from",
@@ -32429,9 +32489,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_typeorm_confirmation_requests_store",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store"
     },
     {
       "relation": "imports",
@@ -32440,9 +32500,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore"
     },
     {
       "relation": "imports_from",
@@ -32451,9 +32511,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "database_database_module",
-      "confidence_score": 1.0
+      "target": "database_database_module"
     },
     {
       "relation": "imports",
@@ -32462,9 +32522,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.module.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_module",
-      "target": "database_database_module_databasemodule",
-      "confidence_score": 1.0
+      "target": "database_database_module_databasemodule"
     },
     {
       "relation": "imports_from",
@@ -32473,9 +32533,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service"
     },
     {
       "relation": "imports",
@@ -32484,9 +32544,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service_confirmationsservice",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice"
     },
     {
       "relation": "contains",
@@ -32494,9 +32554,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service_test_confirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_test_confirmationrequest"
     },
     {
       "relation": "contains",
@@ -32504,9 +32564,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service_test_createdat",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_test_createdat"
     },
     {
       "relation": "contains",
@@ -32514,9 +32574,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service_test_createinput",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_test_createinput"
     },
     {
       "relation": "contains",
@@ -32524,9 +32584,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L163",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service_test_createstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_test_createstore"
     },
     {
       "relation": "contains",
@@ -32534,9 +32594,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service_test_expiresat",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_test_expiresat"
     },
     {
       "relation": "contains",
@@ -32544,9 +32604,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_service_test_updatedat",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_test_updatedat"
     },
     {
       "relation": "imports_from",
@@ -32555,9 +32615,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_store",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store"
     },
     {
       "relation": "imports",
@@ -32566,9 +32626,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult"
     },
     {
       "relation": "imports",
@@ -32577,9 +32637,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult"
     },
     {
       "relation": "imports",
@@ -32588,9 +32648,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_test",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "contains",
@@ -32598,9 +32658,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_service_confirmationsservice",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice"
     },
     {
       "relation": "imports_from",
@@ -32609,9 +32669,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_store",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store"
     },
     {
       "relation": "imports",
@@ -32620,9 +32680,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "method",
@@ -32630,9 +32690,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice",
-      "target": "confirmations_confirmations_service_confirmationsservice_cancelconfirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice_cancelconfirmationrequest"
     },
     {
       "relation": "method",
@@ -32640,9 +32700,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice",
-      "target": "confirmations_confirmations_service_confirmationsservice_constructor",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice_constructor"
     },
     {
       "relation": "method",
@@ -32650,9 +32710,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice",
-      "target": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest"
     },
     {
       "relation": "method",
@@ -32660,9 +32720,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice",
-      "target": "confirmations_confirmations_service_confirmationsservice_getconfirmationrequest",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice_getconfirmationrequest"
     },
     {
       "relation": "method",
@@ -32670,9 +32730,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice",
-      "target": "confirmations_confirmations_service_confirmationsservice_listpendingconfirmationrequests",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_service_confirmationsservice_listpendingconfirmationrequests"
     },
     {
       "relation": "references",
@@ -32681,9 +32741,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.service.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_service_confirmationsservice_constructor",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "contains",
@@ -32691,9 +32751,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.store.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_store",
-      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult"
     },
     {
       "relation": "contains",
@@ -32701,9 +32761,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.store.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_store",
-      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult"
     },
     {
       "relation": "contains",
@@ -32711,9 +32771,9 @@
       "source_file": "apps/api/src/confirmations/confirmations.store.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_confirmations_store",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "imports_from",
@@ -32722,9 +32782,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_store",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store"
     },
     {
       "relation": "imports",
@@ -32733,9 +32793,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult"
     },
     {
       "relation": "references",
@@ -32744,9 +32804,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L87",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
-      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult"
     },
     {
       "relation": "imports",
@@ -32755,9 +32815,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult"
     },
     {
       "relation": "references",
@@ -32766,9 +32826,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
-      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult"
     },
     {
       "relation": "imports",
@@ -32777,9 +32837,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "implements",
@@ -32788,9 +32848,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "target": "confirmations_confirmations_store_confirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_confirmations_store_confirmationrequestsstore"
     },
     {
       "relation": "contains",
@@ -32798,9 +32858,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_typeorm_confirmation_requests_store_confirmationwriteroles",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_confirmationwriteroles"
     },
     {
       "relation": "contains",
@@ -32808,9 +32868,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L213",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail"
     },
     {
       "relation": "contains",
@@ -32818,9 +32878,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L196",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestsummary"
     },
     {
       "relation": "contains",
@@ -32828,9 +32888,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore"
     },
     {
       "relation": "imports_from",
@@ -32839,9 +32899,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "database_database_module",
-      "confidence_score": 1.0
+      "target": "database_database_module"
     },
     {
       "relation": "imports",
@@ -32850,9 +32910,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "database_database_module_apidatasourceprovider",
-      "confidence_score": 1.0
+      "target": "database_database_module_apidatasourceprovider"
     },
     {
       "relation": "imports",
@@ -32861,9 +32921,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "entities_agent_run_entity_agentrunentity",
-      "confidence_score": 1.0
+      "target": "entities_agent_run_entity_agentrunentity"
     },
     {
       "relation": "imports",
@@ -32872,9 +32932,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "entities_confirmation_request_entity_confirmationrequestentity",
-      "confidence_score": 1.0
+      "target": "entities_confirmation_request_entity_confirmationrequestentity"
     },
     {
       "relation": "imports_from",
@@ -32883,9 +32943,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "entities_index",
-      "confidence_score": 1.0
+      "target": "entities_index"
     },
     {
       "relation": "imports",
@@ -32894,9 +32954,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "entities_workspace_member_entity_workspacememberentity",
-      "confidence_score": 1.0
+      "target": "entities_workspace_member_entity_workspacememberentity"
     },
     {
       "relation": "imports_from",
@@ -32905,9 +32965,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "types_core_persistence_types",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types"
     },
     {
       "relation": "imports",
@@ -32916,9 +32976,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "types_core_persistence_types_confirmationrequestrecord",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_confirmationrequestrecord"
     },
     {
       "relation": "imports",
@@ -32927,9 +32987,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store",
-      "target": "types_core_persistence_types_workspacememberrole",
-      "confidence_score": 1.0
+      "target": "types_core_persistence_types_workspacememberrole"
     },
     {
       "relation": "method",
@@ -32937,9 +32997,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace"
     },
     {
       "relation": "method",
@@ -32947,9 +33007,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor"
     },
     {
       "relation": "method",
@@ -32957,9 +33017,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L87",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace"
     },
     {
       "relation": "method",
@@ -32967,9 +33027,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace"
     },
     {
       "relation": "method",
@@ -32977,9 +33037,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L174",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource"
     },
     {
       "relation": "method",
@@ -32987,9 +33047,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace"
     },
     {
       "relation": "references",
@@ -32998,9 +33058,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor",
-      "target": "database_database_module_apidatasourceprovider",
-      "confidence_score": 1.0
+      "target": "database_database_module_apidatasourceprovider"
     },
     {
       "relation": "calls",
@@ -33009,9 +33069,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -33020,9 +33080,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
-      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail"
     },
     {
       "relation": "calls",
@@ -33031,9 +33091,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L68",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -33042,9 +33102,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
-      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail"
     },
     {
       "relation": "calls",
@@ -33053,9 +33113,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -33064,9 +33124,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L170",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
-      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail"
     },
     {
       "relation": "calls",
@@ -33075,9 +33135,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
-      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource"
     },
     {
       "relation": "calls",
@@ -33086,9 +33146,9 @@
       "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
       "source_location": "L216",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
-      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestsummary",
-      "confidence_score": 1.0
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestsummary"
     },
     {
       "relation": "imports",
@@ -73560,7 +73620,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_skill_md",
+      "source": "graphify_skill",
       "target": "graphify_skill_graphify",
       "confidence_score": 1.0
     },
@@ -73790,7 +73850,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
+      "source": "references_add_watch",
       "target": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
       "confidence_score": 1.0
     },
@@ -73820,7 +73880,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
+      "source": "references_exports",
       "target": "references_exports_graphify_reference_extra_exports_and_benchmark",
       "confidence_score": 1.0
     },
@@ -73900,7 +73960,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
+      "source": "references_extraction_spec",
       "target": "references_extraction_spec_graphify_reference_extraction_subagent_prompt_compact",
       "confidence_score": 1.0
     },
@@ -73910,7 +73970,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
+      "source": "references_github_and_merge",
       "target": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
       "confidence_score": 1.0
     },
@@ -73930,7 +73990,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
+      "source": "references_hooks",
       "target": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
       "confidence_score": 1.0
     },
@@ -73960,7 +74020,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
+      "source": "references_query",
       "target": "references_query_graphify_reference_query_path_explain",
       "confidence_score": 1.0
     },
@@ -74010,7 +74070,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
+      "source": "references_transcribe",
       "target": "references_transcribe_graphify_reference_transcribe_video_and_audio",
       "confidence_score": 1.0
     },
@@ -74030,7 +74090,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
+      "source": "references_update",
       "target": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "confidence_score": 1.0
     },
@@ -74053,6 +74113,56 @@
       "confidence_score": 1.0,
       "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "target": "references_update_for_update_incremental_re_extraction"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance",
+      "target": "memories_memory_maintenance_memory_maintenance",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_add_update_threshold",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_discovery_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_maintenance_actions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".serena/memories/memory_maintenance.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "memories_memory_maintenance_memory_maintenance",
+      "target": "memories_memory_maintenance_style",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -74200,7 +74310,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_readme_md",
+      "source": "docs_readme",
       "target": "docs_readme_task_docs",
       "confidence_score": 1.0
     },
@@ -74230,7 +74340,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_agent_mcp_design_md",
+      "source": "docs_agent_mcp_design",
       "target": "docs_agent_mcp_design_agent_and_mcp_design",
       "confidence_score": 1.0
     },
@@ -74420,7 +74530,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_data_model_md",
+      "source": "docs_data_model",
       "target": "docs_data_model_data_model_draft",
       "confidence_score": 1.0
     },
@@ -74630,7 +74740,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_alexander_documents_task_docs_product_model_md",
+      "source": "docs_product_model",
       "target": "docs_product_model_product_model",
       "confidence_score": 1.0
     },
@@ -74926,5 +75036,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "20314b80330b4b158ccc34789c88beda115bbddf"
+  "built_at_commit": "cb8cbdbbb0d00b8747d7f6c009782d6b59f340b9"
 }
