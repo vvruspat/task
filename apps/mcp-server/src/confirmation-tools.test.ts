@@ -24,6 +24,7 @@ import {
   ConfirmationToolInputError,
   createConfirmationToolHandlers,
   parseConfirmationCancelToolInput,
+  parseConfirmationCommitToolInput,
   parseConfirmationCreateToolInput,
   parseConfirmationGetToolInput,
   parseConfirmationListPendingToolInput,
@@ -124,6 +125,21 @@ test("parseConfirmationCancelToolInput validates confirmation identifiers", () =
   );
 });
 
+test("parseConfirmationCommitToolInput validates confirmation identifiers", () => {
+  assert.deepEqual(
+    parseConfirmationCommitToolInput({
+      workspaceId,
+      confirmationRequestId,
+      userId,
+    }),
+    {
+      workspaceId,
+      confirmationRequestId,
+      userId,
+    },
+  );
+});
+
 test("confirmation handlers forward list pending requests to the backend client", async () => {
   const calls: Array<{ workspaceId: string; userId: string }> = [];
   const handlers = createConfirmationToolHandlers(
@@ -200,6 +216,26 @@ test("confirmation handlers forward cancel requests to the backend client", asyn
   assert.deepEqual(calls, [{ workspaceId, confirmationRequestId, userId }]);
 });
 
+test("confirmation handlers forward commit requests to the backend client", async () => {
+  const calls: Array<{ workspaceId: string; confirmationRequestId: string; userId: string }> = [];
+  const confirmedRequest: ConfirmationRequestDetailResponse = {
+    ...confirmationRequest,
+    status: "confirmed",
+  };
+  const handlers = createConfirmationToolHandlers(
+    createBackendClientStub({
+      commitCalls: calls,
+      detail: confirmedRequest,
+    }),
+  );
+
+  assert.deepEqual(
+    await handlers.commit({ workspaceId, confirmationRequestId, userId }),
+    confirmedRequest,
+  );
+  assert.deepEqual(calls, [{ workspaceId, confirmationRequestId, userId }]);
+});
+
 function createBackendClientStub(
   options: {
     listPendingCalls?: Array<{ workspaceId: string; userId: string }>;
@@ -210,6 +246,7 @@ function createBackendClientStub(
       body: CreateConfirmationRequestInput;
     }>;
     cancelCalls?: Array<{ workspaceId: string; confirmationRequestId: string; userId: string }>;
+    commitCalls?: Array<{ workspaceId: string; confirmationRequestId: string; userId: string }>;
     detail?: ConfirmationRequestDetailResponse;
   } = {},
 ): TaskBackendClient {
@@ -245,6 +282,11 @@ function createBackendClientStub(
     },
     cancelConfirmationRequest: async (request): Promise<ConfirmationRequestDetailResponse> => {
       options.cancelCalls?.push(request);
+
+      return options.detail ?? confirmationRequest;
+    },
+    confirmConfirmationRequest: async (request): Promise<ConfirmationRequestDetailResponse> => {
+      options.commitCalls?.push(request);
 
       return options.detail ?? confirmationRequest;
     },

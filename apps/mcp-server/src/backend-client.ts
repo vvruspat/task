@@ -11,6 +11,8 @@ type ListPendingConfirmationRequestsOperation =
 type GetConfirmationRequestOperation = operations["ConfirmationsController_getConfirmationRequest"];
 type CreateConfirmationRequestOperation =
   operations["ConfirmationsController_createConfirmationRequest"];
+type ConfirmConfirmationRequestOperation =
+  operations["ConfirmationsController_confirmConfirmationRequest"];
 type ListActiveTaskSkillsOperation = operations["TaskSkillsController_listActiveTaskSkills"];
 type GetTaskSkillOperation = operations["TaskSkillsController_getTaskSkill"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
@@ -46,6 +48,8 @@ export type ConfirmationRequestSummaryResponse =
   ListPendingConfirmationRequestsOperation["responses"]["200"]["content"]["application/json"][number];
 export type ConfirmationRequestDetailResponse =
   GetConfirmationRequestOperation["responses"]["200"]["content"]["application/json"];
+export type ConfirmConfirmationRequestResponse =
+  ConfirmConfirmationRequestOperation["responses"]["200"]["content"]["application/json"];
 export type CreateConfirmationRequestInput =
   CreateConfirmationRequestOperation["requestBody"]["content"]["application/json"];
 export type TaskSkillSummaryResponse =
@@ -181,6 +185,12 @@ export type CancelConfirmationRequestRequest = {
   userId: string;
 };
 
+export type ConfirmConfirmationRequestRequest = {
+  workspaceId: string;
+  confirmationRequestId: string;
+  userId: string;
+};
+
 export type GetTaskSkillRequest = {
   workspaceId: string;
   taskSkillId: string;
@@ -290,6 +300,9 @@ export type TaskBackendClient = {
   cancelConfirmationRequest(
     request: CancelConfirmationRequestRequest,
   ): Promise<ConfirmationRequestDetailResponse>;
+  confirmConfirmationRequest(
+    request: ConfirmConfirmationRequestRequest,
+  ): Promise<ConfirmConfirmationRequestResponse>;
   listTaskSkills(request: ListTaskSkillsRequest): Promise<TaskSkillSummaryResponse[]>;
   getTaskSkill(request: GetTaskSkillRequest): Promise<TaskSkillDetailResponse>;
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
@@ -390,6 +403,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         fetchImplementation,
         baseUrl,
         buildWorkspaceConfirmationCancelPath(request.workspaceId, request.confirmationRequestId),
+        request.userId,
+        {},
+        readConfirmationRequestDetail,
+      ),
+    confirmConfirmationRequest: (request) =>
+      patchJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceConfirmationConfirmPath(request.workspaceId, request.confirmationRequestId),
         request.userId,
         {},
         readConfirmationRequestDetail,
@@ -715,6 +737,13 @@ function buildWorkspaceConfirmationCancelPath(
   confirmationRequestId: string,
 ): string {
   return `${buildWorkspaceConfirmationPath(workspaceId, confirmationRequestId)}/cancel`;
+}
+
+function buildWorkspaceConfirmationConfirmPath(
+  workspaceId: string,
+  confirmationRequestId: string,
+): string {
+  return `${buildWorkspaceConfirmationPath(workspaceId, confirmationRequestId)}/confirm`;
 }
 
 function buildWorkspaceProjectPath(workspaceId: string, projectId: string): string {

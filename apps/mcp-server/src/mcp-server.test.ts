@@ -902,6 +902,10 @@ test("registerConfirmationTools registers confirmation request tools", async () 
     ...confirmationRequestResponse,
     status: "cancelled",
   };
+  const confirmedResponse: ConfirmationRequestDetailResponse = {
+    ...confirmationRequestResponse,
+    status: "confirmed",
+  };
 
   registerConfirmationTools(registrar, {
     listPending: async (input: unknown): Promise<ConfirmationRequestSummaryResponse[]> => {
@@ -929,16 +933,27 @@ test("registerConfirmationTools registers confirmation request tools", async () 
       assert.deepEqual(input, { workspaceId, confirmationRequestId, userId });
       return cancelledResponse;
     },
+    commit: async (input: unknown): Promise<ConfirmationRequestDetailResponse> => {
+      assert.deepEqual(input, { workspaceId, confirmationRequestId, userId });
+      return confirmedResponse;
+    },
   });
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["confirmation.list_pending", "confirmation.get", "confirmation.create", "confirmation.cancel"],
+    [
+      "confirmation.list_pending",
+      "confirmation.get",
+      "confirmation.create",
+      "confirmation.cancel",
+      "confirmation.commit",
+    ],
   );
   assert.equal(toolCalls[0]?.config.title, "List pending confirmations");
   assert.equal(toolCalls[1]?.config.title, "Get confirmation");
   assert.equal(toolCalls[2]?.config.title, "Create confirmation");
   assert.equal(toolCalls[3]?.config.title, "Cancel confirmation");
+  assert.equal(toolCalls[4]?.config.title, "Commit confirmation");
 
   const listCall = toolCalls[0];
   assert.ok(listCall !== undefined);
@@ -983,6 +998,15 @@ test("registerConfirmationTools registers confirmation request tools", async () 
     ),
     cancelledResponse,
   );
+
+  const commitCall = toolCalls[4];
+  assert.ok(commitCall !== undefined);
+  assert.deepEqual(
+    JSON.parse(
+      readTextResult(await commitCall.callback({ workspaceId, confirmationRequestId, userId })),
+    ),
+    confirmedResponse,
+  );
 });
 
 test("createTaskMcpServer returns an MCP server with task skill tools registered", () => {
@@ -1026,6 +1050,10 @@ function createBackendClientStub(): TaskBackendClient {
     cancelConfirmationRequest: async (): Promise<ConfirmationRequestDetailResponse> => ({
       ...confirmationRequestResponse,
       status: "cancelled",
+    }),
+    confirmConfirmationRequest: async (): Promise<ConfirmationRequestDetailResponse> => ({
+      ...confirmationRequestResponse,
+      status: "confirmed",
     }),
     listTaskSkills: async (): Promise<TaskSkillSummaryResponse[]> => [taskSkillResponse],
     getTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,

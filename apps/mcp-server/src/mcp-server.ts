@@ -568,6 +568,16 @@ export function registerConfirmationTools(
     },
     async (input) => toToolResult(await handlers.cancel(input)),
   );
+
+  registrar.registerTool(
+    "confirmation.commit",
+    {
+      title: "Commit confirmation",
+      description: "Mark one pending confirmation request as confirmed.",
+      inputSchema: confirmationGetInputSchema,
+    },
+    async (input) => toToolResult(await handlers.commit(input)),
+  );
 }
 
 export async function connectTaskMcpServerToStdio(server: McpServer): Promise<void> {

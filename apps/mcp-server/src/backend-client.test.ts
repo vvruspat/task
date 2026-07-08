@@ -430,6 +430,36 @@ test("cancelConfirmationRequest patches one pending confirmation with trusted us
   assert.deepEqual(response, cancelledConfirmation);
 });
 
+test("confirmConfirmationRequest patches one pending confirmation with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const confirmedConfirmation: ConfirmationRequestDetailResponse = {
+    ...confirmationRequestDetail,
+    status: "confirmed",
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, confirmedConfirmation);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.confirmConfirmationRequest({
+    workspaceId,
+    confirmationRequestId,
+    userId,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/confirmations/${confirmationRequestId}/confirm`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "PATCH");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetchCalls[0]?.init.body, "{}");
+  assert.deepEqual(response, confirmedConfirmation);
+});
+
 test("listActiveProjects gets typed project summaries with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, [projectSummary]);
