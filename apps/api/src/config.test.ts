@@ -20,6 +20,12 @@ test("parseApiConfig leaves bot auth unset when TELEGRAM_BOT_SHARED_SECRET is ab
   assert.equal(config.botAuth, null);
 });
 
+test("parseApiConfig leaves OpenRouter config unset when agent runtime env is absent", () => {
+  const config = parseApiConfig({});
+
+  assert.equal(config.openRouter, null);
+});
+
 test("parseApiConfig accepts a valid TELEGRAM_BOT_SHARED_SECRET", () => {
   const config = parseApiConfig({ TELEGRAM_BOT_SHARED_SECRET: "bot-secret" });
 
@@ -54,6 +60,73 @@ test("parseApiConfig accepts a valid DATABASE_URL", () => {
   const config = parseApiConfig({ DATABASE_URL: databaseUrl });
 
   assert.deepEqual(config.database, { url: databaseUrl });
+});
+
+test("parseApiConfig accepts valid OpenRouter settings", () => {
+  const config = parseApiConfig({
+    OPENROUTER_API_KEY: "openrouter-secret",
+    OPENROUTER_MODEL: "openai/gpt-4.1-mini",
+  });
+
+  assert.deepEqual(config.openRouter, {
+    apiKey: "openrouter-secret",
+    model: "openai/gpt-4.1-mini",
+  });
+});
+
+test("parseApiConfig rejects partial OpenRouter settings", () => {
+  assert.throws(
+    () => parseApiConfig({ OPENROUTER_API_KEY: "openrouter-secret" }),
+    InvalidApiEnvironmentError,
+  );
+  assert.throws(
+    () => parseApiConfig({ OPENROUTER_MODEL: "openai/gpt-4.1-mini" }),
+    InvalidApiEnvironmentError,
+  );
+});
+
+test("parseApiConfig rejects invalid OpenRouter settings", () => {
+  const invalidApiKeys = ["", " secret", "secret "];
+
+  for (const apiKey of invalidApiKeys) {
+    assert.throws(
+      () =>
+        parseApiConfig({
+          OPENROUTER_API_KEY: apiKey,
+          OPENROUTER_MODEL: "openai/gpt-4.1-mini",
+        }),
+      InvalidApiEnvironmentError,
+    );
+  }
+
+  const invalidModels = ["", " openai/gpt-4.1-mini", "openai/gpt-4.1-mini ", "openai/gpt 4.1"];
+
+  for (const model of invalidModels) {
+    assert.throws(
+      () =>
+        parseApiConfig({
+          OPENROUTER_API_KEY: "openrouter-secret",
+          OPENROUTER_MODEL: model,
+        }),
+      InvalidApiEnvironmentError,
+    );
+  }
+});
+
+test("parseApiConfig redacts invalid OPENROUTER_API_KEY values in error messages", () => {
+  assert.throws(
+    () =>
+      parseApiConfig({
+        OPENROUTER_API_KEY: " openrouter-secret ",
+        OPENROUTER_MODEL: "openai/gpt-4.1-mini",
+      }),
+    (error: unknown) => {
+      assert.ok(error instanceof InvalidApiEnvironmentError);
+      assert.match(error.message, /Received "\[redacted\]"/);
+      assert.doesNotMatch(error.message, /openrouter-secret/);
+      return true;
+    },
+  );
 });
 
 test("parseApiConfig rejects invalid DATABASE_URL values", () => {
