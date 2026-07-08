@@ -32,6 +32,7 @@ import { CreateAgentRunTables1783296420000 } from "./persistence/migrations/1783
 import { CreateConfirmationRequestsTable1783296480000 } from "./persistence/migrations/1783296480000-create-confirmation-requests-table.js";
 import { CreateTelegramTables1783296540000 } from "./persistence/migrations/1783296540000-create-telegram-tables.js";
 import { CreateInvitesTable1783296600000 } from "./persistence/migrations/1783296600000-create-invites-table.js";
+import { AddAgentRunSourceThreadId1783296660000 } from "./persistence/migrations/1783296660000-add-agent-run-source-thread-id.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -81,6 +82,7 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     CreateConfirmationRequestsTable1783296480000,
     CreateTelegramTables1783296540000,
     CreateInvitesTable1783296600000,
+    AddAgentRunSourceThreadId1783296660000,
   ]);
 });
 

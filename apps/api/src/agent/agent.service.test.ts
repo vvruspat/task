@@ -11,6 +11,7 @@ import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import { AgentService } from "./agent.service.js";
 import type {
   AgentRunStore,
+  FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
@@ -63,6 +64,7 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
   assert.deepEqual(store.lastPersistInput, {
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
+    sourceThreadId: "-100987654321",
     sourceMessageId: "42",
     inputText: "@task what is next?",
     runtimeResult: {
@@ -75,6 +77,59 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
       error: null,
     },
   });
+});
+
+test("AgentService returns an existing Telegram run without invoking runtime on retries", async () => {
+  const existingRun: PersistedAgentRun = {
+    id: "44444444-4444-4444-8444-444444444444",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+    source: "telegram",
+    sourceThreadId: "-100987654321",
+    sourceMessageId: "42",
+    model: "openai/gpt-4.1-mini",
+    inputText: "@task what is next?",
+    normalizedIntent: { kind: "openrouter_chat_completion" },
+    finalResponse: "Already handled.",
+    status: "completed",
+    tokenUsage: null,
+    cost: null,
+    error: null,
+    createdAt: new Date("2026-07-08T00:01:00.000Z"),
+    updatedAt: new Date("2026-07-08T00:01:00.000Z"),
+  };
+  const store = new RecordingAgentRunStore(
+    {
+      status: "resolved",
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+      userId: "33333333-3333-4333-8333-333333333333",
+    },
+    existingRun,
+  );
+  const runtime = new RecordingAgentRuntime();
+  const service = new AgentService(store, runtime);
+
+  assert.deepEqual(
+    { ...(await service.createTelegramRun(input)) },
+    {
+      agentRunId: "44444444-4444-4444-8444-444444444444",
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+      userId: "33333333-3333-4333-8333-333333333333",
+      source: "telegram",
+      sourceMessageId: "42",
+      status: "completed",
+      responseText: "Already handled.",
+      createdAt: "2026-07-08T00:01:00.000Z",
+    },
+  );
+  assert.deepEqual(store.lastFindInput, {
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+    sourceThreadId: "-100987654321",
+    sourceMessageId: "42",
+  });
+  assert.equal(runtime.lastRequest, null);
+  assert.equal(store.lastPersistInput, null);
 });
 
 test("AgentService rejects unlinked Telegram users", async () => {
@@ -106,9 +161,13 @@ test("AgentService rejects users outside the Telegram chat workspace", async () 
 
 class RecordingAgentRunStore implements AgentRunStore {
   lastContextInput: CreateTelegramAgentRunInput | null = null;
+  lastFindInput: FindTelegramAgentRunInput | null = null;
   lastPersistInput: PersistTelegramAgentRunInput | null = null;
 
-  constructor(private readonly contextResult: TelegramAgentRunContextResult) {}
+  constructor(
+    private readonly contextResult: TelegramAgentRunContextResult,
+    private readonly existingRun: PersistedAgentRun | null = null,
+  ) {}
 
   async resolveTelegramRunContext(
     input: CreateTelegramAgentRunInput,
@@ -116,6 +175,14 @@ class RecordingAgentRunStore implements AgentRunStore {
     this.lastContextInput = input;
 
     return this.contextResult;
+  }
+
+  async findTelegramRunBySource(
+    input: FindTelegramAgentRunInput,
+  ): Promise<PersistedAgentRun | null> {
+    this.lastFindInput = input;
+
+    return this.existingRun;
   }
 
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<PersistedAgentRun> {
@@ -126,6 +193,7 @@ class RecordingAgentRunStore implements AgentRunStore {
       workspaceId: input.workspaceId,
       userId: input.userId,
       source: "telegram",
+      sourceThreadId: input.sourceThreadId,
       sourceMessageId: input.sourceMessageId,
       model: input.runtimeResult.model,
       inputText: input.inputText,

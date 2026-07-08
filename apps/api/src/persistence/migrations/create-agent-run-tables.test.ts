@@ -19,6 +19,7 @@ test("agent run migration includes expected agent_runs columns and constraints",
   assert.match(sql, /"workspace_id" uuid NOT NULL/);
   assert.match(sql, /"user_id" uuid NOT NULL/);
   assert.match(sql, /"source" text NOT NULL/);
+  assert.match(sql, /"source_thread_id" text/);
   assert.match(sql, /"input_text" text NOT NULL/);
   assert.match(sql, /"normalized_intent" jsonb/);
   assert.match(sql, /"token_usage" jsonb/);
@@ -77,6 +78,10 @@ test("agent run migration includes run and tool call lookup indexes", () => {
   );
   assert.match(
     sql,
+    /CREATE UNIQUE INDEX "uq_agent_runs_telegram_source_message" ON "agent_runs" \("workspace_id", "user_id", "source", "source_thread_id", "source_message_id"\) WHERE "source_thread_id" IS NOT NULL AND "source_message_id" IS NOT NULL/,
+  );
+  assert.match(
+    sql,
     /CREATE INDEX "idx_agent_tool_calls_agent_run_id_created_at" ON "agent_tool_calls" \("agent_run_id", "created_at"\)/,
   );
   assert.match(
@@ -89,6 +94,7 @@ test("agent run migration down queries drop indexes and child table first", () =
   assert.deepEqual(dropAgentRunTablesSql, [
     `DROP INDEX "idx_agent_tool_calls_agent_run_id_status"`,
     `DROP INDEX "idx_agent_tool_calls_agent_run_id_created_at"`,
+    `DROP INDEX "uq_agent_runs_telegram_source_message"`,
     `DROP INDEX "idx_agent_runs_workspace_id_status"`,
     `DROP INDEX "idx_agent_runs_workspace_id_user_id"`,
     `DROP INDEX "idx_agent_runs_workspace_id_created_at"`,

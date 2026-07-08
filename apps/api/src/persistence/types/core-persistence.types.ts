@@ -142,6 +142,7 @@ export type AgentRunRecord = {
   workspaceId: string;
   userId: string;
   source: AgentRunSource;
+  sourceThreadId: string | null;
   sourceMessageId: string | null;
   model: string | null;
   inputText: string;

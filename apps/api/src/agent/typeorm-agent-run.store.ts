@@ -11,6 +11,7 @@ import {
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
 import type {
   AgentRunStore,
+  FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
@@ -57,6 +58,18 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
     };
   }
 
+  async findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunEntity | null> {
+    const dataSource = await this.getInitializedDataSource();
+
+    return dataSource.getRepository(AgentRunEntity).findOneBy({
+      workspaceId: input.workspaceId,
+      userId: input.userId,
+      source: "telegram",
+      sourceThreadId: input.sourceThreadId,
+      sourceMessageId: input.sourceMessageId,
+    });
+  }
+
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunEntity> {
     const dataSource = await this.getInitializedDataSource();
     const repository = dataSource.getRepository(AgentRunEntity);
@@ -64,6 +77,7 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
       workspaceId: input.workspaceId,
       userId: input.userId,
       source: "telegram",
+      sourceThreadId: input.sourceThreadId,
       sourceMessageId: input.sourceMessageId,
       model: input.runtimeResult.model,
       inputText: input.inputText,

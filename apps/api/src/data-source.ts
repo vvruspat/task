@@ -30,6 +30,7 @@ import { CreateAgentRunTables1783296420000 } from "./persistence/migrations/1783
 import { CreateConfirmationRequestsTable1783296480000 } from "./persistence/migrations/1783296480000-create-confirmation-requests-table.js";
 import { CreateTelegramTables1783296540000 } from "./persistence/migrations/1783296540000-create-telegram-tables.js";
 import { CreateInvitesTable1783296600000 } from "./persistence/migrations/1783296600000-create-invites-table.js";
+import { AddAgentRunSourceThreadId1783296660000 } from "./persistence/migrations/1783296660000-add-agent-run-source-thread-id.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -62,6 +63,7 @@ const apiMigrations = [
   CreateConfirmationRequestsTable1783296480000,
   CreateTelegramTables1783296540000,
   CreateInvitesTable1783296600000,
+  AddAgentRunSourceThreadId1783296660000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {
