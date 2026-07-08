@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { components } from "@task/api-client";
 import {
+  buildAgentHistorySummary,
   buildKanbanColumns,
   buildKanbanSummary,
   buildMatrixColumns,
@@ -294,6 +295,55 @@ test("buildSettingsSummary falls back when selected context is absent", () => {
       statusCount: 0,
       taskCount: 0,
       workspaceCount: 0,
+    },
+  );
+});
+
+test("buildAgentHistorySummary maps selected context and audit counts", () => {
+  assert.deepEqual(
+    buildAgentHistorySummary({
+      projects: [
+        projectSummary({ id: firstProjectId, title: "Album one" }),
+        projectSummary({ id: secondProjectId, title: "Album two" }),
+      ],
+      selectedProjectId: firstProjectId,
+      selectedWorkspaceId: workspaceId,
+      skills: [taskSkillSummary(), taskSkillSummary({ name: "Release" })],
+      statuses: [workspaceStatus()],
+      tasks: [taskSummary(), taskSummary()],
+      workspaces: [workspaceSummary({ id: workspaceId, name: "Studio" })],
+    }),
+    {
+      projectCount: 2,
+      runCount: 0,
+      selectedProjectLabel: "Album one",
+      selectedWorkspaceLabel: "Studio",
+      skillCount: 2,
+      statusCount: 1,
+      taskCount: 2,
+    },
+  );
+});
+
+test("buildAgentHistorySummary falls back when context is absent", () => {
+  assert.deepEqual(
+    buildAgentHistorySummary({
+      projects: [],
+      selectedProjectId: null,
+      selectedWorkspaceId: null,
+      skills: [],
+      statuses: [],
+      tasks: [],
+      workspaces: [],
+    }),
+    {
+      projectCount: 0,
+      runCount: 0,
+      selectedProjectLabel: "No selected project",
+      selectedWorkspaceLabel: "No selected workspace",
+      skillCount: 0,
+      statusCount: 0,
+      taskCount: 0,
     },
   );
 });
