@@ -66,6 +66,15 @@ function createBackendClientStub(
   listWorkspaceStatusesCalls: Array<{ workspaceId: string; userId: string }>,
 ): TaskBackendClient {
   return {
+    listWorkspaces: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    getWorkspace: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    listWorkspaceMembers: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     listWorkspaceStatuses: async (request): Promise<WorkspaceStatusResponse[]> => {
       listWorkspaceStatusesCalls.push(request);
 

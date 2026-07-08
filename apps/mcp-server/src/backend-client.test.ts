@@ -11,7 +11,10 @@ import {
   type TaskCommentResponse,
   type TaskDetailResponse,
   type TaskSummaryResponse,
+  type WorkspaceDetailResponse,
+  type WorkspaceMemberResponse,
   type WorkspaceStatusResponse,
+  type WorkspaceSummaryResponse,
 } from "./backend-client.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -22,6 +25,31 @@ const userId = "55555555-5555-4555-8555-555555555555";
 const rootTaskId = "66666666-6666-4666-8666-666666666666";
 const subtaskId = "77777777-7777-4777-8777-777777777777";
 const timestamp = "2026-01-01T00:00:00.000Z";
+
+const workspaceSummary: WorkspaceSummaryResponse = {
+  id: workspaceId,
+  name: "Studio",
+  slug: "studio",
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const workspaceMember: WorkspaceMemberResponse = {
+  id: "88888888-8888-4888-8888-888888888888",
+  workspaceId,
+  userId,
+  role: "admin",
+  displayName: "Alex",
+  email: "alex@example.com",
+  avatarUrl: null,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+};
+
+const workspaceDetail: WorkspaceDetailResponse = {
+  ...workspaceSummary,
+  members: [workspaceMember],
+};
 
 const workspaceStatus: WorkspaceStatusResponse = {
   id: "99999999-9999-4999-8999-999999999999",
@@ -146,6 +174,58 @@ test("previewTaskSkillApply posts typed payloads with trusted user context", asy
   assert.equal(readPostInit(fetchCalls[0]?.init).headers["content-type"], "application/json");
   assert.deepEqual(readJsonBody(fetchCalls[0]?.init), requestBody);
   assert.equal(response.subtasks[0]?.source, "added");
+});
+
+test("listWorkspaces gets typed workspace summaries with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [workspaceSummary]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listWorkspaces({ userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(fetchCalls[0]?.input, "https://api.task.local/workspaces");
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.deepEqual(response, [workspaceSummary]);
+});
+
+test("getWorkspace gets typed workspace details with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, workspaceDetail);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.getWorkspace({ workspaceId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(fetchCalls[0]?.input, `https://api.task.local/workspaces/${workspaceId}`);
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, workspaceDetail);
+});
+
+test("listWorkspaceMembers gets typed workspace members with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fetchImplementation = createJsonFetch(fetchCalls, [workspaceMember]);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.listWorkspaceMembers({ workspaceId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(fetchCalls[0]?.input, `https://api.task.local/workspaces/${workspaceId}/members`);
+  assert.equal(fetchCalls[0]?.init.method, "GET");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(response, [workspaceMember]);
 });
 
 test("listActiveProjects gets typed project summaries with trusted user context", async () => {
