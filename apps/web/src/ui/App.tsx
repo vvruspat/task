@@ -437,6 +437,7 @@ export function App(): ReactElement {
               route={activeRoute}
               projects={data.projects}
               skills={data.skills}
+              statuses={data.statuses}
               tasks={data.tasks}
             />
           )}

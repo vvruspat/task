@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { components } from "@task/api-client";
 import {
+  buildKanbanColumns,
+  buildKanbanSummary,
   buildMyTaskRows,
   buildMyTaskSummary,
   buildProjectOverviewRows,
@@ -15,10 +17,116 @@ import {
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];
+type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 
 const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const firstProjectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 const secondProjectId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+const firstStatusId = "44444444-4444-4444-8444-444444444444";
+const secondStatusId = "55555555-5555-4555-8555-555555555555";
+const unknownStatusId = "66666666-6666-4666-8666-666666666666";
+
+test("buildKanbanColumns orders statuses and groups known, unknown, and unset tasks", () => {
+  assert.deepEqual(
+    buildKanbanColumns(
+      [projectSummary({ id: firstProjectId, title: "Album one" })],
+      [
+        workspaceStatus({
+          id: secondStatusId,
+          name: "Done",
+          position: "2000",
+        }),
+        workspaceStatus({
+          color: "#3b82f6",
+          id: firstStatusId,
+          name: "In progress",
+          position: "1000",
+        }),
+      ],
+      [
+        taskSummary({
+          dueAt: "2026-07-09T10:00:00.000Z",
+          id: "11111111-1111-4111-8111-111111111111",
+          statusId: firstStatusId,
+          title: "Record vocals",
+          updatedAt: "2026-07-05T10:00:00.000Z",
+        }),
+        taskSummary({
+          id: "22222222-2222-4222-8222-222222222222",
+          projectId: secondProjectId,
+          statusId: unknownStatusId,
+          title: "Mix outro",
+          updatedAt: "2026-07-06T10:00:00.000Z",
+        }),
+        taskSummary({
+          id: "33333333-3333-4333-8333-333333333333",
+          statusId: null,
+          title: "Edit drums",
+          updatedAt: "2026-07-04T10:00:00.000Z",
+        }),
+      ],
+    ).map((column) => ({
+      id: column.id,
+      name: column.name,
+      taskCount: column.taskCount,
+      taskTitles: column.tasks.map((task) => task.title),
+      taskProjects: column.tasks.map((task) => task.projectTitle),
+    })),
+    [
+      {
+        id: firstStatusId,
+        name: "In progress",
+        taskCount: 1,
+        taskProjects: ["Album one"],
+        taskTitles: ["Record vocals"],
+      },
+      {
+        id: secondStatusId,
+        name: "Done",
+        taskCount: 0,
+        taskProjects: [],
+        taskTitles: [],
+      },
+      {
+        id: "unknown-status",
+        name: "Unknown status",
+        taskCount: 1,
+        taskProjects: ["Unknown"],
+        taskTitles: ["Mix outro"],
+      },
+      {
+        id: "unset-status",
+        name: "Unset",
+        taskCount: 1,
+        taskProjects: ["Album one"],
+        taskTitles: ["Edit drums"],
+      },
+    ],
+  );
+});
+
+test("buildKanbanSummary counts columns, done tasks, and unset tasks", () => {
+  assert.deepEqual(
+    buildKanbanSummary(
+      [
+        workspaceStatus({ id: firstStatusId, isDone: false }),
+        workspaceStatus({ id: secondStatusId, isDone: true }),
+      ],
+      [
+        taskSummary({ statusId: firstStatusId }),
+        taskSummary({ statusId: secondStatusId }),
+        taskSummary({ statusId: unknownStatusId }),
+        taskSummary({ statusId: null }),
+      ],
+    ),
+    {
+      columnCount: 4,
+      doneTaskCount: 1,
+      taskCount: 4,
+      unsetTaskCount: 1,
+    },
+  );
+});
 
 test("buildMyTaskRows sorts due tasks first and maps loaded task fields", () => {
   assert.deepEqual(
@@ -322,6 +430,20 @@ function taskSkillSummary(overrides: Partial<TaskSkillSummary> = {}): TaskSkillS
     description: null,
     id: "99999999-9999-4999-8999-999999999999",
     name: "Skill",
+    updatedAt: "2026-07-01T10:00:00.000Z",
+    workspaceId,
+    ...overrides,
+  };
+}
+
+function workspaceStatus(overrides: Partial<WorkspaceStatus> = {}): WorkspaceStatus {
+  return {
+    color: "#6a756f",
+    createdAt: "2026-07-01T09:00:00.000Z",
+    id: firstStatusId,
+    isDone: false,
+    name: "Open",
+    position: "1000",
     updatedAt: "2026-07-01T10:00:00.000Z",
     workspaceId,
     ...overrides,
