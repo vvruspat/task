@@ -55,6 +55,7 @@ test("parseWebShellConfig reports missing trusted user id", () => {
 
 test("loadWebShellData loads workspace-scoped bootstrap data", async () => {
   const client = new RecordingTaskApiClient({
+    agentRuns: [agentRunSummary()],
     projects: [projectSummary()],
     skills: [taskSkillSummary()],
     statuses: [workspaceStatus()],
@@ -63,6 +64,7 @@ test("loadWebShellData loads workspace-scoped bootstrap data", async () => {
   });
 
   assert.deepEqual(await loadWebShellData(client), {
+    agentRuns: [agentRunSummary()],
     projects: [projectSummary()],
     selectedProjectId: projectId,
     selectedWorkspaceId: workspaceId,
@@ -73,6 +75,7 @@ test("loadWebShellData loads workspace-scoped bootstrap data", async () => {
   });
   assert.deepEqual(client.calls, [
     "listWorkspaces",
+    "listAgentRuns:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
     "listProjects:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
     "listTaskSkills:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
     "listStatuses:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
@@ -82,6 +85,7 @@ test("loadWebShellData loads workspace-scoped bootstrap data", async () => {
 
 test("loadWebShellData handles empty workspace lists without scoped reads", async () => {
   const client = new RecordingTaskApiClient({
+    agentRuns: [],
     projects: [],
     skills: [],
     statuses: [],
@@ -90,6 +94,7 @@ test("loadWebShellData handles empty workspace lists without scoped reads", asyn
   });
 
   assert.deepEqual(await loadWebShellData(client), {
+    agentRuns: [],
     projects: [],
     selectedProjectId: null,
     selectedWorkspaceId: null,
@@ -103,6 +108,7 @@ test("loadWebShellData handles empty workspace lists without scoped reads", asyn
 
 test("loadWebShellData skips task reads when the workspace has no projects", async () => {
   const client = new RecordingTaskApiClient({
+    agentRuns: [agentRunSummary()],
     projects: [],
     skills: [taskSkillSummary()],
     statuses: [workspaceStatus()],
@@ -111,6 +117,7 @@ test("loadWebShellData skips task reads when the workspace has no projects", asy
   });
 
   assert.deepEqual(await loadWebShellData(client), {
+    agentRuns: [agentRunSummary()],
     projects: [],
     selectedProjectId: null,
     selectedWorkspaceId: workspaceId,
@@ -121,6 +128,7 @@ test("loadWebShellData skips task reads when the workspace has no projects", asy
   });
   assert.deepEqual(client.calls, [
     "listWorkspaces",
+    "listAgentRuns:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
     "listProjects:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
     "listTaskSkills:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
     "listStatuses:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
@@ -129,6 +137,7 @@ test("loadWebShellData skips task reads when the workspace has no projects", asy
 
 test("createWebShellTask posts trimmed task titles to the selected project", async () => {
   const client = new RecordingTaskApiClient({
+    agentRuns: [],
     projects: [projectSummary()],
     skills: [],
     statuses: [],
@@ -162,6 +171,7 @@ test("createWebShellTask posts trimmed task titles to the selected project", asy
 
 test("createWebShellProject posts trimmed project titles to the selected workspace", async () => {
   const client = new RecordingTaskApiClient({
+    agentRuns: [],
     projects: [],
     skills: [],
     statuses: [],
@@ -193,6 +203,7 @@ test("createWebShellProject posts trimmed project titles to the selected workspa
 
 test("createWebShellTask rejects empty task titles without calling the client", async () => {
   const client = new RecordingTaskApiClient({
+    agentRuns: [],
     projects: [],
     skills: [],
     statuses: [],
@@ -221,6 +232,7 @@ test("createWebShellTask rejects empty task titles without calling the client", 
 
 test("createWebShellProject rejects empty project titles without calling the client", async () => {
   const client = new RecordingTaskApiClient({
+    agentRuns: [],
     projects: [],
     skills: [],
     statuses: [],
@@ -247,6 +259,7 @@ test("createWebShellProject rejects empty project titles without calling the cli
 });
 
 type ApiData = {
+  agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];
   skills: TaskSkillSummary[];
   statuses: WorkspaceStatus[];
@@ -275,8 +288,9 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("getHealth is not used by the web shell loader.");
   }
 
-  async listAgentRuns(_input: { workspaceId: string }): Promise<AgentRunSummary[]> {
-    throw new Error("listAgentRuns is not used by the web shell loader.");
+  async listAgentRuns(input: { workspaceId: string }): Promise<AgentRunSummary[]> {
+    this.calls.push(`listAgentRuns:${input.workspaceId}`);
+    return this.data.agentRuns;
   }
 
   async listProjects(input: { workspaceId: string }): Promise<ProjectSummary[]> {
@@ -311,6 +325,23 @@ function workspaceSummary(): WorkspaceSummary {
     name: "Studio",
     slug: "studio",
     createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function agentRunSummary(): AgentRunSummary {
+  return {
+    id: "11111111-1111-4111-8111-111111111111",
+    workspaceId,
+    userId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+    source: "web",
+    sourceMessageId: null,
+    model: "openai/gpt-5",
+    inputText: "@task what is next for the album?",
+    finalResponse: "Record the intro.",
+    status: "completed",
+    error: null,
+    createdAt: "2026-07-08T09:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
   };
 }

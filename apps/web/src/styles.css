@@ -645,9 +645,16 @@ h1 {
   border-top: 1px solid #ece6dc;
 }
 
+.agent-history-row > div {
+  min-width: 0;
+}
+
 .agent-history-row h4 {
+  overflow: hidden;
   margin-bottom: 4px;
   font-size: 0.98rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .agent-history-row p {
