@@ -367,6 +367,58 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/confirmations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List pending confirmation requests for one visible workspace */
+    get: operations["ConfirmationsController_listPendingConfirmationRequests"];
+    put?: never;
+    /** Create a pending confirmation request for an agent run */
+    post: operations["ConfirmationsController_createConfirmationRequest"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/confirmations/{confirmationRequestId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get one visible confirmation request */
+    get: operations["ConfirmationsController_getConfirmationRequest"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/confirmations/{confirmationRequestId}/cancel": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Cancel one pending confirmation request */
+    patch: operations["ConfirmationsController_cancelConfirmationRequest"];
+    trace?: never;
+  };
   "/internal/telegram/context/resolve": {
     parameters: {
       query?: never;
@@ -408,7 +460,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List agent run history in a visible workspace */
+    /** List current user agent run history in a visible workspace */
     get: operations["AgentRunsController_listWorkspaceRuns"];
     put?: never;
     post?: never;
@@ -817,6 +869,63 @@ export interface components {
       url: string;
       /** @example Bass take reference */
       title?: string | null;
+    };
+    ConfirmationRequestSummaryDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      agentRunId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @example task_skill.apply */
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** @enum {string} */
+      status: "pending" | "confirmed" | "cancelled" | "expired";
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    CreateConfirmationRequestDto: {
+      /** Format: uuid */
+      agentRunId: string;
+      /** @example task_skill.apply */
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      expiresAt: string;
+    };
+    ConfirmationRequestDetailDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      agentRunId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @example task_skill.apply */
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** @enum {string} */
+      status: "pending" | "confirmed" | "cancelled" | "expired";
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
     };
     ResolveTelegramContextDto: {
       /** @example 123456789 */
@@ -1932,6 +2041,157 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ConfirmationsController_listPendingConfirmationRequests: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConfirmationRequestSummaryDto"][];
+        };
+      };
+      /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ConfirmationsController_createConfirmationRequest: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateConfirmationRequestDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConfirmationRequestDetailDto"];
+        };
+      };
+      /** @description Confirmation request payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot create confirmation requests in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or agent run is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ConfirmationsController_getConfirmationRequest: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        confirmationRequestId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConfirmationRequestDetailDto"];
+        };
+      };
+      /** @description Workspace or confirmation request is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ConfirmationsController_cancelConfirmationRequest: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        confirmationRequestId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConfirmationRequestDetailDto"];
+        };
+      };
+      /** @description Current user cannot cancel confirmation requests in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or pending confirmation request is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;

@@ -1533,6 +1533,216 @@
         "tags": ["attachments"]
       }
     },
+    "/workspaces/{workspaceId}/confirmations": {
+      "get": {
+        "operationId": "ConfirmationsController_listPendingConfirmationRequests",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConfirmationRequestSummaryDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          }
+        },
+        "summary": "List pending confirmation requests for one visible workspace",
+        "tags": ["confirmations"]
+      },
+      "post": {
+        "operationId": "ConfirmationsController_createConfirmationRequest",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateConfirmationRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmationRequestDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Confirmation request payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot create confirmation requests in this workspace."
+          },
+          "404": {
+            "description": "Workspace or agent run is missing or not visible to the current user."
+          }
+        },
+        "summary": "Create a pending confirmation request for an agent run",
+        "tags": ["confirmations"]
+      }
+    },
+    "/workspaces/{workspaceId}/confirmations/{confirmationRequestId}": {
+      "get": {
+        "operationId": "ConfirmationsController_getConfirmationRequest",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "confirmationRequestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmationRequestDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace or confirmation request is missing or not visible to the current user."
+          }
+        },
+        "summary": "Get one visible confirmation request",
+        "tags": ["confirmations"]
+      }
+    },
+    "/workspaces/{workspaceId}/confirmations/{confirmationRequestId}/cancel": {
+      "patch": {
+        "operationId": "ConfirmationsController_cancelConfirmationRequest",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "confirmationRequestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmationRequestDetailDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot cancel confirmation requests in this workspace."
+          },
+          "404": {
+            "description": "Workspace or pending confirmation request is missing or not visible."
+          }
+        },
+        "summary": "Cancel one pending confirmation request",
+        "tags": ["confirmations"]
+      }
+    },
     "/internal/telegram/context/resolve": {
       "post": {
         "operationId": "TelegramController_resolveContext",
@@ -2710,6 +2920,143 @@
           }
         },
         "required": ["url"]
+      },
+      "ConfirmationRequestSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "example": "task_skill.apply"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "confirmed", "cancelled", "expired"]
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "agentRunId",
+          "userId",
+          "kind",
+          "preview",
+          "status",
+          "expiresAt",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateConfirmationRequestDto": {
+        "type": "object",
+        "properties": {
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "example": "task_skill.apply",
+            "minLength": 1
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["agentRunId", "kind", "preview", "expiresAt"]
+      },
+      "ConfirmationRequestDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "example": "task_skill.apply"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "confirmed", "cancelled", "expired"]
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "agentRunId",
+          "userId",
+          "kind",
+          "preview",
+          "status",
+          "expiresAt",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "ResolveTelegramContextDto": {
         "type": "object",

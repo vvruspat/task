@@ -1587,7 +1587,7 @@
       "label": "AppModule",
       "file_type": "code",
       "source_file": "apps/api/src/app.module.ts",
-      "source_location": "L29",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "src_app_module_appmodule",
       "community": 77,
@@ -2050,7 +2050,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "attachments_typeorm_task_attachments_store_typeormtaskattachmentsstore_constructor",
-      "community": 99,
+      "community": 94,
       "norm_label": ".constructor()"
     },
     {
@@ -2130,7 +2130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_test",
-      "community": 103,
+      "community": 67,
       "norm_label": "trusted-current-user.decorator.test.ts"
     },
     {
@@ -2140,7 +2140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator",
-      "community": 103,
+      "community": 67,
       "norm_label": "trusted-current-user.decorator.ts"
     },
     {
@@ -2150,7 +2150,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "community": 103,
+      "community": 67,
       "norm_label": "apitrustedcurrentuser()"
     },
     {
@@ -2160,7 +2160,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "community": 103,
+      "community": 67,
       "norm_label": "trustedcurrentuserid"
     },
     {
@@ -2170,7 +2170,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "community": 103,
+      "community": 67,
       "norm_label": "parsetrustedcurrentuserid()"
     },
     {
@@ -2180,7 +2180,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "community": 103,
+      "community": 67,
       "norm_label": "trustedcurrentuserheader"
     },
     {
@@ -2190,7 +2190,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
-      "community": 103,
+      "community": 67,
       "norm_label": "trustedcurrentuserrequest"
     },
     {
@@ -2270,7 +2270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "comments_comments_controller",
-      "community": 103,
+      "community": 64,
       "norm_label": "comments.controller.ts"
     },
     {
@@ -2280,7 +2280,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "comments_comments_controller_uuidv4pipe",
-      "community": 103,
+      "community": 64,
       "norm_label": "uuidv4pipe"
     },
     {
@@ -2290,7 +2290,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller",
-      "community": 106,
+      "community": 64,
       "norm_label": "commentscontroller"
     },
     {
@@ -2300,7 +2300,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller_constructor",
-      "community": 106,
+      "community": 64,
       "norm_label": ".constructor()"
     },
     {
@@ -2310,7 +2310,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller_listtaskcomments",
-      "community": 106,
+      "community": 64,
       "norm_label": ".listtaskcomments()"
     },
     {
@@ -2320,7 +2320,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "comments_comments_controller_commentscontroller_createtaskcomment",
-      "community": 106,
+      "community": 64,
       "norm_label": ".createtaskcomment()"
     },
     {
@@ -2370,7 +2370,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "comments_comments_dto_taskcommentdto",
-      "community": 106,
+      "community": 64,
       "norm_label": "taskcommentdto"
     },
     {
@@ -2380,7 +2380,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "comments_comments_dto_taskcommentdto_constructor",
-      "community": 106,
+      "community": 64,
       "norm_label": ".constructor()"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "comments_comments_module",
-      "community": 118,
+      "community": 64,
       "norm_label": "comments.module.ts"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "comments_comments_module_commentsserviceprovider",
-      "community": 118,
+      "community": 64,
       "norm_label": "commentsserviceprovider"
     },
     {
@@ -2500,7 +2500,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice",
-      "community": 106,
+      "community": 64,
       "norm_label": "commentsservice"
     },
     {
@@ -2510,7 +2510,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice_constructor",
-      "community": 106,
+      "community": 64,
       "norm_label": ".constructor()"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice_listtaskcomments",
-      "community": 106,
+      "community": 64,
       "norm_label": ".listtaskcomments()"
     },
     {
@@ -2530,7 +2530,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "comments_comments_service_commentsservice_createtaskcomment",
-      "community": 106,
+      "community": 64,
       "norm_label": ".createtaskcomment()"
     },
     {
@@ -2590,7 +2590,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore",
-      "community": 117,
+      "community": 64,
       "norm_label": "typeormtaskcommentsstore"
     },
     {
@@ -2600,7 +2600,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -2610,7 +2610,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_listfortask",
-      "community": 117,
+      "community": 64,
       "norm_label": ".listfortask()"
     },
     {
@@ -2620,7 +2620,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_createfortask",
-      "community": 117,
+      "community": 64,
       "norm_label": ".createfortask()"
     },
     {
@@ -2630,7 +2630,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_canreadtask",
-      "community": 117,
+      "community": 64,
       "norm_label": ".canreadtask()"
     },
     {
@@ -2640,7 +2640,7 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getvisibletask",
-      "community": 117,
+      "community": 64,
       "norm_label": ".getvisibletask()"
     },
     {
@@ -2650,7 +2650,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getworkspacemembership",
-      "community": 117,
+      "community": 64,
       "norm_label": ".getworkspacemembership()"
     },
     {
@@ -2660,7 +2660,7 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_getinitializeddatasource",
-      "community": 117,
+      "community": 64,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -2670,7 +2670,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_totaskcomment",
-      "community": 117,
+      "community": 64,
       "norm_label": "totaskcomment()"
     },
     {
@@ -2864,13 +2864,643 @@
       "norm_label": "formatinvalidvalue()"
     },
     {
+      "label": "confirmations.contracts.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_contracts",
+      "community": 99,
+      "norm_label": "confirmations.contracts.ts"
+    },
+    {
+      "label": "ConfirmationRequestSummary",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "community": 99,
+      "norm_label": "confirmationrequestsummary"
+    },
+    {
+      "label": "ConfirmationRequestDetail",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "community": 99,
+      "norm_label": "confirmationrequestdetail"
+    },
+    {
+      "label": "CreateConfirmationRequestInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "community": 99,
+      "norm_label": "createconfirmationrequestinput"
+    },
+    {
+      "label": "confirmations.controller.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_test",
+      "community": 99,
+      "norm_label": "confirmations.controller.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_test_createdat",
+      "community": 99,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "expiresAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_test_expiresat",
+      "community": 99,
+      "norm_label": "expiresat"
+    },
+    {
+      "label": "confirmationRequest",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_test_confirmationrequest",
+      "community": 99,
+      "norm_label": "confirmationrequest"
+    },
+    {
+      "label": "createInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_test_createinput",
+      "community": 99,
+      "norm_label": "createinput"
+    },
+    {
+      "label": "createStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L169",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_test_createstore",
+      "community": 99,
+      "norm_label": "createstore()"
+    },
+    {
+      "label": "confirmations.controller.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller",
+      "community": 99,
+      "norm_label": "confirmations.controller.ts"
+    },
+    {
+      "label": "uuidV4Pipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_uuidv4pipe",
+      "community": 99,
+      "norm_label": "uuidv4pipe"
+    },
+    {
+      "label": "ConfirmationsController",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_confirmationscontroller",
+      "community": 99,
+      "norm_label": "confirmationscontroller"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_confirmationscontroller_constructor",
+      "community": 99,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listPendingConfirmationRequests()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_confirmationscontroller_listpendingconfirmationrequests",
+      "community": 99,
+      "norm_label": ".listpendingconfirmationrequests()"
+    },
+    {
+      "label": ".createConfirmationRequest()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest",
+      "community": 99,
+      "norm_label": ".createconfirmationrequest()"
+    },
+    {
+      "label": ".getConfirmationRequest()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_confirmationscontroller_getconfirmationrequest",
+      "community": 99,
+      "norm_label": ".getconfirmationrequest()"
+    },
+    {
+      "label": ".cancelConfirmationRequest()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L98",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_controller_confirmationscontroller_cancelconfirmationrequest",
+      "community": 99,
+      "norm_label": ".cancelconfirmationrequest()"
+    },
+    {
+      "label": "confirmations.dto.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto",
+      "community": 99,
+      "norm_label": "confirmations.dto.ts"
+    },
+    {
+      "label": "CreateConfirmationRequestDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_createconfirmationrequestdto",
+      "community": 99,
+      "norm_label": "createconfirmationrequestdto"
+    },
+    {
+      "label": "ParseCreateConfirmationRequestBodyPipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
+      "community": 99,
+      "norm_label": "parsecreateconfirmationrequestbodypipe"
+    },
+    {
+      "label": ".transform()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform",
+      "community": 99,
+      "norm_label": ".transform()"
+    },
+    {
+      "label": "ConfirmationRequestSummaryDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "community": 99,
+      "norm_label": "confirmationrequestsummarydto"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_confirmationrequestsummarydto_constructor",
+      "community": 99,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "ConfirmationRequestDetailDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "community": 99,
+      "norm_label": "confirmationrequestdetaildto"
+    },
+    {
+      "label": "parseCreateConfirmationRequestInput()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L83",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "community": 99,
+      "norm_label": "parsecreateconfirmationrequestinput()"
+    },
+    {
+      "label": "isUnknownRecord()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_isunknownrecord",
+      "community": 99,
+      "norm_label": "isunknownrecord()"
+    },
+    {
+      "label": "readRequiredUuid()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_readrequireduuid",
+      "community": 99,
+      "norm_label": "readrequireduuid()"
+    },
+    {
+      "label": "readRequiredNonEmptyString()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L110",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_readrequirednonemptystring",
+      "community": 99,
+      "norm_label": "readrequirednonemptystring()"
+    },
+    {
+      "label": "readRequiredRecord()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L126",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_readrequiredrecord",
+      "community": 99,
+      "norm_label": "readrequiredrecord()"
+    },
+    {
+      "label": "readRequiredDateTime()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L139",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_dto_readrequireddatetime",
+      "community": 99,
+      "norm_label": "readrequireddatetime()"
+    },
+    {
+      "label": "confirmations.module.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_module",
+      "community": 99,
+      "norm_label": "confirmations.module.ts"
+    },
+    {
+      "label": "confirmationsServiceProvider",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_module_confirmationsserviceprovider",
+      "community": 99,
+      "norm_label": "confirmationsserviceprovider"
+    },
+    {
+      "label": "ConfirmationsModule",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_module_confirmationsmodule",
+      "community": 77,
+      "norm_label": "confirmationsmodule"
+    },
+    {
+      "label": "confirmations.service.test.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_test",
+      "community": 99,
+      "norm_label": "confirmations.service.test.ts"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_test_createdat",
+      "community": 99,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "updatedAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_test_updatedat",
+      "community": 99,
+      "norm_label": "updatedat"
+    },
+    {
+      "label": "expiresAt",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_test_expiresat",
+      "community": 99,
+      "norm_label": "expiresat"
+    },
+    {
+      "label": "confirmationRequest",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_test_confirmationrequest",
+      "community": 99,
+      "norm_label": "confirmationrequest"
+    },
+    {
+      "label": "createInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_test_createinput",
+      "community": 99,
+      "norm_label": "createinput"
+    },
+    {
+      "label": "createStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L163",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_test_createstore",
+      "community": 99,
+      "norm_label": "createstore()"
+    },
+    {
+      "label": "confirmations.service.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service",
+      "community": 99,
+      "norm_label": "confirmations.service.ts"
+    },
+    {
+      "label": "ConfirmationsService",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_confirmationsservice",
+      "community": 99,
+      "norm_label": "confirmationsservice"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_confirmationsservice_constructor",
+      "community": 99,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listPendingConfirmationRequests()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_confirmationsservice_listpendingconfirmationrequests",
+      "community": 99,
+      "norm_label": ".listpendingconfirmationrequests()"
+    },
+    {
+      "label": ".getConfirmationRequest()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_confirmationsservice_getconfirmationrequest",
+      "community": 99,
+      "norm_label": ".getconfirmationrequest()"
+    },
+    {
+      "label": ".createConfirmationRequest()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest",
+      "community": 99,
+      "norm_label": ".createconfirmationrequest()"
+    },
+    {
+      "label": ".cancelConfirmationRequest()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_service_confirmationsservice_cancelconfirmationrequest",
+      "community": 99,
+      "norm_label": ".cancelconfirmationrequest()"
+    },
+    {
+      "label": "confirmations.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_store",
+      "community": 99,
+      "norm_label": "confirmations.store.ts"
+    },
+    {
+      "label": "ConfirmationRequestCreateResult",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_store_confirmationrequestcreateresult",
+      "community": 99,
+      "norm_label": "confirmationrequestcreateresult"
+    },
+    {
+      "label": "ConfirmationRequestCancelResult",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_store_confirmationrequestcancelresult",
+      "community": 99,
+      "norm_label": "confirmationrequestcancelresult"
+    },
+    {
+      "label": "ConfirmationRequestsStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "confirmations_confirmations_store_confirmationrequestsstore",
+      "community": 99,
+      "norm_label": "confirmationrequestsstore"
+    },
+    {
+      "label": "typeorm-confirmation-requests.store.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store",
+      "community": 99,
+      "norm_label": "typeorm-confirmation-requests.store.ts"
+    },
+    {
+      "label": "confirmationWriteRoles",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_confirmationwriteroles",
+      "community": 99,
+      "norm_label": "confirmationwriteroles"
+    },
+    {
+      "label": "TypeOrmConfirmationRequestsStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "community": 99,
+      "norm_label": "typeormconfirmationrequestsstore"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor",
+      "community": 67,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".listPendingForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace",
+      "community": 99,
+      "norm_label": ".listpendingforworkspace()"
+    },
+    {
+      "label": ".getForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
+      "community": 99,
+      "norm_label": ".getforworkspace()"
+    },
+    {
+      "label": ".createForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
+      "community": 99,
+      "norm_label": ".createforworkspace()"
+    },
+    {
+      "label": ".cancelForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L134",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
+      "community": 99,
+      "norm_label": ".cancelforworkspace()"
+    },
+    {
+      "label": ".getInitializedDataSource()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L174",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
+      "community": 99,
+      "norm_label": ".getinitializeddatasource()"
+    },
+    {
+      "label": "toConfirmationRequestSummary()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L196",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestsummary",
+      "community": 99,
+      "norm_label": "toconfirmationrequestsummary()"
+    },
+    {
+      "label": "toConfirmationRequestDetail()",
+      "file_type": "code",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L213",
+      "_origin": "ast",
+      "id": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
+      "community": 99,
+      "norm_label": "toconfirmationrequestdetail()"
+    },
+    {
       "label": "data-source.test.ts",
       "file_type": "code",
       "source_file": "apps/api/src/data-source.test.ts",
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 66,
+      "community": 108,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -2880,7 +3510,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 66,
+      "community": 108,
       "norm_label": "data-source.ts"
     },
     {
@@ -2890,7 +3520,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 66,
+      "community": 108,
       "norm_label": "apientities"
     },
     {
@@ -2900,7 +3530,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 66,
+      "community": 108,
       "norm_label": "apimigrations"
     },
     {
@@ -2910,7 +3540,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 66,
+      "community": 108,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -2920,7 +3550,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 66,
+      "community": 108,
       "norm_label": "createapidatasource()"
     },
     {
@@ -2930,7 +3560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "database_database_module",
-      "community": 118,
+      "community": 108,
       "norm_label": "database.module.ts"
     },
     {
@@ -2940,7 +3570,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "database_database_module_apidatasource",
-      "community": 118,
+      "community": 108,
       "norm_label": "apidatasource"
     },
     {
@@ -2950,7 +3580,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider",
-      "community": 99,
+      "community": 67,
       "norm_label": "apidatasourceprovider"
     },
     {
@@ -2970,7 +3600,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_onapplicationshutdown",
-      "community": 99,
+      "community": 67,
       "norm_label": ".onapplicationshutdown()"
     },
     {
@@ -2980,7 +3610,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_getdatasource",
-      "community": 99,
+      "community": 67,
       "norm_label": ".getdatasource()"
     },
     {
@@ -2990,7 +3620,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "database_database_module_databasemodule",
-      "community": 118,
+      "community": 108,
       "norm_label": "databasemodule"
     },
     {
@@ -3500,7 +4130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table",
-      "community": 107,
+      "community": 86,
       "norm_label": "1783296060000-create-projects-table.ts"
     },
     {
@@ -3510,7 +4140,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
-      "community": 107,
+      "community": 86,
       "norm_label": "createprojectstablesql"
     },
     {
@@ -3520,7 +4150,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
-      "community": 107,
+      "community": 86,
       "norm_label": "dropprojectstablesql"
     },
     {
@@ -3650,7 +4280,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000",
-      "community": 66,
+      "community": 108,
       "norm_label": "createtaskskillstables1783296180000"
     },
     {
@@ -3660,7 +4290,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_up",
-      "community": 66,
+      "community": 108,
       "norm_label": ".up()"
     },
     {
@@ -3670,7 +4300,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "migrations_1783296180000_create_task_skills_tables_createtaskskillstables1783296180000_down",
-      "community": 66,
+      "community": 108,
       "norm_label": ".down()"
     },
     {
@@ -3710,7 +4340,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 66,
+      "community": 109,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -3720,7 +4350,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 66,
+      "community": 109,
       "norm_label": ".up()"
     },
     {
@@ -3730,7 +4360,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 66,
+      "community": 109,
       "norm_label": ".down()"
     },
     {
@@ -3740,7 +4370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table",
-      "community": 86,
+      "community": 107,
       "norm_label": "1783296300000-create-attachments-table.ts"
     },
     {
@@ -3750,7 +4380,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstablesql",
-      "community": 86,
+      "community": 107,
       "norm_label": "createattachmentstablesql"
     },
     {
@@ -3760,7 +4390,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_dropattachmentstablesql",
-      "community": 86,
+      "community": 107,
       "norm_label": "dropattachmentstablesql"
     },
     {
@@ -3830,7 +4460,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000",
-      "community": 66,
+      "community": 110,
       "norm_label": "createactivityeventstable1783296360000"
     },
     {
@@ -3840,7 +4470,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_up",
-      "community": 66,
+      "community": 110,
       "norm_label": ".up()"
     },
     {
@@ -3850,7 +4480,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstable1783296360000_down",
-      "community": 66,
+      "community": 110,
       "norm_label": ".down()"
     },
     {
@@ -3950,7 +4580,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "community": 66,
+      "community": 112,
       "norm_label": "createconfirmationrequeststable1783296480000"
     },
     {
@@ -3960,7 +4590,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up",
-      "community": 66,
+      "community": 112,
       "norm_label": ".up()"
     },
     {
@@ -3970,7 +4600,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_down",
-      "community": 66,
+      "community": 112,
       "norm_label": ".down()"
     },
     {
@@ -4010,7 +4640,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000",
-      "community": 66,
+      "community": 113,
       "norm_label": "createtelegramtables1783296540000"
     },
     {
@@ -4020,7 +4650,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_up",
-      "community": 66,
+      "community": 113,
       "norm_label": ".up()"
     },
     {
@@ -4030,7 +4660,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "migrations_1783296540000_create_telegram_tables_createtelegramtables1783296540000_down",
-      "community": 66,
+      "community": 113,
       "norm_label": ".down()"
     },
     {
@@ -4040,7 +4670,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table",
-      "community": 114,
+      "community": 66,
       "norm_label": "1783296600000-create-invites-table.ts"
     },
     {
@@ -4050,7 +4680,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestablesql",
-      "community": 114,
+      "community": 66,
       "norm_label": "createinvitestablesql"
     },
     {
@@ -4060,7 +4690,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_dropinvitestablesql",
-      "community": 114,
+      "community": 66,
       "norm_label": "dropinvitestablesql"
     },
     {
@@ -4130,7 +4760,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000",
-      "community": 66,
+      "community": 115,
       "norm_label": "addagentrunsourcethreadid1783296660000"
     },
     {
@@ -4140,7 +4770,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000_up",
-      "community": 66,
+      "community": 115,
       "norm_label": ".up()"
     },
     {
@@ -4150,7 +4780,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000_down",
-      "community": 66,
+      "community": 115,
       "norm_label": ".down()"
     },
     {
@@ -4190,7 +4820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_attachments_table_test",
-      "community": 86,
+      "community": 107,
       "norm_label": "create-attachments-table.test.ts"
     },
     {
@@ -4250,7 +4880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_invites_table_test",
-      "community": 114,
+      "community": 66,
       "norm_label": "create-invites-table.test.ts"
     },
     {
@@ -4260,7 +4890,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_projects_table_test",
-      "community": 107,
+      "community": 86,
       "norm_label": "create-projects-table.test.ts"
     },
     {
@@ -4500,7 +5130,7 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "types_core_persistence_types_confirmationrequeststatus",
-      "community": 50,
+      "community": 99,
       "norm_label": "confirmationrequeststatus"
     },
     {
@@ -5000,7 +5630,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "projects_typeorm_project_read_store_typeormprojectreadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -5140,7 +5770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_controller",
-      "community": 103,
+      "community": 67,
       "norm_label": "statuses.controller.ts"
     },
     {
@@ -5150,7 +5780,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "statuses_statuses_controller_uuidv4pipe",
-      "community": 103,
+      "community": 67,
       "norm_label": "uuidv4pipe"
     },
     {
@@ -5220,7 +5850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_module",
-      "community": 118,
+      "community": 67,
       "norm_label": "statuses.module.ts"
     },
     {
@@ -5230,7 +5860,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "statuses_statuses_module_statusesserviceprovider",
-      "community": 118,
+      "community": 67,
       "norm_label": "statusesserviceprovider"
     },
     {
@@ -5370,7 +6000,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore",
-      "community": 99,
+      "community": 67,
       "norm_label": "typeormstatusesreadstore"
     },
     {
@@ -5380,7 +6010,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -5390,7 +6020,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_listforworkspace",
-      "community": 99,
+      "community": 67,
       "norm_label": ".listforworkspace()"
     },
     {
@@ -5400,7 +6030,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_getinitializeddatasource",
-      "community": 99,
+      "community": 67,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -6580,7 +7210,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -7480,7 +8110,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tasks_typeorm_task_read_store_typeormtaskreadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -8020,7 +8650,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "workspaces_typeorm_workspace_read_store_typeormworkspacereadstore_constructor",
-      "community": 99,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -9400,7 +10030,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 76,
+      "community": 70,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
@@ -9410,7 +10040,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_backend_client_applytaskskillresponse",
-      "community": 78,
+      "community": 70,
       "norm_label": "applytaskskillresponse"
     },
     {
@@ -9480,7 +10110,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_backend_client_createtaskcommentinput",
-      "community": 65,
+      "community": 103,
       "norm_label": "createtaskcommentinput"
     },
     {
@@ -9560,7 +10190,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_backend_client_projectdetailresponse",
-      "community": 76,
+      "community": 103,
       "norm_label": "projectdetailresponse"
     },
     {
@@ -9580,7 +10210,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_backend_client_taskcommentresponse",
-      "community": 76,
+      "community": 103,
       "norm_label": "taskcommentresponse"
     },
     {
@@ -9600,7 +10230,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_backend_client_taskdetailresponse",
-      "community": 76,
+      "community": 56,
       "norm_label": "taskdetailresponse"
     },
     {
@@ -9630,7 +10260,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendgetheaders",
-      "community": 65,
+      "community": 61,
       "norm_label": "taskbackendgetheaders"
     },
     {
@@ -9640,7 +10270,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendpostheaders",
-      "community": 65,
+      "community": 61,
       "norm_label": "taskbackendpostheaders"
     },
     {
@@ -9670,7 +10300,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclientoptions",
-      "community": 65,
+      "community": 61,
       "norm_label": "taskbackendclientoptions"
     },
     {
@@ -9690,7 +10320,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_backend_client_listactiveprojectsrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "listactiveprojectsrequest"
     },
     {
@@ -9700,7 +10330,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "src_backend_client_listworkspacestatusesrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "listworkspacestatusesrequest"
     },
     {
@@ -9710,7 +10340,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_backend_client_listworkspacesrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "listworkspacesrequest"
     },
     {
@@ -9740,7 +10370,7 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "src_backend_client_listtaskskillsrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "listtaskskillsrequest"
     },
     {
@@ -9750,7 +10380,7 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "src_backend_client_gettaskskillrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "gettaskskillrequest"
     },
     {
@@ -9760,7 +10390,7 @@
       "source_location": "L156",
       "_origin": "ast",
       "id": "src_backend_client_getprojectrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "getprojectrequest"
     },
     {
@@ -9770,7 +10400,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "src_backend_client_createprojectrequest",
-      "community": 76,
+      "community": 70,
       "norm_label": "createprojectrequest"
     },
     {
@@ -9780,7 +10410,7 @@
       "source_location": "L168",
       "_origin": "ast",
       "id": "src_backend_client_listactivetasksrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "listactivetasksrequest"
     },
     {
@@ -9790,7 +10420,7 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_backend_client_listtaskcommentsrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "listtaskcommentsrequest"
     },
     {
@@ -9800,7 +10430,7 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "src_backend_client_createtaskcommentrequest",
-      "community": 76,
+      "community": 103,
       "norm_label": "createtaskcommentrequest"
     },
     {
@@ -9810,7 +10440,7 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "src_backend_client_listtaskattachmentsrequest",
-      "community": 76,
+      "community": 92,
       "norm_label": "listtaskattachmentsrequest"
     },
     {
@@ -9820,7 +10450,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "src_backend_client_createtasklinkattachmentrequest",
-      "community": 76,
+      "community": 92,
       "norm_label": "createtasklinkattachmentrequest"
     },
     {
@@ -9830,7 +10460,7 @@
       "source_location": "L204",
       "_origin": "ast",
       "id": "src_backend_client_gettaskrequest",
-      "community": 65,
+      "community": 61,
       "norm_label": "gettaskrequest"
     },
     {
@@ -9880,7 +10510,7 @@
       "source_location": "L242",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendclient",
-      "community": 76,
+      "community": 120,
       "norm_label": "taskbackendclient"
     },
     {
@@ -10500,7 +11130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_comment_tools_test",
-      "community": 76,
+      "community": 103,
       "norm_label": "comment-tools.test.ts"
     },
     {
@@ -10510,7 +11140,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_comment_tools_test_taskcomment",
-      "community": 76,
+      "community": 103,
       "norm_label": "taskcomment"
     },
     {
@@ -10520,7 +11150,7 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_comment_tools_test_createbackendclientstub",
-      "community": 76,
+      "community": 103,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -10530,7 +11160,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_comment_tools",
-      "community": 65,
+      "community": 103,
       "norm_label": "comment-tools.ts"
     },
     {
@@ -10540,7 +11170,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_comment_tools_commentlisttoolinput",
-      "community": 65,
+      "community": 103,
       "norm_label": "commentlisttoolinput"
     },
     {
@@ -10550,7 +11180,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_comment_tools_commentcreatetoolinput",
-      "community": 65,
+      "community": 103,
       "norm_label": "commentcreatetoolinput"
     },
     {
@@ -10560,7 +11190,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolhandlers",
-      "community": 65,
+      "community": 103,
       "norm_label": "commenttoolhandlers"
     },
     {
@@ -10570,7 +11200,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolinputerror",
-      "community": 65,
+      "community": 103,
       "norm_label": "commenttoolinputerror"
     },
     {
@@ -10580,7 +11210,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_comment_tools_commenttoolinputerror_constructor",
-      "community": 65,
+      "community": 103,
       "norm_label": ".constructor()"
     },
     {
@@ -10590,7 +11220,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_comment_tools_createcommenttoolhandlers",
-      "community": 65,
+      "community": 103,
       "norm_label": "createcommenttoolhandlers()"
     },
     {
@@ -10600,7 +11230,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_comment_tools_parsecommentcreatetoolinput",
-      "community": 65,
+      "community": 103,
       "norm_label": "parsecommentcreatetoolinput()"
     },
     {
@@ -10610,7 +11240,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_comment_tools_parsecommentlisttoolinput",
-      "community": 65,
+      "community": 103,
       "norm_label": "parsecommentlisttoolinput()"
     },
     {
@@ -10620,7 +11250,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_comment_tools_tocreatetaskcommentinput",
-      "community": 65,
+      "community": 103,
       "norm_label": "tocreatetaskcommentinput()"
     },
     {
@@ -10630,7 +11260,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_comment_tools_readrecord",
-      "community": 65,
+      "community": 103,
       "norm_label": "readrecord()"
     },
     {
@@ -10640,7 +11270,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_comment_tools_isunknownrecord",
-      "community": 65,
+      "community": 103,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -10650,7 +11280,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_comment_tools_readrequireduuid",
-      "community": 65,
+      "community": 103,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -10660,7 +11290,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "src_comment_tools_readrequirednonemptystring",
-      "community": 65,
+      "community": 103,
       "norm_label": "readrequirednonemptystring()"
     },
     {
@@ -10780,7 +11410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_index_ts_src_index",
-      "community": 65,
+      "community": 18,
       "norm_label": "index.ts"
     },
     {
@@ -11560,7 +12190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_project_tools_test",
-      "community": 76,
+      "community": 70,
       "norm_label": "project-tools.test.ts"
     },
     {
@@ -11570,7 +12200,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_project_tools_test_albumproject",
-      "community": 76,
+      "community": 70,
       "norm_label": "albumproject"
     },
     {
@@ -11580,7 +12210,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_project_tools_test_projects",
-      "community": 76,
+      "community": 70,
       "norm_label": "projects"
     },
     {
@@ -11590,7 +12220,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_project_tools_test_projectdetail",
-      "community": 76,
+      "community": 70,
       "norm_label": "projectdetail"
     },
     {
@@ -11600,7 +12230,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_project_tools_test_createbackendclientstub",
-      "community": 76,
+      "community": 70,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -12490,7 +13120,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_task_tools_tasktoolhandlers",
-      "community": 69,
+      "community": 18,
       "norm_label": "tasktoolhandlers"
     },
     {
@@ -13430,7 +14060,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_backend_client_createtelegrambackendclient",
-      "community": 75,
+      "community": 84,
       "norm_label": "createtelegrambackendclient()"
     },
     {
@@ -13580,7 +14210,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_telegrambotenvironment",
-      "community": 84,
+      "community": 88,
       "norm_label": "telegrambotenvironment"
     },
     {
@@ -14030,7 +14660,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntimefromenvironment",
-      "community": 102,
+      "community": 84,
       "norm_label": "createtelegrambotruntimefromenvironment()"
     },
     {
@@ -16800,7 +17430,7 @@
       "source_location": "L424",
       "_origin": "ast",
       "id": "views_workspaceview_buildmatrixsummary",
-      "community": 80,
+      "community": 105,
       "norm_label": "buildmatrixsummary()"
     },
     {
@@ -16920,7 +17550,7 @@
       "source_location": "L665",
       "_origin": "ast",
       "id": "views_workspaceview_matrixview",
-      "community": 80,
+      "community": 105,
       "norm_label": "matrixview()"
     },
     {
@@ -16990,7 +17620,7 @@
       "source_location": "L1137",
       "_origin": "ast",
       "id": "views_workspaceview_countrecentlyupdatedtasks",
-      "community": 79,
+      "community": 80,
       "norm_label": "countrecentlyupdatedtasks()"
     },
     {
@@ -18270,7 +18900,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_client_healthresponse",
-      "community": 33,
+      "community": 106,
       "norm_label": "healthresponse"
     },
     {
@@ -18370,7 +19000,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_client_createprojectinput",
-      "community": 33,
+      "community": 106,
       "norm_label": "createprojectinput"
     },
     {
@@ -18380,7 +19010,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_client_createtaskinput",
-      "community": 33,
+      "community": 106,
       "norm_label": "createtaskinput"
     },
     {
@@ -18390,7 +19020,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_client_taskapirequestheaders",
-      "community": 33,
+      "community": 106,
       "norm_label": "taskapirequestheaders"
     },
     {
@@ -18410,7 +19040,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_client_taskapiresponse",
-      "community": 33,
+      "community": 106,
       "norm_label": "taskapiresponse"
     },
     {
@@ -18430,7 +19060,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_client_taskapiclientoptions",
-      "community": 33,
+      "community": 106,
       "norm_label": "taskapiclientoptions"
     },
     {
@@ -18440,7 +19070,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_client_workspacescopedinput",
-      "community": 33,
+      "community": 106,
       "norm_label": "workspacescopedinput"
     },
     {
@@ -18450,7 +19080,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_client_projectscopedinput",
-      "community": 33,
+      "community": 106,
       "norm_label": "projectscopedinput"
     },
     {
@@ -18510,7 +19140,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_client_taskapiclienterror",
-      "community": 33,
+      "community": 72,
       "norm_label": "taskapiclienterror"
     },
     {
@@ -18520,7 +19150,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_client_taskapiclienterror_constructor",
-      "community": 33,
+      "community": 72,
       "norm_label": ".constructor()"
     },
     {
@@ -18690,7 +19320,7 @@
       "source_location": "L334",
       "_origin": "ast",
       "id": "src_client_ishealthresponse",
-      "community": 122,
+      "community": 33,
       "norm_label": "ishealthresponse()"
     },
     {
@@ -18700,7 +19330,7 @@
       "source_location": "L343",
       "_origin": "ast",
       "id": "src_client_isworkspacesummary",
-      "community": 122,
+      "community": 33,
       "norm_label": "isworkspacesummary()"
     },
     {
@@ -18710,7 +19340,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "src_client_isagentrunsummary",
-      "community": 122,
+      "community": 33,
       "norm_label": "isagentrunsummary()"
     },
     {
@@ -18720,7 +19350,7 @@
       "source_location": "L372",
       "_origin": "ast",
       "id": "src_client_isprojectsummary",
-      "community": 122,
+      "community": 33,
       "norm_label": "isprojectsummary()"
     },
     {
@@ -18730,7 +19360,7 @@
       "source_location": "L376",
       "_origin": "ast",
       "id": "src_client_isprojectdetail",
-      "community": 122,
+      "community": 33,
       "norm_label": "isprojectdetail()"
     },
     {
@@ -18740,7 +19370,7 @@
       "source_location": "L392",
       "_origin": "ast",
       "id": "src_client_istasksummary",
-      "community": 122,
+      "community": 33,
       "norm_label": "istasksummary()"
     },
     {
@@ -18750,7 +19380,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "src_client_istaskdetail",
-      "community": 122,
+      "community": 33,
       "norm_label": "istaskdetail()"
     },
     {
@@ -18760,7 +19390,7 @@
       "source_location": "L419",
       "_origin": "ast",
       "id": "src_client_istaskskillsummary",
-      "community": 122,
+      "community": 33,
       "norm_label": "istaskskillsummary()"
     },
     {
@@ -18770,7 +19400,7 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "src_client_isworkspacestatus",
-      "community": 122,
+      "community": 33,
       "norm_label": "isworkspacestatus()"
     },
     {
@@ -18780,7 +19410,7 @@
       "source_location": "L448",
       "_origin": "ast",
       "id": "src_client_isjsonobject",
-      "community": 122,
+      "community": 33,
       "norm_label": "isjsonobject()"
     },
     {
@@ -18790,7 +19420,7 @@
       "source_location": "L452",
       "_origin": "ast",
       "id": "src_client_isarrayof",
-      "community": 122,
+      "community": 33,
       "norm_label": "isarrayof()"
     },
     {
@@ -18810,7 +19440,7 @@
       "source_location": "L463",
       "_origin": "ast",
       "id": "src_client_isagentrunsource",
-      "community": 122,
+      "community": 33,
       "norm_label": "isagentrunsource()"
     },
     {
@@ -18820,7 +19450,7 @@
       "source_location": "L467",
       "_origin": "ast",
       "id": "src_client_isagentrunstatus",
-      "community": 122,
+      "community": 33,
       "norm_label": "isagentrunstatus()"
     },
     {
@@ -18830,7 +19460,7 @@
       "source_location": "L476",
       "_origin": "ast",
       "id": "src_client_hasstring",
-      "community": 122,
+      "community": 33,
       "norm_label": "hasstring()"
     },
     {
@@ -18840,7 +19470,7 @@
       "source_location": "L480",
       "_origin": "ast",
       "id": "src_client_hasoptionalnullablestring",
-      "community": 122,
+      "community": 33,
       "norm_label": "hasoptionalnullablestring()"
     },
     {
@@ -18850,7 +19480,7 @@
       "source_location": "L485",
       "_origin": "ast",
       "id": "src_client_readstring",
-      "community": 122,
+      "community": 33,
       "norm_label": "readstring()"
     },
     {
@@ -18860,7 +19490,7 @@
       "source_location": "L490",
       "_origin": "ast",
       "id": "src_client_readproperty",
-      "community": 122,
+      "community": 33,
       "norm_label": "readproperty()"
     },
     {
@@ -18870,7 +19500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "generated_openapi",
-      "community": 33,
+      "community": 106,
       "norm_label": "openapi.ts"
     },
     {
@@ -18880,47 +19510,47 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "generated_openapi_paths",
-      "community": 33,
+      "community": 106,
       "norm_label": "paths"
     },
     {
       "label": "webhooks",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L422",
+      "source_location": "L474",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
-      "community": 33,
+      "community": 106,
       "norm_label": "webhooks"
     },
     {
       "label": "components",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L423",
+      "source_location": "L475",
       "_origin": "ast",
       "id": "generated_openapi_components",
-      "community": 33,
+      "community": 79,
       "norm_label": "components"
     },
     {
       "label": "$defs",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L896",
+      "source_location": "L1005",
       "_origin": "ast",
       "id": "generated_openapi_defs",
-      "community": 33,
+      "community": 106,
       "norm_label": "$defs"
     },
     {
       "label": "operations",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L897",
+      "source_location": "L1006",
       "_origin": "ast",
       "id": "generated_openapi_operations",
-      "community": 33,
+      "community": 106,
       "norm_label": "operations"
     },
     {
@@ -18930,7 +19560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "packages_api_client_src_index_ts_src_index",
-      "community": 33,
+      "community": 106,
       "norm_label": "index.ts"
     },
     {
@@ -20979,7 +21609,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "graphify_skill",
+      "id": "users_alexander_documents_task_codex_skills_graphify_skill_md",
       "community": 4,
       "norm_label": "skill.md"
     },
@@ -21219,7 +21849,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_add_watch",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
       "community": 11,
       "norm_label": "add-watch.md"
     },
@@ -21259,7 +21889,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_exports",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
       "community": 7,
       "norm_label": "exports.md"
     },
@@ -21349,7 +21979,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_extraction_spec",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
       "community": 16,
       "norm_label": "extraction-spec.md"
     },
@@ -21369,7 +21999,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_github_and_merge",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
       "community": 14,
       "norm_label": "github-and-merge.md"
     },
@@ -21399,7 +22029,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_hooks",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
       "community": 12,
       "norm_label": "hooks.md"
     },
@@ -21439,7 +22069,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_query",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
       "community": 9,
       "norm_label": "query.md"
     },
@@ -21499,7 +22129,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_transcribe",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
       "community": 15,
       "norm_label": "transcribe.md"
     },
@@ -21529,7 +22159,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_update",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
       "community": 13,
       "norm_label": "update.md"
     },
@@ -21562,66 +22192,6 @@
       "id": "references_update_for_cluster_only",
       "community": 13,
       "norm_label": "for --cluster-only"
-    },
-    {
-      "label": "memory_maintenance.md",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance",
-      "community": 123,
-      "norm_label": "memory_maintenance.md"
-    },
-    {
-      "label": "Memory Maintenance",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_memory_maintenance",
-      "community": 123,
-      "norm_label": "memory maintenance"
-    },
-    {
-      "label": "Discovery Model",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_discovery_model",
-      "community": 123,
-      "norm_label": "discovery model"
-    },
-    {
-      "label": "Style",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L19",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_style",
-      "community": 123,
-      "norm_label": "style"
-    },
-    {
-      "label": "Add/update threshold",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L25",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_add_update_threshold",
-      "community": 123,
-      "norm_label": "add/update threshold"
-    },
-    {
-      "label": "Maintenance Actions",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L30",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_maintenance_actions",
-      "community": 123,
-      "norm_label": "maintenance actions"
     },
     {
       "label": "AGENTS.md",
@@ -21779,7 +22349,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_readme",
+      "id": "users_alexander_documents_task_docs_readme_md",
       "community": 10,
       "norm_label": "readme.md"
     },
@@ -21819,7 +22389,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_agent_mcp_design",
+      "id": "users_alexander_documents_task_docs_agent_mcp_design_md",
       "community": 5,
       "norm_label": "agent-mcp-design.md"
     },
@@ -22019,7 +22589,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_data_model",
+      "id": "users_alexander_documents_task_docs_data_model_md",
       "community": 0,
       "norm_label": "data-model.md"
     },
@@ -22239,7 +22809,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_product_model",
+      "id": "users_alexander_documents_task_docs_product_model_md",
       "community": 3,
       "norm_label": "product-model.md"
     },
@@ -26600,6 +27170,28 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_app_module",
+      "target": "confirmations_confirmations_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_app_module",
+      "target": "confirmations_confirmations_module_confirmationsmodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/app.module.ts",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -28509,6 +29101,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "auth_trusted_current_user_decorator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/projects/projects.controller.ts",
       "source_location": "L9",
       "weight": 1.0,
@@ -28570,6 +29173,17 @@
       "confidence_score": 1.0,
       "source": "comments_comments_controller",
       "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -28636,6 +29250,17 @@
       "confidence_score": 1.0,
       "source": "comments_comments_controller",
       "target": "auth_trusted_current_user_decorator_trustedcurrentuserid"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "auth_trusted_current_user_decorator_trustedcurrentuserid",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -30549,6 +31174,1921 @@
       "confidence_score": 1.0,
       "source": "src_config_parseopenrouterconfig",
       "target": "src_config_parseoptionalopenroutersiteurl"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_contracts",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_contracts",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_contracts",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_contracts",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.contracts.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_contracts",
+      "target": "types_core_persistence_types_confirmationrequeststatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_store",
+      "target": "confirmations_confirmations_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_contracts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_confirmationrequestsummarydto_constructor",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_store",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace",
+      "target": "confirmations_confirmations_contracts_confirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_store",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
+      "target": "confirmations_confirmations_contracts_confirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_createconfirmationrequestdto",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_store",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
+      "target": "confirmations_confirmations_contracts_createconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_controller_confirmationscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_controller_test_confirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_controller_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_controller_test_createinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L169",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_controller_test_createstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_controller_test_expiresat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_service_confirmationsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.test.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_test",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_controller_confirmationscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_controller_uuidv4pipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_dto_createconfirmationrequestdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller",
+      "target": "confirmations_confirmations_service_confirmationsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller",
+      "target": "confirmations_confirmations_controller_confirmationscontroller_cancelconfirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller",
+      "target": "confirmations_confirmations_controller_confirmationscontroller_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller",
+      "target": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller",
+      "target": "confirmations_confirmations_controller_confirmationscontroller_getconfirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller",
+      "target": "confirmations_confirmations_controller_confirmationscontroller_listpendingconfirmationrequests",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_controller_confirmationscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller_constructor",
+      "target": "confirmations_confirmations_service_confirmationsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller_listpendingconfirmationrequests",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller_createconfirmationrequest",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller_getconfirmationrequest",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.controller.ts",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_controller_confirmationscontroller_cancelconfirmationrequest",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_createconfirmationrequestdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_readrequireddatetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_readrequiredrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "confirmations_confirmations_dto_readrequireduuid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto",
+      "target": "types_core_persistence_types_confirmationrequeststatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_dto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe",
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestbodypipe_transform",
+      "target": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "target": "types_core_persistence_types_confirmationrequeststatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice_listpendingconfirmationrequests",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_dto_confirmationrequestsummarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice_cancelconfirmationrequest",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice_getconfirmationrequest",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_dto_confirmationrequestdetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "target": "confirmations_confirmations_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "target": "confirmations_confirmations_dto_readrequireddatetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L90",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "target": "confirmations_confirmations_dto_readrequiredrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_parsecreateconfirmationrequestinput",
+      "target": "confirmations_confirmations_dto_readrequireduuid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_readrequiredrecord",
+      "target": "confirmations_confirmations_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_readrequireduuid",
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.dto.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_dto_readrequireddatetime",
+      "target": "confirmations_confirmations_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_module_confirmationsmodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_module_confirmationsserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_service_confirmationsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_typeorm_confirmation_requests_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.module.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_module",
+      "target": "database_database_module_databasemodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service_confirmationsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service_test_confirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service_test_createdat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service_test_createinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L163",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service_test_createstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service_test_expiresat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_service_test_updatedat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.test.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_test",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_service_confirmationsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice",
+      "target": "confirmations_confirmations_service_confirmationsservice_cancelconfirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice",
+      "target": "confirmations_confirmations_service_confirmationsservice_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice",
+      "target": "confirmations_confirmations_service_confirmationsservice_createconfirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice",
+      "target": "confirmations_confirmations_service_confirmationsservice_getconfirmationrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice",
+      "target": "confirmations_confirmations_service_confirmationsservice_listpendingconfirmationrequests",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.service.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_service_confirmationsservice_constructor",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_store",
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_store",
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/confirmations.store.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "confirmations_confirmations_store",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_store",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
+      "target": "confirmations_confirmations_store_confirmationrequestcreateresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
+      "target": "confirmations_confirmations_store_confirmationrequestcancelresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "target": "confirmations_confirmations_store_confirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_typeorm_confirmation_requests_store_confirmationwriteroles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L213",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L196",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "database_database_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "entities_agent_run_entity_agentrunentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "entities_confirmation_request_entity_confirmationrequestentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "entities_index",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "entities_workspace_member_entity_workspacememberentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "types_core_persistence_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "types_core_persistence_types_confirmationrequestrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store",
+      "target": "types_core_persistence_types_workspacememberrole",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L174",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_constructor",
+      "target": "database_database_module_apidatasourceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_listpendingforworkspace",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getforworkspace",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L130",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_createforworkspace",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_cancelforworkspace",
+      "target": "confirmations_typeorm_confirmation_requests_store_typeormconfirmationrequestsstore_getinitializeddatasource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/confirmations/typeorm-confirmation-requests.store.ts",
+      "source_location": "L216",
+      "weight": 1.0,
+      "source": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestdetail",
+      "target": "confirmations_typeorm_confirmation_requests_store_toconfirmationrequestsummary",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -71020,7 +73560,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "graphify_skill",
+      "source": "users_alexander_documents_task_codex_skills_graphify_skill_md",
       "target": "graphify_skill_graphify",
       "confidence_score": 1.0
     },
@@ -71250,7 +73790,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_add_watch",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
       "target": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
       "confidence_score": 1.0
     },
@@ -71280,7 +73820,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_exports",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
       "target": "references_exports_graphify_reference_extra_exports_and_benchmark",
       "confidence_score": 1.0
     },
@@ -71360,7 +73900,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_extraction_spec",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
       "target": "references_extraction_spec_graphify_reference_extraction_subagent_prompt_compact",
       "confidence_score": 1.0
     },
@@ -71370,7 +73910,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_github_and_merge",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
       "target": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
       "confidence_score": 1.0
     },
@@ -71390,7 +73930,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_hooks",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
       "target": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
       "confidence_score": 1.0
     },
@@ -71420,7 +73960,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_query",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
       "target": "references_query_graphify_reference_query_path_explain",
       "confidence_score": 1.0
     },
@@ -71470,7 +74010,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_transcribe",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
       "target": "references_transcribe_graphify_reference_transcribe_video_and_audio",
       "confidence_score": 1.0
     },
@@ -71490,7 +74030,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_update",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
       "target": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "confidence_score": 1.0
     },
@@ -71513,56 +74053,6 @@
       "confidence_score": 1.0,
       "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "target": "references_update_for_update_incremental_re_extraction"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance",
-      "target": "memories_memory_maintenance_memory_maintenance",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L25",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_add_update_threshold",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_discovery_model",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L30",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_maintenance_actions",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L19",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_style",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -71710,7 +74200,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_readme",
+      "source": "users_alexander_documents_task_docs_readme_md",
       "target": "docs_readme_task_docs",
       "confidence_score": 1.0
     },
@@ -71740,7 +74230,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_agent_mcp_design",
+      "source": "users_alexander_documents_task_docs_agent_mcp_design_md",
       "target": "docs_agent_mcp_design_agent_and_mcp_design",
       "confidence_score": 1.0
     },
@@ -71930,7 +74420,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_data_model",
+      "source": "users_alexander_documents_task_docs_data_model_md",
       "target": "docs_data_model_data_model_draft",
       "confidence_score": 1.0
     },
@@ -72140,7 +74630,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_product_model",
+      "source": "users_alexander_documents_task_docs_product_model_md",
       "target": "docs_product_model_product_model",
       "confidence_score": 1.0
     },
@@ -72436,5 +74926,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "72daadf20f2f2acaf750a7ecbe67604adbb72969"
+  "built_at_commit": "20314b80330b4b158ccc34789c88beda115bbddf"
 }
