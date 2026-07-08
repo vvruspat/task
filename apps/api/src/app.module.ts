@@ -4,6 +4,7 @@ import { AppController } from "./app.controller.js";
 import { AppService } from "./app.service.js";
 import { AttachmentsModule } from "./attachments/attachments.module.js";
 import { CommentsModule } from "./comments/comments.module.js";
+import { ConfirmationsModule } from "./confirmations/confirmations.module.js";
 import { ProjectsModule } from "./projects/projects.module.js";
 import { StatusesModule } from "./statuses/statuses.module.js";
 import { TaskSkillsModule } from "./task-skills/task-skills.module.js";
@@ -20,6 +21,7 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
     StatusesModule,
     CommentsModule,
     AttachmentsModule,
+    ConfirmationsModule,
     TelegramModule,
     AgentModule,
   ],
