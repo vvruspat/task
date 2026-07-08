@@ -14,6 +14,7 @@
     "test": "node -e \"console.log('No browser tests yet for @task/web shell')\""
   },
   "dependencies": {
+    "@task/api-client": "file:../../packages/api-client",
     "lucide-react": "^1.23.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
