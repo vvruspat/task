@@ -31,6 +31,10 @@ export default function WorkspaceView({
     return <ProjectsView projects={projects} tasks={tasks} />;
   }
 
+  if (route.id === "table") {
+    return <TaskTableView projects={projects} tasks={tasks} />;
+  }
+
   return (
     <div className="content-grid">
       <section className="panel wide-panel" aria-labelledby="workspace-view-title">
@@ -108,6 +112,22 @@ export type ProjectOverviewSummary = {
   unassignedTaskCount: number;
 };
 
+export type TaskTableRow = {
+  assigneeLabel: string;
+  dueDateLabel: string;
+  id: string;
+  parentLabel: string;
+  projectTitle: string;
+  title: string;
+  updatedAtLabel: string;
+};
+
+export type TaskTableSummary = {
+  dueSoonTaskCount: number;
+  taskCount: number;
+  unassignedTaskCount: number;
+};
+
 export function buildProjectOverviewRows(
   projects: ProjectSummary[],
   tasks: TaskSummary[],
@@ -127,7 +147,7 @@ export function buildProjectOverviewRows(
       statusLabel: project.status ?? "Active",
       taskCount: projectTasks.length,
       title: project.title,
-      unassignedTaskCount: projectTasks.filter((task) => task.assigneeUserId === null).length,
+      unassignedTaskCount: projectTasks.filter(isTaskUnassigned).length,
     };
   });
 }
@@ -140,7 +160,30 @@ export function buildProjectOverviewSummary(
     dueSoonTaskCount: countDueSoonTasks(tasks),
     projectCount: projects.length,
     taskCount: tasks.length,
-    unassignedTaskCount: tasks.filter((task) => task.assigneeUserId === null).length,
+    unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
+  };
+}
+
+export function buildTaskTableRows(
+  projects: ProjectSummary[],
+  tasks: TaskSummary[],
+): TaskTableRow[] {
+  return tasks.map((task) => ({
+    assigneeLabel: isTaskUnassigned(task) ? "Unassigned" : "Assigned",
+    dueDateLabel: formatOptionalDateLabel(task.dueAt),
+    id: task.id,
+    parentLabel: readParentTaskLabel(task, tasks),
+    projectTitle: projects.find((project) => project.id === task.projectId)?.title ?? "Unknown",
+    title: task.title,
+    updatedAtLabel: formatDateLabel(task.updatedAt),
+  }));
+}
+
+export function buildTaskTableSummary(tasks: TaskSummary[]): TaskTableSummary {
+  return {
+    dueSoonTaskCount: countDueSoonTasks(tasks),
+    taskCount: tasks.length,
+    unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
   };
 }
 
@@ -224,14 +267,103 @@ function ProjectsView({
   );
 }
 
+function TaskTableView({
+  projects,
+  tasks,
+}: {
+  projects: ProjectSummary[];
+  tasks: TaskSummary[];
+}): ReactElement {
+  const rows = buildTaskTableRows(projects, tasks);
+  const summary = buildTaskTableSummary(tasks);
+
+  return (
+    <div className="content-grid">
+      <section className="panel wide-panel" aria-labelledby="task-table-view-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Table</p>
+            <h3 id="task-table-view-title">Task table</h3>
+          </div>
+        </div>
+
+        <div className="view-surface">
+          <div className="task-table-header">
+            <span>Task</span>
+            <span>Project</span>
+            <span>Parent</span>
+            <span>Assignee</span>
+            <span>Due</span>
+            <span>Updated</span>
+          </div>
+          {rows.map((task) => (
+            <article className="task-table-row" key={task.id}>
+              <span>{task.title}</span>
+              <span>{task.projectTitle}</span>
+              <span>{task.parentLabel}</span>
+              <span>{task.assigneeLabel}</span>
+              <span>{task.dueDateLabel}</span>
+              <span>{task.updatedAtLabel}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel" aria-labelledby="task-table-summary-title">
+        <div className="panel-header">
+          <div>
+            <p className="eyebrow">Summary</p>
+            <h3 id="task-table-summary-title">Loaded tasks</h3>
+          </div>
+        </div>
+        <p className="agent-line">Counts use the task set currently loaded by the web shell.</p>
+        <dl className="metric-list">
+          <div>
+            <dt>Tasks</dt>
+            <dd>{summary.taskCount}</dd>
+          </div>
+          <div>
+            <dt>Due soon</dt>
+            <dd>{summary.dueSoonTaskCount}</dd>
+          </div>
+          <div>
+            <dt>Unassigned</dt>
+            <dd>{summary.unassignedTaskCount}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  );
+}
+
 function countDueSoonTasks(tasks: TaskSummary[]): number {
-  return tasks.filter((task) => task.dueAt !== null).length;
+  return tasks.filter((task) => hasDateValue(task.dueAt)).length;
 }
 
 function formatDateLabel(value: string): string {
   return value.slice(0, 10);
 }
 
+function formatOptionalDateLabel(value: string | null | undefined): string {
+  return hasDateValue(value) ? formatDateLabel(value) : "No due date";
+}
+
 function maxIsoTimestamp(currentValue: string, candidateValue: string): string {
   return Date.parse(candidateValue) > Date.parse(currentValue) ? candidateValue : currentValue;
+}
+
+function readParentTaskLabel(task: TaskSummary, tasks: TaskSummary[]): string {
+  if (task.parentTaskId === null || task.parentTaskId === undefined) {
+    return "Parent task";
+  }
+
+  return tasks.find((candidate) => candidate.id === task.parentTaskId)?.title ?? "Subtask";
+}
+
+function hasDateValue(value: string | null | undefined): value is string {
+  return value !== null && value !== undefined;
+}
+
+function isTaskUnassigned(task: TaskSummary): boolean {
+  return task.assigneeUserId === null || task.assigneeUserId === undefined;
 }
