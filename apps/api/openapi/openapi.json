@@ -835,6 +835,74 @@
         "tags": ["task-skills"]
       }
     },
+    "/workspaces/{workspaceId}/task-skills/{taskSkillId}/clone": {
+      "post": {
+        "operationId": "TaskSkillsController_cloneTaskSkill",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskSkillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloneTaskSkillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSkillDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task skill clone payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot clone task skills in this workspace."
+          },
+          "404": {
+            "description": "Workspace or active task skill is missing or not visible to the current user."
+          }
+        },
+        "summary": "Clone one active task skill",
+        "tags": ["task-skills"]
+      }
+    },
     "/workspaces/{workspaceId}/task-skills/{taskSkillId}": {
       "get": {
         "operationId": "TaskSkillsController_getTaskSkill",
@@ -2628,6 +2696,27 @@
           "updatedAt",
           "versions"
         ]
+      },
+      "CloneTaskSkillDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Song copy",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["name"]
       },
       "PreviewTaskSkillApplyOverridesDto": {
         "type": "object",

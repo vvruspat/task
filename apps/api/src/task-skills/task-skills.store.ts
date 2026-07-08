@@ -1,4 +1,5 @@
 import type {
+  CloneTaskSkillInput,
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   TaskSkillApplyPreview,
@@ -19,6 +20,24 @@ export type TaskSkillCreateResult =
     }
   | {
       status: "forbidden";
+    }
+  | {
+      status: "duplicate_name";
+    };
+
+export type TaskSkillCloneResult =
+  | {
+      status: "cloned";
+      taskSkill: TaskSkillDetail;
+    }
+  | {
+      status: "workspace_not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "task_skill_not_found";
     }
   | {
       status: "duplicate_name";
@@ -111,6 +130,12 @@ export type TaskSkillsReadStore = {
     userId: string,
     input: CreateTaskSkillInput,
   ): Promise<TaskSkillCreateResult>;
+  cloneForWorkspace(
+    workspaceId: string,
+    taskSkillId: string,
+    userId: string,
+    input: CloneTaskSkillInput,
+  ): Promise<TaskSkillCloneResult>;
   updateMetadataForWorkspace(
     workspaceId: string,
     taskSkillId: string,

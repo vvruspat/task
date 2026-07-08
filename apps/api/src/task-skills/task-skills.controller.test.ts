@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
 import type {
+  CloneTaskSkillInput,
   CreateTaskSkillInput,
   PreviewTaskSkillApplyInput,
   TaskSkillApplyPreview,
@@ -13,6 +14,7 @@ import type {
 } from "./task-skills.contracts.js";
 import { TaskSkillsController } from "./task-skills.controller.js";
 import {
+  ParseCloneTaskSkillBodyPipe,
   ParseCreateTaskSkillBodyPipe,
   ParsePreviewTaskSkillApplyBodyPipe,
   ParseUpdateTaskSkillDefinitionBodyPipe,
@@ -23,6 +25,7 @@ import type {
   TaskSkillApplyForWorkspaceResult,
   TaskSkillApplyPreviewResult,
   TaskSkillArchiveResult,
+  TaskSkillCloneResult,
   TaskSkillCreateResult,
   TaskSkillDefinitionUpdateResult,
   TaskSkillMetadataUpdateResult,
@@ -99,6 +102,12 @@ const createInput: CreateTaskSkillInput = {
   definition: {
     subtasks: [{ title: "Lyrics" }],
   },
+};
+
+const cloneInput: CloneTaskSkillInput = {
+  name: "Song copy",
+  description: null,
+  aliases: ["copy"],
 };
 
 const metadataUpdateInput: UpdateTaskSkillMetadataInput = {
@@ -211,6 +220,20 @@ test("TaskSkillsController uses trusted current user context for task skill crea
   );
 
   const response = await controller.createTaskSkill(workspaceId, userId, createInput);
+
+  assert.equal(response.id, skillId);
+  assert.equal(response.createdByUserId, userId);
+  assert.equal(response.versions[0]?.version, 1);
+});
+
+test("TaskSkillsController uses trusted current user context for task skill clones", async () => {
+  const controller = new TaskSkillsController(
+    new TaskSkillsService(
+      createReadStore({ cloneResult: { status: "cloned", taskSkill: taskSkillDetail } }),
+    ),
+  );
+
+  const response = await controller.cloneTaskSkill(workspaceId, skillId, userId, cloneInput);
 
   assert.equal(response.id, skillId);
   assert.equal(response.createdByUserId, userId);
@@ -465,10 +488,32 @@ test("ParsePreviewTaskSkillApplyBodyPipe validates and normalizes preview payloa
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseCloneTaskSkillBodyPipe validates and normalizes task skill clone payloads", () => {
+  const pipe = new ParseCloneTaskSkillBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      name: "  Song copy  ",
+      description: "",
+      aliases: [" copy ", "copy"],
+    }),
+    {
+      name: "Song copy",
+      description: null,
+      aliases: ["copy"],
+    },
+  );
+  assert.deepEqual(pipe.transform({ name: "Song copy" }), { name: "Song copy" });
+  assert.throws(() => pipe.transform({ name: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ name: "Song copy", aliases: [1] }), BadRequestException);
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
   archiveResult?: TaskSkillArchiveResult;
   applyResult?: TaskSkillApplyForWorkspaceResult;
   applyPreviewResult?: TaskSkillApplyPreviewResult;
+  cloneResult?: TaskSkillCloneResult;
   createResult?: TaskSkillCreateResult;
   definitionUpdateResult?: TaskSkillDefinitionUpdateResult;
   metadataUpdateResult?: TaskSkillMetadataUpdateResult;
@@ -484,6 +529,8 @@ function createReadStore(options: {
       options.applyPreviewResult ?? { status: "not_found" },
     applyForWorkspace: async (): Promise<TaskSkillApplyForWorkspaceResult> =>
       options.applyResult ?? { status: "not_found" },
+    cloneForWorkspace: async (): Promise<TaskSkillCloneResult> =>
+      options.cloneResult ?? { status: "workspace_not_found" },
     createForWorkspace: async (): Promise<TaskSkillCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
     updateDefinitionForWorkspace: async (): Promise<TaskSkillDefinitionUpdateResult> =>

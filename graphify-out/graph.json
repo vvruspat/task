@@ -290,7 +290,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_contracts",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.contracts.ts"
     },
     {
@@ -330,7 +330,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller_test",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.controller.test.ts"
     },
     {
@@ -400,7 +400,7 @@
       "source_location": "L147",
       "_origin": "ast",
       "id": "agent_agent_controller_test_staticagentruntime",
-      "community": 52,
+      "community": 93,
       "norm_label": "staticagentruntime"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "agent_agent_controller_test_agentruntimeresult",
-      "community": 52,
+      "community": 55,
       "norm_label": "agentruntimeresult"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "agent_agent_controller_test_persistedagentrun",
-      "community": 52,
+      "community": 55,
       "norm_label": "persistedagentrun"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_controller",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.controller.ts"
     },
     {
@@ -1150,7 +1150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service_test",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.service.test.ts"
     },
     {
@@ -1160,7 +1160,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "agent_agent_service_test_input",
-      "community": 52,
+      "community": 55,
       "norm_label": "input"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_location": "L325",
       "_origin": "ast",
       "id": "agent_agent_service_test_persistedagentrun",
-      "community": 52,
+      "community": 55,
       "norm_label": "persistedagentrun"
     },
     {
@@ -1270,7 +1270,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_service",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.service.ts"
     },
     {
@@ -1310,7 +1310,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "agent_agent_service_agentservice_listworkspaceruns",
-      "community": 8,
+      "community": 52,
       "norm_label": ".listworkspaceruns()"
     },
     {
@@ -1330,7 +1330,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "agent_agent_service_mapagentruntosummary",
-      "community": 52,
+      "community": 55,
       "norm_label": "mapagentruntosummary()"
     },
     {
@@ -1340,7 +1340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_agent_store",
-      "community": 52,
+      "community": 55,
       "norm_label": "agent.store.ts"
     },
     {
@@ -1360,7 +1360,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "agent_agent_store_persisttelegramagentruninput",
-      "community": 52,
+      "community": 55,
       "norm_label": "persisttelegramagentruninput"
     },
     {
@@ -1370,7 +1370,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "agent_agent_store_findtelegramagentruninput",
-      "community": 52,
+      "community": 55,
       "norm_label": "findtelegramagentruninput"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "agent_agent_store_agentrunstore",
-      "community": 52,
+      "community": 55,
       "norm_label": "agentrunstore"
     },
     {
@@ -1390,7 +1390,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store",
-      "community": 52,
+      "community": 55,
       "norm_label": "typeorm-agent-run.store.ts"
     },
     {
@@ -1400,7 +1400,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore",
-      "community": 55,
+      "community": 109,
       "norm_label": "typeormagentrunstore"
     },
     {
@@ -1410,7 +1410,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_constructor",
-      "community": 55,
+      "community": 109,
       "norm_label": ".constructor()"
     },
     {
@@ -1420,7 +1420,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_resolvetelegramruncontext",
-      "community": 55,
+      "community": 109,
       "norm_label": ".resolvetelegramruncontext()"
     },
     {
@@ -1430,7 +1430,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_listforworkspace",
-      "community": 55,
+      "community": 109,
       "norm_label": ".listforworkspace()"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_findtelegramrunbysource",
-      "community": 55,
+      "community": 109,
       "norm_label": ".findtelegramrunbysource()"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_createtelegramrun",
-      "community": 55,
+      "community": 109,
       "norm_label": ".createtelegramrun()"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "agent_typeorm_agent_run_store_typeormagentrunstore_getinitializeddatasource",
-      "community": 55,
+      "community": 109,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -2130,7 +2130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_test",
-      "community": 67,
+      "community": 2,
       "norm_label": "trusted-current-user.decorator.test.ts"
     },
     {
@@ -2140,7 +2140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator",
-      "community": 67,
+      "community": 2,
       "norm_label": "trusted-current-user.decorator.ts"
     },
     {
@@ -2150,7 +2150,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_apitrustedcurrentuser",
-      "community": 67,
+      "community": 2,
       "norm_label": "apitrustedcurrentuser()"
     },
     {
@@ -2160,7 +2160,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserid",
-      "community": 67,
+      "community": 2,
       "norm_label": "trustedcurrentuserid"
     },
     {
@@ -2170,7 +2170,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_parsetrustedcurrentuserid",
-      "community": 67,
+      "community": 2,
       "norm_label": "parsetrustedcurrentuserid()"
     },
     {
@@ -2180,7 +2180,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserheader",
-      "community": 67,
+      "community": 2,
       "norm_label": "trustedcurrentuserheader"
     },
     {
@@ -2190,7 +2190,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "auth_trusted_current_user_decorator_trustedcurrentuserrequest",
-      "community": 67,
+      "community": 2,
       "norm_label": "trustedcurrentuserrequest"
     },
     {
@@ -2600,7 +2600,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "comments_typeorm_task_comments_store_typeormtaskcommentsstore_constructor",
-      "community": 46,
+      "community": 64,
       "norm_label": ".constructor()"
     },
     {
@@ -3550,7 +3550,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 107,
+      "community": 70,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -3560,7 +3560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source",
-      "community": 107,
+      "community": 92,
       "norm_label": "data-source.ts"
     },
     {
@@ -3570,7 +3570,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_data_source_apientities",
-      "community": 107,
+      "community": 92,
       "norm_label": "apientities"
     },
     {
@@ -3580,7 +3580,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_data_source_apimigrations",
-      "community": 107,
+      "community": 92,
       "norm_label": "apimigrations"
     },
     {
@@ -3590,7 +3590,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 107,
+      "community": 70,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -3600,7 +3600,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 107,
+      "community": 70,
       "norm_label": "createapidatasource()"
     },
     {
@@ -3640,7 +3640,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "database_database_module_apidatasourceprovider_constructor",
-      "community": 77,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -3720,7 +3720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_openapi",
-      "community": 71,
+      "community": 54,
       "norm_label": "openapi.ts"
     },
     {
@@ -4180,7 +4180,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table",
-      "community": 86,
+      "community": 70,
       "norm_label": "1783296060000-create-projects-table.ts"
     },
     {
@@ -4190,7 +4190,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
-      "community": 86,
+      "community": 70,
       "norm_label": "createprojectstablesql"
     },
     {
@@ -4200,7 +4200,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
-      "community": 86,
+      "community": 70,
       "norm_label": "dropprojectstablesql"
     },
     {
@@ -4210,7 +4210,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
-      "community": 107,
+      "community": 70,
       "norm_label": "createprojectstable1783296060000"
     },
     {
@@ -4220,7 +4220,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
-      "community": 107,
+      "community": 70,
       "norm_label": ".up()"
     },
     {
@@ -4230,7 +4230,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
-      "community": 107,
+      "community": 70,
       "norm_label": ".down()"
     },
     {
@@ -4270,7 +4270,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000",
-      "community": 107,
+      "community": 121,
       "norm_label": "createtaskstable1783296120000"
     },
     {
@@ -4280,7 +4280,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_up",
-      "community": 107,
+      "community": 121,
       "norm_label": ".up()"
     },
     {
@@ -4290,7 +4290,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "migrations_1783296120000_create_tasks_table_createtaskstable1783296120000_down",
-      "community": 107,
+      "community": 121,
       "norm_label": ".down()"
     },
     {
@@ -4360,7 +4360,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table",
-      "community": 86,
+      "community": 92,
       "norm_label": "1783296240000-create-comments-table.ts"
     },
     {
@@ -4370,7 +4370,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstablesql",
-      "community": 86,
+      "community": 92,
       "norm_label": "createcommentstablesql"
     },
     {
@@ -4380,7 +4380,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_dropcommentstablesql",
-      "community": 86,
+      "community": 92,
       "norm_label": "dropcommentstablesql"
     },
     {
@@ -4390,7 +4390,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000",
-      "community": 107,
+      "community": 92,
       "norm_label": "createcommentstable1783296240000"
     },
     {
@@ -4400,7 +4400,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_up",
-      "community": 107,
+      "community": 92,
       "norm_label": ".up()"
     },
     {
@@ -4410,7 +4410,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296240000_create_comments_table_createcommentstable1783296240000_down",
-      "community": 107,
+      "community": 92,
       "norm_label": ".down()"
     },
     {
@@ -4450,7 +4450,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000",
-      "community": 107,
+      "community": 115,
       "norm_label": "createattachmentstable1783296300000"
     },
     {
@@ -4460,7 +4460,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_up",
-      "community": 107,
+      "community": 115,
       "norm_label": ".up()"
     },
     {
@@ -4470,7 +4470,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "migrations_1783296300000_create_attachments_table_createattachmentstable1783296300000_down",
-      "community": 107,
+      "community": 115,
       "norm_label": ".down()"
     },
     {
@@ -4480,7 +4480,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table",
-      "community": 95,
+      "community": 86,
       "norm_label": "1783296360000-create-activity-events-table.ts"
     },
     {
@@ -4490,7 +4490,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_createactivityeventstablesql",
-      "community": 95,
+      "community": 86,
       "norm_label": "createactivityeventstablesql"
     },
     {
@@ -4500,7 +4500,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "migrations_1783296360000_create_activity_events_table_dropactivityeventstablesql",
-      "community": 95,
+      "community": 86,
       "norm_label": "dropactivityeventstablesql"
     },
     {
@@ -4570,7 +4570,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000",
-      "community": 107,
+      "community": 111,
       "norm_label": "createagentruntables1783296420000"
     },
     {
@@ -4580,7 +4580,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_up",
-      "community": 107,
+      "community": 111,
       "norm_label": ".up()"
     },
     {
@@ -4590,7 +4590,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "migrations_1783296420000_create_agent_run_tables_createagentruntables1783296420000_down",
-      "community": 107,
+      "community": 111,
       "norm_label": ".down()"
     },
     {
@@ -4600,7 +4600,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table",
-      "community": 98,
+      "community": 107,
       "norm_label": "1783296480000-create-confirmation-requests-table.ts"
     },
     {
@@ -4610,7 +4610,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "community": 98,
+      "community": 107,
       "norm_label": "createconfirmationrequeststablesql"
     },
     {
@@ -4620,7 +4620,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "community": 98,
+      "community": 107,
       "norm_label": "dropconfirmationrequeststablesql"
     },
     {
@@ -4720,7 +4720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table",
-      "community": 102,
+      "community": 86,
       "norm_label": "1783296600000-create-invites-table.ts"
     },
     {
@@ -4730,7 +4730,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_createinvitestablesql",
-      "community": 102,
+      "community": 86,
       "norm_label": "createinvitestablesql"
     },
     {
@@ -4740,7 +4740,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "migrations_1783296600000_create_invites_table_dropinvitestablesql",
-      "community": 102,
+      "community": 86,
       "norm_label": "dropinvitestablesql"
     },
     {
@@ -4810,7 +4810,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000",
-      "community": 107,
+      "community": 123,
       "norm_label": "addagentrunsourcethreadid1783296660000"
     },
     {
@@ -4820,7 +4820,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000_up",
-      "community": 107,
+      "community": 123,
       "norm_label": ".up()"
     },
     {
@@ -4830,7 +4830,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "migrations_1783296660000_add_agent_run_source_thread_id_addagentrunsourcethreadid1783296660000_down",
-      "community": 107,
+      "community": 123,
       "norm_label": ".down()"
     },
     {
@@ -4850,7 +4850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_activity_events_table_test",
-      "community": 95,
+      "community": 86,
       "norm_label": "create-activity-events-table.test.ts"
     },
     {
@@ -4880,7 +4880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_comments_table_test",
-      "community": 86,
+      "community": 92,
       "norm_label": "create-comments-table.test.ts"
     },
     {
@@ -4890,7 +4890,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_confirmation_requests_table_test",
-      "community": 98,
+      "community": 107,
       "norm_label": "create-confirmation-requests-table.test.ts"
     },
     {
@@ -4930,7 +4930,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_invites_table_test",
-      "community": 102,
+      "community": 86,
       "norm_label": "create-invites-table.test.ts"
     },
     {
@@ -4940,7 +4940,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_projects_table_test",
-      "community": 86,
+      "community": 70,
       "norm_label": "create-projects-table.test.ts"
     },
     {
@@ -5140,7 +5140,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "types_core_persistence_types_agentrunstatus",
-      "community": 8,
+      "community": 109,
       "norm_label": "agentrunstatus"
     },
     {
@@ -5760,7 +5760,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_contracts",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.contracts.ts"
     },
     {
@@ -5770,7 +5770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_contracts_workspacestatus",
-      "community": 67,
+      "community": 46,
       "norm_label": "workspacestatus"
     },
     {
@@ -5780,7 +5780,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_controller_test",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.controller.test.ts"
     },
     {
@@ -5790,7 +5790,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "statuses_statuses_controller_test_createdat",
-      "community": 67,
+      "community": 46,
       "norm_label": "createdat"
     },
     {
@@ -5800,7 +5800,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "statuses_statuses_controller_test_workspacestatus",
-      "community": 67,
+      "community": 46,
       "norm_label": "workspacestatus"
     },
     {
@@ -5810,7 +5810,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "statuses_statuses_controller_test_createreadstore",
-      "community": 67,
+      "community": 46,
       "norm_label": "createreadstore()"
     },
     {
@@ -5820,7 +5820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_controller",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.controller.ts"
     },
     {
@@ -5830,7 +5830,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "statuses_statuses_controller_uuidv4pipe",
-      "community": 67,
+      "community": 46,
       "norm_label": "uuidv4pipe"
     },
     {
@@ -5840,7 +5840,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "statuses_statuses_controller_statusescontroller",
-      "community": 67,
+      "community": 46,
       "norm_label": "statusescontroller"
     },
     {
@@ -5850,7 +5850,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "statuses_statuses_controller_statusescontroller_constructor",
-      "community": 67,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -5860,7 +5860,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "statuses_statuses_controller_statusescontroller_liststatuses",
-      "community": 67,
+      "community": 46,
       "norm_label": ".liststatuses()"
     },
     {
@@ -5870,7 +5870,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_dto",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.dto.ts"
     },
     {
@@ -5880,7 +5880,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "statuses_statuses_dto_workspacestatusdto",
-      "community": 67,
+      "community": 46,
       "norm_label": "workspacestatusdto"
     },
     {
@@ -5890,7 +5890,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "statuses_statuses_dto_workspacestatusdto_constructor",
-      "community": 67,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -5900,7 +5900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_module",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.module.ts"
     },
     {
@@ -5910,7 +5910,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "statuses_statuses_module_statusesserviceprovider",
-      "community": 67,
+      "community": 46,
       "norm_label": "statusesserviceprovider"
     },
     {
@@ -5920,7 +5920,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "statuses_statuses_module_statusesmodule",
-      "community": 77,
+      "community": 46,
       "norm_label": "statusesmodule"
     },
     {
@@ -5930,7 +5930,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_service_test",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.service.test.ts"
     },
     {
@@ -5940,7 +5940,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "statuses_statuses_service_test_createdat",
-      "community": 67,
+      "community": 46,
       "norm_label": "createdat"
     },
     {
@@ -5950,7 +5950,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "statuses_statuses_service_test_updatedat",
-      "community": 67,
+      "community": 46,
       "norm_label": "updatedat"
     },
     {
@@ -5960,7 +5960,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "statuses_statuses_service_test_workspacestatus",
-      "community": 67,
+      "community": 46,
       "norm_label": "workspacestatus"
     },
     {
@@ -5970,7 +5970,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "statuses_statuses_service_test_createreadstore",
-      "community": 67,
+      "community": 46,
       "norm_label": "createreadstore()"
     },
     {
@@ -5980,7 +5980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_service",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.service.ts"
     },
     {
@@ -5990,7 +5990,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "statuses_statuses_service_statusesservice",
-      "community": 67,
+      "community": 46,
       "norm_label": "statusesservice"
     },
     {
@@ -6000,7 +6000,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "statuses_statuses_service_statusesservice_constructor",
-      "community": 67,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -6010,7 +6010,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "statuses_statuses_service_statusesservice_liststatuses",
-      "community": 67,
+      "community": 46,
       "norm_label": ".liststatuses()"
     },
     {
@@ -6020,7 +6020,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_statuses_store",
-      "community": 67,
+      "community": 46,
       "norm_label": "statuses.store.ts"
     },
     {
@@ -6030,7 +6030,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "statuses_statuses_store_statusesreadstore",
-      "community": 67,
+      "community": 46,
       "norm_label": "statusesreadstore"
     },
     {
@@ -6040,7 +6040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store",
-      "community": 67,
+      "community": 46,
       "norm_label": "typeorm-statuses-read.store.ts"
     },
     {
@@ -6050,7 +6050,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore",
-      "community": 67,
+      "community": 46,
       "norm_label": "typeormstatusesreadstore"
     },
     {
@@ -6060,7 +6060,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_constructor",
-      "community": 67,
+      "community": 46,
       "norm_label": ".constructor()"
     },
     {
@@ -6070,7 +6070,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_listforworkspace",
-      "community": 67,
+      "community": 46,
       "norm_label": ".listforworkspace()"
     },
     {
@@ -6080,7 +6080,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_typeormstatusesreadstore_getinitializeddatasource",
-      "community": 67,
+      "community": 46,
       "norm_label": ".getinitializeddatasource()"
     },
     {
@@ -6090,7 +6090,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "statuses_typeorm_statuses_read_store_toworkspacestatus",
-      "community": 67,
+      "community": 46,
       "norm_label": "toworkspacestatus()"
     },
     {
@@ -6120,7 +6120,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillversionsummary",
-      "community": 71,
+      "community": 54,
       "norm_label": "taskskillversionsummary"
     },
     {
@@ -6144,10 +6144,20 @@
       "norm_label": "createtaskskillinput"
     },
     {
-      "label": "UpdateTaskSkillMetadataInput",
+      "label": "CloneTaskSkillInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
       "source_location": "L36",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "community": 49,
+      "norm_label": "clonetaskskillinput"
+    },
+    {
+      "label": "UpdateTaskSkillMetadataInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_updatetaskskillmetadatainput",
       "community": 49,
@@ -6157,7 +6167,7 @@
       "label": "UpdateTaskSkillDefinitionInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L42",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_updatetaskskilldefinitioninput",
       "community": 49,
@@ -6167,7 +6177,7 @@
       "label": "TaskSkillApplyPreviewSubtaskSource",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L46",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtasksource",
       "community": 71,
@@ -6177,7 +6187,7 @@
       "label": "TaskSkillApplyPreviewSubtask",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L48",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreviewsubtask",
       "community": 71,
@@ -6187,7 +6197,7 @@
       "label": "TaskSkillApplyPreview",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L53",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplypreview",
       "community": 71,
@@ -6197,7 +6207,7 @@
       "label": "TaskSkillApplyResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L63",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_taskskillapplyresult",
       "community": 71,
@@ -6207,7 +6217,7 @@
       "label": "PreviewTaskSkillApplyOverrides",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L73",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_previewtaskskillapplyoverrides",
       "community": 54,
@@ -6217,7 +6227,7 @@
       "label": "PreviewTaskSkillApplyInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
-      "source_location": "L78",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "task_skills_task_skills_contracts_previewtaskskillapplyinput",
       "community": 71,
@@ -6237,7 +6247,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L40",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_createdat",
       "community": 57,
@@ -6247,7 +6257,7 @@
       "label": "archivedAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L41",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_archivedat",
       "community": 57,
@@ -6257,7 +6267,7 @@
       "label": "taskSkill",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L43",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_taskskill",
       "community": 57,
@@ -6267,7 +6277,7 @@
       "label": "taskSkillDetail",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L55",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_taskskilldetail",
       "community": 57,
@@ -6277,7 +6287,7 @@
       "label": "taskSkillDetailWithNewVersion",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L72",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_taskskilldetailwithnewversion",
       "community": 57,
@@ -6287,7 +6297,7 @@
       "label": "archivedTaskSkillDetail",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L90",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_archivedtaskskilldetail",
       "community": 57,
@@ -6297,17 +6307,27 @@
       "label": "createInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L95",
+      "source_location": "L98",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_createinput",
       "community": 57,
       "norm_label": "createinput"
     },
     {
+      "label": "cloneInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L107",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_controller_test_cloneinput",
+      "community": 57,
+      "norm_label": "cloneinput"
+    },
+    {
       "label": "metadataUpdateInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L104",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_metadataupdateinput",
       "community": 57,
@@ -6317,7 +6337,7 @@
       "label": "definitionUpdateInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L110",
+      "source_location": "L119",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_definitionupdateinput",
       "community": 57,
@@ -6327,7 +6347,7 @@
       "label": "previewInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L116",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_previewinput",
       "community": 57,
@@ -6337,7 +6357,7 @@
       "label": "applyPreview",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L125",
+      "source_location": "L134",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_applypreview",
       "community": 57,
@@ -6347,7 +6367,7 @@
       "label": "applyResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L135",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_applyresult",
       "community": 57,
@@ -6357,7 +6377,7 @@
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
-      "source_location": "L468",
+      "source_location": "L512",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_test_createreadstore",
       "community": 57,
@@ -6377,7 +6397,7 @@
       "label": "uuidV4Pipe",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L40",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_uuidv4pipe",
       "community": 49,
@@ -6387,7 +6407,7 @@
       "label": "TaskSkillsController",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L45",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller",
       "community": 49,
@@ -6397,7 +6417,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L46",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_constructor",
       "community": 49,
@@ -6407,7 +6427,7 @@
       "label": ".listActiveTaskSkills()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L53",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_listactivetaskskills",
       "community": 58,
@@ -6417,17 +6437,27 @@
       "label": ".createTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L70",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_createtaskskill",
       "community": 49,
       "norm_label": ".createtaskskill()"
     },
     {
+      "label": ".cloneTaskSkill()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L94",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_controller_taskskillscontroller_clonetaskskill",
+      "community": 49,
+      "norm_label": ".clonetaskskill()"
+    },
+    {
       "label": ".getTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L86",
+      "source_location": "L111",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_gettaskskill",
       "community": 49,
@@ -6437,7 +6467,7 @@
       "label": ".archiveTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L105",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_archivetaskskill",
       "community": 49,
@@ -6447,7 +6477,7 @@
       "label": ".previewTaskSkillApply()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L123",
+      "source_location": "L148",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_previewtaskskillapply",
       "community": 71,
@@ -6457,7 +6487,7 @@
       "label": ".applyTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L145",
+      "source_location": "L170",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_applytaskskill",
       "community": 71,
@@ -6467,7 +6497,7 @@
       "label": ".updateTaskSkillDefinition()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L167",
+      "source_location": "L192",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_updatetaskskilldefinition",
       "community": 49,
@@ -6477,7 +6507,7 @@
       "label": ".updateTaskSkillMetadata()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
-      "source_location": "L194",
+      "source_location": "L219",
       "_origin": "ast",
       "id": "task_skills_task_skills_controller_taskskillscontroller_updatetaskskillmetadata",
       "community": 49,
@@ -6497,17 +6527,17 @@
       "label": "CreateTaskSkillDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L21",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_createtaskskilldto",
-      "community": 49,
+      "community": 54,
       "norm_label": "createtaskskilldto"
     },
     {
       "label": "ParseCreateTaskSkillBodyPipe",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe",
       "community": 54,
@@ -6517,9 +6547,39 @@
       "label": ".transform()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L36",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsecreatetaskskillbodypipe_transform",
+      "community": 54,
+      "norm_label": ".transform()"
+    },
+    {
+      "label": "CloneTaskSkillDto",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_clonetaskskilldto",
+      "community": 49,
+      "norm_label": "clonetaskskilldto"
+    },
+    {
+      "label": "ParseCloneTaskSkillBodyPipe",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_parseclonetaskskillbodypipe",
+      "community": 54,
+      "norm_label": "parseclonetaskskillbodypipe"
+    },
+    {
+      "label": ".transform()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_parseclonetaskskillbodypipe_transform",
       "community": 54,
       "norm_label": ".transform()"
     },
@@ -6527,17 +6587,17 @@
       "label": "UpdateTaskSkillMetadataDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L41",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_updatetaskskillmetadatadto",
-      "community": 71,
+      "community": 49,
       "norm_label": "updatetaskskillmetadatadto"
     },
     {
       "label": "ParseUpdateTaskSkillMetadataBodyPipe",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L52",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskillmetadatabodypipe",
       "community": 54,
@@ -6547,7 +6607,7 @@
       "label": ".transform()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L55",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskillmetadatabodypipe_transform",
       "community": 54,
@@ -6557,37 +6617,37 @@
       "label": "UpdateTaskSkillDefinitionDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L60",
+      "source_location": "L78",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_updatetaskskilldefinitiondto",
-      "community": 49,
+      "community": 54,
       "norm_label": "updatetaskskilldefinitiondto"
     },
     {
       "label": "ParseUpdateTaskSkillDefinitionBodyPipe",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L65",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskilldefinitionbodypipe",
-      "community": 54,
+      "community": 57,
       "norm_label": "parseupdatetaskskilldefinitionbodypipe"
     },
     {
       "label": ".transform()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L68",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskilldefinitionbodypipe_transform",
-      "community": 54,
+      "community": 57,
       "norm_label": ".transform()"
     },
     {
       "label": "PreviewTaskSkillApplyOverridesDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L73",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_previewtaskskillapplyoverridesdto",
       "community": 54,
@@ -6597,7 +6657,7 @@
       "label": "PreviewTaskSkillApplyDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L81",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_previewtaskskillapplydto",
       "community": 71,
@@ -6607,7 +6667,7 @@
       "label": "ParsePreviewTaskSkillApplyBodyPipe",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L92",
+      "source_location": "L110",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsepreviewtaskskillapplybodypipe",
       "community": 54,
@@ -6617,7 +6677,7 @@
       "label": ".transform()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L95",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsepreviewtaskskillapplybodypipe_transform",
       "community": 54,
@@ -6627,7 +6687,7 @@
       "label": "TaskSkillApplyPreviewSubtaskDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L100",
+      "source_location": "L118",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto",
       "community": 71,
@@ -6637,7 +6697,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L107",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewsubtaskdto_constructor",
       "community": 71,
@@ -6647,7 +6707,7 @@
       "label": "TaskSkillApplyPreviewDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L113",
+      "source_location": "L131",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewdto",
       "community": 71,
@@ -6657,7 +6717,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L135",
+      "source_location": "L153",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplypreviewdto_constructor",
       "community": 71,
@@ -6667,7 +6727,7 @@
       "label": "TaskSkillApplyResultDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L146",
+      "source_location": "L164",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplyresultdto",
       "community": 71,
@@ -6677,7 +6737,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L168",
+      "source_location": "L186",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillapplyresultdto_constructor",
       "community": 71,
@@ -6687,7 +6747,7 @@
       "label": "TaskSkillSummaryDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L179",
+      "source_location": "L197",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillsummarydto",
       "community": 58,
@@ -6697,7 +6757,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L207",
+      "source_location": "L225",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillsummarydto_constructor",
       "community": 58,
@@ -6707,17 +6767,27 @@
       "label": "parseCreateTaskSkillInput()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L220",
+      "source_location": "L238",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsecreatetaskskillinput",
       "community": 54,
       "norm_label": "parsecreatetaskskillinput()"
     },
     {
+      "label": "parseCloneTaskSkillInput()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L263",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_dto_parseclonetaskskillinput",
+      "community": 54,
+      "norm_label": "parseclonetaskskillinput()"
+    },
+    {
       "label": "parseUpdateTaskSkillMetadataInput()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L245",
+      "source_location": "L286",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskillmetadatainput",
       "community": 54,
@@ -6727,7 +6797,7 @@
       "label": "parseUpdateTaskSkillDefinitionInput()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L279",
+      "source_location": "L320",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parseupdatetaskskilldefinitioninput",
       "community": 54,
@@ -6737,7 +6807,7 @@
       "label": "parsePreviewTaskSkillApplyInput()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L289",
+      "source_location": "L330",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_parsepreviewtaskskillapplyinput",
       "community": 54,
@@ -6747,7 +6817,7 @@
       "label": "isUnknownRecord()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L309",
+      "source_location": "L350",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_isunknownrecord",
       "community": 54,
@@ -6757,7 +6827,7 @@
       "label": "readRequiredUuid()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L313",
+      "source_location": "L354",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_readrequireduuid",
       "community": 54,
@@ -6767,7 +6837,7 @@
       "label": "readRequiredNonEmptyString()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L323",
+      "source_location": "L364",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_readrequirednonemptystring",
       "community": 54,
@@ -6777,7 +6847,7 @@
       "label": "readOptionalNullableString()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L339",
+      "source_location": "L380",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_readoptionalnullablestring",
       "community": 54,
@@ -6787,7 +6857,7 @@
       "label": "readOptionalStringArray()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L358",
+      "source_location": "L399",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_readoptionalstringarray",
       "community": 54,
@@ -6797,7 +6867,7 @@
       "label": "readOptionalPreviewOverrides()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L389",
+      "source_location": "L430",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_readoptionalpreviewoverrides",
       "community": 54,
@@ -6807,7 +6877,7 @@
       "label": "readRequiredDefinition()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L418",
+      "source_location": "L459",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_readrequireddefinition",
       "community": 54,
@@ -6817,27 +6887,27 @@
       "label": "TaskSkillVersionSummaryDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L449",
+      "source_location": "L490",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto",
-      "community": 71,
+      "community": 54,
       "norm_label": "taskskillversionsummarydto"
     },
     {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L471",
+      "source_location": "L512",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskillversionsummarydto_constructor",
-      "community": 71,
+      "community": 54,
       "norm_label": ".constructor()"
     },
     {
       "label": "TaskSkillDetailDto",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L482",
+      "source_location": "L523",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskilldetaildto",
       "community": 49,
@@ -6847,7 +6917,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
-      "source_location": "L486",
+      "source_location": "L527",
       "_origin": "ast",
       "id": "task_skills_task_skills_dto_taskskilldetaildto_constructor",
       "community": 68,
@@ -6897,7 +6967,7 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L34",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_createdat",
       "community": 58,
@@ -6907,7 +6977,7 @@
       "label": "updatedAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L35",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_updatedat",
       "community": 58,
@@ -6917,7 +6987,7 @@
       "label": "archivedAt",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L36",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_archivedat",
       "community": 58,
@@ -6927,7 +6997,7 @@
       "label": "taskSkill",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L38",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_taskskill",
       "community": 58,
@@ -6937,7 +7007,7 @@
       "label": "taskSkillDetail",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L50",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_taskskilldetail",
       "community": 58,
@@ -6947,7 +7017,7 @@
       "label": "taskSkillDetailWithNewVersion",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L67",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_taskskilldetailwithnewversion",
       "community": 58,
@@ -6957,7 +7027,7 @@
       "label": "archivedTaskSkillDetail",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L85",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_archivedtaskskilldetail",
       "community": 58,
@@ -6967,17 +7037,27 @@
       "label": "createInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L90",
+      "source_location": "L92",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_createinput",
       "community": 58,
       "norm_label": "createinput"
     },
     {
+      "label": "cloneInput",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L101",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_service_test_cloneinput",
+      "community": 58,
+      "norm_label": "cloneinput"
+    },
+    {
       "label": "metadataUpdateInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L99",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_metadataupdateinput",
       "community": 58,
@@ -6987,7 +7067,7 @@
       "label": "definitionUpdateInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L105",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_definitionupdateinput",
       "community": 58,
@@ -6997,7 +7077,7 @@
       "label": "previewInput",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L111",
+      "source_location": "L119",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_previewinput",
       "community": 58,
@@ -7007,7 +7087,7 @@
       "label": "applyPreview",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L120",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_applypreview",
       "community": 58,
@@ -7017,7 +7097,7 @@
       "label": "applyResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L130",
+      "source_location": "L138",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_applyresult",
       "community": 58,
@@ -7027,7 +7107,7 @@
       "label": "createReadStore()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
-      "source_location": "L498",
+      "source_location": "L554",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_test_createreadstore",
       "community": 58,
@@ -7047,7 +7127,7 @@
       "label": "TaskSkillsService",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L22",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice",
       "community": 49,
@@ -7057,7 +7137,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L23",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_constructor",
       "community": 49,
@@ -7067,7 +7147,7 @@
       "label": ".listActiveTaskSkills()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L25",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_listactivetaskskills",
       "community": 58,
@@ -7077,7 +7157,7 @@
       "label": ".getTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_gettaskskill",
       "community": 49,
@@ -7087,17 +7167,27 @@
       "label": ".createTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L49",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_createtaskskill",
       "community": 49,
       "norm_label": ".createtaskskill()"
     },
     {
+      "label": ".cloneTaskSkill()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L72",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_service_taskskillsservice_clonetaskskill",
+      "community": 49,
+      "norm_label": ".clonetaskskill()"
+    },
+    {
       "label": ".updateTaskSkillMetadata()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L71",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_updatetaskskillmetadata",
       "community": 49,
@@ -7107,7 +7197,7 @@
       "label": ".updateTaskSkillDefinition()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L103",
+      "source_location": "L131",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_updatetaskskilldefinition",
       "community": 49,
@@ -7117,7 +7207,7 @@
       "label": ".archiveTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L131",
+      "source_location": "L159",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_archivetaskskill",
       "community": 49,
@@ -7127,7 +7217,7 @@
       "label": ".previewTaskSkillApply()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L153",
+      "source_location": "L181",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_previewtaskskillapply",
       "community": 71,
@@ -7137,7 +7227,7 @@
       "label": ".applyTaskSkill()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.service.ts",
-      "source_location": "L177",
+      "source_location": "L205",
       "_origin": "ast",
       "id": "task_skills_task_skills_service_taskskillsservice_applytaskskill",
       "community": 71,
@@ -7157,17 +7247,27 @@
       "label": "TaskSkillCreateResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillcreateresult",
       "community": 68,
       "norm_label": "taskskillcreateresult"
     },
     {
+      "label": "TaskSkillCloneResult",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/task-skills.store.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "task_skills_task_skills_store_taskskillcloneresult",
+      "community": 68,
+      "norm_label": "taskskillcloneresult"
+    },
+    {
       "label": "TaskSkillMetadataUpdateResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L27",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillmetadataupdateresult",
       "community": 68,
@@ -7177,7 +7277,7 @@
       "label": "TaskSkillDefinitionUpdateResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L45",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskilldefinitionupdateresult",
       "community": 68,
@@ -7187,7 +7287,7 @@
       "label": "TaskSkillArchiveResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L60",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillarchiveresult",
       "community": 68,
@@ -7197,7 +7297,7 @@
       "label": "TaskSkillApplyPreviewResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L75",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillapplypreviewresult",
       "community": 68,
@@ -7207,7 +7307,7 @@
       "label": "TaskSkillApplyForWorkspaceResult",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L87",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillapplyforworkspaceresult",
       "community": 68,
@@ -7217,7 +7317,7 @@
       "label": "TaskSkillsReadStore",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
-      "source_location": "L102",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "task_skills_task_skills_store_taskskillsreadstore",
       "community": 49,
@@ -7237,7 +7337,7 @@
       "label": "taskSkillWriteRoles",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L38",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_taskskillwriteroles",
       "community": 68,
@@ -7247,7 +7347,7 @@
       "label": "TypeOrmTaskSkillsReadStore",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L41",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore",
       "community": 68,
@@ -7257,7 +7357,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L44",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_constructor",
       "community": 46,
@@ -7267,7 +7367,7 @@
       "label": ".listActiveForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L46",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_listactiveforworkspace",
       "community": 68,
@@ -7277,7 +7377,7 @@
       "label": ".getActiveForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L68",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getactiveforworkspace",
       "community": 68,
@@ -7287,17 +7387,27 @@
       "label": ".createForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L104",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
       "community": 68,
       "norm_label": ".createforworkspace()"
     },
     {
+      "label": ".cloneForWorkspace()",
+      "file_type": "code",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L176",
+      "_origin": "ast",
+      "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_cloneforworkspace",
+      "community": 68,
+      "norm_label": ".cloneforworkspace()"
+    },
+    {
       "label": ".updateMetadataForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L174",
+      "source_location": "L270",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_updatemetadataforworkspace",
       "community": 68,
@@ -7307,7 +7417,7 @@
       "label": ".updateDefinitionForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L276",
+      "source_location": "L372",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_updatedefinitionforworkspace",
       "community": 68,
@@ -7317,7 +7427,7 @@
       "label": ".archiveForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L355",
+      "source_location": "L451",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_archiveforworkspace",
       "community": 68,
@@ -7327,7 +7437,7 @@
       "label": ".previewApplyForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L422",
+      "source_location": "L518",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_previewapplyforworkspace",
       "community": 68,
@@ -7337,7 +7447,7 @@
       "label": ".applyForWorkspace()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L486",
+      "source_location": "L582",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_applyforworkspace",
       "community": 68,
@@ -7347,7 +7457,7 @@
       "label": ".getInitializedDataSource()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L608",
+      "source_location": "L704",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getinitializeddatasource",
       "community": 68,
@@ -7357,7 +7467,7 @@
       "label": "toTaskSkillSummary()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L630",
+      "source_location": "L726",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_totaskskillsummary",
       "community": 68,
@@ -7367,7 +7477,7 @@
       "label": "toTaskSkillVersionSummary()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L644",
+      "source_location": "L740",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_totaskskillversionsummary",
       "community": 68,
@@ -7377,7 +7487,7 @@
       "label": "readDefinitionSubtaskTitles()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L656",
+      "source_location": "L752",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_readdefinitionsubtasktitles",
       "community": 68,
@@ -7387,7 +7497,7 @@
       "label": "isUnknownRecord()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L688",
+      "source_location": "L784",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_isunknownrecord",
       "community": 68,
@@ -7397,7 +7507,7 @@
       "label": "buildApplySubtasks()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L692",
+      "source_location": "L788",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_buildapplysubtasks",
       "community": 68,
@@ -7407,7 +7517,7 @@
       "label": "toTaskDetail()",
       "file_type": "code",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
-      "source_location": "L715",
+      "source_location": "L811",
       "_origin": "ast",
       "id": "task_skills_typeorm_task_skills_read_store_totaskdetail",
       "community": 68,
@@ -9030,7 +9140,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "workspaces_workspaces_module_workspacesmodule",
-      "community": 77,
+      "community": 2,
       "norm_label": "workspacesmodule"
     },
     {
@@ -9510,7 +9620,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_attachment_tools",
-      "community": 84,
+      "community": 66,
       "norm_label": "attachment-tools.ts"
     },
     {
@@ -9520,7 +9630,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmentlisttoolinput",
-      "community": 84,
+      "community": 66,
       "norm_label": "attachmentlisttoolinput"
     },
     {
@@ -9530,7 +9640,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmentcreatelinktoolinput",
-      "community": 84,
+      "community": 66,
       "norm_label": "attachmentcreatelinktoolinput"
     },
     {
@@ -9540,7 +9650,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmenttoolhandlers",
-      "community": 84,
+      "community": 66,
       "norm_label": "attachmenttoolhandlers"
     },
     {
@@ -9550,7 +9660,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmenttoolinputerror",
-      "community": 84,
+      "community": 66,
       "norm_label": "attachmenttoolinputerror"
     },
     {
@@ -9560,7 +9670,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_attachment_tools_attachmenttoolinputerror_constructor",
-      "community": 84,
+      "community": 66,
       "norm_label": ".constructor()"
     },
     {
@@ -9570,7 +9680,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_attachment_tools_createattachmenttoolhandlers",
-      "community": 84,
+      "community": 66,
       "norm_label": "createattachmenttoolhandlers()"
     },
     {
@@ -9580,7 +9690,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_attachment_tools_parseattachmentcreatelinktoolinput",
-      "community": 84,
+      "community": 66,
       "norm_label": "parseattachmentcreatelinktoolinput()"
     },
     {
@@ -9590,7 +9700,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_attachment_tools_parseattachmentlisttoolinput",
-      "community": 84,
+      "community": 66,
       "norm_label": "parseattachmentlisttoolinput()"
     },
     {
@@ -9600,7 +9710,7 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_attachment_tools_tocreatetasklinkattachmentinput",
-      "community": 84,
+      "community": 66,
       "norm_label": "tocreatetasklinkattachmentinput()"
     },
     {
@@ -9610,7 +9720,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_attachment_tools_readrecord",
-      "community": 84,
+      "community": 66,
       "norm_label": "readrecord()"
     },
     {
@@ -9620,7 +9730,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "src_attachment_tools_isunknownrecord",
-      "community": 84,
+      "community": 66,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -9630,7 +9740,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "src_attachment_tools_readrequireduuid",
-      "community": 84,
+      "community": 66,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -9640,7 +9750,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_attachment_tools_readrequiredurl",
-      "community": 84,
+      "community": 66,
       "norm_label": "readrequiredurl()"
     },
     {
@@ -9650,7 +9760,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "src_attachment_tools_readoptionalnullablestring",
-      "community": 84,
+      "community": 66,
       "norm_label": "readoptionalnullablestring()"
     },
     {
@@ -10190,7 +10300,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 78,
+      "community": 84,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
@@ -10260,7 +10370,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_backend_client_updatetaskskilldefinitioninput",
-      "community": 61,
+      "community": 56,
       "norm_label": "updatetaskskilldefinitioninput"
     },
     {
@@ -10280,7 +10390,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_backend_client_workspacesummaryresponse",
-      "community": 90,
+      "community": 120,
       "norm_label": "workspacesummaryresponse"
     },
     {
@@ -10360,7 +10470,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_backend_client_taskskillsummaryresponse",
-      "community": 56,
+      "community": 90,
       "norm_label": "taskskillsummaryresponse"
     },
     {
@@ -10390,7 +10500,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_backend_client_createtasklinkattachmentinput",
-      "community": 84,
+      "community": 66,
       "norm_label": "createtasklinkattachmentinput"
     },
     {
@@ -10400,7 +10510,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_backend_client_createprojectinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "createprojectinput"
     },
     {
@@ -10560,7 +10670,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "src_backend_client_taskbackendfetch",
-      "community": 65,
+      "community": 91,
       "norm_label": "taskbackendfetch"
     },
     {
@@ -10640,7 +10750,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "src_backend_client_listworkspacestatusesrequest",
-      "community": 56,
+      "community": 61,
       "norm_label": "listworkspacestatusesrequest"
     },
     {
@@ -10900,7 +11010,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "src_backend_client_createtaskbackendclient",
-      "community": 65,
+      "community": 91,
       "norm_label": "createtaskbackendclient()"
     },
     {
@@ -10970,7 +11080,7 @@
       "source_location": "L805",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "community": 65,
+      "community": 91,
       "norm_label": "normalizebaseurl()"
     },
     {
@@ -10990,7 +11100,7 @@
       "source_location": "L823",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskskillspath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildtaskskillspath()"
     },
     {
@@ -11000,7 +11110,7 @@
       "source_location": "L827",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskskillpath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildtaskskillpath()"
     },
     {
@@ -11010,7 +11120,7 @@
       "source_location": "L831",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskskilldefinitionpath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildtaskskilldefinitionpath()"
     },
     {
@@ -11020,7 +11130,7 @@
       "source_location": "L835",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacespath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspacespath()"
     },
     {
@@ -11030,7 +11140,7 @@
       "source_location": "L839",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacepath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspacepath()"
     },
     {
@@ -11040,7 +11150,7 @@
       "source_location": "L843",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacememberspath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspacememberspath()"
     },
     {
@@ -11050,7 +11160,7 @@
       "source_location": "L847",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectspath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildworkspaceprojectspath()"
     },
     {
@@ -11060,7 +11170,7 @@
       "source_location": "L851",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspacestatusespath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspacestatusespath()"
     },
     {
@@ -11070,7 +11180,7 @@
       "source_location": "L855",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceconfirmationspath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspaceconfirmationspath()"
     },
     {
@@ -11080,7 +11190,7 @@
       "source_location": "L859",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceconfirmationpath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspaceconfirmationpath()"
     },
     {
@@ -11090,7 +11200,7 @@
       "source_location": "L866",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceconfirmationcancelpath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspaceconfirmationcancelpath()"
     },
     {
@@ -11100,7 +11210,7 @@
       "source_location": "L873",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceconfirmationconfirmpath",
-      "community": 110,
+      "community": 61,
       "norm_label": "buildworkspaceconfirmationconfirmpath()"
     },
     {
@@ -11110,7 +11220,7 @@
       "source_location": "L880",
       "_origin": "ast",
       "id": "src_backend_client_buildworkspaceprojectpath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildworkspaceprojectpath()"
     },
     {
@@ -11120,7 +11230,7 @@
       "source_location": "L884",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskspath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildprojecttaskspath()"
     },
     {
@@ -11130,7 +11240,7 @@
       "source_location": "L888",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskpath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildprojecttaskpath()"
     },
     {
@@ -11140,7 +11250,7 @@
       "source_location": "L892",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskstatuspath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildprojecttaskstatuspath()"
     },
     {
@@ -11150,7 +11260,7 @@
       "source_location": "L900",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskassigneepath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildprojecttaskassigneepath()"
     },
     {
@@ -11160,7 +11270,7 @@
       "source_location": "L908",
       "_origin": "ast",
       "id": "src_backend_client_buildprojecttaskduedatepath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildprojecttaskduedatepath()"
     },
     {
@@ -11170,7 +11280,7 @@
       "source_location": "L916",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskcommentspath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildtaskcommentspath()"
     },
     {
@@ -11180,7 +11290,7 @@
       "source_location": "L920",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskattachmentspath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildtaskattachmentspath()"
     },
     {
@@ -11190,7 +11300,7 @@
       "source_location": "L924",
       "_origin": "ast",
       "id": "src_backend_client_buildtaskattachmentlinkspath",
-      "community": 112,
+      "community": 61,
       "norm_label": "buildtaskattachmentlinkspath()"
     },
     {
@@ -11290,7 +11400,7 @@
       "source_location": "L1004",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacesummary",
-      "community": 92,
+      "community": 61,
       "norm_label": "readworkspacesummary()"
     },
     {
@@ -11300,7 +11410,7 @@
       "source_location": "L1016",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacedetail",
-      "community": 92,
+      "community": 61,
       "norm_label": "readworkspacedetail()"
     },
     {
@@ -11310,7 +11420,7 @@
       "source_location": "L1025",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacemember",
-      "community": 92,
+      "community": 61,
       "norm_label": "readworkspacemember()"
     },
     {
@@ -11320,7 +11430,7 @@
       "source_location": "L1046",
       "_origin": "ast",
       "id": "src_backend_client_readworkspacestatus",
-      "community": 92,
+      "community": 61,
       "norm_label": "readworkspacestatus()"
     },
     {
@@ -11330,7 +11440,7 @@
       "source_location": "L1061",
       "_origin": "ast",
       "id": "src_backend_client_readtaskskillsummary",
-      "community": 92,
+      "community": 61,
       "norm_label": "readtaskskillsummary()"
     },
     {
@@ -11340,7 +11450,7 @@
       "source_location": "L1077",
       "_origin": "ast",
       "id": "src_backend_client_readtaskskilldetail",
-      "community": 92,
+      "community": 61,
       "norm_label": "readtaskskilldetail()"
     },
     {
@@ -11350,7 +11460,7 @@
       "source_location": "L1086",
       "_origin": "ast",
       "id": "src_backend_client_readtaskskillversionsummary",
-      "community": 92,
+      "community": 61,
       "norm_label": "readtaskskillversionsummary()"
     },
     {
@@ -11360,7 +11470,7 @@
       "source_location": "L1100",
       "_origin": "ast",
       "id": "src_backend_client_readconfirmationrequestsummary",
-      "community": 92,
+      "community": 61,
       "norm_label": "readconfirmationrequestsummary()"
     },
     {
@@ -11370,7 +11480,7 @@
       "source_location": "L1127",
       "_origin": "ast",
       "id": "src_backend_client_readconfirmationrequestdetail",
-      "community": 92,
+      "community": 61,
       "norm_label": "readconfirmationrequestdetail()"
     },
     {
@@ -11380,7 +11490,7 @@
       "source_location": "L1131",
       "_origin": "ast",
       "id": "src_backend_client_readtaskcomment",
-      "community": 92,
+      "community": 61,
       "norm_label": "readtaskcomment()"
     },
     {
@@ -11390,7 +11500,7 @@
       "source_location": "L1145",
       "_origin": "ast",
       "id": "src_backend_client_readtaskattachment",
-      "community": 122,
+      "community": 61,
       "norm_label": "readtaskattachment()"
     },
     {
@@ -11400,7 +11510,7 @@
       "source_location": "L1192",
       "_origin": "ast",
       "id": "src_backend_client_readattachmenttargettype",
-      "community": 122,
+      "community": 61,
       "norm_label": "readattachmenttargettype()"
     },
     {
@@ -11410,7 +11520,7 @@
       "source_location": "L1200",
       "_origin": "ast",
       "id": "src_backend_client_readattachmentkind",
-      "community": 122,
+      "community": 61,
       "norm_label": "readattachmentkind()"
     },
     {
@@ -11420,7 +11530,7 @@
       "source_location": "L1208",
       "_origin": "ast",
       "id": "src_backend_client_readprojectdetail",
-      "community": 92,
+      "community": 61,
       "norm_label": "readprojectdetail()"
     },
     {
@@ -11430,7 +11540,7 @@
       "source_location": "L1242",
       "_origin": "ast",
       "id": "src_backend_client_readprojectsummary",
-      "community": 92,
+      "community": 61,
       "norm_label": "readprojectsummary()"
     },
     {
@@ -11440,7 +11550,7 @@
       "source_location": "L1276",
       "_origin": "ast",
       "id": "src_backend_client_readtasksummary",
-      "community": 92,
+      "community": 61,
       "norm_label": "readtasksummary()"
     },
     {
@@ -11450,7 +11560,7 @@
       "source_location": "L1280",
       "_origin": "ast",
       "id": "src_backend_client_readpreviewtaskskillapplyresponse",
-      "community": 92,
+      "community": 61,
       "norm_label": "readpreviewtaskskillapplyresponse()"
     },
     {
@@ -11460,7 +11570,7 @@
       "source_location": "L1294",
       "_origin": "ast",
       "id": "src_backend_client_readapplytaskskillresponse",
-      "community": 92,
+      "community": 61,
       "norm_label": "readapplytaskskillresponse()"
     },
     {
@@ -11470,7 +11580,7 @@
       "source_location": "L1308",
       "_origin": "ast",
       "id": "src_backend_client_readtaskskillapplypreviewsubtask",
-      "community": 92,
+      "community": 61,
       "norm_label": "readtaskskillapplypreviewsubtask()"
     },
     {
@@ -11480,7 +11590,7 @@
       "source_location": "L1322",
       "_origin": "ast",
       "id": "src_backend_client_readtaskdetail",
-      "community": 92,
+      "community": 61,
       "norm_label": "readtaskdetail()"
     },
     {
@@ -11490,7 +11600,7 @@
       "source_location": "L1379",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_readrecord",
-      "community": 92,
+      "community": 61,
       "norm_label": "readrecord()"
     },
     {
@@ -11500,7 +11610,7 @@
       "source_location": "L1387",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_isunknownrecord",
-      "community": 92,
+      "community": 61,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -11510,7 +11620,7 @@
       "source_location": "L1391",
       "_origin": "ast",
       "id": "src_backend_client_readproperty",
-      "community": 92,
+      "community": 61,
       "norm_label": "readproperty()"
     },
     {
@@ -11520,7 +11630,7 @@
       "source_location": "L1395",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_readstring",
-      "community": 92,
+      "community": 61,
       "norm_label": "readstring()"
     },
     {
@@ -11540,7 +11650,7 @@
       "source_location": "L1413",
       "_origin": "ast",
       "id": "src_backend_client_readnumber",
-      "community": 92,
+      "community": 61,
       "norm_label": "readnumber()"
     },
     {
@@ -11550,7 +11660,7 @@
       "source_location": "L1423",
       "_origin": "ast",
       "id": "src_backend_client_readboolean",
-      "community": 92,
+      "community": 61,
       "norm_label": "readboolean()"
     },
     {
@@ -11560,7 +11670,7 @@
       "source_location": "L1433",
       "_origin": "ast",
       "id": "src_backend_client_readarray",
-      "community": 92,
+      "community": 61,
       "norm_label": "readarray()"
     },
     {
@@ -11570,7 +11680,7 @@
       "source_location": "L1443",
       "_origin": "ast",
       "id": "apps_mcp_server_src_backend_client_ts_src_backend_client_readoptionalnullablestring",
-      "community": 92,
+      "community": 61,
       "norm_label": "readoptionalnullablestring()"
     },
     {
@@ -11670,7 +11780,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_comment_tools_createcommenttoolhandlers",
-      "community": 84,
+      "community": 76,
       "norm_label": "createcommenttoolhandlers()"
     },
     {
@@ -11770,7 +11880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_taskmcpenvironment",
-      "community": 65,
+      "community": 91,
       "norm_label": "taskmcpenvironment"
     },
     {
@@ -12130,7 +12240,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_main_ts_src_main",
-      "community": 65,
+      "community": 91,
       "norm_label": "main.ts"
     },
     {
@@ -13020,7 +13130,7 @@
       "source_location": "L658",
       "_origin": "ast",
       "id": "src_mcp_server_connecttaskmcpservertostdio",
-      "community": 65,
+      "community": 91,
       "norm_label": "connecttaskmcpservertostdio()"
     },
     {
@@ -13090,7 +13200,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_project_tools",
-      "community": 70,
+      "community": 84,
       "norm_label": "project-tools.ts"
     },
     {
@@ -13100,7 +13210,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_project_tools_projectsearchtoolinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "projectsearchtoolinput"
     },
     {
@@ -13110,7 +13220,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_project_tools_projectgettoolinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "projectgettoolinput"
     },
     {
@@ -13120,7 +13230,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_project_tools_projectcreatetoolinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "projectcreatetoolinput"
     },
     {
@@ -13130,7 +13240,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_project_tools_projecttoolhandlers",
-      "community": 70,
+      "community": 84,
       "norm_label": "projecttoolhandlers"
     },
     {
@@ -13140,7 +13250,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_project_tools_projecttoolinputerror",
-      "community": 70,
+      "community": 84,
       "norm_label": "projecttoolinputerror"
     },
     {
@@ -13150,7 +13260,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_project_tools_projecttoolinputerror_constructor",
-      "community": 70,
+      "community": 84,
       "norm_label": ".constructor()"
     },
     {
@@ -13160,7 +13270,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_project_tools_createprojecttoolhandlers",
-      "community": 70,
+      "community": 84,
       "norm_label": "createprojecttoolhandlers()"
     },
     {
@@ -13170,7 +13280,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "src_project_tools_parseprojectcreatetoolinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "parseprojectcreatetoolinput()"
     },
     {
@@ -13180,7 +13290,7 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "src_project_tools_parseprojectgettoolinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "parseprojectgettoolinput()"
     },
     {
@@ -13190,7 +13300,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "src_project_tools_tocreateprojectinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "tocreateprojectinput()"
     },
     {
@@ -13200,7 +13310,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "src_project_tools_parseprojectsearchtoolinput",
-      "community": 70,
+      "community": 84,
       "norm_label": "parseprojectsearchtoolinput()"
     },
     {
@@ -13210,7 +13320,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "src_project_tools_normalizesearchtext",
-      "community": 70,
+      "community": 84,
       "norm_label": "normalizesearchtext()"
     },
     {
@@ -13220,7 +13330,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "src_project_tools_readrecord",
-      "community": 70,
+      "community": 84,
       "norm_label": "readrecord()"
     },
     {
@@ -13230,7 +13340,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "src_project_tools_isunknownrecord",
-      "community": 70,
+      "community": 84,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -13240,7 +13350,7 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "src_project_tools_readrequireduuid",
-      "community": 70,
+      "community": 84,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -13250,7 +13360,7 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "src_project_tools_readrequirednonemptystring",
-      "community": 70,
+      "community": 84,
       "norm_label": "readrequirednonemptystring()"
     },
     {
@@ -13260,7 +13370,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "src_project_tools_readoptionalnonemptystring",
-      "community": 70,
+      "community": 84,
       "norm_label": "readoptionalnonemptystring()"
     },
     {
@@ -13270,7 +13380,7 @@
       "source_location": "L210",
       "_origin": "ast",
       "id": "src_project_tools_readoptionalnullablenonemptystring",
-      "community": 70,
+      "community": 84,
       "norm_label": "readoptionalnullablenonemptystring()"
     },
     {
@@ -13410,7 +13520,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_mcp_server_src_runtime_ts_src_runtime",
-      "community": 65,
+      "community": 91,
       "norm_label": "runtime.ts"
     },
     {
@@ -13420,7 +13530,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_runtime_taskmcpserverconnector",
-      "community": 65,
+      "community": 91,
       "norm_label": "taskmcpserverconnector"
     },
     {
@@ -13430,7 +13540,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserveroptions",
-      "community": 65,
+      "community": 91,
       "norm_label": "runtaskmcpserveroptions"
     },
     {
@@ -13440,7 +13550,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_runtime_runtaskmcpserverfromenvironment",
-      "community": 65,
+      "community": 91,
       "norm_label": "runtaskmcpserverfromenvironment()"
     },
     {
@@ -13740,7 +13850,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_task_skill_tools_taskskilltoolhandlers",
-      "community": 69,
+      "community": 56,
       "norm_label": "taskskilltoolhandlers"
     },
     {
@@ -13770,7 +13880,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_task_skill_tools_createtaskskilltoolhandlers",
-      "community": 69,
+      "community": 56,
       "norm_label": "createtaskskilltoolhandlers()"
     },
     {
@@ -14810,7 +14920,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test",
-      "community": 85,
+      "community": 67,
       "norm_label": "backend-client.test.ts"
     },
     {
@@ -14820,7 +14930,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_test_ts_src_backend_client_test_requestbody",
-      "community": 85,
+      "community": 67,
       "norm_label": "requestbody"
     },
     {
@@ -14830,7 +14940,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_backend_client_test_agentrunrequestbody",
-      "community": 85,
+      "community": 67,
       "norm_label": "agentrunrequestbody"
     },
     {
@@ -14840,7 +14950,7 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "src_backend_client_test_recordingtelegrambackendfetch",
-      "community": 85,
+      "community": 67,
       "norm_label": "recordingtelegrambackendfetch"
     },
     {
@@ -14850,7 +14960,7 @@
       "source_location": "L186",
       "_origin": "ast",
       "id": "src_backend_client_test_recordingtelegrambackendfetch_constructor",
-      "community": 85,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -14860,7 +14970,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "src_backend_client_test_recordingtelegrambackendfetch_call",
-      "community": 85,
+      "community": 67,
       "norm_label": ".call()"
     },
     {
@@ -14940,7 +15050,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendfetchinit",
-      "community": 85,
+      "community": 67,
       "norm_label": "telegrambackendfetchinit"
     },
     {
@@ -14970,7 +15080,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_backend_client_telegrambackendfetch",
-      "community": 85,
+      "community": 67,
       "norm_label": "telegrambackendfetch"
     },
     {
@@ -15530,7 +15640,7 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "src_runtime_test_recordingtelegrambackendfetch",
-      "community": 85,
+      "community": 67,
       "norm_label": "recordingtelegrambackendfetch"
     },
     {
@@ -15540,7 +15650,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "src_runtime_test_recordingtelegrambackendfetch_constructor",
-      "community": 85,
+      "community": 67,
       "norm_label": ".constructor()"
     },
     {
@@ -15550,7 +15660,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "src_runtime_test_recordingtelegrambackendfetch_call",
-      "community": 85,
+      "community": 67,
       "norm_label": ".call()"
     },
     {
@@ -20497,7 +20607,7 @@
       "label": "webhooks",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L491",
+      "source_location": "L508",
       "_origin": "ast",
       "id": "generated_openapi_webhooks",
       "community": 108,
@@ -20507,7 +20617,7 @@
       "label": "components",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L492",
+      "source_location": "L509",
       "_origin": "ast",
       "id": "generated_openapi_components",
       "community": 79,
@@ -20517,7 +20627,7 @@
       "label": "$defs",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L1022",
+      "source_location": "L1045",
       "_origin": "ast",
       "id": "generated_openapi_defs",
       "community": 108,
@@ -20527,7 +20637,7 @@
       "label": "operations",
       "file_type": "code",
       "source_file": "packages/api-client/src/generated/openapi.ts",
-      "source_location": "L1023",
+      "source_location": "L1046",
       "_origin": "ast",
       "id": "generated_openapi_operations",
       "community": 108,
@@ -22589,7 +22699,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "graphify_skill",
+      "id": "users_alexander_documents_task_codex_skills_graphify_skill_md",
       "community": 4,
       "norm_label": "skill.md"
     },
@@ -22829,7 +22939,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_add_watch",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
       "community": 11,
       "norm_label": "add-watch.md"
     },
@@ -22869,7 +22979,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_exports",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
       "community": 7,
       "norm_label": "exports.md"
     },
@@ -22959,7 +23069,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_extraction_spec",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
       "community": 16,
       "norm_label": "extraction-spec.md"
     },
@@ -22979,7 +23089,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_github_and_merge",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
       "community": 14,
       "norm_label": "github-and-merge.md"
     },
@@ -23009,7 +23119,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_hooks",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
       "community": 12,
       "norm_label": "hooks.md"
     },
@@ -23049,7 +23159,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_query",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
       "community": 9,
       "norm_label": "query.md"
     },
@@ -23109,7 +23219,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_transcribe",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
       "community": 15,
       "norm_label": "transcribe.md"
     },
@@ -23139,7 +23249,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "references_update",
+      "id": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
       "community": 13,
       "norm_label": "update.md"
     },
@@ -23172,66 +23282,6 @@
       "id": "references_update_for_cluster_only",
       "community": 13,
       "norm_label": "for --cluster-only"
-    },
-    {
-      "label": "memory_maintenance.md",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance",
-      "community": 66,
-      "norm_label": "memory_maintenance.md"
-    },
-    {
-      "label": "Memory Maintenance",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_memory_maintenance",
-      "community": 66,
-      "norm_label": "memory maintenance"
-    },
-    {
-      "label": "Discovery Model",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_discovery_model",
-      "community": 66,
-      "norm_label": "discovery model"
-    },
-    {
-      "label": "Style",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L19",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_style",
-      "community": 66,
-      "norm_label": "style"
-    },
-    {
-      "label": "Add/update threshold",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L25",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_add_update_threshold",
-      "community": 66,
-      "norm_label": "add/update threshold"
-    },
-    {
-      "label": "Maintenance Actions",
-      "file_type": "document",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L30",
-      "_origin": "ast",
-      "id": "memories_memory_maintenance_maintenance_actions",
-      "community": 66,
-      "norm_label": "maintenance actions"
     },
     {
       "label": "AGENTS.md",
@@ -23389,7 +23439,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_readme",
+      "id": "users_alexander_documents_task_docs_readme_md",
       "community": 10,
       "norm_label": "readme.md"
     },
@@ -23429,7 +23479,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_agent_mcp_design",
+      "id": "users_alexander_documents_task_docs_agent_mcp_design_md",
       "community": 5,
       "norm_label": "agent-mcp-design.md"
     },
@@ -23629,7 +23679,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_data_model",
+      "id": "users_alexander_documents_task_docs_data_model_md",
       "community": 0,
       "norm_label": "data-model.md"
     },
@@ -23849,7 +23899,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_product_model",
+      "id": "users_alexander_documents_task_docs_product_model_md",
       "community": 3,
       "norm_label": "product-model.md"
     },
@@ -42214,6 +42264,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_contracts",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.contracts.ts",
       "source_location": "L27",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -42780,6 +42840,138 @@
       "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
       "target": "task_skills_task_skills_contracts_createtaskskillinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_taskskillscontroller_clonetaskskill",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "context": "type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_clonetaskskilldto",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parseclonetaskskillbodypipe_transform",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_taskskillsservice_clonetaskskill",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_test",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.store.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_store",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_cloneforworkspace",
+      "target": "task_skills_task_skills_contracts_clonetaskskillinput",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -43518,6 +43710,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_controller_test_cloneinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -43614,6 +43816,17 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_controller_test",
       "target": "task_skills_task_skills_dto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_dto_parseclonetaskskillbodypipe",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -43730,6 +43943,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_test",
+      "target": "task_skills_task_skills_store_taskskillcloneresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.test.ts",
       "source_location": "L12",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -43805,11 +44029,33 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller",
+      "target": "task_skills_task_skills_dto_clonetaskskilldto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
       "source_location": "L18",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_controller",
       "target": "task_skills_task_skills_dto_createtaskskilldto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller",
+      "target": "task_skills_task_skills_dto_parseclonetaskskillbodypipe",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -43989,6 +44235,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_taskskillscontroller",
+      "target": "task_skills_task_skills_controller_taskskillscontroller_clonetaskskill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
       "source_location": "L23",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -44104,6 +44360,17 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_controller_taskskillscontroller_clonetaskskill",
+      "target": "task_skills_task_skills_dto_taskskilldetaildto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.controller.ts",
       "source_location": "L45",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -44169,6 +44436,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_clonetaskskilldto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L10",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -44184,6 +44461,26 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_dto",
       "target": "task_skills_task_skills_dto_isunknownrecord"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_parseclonetaskskillbodypipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L263",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto",
+      "target": "task_skills_task_skills_dto_parseclonetaskskillinput",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -44494,6 +44791,27 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parseclonetaskskillbodypipe",
+      "target": "task_skills_task_skills_dto_parseclonetaskskillbodypipe_transform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parseclonetaskskillbodypipe_transform",
+      "target": "task_skills_task_skills_dto_parseclonetaskskillinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L45",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -44752,6 +45070,50 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L264",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parseclonetaskskillinput",
+      "target": "task_skills_task_skills_dto_isunknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L269",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parseclonetaskskillinput",
+      "target": "task_skills_task_skills_dto_readoptionalnullablestring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L270",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parseclonetaskskillinput",
+      "target": "task_skills_task_skills_dto_readoptionalstringarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
+      "source_location": "L268",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_dto_parseclonetaskskillinput",
+      "target": "task_skills_task_skills_dto_readrequirednonemptystring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.dto.ts",
       "source_location": "L117",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -44942,6 +45304,17 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_service_taskskillsservice_archivetaskskill",
       "target": "task_skills_task_skills_dto_taskskilldetaildto"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_taskskillsservice_clonetaskskill",
+      "target": "task_skills_task_skills_dto_taskskilldetaildto",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -45150,6 +45523,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_test",
+      "target": "task_skills_task_skills_service_test_cloneinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
       "source_location": "L12",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -45295,6 +45678,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_test",
+      "target": "task_skills_task_skills_store_taskskillcloneresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.test.ts",
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -45385,6 +45779,16 @@
       "confidence_score": 1.0,
       "source": "task_skills_task_skills_service_taskskillsservice",
       "target": "task_skills_task_skills_service_taskskillsservice_archivetaskskill"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.service.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_service_taskskillsservice",
+      "target": "task_skills_task_skills_service_taskskillsservice_clonetaskskill",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -45501,6 +45905,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/task-skills.store.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "task_skills_task_skills_store",
+      "target": "task_skills_task_skills_store_taskskillcloneresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/task-skills.store.ts",
       "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -45569,6 +45983,28 @@
       "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
       "target": "task_skills_task_skills_store_taskskillcreateresult"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store",
+      "target": "task_skills_task_skills_store_taskskillcloneresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_cloneforworkspace",
+      "target": "task_skills_task_skills_store_taskskillcloneresult",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -45828,6 +46264,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore",
+      "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_cloneforworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
       "source_location": "L14",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -45947,6 +46393,17 @@
       "confidence_score": 1.0,
       "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_createforworkspace",
       "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getinitializeddatasource"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/task-skills/typeorm-task-skills-read.store.ts",
+      "source_location": "L182",
+      "weight": 1.0,
+      "source": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_cloneforworkspace",
+      "target": "task_skills_typeorm_task_skills_read_store_typeormtaskskillsreadstore_getinitializeddatasource",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -77254,7 +77711,7 @@
       "source_file": ".codex/skills/graphify/SKILL.md",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "graphify_skill",
+      "source": "users_alexander_documents_task_codex_skills_graphify_skill_md",
       "target": "graphify_skill_graphify",
       "confidence_score": 1.0
     },
@@ -77484,7 +77941,7 @@
       "source_file": ".codex/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_add_watch",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_add_watch_md",
       "target": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
       "confidence_score": 1.0
     },
@@ -77514,7 +77971,7 @@
       "source_file": ".codex/skills/graphify/references/exports.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_exports",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_exports_md",
       "target": "references_exports_graphify_reference_extra_exports_and_benchmark",
       "confidence_score": 1.0
     },
@@ -77594,7 +78051,7 @@
       "source_file": ".codex/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_extraction_spec",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_extraction_spec_md",
       "target": "references_extraction_spec_graphify_reference_extraction_subagent_prompt_compact",
       "confidence_score": 1.0
     },
@@ -77604,7 +78061,7 @@
       "source_file": ".codex/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_github_and_merge",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_github_and_merge_md",
       "target": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
       "confidence_score": 1.0
     },
@@ -77624,7 +78081,7 @@
       "source_file": ".codex/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_hooks",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_hooks_md",
       "target": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
       "confidence_score": 1.0
     },
@@ -77654,7 +78111,7 @@
       "source_file": ".codex/skills/graphify/references/query.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_query",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_query_md",
       "target": "references_query_graphify_reference_query_path_explain",
       "confidence_score": 1.0
     },
@@ -77704,7 +78161,7 @@
       "source_file": ".codex/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_transcribe",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_transcribe_md",
       "target": "references_transcribe_graphify_reference_transcribe_video_and_audio",
       "confidence_score": 1.0
     },
@@ -77724,7 +78181,7 @@
       "source_file": ".codex/skills/graphify/references/update.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "references_update",
+      "source": "users_alexander_documents_task_codex_skills_graphify_references_update_md",
       "target": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "confidence_score": 1.0
     },
@@ -77747,56 +78204,6 @@
       "confidence_score": 1.0,
       "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
       "target": "references_update_for_update_incremental_re_extraction"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance",
-      "target": "memories_memory_maintenance_memory_maintenance",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L25",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_add_update_threshold",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_discovery_model",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L30",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_maintenance_actions",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".serena/memories/memory_maintenance.md",
-      "source_location": "L19",
-      "weight": 1.0,
-      "source": "memories_memory_maintenance_memory_maintenance",
-      "target": "memories_memory_maintenance_style",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -77944,7 +78351,7 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_readme",
+      "source": "users_alexander_documents_task_docs_readme_md",
       "target": "docs_readme_task_docs",
       "confidence_score": 1.0
     },
@@ -77974,7 +78381,7 @@
       "source_file": "docs/agent-mcp-design.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_agent_mcp_design",
+      "source": "users_alexander_documents_task_docs_agent_mcp_design_md",
       "target": "docs_agent_mcp_design_agent_and_mcp_design",
       "confidence_score": 1.0
     },
@@ -78164,7 +78571,7 @@
       "source_file": "docs/data-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_data_model",
+      "source": "users_alexander_documents_task_docs_data_model_md",
       "target": "docs_data_model_data_model_draft",
       "confidence_score": 1.0
     },
@@ -78374,7 +78781,7 @@
       "source_file": "docs/product-model.md",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "docs_product_model",
+      "source": "users_alexander_documents_task_docs_product_model_md",
       "target": "docs_product_model_product_model",
       "confidence_score": 1.0
     },
@@ -78670,5 +79077,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "34f3c406ba288ee79c3fc9b942e8855cc45f429a"
+  "built_at_commit": "deb6afae70d0ace3d1717e7a967a3e0b057328ac"
 }
