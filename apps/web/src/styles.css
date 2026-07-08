@@ -436,6 +436,15 @@ h1 {
   min-width: 640px;
 }
 
+.task-table-header,
+.task-table-row {
+  display: grid;
+  grid-template-columns:
+    minmax(180px, 1.4fr) minmax(140px, 1fr) minmax(120px, 0.8fr)
+    110px 110px 110px;
+  min-width: 860px;
+}
+
 .table-header {
   background: #e7f0ea;
   color: #2d3a33;
@@ -445,13 +454,24 @@ h1 {
 }
 
 .table-header span,
-.table-row span {
+.table-row span,
+.task-table-header span,
+.task-table-row span {
   padding: 11px 12px;
   border-right: 1px solid #d8d1c4;
 }
 
-.table-row {
+.table-row,
+.task-table-row {
   border-top: 1px solid #d8d1c4;
+}
+
+.task-table-header {
+  background: #e7f0ea;
+  color: #2d3a33;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .metric-list {
