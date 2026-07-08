@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  CreateTaskRequestInput,
   ProjectSummary,
   TaskApiClient,
   TaskDetail,
@@ -9,7 +10,7 @@ import type {
   WorkspaceStatus,
   WorkspaceSummary,
 } from "@task/api-client";
-import { loadWebShellData, parseWebShellConfig } from "./web-shell-data.js";
+import { createWebShellTask, loadWebShellData, parseWebShellConfig } from "./web-shell-data.js";
 
 const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const projectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
@@ -118,6 +119,67 @@ test("loadWebShellData skips task reads when the workspace has no projects", asy
   ]);
 });
 
+test("createWebShellTask posts trimmed task titles to the selected project", async () => {
+  const client = new RecordingTaskApiClient({
+    projects: [projectSummary()],
+    skills: [],
+    statuses: [],
+    tasks: [],
+    workspaces: [workspaceSummary()],
+  });
+
+  assert.deepEqual(
+    await createWebShellTask(
+      client,
+      {
+        projectId,
+        workspaceId,
+      },
+      {
+        title: "  Intro  ",
+      },
+    ),
+    taskSummary(),
+  );
+  assert.deepEqual(client.createTaskCalls, [
+    {
+      body: {
+        title: "Intro",
+      },
+      projectId,
+      workspaceId,
+    },
+  ]);
+});
+
+test("createWebShellTask rejects empty task titles without calling the client", async () => {
+  const client = new RecordingTaskApiClient({
+    projects: [],
+    skills: [],
+    statuses: [],
+    tasks: [],
+    workspaces: [],
+  });
+
+  await assert.rejects(
+    () =>
+      createWebShellTask(
+        client,
+        {
+          projectId,
+          workspaceId,
+        },
+        {
+          title: "   ",
+        },
+      ),
+    {
+      message: "Task title is required.",
+    },
+  );
+  assert.deepEqual(client.createTaskCalls, []);
+});
+
 type ApiData = {
   projects: ProjectSummary[];
   skills: TaskSkillSummary[];
@@ -128,11 +190,13 @@ type ApiData = {
 
 class RecordingTaskApiClient implements TaskApiClient {
   readonly calls: string[] = [];
+  readonly createTaskCalls: CreateTaskRequestInput[] = [];
 
   constructor(private readonly data: ApiData) {}
 
-  async createTask(): Promise<TaskDetail> {
-    throw new Error("createTask is not used by the web shell loader.");
+  async createTask(input: CreateTaskRequestInput): Promise<TaskDetail> {
+    this.createTaskCalls.push(input);
+    return taskSummary();
   }
 
   async getHealth(): Promise<never> {
