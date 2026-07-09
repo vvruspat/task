@@ -3,6 +3,21 @@ export type ResolveTelegramContextInput = {
   telegramChatId: string;
 };
 
+export type TelegramConfirmationCallbackAction = "confirm" | "cancel";
+
+export type TelegramConfirmationCallbackInput = {
+  telegramId: string;
+  telegramChatId: string;
+  confirmationRequestId: string;
+  action: TelegramConfirmationCallbackAction;
+};
+
+export type TelegramConfirmationCallbackResult = {
+  confirmationRequestId: string;
+  action: TelegramConfirmationCallbackAction;
+  status: "confirmed" | "cancelled";
+};
+
 export type TelegramContextResolution =
   | {
       status: "resolved";

@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  type HandleTelegramConfirmationCallbackRequest,
   type ResolveTelegramContextRequest,
   type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
   TelegramBackendClientError,
+  type TelegramConfirmationCallbackResponse,
   type TelegramContextResolutionResponse,
 } from "./backend-client.js";
 import { handleTelegramUpdate } from "./message-handler.js";
@@ -147,6 +149,12 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
   async createTelegramAgentRun(): Promise<TelegramAgentRunIntakeResponse> {
     throw new TelegramBackendClientError("Unexpected agent intake request.");
   }
+
+  async handleTelegramConfirmationCallback(
+    _request: HandleTelegramConfirmationCallbackRequest,
+  ): Promise<TelegramConfirmationCallbackResponse> {
+    throw new TelegramBackendClientError("Unexpected confirmation callback request.");
+  }
 }
 
 class FailingTelegramBackendClient implements TelegramBackendClient {
@@ -155,6 +163,10 @@ class FailingTelegramBackendClient implements TelegramBackendClient {
   }
 
   async createTelegramAgentRun(): Promise<TelegramAgentRunIntakeResponse> {
+    throw new TelegramBackendClientError("Backend unavailable.");
+  }
+
+  async handleTelegramConfirmationCallback(): Promise<TelegramConfirmationCallbackResponse> {
     throw new TelegramBackendClientError("Backend unavailable.");
   }
 }

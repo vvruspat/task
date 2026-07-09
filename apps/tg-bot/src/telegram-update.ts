@@ -52,6 +52,18 @@ export type TelegramMessageContext = {
   attachments: TelegramAttachmentContext[];
 };
 
+export type TelegramConfirmationCallbackAction = "confirm" | "cancel";
+
+export type TelegramConfirmationCallbackContext = {
+  updateId: string;
+  callbackQueryId: string;
+  confirmationRequestId: string;
+  action: TelegramConfirmationCallbackAction;
+  sender: TelegramUserContext;
+  chat: TelegramChatContext;
+  messageId: string;
+};
+
 export class TelegramUpdateParseError extends Error {
   constructor(message: string) {
     super(message);
@@ -77,6 +89,31 @@ export function parseTelegramMessageContext(update: unknown): TelegramMessageCon
   };
 }
 
+export function parseTelegramConfirmationCallbackContext(
+  update: unknown,
+): TelegramConfirmationCallbackContext {
+  const updateRecord = readRecord(update, "telegram update");
+  const callbackQuery = readRecord(
+    readRequiredProperty(updateRecord, "callback_query"),
+    "telegram callback query",
+  );
+  const callbackMessage = readRecord(
+    readRequiredProperty(callbackQuery, "message"),
+    "telegram callback message",
+  );
+  const callbackPayload = readConfirmationCallbackPayload(readString(callbackQuery, "data"));
+
+  return {
+    updateId: readTelegramIntegerAsString(updateRecord, "update_id"),
+    callbackQueryId: readString(callbackQuery, "id"),
+    confirmationRequestId: callbackPayload.confirmationRequestId,
+    action: callbackPayload.action,
+    sender: readTelegramUser(readRequiredProperty(callbackQuery, "from")),
+    chat: readTelegramChat(readRequiredProperty(callbackMessage, "chat")),
+    messageId: readTelegramIntegerAsString(callbackMessage, "message_id"),
+  };
+}
+
 function readTelegramUser(value: unknown): TelegramUserContext {
   const record = readRecord(value, "telegram user");
 
@@ -86,6 +123,33 @@ function readTelegramUser(value: unknown): TelegramUserContext {
     username: readOptionalNullableStringAsNull(record, "username"),
     firstName: readOptionalNullableStringAsNull(record, "first_name"),
     lastName: readOptionalNullableStringAsNull(record, "last_name"),
+  };
+}
+
+function readConfirmationCallbackPayload(data: string): ConfirmationCallbackPayload {
+  const parts = data.split(":");
+  const namespace = parts[0];
+  const resource = parts[1];
+  const confirmationRequestId = parts[2];
+  const action = parts[3];
+
+  if (
+    parts.length !== 4 ||
+    namespace !== "task" ||
+    resource !== "confirmation" ||
+    confirmationRequestId === undefined ||
+    !uuidV4Pattern.test(confirmationRequestId)
+  ) {
+    throw new TelegramUpdateParseError("callback confirmation payload is invalid.");
+  }
+
+  if (action !== "confirm" && action !== "cancel") {
+    throw new TelegramUpdateParseError("callback confirmation action is invalid.");
+  }
+
+  return {
+    confirmationRequestId,
+    action,
   };
 }
 
@@ -320,3 +384,10 @@ function readOptionalArray(
 
   return value;
 }
+
+type ConfirmationCallbackPayload = {
+  confirmationRequestId: string;
+  action: TelegramConfirmationCallbackAction;
+};
+
+const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

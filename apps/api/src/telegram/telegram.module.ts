@@ -1,5 +1,6 @@
 import { Module, type Provider } from "@nestjs/common";
 import { BotSharedSecretGuard } from "../auth/bot-shared-secret.guard.js";
+import { ConfirmationsModule } from "../confirmations/confirmations.module.js";
 import { DatabaseModule } from "../database/database.module.js";
 import { TelegramController } from "./telegram.controller.js";
 import { TelegramService } from "./telegram.service.js";
@@ -14,7 +15,7 @@ const telegramServiceProvider: Provider<TelegramService> = {
 };
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, ConfirmationsModule],
   controllers: [TelegramController],
   providers: [BotSharedSecretGuard, TypeOrmTelegramContextStore, telegramServiceProvider],
 })

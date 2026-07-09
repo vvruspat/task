@@ -542,6 +542,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/internal/telegram/confirmations/callback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Apply a Telegram confirmation callback action */
+    post: operations["TelegramController_handleConfirmationCallback"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/internal/agent/telegram/runs": {
     parameters: {
       query?: never;
@@ -1114,6 +1131,24 @@ export interface components {
       workspaceId?: string;
       /** Format: uuid */
       defaultProjectId?: string | null;
+    };
+    TelegramConfirmationCallbackDto: {
+      /** @example 123456789 */
+      telegramId: string;
+      /** @example -100987654321 */
+      telegramChatId: string;
+      /** Format: uuid */
+      confirmationRequestId: string;
+      /** @enum {string} */
+      action: "confirm" | "cancel";
+    };
+    TelegramConfirmationCallbackResultDto: {
+      /** Format: uuid */
+      confirmationRequestId: string;
+      /** @enum {string} */
+      action: "confirm" | "cancel";
+      /** @enum {string} */
+      status: "confirmed" | "cancelled";
     };
     TelegramAgentRunDocumentAttachmentDto: {
       /** @enum {string} */
@@ -2896,6 +2931,60 @@ export interface operations {
       };
       /** @description Telegram bot shared secret is missing or invalid. */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramController_handleConfirmationCallback: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
+        "x-task-bot-secret": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["TelegramConfirmationCallbackDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramConfirmationCallbackResultDto"];
+        };
+      };
+      /** @description Telegram confirmation callback payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram bot shared secret is missing or invalid. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram user or chat is not linked to a workspace visible to the user. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Confirmation request is missing or not visible. */
+      404: {
         headers: {
           [name: string]: unknown;
         };
