@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  AddTaskSubtasksRequest,
   ApplyTaskSkillResponse,
   ArchiveTaskRequest,
   CreateTaskRequest,
@@ -21,6 +22,7 @@ import type {
 } from "./backend-client.js";
 import {
   createTaskToolHandlers,
+  parseTaskAddSubtasksToolInput,
   parseTaskArchiveToolInput,
   parseTaskCreateToolInput,
   parseTaskGetToolInput,
@@ -200,6 +202,75 @@ test("parseTaskCreateToolInput validates and normalizes task create payloads", (
         userId,
         title: "Arrange",
         metadata: [],
+      }),
+    TaskToolInputError,
+  );
+});
+
+test("parseTaskAddSubtasksToolInput validates and normalizes subtask payloads", () => {
+  assert.deepEqual(
+    parseTaskAddSubtasksToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      subtasks: [
+        {
+          title: "  Record drums  ",
+          description: "   ",
+          position: " 3000 ",
+          dueAt: "2026-01-03T12:00:00+02:00",
+          metadata: { source: "manual" },
+        },
+      ],
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      subtasks: [
+        {
+          title: "Record drums",
+          description: null,
+          position: "3000",
+          dueAt: "2026-01-03T10:00:00.000Z",
+          metadata: { source: "manual" },
+        },
+      ],
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseTaskAddSubtasksToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        subtasks: [],
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskAddSubtasksToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        subtasks: [{ title: "" }],
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskAddSubtasksToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        subtasks: [{ title: "Record", position: "first" }],
       }),
     TaskToolInputError,
   );
@@ -554,6 +625,48 @@ test("task create handler forwards task payloads to the backend client", async (
   ]);
 });
 
+test("task add subtasks handler forwards subtask payloads to the backend client", async () => {
+  const calls: AddTaskSubtasksRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], [], [], [], [], [], [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.addSubtasks({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      subtasks: [
+        {
+          title: "Record drums",
+          description: null,
+          position: "3000",
+          metadata: { source: "manual" },
+        },
+      ],
+    }),
+    [taskDetail],
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      body: {
+        subtasks: [
+          {
+            title: "Record drums",
+            description: null,
+            position: "3000",
+            metadata: { source: "manual" },
+          },
+        ],
+      },
+    },
+  ]);
+});
+
 test("task archive handler forwards task identifiers to the backend client", async () => {
   const calls: ArchiveTaskRequest[] = [];
   const client = createBackendClientStub(tasks, [], [], [], [], [], [], calls);
@@ -735,6 +848,7 @@ function createBackendClientStub(
   archiveTaskCalls: ArchiveTaskRequest[] = [],
   updateTaskCalls: UpdateTaskRequest[] = [],
   moveTaskCalls: MoveTaskRequest[] = [],
+  addTaskSubtasksCalls: AddTaskSubtasksRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -826,6 +940,11 @@ function createBackendClientStub(
       createTaskCalls.push(request);
 
       return taskDetail;
+    },
+    addTaskSubtasks: async (request): Promise<TaskDetailResponse[]> => {
+      addTaskSubtasksCalls.push(request);
+
+      return [taskDetail];
     },
     updateTask: async (request): Promise<TaskDetailResponse> => {
       updateTaskCalls.push(request);

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
+  AddTaskSubtasksRequest,
   ApplyTaskSkillResponse,
   ArchiveProjectRequest,
   ArchiveTaskRequest,
@@ -668,6 +669,7 @@ test("registerAttachmentTools registers attachment tools", async () => {
 test("registerTaskTools registers task tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const createCalls: CreateTaskRequest[] = [];
+  const addSubtasksCalls: AddTaskSubtasksRequest[] = [];
   const updateCalls: UpdateTaskRequest[] = [];
   const moveCalls: MoveTaskRequest[] = [];
   const statusCalls: UpdateTaskStatusRequest[] = [];
@@ -690,6 +692,25 @@ test("registerTaskTools registers task tools", async () => {
         },
       });
       return taskResponse;
+    },
+    addSubtasks: async (input: unknown): Promise<TaskDetailResponse[]> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected task add subtasks input.");
+      }
+      addSubtasksCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          subtasks: [
+            {
+              title: "Record drums",
+            },
+          ],
+        },
+      });
+      return [taskResponse];
     },
     update: async (input: unknown): Promise<TaskDetailResponse> => {
       if (!isUnknownRecord(input)) {
@@ -808,6 +829,7 @@ test("registerTaskTools registers task tools", async () => {
       "task.create",
       "task.set_status",
       "task.update",
+      "task.add_subtasks",
       "task.move",
       "task.set_assignee",
       "task.set_due_date",
@@ -819,12 +841,13 @@ test("registerTaskTools registers task tools", async () => {
   assert.equal(toolCalls[0]?.config.title, "Create task");
   assert.equal(toolCalls[1]?.config.title, "Set task status");
   assert.equal(toolCalls[2]?.config.title, "Update task");
-  assert.equal(toolCalls[3]?.config.title, "Move task");
-  assert.equal(toolCalls[4]?.config.title, "Set task assignee");
-  assert.equal(toolCalls[5]?.config.title, "Set task due date");
-  assert.equal(toolCalls[6]?.config.title, "Get task");
-  assert.equal(toolCalls[7]?.config.title, "Archive task");
-  assert.equal(toolCalls[8]?.config.title, "Search tasks");
+  assert.equal(toolCalls[3]?.config.title, "Add subtasks");
+  assert.equal(toolCalls[4]?.config.title, "Move task");
+  assert.equal(toolCalls[5]?.config.title, "Set task assignee");
+  assert.equal(toolCalls[6]?.config.title, "Set task due date");
+  assert.equal(toolCalls[7]?.config.title, "Get task");
+  assert.equal(toolCalls[8]?.config.title, "Archive task");
+  assert.equal(toolCalls[9]?.config.title, "Search tasks");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -893,7 +916,30 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const moveCall = toolCalls[3];
+  const addSubtasksCall = toolCalls[3];
+  assert.ok(addSubtasksCall !== undefined);
+  const addSubtasksResult = await addSubtasksCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    subtasks: [{ title: "Record drums" }],
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(addSubtasksResult)), [taskResponse]);
+  assert.deepEqual(addSubtasksCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        subtasks: [{ title: "Record drums" }],
+      },
+    },
+  ]);
+
+  const moveCall = toolCalls[4];
   assert.ok(moveCall !== undefined);
   const moveResult = await moveCall.callback({
     workspaceId,
@@ -918,7 +964,7 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const assigneeCall = toolCalls[4];
+  const assigneeCall = toolCalls[5];
   assert.ok(assigneeCall !== undefined);
   const assigneeResult = await assigneeCall.callback({
     workspaceId,
@@ -941,7 +987,7 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const dueDateCall = toolCalls[5];
+  const dueDateCall = toolCalls[6];
   assert.ok(dueDateCall !== undefined);
   const dueDateResult = await dueDateCall.callback({
     workspaceId,
@@ -964,7 +1010,7 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const getCall = toolCalls[6];
+  const getCall = toolCalls[7];
   assert.ok(getCall !== undefined);
   const getResult = await getCall.callback({
     workspaceId,
@@ -975,7 +1021,7 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), taskResponse);
 
-  const archiveCall = toolCalls[7];
+  const archiveCall = toolCalls[8];
   assert.ok(archiveCall !== undefined);
   const archiveResult = await archiveCall.callback({
     workspaceId,
@@ -990,7 +1036,7 @@ test("registerTaskTools registers task tools", async () => {
   });
   assert.deepEqual(archiveCalls, [{ workspaceId, projectId, taskId: rootTaskId, userId }]);
 
-  const searchCall = toolCalls[8];
+  const searchCall = toolCalls[9];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -1433,6 +1479,7 @@ function createBackendClientStub(): TaskBackendClient {
     listActiveTasks: async (): Promise<TaskSummaryResponse[]> => [taskResponse],
     getTask: async (): Promise<TaskDetailResponse> => taskResponse,
     createTask: async (): Promise<TaskDetailResponse> => taskResponse,
+    addTaskSubtasks: async (): Promise<TaskDetailResponse[]> => [taskResponse],
     updateTask: async (): Promise<TaskDetailResponse> => taskResponse,
     moveTask: async (): Promise<TaskDetailResponse> => taskResponse,
     updateTaskStatus: async (): Promise<TaskDetailResponse> => ({

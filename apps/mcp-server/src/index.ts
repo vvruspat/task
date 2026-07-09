@@ -11,6 +11,9 @@ export {
 } from "./attachment-tools.js";
 
 export {
+  type AddTaskSubtasksInput,
+  type AddTaskSubtasksRequest,
+  type AddTaskSubtasksResponse,
   type ApplyTaskSkillResponse,
   type ArchiveProjectRequest,
   type ArchiveProjectResponse,
@@ -190,6 +193,7 @@ export {
 } from "./task-skill-tools.js";
 export {
   createTaskToolHandlers,
+  parseTaskAddSubtasksToolInput,
   parseTaskCreateToolInput,
   parseTaskGetToolInput,
   parseTaskMoveToolInput,
@@ -198,6 +202,8 @@ export {
   parseTaskSetDueDateToolInput,
   parseTaskSetStatusToolInput,
   parseTaskUpdateToolInput,
+  type TaskAddSubtasksToolInput,
+  type TaskAddSubtaskToolInput,
   type TaskCreateToolInput,
   type TaskGetToolInput,
   type TaskMoveToolInput,
