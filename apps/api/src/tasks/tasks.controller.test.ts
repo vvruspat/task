@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
 import type {
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   TaskDetail,
@@ -13,6 +14,7 @@ import type {
 } from "./tasks.contracts.js";
 import { TasksController } from "./tasks.controller.js";
 import {
+  ParseAddTaskSubtasksBodyPipe,
   ParseCreateTaskBodyPipe,
   ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
@@ -22,6 +24,7 @@ import {
 } from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
 import type {
+  TaskAddSubtasksResult,
   TaskArchiveResult,
   TaskCreateResult,
   TaskMoveResult,
@@ -41,6 +44,7 @@ const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 const archivedAt = new Date("2026-01-04T00:00:00.000Z");
 const dueAt = "2026-01-03T12:00:00.000Z";
+const subtaskId = "77777777-7777-4777-8777-777777777777";
 
 const taskSummary: TaskSummary = {
   id: taskId,
@@ -99,6 +103,33 @@ test("TasksController uses trusted current user context for task creates", async
 
   assert.equal(response.title, input.title);
   assert.equal(response.createdByUserId, userId);
+});
+
+test("TasksController uses trusted current user context for subtask creates", async () => {
+  const input: AddTaskSubtasksInput = { subtasks: [{ title: "Record drums" }] };
+  const controller = new TasksController(
+    new TasksService(
+      createReadStore({
+        addSubtasksResult: {
+          status: "created",
+          tasks: [
+            {
+              ...taskSummary,
+              id: subtaskId,
+              parentTaskId: taskId,
+              title: "Record drums",
+            },
+          ],
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.addTaskSubtasks(workspaceId, projectId, taskId, userId, input);
+
+  assert.equal(response.length, 1);
+  assert.equal(response[0]?.id, subtaskId);
+  assert.equal(response[0]?.parentTaskId, taskId);
 });
 
 test("TasksController uses trusted current user context for task status updates", async () => {
@@ -262,6 +293,51 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseAddTaskSubtasksBodyPipe validates and normalizes subtask payloads", () => {
+  const pipe = new ParseAddTaskSubtasksBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      subtasks: [
+        {
+          title: "  Record drums  ",
+          description: "",
+          position: "2000",
+          dueAt: "2026-01-02T10:00:00.000Z",
+          metadata: { instrument: "drums" },
+        },
+      ],
+    }),
+    {
+      subtasks: [
+        {
+          title: "Record drums",
+          description: null,
+          position: "2000",
+          dueAt: "2026-01-02T10:00:00.000Z",
+          metadata: { instrument: "drums" },
+        },
+      ],
+    },
+  );
+
+  assert.throws(() => pipe.transform({ subtasks: [] }), BadRequestException);
+  assert.throws(() => pipe.transform({ subtasks: [{ title: "" }] }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ subtasks: [{ title: "Task", position: "first" }] }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ subtasks: [{ title: "Task", dueAt: "tomorrow" }] }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ subtasks: [{ title: "Task", metadata: [] }] }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 test("ParseUpdateTaskBodyPipe validates and normalizes task update payloads", () => {
   const pipe = new ParseUpdateTaskBodyPipe();
 
@@ -358,6 +434,7 @@ function createReadStore(options: {
   task?: TaskDetail | null;
   archiveResult?: TaskArchiveResult;
   createResult?: TaskCreateResult;
+  addSubtasksResult?: TaskAddSubtasksResult;
   updateResult?: TaskUpdateResult;
   moveResult?: TaskMoveResult;
   updateStatusResult?: TaskUpdateStatusResult;
@@ -371,6 +448,8 @@ function createReadStore(options: {
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },
+    addSubtasksForProject: async (): Promise<TaskAddSubtasksResult> =>
+      options.addSubtasksResult ?? { status: "task_not_found" },
     updateForProject: async (): Promise<TaskUpdateResult> =>
       options.updateResult ?? { status: "task_not_found" },
     moveForProject: async (): Promise<TaskMoveResult> =>

@@ -29,6 +29,18 @@ export type CreateTaskInput = {
   metadata?: Record<string, unknown>;
 };
 
+export type AddTaskSubtaskInput = {
+  title: string;
+  description?: string | null;
+  position?: string | null;
+  dueAt?: string | null;
+  metadata?: Record<string, unknown>;
+};
+
+export type AddTaskSubtasksInput = {
+  subtasks: AddTaskSubtaskInput[];
+};
+
 export type UpdateTaskInput = {
   title?: string;
   description?: string | null;

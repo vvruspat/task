@@ -11,6 +11,7 @@ import {
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import type {
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   TaskDetail,
@@ -21,6 +22,7 @@ import type {
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import type {
+  TaskAddSubtasksResult,
   TaskArchiveResult,
   TaskCreateResult,
   TaskMoveResult,
@@ -156,6 +158,68 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     });
 
     return { status: "created", task: toTaskSummary(savedTask) };
+  }
+
+  async addSubtasksForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: AddTaskSubtasksInput,
+  ): Promise<TaskAddSubtasksResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const parentTask = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (parentTask === null) {
+      return { status: "task_not_found" };
+    }
+
+    const savedTasks = await dataSource.transaction(async (manager): Promise<TaskEntity[]> => {
+      const taskRepository = manager.getRepository(TaskEntity);
+      const tasks = input.subtasks.map((subtask) =>
+        taskRepository.create({
+          workspaceId,
+          projectId,
+          parentTaskId: parentTask.id,
+          title: subtask.title,
+          description: subtask.description ?? null,
+          createdByUserId: userId,
+          position: subtask.position ?? "0",
+          dueAt:
+            subtask.dueAt === undefined || subtask.dueAt === null ? null : new Date(subtask.dueAt),
+          metadata: subtask.metadata ?? {},
+        }),
+      );
+      const createdTasks = await taskRepository.save(tasks);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.subtasks_created",
+        entityType: "task",
+        entityId: parentTask.id,
+        payload: {
+          count: createdTasks.length,
+          projectId,
+          taskIds: createdTasks.map((task) => task.id),
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return createdTasks;
+    });
+
+    return { status: "created", tasks: savedTasks.map(toTaskSummary) };
   }
 
   async updateStatusForProject(

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import type {
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   TaskDetail,
@@ -14,6 +15,7 @@ import type {
 import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
 import type {
+  TaskAddSubtasksResult,
   TaskArchiveResult,
   TaskCreateResult,
   TaskMoveResult,
@@ -33,6 +35,7 @@ const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 const archivedAt = new Date("2026-01-04T00:00:00.000Z");
 const dueAt = "2026-01-03T12:00:00.000Z";
+const subtaskId = "77777777-7777-4777-8777-777777777777";
 
 const taskSummary: TaskSummary = {
   id: taskId,
@@ -100,6 +103,42 @@ test("TasksService creates a task for writable workspace members", async () => {
   assert.ok(response instanceof TaskDetailDto);
   assert.equal(response.title, input.title);
   assert.equal(response.createdByUserId, userId);
+});
+
+test("TasksService creates subtasks for writable workspace members", async () => {
+  const input: AddTaskSubtasksInput = {
+    subtasks: [
+      {
+        title: "Record drums",
+        description: "Studio take",
+        position: "2000",
+      },
+    ],
+  };
+  const service = new TasksService(
+    createReadStore({
+      addSubtasksResult: {
+        status: "created",
+        tasks: [
+          {
+            ...taskSummary,
+            id: subtaskId,
+            parentTaskId: taskId,
+            title: input.subtasks[0]?.title ?? "",
+            description: input.subtasks[0]?.description ?? null,
+            position: input.subtasks[0]?.position ?? "0",
+          },
+        ],
+      },
+    }),
+  );
+
+  const response = await service.addTaskSubtasks(workspaceId, projectId, taskId, userId, input);
+
+  assert.equal(response.length, 1);
+  assert.ok(response[0] instanceof TaskDetailDto);
+  assert.equal(response[0]?.id, subtaskId);
+  assert.equal(response[0]?.parentTaskId, taskId);
 });
 
 test("TasksService updates task status for writable workspace members", async () => {
@@ -237,6 +276,13 @@ test("TasksService hides inaccessible projects and missing tasks", async () => {
     NotFoundException,
   );
   await assert.rejects(
+    () =>
+      service.addTaskSubtasks(workspaceId, projectId, taskId, userId, {
+        subtasks: [{ title: "Hidden" }],
+      }),
+    NotFoundException,
+  );
+  await assert.rejects(
     () => service.updateTaskStatus(workspaceId, projectId, taskId, userId, { statusId }),
     NotFoundException,
   );
@@ -271,6 +317,18 @@ test("TasksService rejects task creation without write permission", async () => 
 
   await assert.rejects(
     () => service.createTask(workspaceId, projectId, userId, { title: "Hidden" }),
+    ForbiddenException,
+  );
+});
+
+test("TasksService rejects subtask creation without write permission", async () => {
+  const service = new TasksService(createReadStore({ addSubtasksResult: { status: "forbidden" } }));
+
+  await assert.rejects(
+    () =>
+      service.addTaskSubtasks(workspaceId, projectId, taskId, userId, {
+        subtasks: [{ title: "Hidden" }],
+      }),
     ForbiddenException,
   );
 });
@@ -393,6 +451,7 @@ function createReadStore(options: {
   task?: TaskDetail | null;
   archiveResult?: TaskArchiveResult;
   createResult?: TaskCreateResult;
+  addSubtasksResult?: TaskAddSubtasksResult;
   updateResult?: TaskUpdateResult;
   moveResult?: TaskMoveResult;
   updateStatusResult?: TaskUpdateStatusResult;
@@ -406,6 +465,8 @@ function createReadStore(options: {
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },
+    addSubtasksForProject: async (): Promise<TaskAddSubtasksResult> =>
+      options.addSubtasksResult ?? { status: "task_not_found" },
     updateForProject: async (): Promise<TaskUpdateResult> =>
       options.updateResult ?? { status: "task_not_found" },
     moveForProject: async (): Promise<TaskMoveResult> =>

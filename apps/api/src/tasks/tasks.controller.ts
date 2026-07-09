@@ -15,6 +15,7 @@ import {
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
 import type {
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   UpdateTaskAssigneeInput,
@@ -23,8 +24,10 @@ import type {
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import {
+  AddTaskSubtasksDto,
   CreateTaskDto,
   MoveTaskDto,
+  ParseAddTaskSubtasksBodyPipe,
   ParseCreateTaskBodyPipe,
   ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
@@ -79,6 +82,26 @@ export class TasksController {
     @Body(new ParseCreateTaskBodyPipe()) input: CreateTaskInput,
   ): Promise<TaskDetailDto> {
     return this.tasksService.createTask(workspaceId, projectId, userId, input);
+  }
+
+  @Post(":taskId/subtasks")
+  @ApiOperation({ summary: "Create subtasks under one active task" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiParam({ format: "uuid", name: "taskId" })
+  @ApiBody({ type: AddTaskSubtasksDto })
+  @ApiCreatedResponse({ isArray: true, type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Task subtasks payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot create tasks in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace, project, or task is missing or not visible." })
+  addTaskSubtasks(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @Param("taskId", uuidV4Pipe) taskId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseAddTaskSubtasksBodyPipe()) input: AddTaskSubtasksInput,
+  ): Promise<TaskDetailDto[]> {
+    return this.tasksService.addTaskSubtasks(workspaceId, projectId, taskId, userId, input);
   }
 
   @Patch(":taskId")
