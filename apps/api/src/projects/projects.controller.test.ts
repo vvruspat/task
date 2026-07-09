@@ -5,12 +5,17 @@ import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projec
 import { ProjectsController } from "./projects.controller.js";
 import { ParseCreateProjectBodyPipe } from "./projects.dto.js";
 import { ProjectsService } from "./projects.service.js";
-import type { ProjectCreateResult, ProjectReadStore } from "./projects.store.js";
+import type {
+  ProjectArchiveResult,
+  ProjectCreateResult,
+  ProjectReadStore,
+} from "./projects.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "33333333-3333-4333-8333-333333333333";
 const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
+const archivedAt = new Date("2026-01-04T00:00:00.000Z");
 
 const projectSummary: ProjectSummary = {
   id: projectId,
@@ -66,6 +71,24 @@ test("ProjectsController uses trusted current user context for project creates",
   assert.equal(response.createdByUserId, userId);
 });
 
+test("ProjectsController uses trusted current user context for project archives", async () => {
+  const controller = new ProjectsController(
+    new ProjectsService(
+      createReadStore({
+        archiveResult: {
+          project: { ...projectSummary, archivedAt },
+          status: "archived",
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.archiveProject(workspaceId, projectId, userId);
+
+  assert.equal(response.id, projectId);
+  assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
+});
+
 test("ParseCreateProjectBodyPipe validates and normalizes project create payloads", () => {
   const pipe = new ParseCreateProjectBodyPipe();
 
@@ -94,11 +117,14 @@ function createReadStore(options: {
   projects?: ProjectSummary[] | null;
   project?: ProjectDetail | null;
   createResult?: ProjectCreateResult;
+  archiveResult?: ProjectArchiveResult;
 }): ProjectReadStore {
   return {
     listActiveForWorkspace: async (): Promise<ProjectSummary[] | null> => options.projects ?? [],
     getForWorkspace: async (): Promise<ProjectDetail | null> => options.project ?? null,
     createForWorkspace: async (): Promise<ProjectCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
+    archiveForWorkspace: async (): Promise<ProjectArchiveResult> =>
+      options.archiveResult ?? { status: "project_not_found" },
   };
 }

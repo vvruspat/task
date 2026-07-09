@@ -118,7 +118,8 @@ export interface paths {
     get: operations["ProjectsController_getProject"];
     put?: never;
     post?: never;
-    delete?: never;
+    /** Archive one active project in a visible workspace */
+    delete: operations["ProjectsController_archiveProject"];
     options?: never;
     head?: never;
     patch?: never;
@@ -1271,6 +1272,45 @@ export interface operations {
         };
       };
       /** @description Workspace or project is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProjectsController_archiveProject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProjectDetailDto"];
+        };
+      };
+      /** @description Current user cannot archive projects in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or active project is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;

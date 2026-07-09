@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -58,6 +58,23 @@ export class ProjectsController {
     @Body(new ParseCreateProjectBodyPipe()) input: CreateProjectInput,
   ): Promise<ProjectDetailDto> {
     return this.projectsService.createProject(workspaceId, userId, input);
+  }
+
+  @Delete(":projectId")
+  @ApiOperation({ summary: "Archive one active project in a visible workspace" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiOkResponse({ type: ProjectDetailDto })
+  @ApiForbiddenResponse({ description: "Current user cannot archive projects in this workspace." })
+  @ApiNotFoundResponse({
+    description: "Workspace or active project is missing or not visible to the current user.",
+  })
+  archiveProject(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<ProjectDetailDto> {
+    return this.projectsService.archiveProject(workspaceId, projectId, userId);
   }
 
   @Get(":projectId")

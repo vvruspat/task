@@ -48,4 +48,22 @@ export class ProjectsService {
 
     return new ProjectDetailDto(result.project);
   }
+
+  async archiveProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+  ): Promise<ProjectDetailDto> {
+    const result = await this.readStore.archiveForWorkspace(workspaceId, projectId, userId);
+
+    if (result.status === "project_not_found") {
+      throw new NotFoundException("Project was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot archive projects in this workspace.");
+    }
+
+    return new ProjectDetailDto(result.project);
+  }
 }
