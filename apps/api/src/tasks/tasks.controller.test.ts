@@ -18,6 +18,7 @@ import {
 } from "./tasks.dto.js";
 import { TasksService } from "./tasks.service.js";
 import type {
+  TaskArchiveResult,
   TaskCreateResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
@@ -32,6 +33,7 @@ const statusId = "55555555-5555-4555-8555-555555555555";
 const assigneeUserId = "66666666-6666-4666-8666-666666666666";
 const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
+const archivedAt = new Date("2026-01-04T00:00:00.000Z");
 const dueAt = "2026-01-03T12:00:00.000Z";
 
 const taskSummary: TaskSummary = {
@@ -162,6 +164,24 @@ test("TasksController uses trusted current user context for task due date update
   assert.deepEqual(response.dueAt, new Date(dueAt));
 });
 
+test("TasksController uses trusted current user context for task archives", async () => {
+  const controller = new TasksController(
+    new TasksService(
+      createReadStore({
+        archiveResult: {
+          status: "archived",
+          task: { ...taskSummary, archivedAt },
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.archiveTask(workspaceId, projectId, taskId, userId);
+
+  assert.equal(response.id, taskId);
+  assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
+});
+
 test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", () => {
   const pipe = new ParseCreateTaskBodyPipe();
 
@@ -237,6 +257,7 @@ test("ParseUpdateTaskDueDateBodyPipe validates task due date payloads", () => {
 function createReadStore(options: {
   tasks?: TaskSummary[] | null;
   task?: TaskDetail | null;
+  archiveResult?: TaskArchiveResult;
   createResult?: TaskCreateResult;
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
@@ -249,6 +270,8 @@ function createReadStore(options: {
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },
+    archiveForProject: async (): Promise<TaskArchiveResult> =>
+      options.archiveResult ?? { status: "task_not_found" },
     updateStatusForProject: async (): Promise<TaskUpdateStatusResult> =>
       options.updateStatusResult ?? { status: "task_not_found" },
     updateAssigneeForProject: async (): Promise<TaskUpdateAssigneeResult> =>

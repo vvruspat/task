@@ -204,7 +204,8 @@ export interface paths {
     get: operations["TasksController_getTask"];
     put?: never;
     post?: never;
-    delete?: never;
+    /** Archive one active task in a visible project */
+    delete: operations["TasksController_archiveTask"];
     options?: never;
     head?: never;
     patch?: never;
@@ -1538,6 +1539,46 @@ export interface operations {
         };
       };
       /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_archiveTask: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Current user cannot archive tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or active task is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;
