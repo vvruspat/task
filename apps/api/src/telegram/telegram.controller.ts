@@ -2,6 +2,7 @@ import { Body, Controller, ForbiddenException, Post, UseGuards } from "@nestjs/c
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiConflictResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -10,6 +11,10 @@ import {
   ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 import { ApiBotSharedSecret, BotSharedSecretGuard } from "../auth/bot-shared-secret.guard.js";
+import {
+  ApiTrustedCurrentUser,
+  TrustedCurrentUserId,
+} from "../auth/trusted-current-user.decorator.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { ConfirmationsService } from "../confirmations/confirmations.service.js";
 import type {
@@ -18,6 +23,7 @@ import type {
   VerifyTelegramMiniAppInitDataInput,
 } from "./telegram.contracts.js";
 import {
+  LinkedTelegramIdentityDto,
   ParseResolveTelegramContextBodyPipe,
   ParseTelegramConfirmationCallbackBodyPipe,
   ParseVerifyTelegramMiniAppInitDataBodyPipe,
@@ -110,6 +116,26 @@ export class TelegramMiniAppController {
     input: VerifyTelegramMiniAppInitDataInput,
   ): VerifiedTelegramMiniAppInitDataDto {
     return this.telegramService.verifyMiniAppInitData(input);
+  }
+
+  @Post("identity/link")
+  @ApiTrustedCurrentUser()
+  @ApiOperation({ summary: "Link verified Telegram Mini App identity to the current user" })
+  @ApiBody({ type: VerifyTelegramMiniAppInitDataDto })
+  @ApiOkResponse({ type: LinkedTelegramIdentityDto })
+  @ApiBadRequestResponse({ description: "Telegram Mini App initData payload is malformed." })
+  @ApiUnauthorizedResponse({ description: "Telegram Mini App initData is invalid or expired." })
+  @ApiNotFoundResponse({ description: "Current user is missing." })
+  @ApiConflictResponse({ description: "Telegram identity is already linked to another user." })
+  linkIdentity(
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseVerifyTelegramMiniAppInitDataBodyPipe())
+    input: VerifyTelegramMiniAppInitDataInput,
+  ): Promise<LinkedTelegramIdentityDto> {
+    return this.telegramService.linkMiniAppIdentity({
+      userId,
+      initData: input.initData,
+    });
   }
 }
 

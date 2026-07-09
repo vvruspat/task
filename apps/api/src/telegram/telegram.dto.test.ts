@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
 import {
+  LinkedTelegramIdentityDto,
   ParseResolveTelegramContextBodyPipe,
   ParseTelegramConfirmationCallbackBodyPipe,
   ParseVerifyTelegramMiniAppInitDataBodyPipe,
@@ -152,6 +153,21 @@ test("VerifiedTelegramMiniAppInitDataDto preserves stable identity fields", () =
     {
       telegramId: "123456789",
       authDate: "1720468800",
+    },
+  );
+});
+
+test("LinkedTelegramIdentityDto preserves linked identity fields", () => {
+  const dto = new LinkedTelegramIdentityDto({
+    telegramId: "123456789",
+    userId: "22222222-2222-4222-8222-222222222222",
+  });
+
+  assert.deepEqual(
+    { ...dto },
+    {
+      telegramId: "123456789",
+      userId: "22222222-2222-4222-8222-222222222222",
     },
   );
 });

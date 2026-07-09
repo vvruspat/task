@@ -576,6 +576,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/telegram/mini-app/identity/link": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Link verified Telegram Mini App identity to the current user */
+    post: operations["TelegramMiniAppController_linkIdentity"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/internal/agent/telegram/runs": {
     parameters: {
       query?: never;
@@ -1176,6 +1193,12 @@ export interface components {
       telegramId: string;
       /** @example 1720468800 */
       authDate: string;
+    };
+    LinkedTelegramIdentityDto: {
+      /** @example 123456789 */
+      telegramId: string;
+      /** Format: uuid */
+      userId: string;
     };
     TelegramAgentRunDocumentAttachmentDto: {
       /** @enum {string} */
@@ -3061,6 +3084,60 @@ export interface operations {
       };
       /** @description Telegram Mini App initData is invalid or expired. */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramMiniAppController_linkIdentity: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["VerifyTelegramMiniAppInitDataDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LinkedTelegramIdentityDto"];
+        };
+      };
+      /** @description Telegram Mini App initData payload is malformed. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram Mini App initData is invalid or expired. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user is missing. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram identity is already linked to another user. */
+      409: {
         headers: {
           [name: string]: unknown;
         };

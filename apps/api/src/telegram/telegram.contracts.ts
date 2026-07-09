@@ -12,6 +12,34 @@ export type VerifiedTelegramMiniAppInitData = {
   authDate: string;
 };
 
+export type LinkTelegramMiniAppIdentityInput = {
+  userId: string;
+  initData: string;
+};
+
+export type LinkTelegramIdentityInput = {
+  userId: string;
+  telegramId: string;
+};
+
+export type LinkedTelegramIdentity = {
+  telegramId: string;
+  userId: string;
+};
+
+export type LinkTelegramIdentityResult =
+  | {
+      status: "linked";
+      identity: LinkedTelegramIdentity;
+    }
+  | {
+      status: "user_not_found";
+    }
+  | {
+      status: "telegram_identity_linked_to_different_user";
+      telegramId: string;
+    };
+
 export type TelegramConfirmationCallbackAction = "confirm" | "cancel";
 
 export type TelegramConfirmationCallbackInput = {

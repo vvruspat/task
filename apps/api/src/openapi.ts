@@ -39,6 +39,7 @@ import {
   UpdateTaskStatusDto,
 } from "./tasks/tasks.dto.js";
 import {
+  LinkedTelegramIdentityDto,
   ResolveTelegramContextDto,
   TelegramContextResolutionDto,
   VerifiedTelegramMiniAppInitDataDto,
@@ -96,6 +97,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       TelegramContextResolutionDto,
       VerifyTelegramMiniAppInitDataDto,
       VerifiedTelegramMiniAppInitDataDto,
+      LinkedTelegramIdentityDto,
     ],
   });
 }
