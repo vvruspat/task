@@ -7,6 +7,7 @@ tasks, templates, agent history, and workspace settings.
 ## Docs
 
 - [Docs index](./docs/README.md)
+- [Implementation roadmap](./docs/implementation-roadmap.md)
 - [Product model](./docs/product-model.md)
 - [Technical architecture](./docs/technical-architecture.md)
 - [Data model](./docs/data-model.md)
