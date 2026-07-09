@@ -18,7 +18,8 @@
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "generate:openapi": "turbo run generate:openapi",
-    "generate:api-client": "npm run generate:openapi && turbo run generate:api-client"
+    "generate:api-client": "npm run generate:openapi && turbo run generate:api-client",
+    "check:generated": "npm run generate:api-client && git diff --exit-code -- apps/api/openapi/openapi.json packages/api-client/src/generated/openapi.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",
