@@ -705,6 +705,7 @@ test("registerAttachmentTools registers attachment tools", async () => {
       "attachment.create_link",
       "attachment.add_file",
       "attachment.add_telegram_file",
+      "attachment.resolve_pending_telegram_file",
       "attachment.list",
     ],
   );
@@ -712,7 +713,8 @@ test("registerAttachmentTools registers attachment tools", async () => {
   assert.equal(toolCalls[1]?.config.title, "Create link attachment");
   assert.equal(toolCalls[2]?.config.title, "Add file attachment");
   assert.equal(toolCalls[3]?.config.title, "Add Telegram file attachment");
-  assert.equal(toolCalls[4]?.config.title, "List attachments");
+  assert.equal(toolCalls[4]?.config.title, "Resolve pending Telegram file attachment");
+  assert.equal(toolCalls[5]?.config.title, "List attachments");
 
   const addLinkCall = toolCalls[0];
   assert.ok(addLinkCall !== undefined);
@@ -821,7 +823,34 @@ test("registerAttachmentTools registers attachment tools", async () => {
     mimeType: "audio/mpeg",
     sizeBytes: "2048",
   });
+
+  const resolvePendingTelegramFileCall = toolCalls[4];
+  assert.ok(resolvePendingTelegramFileCall !== undefined);
+  const resolvePendingTelegramFileResult =
+    await resolvePendingTelegramFileCall.callback(telegramFileToolInput);
+
+  assert.deepEqual(JSON.parse(readTextResult(resolvePendingTelegramFileResult)), {
+    ...attachmentResponse,
+    kind: "telegram_file",
+    url: null,
+    storageKey: null,
+    telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    mimeType: "audio/mpeg",
+    sizeBytes: "2048",
+  });
   assert.deepEqual(createTelegramFileCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+        title: "Reference from Telegram",
+        mimeType: "audio/mpeg",
+        sizeBytes: "2048",
+      },
+    },
     {
       workspaceId,
       projectId,
@@ -836,7 +865,7 @@ test("registerAttachmentTools registers attachment tools", async () => {
     },
   ]);
 
-  const listCall = toolCalls[4];
+  const listCall = toolCalls[5];
   assert.ok(listCall !== undefined);
   const listResult = await listCall.callback({
     workspaceId,
