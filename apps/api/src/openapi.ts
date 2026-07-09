@@ -4,7 +4,12 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { HealthResponseDto } from "./app.dto.js";
 import { CreateTaskLinkAttachmentDto, TaskAttachmentDto } from "./attachments/attachments.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
-import { CreateProjectDto, ProjectDetailDto, ProjectSummaryDto } from "./projects/projects.dto.js";
+import {
+  CreateProjectDto,
+  ProjectDetailDto,
+  ProjectSummaryDto,
+  UpdateProjectDto,
+} from "./projects/projects.dto.js";
 import { WorkspaceStatusDto } from "./statuses/statuses.dto.js";
 import {
   CreateTaskSkillDto,
@@ -51,6 +56,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       WorkspaceMemberDto,
       WorkspaceDetailDto,
       CreateProjectDto,
+      UpdateProjectDto,
       ProjectSummaryDto,
       ProjectDetailDto,
       WorkspaceStatusDto,

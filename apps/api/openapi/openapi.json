@@ -321,6 +321,72 @@
         "summary": "Archive one active project in a visible workspace",
         "tags": ["projects"]
       },
+      "patch": {
+        "operationId": "ProjectsController_updateProject",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Project payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot update projects in this workspace."
+          },
+          "404": {
+            "description": "Workspace or active project is missing or not visible to the current user."
+          }
+        },
+        "summary": "Update one active project in a visible workspace",
+        "tags": ["projects"]
+      },
       "get": {
         "operationId": "ProjectsController_getProject",
         "parameters": [
@@ -2382,6 +2448,30 @@
           }
         },
         "required": ["id", "workspaceId", "title", "createdByUserId", "createdAt", "updatedAt"]
+      },
+      "UpdateProjectDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Album release",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "example": "active"
+          },
+          "position": {
+            "type": "string",
+            "nullable": true,
+            "pattern": "^-?\\d+(\\.\\d+)?$"
+          }
+        }
       },
       "TaskSummaryDto": {
         "type": "object",

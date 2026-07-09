@@ -8,11 +8,17 @@ import {
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
-import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projects.contracts.js";
+import type {
+  CreateProjectInput,
+  ProjectDetail,
+  ProjectSummary,
+  UpdateProjectInput,
+} from "./projects.contracts.js";
 import type {
   ProjectArchiveResult,
   ProjectCreateResult,
   ProjectReadStore,
+  ProjectUpdateResult,
 } from "./projects.store.js";
 
 const projectWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
@@ -164,6 +170,72 @@ export class TypeOrmProjectReadStore implements ProjectReadStore {
     return { project: toProjectSummary(archivedProject), status: "archived" };
   }
 
+  async updateForWorkspace(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: UpdateProjectInput,
+  ): Promise<ProjectUpdateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "project_not_found" };
+    }
+
+    if (!projectWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: projectId,
+      workspaceId,
+    });
+
+    if (project === null) {
+      return { status: "project_not_found" };
+    }
+
+    const updatedFields = getUpdatedProjectFields(input);
+    const updatedProject = await dataSource.transaction(async (manager): Promise<ProjectEntity> => {
+      if (input.title !== undefined) {
+        project.title = input.title;
+      }
+
+      if (input.description !== undefined) {
+        project.description = input.description;
+      }
+
+      if (input.status !== undefined) {
+        project.status = input.status;
+      }
+
+      if (input.position !== undefined) {
+        project.position = input.position;
+      }
+
+      const savedProject = await manager.getRepository(ProjectEntity).save(project);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "project.updated",
+        entityType: "project",
+        entityId: savedProject.id,
+        payload: {
+          fields: updatedFields,
+          title: savedProject.title,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return savedProject;
+    });
+
+    return { project: toProjectSummary(updatedProject), status: "updated" };
+  }
+
   private async hasWorkspaceMembership(
     dataSource: DataSource,
     workspaceId: string,
@@ -205,6 +277,28 @@ export class TypeOrmProjectReadStore implements ProjectReadStore {
       throw error;
     }
   }
+}
+
+function getUpdatedProjectFields(input: UpdateProjectInput): string[] {
+  const fields: string[] = [];
+
+  if (input.title !== undefined) {
+    fields.push("title");
+  }
+
+  if (input.description !== undefined) {
+    fields.push("description");
+  }
+
+  if (input.status !== undefined) {
+    fields.push("status");
+  }
+
+  if (input.position !== undefined) {
+    fields.push("position");
+  }
+
+  return fields;
 }
 
 function toProjectSummary(project: ProjectEntity): ProjectSummary {

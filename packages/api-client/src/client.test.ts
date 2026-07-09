@@ -87,6 +87,31 @@ test("createTaskApiClient deletes projects with trusted user context", async () 
   assert.equal(fetcher.calls[0]?.init.body, undefined);
 });
 
+test("createTaskApiClient patches project updates with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(projectSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const body = {
+    description: "Updated release planning.",
+    status: null,
+    title: "Updated album release",
+  };
+
+  assert.deepEqual(await client.updateProject({ body, projectId, workspaceId }), projectSummary());
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "PATCH");
+  assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
+});
+
 test("createTaskApiClient builds project-scoped endpoint paths", async () => {
   const fetcher = new RecordingFetch(single([taskSummary()]));
   const client = createTaskApiClient({

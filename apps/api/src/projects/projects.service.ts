@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
-import type { CreateProjectInput } from "./projects.contracts.js";
+import type { CreateProjectInput, UpdateProjectInput } from "./projects.contracts.js";
 import { ProjectDetailDto, ProjectSummaryDto } from "./projects.dto.js";
 import type { ProjectReadStore } from "./projects.store.js";
 
@@ -62,6 +62,25 @@ export class ProjectsService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot archive projects in this workspace.");
+    }
+
+    return new ProjectDetailDto(result.project);
+  }
+
+  async updateProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: UpdateProjectInput,
+  ): Promise<ProjectDetailDto> {
+    const result = await this.readStore.updateForWorkspace(workspaceId, projectId, userId, input);
+
+    if (result.status === "project_not_found") {
+      throw new NotFoundException("Project was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot update projects in this workspace.");
     }
 
     return new ProjectDetailDto(result.project);

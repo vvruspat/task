@@ -1,6 +1,11 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projects.contracts.js";
+import type {
+  CreateProjectInput,
+  ProjectDetail,
+  ProjectSummary,
+  UpdateProjectInput,
+} from "./projects.contracts.js";
 
 const numericStringPattern = /^-?\d+(\.\d+)?$/;
 
@@ -18,9 +23,29 @@ export class CreateProjectDto implements CreateProjectInput {
   readonly position?: string | null;
 }
 
+export class UpdateProjectDto implements UpdateProjectInput {
+  @ApiPropertyOptional({ example: "Album release", minLength: 1 })
+  readonly title?: string;
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
+
+  @ApiPropertyOptional({ nullable: true, type: String, example: "active" })
+  readonly status?: string | null;
+
+  @ApiPropertyOptional({ nullable: true, pattern: numericStringPattern.source, type: String })
+  readonly position?: string | null;
+}
+
 export class ParseCreateProjectBodyPipe implements PipeTransform<unknown, CreateProjectInput> {
   transform(value: unknown): CreateProjectInput {
     return parseCreateProjectInput(value);
+  }
+}
+
+export class ParseUpdateProjectBodyPipe implements PipeTransform<unknown, UpdateProjectInput> {
+  transform(value: unknown): UpdateProjectInput {
+    return parseUpdateProjectInput(value);
   }
 }
 
@@ -102,12 +127,74 @@ function parseCreateProjectInput(value: unknown): CreateProjectInput {
   return input;
 }
 
+function parseUpdateProjectInput(value: unknown): UpdateProjectInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Project payload must be an object.");
+  }
+
+  const title = readOptionalNonEmptyString(value, "title");
+  const description = readOptionalNullableString(value, "description");
+  const status = readOptionalNullableString(value, "status");
+  const position = readOptionalNullableString(value, "position");
+
+  if (position !== undefined && position !== null && !numericStringPattern.test(position)) {
+    throw new BadRequestException("Project position must be a numeric string.");
+  }
+
+  const input: UpdateProjectInput = {};
+
+  if (title !== undefined) {
+    input.title = title;
+  }
+
+  if (description !== undefined) {
+    input.description = description;
+  }
+
+  if (status !== undefined) {
+    input.status = status;
+  }
+
+  if (position !== undefined) {
+    input.position = position;
+  }
+
+  if (Object.keys(input).length === 0) {
+    throw new BadRequestException("Project update payload must include at least one field.");
+  }
+
+  return input;
+}
+
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function readRequiredNonEmptyString(value: Record<string, unknown>, propertyName: string): string {
   const propertyValue = value[propertyName];
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Project ${propertyName} must be a string.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+
+  if (trimmedValue.length === 0) {
+    throw new BadRequestException(`Project ${propertyName} must not be empty.`);
+  }
+
+  return trimmedValue;
+}
+
+function readOptionalNonEmptyString(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | undefined {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === undefined) {
+    return undefined;
+  }
 
   if (typeof propertyValue !== "string") {
     throw new BadRequestException(`Project ${propertyName} must be a string.`);

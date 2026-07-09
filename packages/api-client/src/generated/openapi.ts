@@ -122,7 +122,8 @@ export interface paths {
     delete: operations["ProjectsController_archiveProject"];
     options?: never;
     head?: never;
-    patch?: never;
+    /** Update one active project in a visible workspace */
+    patch: operations["ProjectsController_updateProject"];
     trace?: never;
   };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks": {
@@ -622,6 +623,14 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    UpdateProjectDto: {
+      /** @example Album release */
+      title?: string;
+      description?: string | null;
+      /** @example active */
+      status?: string | null;
+      position?: string | null;
     };
     TaskSummaryDto: {
       /** Format: uuid */
@@ -1304,6 +1313,56 @@ export interface operations {
         };
       };
       /** @description Current user cannot archive projects in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or active project is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProjectsController_updateProject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateProjectDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProjectDetailDto"];
+        };
+      };
+      /** @description Project payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update projects in this workspace. */
       403: {
         headers: {
           [name: string]: unknown;

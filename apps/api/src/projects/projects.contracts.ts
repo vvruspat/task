@@ -19,3 +19,10 @@ export type CreateProjectInput = {
   status?: string | null;
   position?: string | null;
 };
+
+export type UpdateProjectInput = {
+  title?: string;
+  description?: string | null;
+  status?: string | null;
+  position?: string | null;
+};
