@@ -544,8 +544,49 @@ function limitResults<T>(items: T[], limit: number | undefined): T[] {
   return items.slice(0, limit);
 }
 
+type TaskSearchRank = 0 | 1 | 2;
+
+type TaskSearchMatch = {
+  task: TaskSummaryResponse;
+  rank: TaskSearchRank;
+};
+
 function filterTasks(tasks: TaskSummaryResponse[], normalizedQuery: string): TaskSummaryResponse[] {
-  return tasks.filter((task) => normalizeSearchText(task.title).includes(normalizedQuery));
+  return tasks
+    .flatMap((task) => {
+      const rank = readTaskSearchRank(normalizeSearchText(task.title), normalizedQuery);
+
+      return rank === null ? [] : [{ task, rank }];
+    })
+    .sort(compareTaskSearchMatches)
+    .map((match) => match.task);
+}
+
+function readTaskSearchRank(
+  normalizedTitle: string,
+  normalizedQuery: string,
+): TaskSearchRank | null {
+  if (normalizedTitle === normalizedQuery) {
+    return 0;
+  }
+
+  if (normalizedTitle.startsWith(normalizedQuery)) {
+    return 1;
+  }
+
+  return normalizedTitle.includes(normalizedQuery) ? 2 : null;
+}
+
+function compareTaskSearchMatches(left: TaskSearchMatch, right: TaskSearchMatch): number {
+  if (left.rank !== right.rank) {
+    return left.rank - right.rank;
+  }
+
+  const leftTitle = normalizeSearchText(left.task.title);
+  const rightTitle = normalizeSearchText(right.task.title);
+  const titleComparison = leftTitle.localeCompare(rightTitle);
+
+  return titleComparison === 0 ? left.task.id.localeCompare(right.task.id) : titleComparison;
 }
 
 function readRecord(value: unknown, label: string): Record<string, unknown> {

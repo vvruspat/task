@@ -582,20 +582,44 @@ test("task search handler filters active tasks by title", async () => {
 });
 
 test("task search handler applies a bounded limit after filtering", async () => {
-  const client = createBackendClientStub([
-    arrangeTask,
-    {
-      ...arrangeTask,
-      id: "88888888-8888-4888-8888-888888888888",
-      title: "Arrange drums",
-    },
-  ]);
+  const firstRankedTask: TaskSummaryResponse = {
+    ...arrangeTask,
+    id: "88888888-8888-4888-8888-888888888888",
+    title: "Arrange drums",
+  };
+  const client = createBackendClientStub([arrangeTask, firstRankedTask]);
   const handlers = createTaskToolHandlers(client);
 
   assert.deepEqual(
     await handlers.search({ workspaceId, projectId, userId, query: "arrange", limit: 1 }),
-    [arrangeTask],
+    [firstRankedTask],
   );
+});
+
+test("task search handler ranks exact, prefix, then substring matches deterministically", async () => {
+  const exactTask: TaskSummaryResponse = {
+    ...arrangeTask,
+    id: "88888888-8888-4888-8888-888888888888",
+    title: "Arrange",
+  };
+  const prefixTask: TaskSummaryResponse = {
+    ...arrangeTask,
+    id: "99999999-9999-4999-8999-999999999999",
+    title: "Arrange drums",
+  };
+  const substringTask: TaskSummaryResponse = {
+    ...arrangeTask,
+    id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    title: "Pre-arrange guitars",
+  };
+  const client = createBackendClientStub([substringTask, prefixTask, exactTask]);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(await handlers.search({ workspaceId, projectId, userId, query: "arrange" }), [
+    exactTask,
+    prefixTask,
+    substringTask,
+  ]);
 });
 
 test("task search handler forwards project identifiers to the backend client", async () => {
