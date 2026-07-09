@@ -19,6 +19,7 @@ import type {
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import type {
+  TaskArchiveResult,
   TaskCreateResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
@@ -68,6 +69,7 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     }
 
     const task = await dataSource.getRepository(TaskEntity).findOneBy({
+      archivedAt: IsNull(),
       id: taskId,
       projectId,
       workspaceId,
@@ -317,6 +319,53 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     });
 
     return { status: "updated", task: toTaskSummary(savedTask) };
+  }
+
+  async archiveForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<TaskArchiveResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    const archivedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      task.archivedAt = new Date();
+
+      const savedTask = await manager.getRepository(TaskEntity).save(task);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.archived",
+        entityType: "task",
+        entityId: savedTask.id,
+        payload: {
+          projectId,
+          title: savedTask.title,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return savedTask;
+    });
+
+    return { status: "archived", task: toTaskSummary(archivedTask) };
   }
 
   private async canReadProject(

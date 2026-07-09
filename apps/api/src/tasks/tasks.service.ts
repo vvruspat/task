@@ -154,4 +154,23 @@ export class TasksService {
 
     return new TaskDetailDto(result.task);
   }
+
+  async archiveTask(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<TaskDetailDto> {
+    const result = await this.readStore.archiveForProject(workspaceId, projectId, taskId, userId);
+
+    if (result.status === "task_not_found") {
+      throw new NotFoundException("Task was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot archive tasks in this workspace.");
+    }
+
+    return new TaskDetailDto(result.task);
+  }
 }

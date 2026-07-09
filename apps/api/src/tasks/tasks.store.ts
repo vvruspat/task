@@ -64,6 +64,18 @@ export type TaskUpdateDueDateResult =
       status: "forbidden";
     };
 
+export type TaskArchiveResult =
+  | {
+      status: "archived";
+      task: TaskDetail;
+    }
+  | {
+      status: "task_not_found";
+    }
+  | {
+      status: "forbidden";
+    };
+
 export type TaskReadStore = {
   listActiveForProject(
     workspaceId: string,
@@ -103,4 +115,10 @@ export type TaskReadStore = {
     userId: string,
     input: UpdateTaskDueDateInput,
   ): Promise<TaskUpdateDueDateResult>;
+  archiveForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<TaskArchiveResult>;
 };

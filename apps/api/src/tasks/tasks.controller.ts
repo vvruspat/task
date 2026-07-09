@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -133,6 +133,25 @@ export class TasksController {
     @Body(new ParseUpdateTaskDueDateBodyPipe()) input: UpdateTaskDueDateInput,
   ): Promise<TaskDetailDto> {
     return this.tasksService.updateTaskDueDate(workspaceId, projectId, taskId, userId, input);
+  }
+
+  @Delete(":taskId")
+  @ApiOperation({ summary: "Archive one active task in a visible project" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiParam({ format: "uuid", name: "taskId" })
+  @ApiOkResponse({ type: TaskDetailDto })
+  @ApiForbiddenResponse({ description: "Current user cannot archive tasks in this workspace." })
+  @ApiNotFoundResponse({
+    description: "Workspace, project, or active task is missing or not visible.",
+  })
+  archiveTask(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @Param("taskId", uuidV4Pipe) taskId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<TaskDetailDto> {
+    return this.tasksService.archiveTask(workspaceId, projectId, taskId, userId);
   }
 
   @Get(":taskId")
