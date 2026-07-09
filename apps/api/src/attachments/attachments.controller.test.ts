@@ -1,9 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
-import type { CreateTaskLinkAttachmentInput, TaskAttachment } from "./attachments.contracts.js";
+import type {
+  CreateTaskFileAttachmentInput,
+  CreateTaskLinkAttachmentInput,
+  TaskAttachment,
+} from "./attachments.contracts.js";
 import { AttachmentsController } from "./attachments.controller.js";
-import { ParseCreateTaskLinkAttachmentBodyPipe } from "./attachments.dto.js";
+import {
+  ParseCreateTaskFileAttachmentBodyPipe,
+  ParseCreateTaskLinkAttachmentBodyPipe,
+} from "./attachments.dto.js";
 import { AttachmentsService } from "./attachments.service.js";
 import type { TaskAttachmentCreateResult, TaskAttachmentsStore } from "./attachments.store.js";
 
@@ -69,6 +76,46 @@ test("AttachmentsController uses trusted current user context for link attachmen
   assert.equal(response.url, input.url);
 });
 
+test("AttachmentsController uses trusted current user context for file attachment creates", async () => {
+  const input: CreateTaskFileAttachmentInput = {
+    storageKey: "workspaces/acme/tasks/bass-take.wav",
+    title: "Bass take.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  };
+  const controller = new AttachmentsController(
+    new AttachmentsService(
+      createAttachmentsStore({
+        createResult: {
+          attachment: {
+            ...taskAttachment,
+            kind: "file",
+            title: input.title ?? null,
+            url: null,
+            storageKey: input.storageKey,
+            mimeType: input.mimeType ?? null,
+            sizeBytes: input.sizeBytes ?? null,
+          },
+          status: "created",
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.createTaskFileAttachment(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
+
+  assert.equal(response.kind, "file");
+  assert.equal(response.storageKey, input.storageKey);
+  assert.equal(response.mimeType, input.mimeType);
+  assert.equal(response.sizeBytes, input.sizeBytes);
+});
+
 test("ParseCreateTaskLinkAttachmentBodyPipe validates and normalizes link payloads", () => {
   const pipe = new ParseCreateTaskLinkAttachmentBodyPipe();
 
@@ -97,6 +144,58 @@ test("ParseCreateTaskLinkAttachmentBodyPipe validates and normalizes link payloa
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseCreateTaskFileAttachmentBodyPipe validates and normalizes file payloads", () => {
+  const pipe = new ParseCreateTaskFileAttachmentBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      storageKey: "  workspaces/acme/tasks/bass-take.wav  ",
+      title: "  Bass take.wav  ",
+      mimeType: "  audio/wav  ",
+      sizeBytes: "  18432000  ",
+    }),
+    {
+      storageKey: "workspaces/acme/tasks/bass-take.wav",
+      title: "Bass take.wav",
+      mimeType: "audio/wav",
+      sizeBytes: "18432000",
+    },
+  );
+  assert.deepEqual(pipe.transform({ storageKey: "files/no-metadata.bin" }), {
+    storageKey: "files/no-metadata.bin",
+  });
+  assert.deepEqual(
+    pipe.transform({
+      storageKey: "files/empty-metadata.bin",
+      title: "",
+      mimeType: "",
+      sizeBytes: null,
+    }),
+    {
+      storageKey: "files/empty-metadata.bin",
+      title: null,
+      mimeType: null,
+      sizeBytes: null,
+    },
+  );
+
+  assert.throws(() => pipe.transform({ storageKey: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ storageKey: 1 }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ storageKey: "files/file.bin", sizeBytes: "-1" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ storageKey: "files/file.bin", sizeBytes: "1.5" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ storageKey: "files/file.bin", sizeBytes: 1 }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createAttachmentsStore(options: {
   attachments?: TaskAttachment[] | null;
   createResult?: TaskAttachmentCreateResult;
@@ -105,6 +204,8 @@ function createAttachmentsStore(options: {
     listForTask: async (): Promise<TaskAttachment[] | null> =>
       options.attachments === undefined ? [] : options.attachments,
     createLinkForTask: async (): Promise<TaskAttachmentCreateResult> =>
+      options.createResult ?? { status: "task_not_found" },
+    createFileForTask: async (): Promise<TaskAttachmentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
   };
 }

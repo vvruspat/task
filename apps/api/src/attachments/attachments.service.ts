@@ -1,5 +1,8 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
-import type { CreateTaskLinkAttachmentInput } from "./attachments.contracts.js";
+import type {
+  CreateTaskFileAttachmentInput,
+  CreateTaskLinkAttachmentInput,
+} from "./attachments.contracts.js";
 import { TaskAttachmentDto } from "./attachments.dto.js";
 import type { TaskAttachmentsStore } from "./attachments.store.js";
 
@@ -48,6 +51,32 @@ export class AttachmentsService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot attach links to tasks in this workspace.");
+    }
+
+    return new TaskAttachmentDto(result.attachment);
+  }
+
+  async createTaskFileAttachment(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: CreateTaskFileAttachmentInput,
+  ): Promise<TaskAttachmentDto> {
+    const result = await this.attachmentsStore.createFileForTask(
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      input,
+    );
+
+    if (result.status === "task_not_found") {
+      throw new NotFoundException("Task was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot attach files to tasks in this workspace.");
     }
 
     return new TaskAttachmentDto(result.attachment);

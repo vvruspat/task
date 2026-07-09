@@ -10,7 +10,11 @@ import {
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
-import type { CreateTaskLinkAttachmentInput, TaskAttachment } from "./attachments.contracts.js";
+import type {
+  CreateTaskFileAttachmentInput,
+  CreateTaskLinkAttachmentInput,
+  TaskAttachment,
+} from "./attachments.contracts.js";
 import type { TaskAttachmentCreateResult, TaskAttachmentsStore } from "./attachments.store.js";
 
 const attachmentWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set([
@@ -91,6 +95,68 @@ export class TypeOrmTaskAttachmentsStore implements TaskAttachmentsStore {
           entityId: createdAttachment.id,
           payload: {
             kind: "link",
+            projectId,
+            taskId,
+            targetType: "task",
+          },
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        return createdAttachment;
+      },
+    );
+
+    return { attachment: toTaskAttachment(savedAttachment), status: "created" };
+  }
+
+  async createFileForTask(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: CreateTaskFileAttachmentInput,
+  ): Promise<TaskAttachmentCreateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!attachmentWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    const savedAttachment = await dataSource.transaction(
+      async (manager): Promise<AttachmentEntity> => {
+        const attachmentRepository = manager.getRepository(AttachmentEntity);
+        const attachment = attachmentRepository.create({
+          workspaceId,
+          targetType: "task",
+          targetId: taskId,
+          kind: "file",
+          title: input.title ?? null,
+          storageKey: input.storageKey,
+          mimeType: input.mimeType ?? null,
+          sizeBytes: input.sizeBytes ?? null,
+          createdByUserId: userId,
+        });
+        const createdAttachment = await attachmentRepository.save(attachment);
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "attachment.created",
+          entityType: "attachment",
+          entityId: createdAttachment.id,
+          payload: {
+            kind: "file",
             projectId,
             taskId,
             targetType: "task",
