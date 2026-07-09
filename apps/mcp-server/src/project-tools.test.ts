@@ -209,6 +209,32 @@ test("project search handler filters active projects by title", async () => {
   assert.deepEqual(await handlers.search({ workspaceId, userId, query: "album" }), [albumProject]);
 });
 
+test("project search handler ranks exact, prefix, then substring matches deterministically", async () => {
+  const exactProject: ProjectSummaryResponse = {
+    ...albumProject,
+    id: "77777777-7777-4777-8777-777777777777",
+    title: "Album",
+  };
+  const prefixProject: ProjectSummaryResponse = {
+    ...albumProject,
+    id: "88888888-8888-4888-8888-888888888888",
+    title: "Album Remix",
+  };
+  const substringProject: ProjectSummaryResponse = {
+    ...albumProject,
+    id: "99999999-9999-4999-8999-999999999999",
+    title: "Live Album",
+  };
+  const client = createBackendClientStub([substringProject, prefixProject, exactProject]);
+  const handlers = createProjectToolHandlers(client);
+
+  assert.deepEqual(await handlers.search({ workspaceId, userId, query: "album" }), [
+    exactProject,
+    prefixProject,
+    substringProject,
+  ]);
+});
+
 test("project search handler applies a bounded limit after filtering", async () => {
   const client = createBackendClientStub([
     albumProject,

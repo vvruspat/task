@@ -515,14 +515,94 @@ function filterSkills(
   skills: TaskSkillSummaryResponse[],
   normalizedQuery: string,
 ): TaskSkillSummaryResponse[] {
-  return skills.filter((skill) => {
-    if (normalizeSearchText(skill.name).includes(normalizedQuery)) {
-      return true;
-    }
+  return skills
+    .flatMap((skill) => {
+      const rank = readBestSkillSearchRank(skill, normalizedQuery);
 
-    return skill.aliases.some((alias) => normalizeSearchText(alias).includes(normalizedQuery));
-  });
+      return rank === null ? [] : [{ skill, rank }];
+    })
+    .sort((left, right) => compareSkillMatches(left, right))
+    .map((match) => match.skill);
 }
+
+function compareSkillMatches(left: TaskSkillSearchMatch, right: TaskSkillSearchMatch): number {
+  if (left.rank.match !== right.rank.match) {
+    return left.rank.match - right.rank.match;
+  }
+
+  if (left.rank.field !== right.rank.field) {
+    return left.rank.field - right.rank.field;
+  }
+
+  const nameComparison = normalizeSearchText(left.skill.name).localeCompare(
+    normalizeSearchText(right.skill.name),
+  );
+
+  return nameComparison === 0 ? left.skill.id.localeCompare(right.skill.id) : nameComparison;
+}
+
+function readBestSkillSearchRank(
+  skill: TaskSkillSummaryResponse,
+  normalizedQuery: string,
+): SkillSearchRank | null {
+  let bestRank: SkillSearchRank | null = null;
+  const values: SkillSearchValue[] = [
+    { value: skill.name, field: 0 },
+    ...skill.aliases.map((alias) => ({ value: alias, field: 1 }) satisfies SkillSearchValue),
+  ];
+
+  for (const { value, field } of values) {
+    const match = readSearchMatchRank(normalizeSearchText(value), normalizedQuery);
+
+    if (match !== null) {
+      const rank = { match, field };
+
+      if (bestRank === null || compareSkillSearchRanks(rank, bestRank) < 0) {
+        bestRank = rank;
+      }
+    }
+  }
+
+  return bestRank;
+}
+
+function compareSkillSearchRanks(left: SkillSearchRank, right: SkillSearchRank): number {
+  if (left.match !== right.match) {
+    return left.match - right.match;
+  }
+
+  return left.field - right.field;
+}
+
+function readSearchMatchRank(normalizedValue: string, normalizedQuery: string): MatchRank | null {
+  if (normalizedValue === normalizedQuery) {
+    return 0;
+  }
+
+  if (normalizedValue.startsWith(normalizedQuery)) {
+    return 1;
+  }
+
+  return normalizedValue.includes(normalizedQuery) ? 2 : null;
+}
+
+type TaskSkillSearchMatch = {
+  skill: TaskSkillSummaryResponse;
+  rank: SkillSearchRank;
+};
+
+type SkillSearchRank = {
+  match: MatchRank;
+  field: SkillSearchFieldRank;
+};
+
+type SkillSearchValue = {
+  value: string;
+  field: SkillSearchFieldRank;
+};
+
+type MatchRank = 0 | 1 | 2;
+type SkillSearchFieldRank = 0 | 1;
 
 function limitResults<T>(items: T[], limit: number | undefined): T[] {
   if (limit === undefined) {
