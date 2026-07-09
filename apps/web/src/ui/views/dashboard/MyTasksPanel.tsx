@@ -1,9 +1,20 @@
-import { MBox, MButton, MGrid, MHeading, MInput, MText } from "@task/ui";
+import {
+  MBadge,
+  MBox,
+  MButton,
+  MCard,
+  MDescriptionList,
+  MFlex,
+  MGrid,
+  MHeading,
+  MInput,
+  MText,
+} from "@task/ui/app";
 import { ArrowRight, Plus } from "lucide-react";
 import type { FormEvent, ReactElement, ReactNode } from "react";
 import { useState } from "react";
 import { buildMyTaskRows, buildMyTaskSummary } from "../workspaceViewModels.js";
-import { DashboardMetrics, DashboardPanel } from "./DashboardPrimitives.js";
+import { DashboardPanelHeader } from "./DashboardPanelHeader.js";
 import type { FormSubmissionState, ProjectSummary, TaskSummary } from "./dashboardTypes.js";
 
 type MyTasksPanelProps = {
@@ -39,26 +50,37 @@ export function MyTasksPanel({
   };
 
   return (
-    <DashboardPanel
-      action={
-        <MButton
-          aria-label="Open task table"
-          className="icon-button"
-          mode="secondary"
-          noPadding
-          title="Open task table"
-          type="button"
-        >
-          <ArrowRight aria-hidden="true" />
-        </MButton>
+    <MCard
+      aria-labelledby="my-tasks-view-title"
+      gap="m"
+      header={
+        <DashboardPanelHeader
+          action={
+            <MButton
+              aria-label="Open task table"
+              mode="secondary"
+              noPadding
+              title="Open task table"
+              type="button"
+            >
+              <ArrowRight aria-hidden="true" />
+            </MButton>
+          }
+          eyebrow="My Tasks"
+          title="Personal queue"
+          titleId="my-tasks-view-title"
+        />
       }
-      eyebrow="My Tasks"
-      title="Personal queue"
-      titleId="my-tasks-view-title"
-      wide
+      shadow={false}
     >
-      <MGridForm className="task-create-form" onSubmit={handleTaskSubmit}>
-        <label htmlFor="dashboard-task-title">
+      <MGridForm onSubmit={handleTaskSubmit}>
+        <MFlex
+          as="label"
+          align="stretch"
+          direction="column"
+          gap="xs"
+          htmlFor="dashboard-task-title"
+        >
           <MText as="span" mode="secondary" size="s">
             Task title
           </MText>
@@ -70,69 +92,70 @@ export function MyTasksPanel({
             placeholder="Add task to selected project"
             value={taskTitle}
           />
-        </label>
+        </MFlex>
         <MButton before={<Plus aria-hidden="true" />} disabled={submitDisabled} type="submit">
           {isSubmitting ? "Adding" : "Add task"}
         </MButton>
       </MGridForm>
       {createTaskState.status === "error" || createTaskState.status === "success" ? (
-        <MText
-          as="p"
-          className={`task-create-state ${createTaskState.status}`}
+        <MBadge
           id="task-create-state"
-          mode="secondary"
+          mode={createTaskState.status === "success" ? "success" : "error"}
         >
           {createTaskState.message}
-        </MText>
+        </MBadge>
       ) : (
-        <MText as="p" className="task-create-state" id="task-create-state" mode="secondary">
+        <MText as="p" id="task-create-state" mode="secondary" size="s">
           {createTaskDisabled
             ? "Select a loaded workspace project to add tasks."
             : "Creates a task in the selected project."}
         </MText>
       )}
-      <DashboardMetrics
-        ariaLabel="My Tasks summary"
-        className="my-task-metrics"
-        items={[
-          { label: "Tasks", value: myTaskSummary.taskCount },
-          { label: "Assigned", value: myTaskSummary.assignedTaskCount },
-          { label: "Due", value: myTaskSummary.dueTaskCount },
-          { label: "Recent", value: myTaskSummary.recentlyUpdatedTaskCount },
+      <MDescriptionList
+        aria-label="My Tasks summary"
+        options={[
+          { title: "Tasks", description: myTaskSummary.taskCount },
+          { title: "Assigned", description: myTaskSummary.assignedTaskCount },
+          { title: "Due", description: myTaskSummary.dueTaskCount },
+          { title: "Recent", description: myTaskSummary.recentlyUpdatedTaskCount },
         ]}
+        size="s"
       />
-      <MBox className="my-task-list">
+      <MFlex align="stretch" direction="column" gap="s">
         {myTaskRows.map((task) => (
-          <MBox as="article" className="my-task-row" key={task.id}>
+          <MGrid
+            tag="article"
+            alignItems="center"
+            columnGap="s"
+            columnTemplate="minmax(0, 1fr) auto auto auto"
+            key={task.id}
+          >
             <MBox>
               <MHeading mode="h4">{task.title}</MHeading>
               <MText as="p" mode="secondary">
                 {task.projectTitle}
               </MText>
             </MBox>
-            <MText as="span">{task.assigneeLabel}</MText>
-            <MText as="span">{task.dueDateLabel}</MText>
+            <MBadge mode="transparent">{task.assigneeLabel}</MBadge>
+            <MBadge mode="transparent">{task.dueDateLabel}</MBadge>
             <time dateTime={task.updatedAtLabel}>{task.updatedAtLabel}</time>
-          </MBox>
+          </MGrid>
         ))}
-      </MBox>
-    </DashboardPanel>
+      </MFlex>
+    </MCard>
   );
 }
 
 function MGridForm({
   children,
-  className,
   onSubmit,
 }: {
   children: ReactNode;
-  className: string;
   onSubmit(event: FormEvent<HTMLFormElement>): void;
 }): ReactElement {
   return (
     <MGrid
       alignItems="end"
-      className={className}
       columnGap="s"
       columnTemplate="minmax(0, 1fr) auto"
       tag="form"

@@ -1,20 +1,26 @@
-import { MText } from "@task/ui";
+import { MCard, MText } from "@task/ui/app";
 import { Clock3 } from "lucide-react";
 import type { ReactElement } from "react";
-import { DashboardPanel } from "./DashboardPrimitives.js";
+import { DashboardPanelHeader } from "./DashboardPanelHeader.js";
 
 export function AgentCommandPanel(): ReactElement {
   return (
-    <DashboardPanel
-      action={<Clock3 aria-hidden="true" className="muted-icon" />}
-      eyebrow="Agent"
-      title="Recent command"
-      titleId="agent-title"
-      wide
+    <MCard
+      aria-labelledby="agent-title"
+      gap="m"
+      header={
+        <DashboardPanelHeader
+          action={<Clock3 aria-hidden="true" />}
+          eyebrow="Agent"
+          title="Recent command"
+          titleId="agent-title"
+        />
+      }
+      shadow={false}
     >
-      <MText as="p" className="agent-line" mode="secondary">
+      <MText as="p" mode="secondary">
         Create a song from the Song skill, preview subtasks, then wait for confirmation.
       </MText>
-    </DashboardPanel>
+    </MCard>
   );
 }

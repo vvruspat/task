@@ -1,4 +1,4 @@
-import { MBox, MFlex, MGrid, MHeading, MText } from "@task/ui";
+import { MBox, MFlex, MHeading, MOperationalContentGrid, MText } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { buildSettingsSummary, buildSettingsWorkspaceRows } from "../workspaceViewModels.js";
 import type {
@@ -41,23 +41,14 @@ export function SettingsView({
   });
 
   return (
-    <MGrid
-      className="content-grid"
-      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
-      rowGap="m"
-      columnGap="m"
-    >
-      <WorkspacePanel
-        eyebrow="Settings"
-        title="Workspace context"
-        titleId="settings-view-title"
-        wide
-      >
-        <MBox className="settings-workspace-list">
+    <MOperationalContentGrid>
+      <WorkspacePanel eyebrow="Settings" title="Workspace context" titleId="settings-view-title">
+        <MFlex align="stretch" direction="column" gap="m">
           {rows.map((workspace) => (
             <MFlex
               as="article"
-              className="settings-workspace-row"
+              align="start"
+              gap="m"
               key={workspace.id}
               justify="space-between"
               wrap="nowrap"
@@ -71,14 +62,14 @@ export function SettingsView({
               <time dateTime={workspace.updatedAtLabel}>{workspace.updatedAtLabel}</time>
             </MFlex>
           ))}
-        </MBox>
+        </MFlex>
       </WorkspacePanel>
 
       <WorkspacePanel eyebrow="Summary" title="Loaded context" titleId="settings-summary-title">
-        <MText as="p" className="agent-line" mode="secondary">
+        <MText as="p" mode="secondary">
           {summary.selectedWorkspaceLabel}
         </MText>
-        <MText as="p" className="agent-line" mode="secondary">
+        <MText as="p" mode="secondary">
           {summary.selectedProjectLabel}
         </MText>
         <WorkspaceMetrics
@@ -91,6 +82,6 @@ export function SettingsView({
           ]}
         />
       </WorkspacePanel>
-    </MGrid>
+    </MOperationalContentGrid>
   );
 }

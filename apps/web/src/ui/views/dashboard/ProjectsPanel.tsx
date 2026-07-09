@@ -1,8 +1,8 @@
-import { MBox, MButton, MFlex, MGrid, MHeading, MInput, MText } from "@task/ui";
+import { MBadge, MBox, MButton, MCard, MFlex, MGrid, MHeading, MInput, MText } from "@task/ui/app";
 import { Plus } from "lucide-react";
 import type { FormEvent, ReactElement, ReactNode } from "react";
 import { useState } from "react";
-import { DashboardPanel } from "./DashboardPrimitives.js";
+import { DashboardPanelHeader } from "./DashboardPanelHeader.js";
 import type { FormSubmissionState, ProjectSummary } from "./dashboardTypes.js";
 
 type ProjectsPanelProps = {
@@ -35,9 +35,20 @@ export function ProjectsPanel({
   };
 
   return (
-    <DashboardPanel eyebrow="Projects" title="Active" titleId="project-title">
-      <PanelForm className="project-create-form" onSubmit={handleProjectSubmit}>
-        <label htmlFor="dashboard-project-title">
+    <MCard
+      aria-labelledby="project-title"
+      gap="m"
+      header={<DashboardPanelHeader eyebrow="Projects" title="Active" titleId="project-title" />}
+      shadow={false}
+    >
+      <PanelForm onSubmit={handleProjectSubmit}>
+        <MFlex
+          as="label"
+          align="stretch"
+          direction="column"
+          gap="xs"
+          htmlFor="dashboard-project-title"
+        >
           <MText as="span" mode="secondary" size="s">
             Project title
           </MText>
@@ -49,7 +60,7 @@ export function ProjectsPanel({
             placeholder="Create project"
             value={projectTitle}
           />
-        </label>
+        </MFlex>
         <MButton
           before={<Plus aria-hidden="true" />}
           disabled={projectSubmitDisabled}
@@ -59,24 +70,22 @@ export function ProjectsPanel({
         </MButton>
       </PanelForm>
       {createProjectState.status === "error" || createProjectState.status === "success" ? (
-        <MText
-          as="p"
-          className={`project-create-state ${createProjectState.status}`}
+        <MBadge
           id="project-create-state"
-          mode="secondary"
+          mode={createProjectState.status === "success" ? "success" : "error"}
         >
           {createProjectState.message}
-        </MText>
+        </MBadge>
       ) : (
-        <MText as="p" className="project-create-state" id="project-create-state" mode="secondary">
+        <MText as="p" id="project-create-state" mode="secondary" size="s">
           {createProjectDisabled
             ? "Load a workspace before creating projects."
             : "Creates a project in the selected workspace."}
         </MText>
       )}
-      <MFlex align="stretch" className="stacked-list" direction="column" gap="s">
+      <MFlex align="stretch" direction="column" gap="s">
         {projects.map((project) => (
-          <MBox as="article" className="mini-row" key={project.id}>
+          <MBox as="article" key={project.id} paddingY="xs">
             <MHeading mode="h4">{project.title}</MHeading>
             <MText as="p" mode="secondary">
               {project.description ?? "No description"}
@@ -84,23 +93,20 @@ export function ProjectsPanel({
           </MBox>
         ))}
       </MFlex>
-    </DashboardPanel>
+    </MCard>
   );
 }
 
 function PanelForm({
   children,
-  className,
   onSubmit,
 }: {
   children: ReactNode;
-  className: string;
   onSubmit(event: FormEvent<HTMLFormElement>): void;
 }): ReactElement {
   return (
     <MGrid
       alignItems="end"
-      className={className}
       columnGap="s"
       columnTemplate="minmax(0, 1fr) auto"
       tag="form"

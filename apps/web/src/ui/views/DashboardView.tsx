@@ -1,4 +1,4 @@
-import { MGrid } from "@task/ui";
+import { MOperationalContentGrid } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { AgentCommandPanel } from "./dashboard/AgentCommandPanel.js";
 import type {
@@ -35,12 +35,7 @@ export default function DashboardView({
   tasks,
 }: DashboardViewProps): ReactElement {
   return (
-    <MGrid
-      className="content-grid"
-      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
-      rowGap="m"
-      columnGap="m"
-    >
+    <MOperationalContentGrid>
       <MyTasksPanel
         createTaskDisabled={createTaskDisabled}
         createTaskState={createTaskState}
@@ -56,6 +51,6 @@ export default function DashboardView({
       />
       <TemplatesPanel skills={skills} />
       <AgentCommandPanel />
-    </MGrid>
+    </MOperationalContentGrid>
   );
 }

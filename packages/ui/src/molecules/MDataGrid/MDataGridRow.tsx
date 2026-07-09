@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useCallback } from "react";
-import { MCheckbox, MFlex } from "../../atoms";
+import { MCheckbox } from "../../atoms/MCheckbox";
+import { MFlex } from "../../atoms/MFlex";
 import styles from "./MDataGridRow.module.css";
 import type {
 	MDataGridCellValue,

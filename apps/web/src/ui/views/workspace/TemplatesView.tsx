@@ -1,4 +1,4 @@
-import { MBox, MFlex, MGrid, MHeading, MText } from "@task/ui";
+import { MBox, MFlex, MHeading, MOperationalContentGrid, MText } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { buildTemplateSkillRows, buildTemplateSkillSummary } from "../workspaceViewModels.js";
 import type { TaskSkillSummary } from "./types.js";
@@ -13,18 +13,14 @@ export function TemplatesView({ skills }: TemplatesViewProps): ReactElement {
   const summary = buildTemplateSkillSummary(skills);
 
   return (
-    <MGrid
-      className="content-grid"
-      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
-      rowGap="m"
-      columnGap="m"
-    >
-      <WorkspacePanel eyebrow="Templates" title="Task skills" titleId="templates-view-title" wide>
-        <MBox className="template-skill-list">
+    <MOperationalContentGrid>
+      <WorkspacePanel eyebrow="Templates" title="Task skills" titleId="templates-view-title">
+        <MFlex align="stretch" direction="column" gap="m">
           {rows.map((skill) => (
             <MFlex
               as="article"
-              className="template-skill-row"
+              align="start"
+              gap="m"
               key={skill.id}
               justify="space-between"
               wrap="nowrap"
@@ -39,11 +35,11 @@ export function TemplatesView({ skills }: TemplatesViewProps): ReactElement {
               <time dateTime={skill.updatedAtLabel}>{skill.updatedAtLabel}</time>
             </MFlex>
           ))}
-        </MBox>
+        </MFlex>
       </WorkspacePanel>
 
       <WorkspacePanel eyebrow="Summary" title="Loaded skills" titleId="templates-summary-title">
-        <MText as="p" className="agent-line" mode="secondary">
+        <MText as="p" mode="secondary">
           Read-only overview of task skills loaded for the workspace.
         </MText>
         <WorkspaceMetrics
@@ -54,6 +50,6 @@ export function TemplatesView({ skills }: TemplatesViewProps): ReactElement {
           ]}
         />
       </WorkspacePanel>
-    </MGrid>
+    </MOperationalContentGrid>
   );
 }

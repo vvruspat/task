@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import type { ComponentProps, ReactNode } from "react";
 import { useCallback, useMemo, useState } from "react";
-import { MCheckbox } from "../../atoms";
+import { MCheckbox } from "../../atoms/MCheckbox";
 import styles from "./MDataGrid.module.css";
 import { MDataGridHeader } from "./MDataGridHeader";
 import { MDataGridPagination } from "./MDataGridPagination";

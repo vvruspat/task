@@ -1,6 +1,6 @@
-import { MBox, MFlex, MHeading, MText } from "@task/ui";
+import { MBox, MCard, MFlex, MHeading, MText } from "@task/ui/app";
 import type { ReactElement } from "react";
-import { DashboardPanel } from "./DashboardPrimitives.js";
+import { DashboardPanelHeader } from "./DashboardPanelHeader.js";
 import type { TaskSkillSummary } from "./dashboardTypes.js";
 
 type TemplatesPanelProps = {
@@ -9,10 +9,17 @@ type TemplatesPanelProps = {
 
 export function TemplatesPanel({ skills }: TemplatesPanelProps): ReactElement {
   return (
-    <DashboardPanel eyebrow="Templates" title="Task skills" titleId="skills-title">
-      <MFlex align="stretch" className="stacked-list" direction="column" gap="s">
+    <MCard
+      aria-labelledby="skills-title"
+      gap="m"
+      header={
+        <DashboardPanelHeader eyebrow="Templates" title="Task skills" titleId="skills-title" />
+      }
+      shadow={false}
+    >
+      <MFlex align="stretch" direction="column" gap="s">
         {skills.map((skill) => (
-          <MBox as="article" className="mini-row" key={skill.id}>
+          <MBox as="article" key={skill.id} paddingY="xs">
             <MHeading mode="h4">{skill.name}</MHeading>
             <MText as="p" mode="secondary">
               {skill.aliases.join(", ")}
@@ -20,6 +27,6 @@ export function TemplatesPanel({ skills }: TemplatesPanelProps): ReactElement {
           </MBox>
         ))}
       </MFlex>
-    </DashboardPanel>
+    </MCard>
   );
 }

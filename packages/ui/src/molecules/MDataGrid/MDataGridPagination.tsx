@@ -1,7 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import type { ComponentProps } from "react";
-import { MButton, MFlex, MSelect, MText } from "../../atoms";
+import { MButton } from "../../atoms/MButton";
+import { MFlex } from "../../atoms/MFlex";
+import { MSelect } from "../../atoms/MSelect";
+import { MText } from "../../atoms/MText";
 import type { MSelectOption } from "../../atoms/MSelect/MSelect";
 import styles from "./MDataGridPagination.module.css";
 

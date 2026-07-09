@@ -1,4 +1,4 @@
-import { MBox, MCard, MDescriptionList, MFlex, MHeading, MText } from "@task/ui";
+import { MBox, MCard, MDescriptionList, MFlex, MHeading, MText } from "@task/ui/app";
 import type { ReactElement, ReactNode } from "react";
 
 type WorkspacePanelHeaderProps = {
@@ -10,7 +10,6 @@ type WorkspacePanelHeaderProps = {
 
 type WorkspacePanelProps = WorkspacePanelHeaderProps & {
   children: ReactNode;
-  wide?: boolean;
 };
 
 export type WorkspaceMetricItem = {
@@ -27,7 +26,7 @@ function WorkspacePanelHeader({
   return (
     <MFlex align="start" justify="space-between" wrap="nowrap">
       <MBox>
-        <MText as="p" className="eyebrow" mode="secondary" size="s">
+        <MText as="p" mode="secondary" size="s">
           {eyebrow}
         </MText>
         <MHeading id={titleId} mode="h3">
@@ -45,12 +44,10 @@ export function WorkspacePanel({
   eyebrow,
   title,
   titleId,
-  wide = false,
 }: WorkspacePanelProps): ReactElement {
   return (
     <MCard
       aria-labelledby={titleId}
-      className={wide ? "wide-panel" : undefined}
       gap="m"
       header={
         <WorkspacePanelHeader action={action} eyebrow={eyebrow} title={title} titleId={titleId} />
@@ -62,16 +59,9 @@ export function WorkspacePanel({
   );
 }
 
-export function WorkspaceMetrics({
-  className,
-  items,
-}: {
-  className?: string;
-  items: WorkspaceMetricItem[];
-}): ReactElement {
+export function WorkspaceMetrics({ items }: { items: WorkspaceMetricItem[] }): ReactElement {
   return (
     <MDescriptionList
-      className={className ? `metric-list ${className}` : "metric-list"}
       options={items.map((item) => ({
         title: item.label,
         description: item.value,

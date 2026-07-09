@@ -1,4 +1,5 @@
-import { MBox, MGrid, MText } from "@task/ui";
+import type { MDataGridHeaderType, MDataGridRowType } from "@task/ui/app";
+import { MDataGrid, MOperationalContentGrid, MText } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { buildTaskTableRows, buildTaskTableSummary } from "../workspaceViewModels.js";
 import type { ProjectSummary, TaskSummary } from "./types.js";
@@ -12,39 +13,37 @@ export type TaskTableViewProps = {
 export function TaskTableView({ projects, tasks }: TaskTableViewProps): ReactElement {
   const rows = buildTaskTableRows(projects, tasks);
   const summary = buildTaskTableSummary(tasks);
+  const headers: MDataGridHeaderType[] = [
+    { field: "title", label: "Task", sortable: true },
+    { field: "projectTitle", label: "Project", sortable: true },
+    { field: "parentLabel", label: "Parent", sortable: true },
+    { field: "assigneeLabel", label: "Assignee", sortable: true },
+    { field: "dueDateLabel", label: "Due", sortable: true },
+    { field: "updatedAtLabel", label: "Updated", sortable: true },
+  ];
+  const gridRows: MDataGridRowType[] = rows.map((task) => ({
+    id: task.id,
+    title: task.title,
+    projectTitle: task.projectTitle,
+    parentLabel: task.parentLabel,
+    assigneeLabel: task.assigneeLabel,
+    dueDateLabel: task.dueDateLabel,
+    updatedAtLabel: task.updatedAtLabel,
+  }));
 
   return (
-    <MGrid
-      className="content-grid"
-      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
-      rowGap="m"
-      columnGap="m"
-    >
-      <WorkspacePanel eyebrow="Table" title="Task table" titleId="task-table-view-title" wide>
-        <MBox className="view-surface">
-          <MBox className="task-table-header">
-            <MText as="span">Task</MText>
-            <MText as="span">Project</MText>
-            <MText as="span">Parent</MText>
-            <MText as="span">Assignee</MText>
-            <MText as="span">Due</MText>
-            <MText as="span">Updated</MText>
-          </MBox>
-          {rows.map((task) => (
-            <MBox as="article" className="task-table-row" key={task.id}>
-              <MText as="span">{task.title}</MText>
-              <MText as="span">{task.projectTitle}</MText>
-              <MText as="span">{task.parentLabel}</MText>
-              <MText as="span">{task.assigneeLabel}</MText>
-              <MText as="span">{task.dueDateLabel}</MText>
-              <MText as="span">{task.updatedAtLabel}</MText>
-            </MBox>
-          ))}
-        </MBox>
+    <MOperationalContentGrid>
+      <WorkspacePanel eyebrow="Table" title="Task table" titleId="task-table-view-title">
+        <MDataGrid
+          aria-labelledby="task-table-view-title"
+          emptyMessage="No tasks loaded"
+          headers={headers}
+          rows={gridRows}
+        />
       </WorkspacePanel>
 
       <WorkspacePanel eyebrow="Summary" title="Loaded tasks" titleId="task-table-summary-title">
-        <MText as="p" className="agent-line" mode="secondary">
+        <MText as="p" mode="secondary">
           Counts use the task set currently loaded by the web shell.
         </MText>
         <WorkspaceMetrics
@@ -55,6 +54,6 @@ export function TaskTableView({ projects, tasks }: TaskTableViewProps): ReactEle
           ]}
         />
       </WorkspacePanel>
-    </MGrid>
+    </MOperationalContentGrid>
   );
 }

@@ -1,6 +1,8 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import { MButton, MFlex, MText } from "../../atoms";
+import { MButton } from "../../atoms/MButton";
+import { MFlex } from "../../atoms/MFlex";
+import { MText } from "../../atoms/MText";
 import styles from "./MDataGridHeader.module.css";
 import type { MDataGridHeaderType, MDataGridSortDirection } from "./types";
 

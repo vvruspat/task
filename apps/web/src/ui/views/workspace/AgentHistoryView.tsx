@@ -1,4 +1,4 @@
-import { MBox, MFlex, MGrid, MHeading, MText } from "@task/ui";
+import { MBox, MFlex, MHeading, MOperationalContentGrid, MText } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { buildAgentHistoryRows, buildAgentHistorySummary } from "../workspaceViewModels.js";
 import type {
@@ -45,21 +45,11 @@ export function AgentHistoryView({
   });
 
   return (
-    <MGrid
-      className="content-grid"
-      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
-      rowGap="m"
-      columnGap="m"
-    >
-      <WorkspacePanel
-        eyebrow="Agent"
-        title="Agent run audit"
-        titleId="agent-history-view-title"
-        wide
-      >
-        <MBox className="agent-history-list">
+    <MOperationalContentGrid>
+      <WorkspacePanel eyebrow="Agent" title="Agent run audit" titleId="agent-history-view-title">
+        <MFlex align="stretch" direction="column" gap="m">
           {rows.length === 0 ? (
-            <MFlex as="article" className="agent-history-row" justify="space-between" wrap="nowrap">
+            <MFlex as="article" align="start" gap="m" justify="space-between" wrap="nowrap">
               <MBox>
                 <MHeading mode="h4">No agent runs loaded</MHeading>
                 <MText as="p" mode="secondary">
@@ -72,7 +62,8 @@ export function AgentHistoryView({
             rows.map((run) => (
               <MFlex
                 as="article"
-                className="agent-history-row"
+                align="start"
+                gap="m"
                 key={run.id}
                 justify="space-between"
                 wrap="nowrap"
@@ -89,11 +80,11 @@ export function AgentHistoryView({
               </MFlex>
             ))
           )}
-        </MBox>
+        </MFlex>
       </WorkspacePanel>
 
       <WorkspacePanel eyebrow="Summary" title="Audit load" titleId="agent-history-summary-title">
-        <MText as="p" className="agent-line" mode="secondary">
+        <MText as="p" mode="secondary">
           {summary.selectedWorkspaceLabel}
         </MText>
         <WorkspaceMetrics
@@ -106,6 +97,6 @@ export function AgentHistoryView({
           ]}
         />
       </WorkspacePanel>
-    </MGrid>
+    </MOperationalContentGrid>
   );
 }

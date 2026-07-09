@@ -1,0 +1,112 @@
+@layer components {
+	.shell {
+		min-height: 100vh;
+		color: var(--color-text-primary);
+		background: var(--color-surface-sunken);
+	}
+
+	.sidebar {
+		padding: var(--space-8) var(--space-6);
+		color: var(--color-text-inverse);
+		background: var(--color-surface-inverse);
+	}
+
+	.workspace {
+		padding: var(--space-6) var(--space-8) var(--space-10);
+	}
+
+	.toolbar {
+		min-height: 52px;
+	}
+
+	.header {
+		padding: var(--space-8) 0;
+		border-bottom: 1px solid var(--color-border-default);
+	}
+
+	.contentGrid {
+		padding-top: var(--space-6);
+	}
+
+	.contentGridWide {
+		--grid-column-template: minmax(0, 1fr);
+	}
+
+	.lane {
+		grid-auto-flow: column;
+		grid-auto-columns: minmax(230px, 1fr);
+		max-width: 100%;
+		overflow-x: auto;
+		padding-bottom: var(--space-2);
+	}
+
+	.recordList {
+		width: 100%;
+	}
+
+	.recordRow {
+		min-width: 0;
+		padding: var(--space-4) 0;
+		border-top: 1px solid var(--color-divider-subtle);
+	}
+
+	.surface {
+		overflow-x: auto;
+	}
+
+	.boardColumn {
+		min-width: 220px;
+		padding: var(--space-4);
+		border: 1px solid var(--color-border-default);
+		border-radius: var(--radius-surface);
+		background: var(--color-surface-raised);
+	}
+
+	.boardCard {
+		min-width: 0;
+		padding: var(--space-4);
+		border: 1px solid var(--color-border-default);
+		border-radius: var(--radius-surface);
+		background: var(--color-surface);
+	}
+
+	.statusDot {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		border-radius: var(--radius-pill);
+		flex: 0 0 auto;
+	}
+
+	@media (max-width: 900px) {
+		.shell {
+			--grid-column-template: 1fr;
+		}
+
+		.sidebar {
+			padding: var(--space-6);
+		}
+
+		.header,
+		.contentGrid {
+			--flex-direction: column;
+			--grid-column-template: 1fr;
+		}
+
+		.lane {
+			grid-auto-flow: row;
+			grid-template-columns: 1fr;
+			overflow-x: visible;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.workspace {
+			padding: var(--space-4);
+		}
+
+		.toolbar {
+			--flex-wrap: wrap;
+		}
+	}
+}

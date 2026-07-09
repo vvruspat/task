@@ -1,4 +1,4 @@
-import { MBadge, MBox, MGrid, MHeading, MText } from "@task/ui";
+import { MBadge, MBox, MFlex, MHeading, MOperationalContentGrid, MText } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { buildProjectOverviewRows, buildProjectOverviewSummary } from "../workspaceViewModels.js";
 import type { ProjectSummary, TaskSummary } from "./types.js";
@@ -14,21 +14,18 @@ export function ProjectsView({ projects, tasks }: ProjectsViewProps): ReactEleme
   const summary = buildProjectOverviewSummary(projects, tasks);
 
   return (
-    <MGrid
-      className="content-grid"
-      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
-      rowGap="m"
-      columnGap="m"
-    >
-      <WorkspacePanel
-        eyebrow="Projects"
-        title="Workspace projects"
-        titleId="projects-view-title"
-        wide
-      >
-        <MBox className="project-overview-list">
+    <MOperationalContentGrid>
+      <WorkspacePanel eyebrow="Projects" title="Workspace projects" titleId="projects-view-title">
+        <MFlex align="stretch" direction="column" gap="m">
           {rows.map((project) => (
-            <MBox as="article" className="project-overview-row" key={project.id}>
+            <MFlex
+              as="article"
+              align="start"
+              gap="m"
+              justify="space-between"
+              key={project.id}
+              wrap="nowrap"
+            >
               <MBox>
                 <MHeading mode="h4">{project.title}</MHeading>
                 <MText as="p" mode="secondary">
@@ -36,7 +33,6 @@ export function ProjectsView({ projects, tasks }: ProjectsViewProps): ReactEleme
                 </MText>
               </MBox>
               <WorkspaceMetrics
-                className="project-overview-metrics"
                 items={[
                   { label: "Tasks", value: project.taskCount },
                   { label: "Due soon", value: project.dueSoonTaskCount },
@@ -44,16 +40,14 @@ export function ProjectsView({ projects, tasks }: ProjectsViewProps): ReactEleme
                   { label: "Updated", value: project.latestActivityLabel },
                 ]}
               />
-              <MBadge className="project-status-badge" mode="transparent">
-                {project.statusLabel}
-              </MBadge>
-            </MBox>
+              <MBadge mode="transparent">{project.statusLabel}</MBadge>
+            </MFlex>
           ))}
-        </MBox>
+        </MFlex>
       </WorkspacePanel>
 
       <WorkspacePanel eyebrow="Summary" title="Project load" titleId="projects-summary-title">
-        <MText as="p" className="agent-line" mode="secondary">
+        <MText as="p" mode="secondary">
           Counts use the tasks currently loaded for the selected workspace project.
         </MText>
         <WorkspaceMetrics
@@ -64,6 +58,6 @@ export function ProjectsView({ projects, tasks }: ProjectsViewProps): ReactEleme
           ]}
         />
       </WorkspacePanel>
-    </MGrid>
+    </MOperationalContentGrid>
   );
 }

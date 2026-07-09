@@ -1,4 +1,12 @@
-import { MBox, MGrid, MHeading, MText } from "@task/ui";
+import {
+  MFlex,
+  MHeading,
+  MOperationalBoardCard,
+  MOperationalBoardColumn,
+  MOperationalContentGrid,
+  MOperationalLane,
+  MText,
+} from "@task/ui/app";
 import type { ReactElement } from "react";
 import { buildMatrixColumns, buildMatrixSummary } from "../workspaceViewModels.js";
 import type { TaskSummary } from "./types.js";
@@ -13,22 +21,12 @@ export function MatrixView({ tasks }: MatrixViewProps): ReactElement {
   const summary = buildMatrixSummary(tasks);
 
   return (
-    <MGrid
-      className="content-grid"
-      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
-      rowGap="m"
-      columnGap="m"
-    >
-      <WorkspacePanel eyebrow="Matrix" title="Parent task grid" titleId="matrix-view-title" wide>
-        <MBox className="matrix-grid">
+    <MOperationalContentGrid>
+      <WorkspacePanel eyebrow="Matrix" title="Parent task grid" titleId="matrix-view-title">
+        <MOperationalLane>
           {columns.map((column) => (
-            <MBox
-              as="section"
-              className="matrix-column"
-              key={column.id}
-              aria-labelledby={`${column.id}-title`}
-            >
-              <MBox className="matrix-column-header">
+            <MOperationalBoardColumn key={column.id} aria-labelledby={`${column.id}-title`}>
+              <MFlex align="start" direction="column" gap="xs">
                 <MHeading id={`${column.id}-title`} mode="h4">
                   {column.title}
                 </MHeading>
@@ -36,26 +34,26 @@ export function MatrixView({ tasks }: MatrixViewProps): ReactElement {
                   {column.childCount} subtasks
                 </MText>
                 <time dateTime={column.updatedAtLabel}>{column.updatedAtLabel}</time>
-              </MBox>
-              <MBox className="matrix-cell-list">
+              </MFlex>
+              <MFlex align="stretch" direction="column" gap="s">
                 {column.cells.map((cell) => (
-                  <MBox as="article" className="matrix-cell" key={cell.id}>
+                  <MOperationalBoardCard key={cell.id}>
                     <MHeading mode="h5">{cell.title}</MHeading>
-                    <MBox>
+                    <MFlex gap="xs">
                       <MText as="span">{cell.assigneeLabel}</MText>
                       <MText as="span">{cell.dueDateLabel}</MText>
                       <time dateTime={cell.updatedAtLabel}>{cell.updatedAtLabel}</time>
-                    </MBox>
-                  </MBox>
+                    </MFlex>
+                  </MOperationalBoardCard>
                 ))}
-              </MBox>
-            </MBox>
+              </MFlex>
+            </MOperationalBoardColumn>
           ))}
-        </MBox>
+        </MOperationalLane>
       </WorkspacePanel>
 
       <WorkspacePanel eyebrow="Summary" title="Task tree" titleId="matrix-summary-title">
-        <MText as="p" className="agent-line" mode="secondary">
+        <MText as="p" mode="secondary">
           Columns use parent and subtask relationships from loaded tasks.
         </MText>
         <WorkspaceMetrics
@@ -67,6 +65,6 @@ export function MatrixView({ tasks }: MatrixViewProps): ReactElement {
           ]}
         />
       </WorkspacePanel>
-    </MGrid>
+    </MOperationalContentGrid>
   );
 }
