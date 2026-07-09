@@ -271,8 +271,46 @@ function filterProjects(
   projects: ProjectSummaryResponse[],
   normalizedQuery: string,
 ): ProjectSummaryResponse[] {
-  return projects.filter((project) => normalizeSearchText(project.title).includes(normalizedQuery));
+  return projects
+    .flatMap((project) => {
+      const rank = readSearchRank(normalizeSearchText(project.title), normalizedQuery);
+
+      return rank === null ? [] : [{ project, rank }];
+    })
+    .sort((left, right) => compareProjectMatches(left, right))
+    .map((match) => match.project);
 }
+
+function compareProjectMatches(left: ProjectSearchMatch, right: ProjectSearchMatch): number {
+  if (left.rank !== right.rank) {
+    return left.rank - right.rank;
+  }
+
+  const titleComparison = normalizeSearchText(left.project.title).localeCompare(
+    normalizeSearchText(right.project.title),
+  );
+
+  return titleComparison === 0 ? left.project.id.localeCompare(right.project.id) : titleComparison;
+}
+
+function readSearchRank(normalizedValue: string, normalizedQuery: string): SearchRank | null {
+  if (normalizedValue === normalizedQuery) {
+    return 0;
+  }
+
+  if (normalizedValue.startsWith(normalizedQuery)) {
+    return 1;
+  }
+
+  return normalizedValue.includes(normalizedQuery) ? 2 : null;
+}
+
+type ProjectSearchMatch = {
+  project: ProjectSummaryResponse;
+  rank: SearchRank;
+};
+
+type SearchRank = 0 | 1 | 2;
 
 function normalizeSearchText(value: string): string {
   return value.trim().toLocaleLowerCase();

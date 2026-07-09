@@ -397,6 +397,45 @@ test("task skill search handler filters by name and aliases", async () => {
   ]);
 });
 
+test("task skill search handler ranks exact, prefix, then substring matches deterministically", async () => {
+  const exactSkill: TaskSkillSummaryResponse = {
+    ...taskSkillSummary,
+    id: "77777777-7777-4777-8777-777777777777",
+    name: "Track",
+    aliases: [],
+  };
+  const prefixSkill: TaskSkillSummaryResponse = {
+    ...taskSkillSummary,
+    id: "88888888-8888-4888-8888-888888888888",
+    name: "Track cleanup",
+    aliases: [],
+  };
+  const aliasExactSkill: TaskSkillSummaryResponse = {
+    ...taskSkillSummary,
+    id: "99999999-9999-4999-8999-999999999999",
+    name: "Song production",
+    aliases: ["track"],
+  };
+  const substringSkill: TaskSkillSummaryResponse = {
+    ...taskSkillSummary,
+    id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    name: "Backing track",
+    aliases: [],
+  };
+  const handlers = createTaskSkillToolHandlers(
+    createBackendClientStub([], {
+      taskSkills: [substringSkill, prefixSkill, aliasExactSkill, exactSkill],
+    }),
+  );
+
+  assert.deepEqual(await handlers.search({ workspaceId, userId, query: "track" }), [
+    exactSkill,
+    aliasExactSkill,
+    prefixSkill,
+    substringSkill,
+  ]);
+});
+
 test("task skill search handler applies a bounded limit after filtering", async () => {
   const handlers = createTaskSkillToolHandlers(
     createBackendClientStub([], {
