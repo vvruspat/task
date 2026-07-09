@@ -144,7 +144,7 @@ attachment.create_link
 attachment.add_link          # alias for attachment.create_link
 attachment.add_file
 attachment.add_telegram_file
-attachment.resolve_pending_telegram_file
+attachment.resolve_pending_telegram_file # attach already-resolved Telegram file metadata
 attachment.list
 ```
 
@@ -282,6 +282,11 @@ The agent should:
 3. save attachment metadata;
 4. optionally download file to object storage;
 5. link attachment to target.
+
+The current MCP `attachment.resolve_pending_telegram_file` tool resolves the agent's already-known
+Telegram file metadata into a normal task attachment through the backend attachment API. It does
+not read from a separate pending-file store; introducing durable pending Telegram file storage is a
+separate data-model decision.
 
 ## MCP and OpenAPI
 

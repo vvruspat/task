@@ -423,6 +423,41 @@ test("attachment create Telegram file handler forwards Telegram file payloads to
   ]);
 });
 
+test("attachment resolve pending Telegram file handler forwards Telegram file payloads to the backend client", async () => {
+  const calls: CreateTaskTelegramFileAttachmentRequest[] = [];
+  const handlers = createAttachmentToolHandlers(
+    createBackendClientStub([telegramFileAttachment], [], [], [], calls),
+  );
+
+  assert.deepEqual(
+    await handlers.resolvePendingTelegramFile({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      telegramFileId: " BQACAgIAAxkBAAIBR2Z ",
+      title: " Reference from Telegram ",
+      mimeType: " audio/mpeg ",
+      sizeBytes: " 2048 ",
+    }),
+    telegramFileAttachment,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: {
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+        title: "Reference from Telegram",
+        mimeType: "audio/mpeg",
+        sizeBytes: "2048",
+      },
+    },
+  ]);
+});
+
 test("attachment list handler forwards task identifiers to the backend client", async () => {
   const calls: ListTaskAttachmentsRequest[] = [];
   const handlers = createAttachmentToolHandlers(createBackendClientStub([taskAttachment], calls));

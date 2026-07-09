@@ -636,6 +636,7 @@ test("registerAttachmentTools registers attachment tools", async () => {
   const createLinkCalls: CreateTaskLinkAttachmentRequest[] = [];
   const createFileCalls: CreateTaskFileAttachmentRequest[] = [];
   const createTelegramFileCalls: CreateTaskTelegramFileAttachmentRequest[] = [];
+  const resolvePendingTelegramFileCalls: CreateTaskTelegramFileAttachmentRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerAttachmentTools(registrar, {
@@ -706,6 +707,32 @@ test("registerAttachmentTools registers attachment tools", async () => {
         sizeBytes: "2048",
       };
     },
+    resolvePendingTelegramFile: async (input: unknown): Promise<TaskAttachmentResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected attachment resolve pending Telegram file input.");
+      }
+      resolvePendingTelegramFileCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          telegramFileId: readString(input, "telegramFileId"),
+          title: readNullableString(input, "title"),
+          mimeType: readNullableString(input, "mimeType"),
+          sizeBytes: readNullableString(input, "sizeBytes"),
+        },
+      });
+      return {
+        ...attachmentResponse,
+        kind: "telegram_file",
+        url: null,
+        storageKey: null,
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+        mimeType: "audio/mpeg",
+        sizeBytes: "2048",
+      };
+    },
     list: async (input: unknown): Promise<TaskAttachmentResponse[]> => {
       if (!isUnknownRecord(input)) {
         throw new Error("Expected attachment list input.");
@@ -735,7 +762,7 @@ test("registerAttachmentTools registers attachment tools", async () => {
   assert.equal(toolCalls[1]?.config.title, "Create link attachment");
   assert.equal(toolCalls[2]?.config.title, "Add file attachment");
   assert.equal(toolCalls[3]?.config.title, "Add Telegram file attachment");
-  assert.equal(toolCalls[4]?.config.title, "Resolve pending Telegram file attachment");
+  assert.equal(toolCalls[4]?.config.title, "Resolve Telegram file attachment");
   assert.equal(toolCalls[5]?.config.title, "List attachments");
 
   const addLinkCall = toolCalls[0];
@@ -873,6 +900,8 @@ test("registerAttachmentTools registers attachment tools", async () => {
         sizeBytes: "2048",
       },
     },
+  ]);
+  assert.deepEqual(resolvePendingTelegramFileCalls, [
     {
       workspaceId,
       projectId,
