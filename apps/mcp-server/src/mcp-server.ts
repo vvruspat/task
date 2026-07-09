@@ -148,6 +148,12 @@ const taskSummaryInputSchema = {
   userId: z.string().uuid(),
 };
 
+const projectSummaryInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
+
 const attachmentCreateLinkInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -531,6 +537,16 @@ export function registerSummaryTools(
   registrar: TaskMcpToolRegistrar,
   handlers: SummaryToolHandlers,
 ): void {
+  registrar.registerTool(
+    "summary.project",
+    {
+      title: "Summarize project",
+      description: "Summarize one visible project with active task counts and recent tasks.",
+      inputSchema: projectSummaryInputSchema,
+    },
+    async (input) => toToolResult(await handlers.project(input)),
+  );
+
   registrar.registerTool(
     "summary.task",
     {

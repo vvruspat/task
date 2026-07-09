@@ -17,7 +17,9 @@ import type {
   CreateTaskRequest,
   CreateTaskSkillResponse,
   CreateTaskTelegramFileAttachmentRequest,
+  GetProjectRequest,
   GetTaskRequest,
+  ListActiveTasksRequest,
   ListTaskAttachmentsRequest,
   ListTaskCommentsRequest,
   MoveTaskResponse,
@@ -40,6 +42,7 @@ import type {
 } from "./backend-client.js";
 import {
   createSummaryToolHandlers,
+  parseProjectSummaryToolInput,
   parseTaskSummaryToolInput,
   SummaryToolInputError,
 } from "./summary-tools.js";
@@ -68,6 +71,43 @@ const taskDetail: TaskDetailResponse = {
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt: "2026-01-02T00:00:00.000Z",
 };
+
+const projectDetail: ProjectDetailResponse = {
+  id: projectId,
+  workspaceId,
+  title: "Album Release",
+  description: "Release plan.",
+  status: "active",
+  position: "1000",
+  createdByUserId: userId,
+  archivedAt: null,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-04T00:00:00.000Z",
+};
+
+const projectTasks: TaskSummaryResponse[] = [
+  {
+    ...taskDetail,
+    updatedAt: "2026-01-02T00:00:00.000Z",
+  },
+  {
+    ...taskDetail,
+    id: "77777777-7777-4777-8777-777777777777",
+    parentTaskId: taskId,
+    title: "Edit bass",
+    assigneeUserId: null,
+    dueAt: null,
+    updatedAt: "2026-01-03T00:00:00.000Z",
+  },
+  {
+    ...taskDetail,
+    id: "99999999-9999-4999-8999-999999999999",
+    title: "Mix bass",
+    assigneeUserId: null,
+    dueAt: "2026-01-05T12:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  },
+];
 
 const comments: TaskCommentResponse[] = [
   {
@@ -123,6 +163,31 @@ const attachments: TaskAttachmentResponse[] = [
   },
 ];
 
+test("parseProjectSummaryToolInput validates and normalizes project summary identifiers", () => {
+  assert.deepEqual(
+    parseProjectSummaryToolInput({
+      workspaceId: ` ${workspaceId} `,
+      projectId,
+      userId,
+    }),
+    {
+      workspaceId,
+      projectId,
+      userId,
+    },
+  );
+
+  assert.throws(
+    () => parseProjectSummaryToolInput({ workspaceId, projectId: "bad", userId }),
+    SummaryToolInputError,
+  );
+  assert.throws(
+    () => parseProjectSummaryToolInput({ workspaceId, projectId }),
+    SummaryToolInputError,
+  );
+  assert.throws(() => parseProjectSummaryToolInput(null), SummaryToolInputError);
+});
+
 test("parseTaskSummaryToolInput validates and normalizes task summary identifiers", () => {
   assert.deepEqual(
     parseTaskSummaryToolInput({
@@ -148,6 +213,76 @@ test("parseTaskSummaryToolInput validates and normalizes task summary identifier
     SummaryToolInputError,
   );
   assert.throws(() => parseTaskSummaryToolInput(null), SummaryToolInputError);
+});
+
+test("summary project handler aggregates project detail and active tasks", async () => {
+  const getTaskCalls: GetTaskRequest[] = [];
+  const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
+  const listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [];
+  const getProjectCalls: GetProjectRequest[] = [];
+  const listActiveTasksCalls: ListActiveTasksRequest[] = [];
+  const handlers = createSummaryToolHandlers(
+    createBackendClientStub(
+      getTaskCalls,
+      listTaskCommentsCalls,
+      listTaskAttachmentsCalls,
+      getProjectCalls,
+      listActiveTasksCalls,
+    ),
+  );
+
+  const summary = await handlers.project({ workspaceId, projectId, userId });
+
+  assert.deepEqual(getProjectCalls, [{ workspaceId, projectId, userId }]);
+  assert.deepEqual(listActiveTasksCalls, [{ workspaceId, projectId, userId }]);
+  assert.deepEqual(summary, {
+    project: {
+      id: projectId,
+      workspaceId,
+      title: "Album Release",
+      description: "Release plan.",
+      status: "active",
+      archivedAt: null,
+      updatedAt: "2026-01-04T00:00:00.000Z",
+    },
+    counts: {
+      tasks: 3,
+      parentTasks: 2,
+      subtasks: 1,
+      assignedTasks: 1,
+      unassignedTasks: 2,
+      dueTasks: 2,
+    },
+    recentTasks: [
+      {
+        id: "77777777-7777-4777-8777-777777777777",
+        parentTaskId: taskId,
+        title: "Edit bass",
+        statusId: "88888888-8888-4888-8888-888888888888",
+        assigneeUserId: null,
+        dueAt: null,
+        updatedAt: "2026-01-03T00:00:00.000Z",
+      },
+      {
+        id: taskId,
+        parentTaskId: null,
+        title: "Record bass",
+        statusId: "88888888-8888-4888-8888-888888888888",
+        assigneeUserId: userId,
+        dueAt: "2026-01-03T12:00:00.000Z",
+        updatedAt: "2026-01-02T00:00:00.000Z",
+      },
+      {
+        id: "99999999-9999-4999-8999-999999999999",
+        parentTaskId: null,
+        title: "Mix bass",
+        statusId: "88888888-8888-4888-8888-888888888888",
+        assigneeUserId: null,
+        dueAt: "2026-01-05T12:00:00.000Z",
+        updatedAt: "2026-01-01T00:00:00.000Z",
+      },
+    ],
+  });
 });
 
 test("summary task handler aggregates task detail, comments, and attachments", async () => {
@@ -226,6 +361,8 @@ function createBackendClientStub(
   getTaskCalls: GetTaskRequest[],
   listTaskCommentsCalls: ListTaskCommentsRequest[],
   listTaskAttachmentsCalls: ListTaskAttachmentsRequest[],
+  getProjectCalls: GetProjectRequest[] = [],
+  listActiveTasksCalls: ListActiveTasksRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<WorkspaceSummaryResponse[]> => {
@@ -279,8 +416,10 @@ function createBackendClientStub(
     listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => {
       throw new Error("Not implemented.");
     },
-    getProject: async (): Promise<ProjectDetailResponse> => {
-      throw new Error("Not implemented.");
+    getProject: async (request): Promise<ProjectDetailResponse> => {
+      getProjectCalls.push(request);
+
+      return projectDetail;
     },
     createProject: async (_request: CreateProjectRequest): Promise<ProjectDetailResponse> => {
       throw new Error("Not implemented.");
@@ -291,8 +430,10 @@ function createBackendClientStub(
     updateProject: async (): Promise<UpdateProjectResponse> => {
       throw new Error("Not implemented.");
     },
-    listActiveTasks: async (): Promise<TaskSummaryResponse[]> => {
-      throw new Error("Not implemented.");
+    listActiveTasks: async (request): Promise<TaskSummaryResponse[]> => {
+      listActiveTasksCalls.push(request);
+
+      return projectTasks;
     },
     listTaskComments: async (request): Promise<TaskCommentResponse[]> => {
       listTaskCommentsCalls.push(request);
