@@ -131,7 +131,13 @@ export default function WorkspaceView({
   if (route.id === "table") {
     return (
       <>
-        <TaskTableView onOpenTask={onOpenTask} projects={projects} tasks={tasks} />
+        <TaskTableView
+          client={taskClient}
+          onOpenTask={onOpenTask}
+          projectId={selectedProjectId}
+          statuses={statuses}
+          workspaceId={selectedWorkspaceId}
+        />
         {taskDrawer}
       </>
     );
@@ -140,7 +146,12 @@ export default function WorkspaceView({
   if (route.id === "templates") {
     return (
       <>
-        <TemplatesView skills={skills} />
+        <TemplatesView
+          client={taskClient}
+          projects={projects}
+          skills={skills}
+          workspaceId={selectedWorkspaceId}
+        />
         {taskDrawer}
       </>
     );

@@ -490,6 +490,134 @@ test("createTaskApiClient validates supported list responses", async () => {
   assert.deepEqual(await client.listStatuses({ workspaceId }), [workspaceStatus()]);
 });
 
+test("createTaskApiClient exposes task skill operations with typed request paths and payloads", async () => {
+  const fetcher = new RecordingFetch(
+    sequence([
+      taskSkillDetail(),
+      taskSkillDetail(),
+      taskSkillDetail(),
+      taskSkillDetail(),
+      taskSkillDetail(),
+      taskSkillDetail(),
+      taskSkillApplyPreview(),
+      taskSkillApplyResult(),
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const taskSkillId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+  const createBody = { definition: { subtasks: ["Record vocals"] }, name: "Song" };
+  const cloneBody = { name: "Song copy" };
+  const metadataBody = { aliases: ["track"], description: "Song workflow", name: "Song" };
+  const definitionBody = { definition: { subtasks: ["Mix vocals"] } };
+  const applyBody = {
+    projectId,
+    rootTaskTitle: "Intro",
+    overrides: { addSubtasks: ["Share preview"], removeSubtasks: ["Record vocals"] },
+  };
+
+  await client.createTaskSkill({ body: createBody, workspaceId });
+  await client.cloneTaskSkill({ body: cloneBody, taskSkillId, workspaceId });
+  await client.getTaskSkill({ taskSkillId, workspaceId });
+  await client.archiveTaskSkill({ taskSkillId, workspaceId });
+  await client.updateTaskSkillMetadata({ body: metadataBody, taskSkillId, workspaceId });
+  await client.updateTaskSkillDefinition({ body: definitionBody, taskSkillId, workspaceId });
+  await client.previewTaskSkillApply({ body: applyBody, taskSkillId, workspaceId });
+  await client.applyTaskSkill({ body: applyBody, taskSkillId, workspaceId });
+
+  assert.deepEqual(
+    fetcher.calls.map((call) => ({
+      body: call.init.body,
+      method: call.init.method,
+      url: call.url,
+    })),
+    [
+      {
+        body: JSON.stringify(createBody),
+        method: "POST",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills`,
+      },
+      {
+        body: JSON.stringify(cloneBody),
+        method: "POST",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills/${taskSkillId}/clone`,
+      },
+      {
+        body: undefined,
+        method: "GET",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills/${taskSkillId}`,
+      },
+      {
+        body: undefined,
+        method: "DELETE",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills/${taskSkillId}`,
+      },
+      {
+        body: JSON.stringify(metadataBody),
+        method: "PATCH",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills/${taskSkillId}`,
+      },
+      {
+        body: JSON.stringify(definitionBody),
+        method: "PATCH",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills/${taskSkillId}/definition`,
+      },
+      {
+        body: JSON.stringify(applyBody),
+        method: "POST",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills/${taskSkillId}/preview-apply`,
+      },
+      {
+        body: JSON.stringify(applyBody),
+        method: "POST",
+        url: `https://task.example/workspaces/${workspaceId}/task-skills/${taskSkillId}/apply`,
+      },
+    ],
+  );
+  for (const call of fetcher.calls) {
+    assert.equal(call.init.headers["x-task-user-id"], trustedUserId);
+  }
+});
+
+test("createTaskApiClient rejects malformed task skill responses", async () => {
+  const taskSkillId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+  const fetcher = new RecordingFetch(
+    sequence([
+      { ...taskSkillDetail(), versions: [{ id: taskSkillId }] },
+      { ...taskSkillApplyPreview(), subtasks: [{ title: "Missing source" }] },
+      { ...taskSkillApplyResult(), rootTask: { id: taskId } },
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const applyBody = { projectId, rootTaskTitle: "Intro" };
+
+  await assert.rejects(() => client.getTaskSkill({ taskSkillId, workspaceId }), {
+    message: "Task API returned malformed task skill detail.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
+  await assert.rejects(
+    () => client.previewTaskSkillApply({ body: applyBody, taskSkillId, workspaceId }),
+    {
+      message: "Task API returned malformed task skill apply preview.",
+      name: "TaskApiClientError",
+      status: 200,
+    },
+  );
+  await assert.rejects(() => client.applyTaskSkill({ body: applyBody, taskSkillId, workspaceId }), {
+    message: "Task API returned malformed task skill apply result.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
+});
+
 test("createTaskApiClient rejects protected requests without trusted user context", async () => {
   const fetcher = new RecordingFetch(single([]));
   const client = createTaskApiClient({
@@ -1009,6 +1137,48 @@ function taskSkillSummary(): unknown {
     archivedAt: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function taskSkillDetail(): Record<string, unknown> {
+  const skill = taskSkillSummary();
+  if (typeof skill !== "object" || skill === null || Array.isArray(skill)) {
+    throw new Error("Task skill fixture must be an object.");
+  }
+
+  return {
+    ...skill,
+    versions: [
+      {
+        id: "99999999-9999-4999-8999-999999999999",
+        workspaceId,
+        taskSkillId: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+        version: 1,
+        definition: { subtasks: ["Record vocals"] },
+        createdByUserId: trustedUserId,
+        createdAt: "2026-07-08T10:00:00.000Z",
+      },
+    ],
+  };
+}
+
+function taskSkillApplyPreview(): Record<string, unknown> {
+  return {
+    workspaceId,
+    projectId,
+    taskSkillId: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+    taskSkillVersionId: "99999999-9999-4999-8999-999999999999",
+    taskSkillVersion: 1,
+    rootTaskTitle: "Intro",
+    subtasks: [{ source: "skill", title: "Record vocals" }],
+  };
+}
+
+function taskSkillApplyResult(): Record<string, unknown> {
+  return {
+    ...taskSkillApplyPreview(),
+    rootTask: taskSummary(),
+    subtasks: [taskSummary()],
   };
 }
 

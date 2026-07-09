@@ -6,6 +6,7 @@ export type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
 export type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
+export type TaskSkillDetail = components["schemas"]["TaskSkillDetailDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 

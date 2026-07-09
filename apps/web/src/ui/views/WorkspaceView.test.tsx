@@ -21,6 +21,8 @@ import {
   buildTaskTableSummary,
   buildTemplateSkillRows,
   buildTemplateSkillSummary,
+  filterAgentHistoryRows,
+  filterTemplateSkillRows,
   formatProjectActionFeedback,
 } from "./workspaceViewModels.js";
 
@@ -447,7 +449,10 @@ test("buildAgentHistoryRows maps loaded run summaries", () => {
     [
       {
         detail: "telegram - 2026-07-05",
+        error: null,
+        finalResponse: "Done.",
         id: "11111111-1111-4111-8111-111111111111",
+        model: "openai/gpt-5",
         statusLabel: "waiting_confirmation",
         title: "@task prepare label update",
         updatedAtLabel: "2026-07-06",
@@ -777,6 +782,70 @@ test("buildTemplateSkillRows maps loaded task skills into template rows", () => 
         updatedAtLabel: "2026-07-06",
       },
     ],
+  );
+});
+
+test("filterTemplateSkillRows searches names, descriptions, and aliases", () => {
+  const skills = [
+    taskSkillSummary({
+      aliases: ["song"],
+      description: "Creates a song task tree",
+      id: "99999999-9999-4999-8999-999999999991",
+      name: "Song",
+    }),
+    taskSkillSummary({
+      aliases: ["ship"],
+      description: "Publishes a release",
+      id: "99999999-9999-4999-8999-999999999992",
+      name: "Release",
+    }),
+  ];
+
+  assert.deepEqual(
+    filterTemplateSkillRows(skills, "SONG").map((skill) => skill.id),
+    ["99999999-9999-4999-8999-999999999991"],
+  );
+  assert.deepEqual(
+    filterTemplateSkillRows(skills, "publishes").map((skill) => skill.id),
+    ["99999999-9999-4999-8999-999999999992"],
+  );
+  assert.deepEqual(
+    filterTemplateSkillRows(skills, "").map((skill) => skill.id),
+    skills.map((skill) => skill.id),
+  );
+});
+
+test("filterAgentHistoryRows searches available summary detail", () => {
+  const runs = [
+    agentRunSummary({
+      error: null,
+      finalResponse: "Created three tasks.",
+      id: "12121212-1212-4212-8212-121212121212",
+      inputText: "Plan the release",
+      model: "model-a",
+      source: "web",
+    }),
+    agentRunSummary({
+      error: "Connection failed",
+      finalResponse: null,
+      id: "34343434-3434-4434-8434-343434343434",
+      inputText: "What is next?",
+      model: null,
+      source: "telegram",
+    }),
+  ];
+
+  assert.deepEqual(
+    filterAgentHistoryRows(runs, "created three").map((run) => run.id),
+    ["12121212-1212-4212-8212-121212121212"],
+  );
+  assert.deepEqual(
+    filterAgentHistoryRows(runs, "connection").map((run) => run.id),
+    ["34343434-3434-4434-8434-343434343434"],
+  );
+  assert.deepEqual(
+    filterAgentHistoryRows(runs, "telegram").map((run) => run.id),
+    ["34343434-3434-4434-8434-343434343434"],
   );
 });
 

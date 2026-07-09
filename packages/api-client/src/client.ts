@@ -20,6 +20,10 @@ export type TaskDetail = components["schemas"]["TaskDetailDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
 export type TaskTablePage = components["schemas"]["TaskTablePageDto"];
 export type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
+export type TaskSkillDetail = components["schemas"]["TaskSkillDetailDto"];
+export type TaskSkillVersionSummary = components["schemas"]["TaskSkillVersionSummaryDto"];
+export type TaskSkillApplyPreview = components["schemas"]["TaskSkillApplyPreviewDto"];
+export type TaskSkillApplyResult = components["schemas"]["TaskSkillApplyResultDto"];
 export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 
@@ -37,6 +41,15 @@ type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type ListMyTasksOperation = operations["DashboardController_listMyTasks"];
 type ListTaskTableOperation = operations["TasksController_listTaskTable"];
 type BulkUpdateTasksOperation = operations["TasksController_bulkUpdateTasks"];
+type CreateTaskSkillOperation = operations["TaskSkillsController_createTaskSkill"];
+type CloneTaskSkillOperation = operations["TaskSkillsController_cloneTaskSkill"];
+type GetTaskSkillOperation = operations["TaskSkillsController_getTaskSkill"];
+type ArchiveTaskSkillOperation = operations["TaskSkillsController_archiveTaskSkill"];
+type UpdateTaskSkillMetadataOperation = operations["TaskSkillsController_updateTaskSkillMetadata"];
+type UpdateTaskSkillDefinitionOperation =
+  operations["TaskSkillsController_updateTaskSkillDefinition"];
+type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
+type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -61,6 +74,34 @@ export type UpdateTaskStatusInput =
   UpdateTaskStatusOperation["requestBody"]["content"]["application/json"];
 export type BulkUpdateTasksInput =
   BulkUpdateTasksOperation["requestBody"]["content"]["application/json"];
+export type CreateTaskSkillInput =
+  CreateTaskSkillOperation["requestBody"]["content"]["application/json"];
+export type CloneTaskSkillInput =
+  CloneTaskSkillOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskSkillMetadataInput =
+  UpdateTaskSkillMetadataOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskSkillDefinitionInput =
+  UpdateTaskSkillDefinitionOperation["requestBody"]["content"]["application/json"];
+export type PreviewTaskSkillApplyInput =
+  PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
+export type ApplyTaskSkillInput =
+  ApplyTaskSkillOperation["requestBody"]["content"]["application/json"];
+export type CreateTaskSkillResponse =
+  CreateTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type CloneTaskSkillResponse =
+  CloneTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type GetTaskSkillResponse =
+  GetTaskSkillOperation["responses"]["200"]["content"]["application/json"];
+export type ArchiveTaskSkillResponse =
+  ArchiveTaskSkillOperation["responses"]["200"]["content"]["application/json"];
+export type UpdateTaskSkillMetadataResponse =
+  UpdateTaskSkillMetadataOperation["responses"]["200"]["content"]["application/json"];
+export type UpdateTaskSkillDefinitionResponse =
+  UpdateTaskSkillDefinitionOperation["responses"]["200"]["content"]["application/json"];
+export type PreviewTaskSkillApplyResponse =
+  PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
+export type ApplyTaskSkillResponse =
+  ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
 
 export type TaskApiRequestHeaders = {
   accept: "application/json";
@@ -156,6 +197,24 @@ export type BulkUpdateTasksRequestInput = ProjectScopedInput & { body: BulkUpdat
 
 export type TaskScopedInput = ArchiveTaskRequestInput;
 
+export type TaskSkillScopedInput = WorkspaceScopedInput & {
+  taskSkillId: string;
+};
+export type CreateTaskSkillRequestInput = WorkspaceScopedInput & { body: CreateTaskSkillInput };
+export type CloneTaskSkillRequestInput = TaskSkillScopedInput & { body: CloneTaskSkillInput };
+export type UpdateTaskSkillMetadataRequestInput = TaskSkillScopedInput & {
+  body: UpdateTaskSkillMetadataInput;
+};
+export type UpdateTaskSkillDefinitionRequestInput = TaskSkillScopedInput & {
+  body: UpdateTaskSkillDefinitionInput;
+};
+export type PreviewTaskSkillApplyRequestInput = TaskSkillScopedInput & {
+  body: PreviewTaskSkillApplyInput;
+};
+export type ApplyTaskSkillRequestInput = TaskSkillScopedInput & {
+  body: ApplyTaskSkillInput;
+};
+
 export type CreateTaskCommentRequestInput = TaskScopedInput & {
   body: CreateTaskCommentInput;
 };
@@ -184,8 +243,11 @@ export type TaskApiClient = {
   ): Promise<TaskAttachment>;
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
+  createTaskSkill(input: CreateTaskSkillRequestInput): Promise<CreateTaskSkillResponse>;
+  cloneTaskSkill(input: CloneTaskSkillRequestInput): Promise<CloneTaskSkillResponse>;
   getHealth(): Promise<HealthResponse>;
   getTask(input: TaskScopedInput): Promise<TaskDetail>;
+  getTaskSkill(input: TaskSkillScopedInput): Promise<GetTaskSkillResponse>;
   getDashboardOverview(input: WorkspaceScopedInput): Promise<DashboardOverview>;
   getProjectMatrix(input: GetProjectMatrixRequestInput): Promise<ProjectMatrix>;
   listPendingConfirmationRequests(
@@ -208,6 +270,17 @@ export type TaskApiClient = {
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
   listWorkspaces(): Promise<WorkspaceSummary[]>;
+  archiveTaskSkill(input: TaskSkillScopedInput): Promise<ArchiveTaskSkillResponse>;
+  updateTaskSkillMetadata(
+    input: UpdateTaskSkillMetadataRequestInput,
+  ): Promise<UpdateTaskSkillMetadataResponse>;
+  updateTaskSkillDefinition(
+    input: UpdateTaskSkillDefinitionRequestInput,
+  ): Promise<UpdateTaskSkillDefinitionResponse>;
+  previewTaskSkillApply(
+    input: PreviewTaskSkillApplyRequestInput,
+  ): Promise<PreviewTaskSkillApplyResponse>;
+  applyTaskSkill(input: ApplyTaskSkillRequestInput): Promise<ApplyTaskSkillResponse>;
   updateProject(input: UpdateProjectRequestInput): Promise<UpdateProjectResponse>;
   updateTask(input: UpdateTaskRequestInput): Promise<UpdateTaskResponse>;
   updateTaskAssignee(input: UpdateTaskAssigneeRequestInput): Promise<TaskDetail>;
@@ -527,6 +600,66 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    createTaskSkill: (input) =>
+      request(options.fetch, baseUrl, taskSkillsPath(input), taskSkillDetailParser, {
+        body: input.body,
+        method: "POST",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    cloneTaskSkill: (input) =>
+      request(options.fetch, baseUrl, `${taskSkillPath(input)}/clone`, taskSkillDetailParser, {
+        body: input.body,
+        method: "POST",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    getTaskSkill: (input) =>
+      request(options.fetch, baseUrl, taskSkillPath(input), taskSkillDetailParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    archiveTaskSkill: (input) =>
+      request(options.fetch, baseUrl, taskSkillPath(input), taskSkillDetailParser, {
+        method: "DELETE",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    updateTaskSkillMetadata: (input) =>
+      request(options.fetch, baseUrl, taskSkillPath(input), taskSkillDetailParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    updateTaskSkillDefinition: (input) =>
+      request(options.fetch, baseUrl, `${taskSkillPath(input)}/definition`, taskSkillDetailParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    previewTaskSkillApply: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `${taskSkillPath(input)}/preview-apply`,
+        taskSkillApplyPreviewParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    applyTaskSkill: (input) =>
+      request(options.fetch, baseUrl, `${taskSkillPath(input)}/apply`, taskSkillApplyResultParser, {
+        body: input.body,
+        method: "POST",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     listTasks: (input) =>
       request(
         options.fetch,
@@ -661,6 +794,12 @@ function encodePathSegment(value: string): string {
 function taskPath(input: TaskScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/${encodePathSegment(input.taskId)}`;
 }
+function taskSkillsPath(input: WorkspaceScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/task-skills`;
+}
+function taskSkillPath(input: TaskSkillScopedInput): string {
+  return `${taskSkillsPath(input)}/${encodePathSegment(input.taskSkillId)}`;
+}
 function toMyTasksQuery(input: ListMyTasksRequestInput): string {
   const parameters = new URLSearchParams();
   if (input.queue !== undefined) parameters.set("queue", input.queue);
@@ -779,6 +918,18 @@ const taskCommentParser: ResponseParser<TaskComment> = {
 const taskSkillSummaryArrayParser: ResponseParser<TaskSkillSummary[]> = {
   isValid: (value): value is TaskSkillSummary[] => isArrayOf(value, isTaskSkillSummary),
   label: "task skill summary list",
+};
+const taskSkillDetailParser: ResponseParser<TaskSkillDetail> = {
+  isValid: isTaskSkillDetail,
+  label: "task skill detail",
+};
+const taskSkillApplyPreviewParser: ResponseParser<TaskSkillApplyPreview> = {
+  isValid: isTaskSkillApplyPreview,
+  label: "task skill apply preview",
+};
+const taskSkillApplyResultParser: ResponseParser<TaskSkillApplyResult> = {
+  isValid: isTaskSkillApplyResult,
+  label: "task skill apply result",
 };
 
 const workspaceStatusArrayParser: ResponseParser<WorkspaceStatus[]> = {
@@ -1117,6 +1268,62 @@ function isTaskSkillSummary(value: unknown): value is TaskSkillSummary {
   );
 }
 
+function isTaskSkillDetail(value: unknown): value is TaskSkillDetail {
+  return (
+    isTaskSkillSummary(value) &&
+    isArrayOf(readProperty(value, "versions"), isTaskSkillVersionSummary)
+  );
+}
+
+function isTaskSkillVersionSummary(value: unknown): value is TaskSkillVersionSummary {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "taskSkillId") &&
+    isNumber(readProperty(value, "version")) &&
+    isJsonObject(readProperty(value, "definition")) &&
+    hasString(value, "createdByUserId") &&
+    hasString(value, "createdAt")
+  );
+}
+
+function isTaskSkillApplyPreview(value: unknown): value is TaskSkillApplyPreview {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "projectId") &&
+    hasString(value, "taskSkillId") &&
+    hasString(value, "taskSkillVersionId") &&
+    isNumber(readProperty(value, "taskSkillVersion")) &&
+    hasString(value, "rootTaskTitle") &&
+    isArrayOf(readProperty(value, "subtasks"), isTaskSkillApplyPreviewSubtask)
+  );
+}
+
+function isTaskSkillApplyPreviewSubtask(
+  value: unknown,
+): value is components["schemas"]["TaskSkillApplyPreviewSubtaskDto"] {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "title") &&
+    (readProperty(value, "source") === "skill" || readProperty(value, "source") === "added")
+  );
+}
+
+function isTaskSkillApplyResult(value: unknown): value is TaskSkillApplyResult {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "projectId") &&
+    hasString(value, "taskSkillId") &&
+    hasString(value, "taskSkillVersionId") &&
+    isNumber(readProperty(value, "taskSkillVersion")) &&
+    isTaskDetail(readProperty(value, "rootTask")) &&
+    isArrayOf(readProperty(value, "subtasks"), isTaskDetail)
+  );
+}
+
 function isWorkspaceStatus(value: unknown): value is WorkspaceStatus {
   return (
     isJsonObject(value) &&
@@ -1184,6 +1391,9 @@ function isNonNegativeInteger(value: unknown): boolean {
 }
 function isPositiveInteger(value: unknown): boolean {
   return typeof value === "number" && Number.isInteger(value) && value >= 1;
+}
+function isNumber(value: unknown): boolean {
+  return typeof value === "number";
 }
 
 function readString(value: JsonObject, key: string): string | null {

@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/index.ts": {
-    "mtime": 1783637688.3460596,
-    "ast_hash": "111feae38b8f9c13190907c0d5d4cd47",
+    "mtime": 1783638538.5327284,
+    "ast_hash": "c56f916992cde3cec70d67be7769bdf1",
     "semantic_hash": ""
   },
   "packages/api-client/tsconfig.json": {
@@ -250,7 +250,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1783637977.5080538,
+    "mtime": 1783638019.4357922,
     "ast_hash": "54c5be054b6ec1a03d35b40a10e3995a",
     "semantic_hash": ""
   },
@@ -680,7 +680,7 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1783637984.5227222,
+    "mtime": 1783639207.6182756,
     "ast_hash": "19463ec5dfe73f52aa815ce447f711ff",
     "semantic_hash": ""
   },
@@ -1210,8 +1210,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/WorkspaceView.tsx": {
-    "mtime": 1783637384.2009552,
-    "ast_hash": "67a74e21367f16a3706fed9e91fae2a1",
+    "mtime": 1783638728.558683,
+    "ast_hash": "95b1e404cf63845e712d0aaa27a51365",
     "semantic_hash": ""
   },
   "apps/web/src/vite-env.d.ts": {
@@ -1230,18 +1230,18 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/client.test.ts": {
-    "mtime": 1783637973.1604986,
-    "ast_hash": "1b54a6a8b7ebabaf44bfcebca61a44d4",
+    "mtime": 1783638413.5909495,
+    "ast_hash": "76b2d3bf580816c25df0efa2fdf9456d",
     "semantic_hash": ""
   },
   "packages/api-client/src/client.ts": {
-    "mtime": 1783637956.529891,
-    "ast_hash": "94107646ed091df06f7dc79e2ccec7f5",
+    "mtime": 1783638538.532441,
+    "ast_hash": "1d1e19922061ce2c32871f783d043040",
     "semantic_hash": ""
   },
   "apps/web/src/api/web-shell-data.test.ts": {
-    "mtime": 1783637746.4713066,
-    "ast_hash": "89c470e1cda32d1f4732603bbd9fe5f6",
+    "mtime": 1783638516.2153494,
+    "ast_hash": "2f9879ec09b99b6691f057cac8a3de72",
     "semantic_hash": ""
   },
   "apps/web/src/api/web-shell-data.ts": {
@@ -1255,8 +1255,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/WorkspaceView.test.tsx": {
-    "mtime": 1783637717.4908385,
-    "ast_hash": "5e0f29c020bee6510a5f39139375951c",
+    "mtime": 1783638264.6386688,
+    "ast_hash": "eeae8ae5b014326ecc826963b612adc7",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent-runs.controller.ts": {
@@ -1385,13 +1385,13 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspaceViewModels.ts": {
-    "mtime": 1783636284.5700798,
-    "ast_hash": "3188f40bca6cdb4da7262bf61293c62b",
+    "mtime": 1783638205.8363519,
+    "ast_hash": "4dd162e62250ddcd41b3873ad40e8720",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/AgentHistoryView.tsx": {
-    "mtime": 1783607153.695067,
-    "ast_hash": "1bf869c87052c9650e484ae2ff07a41e",
+    "mtime": 1783638237.464287,
+    "ast_hash": "65ddce4da198e9747d8809106b28d648",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/FallbackWorkspaceRouteView.tsx": {
@@ -1420,18 +1420,18 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/TaskTableView.tsx": {
-    "mtime": 1783636654.1489544,
-    "ast_hash": "172482cc561cb955851e294da62428c0",
+    "mtime": 1783638627.10436,
+    "ast_hash": "5d7db2b2642d4e5da47f586a5b0028b8",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/TemplatesView.tsx": {
-    "mtime": 1783607153.6954775,
-    "ast_hash": "207ee79d9d9f9d41e7603466cd283721",
+    "mtime": 1783639131.0528352,
+    "ast_hash": "13616fc305f51ec8fcd3f8498778c6c1",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/types.ts": {
-    "mtime": 1783634422.1465843,
-    "ast_hash": "c3b66b019d52043cccf0c94f2937b7f1",
+    "mtime": 1783638728.558386,
+    "ast_hash": "23cc05db2fb6fc789f442f814e1c149c",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/dashboard/AgentCommandPanel.tsx": {
@@ -3332,6 +3332,26 @@
   "apps/web/src/ui/views/workspace/matrixViewModels.ts": {
     "mtime": 1783637717.490041,
     "ast_hash": "a5e92e5178f276f21f54b255be4e4f0b",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/views/workspace/TaskTableView.test.ts": {
+    "mtime": 1783638627.1046824,
+    "ast_hash": "392afa952bf3b351ddda4d7c182ac6c7",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/views/workspace/taskTableViewModels.ts": {
+    "mtime": 1783638627.104023,
+    "ast_hash": "df6864688c66c20626f663b306faf355",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/views/workspace/templatesViewModels.test.ts": {
+    "mtime": 1783639017.057009,
+    "ast_hash": "af3578cd4f9fea59cfabbfce4d1e55f0",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/views/workspace/templatesViewModels.ts": {
+    "mtime": 1783639017.0567238,
+    "ast_hash": "b54d3bf2557c5083ee9700b49bd4a79d",
     "semantic_hash": ""
   }
 }

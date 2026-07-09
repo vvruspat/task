@@ -111,7 +111,10 @@ export type AgentHistorySummary = {
 
 export type AgentHistoryRunRow = {
   detail: string;
+  error: string | null;
+  finalResponse: string | null;
   id: string;
+  model: string | null;
   statusLabel: string;
   title: string;
   updatedAtLabel: string;
@@ -372,11 +375,55 @@ export function buildAgentHistorySummary(input: {
 export function buildAgentHistoryRows(agentRuns: AgentRunSummary[]): AgentHistoryRunRow[] {
   return agentRuns.map((run) => ({
     detail: `${run.source} - ${formatDateLabel(run.createdAt)}`,
+    error: run.error ?? null,
+    finalResponse: run.finalResponse ?? null,
     id: run.id,
+    model: run.model ?? null,
     statusLabel: run.status,
     title: run.inputText,
     updatedAtLabel: formatDateLabel(run.updatedAt),
   }));
+}
+
+export function filterTemplateSkillRows(
+  skills: TaskSkillSummary[],
+  query: string,
+): ReturnType<typeof buildTemplateSkillRows> {
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const rows = buildTemplateSkillRows(skills);
+
+  if (normalizedQuery.length === 0) {
+    return rows;
+  }
+
+  return rows.filter((skill) =>
+    [skill.name, skill.description, skill.aliasLabel].some((value) =>
+      value.toLocaleLowerCase().includes(normalizedQuery),
+    ),
+  );
+}
+
+export function filterAgentHistoryRows(
+  agentRuns: AgentRunSummary[],
+  query: string,
+): AgentHistoryRunRow[] {
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const rows = buildAgentHistoryRows(agentRuns);
+
+  if (normalizedQuery.length === 0) {
+    return rows;
+  }
+
+  return rows.filter((run) =>
+    [
+      run.title,
+      run.detail,
+      run.statusLabel,
+      run.model ?? "",
+      run.finalResponse ?? "",
+      run.error ?? "",
+    ].some((value) => value.toLocaleLowerCase().includes(normalizedQuery)),
+  );
 }
 
 export function buildProjectOverviewRows(

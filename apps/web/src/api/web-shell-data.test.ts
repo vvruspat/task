@@ -3,9 +3,11 @@ import test from "node:test";
 import type {
   AddTaskSubtasksRequestInput,
   AgentRunSummary,
+  ApplyTaskSkillRequestInput,
   ArchiveProjectRequestInput,
   ArchiveTaskRequestInput,
   BulkUpdateTasksRequestInput,
+  CloneTaskSkillRequestInput,
   ConfirmationRequestDetail,
   ConfirmationRequestScopedInput,
   ConfirmationRequestSummary,
@@ -14,6 +16,7 @@ import type {
   CreateTaskFileAttachmentRequestInput,
   CreateTaskLinkAttachmentRequestInput,
   CreateTaskRequestInput,
+  CreateTaskSkillRequestInput,
   CreateTaskTelegramFileAttachmentRequestInput,
   DashboardOverview,
   GetProjectMatrixRequestInput,
@@ -21,6 +24,7 @@ import type {
   ListTaskTableRequestInput,
   MoveTaskRequestInput,
   MyTasksPage,
+  PreviewTaskSkillApplyRequestInput,
   ProjectDetail,
   ProjectMatrix,
   ProjectSummary,
@@ -29,6 +33,7 @@ import type {
   TaskAttachment,
   TaskComment,
   TaskDetail,
+  TaskSkillScopedInput,
   TaskSkillSummary,
   TaskSummary,
   TaskTablePage,
@@ -36,6 +41,8 @@ import type {
   UpdateTaskAssigneeRequestInput,
   UpdateTaskDueDateRequestInput,
   UpdateTaskRequestInput,
+  UpdateTaskSkillDefinitionRequestInput,
+  UpdateTaskSkillMetadataRequestInput,
   UpdateTaskStatusRequestInput,
   WorkspaceStatus,
   WorkspaceSummary,
@@ -342,6 +349,14 @@ class RecordingTaskApiClient implements TaskApiClient {
     return taskSummary();
   }
 
+  async createTaskSkill(_input: CreateTaskSkillRequestInput): Promise<never> {
+    throw new Error("createTaskSkill is not used by the web shell loader.");
+  }
+
+  async cloneTaskSkill(_input: CloneTaskSkillRequestInput): Promise<never> {
+    throw new Error("cloneTaskSkill is not used by the web shell loader.");
+  }
+
   async createTaskComment(_input: CreateTaskCommentRequestInput): Promise<never> {
     throw new Error("createTaskComment is not used by the web shell loader.");
   }
@@ -374,6 +389,30 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async getTask(_input: ArchiveTaskRequestInput): Promise<never> {
     throw new Error("getTask is not used by the web shell loader.");
+  }
+
+  async getTaskSkill(_input: TaskSkillScopedInput): Promise<never> {
+    throw new Error("getTaskSkill is not used by the web shell loader.");
+  }
+
+  async archiveTaskSkill(_input: TaskSkillScopedInput): Promise<never> {
+    throw new Error("archiveTaskSkill is not used by the web shell loader.");
+  }
+
+  async updateTaskSkillMetadata(_input: UpdateTaskSkillMetadataRequestInput): Promise<never> {
+    throw new Error("updateTaskSkillMetadata is not used by the web shell loader.");
+  }
+
+  async updateTaskSkillDefinition(_input: UpdateTaskSkillDefinitionRequestInput): Promise<never> {
+    throw new Error("updateTaskSkillDefinition is not used by the web shell loader.");
+  }
+
+  async previewTaskSkillApply(_input: PreviewTaskSkillApplyRequestInput): Promise<never> {
+    throw new Error("previewTaskSkillApply is not used by the web shell loader.");
+  }
+
+  async applyTaskSkill(_input: ApplyTaskSkillRequestInput): Promise<never> {
+    throw new Error("applyTaskSkill is not used by the web shell loader.");
   }
 
   async updateProject(_input: UpdateProjectRequestInput): Promise<never> {
