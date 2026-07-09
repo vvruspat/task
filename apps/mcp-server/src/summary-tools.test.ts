@@ -50,12 +50,14 @@ import {
   createSummaryToolHandlers,
   parseProjectSummaryToolInput,
   parseTaskSummaryToolInput,
+  parseUserSummaryToolInput,
   parseWorkspaceSummaryToolInput,
   SummaryToolInputError,
 } from "./summary-tools.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "22222222-2222-4222-8222-222222222222";
+const videoProjectId = "33333333-3333-4333-8333-333333333333";
 const taskId = "66666666-6666-4666-8666-666666666666";
 const userId = "55555555-5555-4555-8555-555555555555";
 const secondUserId = "77777777-7777-4777-8777-777777777777";
@@ -163,7 +165,7 @@ const workspaceProjects: ProjectSummaryResponse[] = [
   },
   {
     ...projectDetail,
-    id: "33333333-3333-4333-8333-333333333333",
+    id: videoProjectId,
     title: "Video Release",
     status: "active",
     updatedAt: "2026-01-05T00:00:00.000Z",
@@ -205,6 +207,29 @@ const projectTasks: TaskSummaryResponse[] = [
     assigneeUserId: null,
     dueAt: "2026-01-05T12:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",
+  },
+];
+
+const videoProjectTasks: TaskSummaryResponse[] = [
+  {
+    ...taskDetail,
+    id: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+    projectId: videoProjectId,
+    title: "Edit teaser",
+    statusId: "99999999-9999-4999-8999-999999999999",
+    assigneeUserId: secondUserId,
+    dueAt: "2026-01-06T12:00:00.000Z",
+    updatedAt: "2026-01-06T00:00:00.000Z",
+  },
+  {
+    ...taskDetail,
+    id: "ffffffff-ffff-4fff-8fff-ffffffffffff",
+    projectId: videoProjectId,
+    title: "Export teaser",
+    statusId: "88888888-8888-4888-8888-888888888888",
+    assigneeUserId: secondUserId,
+    dueAt: null,
+    updatedAt: "2026-01-05T00:00:00.000Z",
   },
 ];
 
@@ -335,6 +360,32 @@ test("parseTaskSummaryToolInput validates and normalizes task summary identifier
   assert.throws(() => parseTaskSummaryToolInput(null), SummaryToolInputError);
 });
 
+test("parseUserSummaryToolInput validates and normalizes user summary identifiers", () => {
+  assert.deepEqual(
+    parseUserSummaryToolInput({
+      workspaceId: ` ${workspaceId} `,
+      userId,
+      targetUserId: secondUserId,
+    }),
+    {
+      workspaceId,
+      userId,
+      targetUserId: secondUserId,
+    },
+  );
+  assert.deepEqual(parseUserSummaryToolInput({ workspaceId, userId }), {
+    workspaceId,
+    userId,
+  });
+
+  assert.throws(
+    () => parseUserSummaryToolInput({ workspaceId, userId, targetUserId: "bad" }),
+    SummaryToolInputError,
+  );
+  assert.throws(() => parseUserSummaryToolInput({ workspaceId }), SummaryToolInputError);
+  assert.throws(() => parseUserSummaryToolInput(null), SummaryToolInputError);
+});
+
 test("summary workspace handler aggregates workspace context with explicit workspace", async () => {
   const getTaskCalls: GetTaskRequest[] = [];
   const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
@@ -451,6 +502,119 @@ test("summary workspace handler falls back to the first visible workspace", asyn
   assert.equal(summary.workspace.id, workspaceId);
   assert.deepEqual(listWorkspacesCalls, [{ userId }]);
   assert.deepEqual(getWorkspaceCalls, [{ workspaceId, userId }]);
+});
+
+test("summary user handler aggregates visible member assigned task context", async () => {
+  const getTaskCalls: GetTaskRequest[] = [];
+  const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
+  const listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [];
+  const listWorkspaceMembersCalls: ListWorkspaceMembersRequest[] = [];
+  const listActiveProjectsCalls: ListActiveProjectsRequest[] = [];
+  const listWorkspaceStatusesCalls: ListWorkspaceStatusesRequest[] = [];
+  const listActiveTasksCalls: ListActiveTasksRequest[] = [];
+  const handlers = createSummaryToolHandlers(
+    createBackendClientStub({
+      getTaskCalls,
+      listTaskCommentsCalls,
+      listTaskAttachmentsCalls,
+      listWorkspaceMembersCalls,
+      listActiveProjectsCalls,
+      listWorkspaceStatusesCalls,
+      listActiveTasksCalls,
+    }),
+  );
+
+  const summary = await handlers.user({ workspaceId, userId, targetUserId: secondUserId });
+
+  assert.deepEqual(listWorkspaceMembersCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listActiveProjectsCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listWorkspaceStatusesCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listActiveTasksCalls, [
+    { workspaceId, projectId, userId },
+    { workspaceId, projectId: videoProjectId, userId },
+  ]);
+  assert.deepEqual(summary, {
+    user: {
+      userId: secondUserId,
+      role: "member",
+      displayName: "Sam",
+      email: null,
+      avatarUrl: null,
+    },
+    counts: {
+      assignedTasks: 2,
+      openAssignedTasks: 1,
+      doneAssignedTasks: 1,
+      dueAssignedTasks: 1,
+      projectsWithAssignedTasks: 1,
+    },
+    recentAssignedTasks: [
+      {
+        id: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+        projectId: videoProjectId,
+        projectTitle: "Video Release",
+        parentTaskId: null,
+        title: "Edit teaser",
+        statusId: "99999999-9999-4999-8999-999999999999",
+        statusName: "Done",
+        isDone: true,
+        dueAt: "2026-01-06T12:00:00.000Z",
+        updatedAt: "2026-01-06T00:00:00.000Z",
+      },
+      {
+        id: "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        projectId: videoProjectId,
+        projectTitle: "Video Release",
+        parentTaskId: null,
+        title: "Export teaser",
+        statusId: "88888888-8888-4888-8888-888888888888",
+        statusName: "In progress",
+        isDone: false,
+        dueAt: null,
+        updatedAt: "2026-01-05T00:00:00.000Z",
+      },
+    ],
+  });
+});
+
+test("summary user handler defaults target user to caller", async () => {
+  const getTaskCalls: GetTaskRequest[] = [];
+  const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
+  const listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [];
+  const handlers = createSummaryToolHandlers(
+    createBackendClientStub({
+      getTaskCalls,
+      listTaskCommentsCalls,
+      listTaskAttachmentsCalls,
+    }),
+  );
+
+  const summary = await handlers.user({ workspaceId, userId });
+
+  assert.equal(summary.user.userId, userId);
+  assert.equal(summary.counts.assignedTasks, 1);
+});
+
+test("summary user handler rejects hidden target members", async () => {
+  const getTaskCalls: GetTaskRequest[] = [];
+  const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
+  const listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [];
+  const handlers = createSummaryToolHandlers(
+    createBackendClientStub({
+      getTaskCalls,
+      listTaskCommentsCalls,
+      listTaskAttachmentsCalls,
+    }),
+  );
+
+  await assert.rejects(
+    handlers.user({
+      workspaceId,
+      userId,
+      targetUserId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    }),
+    SummaryToolInputError,
+  );
 });
 
 test("summary project handler aggregates project detail and active tasks", async () => {
@@ -703,6 +867,10 @@ function createBackendClientStub(calls: BackendClientStubCalls): TaskBackendClie
     },
     listActiveTasks: async (request): Promise<TaskSummaryResponse[]> => {
       listActiveTasksCalls.push(request);
+
+      if (request.projectId === videoProjectId) {
+        return videoProjectTasks;
+      }
 
       return projectTasks;
     },

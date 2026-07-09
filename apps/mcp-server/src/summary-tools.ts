@@ -33,6 +33,12 @@ export type WorkspaceSummaryToolInput = {
   workspaceId?: string;
 };
 
+export type UserSummaryToolInput = {
+  workspaceId: string;
+  userId: string;
+  targetUserId?: string;
+};
+
 export type WorkspaceSummaryWorkspace = {
   id: string;
   name: string;
@@ -72,6 +78,39 @@ export type WorkspaceSummaryToolResponse = {
     name: string;
     aliases: string[];
   }>;
+};
+
+export type UserSummaryMember = {
+  userId: string;
+  role: WorkspaceMemberResponse["role"];
+  displayName: string;
+  email: string | null;
+  avatarUrl: string | null;
+};
+
+export type UserSummaryAssignedTask = {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  parentTaskId: string | null;
+  title: string;
+  statusId: string | null;
+  statusName: string | null;
+  isDone: boolean;
+  dueAt: string | null;
+  updatedAt: string;
+};
+
+export type UserSummaryToolResponse = {
+  user: UserSummaryMember;
+  counts: {
+    assignedTasks: number;
+    openAssignedTasks: number;
+    doneAssignedTasks: number;
+    dueAssignedTasks: number;
+    projectsWithAssignedTasks: number;
+  };
+  recentAssignedTasks: UserSummaryAssignedTask[];
 };
 
 export type ProjectSummaryProject = {
@@ -153,6 +192,7 @@ export type TaskSummaryToolResponse = {
 export type SummaryToolHandlers = {
   project(input: unknown): Promise<ProjectSummaryToolResponse>;
   task(input: unknown): Promise<TaskSummaryToolResponse>;
+  user(input: unknown): Promise<UserSummaryToolResponse>;
   workspace(input: unknown): Promise<WorkspaceSummaryToolResponse>;
 };
 
@@ -207,6 +247,35 @@ export function createSummaryToolHandlers(client: TaskBackendClient): SummaryToo
 
       return buildTaskSummary(task, comments, attachments);
     },
+    user: async (input) => {
+      const parsedInput = parseUserSummaryToolInput(input);
+      const [members, projects, statuses] = await Promise.all([
+        client.listWorkspaceMembers({
+          workspaceId: parsedInput.workspaceId,
+          userId: parsedInput.userId,
+        }),
+        client.listActiveProjects({
+          workspaceId: parsedInput.workspaceId,
+          userId: parsedInput.userId,
+        }),
+        client.listWorkspaceStatuses({
+          workspaceId: parsedInput.workspaceId,
+          userId: parsedInput.userId,
+        }),
+      ]);
+      const projectTaskSummaries = await Promise.all(
+        projects.map(async (project) => ({
+          project,
+          tasks: await client.listActiveTasks({
+            workspaceId: parsedInput.workspaceId,
+            projectId: project.id,
+            userId: parsedInput.userId,
+          }),
+        })),
+      );
+
+      return buildUserSummary(parsedInput, members, projectTaskSummaries, statuses);
+    },
     workspace: async (input) => {
       const parsedInput = parseWorkspaceSummaryToolInput(input);
       const workspaceId = await resolveWorkspaceId(client, parsedInput);
@@ -236,6 +305,21 @@ export function createSummaryToolHandlers(client: TaskBackendClient): SummaryToo
       return buildWorkspaceSummary(workspace, members, projects, statuses, taskSkills);
     },
   };
+}
+
+export function parseUserSummaryToolInput(input: unknown): UserSummaryToolInput {
+  const record = readRecord(input, "user summary tool input");
+  const parsedInput: UserSummaryToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+  const targetUserId = readOptionalUuid(record, "targetUserId");
+
+  if (targetUserId !== undefined) {
+    parsedInput.targetUserId = targetUserId;
+  }
+
+  return parsedInput;
 }
 
 export function parseWorkspaceSummaryToolInput(input: unknown): WorkspaceSummaryToolInput {
@@ -289,6 +373,53 @@ async function resolveWorkspaceId(
   }
 
   return firstWorkspace.id;
+}
+
+function buildUserSummary(
+  input: UserSummaryToolInput,
+  members: WorkspaceMemberResponse[],
+  projectTaskSummaries: Array<{
+    project: ProjectSummaryResponse;
+    tasks: TaskSummaryResponse[];
+  }>,
+  statuses: WorkspaceStatusResponse[],
+): UserSummaryToolResponse {
+  const targetUserId = input.targetUserId ?? input.userId;
+  const targetMember = members.find((member) => member.userId === targetUserId);
+
+  if (targetMember === undefined) {
+    throw new SummaryToolInputError("targetUserId must be a visible workspace member.");
+  }
+
+  const statusById = new Map(statuses.map((status) => [status.id, status]));
+  const assignedTasks = projectTaskSummaries.flatMap(({ project, tasks }) =>
+    tasks
+      .filter((task) => task.assigneeUserId === targetUserId)
+      .map((task) => ({
+        project,
+        task,
+      })),
+  );
+  const doneAssignedTasks = assignedTasks.filter(({ task }) => isTaskDone(task, statusById));
+  const projectsWithAssignedTasks = new Set(assignedTasks.map(({ project }) => project.id)).size;
+
+  return {
+    user: toUserSummaryMember(targetMember),
+    counts: {
+      assignedTasks: assignedTasks.length,
+      openAssignedTasks: assignedTasks.length - doneAssignedTasks.length,
+      doneAssignedTasks: doneAssignedTasks.length,
+      dueAssignedTasks: assignedTasks.filter(
+        ({ task }) => task.dueAt !== null && task.dueAt !== undefined,
+      ).length,
+      projectsWithAssignedTasks,
+    },
+    recentAssignedTasks: assignedTasks
+      .slice()
+      .sort((left, right) => right.task.updatedAt.localeCompare(left.task.updatedAt))
+      .slice(0, recentItemLimit)
+      .map(({ project, task }) => toUserSummaryAssignedTask(project, task, statusById)),
+  };
 }
 
 function buildWorkspaceSummary(
@@ -394,6 +525,51 @@ function buildTaskSummary(
       .slice(0, recentItemLimit)
       .map(toTaskSummaryAttachment),
   };
+}
+
+function toUserSummaryMember(member: WorkspaceMemberResponse): UserSummaryMember {
+  return {
+    userId: member.userId,
+    role: member.role,
+    displayName: member.displayName,
+    email: member.email ?? null,
+    avatarUrl: member.avatarUrl ?? null,
+  };
+}
+
+function toUserSummaryAssignedTask(
+  project: ProjectSummaryResponse,
+  task: TaskSummaryResponse,
+  statusById: Map<string, WorkspaceStatusResponse>,
+): UserSummaryAssignedTask {
+  const status =
+    task.statusId === null || task.statusId === undefined
+      ? undefined
+      : statusById.get(task.statusId);
+
+  return {
+    id: task.id,
+    projectId: project.id,
+    projectTitle: project.title,
+    parentTaskId: task.parentTaskId ?? null,
+    title: task.title,
+    statusId: task.statusId ?? null,
+    statusName: status?.name ?? null,
+    isDone: status?.isDone ?? false,
+    dueAt: task.dueAt ?? null,
+    updatedAt: task.updatedAt,
+  };
+}
+
+function isTaskDone(
+  task: TaskSummaryResponse,
+  statusById: Map<string, WorkspaceStatusResponse>,
+): boolean {
+  if (task.statusId === null || task.statusId === undefined) {
+    return false;
+  }
+
+  return statusById.get(task.statusId)?.isDone ?? false;
 }
 
 function toWorkspaceSummaryMember(

@@ -166,6 +166,12 @@ const workspaceSummaryInputSchema = {
   workspaceId: z.string().uuid().optional(),
 };
 
+const userSummaryInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+  targetUserId: z.string().uuid().optional(),
+};
+
 const attachmentCreateLinkInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -331,6 +337,7 @@ type ConfirmationCreateMcpArgs = z.output<z.ZodObject<typeof confirmationCreateI
 type WorkspaceGetCurrentMcpArgs = z.output<z.ZodObject<typeof workspaceGetCurrentInputSchema>>;
 type WorkspaceMemberListMcpArgs = z.output<z.ZodObject<typeof workspaceMemberListInputSchema>>;
 type WorkspaceUserResolveMcpArgs = z.output<z.ZodObject<typeof workspaceUserResolveInputSchema>>;
+type UserSummaryMcpArgs = z.output<z.ZodObject<typeof userSummaryInputSchema>>;
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
 type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
 type CommentCreateMcpArgs = z.output<z.ZodObject<typeof commentCreateInputSchema>>;
@@ -366,6 +373,7 @@ type TaskMcpToolCallback = (
     | WorkspaceGetCurrentMcpArgs
     | WorkspaceMemberListMcpArgs
     | WorkspaceUserResolveMcpArgs
+    | UserSummaryMcpArgs
     | StatusListMcpArgs
     | CommentListMcpArgs
     | CommentCreateMcpArgs
@@ -405,6 +413,7 @@ export type TaskMcpToolRegistrar = {
         | typeof workspaceGetCurrentInputSchema
         | typeof workspaceMemberListInputSchema
         | typeof workspaceUserResolveInputSchema
+        | typeof userSummaryInputSchema
         | typeof statusListInputSchema
         | typeof commentListInputSchema
         | typeof commentCreateInputSchema
@@ -580,6 +589,17 @@ export function registerSummaryTools(
       inputSchema: taskSummaryInputSchema,
     },
     async (input) => toToolResult(await handlers.task(input)),
+  );
+
+  registrar.registerTool(
+    "summary.user",
+    {
+      title: "Summarize user",
+      description:
+        "Summarize one visible workspace member with assigned task counts and recent assigned tasks.",
+      inputSchema: userSummaryInputSchema,
+    },
+    async (input) => toToolResult(await handlers.user(input)),
   );
 
   registrar.registerTool(

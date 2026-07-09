@@ -915,6 +915,11 @@ test("registerSummaryTools registers summary tools", async () => {
     workspaceId: string;
     userId: string;
   }> = [];
+  const userSummaryCalls: Array<{
+    workspaceId: string;
+    userId: string;
+    targetUserId: string;
+  }> = [];
   const registrar = createRegistrar(toolCalls);
 
   registerSummaryTools(registrar, {
@@ -980,6 +985,46 @@ test("registerSummaryTools registers summary tools", async () => {
         recentAttachments: [],
       };
     },
+    user: async (input: unknown) => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected user summary input.");
+      }
+      userSummaryCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        userId: readString(input, "userId"),
+        targetUserId: readString(input, "targetUserId"),
+      });
+      return {
+        user: {
+          userId: assigneeUserId,
+          role: "member",
+          displayName: "Sam",
+          email: null,
+          avatarUrl: null,
+        },
+        counts: {
+          assignedTasks: 1,
+          openAssignedTasks: 1,
+          doneAssignedTasks: 0,
+          dueAssignedTasks: 1,
+          projectsWithAssignedTasks: 1,
+        },
+        recentAssignedTasks: [
+          {
+            id: rootTaskId,
+            projectId,
+            projectTitle: "Album Release",
+            parentTaskId: null,
+            title: "Intro",
+            statusId,
+            statusName: "In progress",
+            isDone: false,
+            dueAt,
+            updatedAt: timestamp,
+          },
+        ],
+      };
+    },
     workspace: async (input: unknown) => {
       if (!isUnknownRecord(input)) {
         throw new Error("Expected workspace summary input.");
@@ -1011,11 +1056,12 @@ test("registerSummaryTools registers summary tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["summary.project", "summary.task", "summary.workspace"],
+    ["summary.project", "summary.task", "summary.user", "summary.workspace"],
   );
   assert.equal(toolCalls[0]?.config.title, "Summarize project");
   assert.equal(toolCalls[1]?.config.title, "Summarize task");
-  assert.equal(toolCalls[2]?.config.title, "Summarize workspace");
+  assert.equal(toolCalls[2]?.config.title, "Summarize user");
+  assert.equal(toolCalls[3]?.config.title, "Summarize workspace");
 
   const projectSummaryCall = toolCalls[0];
   assert.ok(projectSummaryCall !== undefined);
@@ -1079,7 +1125,47 @@ test("registerSummaryTools registers summary tools", async () => {
   });
   assert.deepEqual(summaryCalls, [{ workspaceId, projectId, taskId: rootTaskId, userId }]);
 
-  const workspaceSummaryCall = toolCalls[2];
+  const userSummaryCall = toolCalls[2];
+  assert.ok(userSummaryCall !== undefined);
+  const userSummaryResult = await userSummaryCall.callback({
+    workspaceId,
+    userId,
+    targetUserId: assigneeUserId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(userSummaryResult)), {
+    user: {
+      userId: assigneeUserId,
+      role: "member",
+      displayName: "Sam",
+      email: null,
+      avatarUrl: null,
+    },
+    counts: {
+      assignedTasks: 1,
+      openAssignedTasks: 1,
+      doneAssignedTasks: 0,
+      dueAssignedTasks: 1,
+      projectsWithAssignedTasks: 1,
+    },
+    recentAssignedTasks: [
+      {
+        id: rootTaskId,
+        projectId,
+        projectTitle: "Album Release",
+        parentTaskId: null,
+        title: "Intro",
+        statusId,
+        statusName: "In progress",
+        isDone: false,
+        dueAt,
+        updatedAt: timestamp,
+      },
+    ],
+  });
+  assert.deepEqual(userSummaryCalls, [{ workspaceId, userId, targetUserId: assigneeUserId }]);
+
+  const workspaceSummaryCall = toolCalls[3];
   assert.ok(workspaceSummaryCall !== undefined);
   const workspaceSummaryResult = await workspaceSummaryCall.callback({
     workspaceId,
