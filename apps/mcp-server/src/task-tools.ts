@@ -5,6 +5,7 @@ import type {
   TaskSummaryResponse,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
+  UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./backend-client.js";
 
@@ -26,6 +27,12 @@ export type TaskGetToolInput = {
 };
 
 export type TaskArchiveToolInput = TaskGetToolInput;
+
+export type TaskUpdateToolInput = TaskGetToolInput & {
+  title?: string;
+  description?: string | null;
+  metadata?: Record<string, unknown>;
+};
 
 export type TaskCreateToolInput = {
   workspaceId: string;
@@ -66,6 +73,7 @@ export type TaskSetDueDateToolInput = {
 export type TaskToolHandlers = {
   archive(input: unknown): Promise<TaskDetailResponse>;
   create(input: unknown): Promise<TaskDetailResponse>;
+  update(input: unknown): Promise<TaskDetailResponse>;
   setStatus(input: unknown): Promise<TaskDetailResponse>;
   setAssignee(input: unknown): Promise<TaskDetailResponse>;
   setDueDate(input: unknown): Promise<TaskDetailResponse>;
@@ -100,6 +108,17 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
         projectId: parsedInput.projectId,
         userId: parsedInput.userId,
         body: toCreateTaskInput(parsedInput),
+      });
+    },
+    update: (input) => {
+      const parsedInput = parseTaskUpdateToolInput(input);
+
+      return client.updateTask({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toUpdateTaskInput(parsedInput),
       });
     },
     setStatus: (input) => {
@@ -237,6 +256,37 @@ export function parseTaskCreateToolInput(input: unknown): TaskCreateToolInput {
   return parsedInput;
 }
 
+export function parseTaskUpdateToolInput(input: unknown): TaskUpdateToolInput {
+  const record = readRecord(input, "task update tool input");
+  const parsedInput: TaskUpdateToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+  const title = readOptionalNonEmptyString(record, "title");
+  const description = readOptionalNullableString(record, "description");
+  const metadata = readOptionalRecord(record, "metadata");
+
+  if (title !== undefined) {
+    parsedInput.title = title;
+  }
+
+  if (description !== undefined) {
+    parsedInput.description = description;
+  }
+
+  if (metadata !== undefined) {
+    parsedInput.metadata = metadata;
+  }
+
+  if (title === undefined && description === undefined && metadata === undefined) {
+    throw new TaskToolInputError("task update tool input must include at least one field.");
+  }
+
+  return parsedInput;
+}
+
 export function parseTaskGetToolInput(input: unknown): TaskGetToolInput {
   const record = readRecord(input, "task get tool input");
 
@@ -294,6 +344,24 @@ function toCreateTaskInput(input: TaskCreateToolInput): CreateTaskInput {
 
   if (input.dueAt !== undefined) {
     body.dueAt = input.dueAt;
+  }
+
+  if (input.metadata !== undefined) {
+    body.metadata = input.metadata;
+  }
+
+  return body;
+}
+
+function toUpdateTaskInput(input: TaskUpdateToolInput): UpdateTaskInput {
+  const body: UpdateTaskInput = {};
+
+  if (input.title !== undefined) {
+    body.title = input.title;
+  }
+
+  if (input.description !== undefined) {
+    body.description = input.description;
   }
 
   if (input.metadata !== undefined) {

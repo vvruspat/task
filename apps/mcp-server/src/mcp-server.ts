@@ -200,6 +200,16 @@ const taskCreateInputSchema = {
   metadata: z.record(z.string(), z.unknown()).optional(),
 };
 
+const taskUpdateInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  title: z.string().min(1).optional(),
+  description: z.string().nullable().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+};
+
 const taskSetStatusInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -255,6 +265,7 @@ type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskArchiveMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskCreateMcpArgs = z.output<z.ZodObject<typeof taskCreateInputSchema>>;
+type TaskUpdateMcpArgs = z.output<z.ZodObject<typeof taskUpdateInputSchema>>;
 type TaskSetStatusMcpArgs = z.output<z.ZodObject<typeof taskSetStatusInputSchema>>;
 type TaskSetAssigneeMcpArgs = z.output<z.ZodObject<typeof taskSetAssigneeInputSchema>>;
 type TaskSetDueDateMcpArgs = z.output<z.ZodObject<typeof taskSetDueDateInputSchema>>;
@@ -285,6 +296,7 @@ type TaskMcpToolCallback = (
     | TaskGetMcpArgs
     | TaskArchiveMcpArgs
     | TaskCreateMcpArgs
+    | TaskUpdateMcpArgs
     | TaskSetStatusMcpArgs
     | TaskSetAssigneeMcpArgs
     | TaskSetDueDateMcpArgs,
@@ -317,6 +329,7 @@ export type TaskMcpToolRegistrar = {
         | typeof taskSearchInputSchema
         | typeof taskGetInputSchema
         | typeof taskCreateInputSchema
+        | typeof taskUpdateInputSchema
         | typeof taskSetStatusInputSchema
         | typeof taskSetAssigneeInputSchema
         | typeof taskSetDueDateInputSchema;
@@ -518,6 +531,16 @@ export function registerTaskTools(
       inputSchema: taskSetStatusInputSchema,
     },
     async (input) => toToolResult(await handlers.setStatus(input)),
+  );
+
+  registrar.registerTool(
+    "task.update",
+    {
+      title: "Update task",
+      description: "Update one visible task title, description, or metadata.",
+      inputSchema: taskUpdateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.update(input)),
   );
 
   registrar.registerTool(
