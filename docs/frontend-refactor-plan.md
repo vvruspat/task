@@ -2,7 +2,7 @@
 
 ## Source and constraints
 
-Reference source: `/tmp/ws-uikit-main` on branch `main` (`60ef82f`, CSS token architecture). This supersedes the older architecture note that pointed at the `react-aria` branch.
+Reference source: `/tmp/ws-uikit-main` on branch `main` (`60ef82f`, CSS token architecture). This is the only ws-uikit source reference for this project; do not use the older `react-aria` branch.
 
 Project constraints:
 

@@ -177,7 +177,7 @@ For LLM/agent behavior, use deterministic fixtures and mocked model/tool respons
 - Keep views dense and operational: Kanban, Matrix, Table, My Tasks, Templates.
 - Use generated API types.
 - Lazy-load major routes and heavy views.
-- New reusable UI components must be built on top of React Aria primitives/patterns.
+- New reusable UI components must follow the project UI-kit direction from `vvruspat/ws-uikit` branch `main`; do not use the old `react-aria` branch as the source reference.
 - Use layout primitives from `packages/ui` for flex and grid layouts. Do not hand-style flex/grid directly in app code when a UI-kit component exists.
 - Use text/typography primitives from `packages/ui`. Do not hand-style app text directly when a UI-kit text component exists.
 - Avoid custom CSS in apps. If the app needs styling that the UI kit does not cover, add or extend a reusable component/token in `packages/ui` first.
