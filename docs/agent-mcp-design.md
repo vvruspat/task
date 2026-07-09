@@ -131,8 +131,10 @@ task.comment
 skill.search
 skill.get
 skill.create
-skill.update
 skill.clone
+skill.archive
+skill.update_metadata
+skill.update_definition
 skill.preview_apply
 skill.apply
 ```
