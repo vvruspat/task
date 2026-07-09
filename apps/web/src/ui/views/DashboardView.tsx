@@ -2,7 +2,7 @@ import type { components } from "@task/api-client";
 import { ArrowRight, Clock3, Plus } from "lucide-react";
 import type { FormEvent, ReactElement } from "react";
 import { useState } from "react";
-import { buildMyTaskRows, buildMyTaskSummary } from "./WorkspaceView.js";
+import { buildMyTaskRows, buildMyTaskSummary } from "./workspaceViewModels.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type TaskSummary = components["schemas"]["TaskSummaryDto"];

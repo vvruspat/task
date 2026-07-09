@@ -18,7 +18,7 @@ import {
   buildTaskTableSummary,
   buildTemplateSkillRows,
   buildTemplateSkillSummary,
-} from "./WorkspaceView.js";
+} from "./workspaceViewModels.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
