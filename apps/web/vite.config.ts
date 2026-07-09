@@ -3,4 +3,8 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    environment: "jsdom",
+    include: ["src/ui/**/*.interaction.tsx"],
+  },
 });

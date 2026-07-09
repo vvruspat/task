@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1783607153.6938736,
-    "ast_hash": "4ad4aa595771a9ed975731091a183f32",
+    "mtime": 1783640951.4434533,
+    "ast_hash": "9fd326cfef33fbfa4c6f420e47506164",
     "semantic_hash": ""
   },
   "apps/web/src/index.ts": {
@@ -1200,8 +1200,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/App.tsx": {
-    "mtime": 1783637132.718386,
-    "ast_hash": "1e1653c17e655352d537583ef90ecc0d",
+    "mtime": 1783640830.499044,
+    "ast_hash": "396f7a143bbdcf85d7dd4c7eae8781c9",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/DashboardView.tsx": {
@@ -1220,8 +1220,8 @@
     "semantic_hash": ""
   },
   "apps/web/vite.config.ts": {
-    "mtime": 1783607153.6958878,
-    "ast_hash": "ea5effd26043c1f292f412678770f75b",
+    "mtime": 1783641025.8786576,
+    "ast_hash": "2563f89ed9ef5d1a8f53c8919e174839",
     "semantic_hash": ""
   },
   "apps/web/index.html": {
@@ -3320,8 +3320,8 @@
     "semantic_hash": ""
   },
   "packages/ui/src/molecules/MDrawer/MDrawer.tsx": {
-    "mtime": 1783636779.668774,
-    "ast_hash": "5c943da5e729cbe432265f7fc0de2e0f",
+    "mtime": 1783640841.3688316,
+    "ast_hash": "f86652961a24c09453eae75433a06a17",
     "semantic_hash": ""
   },
   "packages/ui/src/molecules/MDrawer/index.ts": {
@@ -3407,6 +3407,26 @@
   "apps/web/src/ui/views/workspace/SettingsView.test.tsx": {
     "mtime": 1783639993.4460497,
     "ast_hash": "8951804fc8ee49e8a6f9c2ee67689122",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/GlobalSearchPalette.interaction.tsx": {
+    "mtime": 1783641073.3025827,
+    "ast_hash": "4bec3f17eaebb7bf85fe4f0ba2c233ff",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/GlobalSearchPalette.tsx": {
+    "mtime": 1783641050.731888,
+    "ast_hash": "031c53c2f60ae6543980d2d39316c8dd",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/globalSearchPaletteModels.test.ts": {
+    "mtime": 1783640835.5900745,
+    "ast_hash": "4caa29bfa2c6d79c3872db5517bd8972",
+    "semantic_hash": ""
+  },
+  "apps/web/src/ui/globalSearchPaletteModels.ts": {
+    "mtime": 1783640835.5897577,
+    "ast_hash": "139920666e7a79d66dbcc54bccdecd63",
     "semantic_hash": ""
   }
 }

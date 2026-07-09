@@ -10,7 +10,6 @@ import {
   MButton,
   MFlex,
   MHeading,
-  MInput,
   MOperationalHeader,
   MOperationalShell,
   MOperationalSidebar,
@@ -48,6 +47,8 @@ import {
   type WebShellData,
   type WebShellEnvironment,
 } from "../api/web-shell-data.js";
+import { GlobalSearchPalette } from "./GlobalSearchPalette.js";
+import { isWorkspaceSearchShortcut } from "./globalSearchPaletteModels.js";
 import {
   createWorkspaceNavigationUrl,
   parseWorkspaceNavigation,
@@ -185,6 +186,7 @@ export function App(): ReactElement {
   });
   const [taskCreateState, setTaskCreateState] = useState<FormSubmissionState>({ status: "idle" });
   const [taskDrawerDirty, setTaskDrawerDirty] = useState(false);
+  const [isSearchPaletteOpen, setSearchPaletteOpen] = useState(false);
   const [confirmationLoadState, setConfirmationLoadState] = useState<ConfirmationLoadState>({
     status: "loading",
   });
@@ -335,6 +337,17 @@ export function App(): ReactElement {
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, [taskDrawerDirty]);
+
+  useEffect(() => {
+    const handleGlobalSearchShortcut = (event: KeyboardEvent): void => {
+      if (isWorkspaceSearchShortcut(event)) {
+        event.preventDefault();
+        setSearchPaletteOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleGlobalSearchShortcut);
+    return () => window.removeEventListener("keydown", handleGlobalSearchShortcut);
+  }, []);
 
   useEffect(() => {
     if (
@@ -680,16 +693,16 @@ export function App(): ReactElement {
           <MButton aria-label="Toggle navigation" mode="round" noPadding>
             <PanelLeft aria-hidden="true" />
           </MButton>
-          <MInput
-            aria-label="Search tasks and projects"
-            before={<Search aria-hidden="true" />}
-            placeholder="Search tasks, projects, skills"
-          />
           <MButton
-            disabled
-            title="Agent commands will be enabled when the public command API is available."
+            aria-haspopup="dialog"
+            aria-label="Search workspace. Press Command or Control K."
+            before={<Search aria-hidden="true" />}
+            justify="start"
+            mode="outlined"
+            onClick={() => setSearchPaletteOpen(true)}
+            stretch
           >
-            Agent commands soon
+            Search tasks, projects, skills
           </MButton>
         </MOperationalToolbar>
 
@@ -842,6 +855,13 @@ export function App(): ReactElement {
           </MAlert>
         ) : null}
       </MOperationalWorkspace>
+      <GlobalSearchPalette
+        isOpen={isSearchPaletteOpen}
+        onClose={() => setSearchPaletteOpen(false)}
+        onNavigate={updateNavigation}
+        searchClient={taskClient}
+        workspaceId={data.selectedWorkspaceId}
+      />
     </MOperationalShell>
   );
 }

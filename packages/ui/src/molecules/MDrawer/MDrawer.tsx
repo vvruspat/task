@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { KeyboardEventHandler, ReactNode } from "react";
 import { Dialog, Modal, ModalOverlay } from "react-aria-components";
 import styles from "./MDrawer.module.css";
 
@@ -7,10 +7,11 @@ export type MDrawerProps = {
   children: ReactNode;
   isOpen: boolean;
   onClose(): void;
+  onKeyDown?: KeyboardEventHandler<HTMLDivElement>;
 };
 
 /** A modal side panel with an accessible focus trap and focus restoration. */
-export function MDrawer({ children, isOpen, onClose, ...dialogProps }: MDrawerProps) {
+export function MDrawer({ children, isOpen, onClose, onKeyDown, ...dialogProps }: MDrawerProps) {
   return (
     <ModalOverlay
       className={styles.overlay}
@@ -22,7 +23,7 @@ export function MDrawer({ children, isOpen, onClose, ...dialogProps }: MDrawerPr
     >
       <Modal className={styles.modal}>
         <Dialog className={styles.drawer} {...dialogProps}>
-          {children}
+          <div onKeyDown={onKeyDown}>{children}</div>
         </Dialog>
       </Modal>
     </ModalOverlay>
