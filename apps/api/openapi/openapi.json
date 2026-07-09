@@ -2479,6 +2479,58 @@
         "tags": ["telegram"]
       }
     },
+    "/internal/telegram/confirmations/callback": {
+      "post": {
+        "operationId": "TelegramController_handleConfirmationCallback",
+        "parameters": [
+          {
+            "name": "x-task-bot-secret",
+            "in": "header",
+            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TelegramConfirmationCallbackDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramConfirmationCallbackResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram confirmation callback payload is invalid."
+          },
+          "401": {
+            "description": "Telegram bot shared secret is missing or invalid."
+          },
+          "403": {
+            "description": "Telegram user or chat is not linked to a workspace visible to the user."
+          },
+          "404": {
+            "description": "Confirmation request is missing or not visible."
+          }
+        },
+        "summary": "Apply a Telegram confirmation callback action",
+        "tags": ["telegram"]
+      }
+    },
     "/internal/agent/telegram/runs": {
       "post": {
         "operationId": "AgentController_createTelegramRun",
@@ -3960,6 +4012,46 @@
           }
         },
         "required": ["status"]
+      },
+      "TelegramConfirmationCallbackDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "telegramChatId": {
+            "type": "string",
+            "example": "-100987654321"
+          },
+          "confirmationRequestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["confirm", "cancel"]
+          }
+        },
+        "required": ["telegramId", "telegramChatId", "confirmationRequestId", "action"]
+      },
+      "TelegramConfirmationCallbackResultDto": {
+        "type": "object",
+        "properties": {
+          "confirmationRequestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["confirm", "cancel"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["confirmed", "cancelled"]
+          }
+        },
+        "required": ["confirmationRequestId", "action", "status"]
       },
       "TelegramAgentRunDocumentAttachmentDto": {
         "type": "object",

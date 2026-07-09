@@ -2,6 +2,8 @@ import type { operations } from "@task/api-client";
 
 type ResolveTelegramContextOperation = operations["TelegramController_resolveContext"];
 type CreateTelegramAgentRunOperation = operations["AgentController_createTelegramRun"];
+type HandleTelegramConfirmationCallbackOperation =
+  operations["TelegramController_handleConfirmationCallback"];
 
 export type ResolveTelegramContextInput =
   ResolveTelegramContextOperation["requestBody"]["content"]["application/json"];
@@ -11,6 +13,10 @@ export type CreateTelegramAgentRunInput =
   CreateTelegramAgentRunOperation["requestBody"]["content"]["application/json"];
 export type TelegramAgentRunIntakeResponse =
   CreateTelegramAgentRunOperation["responses"]["201"]["content"]["application/json"];
+export type TelegramConfirmationCallbackInput =
+  HandleTelegramConfirmationCallbackOperation["requestBody"]["content"]["application/json"];
+export type TelegramConfirmationCallbackResponse =
+  HandleTelegramConfirmationCallbackOperation["responses"]["200"]["content"]["application/json"];
 
 export type TelegramBackendFetchInit = {
   method: "POST";
@@ -50,6 +56,10 @@ export type CreateTelegramAgentRunRequest = {
   body: CreateTelegramAgentRunInput;
 };
 
+export type HandleTelegramConfirmationCallbackRequest = {
+  body: TelegramConfirmationCallbackInput;
+};
+
 export type TelegramBackendClient = {
   resolveTelegramContext(
     request: ResolveTelegramContextRequest,
@@ -57,6 +67,9 @@ export type TelegramBackendClient = {
   createTelegramAgentRun(
     request: CreateTelegramAgentRunRequest,
   ): Promise<TelegramAgentRunIntakeResponse>;
+  handleTelegramConfirmationCallback(
+    request: HandleTelegramConfirmationCallbackRequest,
+  ): Promise<TelegramConfirmationCallbackResponse>;
 };
 
 export class TelegramBackendClientError extends Error {
@@ -91,6 +104,15 @@ export function createTelegramBackendClient(
         readTelegramAgentRunIntakeResponse,
       );
     },
+    handleTelegramConfirmationCallback(request: HandleTelegramConfirmationCallbackRequest) {
+      return postJson(
+        fetchImplementation,
+        `${baseUrl}/internal/telegram/confirmations/callback`,
+        options.botSharedSecret,
+        request.body,
+        readTelegramConfirmationCallbackResponse,
+      );
+    },
   };
 }
 
@@ -98,7 +120,10 @@ async function postJson<ResponseBody>(
   fetchImplementation: TelegramBackendFetch,
   url: string,
   botSharedSecret: string,
-  body: ResolveTelegramContextInput | CreateTelegramAgentRunInput,
+  body:
+    | ResolveTelegramContextInput
+    | CreateTelegramAgentRunInput
+    | TelegramConfirmationCallbackInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(url, {
@@ -167,6 +192,18 @@ function readTelegramAgentRunIntakeResponse(value: unknown): TelegramAgentRunInt
   };
 }
 
+function readTelegramConfirmationCallbackResponse(
+  value: unknown,
+): TelegramConfirmationCallbackResponse {
+  const record = readRecord(value, "Telegram confirmation callback response");
+
+  return {
+    confirmationRequestId: readString(record, "confirmationRequestId"),
+    action: readConfirmationCallbackAction(record, "action"),
+    status: readConfirmationCallbackStatus(record, "status"),
+  };
+}
+
 function readRecord(value: unknown, label: string): Record<string, unknown> {
   if (!isUnknownRecord(value)) {
     throw new TelegramBackendClientError(`${label} must be an object.`);
@@ -222,6 +259,32 @@ function readResolutionStatus(
     value !== "telegram_chat_unlinked" &&
     value !== "user_not_in_chat_workspace"
   ) {
+    throw new TelegramBackendClientError(`${propertyName} is invalid.`);
+  }
+
+  return value;
+}
+
+function readConfirmationCallbackAction(
+  record: Record<string, unknown>,
+  propertyName: string,
+): TelegramConfirmationCallbackResponse["action"] {
+  const value = record[propertyName];
+
+  if (value !== "confirm" && value !== "cancel") {
+    throw new TelegramBackendClientError(`${propertyName} is invalid.`);
+  }
+
+  return value;
+}
+
+function readConfirmationCallbackStatus(
+  record: Record<string, unknown>,
+  propertyName: string,
+): TelegramConfirmationCallbackResponse["status"] {
+  const value = record[propertyName];
+
+  if (value !== "confirmed" && value !== "cancelled") {
     throw new TelegramBackendClientError(`${propertyName} is invalid.`);
   }
 

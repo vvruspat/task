@@ -16,5 +16,6 @@ const confirmationsServiceProvider: Provider<ConfirmationsService> = {
   imports: [DatabaseModule],
   controllers: [ConfirmationsController],
   providers: [TypeOrmConfirmationRequestsStore, confirmationsServiceProvider],
+  exports: [ConfirmationsService],
 })
 export class ConfirmationsModule {}

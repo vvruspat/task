@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   CreateTelegramAgentRunRequest,
+  HandleTelegramConfirmationCallbackRequest,
   ResolveTelegramContextRequest,
   TelegramAgentRunIntakeResponse,
   TelegramBackendClient,
+  TelegramConfirmationCallbackResponse,
   TelegramContextResolutionResponse,
 } from "./backend-client.js";
 import { TelegramBackendClientError } from "./backend-client.js";
@@ -34,6 +36,26 @@ const telegramUpdate = {
       mime_type: "application/pdf",
       file_size: 1024,
     },
+  },
+};
+const telegramConfirmationCallbackUpdate = {
+  update_id: 11,
+  callback_query: {
+    id: "callback-1",
+    from: {
+      id: 123456789,
+      is_bot: false,
+      username: "alex",
+    },
+    message: {
+      message_id: 21,
+      chat: {
+        id: -100987654321,
+        type: "supergroup",
+        title: "Album Team",
+      },
+    },
+    data: "task:confirmation:11111111-1111-4111-8111-111111111111:confirm",
   },
 };
 
@@ -129,6 +151,94 @@ test("processTelegramUpdate records resolved commands and replies with agent res
   }
 });
 
+test("processTelegramUpdate applies confirmation callbacks and replies with the result", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    {
+      status: "resolved",
+      userId: "22222222-2222-4222-8222-222222222222",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      defaultProjectId: null,
+    },
+    agentRunResponse,
+    {
+      confirmationRequestId: "11111111-1111-4111-8111-111111111111",
+      action: "confirm",
+      status: "confirmed",
+    },
+  );
+  const replySender = new RecordingTelegramReplySender({ messageId: "46" });
+
+  const result = await processTelegramUpdate(telegramConfirmationCallbackUpdate, {
+    backendClient,
+    replySender,
+  });
+
+  assert.equal(result.kind, "confirmation_callback_reply_sent");
+  assert.equal(backendClient.lastRequest, null);
+  assert.equal(backendClient.lastAgentRunRequest, null);
+  assert.deepEqual(backendClient.lastConfirmationCallbackRequest, {
+    body: {
+      telegramId: "123456789",
+      telegramChatId: "-100987654321",
+      confirmationRequestId: "11111111-1111-4111-8111-111111111111",
+      action: "confirm",
+    },
+  });
+  assert.deepEqual(replySender.lastAction, {
+    kind: "reply",
+    telegramChatId: "-100987654321",
+    replyToMessageId: "21",
+    text: "Подтверждено.",
+  });
+
+  if (result.kind === "confirmation_callback_reply_sent") {
+    assert.deepEqual(result.callback, {
+      confirmationRequestId: "11111111-1111-4111-8111-111111111111",
+      action: "confirm",
+      status: "confirmed",
+    });
+    assert.deepEqual(result.sentMessage, { messageId: "46" });
+  }
+});
+
+test("processTelegramUpdate does not call the backend for malformed confirmation callbacks", async () => {
+  const backendClient = new RecordingTelegramBackendClient({
+    status: "telegram_user_unlinked",
+  });
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+
+  const result = await processTelegramUpdate(
+    {
+      update_id: 11,
+      callback_query: {
+        id: "callback-1",
+        from: { id: 123456789, is_bot: false },
+        message: {
+          message_id: 21,
+          chat: { id: -100987654321, type: "supergroup" },
+        },
+        data: "task:confirmation:not-a-uuid:confirm",
+      },
+    },
+    {
+      backendClient,
+      replySender,
+    },
+  );
+
+  assert.deepEqual(result, {
+    kind: "reply_sent",
+    reply: {
+      kind: "reply",
+      telegramChatId: "-100987654321",
+      replyToMessageId: "21",
+      text: "Не смог обработать подтверждение.",
+    },
+    sentMessage: { messageId: "45" },
+  });
+  assert.equal(backendClient.lastConfirmationCallbackRequest, null);
+});
+
 test("processTelegramUpdate replies when agent intake fails", async () => {
   const backendClient = new RecordingTelegramBackendClient(
     {
@@ -161,10 +271,12 @@ test("processTelegramUpdate replies when agent intake fails", async () => {
 class RecordingTelegramBackendClient implements TelegramBackendClient {
   lastRequest: ResolveTelegramContextRequest | null = null;
   lastAgentRunRequest: CreateTelegramAgentRunRequest | null = null;
+  lastConfirmationCallbackRequest: HandleTelegramConfirmationCallbackRequest | null = null;
 
   constructor(
     private readonly response: TelegramContextResolutionResponse,
     private readonly agentRunResponse: TelegramAgentRunIntakeResponse | null = null,
+    private readonly confirmationCallbackResponse: TelegramConfirmationCallbackResponse | null = null,
   ) {}
 
   async resolveTelegramContext(
@@ -185,6 +297,18 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
     }
 
     return this.agentRunResponse;
+  }
+
+  async handleTelegramConfirmationCallback(
+    request: HandleTelegramConfirmationCallbackRequest,
+  ): Promise<TelegramConfirmationCallbackResponse> {
+    this.lastConfirmationCallbackRequest = request;
+
+    if (this.confirmationCallbackResponse === null) {
+      throw new TelegramBackendClientError("Confirmation callback unavailable.");
+    }
+
+    return this.confirmationCallbackResponse;
   }
 }
 

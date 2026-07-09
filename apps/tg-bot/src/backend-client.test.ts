@@ -6,6 +6,7 @@ import {
   TelegramBackendClientError,
   type TelegramBackendFetch,
   type TelegramBackendFetchInit,
+  type TelegramConfirmationCallbackInput,
 } from "./backend-client.js";
 
 const requestBody = {
@@ -27,6 +28,12 @@ const agentRunRequestBody: CreateTelegramAgentRunInput = {
       sizeBytes: "2048",
     },
   ],
+};
+const confirmationCallbackRequestBody: TelegramConfirmationCallbackInput = {
+  telegramId: "123456789",
+  telegramChatId: "-100987654321",
+  confirmationRequestId: "11111111-1111-4111-8111-111111111111",
+  action: "confirm",
 };
 
 test("TelegramBackendClient posts Telegram context with bot shared secret", async () => {
@@ -99,6 +106,41 @@ test("TelegramBackendClient posts Telegram agent runs with bot shared secret", a
   });
 });
 
+test("TelegramBackendClient posts Telegram confirmation callbacks with bot shared secret", async () => {
+  const fetch = new RecordingTelegramBackendFetch({
+    confirmationRequestId: "11111111-1111-4111-8111-111111111111",
+    action: "confirm",
+    status: "confirmed",
+  });
+  const client = createTelegramBackendClient({
+    baseUrl: "https://api.example.test/",
+    botSharedSecret: "bot-secret",
+    fetch: fetch.call,
+  });
+
+  assert.deepEqual(
+    await client.handleTelegramConfirmationCallback({ body: confirmationCallbackRequestBody }),
+    {
+      confirmationRequestId: "11111111-1111-4111-8111-111111111111",
+      action: "confirm",
+      status: "confirmed",
+    },
+  );
+  assert.equal(
+    fetch.lastInput,
+    "https://api.example.test/internal/telegram/confirmations/callback",
+  );
+  assert.deepEqual(fetch.lastInit, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+      "x-task-bot-secret": "bot-secret",
+    },
+    body: JSON.stringify(confirmationCallbackRequestBody),
+  });
+});
+
 test("TelegramBackendClient parses explicit unlinked states", async () => {
   const unlinkedUserClient = createTelegramBackendClient({
     baseUrl: "https://api.example.test",
@@ -151,6 +193,22 @@ test("TelegramBackendClient throws typed errors for agent intake non-2xx respons
 
   await assert.rejects(
     () => client.createTelegramAgentRun({ body: agentRunRequestBody }),
+    TelegramBackendClientError,
+  );
+});
+
+test("TelegramBackendClient throws typed errors for confirmation callback non-2xx responses", async () => {
+  const client = createTelegramBackendClient({
+    baseUrl: "https://api.example.test",
+    botSharedSecret: "bot-secret",
+    fetch: new RecordingTelegramBackendFetch(
+      { status: "failed" },
+      { ok: false, status: 403, statusText: "Forbidden" },
+    ).call,
+  });
+
+  await assert.rejects(
+    () => client.handleTelegramConfirmationCallback({ body: confirmationCallbackRequestBody }),
     TelegramBackendClientError,
   );
 });

@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseTelegramMessageContext, TelegramUpdateParseError } from "./telegram-update.js";
+import {
+  parseTelegramConfirmationCallbackContext,
+  parseTelegramMessageContext,
+  TelegramUpdateParseError,
+} from "./telegram-update.js";
 
 test("parseTelegramMessageContext normalizes direct text messages", () => {
   const context = parseTelegramMessageContext({
@@ -172,6 +176,84 @@ test("parseTelegramMessageContext rejects malformed webhook payloads", () => {
           from: { id: 123, is_bot: false },
           chat: { id: 123, type: "private" },
           entities: [{ type: "mention", offset: -1, length: 5 }],
+        },
+      }),
+    TelegramUpdateParseError,
+  );
+});
+
+test("parseTelegramConfirmationCallbackContext normalizes confirmation callbacks", () => {
+  const context = parseTelegramConfirmationCallbackContext({
+    update_id: 14,
+    callback_query: {
+      id: "callback-1",
+      from: {
+        id: 123456789,
+        is_bot: false,
+        username: "alex",
+      },
+      message: {
+        message_id: 24,
+        chat: {
+          id: -100987654321,
+          type: "supergroup",
+          title: "Album Team",
+        },
+      },
+      data: "task:confirmation:11111111-1111-4111-8111-111111111111:confirm",
+    },
+  });
+
+  assert.deepEqual(context, {
+    updateId: "14",
+    callbackQueryId: "callback-1",
+    confirmationRequestId: "11111111-1111-4111-8111-111111111111",
+    action: "confirm",
+    sender: {
+      telegramId: "123456789",
+      isBot: false,
+      username: "alex",
+      firstName: null,
+      lastName: null,
+    },
+    chat: {
+      telegramChatId: "-100987654321",
+      type: "supergroup",
+      title: "Album Team",
+    },
+    messageId: "24",
+  });
+});
+
+test("parseTelegramConfirmationCallbackContext rejects malformed callback payloads", () => {
+  assert.throws(
+    () =>
+      parseTelegramConfirmationCallbackContext({
+        update_id: 14,
+        callback_query: {
+          id: "callback-1",
+          from: { id: 123456789, is_bot: false },
+          message: {
+            message_id: 24,
+            chat: { id: -100987654321, type: "supergroup" },
+          },
+          data: "task:confirmation:not-a-uuid:confirm",
+        },
+      }),
+    TelegramUpdateParseError,
+  );
+  assert.throws(
+    () =>
+      parseTelegramConfirmationCallbackContext({
+        update_id: 14,
+        callback_query: {
+          id: "callback-1",
+          from: { id: 123456789, is_bot: false },
+          message: {
+            message_id: 24,
+            chat: { id: -100987654321, type: "supergroup" },
+          },
+          data: "task:confirmation:11111111-1111-4111-8111-111111111111:approve",
         },
       }),
     TelegramUpdateParseError,
