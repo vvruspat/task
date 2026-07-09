@@ -12,6 +12,7 @@ import {
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
@@ -22,6 +23,7 @@ import type {
 import type {
   TaskArchiveResult,
   TaskCreateResult,
+  TaskMoveResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
   TaskUpdateDueDateResult,
@@ -275,6 +277,73 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     return { status: "updated", task: toTaskSummary(savedTask) };
   }
 
+  async moveForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: MoveTaskInput,
+  ): Promise<TaskMoveResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (input.parentTaskId !== null) {
+      const parentTask = await this.getVisibleTask(
+        dataSource,
+        workspaceId,
+        projectId,
+        input.parentTaskId,
+      );
+
+      if (
+        parentTask === null ||
+        parentTask.id === task.id ||
+        (await this.isTaskAncestor(dataSource, workspaceId, projectId, task.id, parentTask))
+      ) {
+        return { status: "invalid_parent_task" };
+      }
+    }
+
+    const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      task.parentTaskId = input.parentTaskId;
+      task.position = input.position;
+
+      const updatedTask = await manager.getRepository(TaskEntity).save(task);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.moved",
+        entityType: "task",
+        entityId: updatedTask.id,
+        payload: {
+          parentTaskId: input.parentTaskId,
+          position: input.position,
+          projectId,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return updatedTask;
+    });
+
+    return { status: "updated", task: toTaskSummary(savedTask) };
+  }
+
   async updateAssigneeForProject(
     workspaceId: string,
     projectId: string,
@@ -482,6 +551,37 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       workspaceId,
       userId,
     });
+  }
+
+  private async isTaskAncestor(
+    dataSource: DataSource,
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    parentTask: TaskEntity,
+  ): Promise<boolean> {
+    let currentParentId = parentTask.parentTaskId;
+
+    while (currentParentId !== null) {
+      if (currentParentId === taskId) {
+        return true;
+      }
+
+      const currentParent = await this.getVisibleTask(
+        dataSource,
+        workspaceId,
+        projectId,
+        currentParentId,
+      );
+
+      if (currentParent === null) {
+        return false;
+      }
+
+      currentParentId = currentParent.parentTaskId;
+    }
+
+    return false;
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {

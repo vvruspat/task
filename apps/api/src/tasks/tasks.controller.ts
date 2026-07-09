@@ -16,6 +16,7 @@ import {
 } from "../auth/trusted-current-user.decorator.js";
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
@@ -23,7 +24,9 @@ import type {
 } from "./tasks.contracts.js";
 import {
   CreateTaskDto,
+  MoveTaskDto,
   ParseCreateTaskBodyPipe,
+  ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
   ParseUpdateTaskBodyPipe,
   ParseUpdateTaskDueDateBodyPipe,
@@ -96,6 +99,26 @@ export class TasksController {
     @Body(new ParseUpdateTaskBodyPipe()) input: UpdateTaskInput,
   ): Promise<TaskDetailDto> {
     return this.tasksService.updateTask(workspaceId, projectId, taskId, userId, input);
+  }
+
+  @Patch(":taskId/move")
+  @ApiOperation({ summary: "Move one active task within a visible project" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiParam({ format: "uuid", name: "taskId" })
+  @ApiBody({ type: MoveTaskDto })
+  @ApiOkResponse({ type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Task move payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update tasks in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace, project, or task is missing or not visible." })
+  moveTask(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @Param("taskId", uuidV4Pipe) taskId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseMoveTaskBodyPipe()) input: MoveTaskInput,
+  ): Promise<TaskDetailDto> {
+    return this.tasksService.moveTask(workspaceId, projectId, taskId, userId, input);
   }
 
   @Patch(":taskId/status")

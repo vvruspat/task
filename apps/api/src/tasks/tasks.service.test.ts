@@ -3,6 +3,7 @@ import test from "node:test";
 import { BadRequestException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
@@ -15,6 +16,7 @@ import { TasksService } from "./tasks.service.js";
 import type {
   TaskArchiveResult,
   TaskCreateResult,
+  TaskMoveResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
   TaskUpdateDueDateResult,
@@ -147,6 +149,25 @@ test("TasksService updates task metadata for writable workspace members", async 
   assert.deepEqual(response.metadata, input.metadata);
 });
 
+test("TasksService moves tasks for writable workspace members", async () => {
+  const input: MoveTaskInput = { parentTaskId: null, position: "3000" };
+  const service = new TasksService(
+    createReadStore({
+      moveResult: {
+        status: "updated",
+        task: { ...taskSummary, parentTaskId: input.parentTaskId, position: input.position },
+      },
+    }),
+  );
+
+  const response = await service.moveTask(workspaceId, projectId, taskId, userId, input);
+
+  assert.ok(response instanceof TaskDetailDto);
+  assert.equal(response.id, taskId);
+  assert.equal(response.parentTaskId, input.parentTaskId);
+  assert.equal(response.position, input.position);
+});
+
 test("TasksService updates task assignee for writable workspace members", async () => {
   const input: UpdateTaskAssigneeInput = { assigneeUserId };
   const service = new TasksService(
@@ -224,6 +245,14 @@ test("TasksService hides inaccessible projects and missing tasks", async () => {
     NotFoundException,
   );
   await assert.rejects(
+    () =>
+      service.moveTask(workspaceId, projectId, taskId, userId, {
+        parentTaskId: null,
+        position: "0",
+      }),
+    NotFoundException,
+  );
+  await assert.rejects(
     () => service.updateTaskAssignee(workspaceId, projectId, taskId, userId, { assigneeUserId }),
     NotFoundException,
   );
@@ -262,6 +291,19 @@ test("TasksService rejects task updates without write permission", async () => {
 
   await assert.rejects(
     () => service.updateTask(workspaceId, projectId, taskId, userId, { title: "Hidden" }),
+    ForbiddenException,
+  );
+});
+
+test("TasksService rejects task moves without write permission", async () => {
+  const service = new TasksService(createReadStore({ moveResult: { status: "forbidden" } }));
+
+  await assert.rejects(
+    () =>
+      service.moveTask(workspaceId, projectId, taskId, userId, {
+        parentTaskId: null,
+        position: "0",
+      }),
     ForbiddenException,
   );
 });
@@ -331,12 +373,28 @@ test("TasksService rejects parent tasks outside the project", async () => {
   );
 });
 
+test("TasksService rejects invalid parent tasks during moves", async () => {
+  const service = new TasksService(
+    createReadStore({ moveResult: { status: "invalid_parent_task" } }),
+  );
+
+  await assert.rejects(
+    () =>
+      service.moveTask(workspaceId, projectId, taskId, userId, {
+        parentTaskId: taskId,
+        position: "0",
+      }),
+    BadRequestException,
+  );
+});
+
 function createReadStore(options: {
   tasks?: TaskSummary[] | null;
   task?: TaskDetail | null;
   archiveResult?: TaskArchiveResult;
   createResult?: TaskCreateResult;
   updateResult?: TaskUpdateResult;
+  moveResult?: TaskMoveResult;
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
   updateDueDateResult?: TaskUpdateDueDateResult;
@@ -350,6 +408,8 @@ function createReadStore(options: {
       options.createResult ?? { status: "project_not_found" },
     updateForProject: async (): Promise<TaskUpdateResult> =>
       options.updateResult ?? { status: "task_not_found" },
+    moveForProject: async (): Promise<TaskMoveResult> =>
+      options.moveResult ?? { status: "task_not_found" },
     archiveForProject: async (): Promise<TaskArchiveResult> =>
       options.archiveResult ?? { status: "task_not_found" },
     updateStatusForProject: async (): Promise<TaskUpdateStatusResult> =>

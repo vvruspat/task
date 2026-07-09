@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
@@ -121,6 +122,36 @@ export class TasksService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot update tasks in this workspace.");
+    }
+
+    return new TaskDetailDto(result.task);
+  }
+
+  async moveTask(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: MoveTaskInput,
+  ): Promise<TaskDetailDto> {
+    const result = await this.readStore.moveForProject(
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      input,
+    );
+
+    if (result.status === "task_not_found") {
+      throw new NotFoundException("Task was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot update tasks in this workspace.");
+    }
+
+    if (result.status === "invalid_parent_task") {
+      throw new BadRequestException("Parent task must be an active task in the same project.");
     }
 
     return new TaskDetailDto(result.task);

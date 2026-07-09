@@ -3,6 +3,7 @@ import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
@@ -13,6 +14,7 @@ import type {
 import { TasksController } from "./tasks.controller.js";
 import {
   ParseCreateTaskBodyPipe,
+  ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
   ParseUpdateTaskBodyPipe,
   ParseUpdateTaskDueDateBodyPipe,
@@ -22,6 +24,7 @@ import { TasksService } from "./tasks.service.js";
 import type {
   TaskArchiveResult,
   TaskCreateResult,
+  TaskMoveResult,
   TaskReadStore,
   TaskUpdateAssigneeResult,
   TaskUpdateDueDateResult,
@@ -139,6 +142,26 @@ test("TasksController uses trusted current user context for task updates", async
   assert.equal(response.id, taskId);
   assert.equal(response.description, input.description);
   assert.deepEqual(response.metadata, input.metadata);
+});
+
+test("TasksController uses trusted current user context for task moves", async () => {
+  const input: MoveTaskInput = { parentTaskId: null, position: "3000" };
+  const controller = new TasksController(
+    new TasksService(
+      createReadStore({
+        moveResult: {
+          status: "updated",
+          task: { ...taskSummary, parentTaskId: input.parentTaskId, position: input.position },
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.moveTask(workspaceId, projectId, taskId, userId, input);
+
+  assert.equal(response.id, taskId);
+  assert.equal(response.parentTaskId, input.parentTaskId);
+  assert.equal(response.position, input.position);
 });
 
 test("TasksController uses trusted current user context for task assignee updates", async () => {
@@ -263,6 +286,31 @@ test("ParseUpdateTaskBodyPipe validates and normalizes task update payloads", ()
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseMoveTaskBodyPipe validates task move payloads", () => {
+  const pipe = new ParseMoveTaskBodyPipe();
+
+  assert.deepEqual(pipe.transform({ parentTaskId: taskId, position: " 2000 " }), {
+    parentTaskId: taskId,
+    position: "2000",
+  });
+  assert.deepEqual(pipe.transform({ parentTaskId: null, position: "-100.5" }), {
+    parentTaskId: null,
+    position: "-100.5",
+  });
+
+  assert.throws(() => pipe.transform({}), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ parentTaskId: "bad", position: "1000" }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform({ parentTaskId: taskId, position: "" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ parentTaskId: taskId, position: "first" }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 test("ParseUpdateTaskStatusBodyPipe validates task status payloads", () => {
   const pipe = new ParseUpdateTaskStatusBodyPipe();
 
@@ -311,6 +359,7 @@ function createReadStore(options: {
   archiveResult?: TaskArchiveResult;
   createResult?: TaskCreateResult;
   updateResult?: TaskUpdateResult;
+  moveResult?: TaskMoveResult;
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
   updateDueDateResult?: TaskUpdateDueDateResult;
@@ -324,6 +373,8 @@ function createReadStore(options: {
       options.createResult ?? { status: "project_not_found" },
     updateForProject: async (): Promise<TaskUpdateResult> =>
       options.updateResult ?? { status: "task_not_found" },
+    moveForProject: async (): Promise<TaskMoveResult> =>
+      options.moveResult ?? { status: "task_not_found" },
     archiveForProject: async (): Promise<TaskArchiveResult> =>
       options.archiveResult ?? { status: "task_not_found" },
     updateStatusForProject: async (): Promise<TaskUpdateStatusResult> =>
