@@ -27,6 +27,8 @@ export {
 
 export {
   handleTelegramUpdate,
+  type TelegramInlineKeyboardButton,
+  type TelegramInlineKeyboardMarkup,
   type TelegramMessageHandlerAction,
   type TelegramMessageHandlerOptions,
   type TelegramReplyAction,
@@ -43,6 +45,7 @@ export {
 } from "./runtime.js";
 
 export {
+  createTelegramConfirmationInlineKeyboard,
   createTelegramReplySender,
   type TelegramBotApiFetch,
   type TelegramBotApiFetchInit,
