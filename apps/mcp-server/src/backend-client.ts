@@ -25,6 +25,7 @@ type ListActiveProjectsOperation = operations["ProjectsController_listActiveProj
 type GetProjectOperation = operations["ProjectsController_getProject"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
+type UpdateProjectOperation = operations["ProjectsController_updateProject"];
 type ListActiveTasksOperation = operations["TasksController_listActiveTasks"];
 type ListTaskCommentsOperation = operations["CommentsController_listTaskComments"];
 type CreateTaskCommentOperation = operations["CommentsController_createTaskComment"];
@@ -88,6 +89,10 @@ export type CreateTaskLinkAttachmentInput =
   CreateTaskLinkAttachmentOperation["requestBody"]["content"]["application/json"];
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
+export type UpdateProjectInput =
+  UpdateProjectOperation["requestBody"]["content"]["application/json"];
+export type UpdateProjectResponse =
+  UpdateProjectOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
 export type UpdateTaskStatusInput =
   UpdateTaskStatusOperation["requestBody"]["content"]["application/json"];
@@ -282,6 +287,13 @@ export type ArchiveProjectRequest = {
   userId: string;
 };
 
+export type UpdateProjectRequest = {
+  workspaceId: string;
+  projectId: string;
+  userId: string;
+  body: UpdateProjectInput;
+};
+
 export type ListActiveTasksRequest = {
   workspaceId: string;
   projectId: string;
@@ -398,6 +410,7 @@ export type TaskBackendClient = {
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
   archiveProject(request: ArchiveProjectRequest): Promise<ArchiveProjectResponse>;
+  updateProject(request: UpdateProjectRequest): Promise<UpdateProjectResponse>;
   listActiveTasks(request: ListActiveTasksRequest): Promise<TaskSummaryResponse[]>;
   listTaskComments(request: ListTaskCommentsRequest): Promise<TaskCommentResponse[]>;
   createTaskComment(request: CreateTaskCommentRequest): Promise<TaskCommentResponse>;
@@ -600,6 +613,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.userId,
         readProjectDetail,
       ),
+    updateProject: (request) =>
+      patchJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceProjectPath(request.workspaceId, request.projectId),
+        request.userId,
+        request.body,
+        readProjectDetail,
+      ),
     listActiveTasks: (request) =>
       getJson(
         fetchImplementation,
@@ -752,6 +774,7 @@ async function patchJson<ResponseBody>(
     | UpdateTaskDueDateInput
     | UpdateTaskSkillMetadataInput
     | UpdateTaskSkillDefinitionInput
+    | UpdateProjectInput
     | Record<string, never>,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {

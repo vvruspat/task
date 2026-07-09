@@ -674,6 +674,9 @@ function createBackendClientStub(
     archiveProject: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
+    updateProject: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async () => {
       throw new Error("Not implemented.");
     },

@@ -68,6 +68,9 @@ export {
   type TaskSkillDetailResponse,
   type TaskSkillSummaryResponse,
   type TaskSummaryResponse,
+  type UpdateProjectInput,
+  type UpdateProjectRequest,
+  type UpdateProjectResponse,
   type UpdateTaskAssigneeInput,
   type UpdateTaskAssigneeRequest,
   type UpdateTaskDueDateInput,
@@ -141,10 +144,12 @@ export {
   type ProjectSearchToolInput,
   type ProjectToolHandlers,
   ProjectToolInputError,
+  type ProjectUpdateToolInput,
   parseProjectArchiveToolInput,
   parseProjectCreateToolInput,
   parseProjectGetToolInput,
   parseProjectSearchToolInput,
+  parseProjectUpdateToolInput,
 } from "./project-tools.js";
 export {
   type RunTaskMcpServerOptions,
