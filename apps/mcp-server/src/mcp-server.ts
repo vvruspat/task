@@ -500,6 +500,16 @@ export function registerCommentTools(
   );
 
   registrar.registerTool(
+    "task.comment",
+    {
+      title: "Comment on task",
+      description: "Create a comment on one writable task.",
+      inputSchema: commentCreateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.create(input)),
+  );
+
+  registrar.registerTool(
     "comment.list",
     {
       title: "List comments",
