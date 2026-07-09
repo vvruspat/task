@@ -107,6 +107,12 @@ const createTaskSkillInput = {
   },
 };
 
+const cloneTaskSkillInput = {
+  name: "Song copy",
+  description: null,
+  aliases: ["copy"],
+};
+
 const confirmationRequestSummary: ConfirmationRequestSummaryResponse = {
   id: confirmationRequestId,
   workspaceId,
@@ -363,6 +369,40 @@ test("createTaskSkill posts typed payloads with trusted user context", async () 
   assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
   assert.equal(fetchCalls[0]?.init.body, JSON.stringify(createTaskSkillInput));
   assert.deepEqual(response, taskSkillDetail);
+});
+
+test("cloneTaskSkill posts typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const clonedTaskSkill: TaskSkillDetailResponse = {
+    ...taskSkillDetail,
+    id: "88888888-8888-4888-8888-888888888888",
+    name: "Song copy",
+    description: null,
+    aliases: ["copy"],
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, clonedTaskSkill);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.cloneTaskSkill({
+    workspaceId,
+    taskSkillId,
+    userId,
+    body: cloneTaskSkillInput,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/task-skills/${taskSkillId}/clone`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "POST");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetchCalls[0]?.init.body, JSON.stringify(cloneTaskSkillInput));
+  assert.deepEqual(response, clonedTaskSkill);
 });
 
 test("archiveTaskSkill deletes one active skill with trusted user context", async () => {

@@ -299,6 +299,9 @@ function createBackendClientStub(
     createTaskSkill: async (): Promise<TaskSkillDetailResponse> => {
       throw new Error("Not implemented.");
     },
+    cloneTaskSkill: async (): Promise<TaskSkillDetailResponse> => {
+      throw new Error("Not implemented.");
+    },
     archiveTaskSkill: async (): Promise<TaskSkillDetailResponse> => {
       throw new Error("Not implemented.");
     },
