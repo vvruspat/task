@@ -154,6 +154,7 @@ summary.workspace
 ### Confirmation tools
 
 ```text
+confirmation.list_pending
 confirmation.create
 confirmation.get
 confirmation.commit
@@ -214,6 +215,9 @@ Telegram can render the preview as text with buttons:
 ```text
 [Создать] [Изменить] [Отмена]
 ```
+
+Agents can use `confirmation.list_pending` to inspect outstanding confirmation requests before
+rendering or resolving a confirmation flow.
 
 ## Agent run audit
 
@@ -291,4 +295,3 @@ Recommended path:
    - ambiguous project match.
 
 Longer term, some MCP tools can be generated from OpenAPI, but hand-written tools are better at first because agent-facing operations should be higher-level than raw CRUD.
-
