@@ -92,8 +92,6 @@ MCP tools should be small and explicit. Do not create one giant `doEverything` t
 workspace.get_current
 user.resolve
 user.list_workspace_members
-telegram.resolve_user
-telegram.link_user
 ```
 
 ### Project tools
@@ -142,8 +140,10 @@ skill.apply
 ### Attachment tools
 
 ```text
-attachment.add_link
+attachment.create_link
+attachment.add_link          # alias for attachment.create_link
 attachment.add_file
+attachment.add_telegram_file
 attachment.resolve_pending_telegram_file
 attachment.list
 ```
