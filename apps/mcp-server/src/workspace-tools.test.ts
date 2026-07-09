@@ -10,6 +10,7 @@ import {
   createWorkspaceToolHandlers,
   parseWorkspaceGetCurrentToolInput,
   parseWorkspaceMemberListToolInput,
+  parseWorkspaceUserResolveToolInput,
 } from "./workspace-tools.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -34,6 +35,30 @@ const workspaceMember: WorkspaceMemberResponse = {
   avatarUrl: null,
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const exactWorkspaceMember: WorkspaceMemberResponse = {
+  ...workspaceMember,
+  id: "99999999-9999-4999-8999-999999999999",
+  userId: "99999999-9999-4999-8999-999999999999",
+  displayName: "Ali",
+  email: "ali@example.com",
+};
+
+const prefixWorkspaceMember: WorkspaceMemberResponse = {
+  ...workspaceMember,
+  id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  userId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  displayName: "Alicia",
+  email: "team-lead@example.com",
+};
+
+const substringWorkspaceMember: WorkspaceMemberResponse = {
+  ...workspaceMember,
+  id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+  userId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+  displayName: "Tali",
+  email: "operator@example.com",
 };
 
 const workspaceDetail: WorkspaceDetailResponse = {
@@ -64,6 +89,34 @@ test("parseWorkspaceMemberListToolInput validates workspace and user", () => {
       workspaceId,
       userId,
     },
+  );
+});
+
+test("parseWorkspaceUserResolveToolInput validates query and bounded optional limit", () => {
+  assert.deepEqual(
+    parseWorkspaceUserResolveToolInput({
+      workspaceId,
+      userId,
+      query: " Alex ",
+      limit: 3,
+    }),
+    {
+      workspaceId,
+      userId,
+      query: "Alex",
+      limit: 3,
+    },
+  );
+});
+
+test("parseWorkspaceUserResolveToolInput rejects empty query and out-of-range limit", () => {
+  assert.throws(
+    () => parseWorkspaceUserResolveToolInput({ workspaceId, userId, query: " " }),
+    /query must not be empty/,
+  );
+  assert.throws(
+    () => parseWorkspaceUserResolveToolInput({ workspaceId, userId, query: "Alex", limit: 21 }),
+    /limit must be between 1 and 20/,
   );
 });
 
@@ -107,6 +160,50 @@ test("workspace handlers list visible workspace members", async () => {
 
   assert.deepEqual(await handlers.listMembers({ workspaceId, userId }), [workspaceMember]);
   assert.deepEqual(memberCalls, [{ workspaceId, userId }]);
+});
+
+test("workspace handlers resolve users by exact, prefix, then substring matches", async () => {
+  const memberCalls: Array<{ workspaceId: string; userId: string }> = [];
+  const handlers = createWorkspaceToolHandlers({
+    ...createBackendClientStub(),
+    listWorkspaceMembers: async (request): Promise<WorkspaceMemberResponse[]> => {
+      memberCalls.push(request);
+      return [
+        substringWorkspaceMember,
+        prefixWorkspaceMember,
+        exactWorkspaceMember,
+        workspaceMember,
+      ];
+    },
+  });
+
+  assert.deepEqual(await handlers.resolveUser({ workspaceId, userId, query: "ali", limit: 2 }), [
+    exactWorkspaceMember,
+    prefixWorkspaceMember,
+  ]);
+  assert.deepEqual(memberCalls, [{ workspaceId, userId }]);
+});
+
+test("workspace handlers resolve users by email and user id", async () => {
+  const handlers = createWorkspaceToolHandlers({
+    ...createBackendClientStub(),
+    listWorkspaceMembers: async (): Promise<WorkspaceMemberResponse[]> => [
+      exactWorkspaceMember,
+      prefixWorkspaceMember,
+    ],
+  });
+
+  assert.deepEqual(await handlers.resolveUser({ workspaceId, userId, query: "team-lead" }), [
+    prefixWorkspaceMember,
+  ]);
+  assert.deepEqual(
+    await handlers.resolveUser({
+      workspaceId,
+      userId,
+      query: exactWorkspaceMember.userId,
+    }),
+    [exactWorkspaceMember],
+  );
 });
 
 function createBackendClientStub(): TaskBackendClient {

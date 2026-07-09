@@ -231,8 +231,10 @@ export {
   createWorkspaceToolHandlers,
   parseWorkspaceGetCurrentToolInput,
   parseWorkspaceMemberListToolInput,
+  parseWorkspaceUserResolveToolInput,
   type WorkspaceGetCurrentToolInput,
   type WorkspaceMemberListToolInput,
   type WorkspaceToolHandlers,
   WorkspaceToolInputError,
+  type WorkspaceUserResolveToolInput,
 } from "./workspace-tools.js";
