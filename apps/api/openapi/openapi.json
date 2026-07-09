@@ -2567,6 +2567,59 @@
         "tags": ["telegram"]
       }
     },
+    "/telegram/mini-app/identity/link": {
+      "post": {
+        "operationId": "TelegramMiniAppController_linkIdentity",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyTelegramMiniAppInitDataDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkedTelegramIdentityDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram Mini App initData payload is malformed."
+          },
+          "401": {
+            "description": "Telegram Mini App initData is invalid or expired."
+          },
+          "404": {
+            "description": "Current user is missing."
+          },
+          "409": {
+            "description": "Telegram identity is already linked to another user."
+          }
+        },
+        "summary": "Link verified Telegram Mini App identity to the current user",
+        "tags": ["telegram"]
+      }
+    },
     "/internal/agent/telegram/runs": {
       "post": {
         "operationId": "AgentController_createTelegramRun",
@@ -4113,6 +4166,20 @@
           }
         },
         "required": ["telegramId", "authDate"]
+      },
+      "LinkedTelegramIdentityDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": ["telegramId", "userId"]
       },
       "TelegramAgentRunDocumentAttachmentDto": {
         "type": "object",

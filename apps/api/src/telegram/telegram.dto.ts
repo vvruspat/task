@@ -1,6 +1,7 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
+  LinkedTelegramIdentity,
   ResolveTelegramContextInput,
   TelegramConfirmationCallbackInput,
   TelegramConfirmationCallbackResult,
@@ -136,6 +137,19 @@ export class VerifiedTelegramMiniAppInitDataDto implements VerifiedTelegramMiniA
   constructor(result: VerifiedTelegramMiniAppInitData) {
     this.telegramId = result.telegramId;
     this.authDate = result.authDate;
+  }
+}
+
+export class LinkedTelegramIdentityDto implements LinkedTelegramIdentity {
+  @ApiProperty({ example: "123456789" })
+  readonly telegramId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly userId: string;
+
+  constructor(identity: LinkedTelegramIdentity) {
+    this.telegramId = identity.telegramId;
+    this.userId = identity.userId;
   }
 }
 

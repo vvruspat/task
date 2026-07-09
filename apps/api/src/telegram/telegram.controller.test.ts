@@ -13,6 +13,8 @@ import type {
   ConfirmationRequestsStore,
 } from "../confirmations/confirmations.store.js";
 import type {
+  LinkTelegramIdentityInput,
+  LinkTelegramIdentityResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
 } from "./telegram.contracts.js";
@@ -137,6 +139,40 @@ test("TelegramMiniAppController verifies initData through the service", () => {
   );
 });
 
+test("TelegramMiniAppController links verified initData to the trusted current user", async () => {
+  const store = new RecordingTelegramContextStore({ status: "telegram_user_unlinked" });
+  const controller = new TelegramMiniAppController(
+    new TelegramService(
+      store,
+      new TelegramMiniAppInitDataVerifier({
+        botToken,
+        maxAgeSeconds: 86_400,
+        now: () => now,
+      }),
+    ),
+  );
+  const authDate = String(Math.floor(now.getTime() / 1000));
+
+  assert.deepEqual(
+    {
+      ...(await controller.linkIdentity("22222222-2222-4222-8222-222222222222", {
+        initData: createSignedInitData({
+          authDate,
+          userJson: JSON.stringify({ id: 123456789, first_name: "Alex" }),
+        }),
+      })),
+    },
+    {
+      telegramId: "123456789",
+      userId: "22222222-2222-4222-8222-222222222222",
+    },
+  );
+  assert.deepEqual(store.lastLinkInput, {
+    telegramId: "123456789",
+    userId: "22222222-2222-4222-8222-222222222222",
+  });
+});
+
 const confirmationRequest: ConfirmationRequestDetail = {
   id: "11111111-1111-4111-8111-111111111111",
   workspaceId: "33333333-3333-4333-8333-333333333333",
@@ -152,13 +188,29 @@ const confirmationRequest: ConfirmationRequestDetail = {
 
 class RecordingTelegramContextStore implements TelegramContextStore {
   lastInput: ResolveTelegramContextInput | null = null;
+  lastLinkInput: LinkTelegramIdentityInput | null = null;
 
-  constructor(private readonly resolution: TelegramContextResolution) {}
+  constructor(
+    private readonly resolution: TelegramContextResolution,
+    private readonly linkResult: LinkTelegramIdentityResult = {
+      status: "linked",
+      identity: {
+        telegramId: "123456789",
+        userId: "22222222-2222-4222-8222-222222222222",
+      },
+    },
+  ) {}
 
   async resolveContext(input: ResolveTelegramContextInput): Promise<TelegramContextResolution> {
     this.lastInput = input;
 
     return this.resolution;
+  }
+
+  async linkIdentity(input: LinkTelegramIdentityInput): Promise<LinkTelegramIdentityResult> {
+    this.lastLinkInput = input;
+
+    return this.linkResult;
   }
 }
 

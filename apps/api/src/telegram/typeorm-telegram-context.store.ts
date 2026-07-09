@@ -5,9 +5,12 @@ import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   TelegramChatEntity,
   TelegramIdentityEntity,
+  UserEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type {
+  LinkTelegramIdentityInput,
+  LinkTelegramIdentityResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
 } from "./telegram.contracts.js";
@@ -61,6 +64,80 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
     };
   }
 
+  async linkIdentity(input: LinkTelegramIdentityInput): Promise<LinkTelegramIdentityResult> {
+    const dataSource = await this.getInitializedDataSource();
+
+    return dataSource.transaction(async (entityManager) => {
+      const user = await entityManager.getRepository(UserEntity).findOneBy({ id: input.userId });
+
+      if (user === null) {
+        return { status: "user_not_found" };
+      }
+
+      const identityRepository = entityManager.getRepository(TelegramIdentityEntity);
+      const identity = await identityRepository.findOneBy({ telegramId: input.telegramId });
+      const now = new Date();
+
+      if (identity !== null) {
+        if (identity.userId !== input.userId) {
+          return {
+            status: "telegram_identity_linked_to_different_user",
+            telegramId: input.telegramId,
+          };
+        }
+
+        identity.lastSeenAt = now;
+        await identityRepository.save(identity);
+
+        return {
+          status: "linked",
+          identity: {
+            telegramId: identity.telegramId,
+            userId: identity.userId,
+          },
+        };
+      }
+
+      const linkedIdentity = identityRepository.create({
+        userId: input.userId,
+        telegramId: input.telegramId,
+        linkedAt: now,
+        lastSeenAt: now,
+      });
+      let savedIdentity: TelegramIdentityEntity;
+
+      try {
+        savedIdentity = await identityRepository.save(linkedIdentity);
+      } catch (error) {
+        if (!isUniqueConstraintViolation(error)) {
+          throw error;
+        }
+
+        const conflictingIdentity = await identityRepository.findOneBy({
+          telegramId: input.telegramId,
+        });
+
+        if (conflictingIdentity === null || conflictingIdentity.userId !== input.userId) {
+          return {
+            status: "telegram_identity_linked_to_different_user",
+            telegramId: input.telegramId,
+          };
+        }
+
+        conflictingIdentity.lastSeenAt = now;
+        savedIdentity = await identityRepository.save(conflictingIdentity);
+      }
+
+      return {
+        status: "linked",
+        identity: {
+          telegramId: savedIdentity.telegramId,
+          userId: savedIdentity.userId,
+        },
+      };
+    });
+  }
+
   private async getInitializedDataSource(): Promise<DataSource> {
     const dataSource = this.dataSourceProvider.getDataSource();
 
@@ -81,4 +158,8 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
       throw error;
     }
   }
+}
+
+function isUniqueConstraintViolation(error: unknown): boolean {
+  return typeof error === "object" && error !== null && "code" in error && error.code === "23505";
 }

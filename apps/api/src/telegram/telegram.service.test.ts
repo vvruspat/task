@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
 import test from "node:test";
 import type {
+  LinkTelegramIdentityInput,
+  LinkTelegramIdentityResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
 } from "./telegram.contracts.js";
@@ -12,6 +15,8 @@ const input: ResolveTelegramContextInput = {
   telegramId: "123456789",
   telegramChatId: "-100987654321",
 };
+const botToken = "123456:telegram-bot-token";
+const now = new Date("2026-07-09T12:00:00.000Z");
 
 test("TelegramService returns resolved Telegram context", async () => {
   const store = new RecordingTelegramContextStore({
@@ -86,15 +91,102 @@ test("TelegramService returns explicit workspace membership mismatch state", asy
   );
 });
 
+test("TelegramService links verified Mini App identity to the current user", async () => {
+  const store = new RecordingTelegramContextStore({ status: "telegram_user_unlinked" });
+  const service = new TelegramService(store, createConfiguredMiniAppInitDataVerifier());
+  const authDate = String(Math.floor(now.getTime() / 1000));
+
+  assert.deepEqual(
+    {
+      ...(await service.linkMiniAppIdentity({
+        userId: "22222222-2222-4222-8222-222222222222",
+        initData: createSignedInitData({
+          authDate,
+          userJson: JSON.stringify({ id: 123456789, first_name: "Alex" }),
+        }),
+      })),
+    },
+    {
+      telegramId: "123456789",
+      userId: "22222222-2222-4222-8222-222222222222",
+    },
+  );
+  assert.deepEqual(store.lastLinkInput, {
+    telegramId: "123456789",
+    userId: "22222222-2222-4222-8222-222222222222",
+  });
+});
+
+test("TelegramService rejects linking when the Telegram identity belongs to another user", async () => {
+  const store = new RecordingTelegramContextStore(
+    { status: "telegram_user_unlinked" },
+    {
+      status: "telegram_identity_linked_to_different_user",
+      telegramId: "123456789",
+    },
+  );
+  const service = new TelegramService(store, createConfiguredMiniAppInitDataVerifier());
+  const authDate = String(Math.floor(now.getTime() / 1000));
+
+  await assert.rejects(
+    () =>
+      service.linkMiniAppIdentity({
+        userId: "22222222-2222-4222-8222-222222222222",
+        initData: createSignedInitData({
+          authDate,
+          userJson: JSON.stringify({ id: 123456789, first_name: "Alex" }),
+        }),
+      }),
+    { name: "ConflictException" },
+  );
+});
+
+test("TelegramService rejects linking for missing current users", async () => {
+  const store = new RecordingTelegramContextStore(
+    { status: "telegram_user_unlinked" },
+    { status: "user_not_found" },
+  );
+  const service = new TelegramService(store, createConfiguredMiniAppInitDataVerifier());
+  const authDate = String(Math.floor(now.getTime() / 1000));
+
+  await assert.rejects(
+    () =>
+      service.linkMiniAppIdentity({
+        userId: "22222222-2222-4222-8222-222222222222",
+        initData: createSignedInitData({
+          authDate,
+          userJson: JSON.stringify({ id: 123456789, first_name: "Alex" }),
+        }),
+      }),
+    { name: "NotFoundException" },
+  );
+});
+
 class RecordingTelegramContextStore implements TelegramContextStore {
   lastInput: ResolveTelegramContextInput | null = null;
+  lastLinkInput: LinkTelegramIdentityInput | null = null;
 
-  constructor(private readonly resolution: TelegramContextResolution) {}
+  constructor(
+    private readonly resolution: TelegramContextResolution,
+    private readonly linkResult: LinkTelegramIdentityResult = {
+      status: "linked",
+      identity: {
+        telegramId: "123456789",
+        userId: "22222222-2222-4222-8222-222222222222",
+      },
+    },
+  ) {}
 
   async resolveContext(input: ResolveTelegramContextInput): Promise<TelegramContextResolution> {
     this.lastInput = input;
 
     return this.resolution;
+  }
+
+  async linkIdentity(input: LinkTelegramIdentityInput): Promise<LinkTelegramIdentityResult> {
+    this.lastLinkInput = input;
+
+    return this.linkResult;
   }
 }
 
@@ -102,6 +194,49 @@ function createMiniAppInitDataVerifier(): TelegramMiniAppInitDataVerifier {
   return new TelegramMiniAppInitDataVerifier({
     botToken: null,
     maxAgeSeconds: 86_400,
-    now: () => new Date("2026-07-09T12:00:00.000Z"),
+    now: () => now,
   });
+}
+
+function createConfiguredMiniAppInitDataVerifier(): TelegramMiniAppInitDataVerifier {
+  return new TelegramMiniAppInitDataVerifier({
+    botToken,
+    maxAgeSeconds: 86_400,
+    now: () => now,
+  });
+}
+
+type SignedInitDataInput = {
+  authDate: string;
+  userJson: string;
+};
+
+function createSignedInitData(input: SignedInitDataInput): string {
+  const fields = new URLSearchParams();
+
+  fields.set("auth_date", input.authDate);
+  fields.set("user", input.userJson);
+
+  const dataCheckString = [...fields.entries()]
+    .sort(([leftKey], [rightKey]) => compareDataCheckKeys(leftKey, rightKey))
+    .map(([key, value]) => `${key}=${value}`)
+    .join("\n");
+  const secretKey = createHmac("sha256", "WebAppData").update(botToken).digest();
+  const hash = createHmac("sha256", secretKey).update(dataCheckString).digest("hex");
+
+  fields.set("hash", hash);
+
+  return fields.toString();
+}
+
+function compareDataCheckKeys(leftKey: string, rightKey: string): number {
+  if (leftKey < rightKey) {
+    return -1;
+  }
+
+  if (leftKey > rightKey) {
+    return 1;
+  }
+
+  return 0;
 }
