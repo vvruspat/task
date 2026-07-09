@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
-import type { CreateTaskLinkAttachmentInput, TaskAttachment } from "./attachments.contracts.js";
+import type {
+  CreateTaskFileAttachmentInput,
+  CreateTaskLinkAttachmentInput,
+  TaskAttachment,
+} from "./attachments.contracts.js";
 import { TaskAttachmentDto } from "./attachments.dto.js";
 import { AttachmentsService } from "./attachments.service.js";
 import type { TaskAttachmentCreateResult, TaskAttachmentsStore } from "./attachments.store.js";
@@ -71,6 +75,45 @@ test("AttachmentsService creates link attachments for writable workspace members
   assert.equal(response.url, input.url);
 });
 
+test("AttachmentsService creates file attachments for writable workspace members", async () => {
+  const input: CreateTaskFileAttachmentInput = {
+    storageKey: "workspaces/acme/tasks/bass-take.wav",
+    title: "Bass take.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  };
+  const service = new AttachmentsService(
+    createAttachmentsStore({
+      createResult: {
+        attachment: {
+          ...taskAttachment,
+          kind: "file",
+          title: input.title ?? null,
+          url: null,
+          storageKey: input.storageKey,
+          mimeType: input.mimeType ?? null,
+          sizeBytes: input.sizeBytes ?? null,
+        },
+        status: "created",
+      },
+    }),
+  );
+
+  const response = await service.createTaskFileAttachment(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
+
+  assert.ok(response instanceof TaskAttachmentDto);
+  assert.equal(response.kind, "file");
+  assert.equal(response.storageKey, input.storageKey);
+  assert.equal(response.mimeType, input.mimeType);
+  assert.equal(response.sizeBytes, input.sizeBytes);
+});
+
 test("AttachmentsService hides inaccessible or missing tasks", async () => {
   const service = new AttachmentsService(createAttachmentsStore({ attachments: null }));
 
@@ -85,9 +128,16 @@ test("AttachmentsService hides inaccessible or missing tasks", async () => {
       }),
     NotFoundException,
   );
+  await assert.rejects(
+    () =>
+      service.createTaskFileAttachment(workspaceId, projectId, taskId, userId, {
+        storageKey: "files/hidden.bin",
+      }),
+    NotFoundException,
+  );
 });
 
-test("AttachmentsService rejects link attachments without write permission", async () => {
+test("AttachmentsService rejects attachment creates without write permission", async () => {
   const service = new AttachmentsService(
     createAttachmentsStore({ createResult: { status: "forbidden" } }),
   );
@@ -96,6 +146,13 @@ test("AttachmentsService rejects link attachments without write permission", asy
     () =>
       service.createTaskLinkAttachment(workspaceId, projectId, taskId, userId, {
         url: "https://example.com/hidden",
+      }),
+    ForbiddenException,
+  );
+  await assert.rejects(
+    () =>
+      service.createTaskFileAttachment(workspaceId, projectId, taskId, userId, {
+        storageKey: "files/hidden.bin",
       }),
     ForbiddenException,
   );
@@ -109,6 +166,8 @@ function createAttachmentsStore(options: {
     listForTask: async (): Promise<TaskAttachment[] | null> =>
       options.attachments === undefined ? [] : options.attachments,
     createLinkForTask: async (): Promise<TaskAttachmentCreateResult> =>
+      options.createResult ?? { status: "task_not_found" },
+    createFileForTask: async (): Promise<TaskAttachmentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
   };
 }

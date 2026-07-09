@@ -1,4 +1,8 @@
-import type { CreateTaskLinkAttachmentInput, TaskAttachment } from "./attachments.contracts.js";
+import type {
+  CreateTaskFileAttachmentInput,
+  CreateTaskLinkAttachmentInput,
+  TaskAttachment,
+} from "./attachments.contracts.js";
 
 export type TaskAttachmentCreateResult =
   | {
@@ -25,5 +29,12 @@ export type TaskAttachmentsStore = {
     taskId: string,
     userId: string,
     input: CreateTaskLinkAttachmentInput,
+  ): Promise<TaskAttachmentCreateResult>;
+  createFileForTask(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: CreateTaskFileAttachmentInput,
   ): Promise<TaskAttachmentCreateResult>;
 };

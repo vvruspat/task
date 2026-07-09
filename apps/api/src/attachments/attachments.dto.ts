@@ -1,6 +1,10 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import type { CreateTaskLinkAttachmentInput, TaskAttachment } from "./attachments.contracts.js";
+import type {
+  CreateTaskFileAttachmentInput,
+  CreateTaskLinkAttachmentInput,
+  TaskAttachment,
+} from "./attachments.contracts.js";
 
 export class CreateTaskLinkAttachmentDto implements CreateTaskLinkAttachmentInput {
   @ApiProperty({ example: "https://example.com/bass-take" })
@@ -10,11 +14,33 @@ export class CreateTaskLinkAttachmentDto implements CreateTaskLinkAttachmentInpu
   readonly title?: string | null;
 }
 
+export class CreateTaskFileAttachmentDto implements CreateTaskFileAttachmentInput {
+  @ApiProperty({ example: "workspaces/acme/tasks/bass-take.wav" })
+  readonly storageKey: string = "";
+
+  @ApiPropertyOptional({ nullable: true, type: String, example: "Bass take.wav" })
+  readonly title?: string | null;
+
+  @ApiPropertyOptional({ nullable: true, type: String, example: "audio/wav" })
+  readonly mimeType?: string | null;
+
+  @ApiPropertyOptional({ nullable: true, type: String, example: "18432000" })
+  readonly sizeBytes?: string | null;
+}
+
 export class ParseCreateTaskLinkAttachmentBodyPipe
   implements PipeTransform<unknown, CreateTaskLinkAttachmentInput>
 {
   transform(value: unknown): CreateTaskLinkAttachmentInput {
     return parseCreateTaskLinkAttachmentInput(value);
+  }
+}
+
+export class ParseCreateTaskFileAttachmentBodyPipe
+  implements PipeTransform<unknown, CreateTaskFileAttachmentInput>
+{
+  transform(value: unknown): CreateTaskFileAttachmentInput {
+    return parseCreateTaskFileAttachmentInput(value);
   }
 }
 
@@ -91,8 +117,50 @@ function parseCreateTaskLinkAttachmentInput(value: unknown): CreateTaskLinkAttac
   return input;
 }
 
+function parseCreateTaskFileAttachmentInput(value: unknown): CreateTaskFileAttachmentInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Attachment payload must be an object.");
+  }
+
+  const storageKey = readRequiredString(value, "storageKey");
+  const title = readOptionalNullableString(value, "title");
+  const mimeType = readOptionalNullableString(value, "mimeType");
+  const sizeBytes = readOptionalNullableSizeBytes(value, "sizeBytes");
+  const input: CreateTaskFileAttachmentInput = { storageKey };
+
+  if (title !== undefined) {
+    input.title = title;
+  }
+
+  if (mimeType !== undefined) {
+    input.mimeType = mimeType;
+  }
+
+  if (sizeBytes !== undefined) {
+    input.sizeBytes = sizeBytes;
+  }
+
+  return input;
+}
+
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readRequiredString(value: Record<string, unknown>, propertyName: string): string {
+  const propertyValue = value[propertyName];
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Attachment ${propertyName} must be a string.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+
+  if (trimmedValue.length === 0) {
+    throw new BadRequestException(`Attachment ${propertyName} must not be empty.`);
+  }
+
+  return trimmedValue;
 }
 
 function readRequiredUrl(value: Record<string, unknown>, propertyName: string): string {
@@ -140,4 +208,21 @@ function readOptionalNullableString(
   const trimmedValue = propertyValue.trim();
 
   return trimmedValue.length === 0 ? null : trimmedValue;
+}
+
+function readOptionalNullableSizeBytes(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const propertyValue = readOptionalNullableString(value, propertyName);
+
+  if (propertyValue === undefined || propertyValue === null) {
+    return propertyValue;
+  }
+
+  if (!/^(0|[1-9][0-9]*)$/.test(propertyValue)) {
+    throw new BadRequestException(`Attachment ${propertyName} must be a non-negative integer.`);
+  }
+
+  return propertyValue;
 }

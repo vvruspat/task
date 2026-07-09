@@ -23,3 +23,10 @@ export type CreateTaskLinkAttachmentInput = {
   url: string;
   title?: string | null;
 };
+
+export type CreateTaskFileAttachmentInput = {
+  storageKey: string;
+  title?: string | null;
+  mimeType?: string | null;
+  sizeBytes?: string | null;
+};
