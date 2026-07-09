@@ -14,6 +14,7 @@ const request = {
     telegramChatId: "-100987654321",
     sourceMessageId: "42",
     inputText: "@task summarize today",
+    attachments: [],
   },
   context: {
     workspaceId: "22222222-2222-4222-8222-222222222222",

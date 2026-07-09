@@ -12,6 +12,24 @@ const validInput = {
   telegramChatId: "-100987654321",
   sourceMessageId: "  42  ",
   inputText: "  @task what is next?  ",
+  attachments: [
+    {
+      kind: "document",
+      fileId: " document-file-id ",
+      fileUniqueId: "document-unique-id",
+      fileName: " chart.pdf ",
+      mimeType: " application/pdf ",
+      sizeBytes: "1024",
+    },
+    {
+      kind: "photo",
+      fileId: "photo-file-id",
+      fileUniqueId: null,
+      width: 1280,
+      height: 720,
+      sizeBytes: null,
+    },
+  ],
 };
 
 test("parseCreateTelegramAgentRunInput validates and normalizes Telegram agent requests", () => {
@@ -20,6 +38,24 @@ test("parseCreateTelegramAgentRunInput validates and normalizes Telegram agent r
     telegramChatId: "-100987654321",
     sourceMessageId: "42",
     inputText: "@task what is next?",
+    attachments: [
+      {
+        kind: "document",
+        fileId: "document-file-id",
+        fileUniqueId: "document-unique-id",
+        fileName: "chart.pdf",
+        mimeType: "application/pdf",
+        sizeBytes: "1024",
+      },
+      {
+        kind: "photo",
+        fileId: "photo-file-id",
+        fileUniqueId: null,
+        width: 1280,
+        height: 720,
+        sizeBytes: null,
+      },
+    ],
   });
 
   assert.deepEqual(
@@ -32,8 +68,34 @@ test("parseCreateTelegramAgentRunInput validates and normalizes Telegram agent r
       telegramChatId: "-100987654321",
       sourceMessageId: null,
       inputText: "@task what is next?",
+      attachments: [
+        {
+          kind: "document",
+          fileId: "document-file-id",
+          fileUniqueId: "document-unique-id",
+          fileName: "chart.pdf",
+          mimeType: "application/pdf",
+          sizeBytes: "1024",
+        },
+        {
+          kind: "photo",
+          fileId: "photo-file-id",
+          fileUniqueId: null,
+          width: 1280,
+          height: 720,
+          sizeBytes: null,
+        },
+      ],
     },
   );
+
+  assert.deepEqual(parseCreateTelegramAgentRunInput({ ...validInput, attachments: undefined }), {
+    telegramId: "123456789",
+    telegramChatId: "-100987654321",
+    sourceMessageId: "42",
+    inputText: "@task what is next?",
+    attachments: [],
+  });
 });
 
 test("parseCreateTelegramAgentRunInput rejects malformed Telegram agent requests", () => {
@@ -45,6 +107,15 @@ test("parseCreateTelegramAgentRunInput rejects malformed Telegram agent requests
     { ...validInput, sourceMessageId: 42 },
     { ...validInput, inputText: "" },
     { ...validInput, inputText: " ".repeat(8001) },
+    { ...validInput, attachments: {} },
+    { ...validInput, attachments: Array.from({ length: 11 }, () => validInput.attachments[0]) },
+    { ...validInput, attachments: [{ kind: "video", fileId: "file-id" }] },
+    { ...validInput, attachments: [{ kind: "document", fileId: "", sizeBytes: null }] },
+    { ...validInput, attachments: [{ kind: "document", fileId: "file-id", sizeBytes: "1KB" }] },
+    {
+      ...validInput,
+      attachments: [{ kind: "photo", fileId: "file-id", width: 0, height: 1 }],
+    },
   ];
 
   for (const payload of invalidPayloads) {

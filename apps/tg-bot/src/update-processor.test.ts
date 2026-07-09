@@ -27,6 +27,13 @@ const telegramUpdate = {
       title: "Album Team",
     },
     text: "создай задачу записать бас",
+    document: {
+      file_id: "document-file-id",
+      file_unique_id: "document-unique-id",
+      file_name: "chart.pdf",
+      mime_type: "application/pdf",
+      file_size: 1024,
+    },
   },
 };
 
@@ -97,6 +104,16 @@ test("processTelegramUpdate records resolved commands and replies with agent res
       telegramChatId: "-100987654321",
       sourceMessageId: "20",
       inputText: "создай задачу записать бас",
+      attachments: [
+        {
+          kind: "document",
+          fileId: "document-file-id",
+          fileUniqueId: "document-unique-id",
+          fileName: "chart.pdf",
+          mimeType: "application/pdf",
+          sizeBytes: "1024",
+        },
+      ],
     },
   });
   assert.deepEqual(replySender.lastAction, {

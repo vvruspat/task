@@ -1115,6 +1115,24 @@ export interface components {
       /** Format: uuid */
       defaultProjectId?: string | null;
     };
+    TelegramAgentRunDocumentAttachmentDto: {
+      /** @enum {string} */
+      kind: "document";
+      fileId: string;
+      fileUniqueId: string | null;
+      fileName: string | null;
+      mimeType: string | null;
+      sizeBytes: string | null;
+    };
+    TelegramAgentRunPhotoAttachmentDto: {
+      /** @enum {string} */
+      kind: "photo";
+      fileId: string;
+      fileUniqueId: string | null;
+      width: number;
+      height: number;
+      sizeBytes: string | null;
+    };
     CreateTelegramAgentRunDto: {
       /** @example 123456789 */
       telegramId: string;
@@ -1123,6 +1141,10 @@ export interface components {
       sourceMessageId?: string | null;
       /** @example @task what is next for the album? */
       inputText: string;
+      attachments: (
+        | components["schemas"]["TelegramAgentRunDocumentAttachmentDto"]
+        | components["schemas"]["TelegramAgentRunPhotoAttachmentDto"]
+      )[];
     };
     AgentRunIntakeResponseDto: {
       /** Format: uuid */

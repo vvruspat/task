@@ -8,7 +8,30 @@ export type CreateTelegramAgentRunInput = {
   telegramChatId: string;
   sourceMessageId?: string | null;
   inputText: string;
+  attachments: TelegramAgentRunAttachmentInput[];
 };
+
+export type TelegramAgentRunDocumentAttachmentInput = {
+  kind: "document";
+  fileId: string;
+  fileUniqueId: string | null;
+  fileName: string | null;
+  mimeType: string | null;
+  sizeBytes: string | null;
+};
+
+export type TelegramAgentRunPhotoAttachmentInput = {
+  kind: "photo";
+  fileId: string;
+  fileUniqueId: string | null;
+  width: number;
+  height: number;
+  sizeBytes: string | null;
+};
+
+export type TelegramAgentRunAttachmentInput =
+  | TelegramAgentRunDocumentAttachmentInput
+  | TelegramAgentRunPhotoAttachmentInput;
 
 export type AgentRunIntakeResponse = {
   agentRunId: string;

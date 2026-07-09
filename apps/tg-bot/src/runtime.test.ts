@@ -140,6 +140,7 @@ test("createTelegramBotRuntimeFromEnvironment records resolved updates through a
       telegramChatId: "-100987654321",
       sourceMessageId: "20",
       inputText: "создай задачу записать бас",
+      attachments: [],
     }),
   });
   assert.equal(
