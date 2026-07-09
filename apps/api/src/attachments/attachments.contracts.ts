@@ -30,3 +30,10 @@ export type CreateTaskFileAttachmentInput = {
   mimeType?: string | null;
   sizeBytes?: string | null;
 };
+
+export type CreateTaskTelegramFileAttachmentInput = {
+  telegramFileId: string;
+  title?: string | null;
+  mimeType?: string | null;
+  sizeBytes?: string | null;
+};

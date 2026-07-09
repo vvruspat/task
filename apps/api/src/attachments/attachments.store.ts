@@ -1,6 +1,7 @@
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
   TaskAttachment,
 } from "./attachments.contracts.js";
 
@@ -36,5 +37,12 @@ export type TaskAttachmentsStore = {
     taskId: string,
     userId: string,
     input: CreateTaskFileAttachmentInput,
+  ): Promise<TaskAttachmentCreateResult>;
+  createTelegramFileForTask(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: CreateTaskTelegramFileAttachmentInput,
   ): Promise<TaskAttachmentCreateResult>;
 };

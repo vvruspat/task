@@ -439,6 +439,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments/telegram-files": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Attach Telegram file metadata to a visible task */
+    post: operations["AttachmentsController_createTaskTelegramFileAttachment"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/confirmations": {
     parameters: {
       query?: never;
@@ -1004,6 +1021,16 @@ export interface components {
     CreateTaskFileAttachmentDto: {
       /** @example workspaces/acme/tasks/bass-take.wav */
       storageKey: string;
+      /** @example Bass take.wav */
+      title?: string | null;
+      /** @example audio/wav */
+      mimeType?: string | null;
+      /** @example 18432000 */
+      sizeBytes?: string | null;
+    };
+    CreateTaskTelegramFileAttachmentDto: {
+      /** @example BQACAgIAAxkBAAIBR2Z... */
+      telegramFileId: string;
       /** @example Bass take.wav */
       title?: string | null;
       /** @example audio/wav */
@@ -2558,6 +2585,57 @@ export interface operations {
         content?: never;
       };
       /** @description Current user cannot attach files in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttachmentsController_createTaskTelegramFileAttachment: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTaskTelegramFileAttachmentDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskAttachmentDto"];
+        };
+      };
+      /** @description Attachment payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot attach Telegram files in this workspace. */
       403: {
         headers: {
           [name: string]: unknown;

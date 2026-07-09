@@ -2091,6 +2091,83 @@
         "tags": ["attachments"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments/telegram-files": {
+      "post": {
+        "operationId": "AttachmentsController_createTaskTelegramFileAttachment",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskTelegramFileAttachmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskAttachmentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Attachment payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot attach Telegram files in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "Attach Telegram file metadata to a visible task",
+        "tags": ["attachments"]
+      }
+    },
     "/workspaces/{workspaceId}/confirmations": {
       "get": {
         "operationId": "ConfirmationsController_listPendingConfirmationRequests",
@@ -3679,6 +3756,31 @@
           }
         },
         "required": ["storageKey"]
+      },
+      "CreateTaskTelegramFileAttachmentDto": {
+        "type": "object",
+        "properties": {
+          "telegramFileId": {
+            "type": "string",
+            "example": "BQACAgIAAxkBAAIBR2Z..."
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "example": "Bass take.wav"
+          },
+          "mimeType": {
+            "type": "string",
+            "nullable": true,
+            "example": "audio/wav"
+          },
+          "sizeBytes": {
+            "type": "string",
+            "nullable": true,
+            "example": "18432000"
+          }
+        },
+        "required": ["telegramFileId"]
       },
       "ConfirmationRequestSummaryDto": {
         "type": "object",

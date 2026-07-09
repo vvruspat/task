@@ -13,6 +13,7 @@ import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
   TaskAttachment,
 } from "./attachments.contracts.js";
 import type { TaskAttachmentCreateResult, TaskAttachmentsStore } from "./attachments.store.js";
@@ -157,6 +158,68 @@ export class TypeOrmTaskAttachmentsStore implements TaskAttachmentsStore {
           entityId: createdAttachment.id,
           payload: {
             kind: "file",
+            projectId,
+            taskId,
+            targetType: "task",
+          },
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        return createdAttachment;
+      },
+    );
+
+    return { attachment: toTaskAttachment(savedAttachment), status: "created" };
+  }
+
+  async createTelegramFileForTask(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: CreateTaskTelegramFileAttachmentInput,
+  ): Promise<TaskAttachmentCreateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!attachmentWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    const savedAttachment = await dataSource.transaction(
+      async (manager): Promise<AttachmentEntity> => {
+        const attachmentRepository = manager.getRepository(AttachmentEntity);
+        const attachment = attachmentRepository.create({
+          workspaceId,
+          targetType: "task",
+          targetId: taskId,
+          kind: "telegram_file",
+          title: input.title ?? null,
+          telegramFileId: input.telegramFileId,
+          mimeType: input.mimeType ?? null,
+          sizeBytes: input.sizeBytes ?? null,
+          createdByUserId: userId,
+        });
+        const createdAttachment = await attachmentRepository.save(attachment);
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "attachment.created",
+          entityType: "attachment",
+          entityId: createdAttachment.id,
+          payload: {
+            kind: "telegram_file",
             projectId,
             taskId,
             targetType: "task",

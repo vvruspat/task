@@ -5,6 +5,7 @@ import { HealthResponseDto } from "./app.dto.js";
 import {
   CreateTaskFileAttachmentDto,
   CreateTaskLinkAttachmentDto,
+  CreateTaskTelegramFileAttachmentDto,
   TaskAttachmentDto,
 } from "./attachments/attachments.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
@@ -87,6 +88,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       TaskCommentDto,
       CreateTaskFileAttachmentDto,
       CreateTaskLinkAttachmentDto,
+      CreateTaskTelegramFileAttachmentDto,
       TaskAttachmentDto,
       ResolveTelegramContextDto,
       TelegramContextResolutionDto,

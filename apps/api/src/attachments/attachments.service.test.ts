@@ -4,6 +4,7 @@ import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
   TaskAttachment,
 } from "./attachments.contracts.js";
 import { TaskAttachmentDto } from "./attachments.dto.js";
@@ -114,6 +115,45 @@ test("AttachmentsService creates file attachments for writable workspace members
   assert.equal(response.sizeBytes, input.sizeBytes);
 });
 
+test("AttachmentsService creates Telegram file attachments for writable workspace members", async () => {
+  const input: CreateTaskTelegramFileAttachmentInput = {
+    telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    title: "Bass take.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  };
+  const service = new AttachmentsService(
+    createAttachmentsStore({
+      createResult: {
+        attachment: {
+          ...taskAttachment,
+          kind: "telegram_file",
+          title: input.title ?? null,
+          url: null,
+          telegramFileId: input.telegramFileId,
+          mimeType: input.mimeType ?? null,
+          sizeBytes: input.sizeBytes ?? null,
+        },
+        status: "created",
+      },
+    }),
+  );
+
+  const response = await service.createTaskTelegramFileAttachment(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
+
+  assert.ok(response instanceof TaskAttachmentDto);
+  assert.equal(response.kind, "telegram_file");
+  assert.equal(response.telegramFileId, input.telegramFileId);
+  assert.equal(response.mimeType, input.mimeType);
+  assert.equal(response.sizeBytes, input.sizeBytes);
+});
+
 test("AttachmentsService hides inaccessible or missing tasks", async () => {
   const service = new AttachmentsService(createAttachmentsStore({ attachments: null }));
 
@@ -132,6 +172,13 @@ test("AttachmentsService hides inaccessible or missing tasks", async () => {
     () =>
       service.createTaskFileAttachment(workspaceId, projectId, taskId, userId, {
         storageKey: "files/hidden.bin",
+      }),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () =>
+      service.createTaskTelegramFileAttachment(workspaceId, projectId, taskId, userId, {
+        telegramFileId: "hidden-telegram-file-id",
       }),
     NotFoundException,
   );
@@ -156,6 +203,13 @@ test("AttachmentsService rejects attachment creates without write permission", a
       }),
     ForbiddenException,
   );
+  await assert.rejects(
+    () =>
+      service.createTaskTelegramFileAttachment(workspaceId, projectId, taskId, userId, {
+        telegramFileId: "hidden-telegram-file-id",
+      }),
+    ForbiddenException,
+  );
 });
 
 function createAttachmentsStore(options: {
@@ -168,6 +222,8 @@ function createAttachmentsStore(options: {
     createLinkForTask: async (): Promise<TaskAttachmentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
     createFileForTask: async (): Promise<TaskAttachmentCreateResult> =>
+      options.createResult ?? { status: "task_not_found" },
+    createTelegramFileForTask: async (): Promise<TaskAttachmentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
   };
 }
