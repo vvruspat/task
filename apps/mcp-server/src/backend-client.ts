@@ -32,6 +32,8 @@ type CreateTaskCommentOperation = operations["CommentsController_createTaskComme
 type ListTaskAttachmentsOperation = operations["AttachmentsController_listTaskAttachments"];
 type CreateTaskLinkAttachmentOperation =
   operations["AttachmentsController_createTaskLinkAttachment"];
+type CreateTaskFileAttachmentOperation =
+  operations["AttachmentsController_createTaskFileAttachment"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type AddTaskSubtasksOperation = operations["TasksController_addTaskSubtasks"];
@@ -90,6 +92,8 @@ export type CreateTaskCommentInput =
   CreateTaskCommentOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskLinkAttachmentInput =
   CreateTaskLinkAttachmentOperation["requestBody"]["content"]["application/json"];
+export type CreateTaskFileAttachmentInput =
+  CreateTaskFileAttachmentOperation["requestBody"]["content"]["application/json"];
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
 export type UpdateProjectInput =
@@ -342,6 +346,14 @@ export type CreateTaskLinkAttachmentRequest = {
   body: CreateTaskLinkAttachmentInput;
 };
 
+export type CreateTaskFileAttachmentRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  body: CreateTaskFileAttachmentInput;
+};
+
 export type GetTaskRequest = {
   workspaceId: string;
   projectId: string;
@@ -453,6 +465,9 @@ export type TaskBackendClient = {
   listTaskAttachments(request: ListTaskAttachmentsRequest): Promise<TaskAttachmentResponse[]>;
   createTaskLinkAttachment(
     request: CreateTaskLinkAttachmentRequest,
+  ): Promise<TaskAttachmentResponse>;
+  createTaskFileAttachment(
+    request: CreateTaskFileAttachmentRequest,
   ): Promise<TaskAttachmentResponse>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
@@ -703,6 +718,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.body,
         readTaskAttachment,
       ),
+    createTaskFileAttachment: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskAttachmentFilesPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        request.body,
+        readTaskAttachment,
+      ),
     getTask: (request) =>
       getJson(
         fetchImplementation,
@@ -824,6 +848,7 @@ async function postJson<ResponseBody>(
     | AddTaskSubtasksInput
     | CreateTaskCommentInput
     | CreateTaskLinkAttachmentInput
+    | CreateTaskFileAttachmentInput
     | CreateConfirmationRequestInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
@@ -894,6 +919,7 @@ async function writeJson<ResponseBody>(
     | AddTaskSubtasksInput
     | CreateTaskCommentInput
     | CreateTaskLinkAttachmentInput
+    | CreateTaskFileAttachmentInput
     | CreateConfirmationRequestInput
     | UpdateTaskStatusInput
     | UpdateTaskAssigneeInput
@@ -1096,6 +1122,14 @@ function buildTaskAttachmentLinksPath(
   taskId: string,
 ): string {
   return `${buildTaskAttachmentsPath(workspaceId, projectId, taskId)}/links`;
+}
+
+function buildTaskAttachmentFilesPath(
+  workspaceId: string,
+  projectId: string,
+  taskId: string,
+): string {
+  return `${buildTaskAttachmentsPath(workspaceId, projectId, taskId)}/files`;
 }
 
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {

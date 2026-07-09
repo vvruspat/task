@@ -930,6 +930,52 @@ test("createTaskLinkAttachment posts typed payloads with trusted user context", 
   assert.deepEqual(response, taskAttachment);
 });
 
+test("createTaskFileAttachment posts typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const fileAttachment = {
+    ...taskAttachment,
+    kind: "file",
+    title: "Reference mix.wav",
+    url: null,
+    storageKey: "workspaces/acme/tasks/reference-mix.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, fileAttachment, {
+    ok: true,
+    status: 201,
+    statusText: "Created",
+  });
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+  const body = {
+    storageKey: "workspaces/acme/tasks/reference-mix.wav",
+    title: "Reference mix.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  };
+
+  const response = await client.createTaskFileAttachment({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    body,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}/attachments/files`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "POST");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
+  assert.deepEqual(response, fileAttachment);
+});
+
 test("getTask gets typed task detail with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, taskDetailResponse);

@@ -149,6 +149,17 @@ const attachmentCreateLinkInputSchema = {
   title: z.string().nullable().optional(),
 };
 
+const attachmentCreateFileInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  storageKey: z.string().min(1),
+  title: z.string().nullable().optional(),
+  mimeType: z.string().nullable().optional(),
+  sizeBytes: z.string().nullable().optional(),
+};
+
 const projectGetInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -287,6 +298,7 @@ type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
 type CommentCreateMcpArgs = z.output<z.ZodObject<typeof commentCreateInputSchema>>;
 type AttachmentListMcpArgs = z.output<z.ZodObject<typeof attachmentListInputSchema>>;
 type AttachmentCreateLinkMcpArgs = z.output<z.ZodObject<typeof attachmentCreateLinkInputSchema>>;
+type AttachmentCreateFileMcpArgs = z.output<z.ZodObject<typeof attachmentCreateFileInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectArchiveMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
@@ -320,6 +332,7 @@ type TaskMcpToolCallback = (
     | CommentCreateMcpArgs
     | AttachmentListMcpArgs
     | AttachmentCreateLinkMcpArgs
+    | AttachmentCreateFileMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
     | ProjectArchiveMcpArgs
@@ -357,6 +370,7 @@ export type TaskMcpToolRegistrar = {
         | typeof commentCreateInputSchema
         | typeof attachmentListInputSchema
         | typeof attachmentCreateLinkInputSchema
+        | typeof attachmentCreateFileInputSchema
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
@@ -448,6 +462,16 @@ export function registerAttachmentTools(
       inputSchema: attachmentCreateLinkInputSchema,
     },
     async (input) => toToolResult(await handlers.createLink(input)),
+  );
+
+  registrar.registerTool(
+    "attachment.add_file",
+    {
+      title: "Add file attachment",
+      description: "Attach already-stored file metadata to a writable task.",
+      inputSchema: attachmentCreateFileInputSchema,
+    },
+    async (input) => toToolResult(await handlers.createFile(input)),
   );
 
   registrar.registerTool(

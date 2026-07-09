@@ -1,4 +1,5 @@
 import type {
+  CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
   TaskAttachmentResponse,
   TaskBackendClient,
@@ -22,9 +23,21 @@ export type AttachmentCreateLinkToolInput = {
   title?: string | null;
 };
 
+export type AttachmentCreateFileToolInput = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  storageKey: string;
+  title?: string | null;
+  mimeType?: string | null;
+  sizeBytes?: string | null;
+};
+
 export type AttachmentToolHandlers = {
   list(input: unknown): Promise<TaskAttachmentResponse[]>;
   createLink(input: unknown): Promise<TaskAttachmentResponse>;
+  createFile(input: unknown): Promise<TaskAttachmentResponse>;
 };
 
 export class AttachmentToolInputError extends Error {
@@ -45,6 +58,17 @@ export function createAttachmentToolHandlers(client: TaskBackendClient): Attachm
         taskId: parsedInput.taskId,
         userId: parsedInput.userId,
         body: toCreateTaskLinkAttachmentInput(parsedInput),
+      });
+    },
+    createFile: (input) => {
+      const parsedInput = parseAttachmentCreateFileToolInput(input);
+
+      return client.createTaskFileAttachment({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toCreateTaskFileAttachmentInput(parsedInput),
       });
     },
     list: (input) => {
@@ -78,6 +102,34 @@ export function parseAttachmentCreateLinkToolInput(input: unknown): AttachmentCr
   return parsedInput;
 }
 
+export function parseAttachmentCreateFileToolInput(input: unknown): AttachmentCreateFileToolInput {
+  const record = readRecord(input, "attachment create file tool input");
+  const parsedInput: AttachmentCreateFileToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+    storageKey: readRequiredString(record, "storageKey"),
+  };
+  const title = readOptionalNullableString(record, "title");
+  const mimeType = readOptionalNullableString(record, "mimeType");
+  const sizeBytes = readOptionalNullableSizeBytes(record, "sizeBytes");
+
+  if (title !== undefined) {
+    parsedInput.title = title;
+  }
+
+  if (mimeType !== undefined) {
+    parsedInput.mimeType = mimeType;
+  }
+
+  if (sizeBytes !== undefined) {
+    parsedInput.sizeBytes = sizeBytes;
+  }
+
+  return parsedInput;
+}
+
 export function parseAttachmentListToolInput(input: unknown): AttachmentListToolInput {
   const record = readRecord(input, "attachment list tool input");
 
@@ -87,6 +139,28 @@ export function parseAttachmentListToolInput(input: unknown): AttachmentListTool
     taskId: readRequiredUuid(record, "taskId"),
     userId: readRequiredUuid(record, "userId"),
   };
+}
+
+function toCreateTaskFileAttachmentInput(
+  input: AttachmentCreateFileToolInput,
+): CreateTaskFileAttachmentInput {
+  const body: CreateTaskFileAttachmentInput = {
+    storageKey: input.storageKey,
+  };
+
+  if (input.title !== undefined) {
+    body.title = input.title;
+  }
+
+  if (input.mimeType !== undefined) {
+    body.mimeType = input.mimeType;
+  }
+
+  if (input.sizeBytes !== undefined) {
+    body.sizeBytes = input.sizeBytes;
+  }
+
+  return body;
 }
 
 function toCreateTaskLinkAttachmentInput(
@@ -125,6 +199,21 @@ function readRequiredUuid(record: Record<string, unknown>, propertyName: string)
 
   if (!uuidV4Pattern.test(trimmedValue)) {
     throw new AttachmentToolInputError(`${propertyName} must be a UUID v4 string.`);
+  }
+
+  return trimmedValue;
+}
+
+function readRequiredString(record: Record<string, unknown>, propertyName: string): string {
+  const value = record[propertyName];
+
+  if (typeof value !== "string") {
+    throw new AttachmentToolInputError(`${propertyName} must be a string.`);
+  }
+  const trimmedValue = value.trim();
+
+  if (trimmedValue.length === 0) {
+    throw new AttachmentToolInputError(`${propertyName} must not be empty.`);
   }
 
   return trimmedValue;
@@ -174,4 +263,21 @@ function readOptionalNullableString(
   const trimmedValue = value.trim();
 
   return trimmedValue.length === 0 ? null : trimmedValue;
+}
+
+function readOptionalNullableSizeBytes(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const value = readOptionalNullableString(record, propertyName);
+
+  if (value === undefined || value === null) {
+    return value;
+  }
+
+  if (!/^(0|[1-9][0-9]*)$/.test(value)) {
+    throw new AttachmentToolInputError(`${propertyName} must be a non-negative integer.`);
+  }
+
+  return value;
 }
