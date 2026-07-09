@@ -176,10 +176,13 @@ export {
   type ProjectSummaryToolResponse,
   parseProjectSummaryToolInput,
   parseTaskSummaryToolInput,
+  parseWorkspaceSummaryToolInput,
   type SummaryToolHandlers,
   SummaryToolInputError,
   type TaskSummaryToolInput,
   type TaskSummaryToolResponse,
+  type WorkspaceSummaryToolInput,
+  type WorkspaceSummaryToolResponse,
 } from "./summary-tools.js";
 export {
   createTaskSkillToolHandlers,
