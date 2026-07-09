@@ -1,6 +1,7 @@
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
   TaskAttachmentResponse,
   TaskBackendClient,
 } from "./backend-client.js";
@@ -34,10 +35,22 @@ export type AttachmentCreateFileToolInput = {
   sizeBytes?: string | null;
 };
 
+export type AttachmentCreateTelegramFileToolInput = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  telegramFileId: string;
+  title?: string | null;
+  mimeType?: string | null;
+  sizeBytes?: string | null;
+};
+
 export type AttachmentToolHandlers = {
   list(input: unknown): Promise<TaskAttachmentResponse[]>;
   createLink(input: unknown): Promise<TaskAttachmentResponse>;
   createFile(input: unknown): Promise<TaskAttachmentResponse>;
+  createTelegramFile(input: unknown): Promise<TaskAttachmentResponse>;
 };
 
 export class AttachmentToolInputError extends Error {
@@ -69,6 +82,17 @@ export function createAttachmentToolHandlers(client: TaskBackendClient): Attachm
         taskId: parsedInput.taskId,
         userId: parsedInput.userId,
         body: toCreateTaskFileAttachmentInput(parsedInput),
+      });
+    },
+    createTelegramFile: (input) => {
+      const parsedInput = parseAttachmentCreateTelegramFileToolInput(input);
+
+      return client.createTaskTelegramFileAttachment({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toCreateTaskTelegramFileAttachmentInput(parsedInput),
       });
     },
     list: (input) => {
@@ -130,6 +154,36 @@ export function parseAttachmentCreateFileToolInput(input: unknown): AttachmentCr
   return parsedInput;
 }
 
+export function parseAttachmentCreateTelegramFileToolInput(
+  input: unknown,
+): AttachmentCreateTelegramFileToolInput {
+  const record = readRecord(input, "attachment create Telegram file tool input");
+  const parsedInput: AttachmentCreateTelegramFileToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+    telegramFileId: readRequiredString(record, "telegramFileId"),
+  };
+  const title = readOptionalNullableString(record, "title");
+  const mimeType = readOptionalNullableString(record, "mimeType");
+  const sizeBytes = readOptionalNullableSizeBytes(record, "sizeBytes");
+
+  if (title !== undefined) {
+    parsedInput.title = title;
+  }
+
+  if (mimeType !== undefined) {
+    parsedInput.mimeType = mimeType;
+  }
+
+  if (sizeBytes !== undefined) {
+    parsedInput.sizeBytes = sizeBytes;
+  }
+
+  return parsedInput;
+}
+
 export function parseAttachmentListToolInput(input: unknown): AttachmentListToolInput {
   const record = readRecord(input, "attachment list tool input");
 
@@ -146,6 +200,28 @@ function toCreateTaskFileAttachmentInput(
 ): CreateTaskFileAttachmentInput {
   const body: CreateTaskFileAttachmentInput = {
     storageKey: input.storageKey,
+  };
+
+  if (input.title !== undefined) {
+    body.title = input.title;
+  }
+
+  if (input.mimeType !== undefined) {
+    body.mimeType = input.mimeType;
+  }
+
+  if (input.sizeBytes !== undefined) {
+    body.sizeBytes = input.sizeBytes;
+  }
+
+  return body;
+}
+
+function toCreateTaskTelegramFileAttachmentInput(
+  input: AttachmentCreateTelegramFileToolInput,
+): CreateTaskTelegramFileAttachmentInput {
+  const body: CreateTaskTelegramFileAttachmentInput = {
+    telegramFileId: input.telegramFileId,
   };
 
   if (input.title !== undefined) {

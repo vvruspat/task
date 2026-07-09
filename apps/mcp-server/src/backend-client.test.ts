@@ -976,6 +976,53 @@ test("createTaskFileAttachment posts typed payloads with trusted user context", 
   assert.deepEqual(response, fileAttachment);
 });
 
+test("createTaskTelegramFileAttachment posts typed payloads with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const telegramFileAttachment: TaskAttachmentResponse = {
+    ...taskAttachment,
+    kind: "telegram_file",
+    title: "Reference from Telegram",
+    url: null,
+    storageKey: null,
+    telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    mimeType: "audio/mpeg",
+    sizeBytes: "2048",
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, telegramFileAttachment, {
+    ok: true,
+    status: 201,
+    statusText: "Created",
+  });
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+  const body = {
+    telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    title: "Reference from Telegram",
+    mimeType: "audio/mpeg",
+    sizeBytes: "2048",
+  };
+
+  const response = await client.createTaskTelegramFileAttachment({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    body,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}/attachments/telegram-files`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "POST");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
+  assert.deepEqual(response, telegramFileAttachment);
+});
+
 test("getTask gets typed task detail with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, taskDetailResponse);

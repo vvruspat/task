@@ -914,6 +914,9 @@ function createBackendClientStub(
     createTaskFileAttachment: async (): Promise<TaskAttachmentResponse> => {
       throw new Error("Not implemented.");
     },
+    createTaskTelegramFileAttachment: async (): Promise<TaskAttachmentResponse> => {
+      throw new Error("Not implemented.");
+    },
     archiveProject: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },

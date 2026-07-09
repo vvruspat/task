@@ -34,6 +34,8 @@ type CreateTaskLinkAttachmentOperation =
   operations["AttachmentsController_createTaskLinkAttachment"];
 type CreateTaskFileAttachmentOperation =
   operations["AttachmentsController_createTaskFileAttachment"];
+type CreateTaskTelegramFileAttachmentOperation =
+  operations["AttachmentsController_createTaskTelegramFileAttachment"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type AddTaskSubtasksOperation = operations["TasksController_addTaskSubtasks"];
@@ -94,6 +96,8 @@ export type CreateTaskLinkAttachmentInput =
   CreateTaskLinkAttachmentOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskFileAttachmentInput =
   CreateTaskFileAttachmentOperation["requestBody"]["content"]["application/json"];
+export type CreateTaskTelegramFileAttachmentInput =
+  CreateTaskTelegramFileAttachmentOperation["requestBody"]["content"]["application/json"];
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
 export type UpdateProjectInput =
@@ -354,6 +358,14 @@ export type CreateTaskFileAttachmentRequest = {
   body: CreateTaskFileAttachmentInput;
 };
 
+export type CreateTaskTelegramFileAttachmentRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  body: CreateTaskTelegramFileAttachmentInput;
+};
+
 export type GetTaskRequest = {
   workspaceId: string;
   projectId: string;
@@ -468,6 +480,9 @@ export type TaskBackendClient = {
   ): Promise<TaskAttachmentResponse>;
   createTaskFileAttachment(
     request: CreateTaskFileAttachmentRequest,
+  ): Promise<TaskAttachmentResponse>;
+  createTaskTelegramFileAttachment(
+    request: CreateTaskTelegramFileAttachmentRequest,
   ): Promise<TaskAttachmentResponse>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
@@ -727,6 +742,19 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.body,
         readTaskAttachment,
       ),
+    createTaskTelegramFileAttachment: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskAttachmentTelegramFilesPath(
+          request.workspaceId,
+          request.projectId,
+          request.taskId,
+        ),
+        request.userId,
+        request.body,
+        readTaskAttachment,
+      ),
     getTask: (request) =>
       getJson(
         fetchImplementation,
@@ -849,6 +877,7 @@ async function postJson<ResponseBody>(
     | CreateTaskCommentInput
     | CreateTaskLinkAttachmentInput
     | CreateTaskFileAttachmentInput
+    | CreateTaskTelegramFileAttachmentInput
     | CreateConfirmationRequestInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
@@ -920,6 +949,7 @@ async function writeJson<ResponseBody>(
     | CreateTaskCommentInput
     | CreateTaskLinkAttachmentInput
     | CreateTaskFileAttachmentInput
+    | CreateTaskTelegramFileAttachmentInput
     | CreateConfirmationRequestInput
     | UpdateTaskStatusInput
     | UpdateTaskAssigneeInput
@@ -1130,6 +1160,14 @@ function buildTaskAttachmentFilesPath(
   taskId: string,
 ): string {
   return `${buildTaskAttachmentsPath(workspaceId, projectId, taskId)}/files`;
+}
+
+function buildTaskAttachmentTelegramFilesPath(
+  workspaceId: string,
+  projectId: string,
+  taskId: string,
+): string {
+  return `${buildTaskAttachmentsPath(workspaceId, projectId, taskId)}/telegram-files`;
 }
 
 function readProjectSummaryList(value: unknown): ProjectSummaryResponse[] {

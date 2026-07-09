@@ -12,6 +12,7 @@ import type {
   CreateTaskFileAttachmentRequest,
   CreateTaskLinkAttachmentRequest,
   CreateTaskRequest,
+  CreateTaskTelegramFileAttachmentRequest,
   GetWorkspaceRequest,
   ListTaskAttachmentsRequest,
   ListWorkspaceMembersRequest,
@@ -612,6 +613,7 @@ test("registerAttachmentTools registers attachment tools", async () => {
   const listCalls: ListTaskAttachmentsRequest[] = [];
   const createLinkCalls: CreateTaskLinkAttachmentRequest[] = [];
   const createFileCalls: CreateTaskFileAttachmentRequest[] = [];
+  const createTelegramFileCalls: CreateTaskTelegramFileAttachmentRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerAttachmentTools(registrar, {
@@ -656,6 +658,32 @@ test("registerAttachmentTools registers attachment tools", async () => {
         sizeBytes: "18432000",
       };
     },
+    createTelegramFile: async (input: unknown): Promise<TaskAttachmentResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected attachment create Telegram file input.");
+      }
+      createTelegramFileCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          telegramFileId: readString(input, "telegramFileId"),
+          title: readNullableString(input, "title"),
+          mimeType: readNullableString(input, "mimeType"),
+          sizeBytes: readNullableString(input, "sizeBytes"),
+        },
+      });
+      return {
+        ...attachmentResponse,
+        kind: "telegram_file",
+        url: null,
+        storageKey: null,
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+        mimeType: "audio/mpeg",
+        sizeBytes: "2048",
+      };
+    },
     list: async (input: unknown): Promise<TaskAttachmentResponse[]> => {
       if (!isUnknownRecord(input)) {
         throw new Error("Expected attachment list input.");
@@ -672,12 +700,19 @@ test("registerAttachmentTools registers attachment tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["attachment.add_link", "attachment.create_link", "attachment.add_file", "attachment.list"],
+    [
+      "attachment.add_link",
+      "attachment.create_link",
+      "attachment.add_file",
+      "attachment.add_telegram_file",
+      "attachment.list",
+    ],
   );
   assert.equal(toolCalls[0]?.config.title, "Add link attachment");
   assert.equal(toolCalls[1]?.config.title, "Create link attachment");
   assert.equal(toolCalls[2]?.config.title, "Add file attachment");
-  assert.equal(toolCalls[3]?.config.title, "List attachments");
+  assert.equal(toolCalls[3]?.config.title, "Add Telegram file attachment");
+  assert.equal(toolCalls[4]?.config.title, "List attachments");
 
   const addLinkCall = toolCalls[0];
   assert.ok(addLinkCall !== undefined);
@@ -763,7 +798,45 @@ test("registerAttachmentTools registers attachment tools", async () => {
     },
   ]);
 
-  const listCall = toolCalls[3];
+  const addTelegramFileCall = toolCalls[3];
+  assert.ok(addTelegramFileCall !== undefined);
+  const telegramFileToolInput = {
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    title: "Reference from Telegram",
+    mimeType: "audio/mpeg",
+    sizeBytes: "2048",
+  };
+  const addTelegramFileResult = await addTelegramFileCall.callback(telegramFileToolInput);
+
+  assert.deepEqual(JSON.parse(readTextResult(addTelegramFileResult)), {
+    ...attachmentResponse,
+    kind: "telegram_file",
+    url: null,
+    storageKey: null,
+    telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    mimeType: "audio/mpeg",
+    sizeBytes: "2048",
+  });
+  assert.deepEqual(createTelegramFileCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+        title: "Reference from Telegram",
+        mimeType: "audio/mpeg",
+        sizeBytes: "2048",
+      },
+    },
+  ]);
+
+  const listCall = toolCalls[4];
   assert.ok(listCall !== undefined);
   const listResult = await listCall.callback({
     workspaceId,
@@ -1601,6 +1674,8 @@ function createBackendClientStub(): TaskBackendClient {
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],
     createTaskLinkAttachment: async (): Promise<TaskAttachmentResponse> => attachmentResponse,
     createTaskFileAttachment: async (): Promise<TaskAttachmentResponse> => attachmentResponse,
+    createTaskTelegramFileAttachment: async (): Promise<TaskAttachmentResponse> =>
+      attachmentResponse,
     archiveProject: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
