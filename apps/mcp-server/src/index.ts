@@ -97,7 +97,6 @@ export {
   type WorkspaceStatusResponse,
   type WorkspaceSummaryResponse,
 } from "./backend-client.js";
-
 export {
   type CommentCreateToolInput,
   type CommentListToolInput,
@@ -129,7 +128,6 @@ export {
   parseConfirmationGetToolInput,
   parseConfirmationListPendingToolInput,
 } from "./confirmation-tools.js";
-
 export {
   connectTaskMcpServerToStdio,
   createTaskMcpServer,
@@ -172,6 +170,14 @@ export {
   type StatusToolHandlers,
   StatusToolInputError,
 } from "./status-tools.js";
+export {
+  createSummaryToolHandlers,
+  parseTaskSummaryToolInput,
+  type SummaryToolHandlers,
+  SummaryToolInputError,
+  type TaskSummaryToolInput,
+  type TaskSummaryToolResponse,
+} from "./summary-tools.js";
 export {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
