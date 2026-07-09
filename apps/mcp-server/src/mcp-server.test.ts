@@ -544,10 +544,11 @@ test("registerCommentTools registers comment tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["comment.create", "comment.list"],
+    ["comment.create", "task.comment", "comment.list"],
   );
   assert.equal(toolCalls[0]?.config.title, "Create comment");
-  assert.equal(toolCalls[1]?.config.title, "List comments");
+  assert.equal(toolCalls[1]?.config.title, "Comment on task");
+  assert.equal(toolCalls[2]?.config.title, "List comments");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -560,7 +561,28 @@ test("registerCommentTools registers comment tools", async () => {
   });
 
   assert.deepEqual(JSON.parse(readTextResult(createResult)), commentResponse);
+
+  const taskCommentCall = toolCalls[1];
+  assert.ok(taskCommentCall !== undefined);
+  const taskCommentResult = await taskCommentCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    body: "Bass take is ready for review.",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(taskCommentResult)), commentResponse);
   assert.deepEqual(createCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        body: "Bass take is ready for review.",
+      },
+    },
     {
       workspaceId,
       projectId,
@@ -572,7 +594,7 @@ test("registerCommentTools registers comment tools", async () => {
     },
   ]);
 
-  const listCall = toolCalls[1];
+  const listCall = toolCalls[2];
   assert.ok(listCall !== undefined);
   const listResult = await listCall.callback({
     workspaceId,
