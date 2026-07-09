@@ -178,6 +178,9 @@ function createBackendClientStub(): TaskBackendClient {
     updateTask: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
+    moveTask: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     updateTaskStatus: async () => {
       throw new Error("updateTaskStatus is not used by workspace tools.");
     },
