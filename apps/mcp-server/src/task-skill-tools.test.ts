@@ -703,6 +703,9 @@ function createBackendClientStub(
 
       return previewResponse;
     },
+    archiveTask: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     applyTaskSkill: async (request): Promise<ApplyTaskSkillResponse> => {
       calls.push(request);
 

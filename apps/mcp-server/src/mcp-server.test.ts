@@ -3,6 +3,7 @@ import test from "node:test";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   ApplyTaskSkillResponse,
+  ArchiveTaskRequest,
   ConfirmationRequestDetailResponse,
   ConfirmationRequestSummaryResponse,
   CreateProjectRequest,
@@ -599,6 +600,7 @@ test("registerTaskTools registers task tools", async () => {
   const statusCalls: UpdateTaskStatusRequest[] = [];
   const assigneeCalls: UpdateTaskAssigneeRequest[] = [];
   const dueDateCalls: UpdateTaskDueDateRequest[] = [];
+  const archiveCalls: ArchiveTaskRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerTaskTools(registrar, {
@@ -670,6 +672,21 @@ test("registerTaskTools registers task tools", async () => {
       });
       return taskResponse;
     },
+    archive: async (input: unknown): Promise<TaskDetailResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected task archive input.");
+      }
+      archiveCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+      });
+      return {
+        ...taskResponse,
+        archivedAt: timestamp,
+      };
+    },
     search: async (input: unknown): Promise<TaskSummaryResponse[]> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -689,6 +706,7 @@ test("registerTaskTools registers task tools", async () => {
       "task.set_assignee",
       "task.set_due_date",
       "task.get",
+      "task.archive",
       "task.search",
     ],
   );
@@ -697,7 +715,8 @@ test("registerTaskTools registers task tools", async () => {
   assert.equal(toolCalls[2]?.config.title, "Set task assignee");
   assert.equal(toolCalls[3]?.config.title, "Set task due date");
   assert.equal(toolCalls[4]?.config.title, "Get task");
-  assert.equal(toolCalls[5]?.config.title, "Search tasks");
+  assert.equal(toolCalls[5]?.config.title, "Archive task");
+  assert.equal(toolCalls[6]?.config.title, "Search tasks");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -800,7 +819,22 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), taskResponse);
 
-  const searchCall = toolCalls[5];
+  const archiveCall = toolCalls[5];
+  assert.ok(archiveCall !== undefined);
+  const archiveResult = await archiveCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(archiveResult)), {
+    ...taskResponse,
+    archivedAt: timestamp,
+  });
+  assert.deepEqual(archiveCalls, [{ workspaceId, projectId, taskId: rootTaskId, userId }]);
+
+  const searchCall = toolCalls[6];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -1250,6 +1284,9 @@ function createBackendClientStub(): TaskBackendClient {
       dueAt,
     }),
     previewTaskSkillApply: async (): Promise<PreviewTaskSkillApplyResponse> => previewResponse,
+    archiveTask: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     applyTaskSkill: async (): Promise<ApplyTaskSkillResponse> => applyResponse,
   };
 }

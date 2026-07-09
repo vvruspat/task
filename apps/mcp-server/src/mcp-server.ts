@@ -241,6 +241,7 @@ type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
 type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
+type TaskArchiveMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskCreateMcpArgs = z.output<z.ZodObject<typeof taskCreateInputSchema>>;
 type TaskSetStatusMcpArgs = z.output<z.ZodObject<typeof taskSetStatusInputSchema>>;
 type TaskSetAssigneeMcpArgs = z.output<z.ZodObject<typeof taskSetAssigneeInputSchema>>;
@@ -268,6 +269,7 @@ type TaskMcpToolCallback = (
     | ProjectCreateMcpArgs
     | TaskSearchMcpArgs
     | TaskGetMcpArgs
+    | TaskArchiveMcpArgs
     | TaskCreateMcpArgs
     | TaskSetStatusMcpArgs
     | TaskSetAssigneeMcpArgs
@@ -511,6 +513,16 @@ export function registerTaskTools(
       inputSchema: taskGetInputSchema,
     },
     async (input) => toToolResult(await handlers.get(input)),
+  );
+
+  registrar.registerTool(
+    "task.archive",
+    {
+      title: "Archive task",
+      description: "Archive one active task in a visible project.",
+      inputSchema: taskGetInputSchema,
+    },
+    async (input) => toToolResult(await handlers.archive(input)),
   );
 
   registrar.registerTool(

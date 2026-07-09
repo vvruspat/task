@@ -26,7 +26,7 @@ export type TaskApiRequestHeaders = {
 export type TaskApiRequestInit = {
   body?: string;
   headers: TaskApiRequestHeaders;
-  method: "GET" | "POST";
+  method: "DELETE" | "GET" | "POST";
 };
 
 export type TaskApiResponse = {
@@ -61,7 +61,12 @@ export type CreateTaskRequestInput = ProjectScopedInput & {
   body: CreateTaskInput;
 };
 
+export type ArchiveTaskRequestInput = ProjectScopedInput & {
+  taskId: string;
+};
+
 export type TaskApiClient = {
+  archiveTask(input: ArchiveTaskRequestInput): Promise<TaskDetail>;
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   getHealth(): Promise<HealthResponse>;
@@ -99,6 +104,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
   const baseUrl = normalizeBaseUrl(options.baseUrl);
 
   return {
+    archiveTask: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/${encodePathSegment(input.taskId)}`,
+        taskDetailParser,
+        {
+          method: "DELETE",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     createProject: (input) =>
       request(
         options.fetch,

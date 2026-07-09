@@ -2,6 +2,7 @@ export const apiClientPackageName = "@task/api-client";
 
 export {
   type AgentRunSummary,
+  type ArchiveTaskRequestInput,
   type CreateProjectInput,
   type CreateProjectRequestInput,
   type CreateTaskInput,

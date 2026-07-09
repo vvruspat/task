@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   AgentRunSummary,
+  ArchiveTaskRequestInput,
   CreateProjectRequestInput,
   CreateTaskRequestInput,
   ProjectDetail,
@@ -282,6 +283,10 @@ class RecordingTaskApiClient implements TaskApiClient {
   async createTask(input: CreateTaskRequestInput): Promise<TaskDetail> {
     this.createTaskCalls.push(input);
     return taskSummary();
+  }
+
+  async archiveTask(_input: ArchiveTaskRequestInput): Promise<never> {
+    throw new Error("archiveTask is not used by the web shell loader.");
   }
 
   async getHealth(): Promise<never> {
