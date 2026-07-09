@@ -5,10 +5,16 @@ import type {
   ArchiveProjectRequestInput,
   ArchiveTaskRequestInput,
   CreateProjectRequestInput,
+  CreateTaskCommentRequestInput,
+  CreateTaskFileAttachmentRequestInput,
+  CreateTaskLinkAttachmentRequestInput,
   CreateTaskRequestInput,
+  CreateTaskTelegramFileAttachmentRequestInput,
   ProjectDetail,
   ProjectSummary,
   TaskApiClient,
+  TaskAttachment,
+  TaskComment,
   TaskDetail,
   TaskSkillSummary,
   TaskSummary,
@@ -288,6 +294,24 @@ class RecordingTaskApiClient implements TaskApiClient {
     return taskSummary();
   }
 
+  async createTaskComment(_input: CreateTaskCommentRequestInput): Promise<never> {
+    throw new Error("createTaskComment is not used by the web shell loader.");
+  }
+
+  async createTaskFileAttachment(_input: CreateTaskFileAttachmentRequestInput): Promise<never> {
+    throw new Error("createTaskFileAttachment is not used by the web shell loader.");
+  }
+
+  async createTaskLinkAttachment(_input: CreateTaskLinkAttachmentRequestInput): Promise<never> {
+    throw new Error("createTaskLinkAttachment is not used by the web shell loader.");
+  }
+
+  async createTaskTelegramFileAttachment(
+    _input: CreateTaskTelegramFileAttachmentRequestInput,
+  ): Promise<never> {
+    throw new Error("createTaskTelegramFileAttachment is not used by the web shell loader.");
+  }
+
   async archiveProject(_input: ArchiveProjectRequestInput): Promise<never> {
     throw new Error("archiveProject is not used by the web shell loader.");
   }
@@ -311,6 +335,22 @@ class RecordingTaskApiClient implements TaskApiClient {
   async listAgentRuns(input: { workspaceId: string }): Promise<AgentRunSummary[]> {
     this.calls.push(`listAgentRuns:${input.workspaceId}`);
     return this.data.agentRuns;
+  }
+
+  async listTaskAttachments(_input: {
+    projectId: string;
+    taskId: string;
+    workspaceId: string;
+  }): Promise<TaskAttachment[]> {
+    throw new Error("listTaskAttachments is not used by the web shell loader.");
+  }
+
+  async listTaskComments(_input: {
+    projectId: string;
+    taskId: string;
+    workspaceId: string;
+  }): Promise<TaskComment[]> {
+    throw new Error("listTaskComments is not used by the web shell loader.");
   }
 
   async listProjects(input: { workspaceId: string }): Promise<ProjectSummary[]> {
