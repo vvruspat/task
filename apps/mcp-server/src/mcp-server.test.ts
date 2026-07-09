@@ -9,6 +9,7 @@ import type {
   ConfirmationRequestDetailResponse,
   ConfirmationRequestSummaryResponse,
   CreateProjectRequest,
+  CreateTaskFileAttachmentRequest,
   CreateTaskLinkAttachmentRequest,
   CreateTaskRequest,
   GetWorkspaceRequest,
@@ -588,6 +589,7 @@ test("registerAttachmentTools registers attachment tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const listCalls: ListTaskAttachmentsRequest[] = [];
   const createLinkCalls: CreateTaskLinkAttachmentRequest[] = [];
+  const createFileCalls: CreateTaskFileAttachmentRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerAttachmentTools(registrar, {
@@ -607,6 +609,31 @@ test("registerAttachmentTools registers attachment tools", async () => {
       });
       return attachmentResponse;
     },
+    createFile: async (input: unknown): Promise<TaskAttachmentResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected attachment create file input.");
+      }
+      createFileCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        taskId: readString(input, "taskId"),
+        userId: readString(input, "userId"),
+        body: {
+          storageKey: readString(input, "storageKey"),
+          title: readNullableString(input, "title"),
+          mimeType: readNullableString(input, "mimeType"),
+          sizeBytes: readNullableString(input, "sizeBytes"),
+        },
+      });
+      return {
+        ...attachmentResponse,
+        kind: "file",
+        url: null,
+        storageKey: "workspaces/acme/tasks/reference-mix.wav",
+        mimeType: "audio/wav",
+        sizeBytes: "18432000",
+      };
+    },
     list: async (input: unknown): Promise<TaskAttachmentResponse[]> => {
       if (!isUnknownRecord(input)) {
         throw new Error("Expected attachment list input.");
@@ -623,11 +650,12 @@ test("registerAttachmentTools registers attachment tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["attachment.add_link", "attachment.create_link", "attachment.list"],
+    ["attachment.add_link", "attachment.create_link", "attachment.add_file", "attachment.list"],
   );
   assert.equal(toolCalls[0]?.config.title, "Add link attachment");
   assert.equal(toolCalls[1]?.config.title, "Create link attachment");
-  assert.equal(toolCalls[2]?.config.title, "List attachments");
+  assert.equal(toolCalls[2]?.config.title, "Add file attachment");
+  assert.equal(toolCalls[3]?.config.title, "List attachments");
 
   const addLinkCall = toolCalls[0];
   assert.ok(addLinkCall !== undefined);
@@ -677,7 +705,43 @@ test("registerAttachmentTools registers attachment tools", async () => {
     },
   ]);
 
-  const listCall = toolCalls[2];
+  const addFileCall = toolCalls[2];
+  assert.ok(addFileCall !== undefined);
+  const addFileResult = await addFileCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    storageKey: "workspaces/acme/tasks/reference-mix.wav",
+    title: "Reference mix.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(addFileResult)), {
+    ...attachmentResponse,
+    kind: "file",
+    url: null,
+    storageKey: "workspaces/acme/tasks/reference-mix.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  });
+  assert.deepEqual(createFileCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        storageKey: "workspaces/acme/tasks/reference-mix.wav",
+        title: "Reference mix.wav",
+        mimeType: "audio/wav",
+        sizeBytes: "18432000",
+      },
+    },
+  ]);
+
+  const listCall = toolCalls[3];
   assert.ok(listCall !== undefined);
   const listResult = await listCall.callback({
     workspaceId,
@@ -1491,6 +1555,7 @@ function createBackendClientStub(): TaskBackendClient {
     createTaskComment: async (): Promise<TaskCommentResponse> => commentResponse,
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],
     createTaskLinkAttachment: async (): Promise<TaskAttachmentResponse> => attachmentResponse,
+    createTaskFileAttachment: async (): Promise<TaskAttachmentResponse> => attachmentResponse,
     archiveProject: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },

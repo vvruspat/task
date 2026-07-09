@@ -3,11 +3,13 @@ import test from "node:test";
 import {
   AttachmentToolInputError,
   createAttachmentToolHandlers,
+  parseAttachmentCreateFileToolInput,
   parseAttachmentCreateLinkToolInput,
   parseAttachmentListToolInput,
 } from "./attachment-tools.js";
 import type {
   ApplyTaskSkillResponse,
+  CreateTaskFileAttachmentRequest,
   CreateTaskLinkAttachmentRequest,
   ListTaskAttachmentsRequest,
   PreviewTaskSkillApplyResponse,
@@ -41,6 +43,16 @@ const taskAttachment: TaskAttachmentResponse = {
   sizeBytes: null,
   createdByUserId: userId,
   createdAt: timestamp,
+};
+
+const fileAttachment: TaskAttachmentResponse = {
+  ...taskAttachment,
+  kind: "file",
+  title: "Reference mix.wav",
+  url: null,
+  storageKey: "workspaces/acme/tasks/reference-mix.wav",
+  mimeType: "audio/wav",
+  sizeBytes: "18432000",
 };
 
 test("parseAttachmentCreateLinkToolInput validates and normalizes link attachment payloads", () => {
@@ -105,6 +117,89 @@ test("parseAttachmentCreateLinkToolInput validates and normalizes link attachmen
   );
 });
 
+test("parseAttachmentCreateFileToolInput validates and normalizes file attachment payloads", () => {
+  assert.deepEqual(
+    parseAttachmentCreateFileToolInput({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      storageKey: " workspaces/acme/tasks/reference-mix.wav ",
+      title: " Reference mix.wav ",
+      mimeType: " audio/wav ",
+      sizeBytes: " 18432000 ",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      storageKey: "workspaces/acme/tasks/reference-mix.wav",
+      title: "Reference mix.wav",
+      mimeType: "audio/wav",
+      sizeBytes: "18432000",
+    },
+  );
+  assert.deepEqual(
+    parseAttachmentCreateFileToolInput({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      storageKey: "workspaces/acme/tasks/empty.bin",
+      title: "",
+      mimeType: "",
+      sizeBytes: null,
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      storageKey: "workspaces/acme/tasks/empty.bin",
+      title: null,
+      mimeType: null,
+      sizeBytes: null,
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseAttachmentCreateFileToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        storageKey: "",
+      }),
+    AttachmentToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseAttachmentCreateFileToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        storageKey: "workspaces/acme/tasks/file.bin",
+        sizeBytes: "-1",
+      }),
+    AttachmentToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseAttachmentCreateFileToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        storageKey: "workspaces/acme/tasks/file.bin",
+        sizeBytes: 1,
+      }),
+    AttachmentToolInputError,
+  );
+});
+
 test("parseAttachmentListToolInput validates and normalizes attachment list payloads", () => {
   assert.deepEqual(
     parseAttachmentListToolInput({
@@ -162,6 +257,41 @@ test("attachment create link handler forwards link payloads to the backend clien
   ]);
 });
 
+test("attachment create file handler forwards file payloads to the backend client", async () => {
+  const calls: CreateTaskFileAttachmentRequest[] = [];
+  const handlers = createAttachmentToolHandlers(
+    createBackendClientStub([fileAttachment], [], [], calls),
+  );
+
+  assert.deepEqual(
+    await handlers.createFile({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      storageKey: " workspaces/acme/tasks/reference-mix.wav ",
+      title: " Reference mix.wav ",
+      mimeType: " audio/wav ",
+      sizeBytes: " 18432000 ",
+    }),
+    fileAttachment,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: {
+        storageKey: "workspaces/acme/tasks/reference-mix.wav",
+        title: "Reference mix.wav",
+        mimeType: "audio/wav",
+        sizeBytes: "18432000",
+      },
+    },
+  ]);
+});
+
 test("attachment list handler forwards task identifiers to the backend client", async () => {
   const calls: ListTaskAttachmentsRequest[] = [];
   const handlers = createAttachmentToolHandlers(createBackendClientStub([taskAttachment], calls));
@@ -176,6 +306,7 @@ function createBackendClientStub(
   attachments: TaskAttachmentResponse[],
   listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [],
   createTaskLinkAttachmentCalls: CreateTaskLinkAttachmentRequest[] = [],
+  createTaskFileAttachmentCalls: CreateTaskFileAttachmentRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -235,6 +366,11 @@ function createBackendClientStub(
       createTaskLinkAttachmentCalls.push(request);
 
       return taskAttachment;
+    },
+    createTaskFileAttachment: async (request): Promise<TaskAttachmentResponse> => {
+      createTaskFileAttachmentCalls.push(request);
+
+      return fileAttachment;
     },
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");
