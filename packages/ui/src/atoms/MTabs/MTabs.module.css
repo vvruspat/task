@@ -1,0 +1,67 @@
+@layer components {
+	/* ── Token contract ───────────────────────────────────────────────
+	   Public override API: --tabs-*  |  Private (read by body): --_*
+	   Defaults fall through to semantic dimension roles — never raw
+	   --space-N/--radius-N/--size-N. */
+	.tabs {
+		width: 100%;
+	}
+
+	.tabHeaders {
+		--_gap: var(--tabs-header-gap, var(--gap-4xl));
+		--_px: var(--tabs-header-padding-x, var(--gap-l));
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--_gap);
+		list-style-type: none;
+		padding: 0 var(--_px);
+		box-sizing: border-box;
+		margin: 0;
+		border-bottom: 1px solid var(--color-border-default);
+		width: 100%;
+	}
+
+	.tabContent {
+		--_radius: var(--tabs-radius, var(--radius-xs));
+		border-radius: var(--_radius);
+		background-color: var(--color-surface);
+	}
+
+	.tab {
+		--_gap: var(--tabs-item-gap, var(--gap-l));
+		--_padding: var(--tabs-item-padding, var(--gap-s));
+		cursor: pointer;
+		transition: background-color 0.3s;
+		list-style-type: none;
+		display: flex;
+		gap: var(--_gap);
+		padding: var(--_padding);
+		border: 1px solid transparent;
+		color: var(--color-text-secondary);
+		font-size: var(--font-size-lg);
+	}
+
+	.tab[data-hovered] {
+		color: var(--color-action-secondary-rest);
+	}
+
+	.tab[data-selected] {
+		color: var(--color-action-secondary-rest);
+		border-bottom: 1px solid var(--color-action-secondary-rest);
+	}
+
+	.tab[data-disabled],
+	.tab[data-disabled][data-hovered],
+	.tab[data-disabled][data-pressed] {
+		color: var(--color-text-tertiary);
+		border: 1px solid transparent;
+		cursor: not-allowed;
+	}
+
+	@media (max-width: 600px) {
+		.tab {
+			flex-grow: 1;
+			text-align: center;
+		}
+	}
+}

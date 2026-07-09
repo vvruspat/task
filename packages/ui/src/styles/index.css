@@ -1,0 +1,16 @@
+/* Cascade layer order — later layers win regardless of import order/specificity:
+   primitives < semantic < brand < components < overrides
+   Brand overrides beat semantic; semantic beats primitives. */
+@layer primitives, semantic, brand, components, overrides;
+
+/* ── primitives: raw palette, fonts, spacing/radius scale ── */
+@import "./brand.css" layer(primitives);
+@import "./font.css" layer(primitives);
+@import "./platforms/web.css" layer(primitives);
+@import "./platforms/tablet.css" layer(primitives);
+@import "./platforms/mobile.css" layer(primitives);
+
+/* ── semantic: meaning assigned to primitives (color + dimension roles) ── */
+@import "./themes/light.css" layer(semantic);
+@import "./themes/dark.css" layer(semantic);
+@import "./semantic/dimensions.css" layer(semantic);

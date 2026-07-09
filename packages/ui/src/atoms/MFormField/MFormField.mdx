@@ -1,0 +1,36 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as FormFieldStories from './MFormField.stories';
+
+<Meta of={FormFieldStories} />
+
+# MFormField
+
+A layout wrapper that pairs a label, a form control, and an optional description/error
+message in a responsive grid — label/control side-by-side (`row`) or stacked (`column`),
+with an independent mobile layout.
+
+---
+
+## Usage
+
+<Canvas of={FormFieldStories.Basic} />
+
+<Controls />
+
+---
+
+## Customization
+
+MFormField is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance).
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--formfield-column-gap` | Gap between the label and control columns (`row` layout) | `--gap-l` |
+| `--formfield-row-gap` | Gap between rows (control and description) | `--gap-s` |
+
+MFormField has no colors of its own — it only lays out its `label`/`control`/`description`
+slots, each of which carries its own semantic color roles (see MLabel, MFieldDescription).

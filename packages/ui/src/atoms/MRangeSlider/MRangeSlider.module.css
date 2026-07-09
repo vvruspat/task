@@ -1,0 +1,137 @@
+@layer components {
+	/* ── Token contract ───────────────────────────────────────────────
+	   Public override API: --rangeslider-*  |  Private (read by body): --_*
+	   Defaults fall through to semantic dimension roles — never raw
+	   --space-N/--radius-N/--size-N. Shares its track height/radius role
+	   with the underlying MSlider hit area (see .sliderTrack). */
+	.rangeSliderWrapper {
+		width: 100%;
+		/* stacking gap — public MFlex seam, not a literal gap prop */
+		--flex-gap: var(--rangeslider-gap, var(--gap-xs));
+	}
+
+	.regular {
+		color: inherit;
+	}
+
+	.rangeHeader {
+		width: 100%;
+		/* header row gap — public MFlex seam, not a literal gap prop */
+		--flex-gap: var(--rangeslider-header-gap, var(--gap-m));
+	}
+
+	.value {
+		color: var(--color-text-secondary);
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-sm);
+	}
+
+	.rangeControl {
+		--_hit-height: var(--rangeslider-hit-height, var(--gap-xl));
+		--_track-height: var(--rangeslider-track-height, var(--gap-xs));
+		--_track-radius: var(--rangeslider-track-radius, var(--radius-pill));
+		position: relative;
+		width: 100%;
+		min-height: var(--_hit-height);
+	}
+
+	.rangeTrack,
+	.rangeSelection {
+		position: absolute;
+		top: 50%;
+		height: var(--_track-height);
+		border-radius: var(--_track-radius);
+		transform: translateY(-50%);
+	}
+
+	.rangeTrack {
+		right: 0;
+		left: 0;
+		background-color: var(--color-control-track);
+	}
+
+	.rangeSelection {
+		background-color: var(--color-control-checked);
+	}
+
+	.rangeInputs {
+		position: relative;
+		min-height: var(--_hit-height);
+	}
+
+	.sliderControl {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.sliderTrack {
+		min-height: var(--_hit-height);
+	}
+
+	.rangeInput {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: auto;
+	}
+
+	.lowerInput {
+		z-index: 2;
+	}
+
+	.upperInput {
+		z-index: 3;
+	}
+
+	.rangeInput::-webkit-slider-runnable-track {
+		background-color: transparent;
+	}
+
+	.rangeInput::-moz-range-track,
+	.rangeInput::-moz-range-progress {
+		background-color: transparent;
+	}
+
+	.rangeInput:not(:disabled):hover::-webkit-slider-runnable-track {
+		background-color: transparent;
+	}
+
+	.rangeInput:not(:disabled):hover::-moz-range-track,
+	.rangeInput:not(:disabled):hover::-moz-range-progress {
+		background-color: transparent;
+	}
+
+	.valid .rangeSelection {
+		background-color: var(--color-status-success-border);
+	}
+
+	.invalid .rangeSelection {
+		background-color: var(--color-status-error-border);
+	}
+
+	.invalid .rangeInput::-webkit-slider-thumb {
+		border-color: var(--color-status-error);
+	}
+
+	.invalid .rangeInput::-moz-range-thumb {
+		border-color: var(--color-status-error);
+	}
+
+	.valid .rangeInput::-webkit-slider-thumb {
+		border-color: var(--color-status-success);
+	}
+
+	.valid .rangeInput::-moz-range-thumb {
+		border-color: var(--color-status-success);
+	}
+
+	.disabled {
+		cursor: not-allowed;
+	}
+
+	.disabled .rangeTrack,
+	.disabled .rangeSelection {
+		background-color: var(--color-action-disabled);
+	}
+}

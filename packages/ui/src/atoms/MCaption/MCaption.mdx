@@ -1,0 +1,42 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as CaptionStories from './MCaption.stories';
+
+<Meta of={CaptionStories} />
+
+# Definition
+
+Caption is a clickable interactive element that triggers a response.
+
+You can place text and icons inside of a Caption.
+
+Captions are often used for form submissions and to toggle elements into view.
+
+## Usage
+
+## Captions
+
+Caption has the following properties:
+
+<Canvas of={CaptionStories.Basic} />
+
+<Controls />
+
+---
+
+## Customization
+
+MCaption is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance).
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--caption-gap` | Gap between leading content and text | `--gap-s` |
+
+Status colors have no per-caption token by design — they bind to shared semantic roles.
+
+| Status | Semantic role | → primitive (default) |
+|--------|---------------|-----------------------|
+| `regular` | inherited from `MText` mode | — |
+| `valid` | `--color-text-secondary` | `--palette-base-600` |
+| `invalid` | `--color-status-error` | `--palette-error-800` |

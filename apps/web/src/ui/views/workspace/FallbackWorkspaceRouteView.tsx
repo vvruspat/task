@@ -1,5 +1,7 @@
+import { MBox, MGrid, MText } from "@task/ui";
 import type { ReactElement } from "react";
 import type { ProjectSummary, TaskSkillSummary, TaskSummary, WorkspaceRoute } from "./types.js";
+import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type FallbackWorkspaceRouteViewProps = {
   projects: ProjectSummary[];
@@ -17,60 +19,52 @@ export function FallbackWorkspaceRouteView({
   const visibleRows = route.id === "templates" ? skills.length : tasks.length;
 
   return (
-    <div className="content-grid">
-      <section className="panel wide-panel" aria-labelledby="workspace-view-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Lazy view</p>
-            <h3 id="workspace-view-title">{route.label}</h3>
-          </div>
-          <route.icon aria-hidden="true" className="muted-icon" />
-        </div>
-
-        <div className="view-surface">
-          <div className="table-header">
-            <span>Name</span>
-            <span>Project</span>
-            <span>Status</span>
-            <span>Owner</span>
-          </div>
+    <MGrid
+      className="content-grid"
+      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
+      rowGap="m"
+      columnGap="m"
+    >
+      <WorkspacePanel
+        action={<route.icon aria-hidden="true" className="muted-icon" />}
+        eyebrow="Lazy view"
+        title={route.label}
+        titleId="workspace-view-title"
+        wide
+      >
+        <MBox className="view-surface">
+          <MBox className="table-header">
+            <MText as="span">Name</MText>
+            <MText as="span">Project</MText>
+            <MText as="span">Status</MText>
+            <MText as="span">Owner</MText>
+          </MBox>
           {tasks.map((task) => (
-            <article className="table-row" key={task.id}>
-              <span>{task.title}</span>
-              <span>
+            <MBox as="article" className="table-row" key={task.id}>
+              <MText as="span">{task.title}</MText>
+              <MText as="span">
                 {projects.find((project) => project.id === task.projectId)?.title ??
                   "Unknown project"}
-              </span>
-              <span>Open</span>
-              <span>{task.assigneeUserId === null ? "Unassigned" : "Assigned"}</span>
-            </article>
+              </MText>
+              <MText as="span">Open</MText>
+              <MText as="span">{task.assigneeUserId === null ? "Unassigned" : "Assigned"}</MText>
+            </MBox>
           ))}
-        </div>
-      </section>
+        </MBox>
+      </WorkspacePanel>
 
-      <section className="panel" aria-labelledby="view-summary-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Summary</p>
-            <h3 id="view-summary-title">Ready for data</h3>
-          </div>
-        </div>
-        <p className="agent-line">{route.description}</p>
-        <dl className="metric-list">
-          <div>
-            <dt>Rows</dt>
-            <dd>{visibleRows}</dd>
-          </div>
-          <div>
-            <dt>Projects</dt>
-            <dd>{projects.length}</dd>
-          </div>
-          <div>
-            <dt>Skills</dt>
-            <dd>{skills.length}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
+      <WorkspacePanel eyebrow="Summary" title="Ready for data" titleId="view-summary-title">
+        <MText as="p" className="agent-line" mode="secondary">
+          {route.description}
+        </MText>
+        <WorkspaceMetrics
+          items={[
+            { label: "Rows", value: visibleRows },
+            { label: "Projects", value: projects.length },
+            { label: "Skills", value: skills.length },
+          ]}
+        />
+      </WorkspacePanel>
+    </MGrid>
   );
 }

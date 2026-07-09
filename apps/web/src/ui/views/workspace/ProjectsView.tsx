@@ -1,6 +1,8 @@
+import { MBadge, MBox, MGrid, MHeading, MText } from "@task/ui";
 import type { ReactElement } from "react";
 import { buildProjectOverviewRows, buildProjectOverviewSummary } from "../workspaceViewModels.js";
 import type { ProjectSummary, TaskSummary } from "./types.js";
+import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type ProjectsViewProps = {
   projects: ProjectSummary[];
@@ -12,71 +14,56 @@ export function ProjectsView({ projects, tasks }: ProjectsViewProps): ReactEleme
   const summary = buildProjectOverviewSummary(projects, tasks);
 
   return (
-    <div className="content-grid">
-      <section className="panel wide-panel" aria-labelledby="projects-view-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Projects</p>
-            <h3 id="projects-view-title">Workspace projects</h3>
-          </div>
-        </div>
-
-        <div className="project-overview-list">
+    <MGrid
+      className="content-grid"
+      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
+      rowGap="m"
+      columnGap="m"
+    >
+      <WorkspacePanel
+        eyebrow="Projects"
+        title="Workspace projects"
+        titleId="projects-view-title"
+        wide
+      >
+        <MBox className="project-overview-list">
           {rows.map((project) => (
-            <article className="project-overview-row" key={project.id}>
-              <div>
-                <h4>{project.title}</h4>
-                <p>{project.description}</p>
-              </div>
-              <dl>
-                <div className="project-overview-metric">
-                  <dt>Tasks</dt>
-                  <dd>{project.taskCount}</dd>
-                </div>
-                <div className="project-overview-metric">
-                  <dt>Due soon</dt>
-                  <dd>{project.dueSoonTaskCount}</dd>
-                </div>
-                <div className="project-overview-metric">
-                  <dt>Unassigned</dt>
-                  <dd>{project.unassignedTaskCount}</dd>
-                </div>
-                <div className="project-overview-metric">
-                  <dt>Updated</dt>
-                  <dd>{project.latestActivityLabel}</dd>
-                </div>
-              </dl>
-              <span>{project.statusLabel}</span>
-            </article>
+            <MBox as="article" className="project-overview-row" key={project.id}>
+              <MBox>
+                <MHeading mode="h4">{project.title}</MHeading>
+                <MText as="p" mode="secondary">
+                  {project.description}
+                </MText>
+              </MBox>
+              <WorkspaceMetrics
+                className="project-overview-metrics"
+                items={[
+                  { label: "Tasks", value: project.taskCount },
+                  { label: "Due soon", value: project.dueSoonTaskCount },
+                  { label: "Unassigned", value: project.unassignedTaskCount },
+                  { label: "Updated", value: project.latestActivityLabel },
+                ]}
+              />
+              <MBadge className="project-status-badge" mode="transparent">
+                {project.statusLabel}
+              </MBadge>
+            </MBox>
           ))}
-        </div>
-      </section>
+        </MBox>
+      </WorkspacePanel>
 
-      <section className="panel" aria-labelledby="projects-summary-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Summary</p>
-            <h3 id="projects-summary-title">Project load</h3>
-          </div>
-        </div>
-        <p className="agent-line">
+      <WorkspacePanel eyebrow="Summary" title="Project load" titleId="projects-summary-title">
+        <MText as="p" className="agent-line" mode="secondary">
           Counts use the tasks currently loaded for the selected workspace project.
-        </p>
-        <dl className="metric-list">
-          <div>
-            <dt>Projects</dt>
-            <dd>{summary.projectCount}</dd>
-          </div>
-          <div>
-            <dt>Tasks</dt>
-            <dd>{summary.taskCount}</dd>
-          </div>
-          <div>
-            <dt>Unassigned</dt>
-            <dd>{summary.unassignedTaskCount}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
+        </MText>
+        <WorkspaceMetrics
+          items={[
+            { label: "Projects", value: summary.projectCount },
+            { label: "Tasks", value: summary.taskCount },
+            { label: "Unassigned", value: summary.unassignedTaskCount },
+          ]}
+        />
+      </WorkspacePanel>
+    </MGrid>
   );
 }

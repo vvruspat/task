@@ -1,6 +1,8 @@
+import { MBox, MGrid, MText } from "@task/ui";
 import type { ReactElement } from "react";
 import { buildTaskTableRows, buildTaskTableSummary } from "../workspaceViewModels.js";
 import type { ProjectSummary, TaskSummary } from "./types.js";
+import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type TaskTableViewProps = {
   projects: ProjectSummary[];
@@ -12,60 +14,47 @@ export function TaskTableView({ projects, tasks }: TaskTableViewProps): ReactEle
   const summary = buildTaskTableSummary(tasks);
 
   return (
-    <div className="content-grid">
-      <section className="panel wide-panel" aria-labelledby="task-table-view-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Table</p>
-            <h3 id="task-table-view-title">Task table</h3>
-          </div>
-        </div>
-
-        <div className="view-surface">
-          <div className="task-table-header">
-            <span>Task</span>
-            <span>Project</span>
-            <span>Parent</span>
-            <span>Assignee</span>
-            <span>Due</span>
-            <span>Updated</span>
-          </div>
+    <MGrid
+      className="content-grid"
+      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
+      rowGap="m"
+      columnGap="m"
+    >
+      <WorkspacePanel eyebrow="Table" title="Task table" titleId="task-table-view-title" wide>
+        <MBox className="view-surface">
+          <MBox className="task-table-header">
+            <MText as="span">Task</MText>
+            <MText as="span">Project</MText>
+            <MText as="span">Parent</MText>
+            <MText as="span">Assignee</MText>
+            <MText as="span">Due</MText>
+            <MText as="span">Updated</MText>
+          </MBox>
           {rows.map((task) => (
-            <article className="task-table-row" key={task.id}>
-              <span>{task.title}</span>
-              <span>{task.projectTitle}</span>
-              <span>{task.parentLabel}</span>
-              <span>{task.assigneeLabel}</span>
-              <span>{task.dueDateLabel}</span>
-              <span>{task.updatedAtLabel}</span>
-            </article>
+            <MBox as="article" className="task-table-row" key={task.id}>
+              <MText as="span">{task.title}</MText>
+              <MText as="span">{task.projectTitle}</MText>
+              <MText as="span">{task.parentLabel}</MText>
+              <MText as="span">{task.assigneeLabel}</MText>
+              <MText as="span">{task.dueDateLabel}</MText>
+              <MText as="span">{task.updatedAtLabel}</MText>
+            </MBox>
           ))}
-        </div>
-      </section>
+        </MBox>
+      </WorkspacePanel>
 
-      <section className="panel" aria-labelledby="task-table-summary-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Summary</p>
-            <h3 id="task-table-summary-title">Loaded tasks</h3>
-          </div>
-        </div>
-        <p className="agent-line">Counts use the task set currently loaded by the web shell.</p>
-        <dl className="metric-list">
-          <div>
-            <dt>Tasks</dt>
-            <dd>{summary.taskCount}</dd>
-          </div>
-          <div>
-            <dt>Due soon</dt>
-            <dd>{summary.dueSoonTaskCount}</dd>
-          </div>
-          <div>
-            <dt>Unassigned</dt>
-            <dd>{summary.unassignedTaskCount}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
+      <WorkspacePanel eyebrow="Summary" title="Loaded tasks" titleId="task-table-summary-title">
+        <MText as="p" className="agent-line" mode="secondary">
+          Counts use the task set currently loaded by the web shell.
+        </MText>
+        <WorkspaceMetrics
+          items={[
+            { label: "Tasks", value: summary.taskCount },
+            { label: "Due soon", value: summary.dueSoonTaskCount },
+            { label: "Unassigned", value: summary.unassignedTaskCount },
+          ]}
+        />
+      </WorkspacePanel>
+    </MGrid>
   );
 }

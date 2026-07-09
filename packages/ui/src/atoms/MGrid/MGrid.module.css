@@ -1,0 +1,95 @@
+@layer components {
+	.grid {
+		/* Public seam --grid-* wins (lives in the cascade, overridable by brand/zone/instance).
+		   Fallback: --_grid-* private default set inline from the prop. Then hardcoded default. */
+		display: var(--grid-display, var(--_grid-display, grid));
+		grid-template-rows: var(
+			--grid-row-template,
+			var(--_grid-row-template, none)
+		);
+		grid-template-columns: var(
+			--grid-column-template,
+			var(--_grid-column-template, none)
+		);
+		align-items: var(--grid-align-items, var(--_grid-align-items, stretch));
+		justify-items: var(
+			--grid-justify-items,
+			var(--_grid-justify-items, stretch)
+		);
+		row-gap: var(--grid-row-gap, var(--_grid-row-gap, var(--gap-s)));
+		column-gap: var(--grid-col-gap, var(--_grid-col-gap, var(--gap-m)));
+	}
+
+	/* t-shirt classes set only the private gap default → semantic --gap-* role */
+	.grid-row-gap-none {
+		--_grid-row-gap: var(--gap-none);
+	}
+
+	.grid-col-gap-none {
+		--_grid-col-gap: var(--gap-none);
+	}
+
+	.grid-row-gap-xs {
+		--_grid-row-gap: var(--gap-xs);
+	}
+
+	.grid-col-gap-xs {
+		--_grid-col-gap: var(--gap-xs);
+	}
+
+	.grid-row-gap-s {
+		--_grid-row-gap: var(--gap-s);
+	}
+
+	.grid-col-gap-s {
+		--_grid-col-gap: var(--gap-s);
+	}
+
+	.grid-row-gap-m {
+		--_grid-row-gap: var(--gap-m);
+	}
+
+	.grid-col-gap-m {
+		--_grid-col-gap: var(--gap-m);
+	}
+
+	.grid-row-gap-l {
+		--_grid-row-gap: var(--gap-l);
+	}
+
+	.grid-col-gap-l {
+		--_grid-col-gap: var(--gap-l);
+	}
+
+	.grid-row-gap-xl {
+		--_grid-row-gap: var(--gap-xl);
+	}
+
+	.grid-col-gap-xl {
+		--_grid-col-gap: var(--gap-xl);
+	}
+
+	.grid-row-gap-2xl {
+		--_grid-row-gap: var(--gap-2xl);
+	}
+
+	.grid-col-gap-2xl {
+		--_grid-col-gap: var(--gap-2xl);
+	}
+
+	.grid-row-gap-3xl {
+		--_grid-row-gap: var(--gap-3xl);
+	}
+
+	.grid-col-gap-3xl {
+		--_grid-col-gap: var(--gap-3xl);
+	}
+
+	.grid-row-gap-4xl {
+		--_grid-row-gap: var(--gap-4xl);
+	}
+
+	.grid-col-gap-4xl {
+		--_grid-col-gap: var(--gap-4xl);
+	}
+}

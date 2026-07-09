@@ -1,0 +1,54 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as ProgressBarStories from "./MProgressBar.stories";
+
+<Meta of={ProgressBarStories} />
+
+# MProgressBar
+
+A linear progress indicator for determinate or indeterminate work.
+
+<Canvas of={ProgressBarStories.Regular} />
+
+## Variants
+
+<Canvas of={ProgressBarStories.AllVariants} />
+
+## Sizes
+
+<Canvas of={ProgressBarStories.Sizes} />
+
+---
+
+## Customization
+
+MProgressBar is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--progressbar-radius` | Track & fill corner radius | `--radius-pill` |
+| `--progressbar-height` | Track height | `--gap-xs` (`s`) · `--padding-control-y-s` (`m`) · `--gap-s` (`l`) |
+| `--progressbar-gap` | Gap between header and track | `--gap-xs` |
+| `--progressbar-header-gap` | Gap between label and value | `--gap-m` |
+
+**Colors** have no per-component token by design — they bind to shared semantic roles so
+the progress bar stays in lock-step with the rest of the system.
+
+| Role | Semantic role | → primitive (default) |
+|------|---------------|-----------------------|
+| track | `--color-control-track` | `--palette-base-200` |
+| track (indeterminate) | `--color-control-track-hover` | `--palette-primary-500` |
+| fill (regular) | `--color-control-checked` | `--palette-primary-600` |
+| fill (`status="valid"`) | `--color-status-success-border` | `--palette-success-400` |
+| fill (`status="invalid"`) | `--color-status-error-border` | `--palette-error-400` |
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+---
+
+## Props
+
+<Controls />

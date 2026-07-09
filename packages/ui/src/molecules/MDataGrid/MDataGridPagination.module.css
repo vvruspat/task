@@ -1,0 +1,36 @@
+@layer components {
+	.pagination {
+		padding: var(--_padding-y, var(--data-grid-padding-y, var(--padding-control-y-l)))
+			var(--_padding-x, var(--data-grid-padding-x, var(--gap-m)));
+	}
+
+	.paginationContent {
+		--flex-gap: var(--data-grid-pagination-gap, var(--gap-m));
+		width: 100%;
+	}
+
+	.rowsPerPage {
+		--flex-gap: var(--gap-s);
+		min-width: var(--size-control-2xl);
+	}
+
+	.rowsPerPageLabel,
+	.pages {
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-sm);
+		white-space: nowrap;
+	}
+
+	.rowsPerPageSelect {
+		min-width: var(--size-control-xl);
+	}
+
+	.pageControls {
+		--flex-gap: var(--data-grid-pagination-gap, var(--gap-m));
+		margin-left: auto;
+	}
+
+	.pageNav {
+		--flex-gap: var(--gap-xs);
+	}
+}

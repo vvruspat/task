@@ -1,0 +1,147 @@
+import { useEffect, useState } from 'react';
+import { Meta } from '@storybook/addon-docs/blocks';
+import './Palette.css';
+
+<Meta title="Guides/Color Palette" />
+
+export const ThemeToggle = () => {
+  const [theme, setTheme] = useState('light');
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-platform', 'desktop');
+  }, [theme]);
+  return (
+    <div className="theme-toggle">
+      {['light', 'dark'].map((mode) => (
+        <button
+          key={mode}
+          type="button"
+          className={mode === theme ? 'active' : ''}
+          onClick={() => setTheme(mode)}
+        >
+          {mode}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+<ThemeToggle />
+
+# Color Palette
+
+Live view of the **primitive** palette (`brand.css`) and the **semantic** color roles
+(`themes/light.css` / `themes/dark.css`) described in
+[Theming & Customization](/docs/guides-theming---customization--docs). Swatches render the
+actual `var(--...)` value, so this page always reflects the current brand.
+
+---
+
+## Primitives
+
+Raw, semantic-agnostic scale. Retune these to rebrand the whole kit — see
+[Theming & Customization](/docs/guides-theming---customization--docs#1-global--a-brand--theme).
+
+{
+  [
+    { name: 'primary', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'secondary', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'tertiary', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'base', steps: [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'success', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'error', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'warning', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'info', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+  ].map(({ name, steps }) => (
+    <div className="palette-group" key={name}>
+      <h4>{name}</h4>
+      <div className="palette-row">
+        {steps.map((step) => {
+          const varName = `--palette-${name}-${step}`;
+          return (
+            <div className="palette-swatch" key={varName}>
+              <div className="chip" style={{ background: `var(${varName})` }} />
+              <div className="step">{step}</div>
+              <div className="var-name">{varName}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  ))
+}
+
+<div className="palette-group">
+  <h4>alpha</h4>
+  <div className="palette-row">
+    {
+      ['black-12', 'black-40', 'black-50', 'black-60', 'white-30'].map((key) => {
+        const varName = `--palette-alpha-${key}`;
+        return (
+          <div className="palette-swatch" key={varName}>
+            <div className="chip" style={{ background: `var(${varName})` }} />
+            <div className="step">{key}</div>
+            <div className="var-name">{varName}</div>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>
+
+---
+
+## Semantic roles (current theme)
+
+Same token names in both themes, different primitive references. Use the **light / dark**
+toggle above to see these swap.
+
+{
+  [
+    {
+      group: 'Surface',
+      tokens: ['--color-surface', '--color-surface-raised', '--color-surface-overlay', '--color-surface-sunken', '--color-surface-inverse'],
+    },
+    {
+      group: 'Text',
+      tokens: ['--color-text-primary', '--color-text-secondary', '--color-text-tertiary', '--color-text-disabled', '--color-text-inverse', '--color-text-link'],
+    },
+    {
+      group: 'Border / Divider',
+      tokens: ['--color-border-default', '--color-border-strong', '--color-border-focus', '--color-divider-subtle', '--color-divider-strong'],
+    },
+    {
+      group: 'Action — primary',
+      tokens: ['--color-action-rest', '--color-action-hover', '--color-action-active', '--color-action-disabled', '--color-action-foreground'],
+    },
+    {
+      group: 'Action — secondary / tertiary',
+      tokens: ['--color-action-secondary-rest', '--color-action-secondary-hover', '--color-action-tertiary-rest', '--color-action-tertiary-hover'],
+    },
+    {
+      group: 'Action — subtle / outlined',
+      tokens: ['--color-action-subtle-rest', '--color-action-outlined-bg', '--color-action-outlined-border'],
+    },
+    {
+      group: 'Status',
+      tokens: [
+        '--color-status-error', '--color-status-error-surface',
+        '--color-status-success', '--color-status-success-surface',
+        '--color-status-warning', '--color-status-warning-surface',
+        '--color-status-info', '--color-status-info-surface',
+      ],
+    },
+  ].map(({ group, tokens }) => (
+    <div className="palette-group" key={group}>
+      <h4>{group}</h4>
+      <div className="semantic-row">
+        {tokens.map((varName) => (
+          <div className="semantic-swatch" key={varName}>
+            <div className="chip" style={{ background: `var(${varName})` }} />
+            <div className="var-name">{varName}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))
+}

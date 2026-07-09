@@ -1,0 +1,4 @@
+/* src/styles/platforms/mobile.css — Mobile layout override */
+:root[data-platform="mobile"] {
+  --layout-screen-padding-h: var(--space-8); /* 16px */
+}

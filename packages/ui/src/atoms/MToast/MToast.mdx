@@ -1,0 +1,70 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as ToastStories from './MToast.stories';
+
+<Meta of={ToastStories} />
+
+# MToast
+
+A transient notification stacked in a fixed corner region. Built on
+[React Aria's Toast](https://react-spectrum.adobe.com/react-aria/Toast.html) for queueing,
+auto-dismiss timing, focus management, and screen-reader announcements — MToast supplies the
+visual layer, reusing **MAlert**'s status coloring, **MText**'s type scale, and **MFlex** for
+layout, plus status icons from [Heroicons](https://heroicons.com).
+
+---
+
+## Overview
+
+Mount `<MToastRegion />` once, near the app root (it renders into a portal, so placement in
+the tree doesn't matter). Trigger toasts from anywhere via the `mToast` helper — no context
+or provider wiring required.
+
+```tsx
+import { MToastRegion, mToast } from "ws-uikit";
+
+// once, near the root
+<MToastRegion />
+
+// anywhere else
+mToast.success("Saved", "Your changes were saved successfully.");
+mToast.error("Something went wrong", "Please try again.");
+```
+
+<Canvas of={ToastStories.AllModes} />
+
+---
+
+## Modes
+
+Same four semantic modes as **MAlert** — `mToast.<mode>(title, description?)`:
+
+| Mode | When to use |
+|------|-------------|
+| `info` | Neutral information — tips, hints, notices |
+| `success` | Positive outcome — action completed |
+| `warning` | Caution — potential issue |
+| `error` | Failure — something went wrong. Stays until dismissed (no auto-timeout) |
+
+`info`/`success`/`warning` toasts auto-dismiss after 5s; `error` toasts wait for the user to
+close them, since failures shouldn't disappear before they're read.
+
+---
+
+## Customization
+
+MToast has no color tokens of its own — each toast borrows its mode's coloring directly from
+**MAlert**'s `--color-status-*` roles, so the two stay in lock-step. See
+**Guides/Theming & Customization** for the override mechanism.
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--toast-region-inset` | Distance from the viewport corner | `--gap-2xl` |
+| `--toast-region-gap` | Gap between stacked toasts | `--gap-s` |
+| `--toast-min-width` / `--toast-max-width` | Card width bounds | `320px` / `400px` |
+
+---
+
+## Playground
+
+<Canvas of={ToastStories.Basic} />

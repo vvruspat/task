@@ -1,0 +1,204 @@
+@layer components {
+	/* ── Token contract ───────────────────────────────────────────────
+	   Public override API: --input-*  |  Private (read by body): --_*
+	   Defaults fall through to semantic dimension roles — never raw
+	   --space-N/--radius-N/--size-N. Mobile/tablet breakpoint re-declares
+	   the private defaults. */
+	.inputWrapper {
+		max-width: 100%;
+	}
+
+	.inputWrapper input {
+		background: inherit;
+	}
+
+	.inputHeading {
+		width: 100%;
+	}
+
+	.inputContainer:focus-within {
+		outline: var(--focus-ring-width) solid var(--color-focus-ring);
+		outline-offset: var(--focus-ring-offset);
+	}
+
+	.inputContainer {
+		transition: border 0.2s ease-in-out;
+	}
+
+	.inputContainer > div,
+	.inputContainer > input {
+		transition: color 0.2s ease-in-out;
+	}
+
+	.inputContainer {
+		width: 100%;
+		box-sizing: border-box;
+		--_gap: var(--input-gap, var(--gap-control));
+		--_radius: var(--input-radius, var(--radius-control-sm));
+		--_px: var(--input-px, var(--padding-control-x-s));
+		--_py: var(--input-py, var(--padding-control-y-m));
+		/* public seam: feeds the underlying MFlex's own gap read (--flex-gap) */
+		--flex-gap: var(--_gap);
+		padding: var(--_py) var(--_px);
+		border-radius: var(--_radius);
+	}
+
+	:root[data-platform="mobile"] .inputContainer,
+	:root[data-platform="tablet"] .inputContainer {
+		--_px: var(--input-px, var(--padding-control-x-m));
+		--_py: var(--input-py, var(--gap-m));
+		--_radius: var(--input-radius, var(--radius-control));
+	}
+
+	.inputContainer.size-s {
+		width: 30%;
+	}
+
+	.inputContainer.size-m {
+		width: 50%;
+	}
+
+	.inputContainer.size-l {
+		width: 70%;
+	}
+
+	.inputContainer.size-auto {
+		width: 100%;
+	}
+
+	.inputField {
+		flex: 1;
+		flex-shrink: 1;
+		flex-grow: 1;
+		overflow: hidden;
+	}
+
+	.input {
+		border: none;
+		flex: 1;
+		max-width: 100%;
+		flex-shrink: 1;
+		flex-grow: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-family: var(--font-family-primary);
+		font-size: var(--font-size-lg);
+		font-style: normal;
+		font-weight: 400;
+		line-height: var(--font-size-xl);
+	}
+
+	/** States */
+
+	/* enabled */
+	.inputWrapper.regular .inputContainer {
+		border: 1px solid var(--color-input-border);
+		background: var(--color-input-bg);
+		color: var(--color-input-placeholder);
+	}
+
+	.inputWrapper.regular .inputContainer input {
+		color: var(--color-input-text);
+	}
+
+	/* valid */
+	.inputWrapper.valid .inputContainer {
+		border: 1px solid var(--color-border-success);
+		background: var(--color-input-bg);
+		color: var(--color-input-placeholder);
+	}
+
+	.inputWrapper.valid .inputContainer input {
+		color: var(--color-input-text);
+	}
+
+	/* invalid */
+	.inputWrapper.invalid .inputContainer {
+		border: 1px solid var(--color-border-error);
+		background: var(--color-input-bg);
+		color: var(--color-status-error);
+	}
+
+	.inputWrapper.invalid .inputContainer input {
+		color: var(--color-status-error);
+	}
+
+	/* hover */
+	.inputWrapper:not(.invalid):hover .inputContainer {
+		background: var(--color-input-bg); /* this property was here initially, but I can't see any visual effect */
+		color: var(--color-input-text-hover);
+	}
+
+	.inputWrapper:not(.invalid):hover .inputContainer input {
+		color: var(--color-input-text-hover);
+	}
+
+	/* focus */
+	.inputWrapper:not(.invalid):has(.input:focus) .inputContainer {
+		background: var(--color-input-bg); /* this property was here initially, but I can't see any visual effect */
+		color: var(--color-input-text);
+	}
+
+	.inputWrapper:has(.input:focus) .inputContainer input {
+		color: var(--color-input-text);
+	}
+
+	/* active */
+	.inputWrapper:not(.invalid):has(.input:active) .inputContainer {
+		color: var(--color-input-text-hover);
+		background: var(--color-input-bg); /* this property was here initially, but I can't see any visual effect */
+	}
+
+	.inputWrapper:has(.input:active) .inputContainer input {
+		color: var(--color-input-text-hover);
+	}
+
+	/* disabled */
+	.inputWrapper:has(.input:disabled) .inputContainer {
+		color: var(--color-text-disabled);
+		border: 1px solid var(--color-input-border);
+		background: var(--color-input-bg-disabled);
+	}
+
+	.inputWrapper:has(.input:disabled) .inputContainer input {
+		color: var(--color-text-disabled);
+		background: var(--color-input-bg-disabled);
+	}
+
+	.inputWrapper:has(.input:disabled):hover .inputContainer,
+	.inputWrapper:has(.input:disabled):focus .inputContainer,
+	.inputWrapper:has(.input:disabled):active .inputContainer {
+		color: var(--color-text-disabled);
+		background: var(--color-input-bg-disabled);
+	}
+
+	.inputWrapper.invalid:has(.input:disabled) .inputContainer {
+		border: 1px solid var(--color-status-error);
+		color: var(--color-status-error);
+	}
+
+	.input:focus-visible {
+		outline: none;
+	}
+
+	.input::placeholder {
+		color: var(--color-input-placeholder);
+		transition: all 0.2s ease-in-out; /* color|opacity transitions for placeholders are not supported in Firefox */
+	}
+
+	.inputWrapper.invalid .inputContainer input::placeholder {
+		color: var(--color-status-error);
+	}
+
+	.inputWrapper:not(.invalid):not(:has(input:disabled)):hover
+		.inputContainer
+		input::placeholder {
+		color: var(--color-input-placeholder-hover);
+	}
+
+	.inputWrapper:not(.invalid):not(:has(input:disabled)):has(.input:focus)
+		.inputContainer
+		input::placeholder {
+		color: var(--color-input-placeholder-hover);
+	}
+}

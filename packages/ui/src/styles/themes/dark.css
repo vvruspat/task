@@ -1,0 +1,116 @@
+/* src/styles/themes/dark.css
+   All semantic color tokens for dark mode.
+   Token names are identical to light.css — only values differ.
+*/
+:root[data-theme="dark"] {
+  /* ── Surface ──────────────────────────────────────── */
+  --color-surface:          var(--palette-base-800);
+  --color-surface-raised:   var(--palette-base-700);
+  --color-surface-overlay:  var(--palette-base-600);
+  --color-surface-sunken:   var(--palette-base-900);
+  --color-surface-inverse:  var(--palette-base-0);
+
+  /* ── Text ─────────────────────────────────────────── */
+  --color-text-primary:        var(--palette-base-100);
+  --color-text-secondary:      var(--palette-base-300);
+  --color-text-tertiary:       var(--palette-base-500);
+  --color-text-disabled:       var(--palette-base-700);
+  --color-text-inverse:        var(--palette-base-1000);
+  --color-text-on-action:      var(--palette-base-800);
+  --color-text-link:           var(--palette-primary-400);
+  --color-text-link-hover:     var(--palette-primary-200);
+  --color-text-link-visited:   var(--palette-primary-100);
+
+  /* ── Border ───────────────────────────────────────── */
+  --color-border-default: var(--palette-base-500);
+  --color-border-strong:  var(--palette-base-400);
+  --color-border-focus:   var(--palette-primary-500);
+  --color-border-error:   var(--palette-error-400);
+  --color-border-success: var(--palette-success-700);
+
+  /* ── Action — primary ────────────────────────────── */
+  --color-action-rest:                var(--palette-primary-700);
+  --color-action-hover:               var(--palette-primary-600);
+  --color-action-active:              var(--palette-primary-800);
+  --color-action-disabled:            var(--palette-base-300);
+  --color-action-foreground:          var(--palette-base-0);
+  --color-action-foreground-disabled: var(--palette-base-600);
+
+  /* ── Action — secondary ──────────────────────────── */
+  --color-action-secondary-rest:       var(--palette-secondary-700);
+  --color-action-secondary-hover:      var(--palette-secondary-600);
+  --color-action-secondary-active:     var(--palette-secondary-800);
+  --color-action-secondary-foreground: var(--palette-base-0);
+
+  /* ── Action — tertiary ────────────────────────────── */
+  --color-action-tertiary-rest:        var(--palette-tertiary-700);
+  --color-action-tertiary-hover:       var(--palette-tertiary-600);
+  --color-action-tertiary-active:      var(--palette-tertiary-800);
+  --color-action-tertiary-foreground:  var(--palette-base-0);
+
+  /* ── Action — subtle ─────────────────────────────── */
+  --color-action-subtle-rest:       var(--palette-base-200);
+  --color-action-subtle-hover:      var(--palette-base-200);
+  --color-action-subtle-active:     var(--palette-base-300);
+  --color-action-subtle-foreground: var(--palette-base-500);
+  --color-action-subtle-border:     var(--palette-base-400);
+
+  /* ── Action — outlined ───────────────────────────── */
+  --color-action-outlined-bg:         var(--palette-base-800);
+  --color-action-outlined-bg-hover:   var(--palette-base-700);
+  --color-action-outlined-border:     var(--palette-base-500);
+  --color-action-outlined-foreground: var(--palette-base-100);
+
+  /* ── Action — transparent ────────────────────────── */
+  --color-action-transparent-foreground:          var(--palette-base-100);
+  --color-action-transparent-foreground-hover:    var(--palette-base-300);
+  --color-action-transparent-foreground-disabled: var(--palette-base-700);
+
+  /* ── Control ──────────────────────────────────────── */
+  --color-control-track:          var(--palette-base-200);
+  --color-control-track-hover:    var(--palette-primary-500);
+  --color-control-checked:        var(--palette-primary-600);
+  --color-control-checked-hover:  var(--palette-primary-500);
+  --color-control-thumb:          var(--palette-base-0);
+  --color-control-outline:        var(--palette-base-600);
+  --color-control-outline-hover:  var(--palette-base-700);
+  --color-control-outline-focus:  var(--palette-primary-600);
+
+  /* ── Input ────────────────────────────────────────── */
+  --color-input-bg:                var(--palette-base-800);
+  --color-input-bg-disabled:       var(--palette-base-700);
+  --color-input-border:            var(--palette-base-500);
+  --color-input-border-hover:      var(--palette-base-400);
+  --color-input-border-focus:      var(--palette-primary-500);
+  --color-input-text:              var(--palette-base-300);
+  --color-input-text-hover:        var(--palette-base-100);
+  --color-input-placeholder:       var(--palette-base-500);
+  --color-input-placeholder-hover: var(--palette-base-300);
+  --color-input-label:             var(--palette-base-300);
+  --color-input-assistive:         var(--palette-base-100);
+
+  /* ── Status ───────────────────────────────────────── */
+  --color-status-error:            var(--palette-error-400);
+  --color-status-error-surface:    var(--palette-error-100);
+  --color-status-error-border:     var(--palette-error-400);
+  --color-status-success:          var(--palette-success-700);
+  --color-status-success-surface:  var(--palette-success-100);
+  --color-status-success-border:   var(--palette-success-400);
+  --color-status-warning:          var(--palette-warning-400);
+  --color-status-warning-surface:  var(--palette-warning-100);
+  --color-status-warning-border:   var(--palette-warning-400);
+  --color-status-info:             var(--palette-info-800);
+  --color-status-info-surface:     var(--palette-info-100);
+  --color-status-info-border:      var(--palette-info-400);
+
+  /* ── Divider ──────────────────────────────────────── */
+  --color-divider-subtle: var(--palette-alpha-white-8);
+  --color-divider-strong: var(--palette-alpha-white-16);
+
+  /* ── Overlay / Focus / Card shadow ─────────────────── */
+  --color-overlay:    var(--palette-alpha-black-60);
+  --color-focus-ring: var(--palette-primary-500);
+  --shadow-card:
+    0px 0px 1px rgba(0, 0, 0, 0.3),
+    0px 1px 4px rgba(0, 0, 0, 0.5);
+}

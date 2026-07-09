@@ -1,0 +1,104 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as ButtonStories from './MButton.stories';
+
+<Meta of={ButtonStories} />
+
+# MButton
+
+A clickable element that triggers an action. Supports six visual modes, three sizes, icon slots before/after the label, and a disabled state.
+
+---
+
+## Overview
+
+All modes at a glance.
+
+<Canvas of={ButtonStories.AllModes} />
+
+---
+
+## Modes
+
+| Mode | When to use |
+|------|-------------|
+| `primary` | Main call-to-action — highest emphasis |
+| `secondary` | Secondary action |
+| `tertiary` | Low-emphasis action |
+| `outlined` | Outlined style with visible border |
+| `transparent` | Ghost button, no background |
+| `round` | Icon-only circular button (FAB) |
+
+---
+
+## Sizes
+
+<Canvas of={ButtonStories.AllSizes} />
+
+---
+
+## States
+
+### Disabled
+
+<Canvas of={ButtonStories.Disabled} />
+
+---
+
+## Customization
+
+MButton is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--button-radius` | Corner radius (all modes except `round`) | `--radius-control` · outlined: `--radius-control-sm` |
+| `--button-radius-round` | `round` mode radius | `50%` |
+| `--button-gap` | Gap between icon and label | `--gap-control` |
+| `--button-px` | Horizontal padding | `--padding-control-x-{s,m,l}` |
+| `--button-py` | Vertical padding | `--padding-control-y-{s,m,l}` |
+| `--button-font-size` | Label size | `--font-size-{sm,md,lg}` |
+| `--button-icon-size` | `round` width/height | `--size-control-{s,m,l}` |
+| `--button-icon-padding` | `round` inner padding | `--padding-icon-{s,m,l}` |
+
+**Colors & focus** have no per-button token by design — they bind to shared semantic
+roles so the button stays in lock-step with the rest of the system. The table shows which
+role each mode consumes and the primitive it resolves to in the default (light) theme, so
+you know where to intervene: retune the **primitive** for a brand-wide change, or repoint
+the **semantic role** at a different primitive.
+
+| Mode | Semantic role | → primitive (default) |
+|------|---------------|-----------------------|
+| primary | `--color-action-rest` / `-hover` / `-active` | `--palette-primary-700` / `-600` / `-800` |
+| primary | `--color-action-foreground` | `--palette-base-0` |
+| secondary | `--color-action-secondary-rest` / `-hover` / `-active` | `--palette-secondary-600` / `-700` / `-800` |
+| tertiary · round | `--color-action-subtle-rest` / `-hover` / `-active` | `--palette-base-200` / `-200` / `-300` |
+| tertiary · round | `--color-action-subtle-foreground` / `-border` | `--palette-base-500` / `-400` |
+| outlined | `--color-action-outlined-bg` / `-border` / `-foreground` | `--palette-base-0` / `-300` / `-900` |
+| transparent | `--color-action-transparent-foreground` | `--palette-base-1000` |
+| disabled | `--color-action-disabled` / `-foreground-disabled` | `--palette-base-300` / `-400` |
+| all | `--color-focus-ring` | `--palette-primary-700` |
+
+Focus geometry is the shared `--focus-ring-width` / `--focus-ring-offset`.
+
+```css
+/* geometry: square, tighter buttons everywhere (per-component tokens) */
+:root {
+  --button-radius: var(--radius-2);
+  --button-gap: var(--space-2);
+}
+```
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+---
+
+## Playground
+
+<Canvas of={ButtonStories.Basic} />
+
+## Props
+
+<Controls />

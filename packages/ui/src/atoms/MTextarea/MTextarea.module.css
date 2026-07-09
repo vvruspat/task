@@ -1,0 +1,161 @@
+@layer components {
+	/* ── Token contract ───────────────────────────────────────────────
+	   Public override API: --textarea-*  |  Private (read by body): --_*
+	   Defaults fall through to semantic dimension roles — never raw
+	   --space-N/--radius-N/--size-N. Mobile/tablet breakpoint re-declares
+	   the private defaults. --_px/--_py are also read (via inheritance)
+	   by .counter so it stays flush with the container padding. */
+	.textareaWrapper * {
+		box-sizing: border-box;
+	}
+
+	.textareaWrapper {
+		width: 100%;
+		--_gap: var(--textarea-gap, var(--gap-m));
+		/* public seam: feeds the underlying MFlex's own gap read (--flex-gap) */
+		--flex-gap: var(--_gap);
+	}
+
+	.textareaLabel {
+		width: 100%;
+	}
+
+	.textareaContainer {
+		position: relative;
+		width: 100%;
+		--_radius: var(--textarea-radius, var(--radius-control-sm));
+		--_px: var(--textarea-px, var(--padding-control-x-s));
+		--_py: var(--textarea-py, var(--padding-control-y-m));
+		padding: var(--_py) var(--_px);
+		border-radius: var(--_radius);
+		transition-property: background, border, color;
+		transition-duration: 0.2s;
+		transition-timing-function: ease-in-out;
+	}
+
+	:root[data-platform="mobile"] .textareaContainer,
+	:root[data-platform="tablet"] .textareaContainer {
+		--_px: var(--textarea-px, var(--padding-control-x-m));
+		--_py: var(--textarea-py, var(--gap-m));
+		--_radius: var(--textarea-radius, var(--radius-control));
+	}
+
+	.textareaContainer.hasCounter {
+		padding-bottom: var(--textarea-counter-space, var(--size-control-m));
+	}
+
+	.textareaContainer:focus-within {
+		outline: var(--focus-ring-width) solid var(--color-focus-ring);
+		outline-offset: var(--focus-ring-offset);
+	}
+
+	.textarea {
+		box-sizing: border-box;
+		width: 100%;
+		border: none;
+		font-family: var(--font-family-primary);
+		font-size: var(--font-size-lg);
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		resize: none;
+		transition: all 0.2s ease-in-out;
+	}
+
+	.textarea:focus,
+	.textarea:active,
+	.textarea:focus-visible {
+		border: none;
+		outline: none;
+	}
+
+	.textarea {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-input-placeholder) transparent;
+	}
+
+	.textarea::placeholder {
+		transition: color 0.2s ease-in-out;
+	}
+
+	.counter {
+		position: absolute;
+		right: var(--_px);
+		bottom: var(--_py);
+		text-align: right;
+		font-family: var(--font-family-primary);
+		font-size: var(--font-size-sm);
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		transition: color 0.2s ease-in-out;
+	}
+
+	/** STATES */
+
+	/* enabled = regular */
+
+	.textareaWrapper.regular .textareaContainer {
+		border: 1px solid var(--color-input-border);
+	}
+
+	.textareaWrapper.regular .textarea::placeholder {
+		color: var(--color-input-placeholder);
+	}
+
+	.textareaWrapper.regular .counter {
+		color: var(--color-input-placeholder);
+	}
+
+	/* valid */
+	.textareaWrapper.valid .textareaContainer {
+		border: 1px solid var(--color-border-success);
+	}
+
+	/* invalid */
+
+	.textareaWrapper.invalid .textareaContainer {
+		border: 1px solid var(--color-border-error);
+	}
+
+	.textareaWrapper.invalid .textarea,
+	.textareaWrapper.invalid .textarea::placeholder {
+		color: var(--color-status-error);
+	}
+
+	.textareaWrapper.invalid .textarea:disabled::placeholder {
+		color: var(--color-input-placeholder);
+	}
+
+	.textareaWrapper.invalid .textarea:focus,
+	.textareaWrapper.invalid .textarea:focus-visible {
+		color: var(--color-input-text);
+	}
+
+	.textareaWrapper.invalid .counter {
+		color: var(--color-status-error);
+	}
+
+	/* disabled */
+
+	.textareaContainer:has(.textarea:disabled) {
+		background: var(--color-input-bg-disabled);
+	}
+	.textarea:disabled {
+		background: var(--color-input-bg-disabled);
+	}
+
+	.textareaContainer:has(.textarea:disabled) .counter {
+		color: var(--color-input-placeholder);
+	}
+
+	/* Input pseudo classes */
+
+	.textareaWrapper.regular .textareaContainer:hover .textarea::placeholder {
+		color: var(--color-input-placeholder-hover);
+	}
+
+	.textareaContainer:has(.textarea:disabled):hover .textarea::placeholder {
+		color: var(--color-input-placeholder);
+	}
+}

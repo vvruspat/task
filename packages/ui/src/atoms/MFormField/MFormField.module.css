@@ -1,0 +1,62 @@
+@layer components {
+	/* ── Token contract ───────────────────────────────────────────────
+	   Public override API: --formfield-*  |  Private (read by body): --_*
+	   Defaults fall through to semantic dimension roles — never raw
+	   --space-N/--radius-N/--size-N. */
+	.formField {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		align-items: center;
+		--_column-gap: var(--formfield-column-gap, var(--gap-l));
+		--_row-gap: var(--formfield-row-gap, var(--gap-s));
+		column-gap: var(--_column-gap);
+		row-gap: var(--_row-gap);
+		width: 100%;
+	}
+
+	.size-auto {
+		grid-template-columns: auto 1fr;
+	}
+
+	.size-s {
+		grid-template-columns: 1fr 2fr;
+	}
+
+	.size-m {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.size-l {
+		grid-template-columns: 2fr 1fr;
+	}
+
+	.size-full {
+		grid-template-columns: 3fr;
+	}
+
+	.row {
+		grid-template-areas:
+			"label control"
+			".     description";
+	}
+
+	.column {
+		grid-template-areas:
+			"label"
+			"control"
+			"description";
+	}
+
+	.label {
+		grid-area: label;
+	}
+
+	.control {
+		grid-area: control;
+		align-items: start;
+	}
+
+	.description {
+		grid-area: description;
+	}
+}

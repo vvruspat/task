@@ -1,3 +1,4 @@
+import { MBox, MFlex, MGrid, MHeading, MText } from "@task/ui";
 import type { ReactElement } from "react";
 import { buildAgentHistoryRows, buildAgentHistorySummary } from "../workspaceViewModels.js";
 import type {
@@ -8,6 +9,7 @@ import type {
   WorkspaceStatus,
   WorkspaceSummary,
 } from "./types.js";
+import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type AgentHistoryViewProps = {
   agentRuns: AgentRunSummary[];
@@ -43,71 +45,67 @@ export function AgentHistoryView({
   });
 
   return (
-    <div className="content-grid">
-      <section className="panel wide-panel" aria-labelledby="agent-history-view-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Agent</p>
-            <h3 id="agent-history-view-title">Agent run audit</h3>
-          </div>
-        </div>
-
-        <div className="agent-history-list">
+    <MGrid
+      className="content-grid"
+      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
+      rowGap="m"
+      columnGap="m"
+    >
+      <WorkspacePanel
+        eyebrow="Agent"
+        title="Agent run audit"
+        titleId="agent-history-view-title"
+        wide
+      >
+        <MBox className="agent-history-list">
           {rows.length === 0 ? (
-            <article className="agent-history-row">
-              <div>
-                <h4>No agent runs loaded</h4>
-                <p>{summary.selectedWorkspaceLabel}</p>
-              </div>
-              <span>{summary.selectedProjectLabel}</span>
-            </article>
+            <MFlex as="article" className="agent-history-row" justify="space-between" wrap="nowrap">
+              <MBox>
+                <MHeading mode="h4">No agent runs loaded</MHeading>
+                <MText as="p" mode="secondary">
+                  {summary.selectedWorkspaceLabel}
+                </MText>
+              </MBox>
+              <MText as="span">{summary.selectedProjectLabel}</MText>
+            </MFlex>
           ) : (
             rows.map((run) => (
-              <article className="agent-history-row" key={run.id}>
-                <div>
-                  <h4>{run.title}</h4>
-                  <p>{run.detail}</p>
-                </div>
-                <span>
+              <MFlex
+                as="article"
+                className="agent-history-row"
+                key={run.id}
+                justify="space-between"
+                wrap="nowrap"
+              >
+                <MBox>
+                  <MHeading mode="h4">{run.title}</MHeading>
+                  <MText as="p" mode="secondary">
+                    {run.detail}
+                  </MText>
+                </MBox>
+                <MText as="span">
                   {run.statusLabel} - {run.updatedAtLabel}
-                </span>
-              </article>
+                </MText>
+              </MFlex>
             ))
           )}
-        </div>
-      </section>
+        </MBox>
+      </WorkspacePanel>
 
-      <section className="panel" aria-labelledby="agent-history-summary-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Summary</p>
-            <h3 id="agent-history-summary-title">Audit load</h3>
-          </div>
-        </div>
-        <p className="agent-line">{summary.selectedWorkspaceLabel}</p>
-        <dl className="metric-list">
-          <div>
-            <dt>Runs</dt>
-            <dd>{summary.runCount}</dd>
-          </div>
-          <div>
-            <dt>Projects</dt>
-            <dd>{summary.projectCount}</dd>
-          </div>
-          <div>
-            <dt>Tasks</dt>
-            <dd>{summary.taskCount}</dd>
-          </div>
-          <div>
-            <dt>Skills</dt>
-            <dd>{summary.skillCount}</dd>
-          </div>
-          <div>
-            <dt>Statuses</dt>
-            <dd>{summary.statusCount}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
+      <WorkspacePanel eyebrow="Summary" title="Audit load" titleId="agent-history-summary-title">
+        <MText as="p" className="agent-line" mode="secondary">
+          {summary.selectedWorkspaceLabel}
+        </MText>
+        <WorkspaceMetrics
+          items={[
+            { label: "Runs", value: summary.runCount },
+            { label: "Projects", value: summary.projectCount },
+            { label: "Tasks", value: summary.taskCount },
+            { label: "Skills", value: summary.skillCount },
+            { label: "Statuses", value: summary.statusCount },
+          ]}
+        />
+      </WorkspacePanel>
+    </MGrid>
   );
 }

@@ -1,0 +1,73 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+
+import * as DataGridStories from "./MDataGrid.stories";
+
+<Meta of={DataGridStories} />
+
+# MDataGrid Component
+
+The `MDataGrid` component is an interactive data table that supports sorting, selection, and infinite scrolling.
+
+## Features
+
+- Column sorting
+- Rows selection
+- Rows filtering
+- Infinite scrolling for large datasets
+- Custom renderers for data display
+
+## Usage
+
+### Default Example
+
+<Canvas of={DataGridStories.Default} />
+
+---
+
+## Customization
+
+MDataGrid is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Its component tokens are set once on the
+outer container and shared — via CSS inheritance, with a same-value fallback baked into
+each consumer as a safety net — by the header cells, row cells, and pagination bar
+(`MDataGridHeader` / `MDataGridRow` / `MDataGridPagination` all render as real DOM
+descendants of the grid container, never in a portal).
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--data-grid-radius` | Outer card corner radius | `--radius-md` |
+| `--data-grid-padding-y` | Header/row/pagination cell vertical padding | `--padding-control-y-l` |
+| `--data-grid-padding-x` | Header/row/pagination cell horizontal padding | `--gap-m` |
+| `--data-grid-selection-size` | Selection column width | `--size-control-l` |
+| `--data-grid-header-gap` | Gap between a header's title and its filter row | `--gap-s` |
+| `--data-grid-pagination-gap` | Gap inside the pagination bar's flex rows | `--gap-m` |
+
+**Colors** have no per-grid token by design — they bind to shared semantic roles so the
+grid stays in lock-step with the rest of the system.
+
+| Role | Semantic role | → primitive (default) |
+|------|---------------|-----------------------|
+| borders | `--color-border-default` | `--palette-alpha-black-12` |
+| surface / header-footer band | `--color-surface` / `--color-surface-raised` | `--palette-base-0` / `-50` |
+| row hover | `--color-surface-overlay` | `--palette-base-100` |
+| selected row | `--color-action-subtle-rest` | `--palette-base-200` |
+| text | `--color-text-primary` / `-secondary` / `-tertiary` | `--palette-base-800` / `-600` / `-400` |
+| active sort icon | `--color-action-transparent-foreground` | `--palette-base-1000` |
+
+```css
+/* geometry: flatter card, tighter cells */
+:root {
+  --data-grid-radius: var(--radius-sm);
+  --data-grid-padding-y: var(--padding-control-y-m);
+}
+```
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+---
+
+## Props
+
+<Controls />

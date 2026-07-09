@@ -1,0 +1,37 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as TimepickerStories from './MTimepicker.stories';
+
+<Meta of={TimepickerStories} />
+
+# MTimepicker
+
+An `MInput` of type `time`, with a button that opens the native time picker.
+
+---
+
+## Overview
+
+<Canvas of={TimepickerStories.Regular} />
+
+---
+
+## States
+
+<Canvas of={TimepickerStories.Valid} />
+<Canvas of={TimepickerStories.Invalid} />
+<Canvas of={TimepickerStories.Disabled} />
+
+---
+
+## Customization
+
+MTimepicker has no component tokens of its own — it composes `MInput` and `MButton`,
+each already themeable through their own `--input-*` / `--button-*` tokens. See
+**Guides/Theming & Customization**.
+
+---
+
+## Props
+
+<Controls />

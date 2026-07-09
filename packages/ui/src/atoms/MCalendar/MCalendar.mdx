@@ -1,0 +1,70 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as CalendarStories from './MCalendar.stories';
+
+<Meta of={CalendarStories} />
+
+# MCalendar
+
+A date picker grid. Supports single-date and range selection, with month/year
+dropdown navigation.
+
+---
+
+## Overview
+
+<Canvas of={CalendarStories.Default} />
+
+---
+
+## Range mode
+
+<Canvas of={CalendarStories.Range} />
+
+---
+
+## Customization
+
+MCalendar is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--calendar-radius` | Month/year button & popover corner radius | `--radius-sm` |
+| `--calendar-cell-radius` | Day cell & prev/next nav button radius (circular) | `--radius-pill` |
+| `--calendar-cell-size` | Day cell width/height | `--gap-4xl` |
+| `--calendar-gap` | Gap between month/year selects, and icon/label gap in each | `--gap-xs` |
+| `--calendar-padding-y` | Header & grid vertical padding | `--gap-m` |
+| `--calendar-padding-x` | Header & grid horizontal padding | `--gap-l` |
+
+**Colors & focus** have no per-calendar token by design — they bind to shared semantic
+roles so the calendar stays in lock-step with the rest of the system.
+
+| Role | Semantic role | → primitive (default) |
+|------|---------------|-----------------------|
+| text | `--color-text-primary` / `-secondary` / `-tertiary` / `-disabled` | `--palette-base-800` / `-600` / `-400` / `-300` |
+| hover (nav, options, cells) | `--color-action-subtle-hover` | `--palette-base-200` |
+| selected option | `--color-action-subtle-rest` / `-foreground` | `--palette-base-200` / `-500` |
+| selected day | `--color-control-checked` / `--color-control-thumb` | `--palette-primary-600` / `--palette-base-0` |
+| popover surface | `--color-surface` / `--shadow-card` | `--palette-base-0` |
+| focus ring | `--color-focus-ring` | `--palette-primary-700` |
+
+Focus geometry is the shared `--focus-ring-width` / `--focus-ring-offset`.
+
+```css
+/* geometry: tighter grid, square-ish cells */
+:root {
+  --calendar-cell-size: var(--gap-2xl);
+  --calendar-padding-x: var(--gap-m);
+}
+```
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+---
+
+## Props
+
+<Controls />

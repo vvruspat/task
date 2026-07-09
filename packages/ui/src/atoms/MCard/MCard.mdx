@@ -1,0 +1,72 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+import * as MCardStories from './MCard.stories.tsx';
+
+<Meta of={MCardStories} />
+
+# MCard
+
+A content container with optional header, footer, shadow, dividers, and collapsible behavior. Corner radii are individually configurable.
+
+---
+
+## Variants
+
+### Full Card (Header + Content + Footer)
+
+<Canvas of={MCardStories.Basic} />
+
+### With Dividers
+
+<Canvas of={MCardStories.WithDividers} />
+
+### Content Only
+
+<Canvas of={MCardStories.ContentOnly} />
+
+---
+
+## States
+
+### Collapsed
+
+<Canvas of={MCardStories.Collapsed} />
+
+### No Padding
+
+<Canvas of={MCardStories.NoPadding} />
+
+---
+
+## Customization
+
+MCard is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--card-padding` | Outer padding | `--gap-l` |
+| `--card-radius` | Base corner radius (fallback when no per-corner size is set) | `--radius-md` |
+| `--card-gap` | Gap between header / content / footer | `--gap-l` |
+| `--card-section-gap` | Inner gap of the header and footer blocks | `--gap-l` |
+
+Per-corner radii (`borderLeftTopRadius`, `borderRightTopRadius`, `borderLeftBottomRadius`,
+`borderRightBottomRadius`) are instance-level shape presets (`s` → `--radius-sm` through `4xl` →
+`--radius-5xl`, or `none`) — they read the radius scale directly rather than through a
+component token, the same way `MFlex`'s t-shirt gap classes do.
+
+**Colors** have no per-card token by design — they bind to shared semantic roles so the card
+stays in lock-step with the rest of the system.
+
+| Semantic role | → primitive (default) |
+|----------------|-----------------------|
+| `--color-surface` | `--palette-base-0` |
+| `--color-border-strong` | `--palette-base-300` |
+| `--shadow-card` | see `src/styles/themes/light.css` |
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+## Props
+
+<Controls />

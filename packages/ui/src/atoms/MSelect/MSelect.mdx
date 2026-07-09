@@ -1,0 +1,60 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+
+import * as SelectStories from './MSelect.stories';
+
+<Meta of={SelectStories} />
+
+# Definition
+
+A dropdown menu for displaying choices - an elegant alternative to the native `<select>` element.
+
+Utilizing Radio is recommended when there are fewer total options (less than 5).
+
+You probably need AutoComplete if you're looking for an input box that can be typed or selected.
+
+## Usage
+
+## Captions
+
+Select has the following properties:
+
+<Canvas of={SelectStories.Basic} />
+
+<Controls />
+
+---
+
+## Customization
+
+MSelect is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role).
+The popover and options are portaled outside the trigger by react-aria-components, so they
+resolve the same `--select-*` tokens independently rather than inheriting from the trigger:
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--select-radius` | Trigger button and popover corner radius | `--radius-control-sm` |
+| `--select-gap` | Gap between value/caret (trigger) and before/value/after (option) | `--gap-m` |
+| `--select-px` | Horizontal padding (trigger and option) | `--padding-control-x-s` |
+| `--select-py` | Vertical padding (trigger and option) | `--padding-control-y-m` |
+
+**Colors & focus** have no per-select token by design — they bind to shared semantic
+roles so the select stays in lock-step with the rest of the system.
+
+| Part / status | Semantic role | → primitive (default) |
+|----------------|---------------|-----------------------|
+| trigger | `--color-input-border` / `-bg` / `-text` | `--palette-alpha-black-12` / `--palette-base-0` / `--palette-base-400` |
+| valid | `--color-border-success` | `--palette-success-700` |
+| invalid | `--color-border-error` | `--palette-error-600` |
+| disabled | `--color-input-bg-disabled` / `--color-input-placeholder` | `--palette-base-100` / `--palette-base-300` |
+| popover | `--color-surface` | `--palette-base-0` |
+| option | `--color-text-primary` | `--palette-base-800` |
+| option hover/focus | `--color-action-subtle-hover` | `--palette-base-200` |
+| option selected | `--color-action-subtle-rest` / `-foreground` | `--palette-base-200` / `--palette-base-500` |
+| focus ring | `--color-focus-ring` | `--palette-primary-700` |
+
+Focus geometry is the shared `--focus-ring-width` / `--focus-ring-offset`.
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.

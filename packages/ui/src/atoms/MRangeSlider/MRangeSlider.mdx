@@ -1,0 +1,55 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as RangeSliderStories from "./MRangeSlider.stories";
+
+<Meta of={RangeSliderStories} />
+
+# MRangeSlider
+
+A two-thumb slider for choosing a numeric range.
+
+<Canvas of={RangeSliderStories.Regular} />
+
+## Variants
+
+<Canvas of={RangeSliderStories.AllVariants} />
+
+## Disabled
+
+<Canvas of={RangeSliderStories.Disabled} />
+
+---
+
+## Customization
+
+MRangeSlider is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+(The underlying thumbs are `MSlider` instances — see **MSlider → Customization** for
+`--slider-*` thumb tokens, which still apply to each handle.)
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--rangeslider-gap` | Vertical gap between header, track, and description | `--gap-xs` |
+| `--rangeslider-header-gap` | Gap between label and value in the header row | `--gap-m` |
+| `--rangeslider-hit-height` | Min-height of the track's click/hit area | `--gap-xl` |
+| `--rangeslider-track-height` | Visual bar/selection height | `--gap-xs` |
+| `--rangeslider-track-radius` | Bar/selection corner radius | `--radius-pill` |
+
+**Colors** have no per-component token by design — they bind to shared semantic
+roles so the range slider stays in lock-step with the rest of the system.
+
+| Status | Semantic role | → primitive (default) |
+|--------|---------------|-----------------------|
+| track | `--color-control-track` | `--palette-base-200` |
+| selection | `--color-control-checked` | `--palette-primary-600` |
+| valid | `--color-status-success-border` / `--color-status-success` | `--palette-success-400` / `-800` |
+| invalid | `--color-status-error-border` / `--color-status-error` | `--palette-error-400` / `-800` |
+| disabled | `--color-action-disabled` | `--palette-base-300` |
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+## Props
+
+<Controls />

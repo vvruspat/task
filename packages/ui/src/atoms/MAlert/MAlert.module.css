@@ -1,0 +1,35 @@
+@layer components {
+	.alert {
+		--_radius: var(--alert-radius, var(--radius-md));
+		--_py: var(--alert-py, var(--gap-s));
+		--_px: var(--alert-px, var(--gap-l));
+		padding: var(--_py) var(--_px);
+		border-style: solid;
+		border-width: 1px;
+		border-radius: var(--_radius);
+	}
+
+	.alert-mode-info {
+		border-color: var(--color-status-info-border);
+		background-color: var(--color-status-info-surface);
+		color: var(--color-status-info);
+	}
+
+	.alert-mode-warning {
+		border-color: var(--color-status-warning-border);
+		background-color: var(--color-status-warning-surface);
+		color: var(--color-status-warning);
+	}
+
+	.alert-mode-error {
+		border-color: var(--color-status-error-border);
+		background-color: var(--color-status-error-surface);
+		color: var(--color-status-error);
+	}
+
+	.alert-mode-success {
+		border-color: var(--color-status-success-border);
+		background-color: var(--color-status-success-surface);
+		color: var(--color-status-success);
+	}
+}

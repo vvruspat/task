@@ -1,5 +1,5 @@
 import type { TaskApiFetch } from "@task/api-client";
-import { Badge, Box, Button, Heading, IconButton, Inline, Stack, Surface, Text } from "@task/ui";
+import { MBadge, MBox, MButton, MCard, MFlex, MHeading, MInput, MText } from "@task/ui";
 import {
   Bot,
   CalendarClock,
@@ -339,54 +339,64 @@ export function App(): ReactElement {
   };
 
   return (
-    <Box as="main" className="app-shell">
-      <Stack as="aside" className="sidebar" gap="xl" aria-label="Workspace navigation">
-        <Inline className="brand-row" gap="md" wrap="nowrap">
-          <Box className="brand-mark" aria-hidden="true">
+    <MBox as="main" className="app-shell">
+      <MFlex
+        as="aside"
+        className="sidebar"
+        direction="column"
+        gap="xl"
+        aria-label="Workspace navigation"
+      >
+        <MFlex className="brand-row" gap="m" wrap="nowrap">
+          <MBox className="brand-mark" aria-hidden="true">
             t
-          </Box>
-          <Stack gap="xs">
-            <Text className="eyebrow" size="sm" tone="inverse" weight="strong">
+          </MBox>
+          <MFlex direction="column" gap="xs" align="start">
+            <MText as="p" className="eyebrow" size="s" mode="inherit">
               Workspace
-            </Text>
-            <Heading as="h1" size="md" tone="inverse">
-              tAsk
-            </Heading>
-          </Stack>
-        </Inline>
+            </MText>
+            <MHeading mode="h1">tAsk</MHeading>
+          </MFlex>
+        </MFlex>
 
-        <Stack as="nav" className="nav-list" gap="xs" aria-label="Primary">
+        <MFlex as="nav" className="nav-list" direction="column" gap="xs" aria-label="Primary">
           {routes.map((route) => (
-            <Button
+            <MButton
               className={route.id === activeRoute.id ? "nav-item is-active" : "nav-item"}
               key={route.id}
               onClick={() => setActiveRouteId(route.id)}
               before={<route.icon aria-hidden="true" className="nav-icon" />}
               title={route.description}
-              variant="ghost"
+              mode="tertiary"
+              justify="start"
             >
-              <span>{route.label}</span>
-            </Button>
+              {route.label}
+            </MButton>
           ))}
-        </Stack>
-      </Stack>
+        </MFlex>
+      </MFlex>
 
-      <Box as="section" className="workspace">
-        <Inline as="header" className="topbar" gap="md" wrap="nowrap">
-          <IconButton label="Toggle navigation">
+      <MBox as="section" className="workspace">
+        <MFlex as="header" className="topbar" gap="m" wrap="nowrap">
+          <MButton
+            aria-label="Toggle navigation"
+            className="icon-button"
+            mode="secondary"
+            noPadding
+          >
             <PanelLeft aria-hidden="true" />
-          </IconButton>
-          <Inline as="label" className="command-bar" gap="md" wrap="nowrap">
-            <Search aria-hidden="true" />
-            <input
-              aria-label="Search tasks and projects"
-              placeholder="Search tasks, projects, skills"
-            />
-          </Inline>
-          <Button before={<Command aria-hidden="true" />}>Ask agent</Button>
-        </Inline>
+          </MButton>
+          <MInput
+            aria-label="Search tasks and projects"
+            before={<Search aria-hidden="true" />}
+            className="command-bar-input"
+            wrapperClassName="command-bar"
+            placeholder="Search tasks, projects, skills"
+          />
+          <MButton before={<Command aria-hidden="true" />}>Ask agent</MButton>
+        </MFlex>
 
-        <Inline
+        <MFlex
           as="section"
           className="route-header"
           align="start"
@@ -394,38 +404,49 @@ export function App(): ReactElement {
           gap="xl"
           aria-labelledby="route-title"
         >
-          <Stack gap="sm">
-            <Text className="eyebrow" size="sm" tone="muted" weight="strong">
+          <MFlex direction="column" gap="s" align="start">
+            <MText as="p" className="eyebrow" size="s" mode="secondary">
               Current view
-            </Text>
-            <Heading as="h2" id="route-title" size="lg">
+            </MText>
+            <MHeading mode="h2" id="route-title">
               {activeRoute.label}
-            </Heading>
-            <Text className="route-description" tone="muted">
+            </MHeading>
+            <MText as="p" className="route-description" mode="secondary">
               {activeRoute.description}
-            </Text>
-          </Stack>
-          <Inline
-            as="ul"
+            </MText>
+          </MFlex>
+          <MFlex
             className="status-strip"
-            gap="sm"
+            gap="s"
             justify="end"
             aria-label="Workspace status summary"
           >
-            <Badge as="li" before={<ListTodo aria-hidden="true" />}>
-              {data.tasks.length} tasks
-            </Badge>
-            <Badge as="li" before={<FolderKanban aria-hidden="true" />}>
-              {data.projects.length} projects
-            </Badge>
-            <Badge as="li" before={<Sparkles aria-hidden="true" />}>
-              {data.skills.length} skills
-            </Badge>
-            <Badge as="li" before={<CalendarClock aria-hidden="true" />}>
-              {dueSoonCount} due soon
-            </Badge>
-          </Inline>
-        </Inline>
+            <MBadge mode="transparent">
+              <MFlex gap="xs" wrap="nowrap">
+                <ListTodo aria-hidden="true" />
+                {data.tasks.length} tasks
+              </MFlex>
+            </MBadge>
+            <MBadge mode="transparent">
+              <MFlex gap="xs" wrap="nowrap">
+                <FolderKanban aria-hidden="true" />
+                {data.projects.length} projects
+              </MFlex>
+            </MBadge>
+            <MBadge mode="transparent">
+              <MFlex gap="xs" wrap="nowrap">
+                <Sparkles aria-hidden="true" />
+                {data.skills.length} skills
+              </MFlex>
+            </MBadge>
+            <MBadge mode="transparent">
+              <MFlex gap="xs" wrap="nowrap">
+                <CalendarClock aria-hidden="true" />
+                {dueSoonCount} due soon
+              </MFlex>
+            </MBadge>
+          </MFlex>
+        </MFlex>
 
         {loadState.status !== "loaded" ? <ShellStatePanel state={loadState} /> : null}
         {loadState.status === "loaded" && data.workspaces.length === 0 ? (
@@ -437,7 +458,7 @@ export function App(): ReactElement {
           />
         ) : null}
 
-        <Suspense fallback={<Box className="loading-state">Loading view</Box>}>
+        <Suspense fallback={<MBox className="loading-state">Loading view</MBox>}>
           {activeRoute.id === "my-tasks" ? (
             <LazyDashboardView
               createProjectDisabled={!canCreateProject}
@@ -464,8 +485,8 @@ export function App(): ReactElement {
             />
           )}
         </Suspense>
-      </Box>
-    </Box>
+      </MBox>
+    </MBox>
   );
 }
 
@@ -486,17 +507,12 @@ function ShellStatePanel({
       : state.message;
 
   return (
-    <Surface
-      as="section"
-      className={`state-panel ${state.status}`}
-      tone={state.status === "error" ? "warning" : "default"}
-      aria-live="polite"
-    >
-      <Heading as="h3" size="sm">
-        {title}
-      </Heading>
-      <Text tone="muted">{message}</Text>
-    </Surface>
+    <MCard className={`state-panel ${state.status}`} aria-live="polite" shadow={false}>
+      <MHeading mode="h3">{title}</MHeading>
+      <MText as="p" mode="secondary">
+        {message}
+      </MText>
+    </MCard>
   );
 }
 

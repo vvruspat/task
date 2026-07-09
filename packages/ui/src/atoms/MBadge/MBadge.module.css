@@ -1,0 +1,56 @@
+@layer components {
+	.badge {
+		--_gap: var(--badge-gap, var(--gap-xs));
+		--_py: var(--badge-py, var(--padding-control-y-s));
+		--_px: var(--badge-px, var(--padding-control-x-s));
+		--_radius: var(--badge-radius, var(--radius-pill));
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		gap: var(--_gap);
+		color: var(--color-text-primary);
+		font-family: var(--font-family-primary);
+		font-size: var(--font-size-lg);
+		font-style: normal;
+		font-weight: 500;
+		line-height: normal;
+		cursor: default;
+
+		padding: var(--_py) var(--_px);
+		border-radius: var(--_radius);
+	}
+
+	.badge.primary {
+		background: var(--color-action-subtle-foreground);
+		color: var(--color-action-foreground);
+	}
+
+	.badge.transparent {
+		background: transparent;
+		line-height: 1.25;
+	}
+
+	.badge.info {
+		background: var(--color-status-info-surface);
+		border: 1px solid var(--color-status-info-border);
+		color: var(--color-status-info);
+	}
+
+	.badge.success {
+		background: var(--color-status-success-surface);
+		border: 1px solid var(--color-status-success-border);
+		color: var(--color-status-success);
+	}
+
+	.badge.warning {
+		background: var(--color-status-warning-surface);
+		border: 1px solid var(--color-status-warning-border);
+		color: var(--color-status-warning);
+	}
+
+	.badge.error {
+		background: var(--color-status-error-surface);
+		border: 1px solid var(--color-status-error-border);
+		color: var(--color-status-error);
+	}
+}

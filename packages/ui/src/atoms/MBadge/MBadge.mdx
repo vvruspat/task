@@ -1,0 +1,90 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as BadgeStories from './MBadge.stories';
+
+<Meta of={BadgeStories} />
+
+# MBadge
+
+A small label used to display status, category, or count information inline. Supports six semantic color modes.
+
+---
+
+## Overview
+
+All modes at a glance.
+
+<Canvas of={BadgeStories.AllModes} />
+
+---
+
+## Modes
+
+| Mode | Usage |
+|------|-------|
+| `primary` | Default, brand-colored label |
+| `transparent` | Subtle, minimal background |
+| `info` | Informational / neutral |
+| `success` | Positive / completed |
+| `warning` | Caution / attention needed |
+| `error` | Destructive / failed |
+
+### Primary
+
+<Canvas of={BadgeStories.Primary} />
+
+### Transparent
+
+<Canvas of={BadgeStories.Transparent} />
+
+### Info
+
+<Canvas of={BadgeStories.Info} />
+
+### Success
+
+<Canvas of={BadgeStories.Success} />
+
+### Warning
+
+<Canvas of={BadgeStories.Warning} />
+
+### Error
+
+<Canvas of={BadgeStories.Error} />
+
+---
+
+## Customization
+
+MBadge is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--badge-gap` | Gap between leading content and label | `--gap-xs` |
+| `--badge-py` | Vertical padding | `--padding-control-y-s` |
+| `--badge-px` | Horizontal padding | `--padding-control-x-s` |
+| `--badge-radius` | Corner radius | `--radius-pill` |
+
+**Colors** have no per-badge token by design — they bind to shared semantic roles so the
+badge stays in lock-step with the rest of the system.
+
+| Mode | Semantic role | → primitive (default) |
+|------|---------------|-----------------------|
+| primary | `--color-action-subtle-foreground` | `--palette-base-500` |
+| primary | `--color-text-inverse` | `--palette-base-0` |
+| info | `--color-status-info` / `-surface` / `-border` | `--palette-info-800` / `-100` / `-400` |
+| success | `--color-status-success` / `-surface` / `-border` | `--palette-success-800` / `-100` / `-400` |
+| warning | `--color-status-warning` / `-surface` / `-border` | `--palette-warning-800` / `-100` / `-400` |
+| error | `--color-status-error` / `-surface` / `-border` | `--palette-error-800` / `-100` / `-400` |
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+---
+
+## Props
+
+<Controls />

@@ -1,0 +1,42 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as DatetimeStories from './MDatetime.stories';
+
+<Meta of={DatetimeStories} />
+
+# MDatetime
+
+An `MDatepicker` and `MTimepicker` side by side, plus a hidden combined-value input.
+
+---
+
+## Overview
+
+<Canvas of={DatetimeStories.Regular} />
+
+---
+
+## States
+
+<Canvas of={DatetimeStories.Valid} />
+<Canvas of={DatetimeStories.Invalid} />
+<Canvas of={DatetimeStories.Disabled} />
+
+---
+
+## Customization
+
+MDatetime composes `MDatepicker` and `MTimepicker`, each already themeable through
+their own tokens. It exposes one token of its own:
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--datetime-gap` | Gap between the date and time pickers | `--gap-m` |
+
+See **Guides/Theming & Customization** for the override mechanism.
+
+---
+
+## Props
+
+<Controls />

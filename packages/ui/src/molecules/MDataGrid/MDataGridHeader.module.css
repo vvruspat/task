@@ -1,0 +1,52 @@
+@layer components {
+	.headerCell {
+		padding: var(--_padding-y, var(--data-grid-padding-y, var(--padding-control-y-l)))
+			var(--_padding-x, var(--data-grid-padding-x, var(--gap-m)));
+		color: var(--color-text-secondary);
+		text-align: left;
+	}
+
+	.headerContent {
+		--flex-gap: var(--data-grid-header-gap, var(--gap-s));
+		min-width: 0;
+	}
+
+	.headerTitle {
+		min-width: 0;
+		overflow: hidden;
+		color: var(--color-text-primary);
+		font-size: var(--font-size-sm);
+		font-weight: 600;
+		line-height: var(--line-height-sm);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.sortButton {
+		color: var(--color-text-primary);
+	}
+
+	.sort {
+		flex: 0 0 auto;
+		color: var(--color-text-tertiary);
+		transition:
+			color 0.16s ease-in-out,
+			transform 0.16s ease-in-out;
+	}
+
+	.sort-asc {
+		transform: rotate(180deg);
+	}
+
+	.sort-desc {
+		transform: rotate(0deg);
+	}
+
+	.sorting {
+		color: var(--color-action-transparent-foreground);
+	}
+
+	.filterWrapper {
+		max-width: 100%;
+	}
+}

@@ -1,0 +1,5 @@
+@layer components {
+	.datetime {
+		--flex-gap: var(--datetime-gap, var(--gap-m));
+	}
+}

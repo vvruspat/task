@@ -1,0 +1,79 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as SwitchStories from './MSwitch.stories';
+
+<Meta of={SwitchStories} />
+
+# MSwitch
+
+A toggle switch for binary on/off choices. Supports two border styles (`round` and `rectangular`) and icon slots for active/inactive indicators.
+
+---
+
+## Overview
+
+All border types and states at a glance.
+
+<Canvas of={SwitchStories.AllVariants} />
+
+---
+
+## Border Types
+
+| Type | Description |
+|------|-------------|
+| `round` | Pill-shaped corners (default) |
+| `rectangular` | Squared corners |
+
+### Round
+
+<Canvas of={SwitchStories.Regular} />
+
+### Rectangular
+
+<Canvas of={SwitchStories.Rectangular} />
+
+---
+
+## States
+
+### Disabled
+
+<Canvas of={SwitchStories.Disabled} />
+
+---
+
+## Customization
+
+MSwitch is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--switch-width` | Track width | `--size-control-l` |
+| `--switch-height` | Track height | `--gap-2xl` |
+| `--switch-radius` | Track (and, in `rectangular` mode, thumb) corner radius | `round`: `--radius-3xl` · `rectangular`: `--radius-sm` |
+| `--switch-thumb-size` | Thumb width/height | `--gap-xl` |
+| `--switch-thumb-inset` | Thumb inset from the track edge | `--gap-3xs` |
+
+**Colors & focus** have no per-switch token by design — they bind to shared semantic
+roles so the switch stays in lock-step with the rest of the system.
+
+| State | Semantic role | → primitive (default) |
+|-------|---------------|-----------------------|
+| track (off) | `--color-control-track` | `--palette-base-200` |
+| track (on) | `--color-control-checked` | `--palette-primary-600` |
+| thumb | `--color-control-thumb` | `--palette-base-0` |
+| disabled track | `--color-action-disabled` | `--palette-base-300` |
+| disabled thumb | `--color-surface-overlay` | `--palette-base-100` |
+| focus | `--color-focus-ring` | `--palette-primary-700` |
+
+Focus geometry is the shared `--focus-ring-width` / `--focus-ring-offset`.
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+## Props
+
+<Controls />

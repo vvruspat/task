@@ -1,0 +1,19 @@
+@layer components {
+	.inputsRow {
+		--flex-gap: var(--date-range-picker-gap, var(--gap-xs));
+		box-sizing: content-box;
+	}
+
+	.inputWrapper {
+		flex: 1 1 0;
+		min-width: 0;
+	}
+
+	.separator {
+		color: var(--color-text-secondary);
+	}
+
+	.dateRangePickerInput::-webkit-calendar-picker-indicator {
+		display: none;
+	}
+}

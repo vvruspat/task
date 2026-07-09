@@ -1,0 +1,37 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as DatepickerStories from './MDatepicker.stories';
+
+<Meta of={DatepickerStories} />
+
+# MDatepicker
+
+A text input that opens an `MCalendar` in a popover for picking a date.
+
+---
+
+## Overview
+
+<Canvas of={DatepickerStories.Regular} />
+
+---
+
+## States
+
+<Canvas of={DatepickerStories.Valid} />
+<Canvas of={DatepickerStories.Invalid} />
+<Canvas of={DatepickerStories.Disabled} />
+
+---
+
+## Customization
+
+MDatepicker has no component tokens of its own — it composes `MInput`, `MButton`,
+`MDropdown` and `MCalendar`, each already themeable through their own `--input-*` /
+`--button-*` / `--dropdown-*` / `--calendar-*` tokens. See **Guides/Theming & Customization**.
+
+---
+
+## Props
+
+<Controls />

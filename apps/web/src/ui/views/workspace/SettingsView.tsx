@@ -1,3 +1,4 @@
+import { MBox, MFlex, MGrid, MHeading, MText } from "@task/ui";
 import type { ReactElement } from "react";
 import { buildSettingsSummary, buildSettingsWorkspaceRows } from "../workspaceViewModels.js";
 import type {
@@ -7,6 +8,7 @@ import type {
   WorkspaceStatus,
   WorkspaceSummary,
 } from "./types.js";
+import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type SettingsViewProps = {
   projects: ProjectSummary[];
@@ -39,60 +41,56 @@ export function SettingsView({
   });
 
   return (
-    <div className="content-grid">
-      <section className="panel wide-panel" aria-labelledby="settings-view-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Settings</p>
-            <h3 id="settings-view-title">Workspace context</h3>
-          </div>
-        </div>
-
-        <div className="settings-workspace-list">
+    <MGrid
+      className="content-grid"
+      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
+      rowGap="m"
+      columnGap="m"
+    >
+      <WorkspacePanel
+        eyebrow="Settings"
+        title="Workspace context"
+        titleId="settings-view-title"
+        wide
+      >
+        <MBox className="settings-workspace-list">
           {rows.map((workspace) => (
-            <article className="settings-workspace-row" key={workspace.id}>
-              <div>
-                <h4>{workspace.name}</h4>
-                <p>{workspace.slug}</p>
-              </div>
+            <MFlex
+              as="article"
+              className="settings-workspace-row"
+              key={workspace.id}
+              justify="space-between"
+              wrap="nowrap"
+            >
+              <MBox>
+                <MHeading mode="h4">{workspace.name}</MHeading>
+                <MText as="p" mode="secondary">
+                  {workspace.slug}
+                </MText>
+              </MBox>
               <time dateTime={workspace.updatedAtLabel}>{workspace.updatedAtLabel}</time>
-            </article>
+            </MFlex>
           ))}
-        </div>
-      </section>
+        </MBox>
+      </WorkspacePanel>
 
-      <section className="panel" aria-labelledby="settings-summary-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Summary</p>
-            <h3 id="settings-summary-title">Loaded context</h3>
-          </div>
-        </div>
-        <p className="agent-line">{summary.selectedWorkspaceLabel}</p>
-        <p className="agent-line">{summary.selectedProjectLabel}</p>
-        <dl className="metric-list">
-          <div>
-            <dt>Workspaces</dt>
-            <dd>{summary.workspaceCount}</dd>
-          </div>
-          <div>
-            <dt>Projects</dt>
-            <dd>{summary.projectCount}</dd>
-          </div>
-          <div>
-            <dt>Tasks</dt>
-            <dd>{summary.taskCount}</dd>
-          </div>
-          <div>
-            <dt>Statuses</dt>
-            <dd>{summary.statusCount}</dd>
-          </div>
-          <div>
-            <dt>Skills</dt>
-            <dd>{summary.skillCount}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
+      <WorkspacePanel eyebrow="Summary" title="Loaded context" titleId="settings-summary-title">
+        <MText as="p" className="agent-line" mode="secondary">
+          {summary.selectedWorkspaceLabel}
+        </MText>
+        <MText as="p" className="agent-line" mode="secondary">
+          {summary.selectedProjectLabel}
+        </MText>
+        <WorkspaceMetrics
+          items={[
+            { label: "Workspaces", value: summary.workspaceCount },
+            { label: "Projects", value: summary.projectCount },
+            { label: "Tasks", value: summary.taskCount },
+            { label: "Statuses", value: summary.statusCount },
+            { label: "Skills", value: summary.skillCount },
+          ]}
+        />
+      </WorkspacePanel>
+    </MGrid>
   );
 }

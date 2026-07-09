@@ -1,0 +1,72 @@
+@layer components {
+	.skelleton {
+		--_radius: var(--skelleton-radius, var(--radius-md));
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			270deg,
+			var(--color-surface-sunken) 0%,
+			var(--color-surface-overlay) 50%,
+			var(--color-surface-sunken) 100%
+		);
+		background-size: 200% 200%;
+		animation: skelleton-animation 2s linear infinite;
+		border-radius: var(--_radius);
+	}
+
+	@keyframes skelleton-animation {
+		0% {
+			background-position: 100% 50%;
+		}
+		50% {
+			background-position: 0 50%;
+		}
+		100% {
+			background-position: 100% 50%;
+		}
+	}
+
+	.size-xs {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-xs)));
+		min-width: var(--_min-size);
+	}
+
+	.size-s {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-s)));
+		min-width: var(--_min-size);
+	}
+
+	.size-m {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-m)));
+		min-width: var(--_min-size);
+	}
+
+	.size-l {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-l)));
+		min-width: var(--_min-size);
+	}
+
+	.size-xl {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-xl)));
+		min-width: var(--_min-size);
+	}
+
+	.size-2xl {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-2xl)));
+		min-width: var(--_min-size);
+	}
+
+	.size-3xl {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-3xl)));
+		min-width: var(--_min-size);
+	}
+
+	.size-4xl {
+		--_min-size: var(--skelleton-min-size, calc(4 * var(--gap-4xl)));
+		min-width: var(--_min-size);
+	}
+
+	.size-inherit {
+		min-width: 100%;
+	}
+}

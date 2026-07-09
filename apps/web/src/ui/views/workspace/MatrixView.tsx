@@ -1,6 +1,8 @@
+import { MBox, MGrid, MHeading, MText } from "@task/ui";
 import type { ReactElement } from "react";
 import { buildMatrixColumns, buildMatrixSummary } from "../workspaceViewModels.js";
 import type { TaskSummary } from "./types.js";
+import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type MatrixViewProps = {
   tasks: TaskSummary[];
@@ -11,73 +13,60 @@ export function MatrixView({ tasks }: MatrixViewProps): ReactElement {
   const summary = buildMatrixSummary(tasks);
 
   return (
-    <div className="content-grid">
-      <section className="panel wide-panel" aria-labelledby="matrix-view-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Matrix</p>
-            <h3 id="matrix-view-title">Parent task grid</h3>
-          </div>
-        </div>
-
-        <div className="matrix-grid">
+    <MGrid
+      className="content-grid"
+      columnTemplate="minmax(0, 1.4fr) minmax(280px, 0.6fr)"
+      rowGap="m"
+      columnGap="m"
+    >
+      <WorkspacePanel eyebrow="Matrix" title="Parent task grid" titleId="matrix-view-title" wide>
+        <MBox className="matrix-grid">
           {columns.map((column) => (
-            <section
+            <MBox
+              as="section"
               className="matrix-column"
               key={column.id}
               aria-labelledby={`${column.id}-title`}
             >
-              <div className="matrix-column-header">
-                <h4 id={`${column.id}-title`}>{column.title}</h4>
-                <span>{column.childCount} subtasks</span>
+              <MBox className="matrix-column-header">
+                <MHeading id={`${column.id}-title`} mode="h4">
+                  {column.title}
+                </MHeading>
+                <MText as="span" mode="secondary">
+                  {column.childCount} subtasks
+                </MText>
                 <time dateTime={column.updatedAtLabel}>{column.updatedAtLabel}</time>
-              </div>
-              <div className="matrix-cell-list">
+              </MBox>
+              <MBox className="matrix-cell-list">
                 {column.cells.map((cell) => (
-                  <article className="matrix-cell" key={cell.id}>
-                    <h5>{cell.title}</h5>
-                    <div>
-                      <span>{cell.assigneeLabel}</span>
-                      <span>{cell.dueDateLabel}</span>
+                  <MBox as="article" className="matrix-cell" key={cell.id}>
+                    <MHeading mode="h5">{cell.title}</MHeading>
+                    <MBox>
+                      <MText as="span">{cell.assigneeLabel}</MText>
+                      <MText as="span">{cell.dueDateLabel}</MText>
                       <time dateTime={cell.updatedAtLabel}>{cell.updatedAtLabel}</time>
-                    </div>
-                  </article>
+                    </MBox>
+                  </MBox>
                 ))}
-              </div>
-            </section>
+              </MBox>
+            </MBox>
           ))}
-        </div>
-      </section>
+        </MBox>
+      </WorkspacePanel>
 
-      <section className="panel" aria-labelledby="matrix-summary-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Summary</p>
-            <h3 id="matrix-summary-title">Task tree</h3>
-          </div>
-        </div>
-        <p className="agent-line">
+      <WorkspacePanel eyebrow="Summary" title="Task tree" titleId="matrix-summary-title">
+        <MText as="p" className="agent-line" mode="secondary">
           Columns use parent and subtask relationships from loaded tasks.
-        </p>
-        <dl className="metric-list">
-          <div>
-            <dt>Parents</dt>
-            <dd>{summary.parentTaskCount}</dd>
-          </div>
-          <div>
-            <dt>Subtasks</dt>
-            <dd>{summary.subtaskCount}</dd>
-          </div>
-          <div>
-            <dt>Due</dt>
-            <dd>{summary.dueTaskCount}</dd>
-          </div>
-          <div>
-            <dt>Unassigned</dt>
-            <dd>{summary.unassignedTaskCount}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
+        </MText>
+        <WorkspaceMetrics
+          items={[
+            { label: "Parents", value: summary.parentTaskCount },
+            { label: "Subtasks", value: summary.subtaskCount },
+            { label: "Due", value: summary.dueTaskCount },
+            { label: "Unassigned", value: summary.unassignedTaskCount },
+          ]}
+        />
+      </WorkspacePanel>
+    </MGrid>
   );
 }

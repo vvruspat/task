@@ -1,0 +1,58 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as TabsStories from './MTabs.stories.tsx';
+
+<Meta of={TabsStories} />
+
+# MTabs
+
+A tab navigation component for switching between different views or content sections. Tabs can include icon slots and support a disabled state per tab item.
+
+---
+
+## Overview
+
+<Canvas of={TabsStories.Basic} />
+
+---
+
+## Features
+
+- **Icon slots** — Add icons before tab labels via the `before` prop on each tab item
+- **Disabled tabs** — Individual tabs can be disabled by setting `disabled: true` on the tab item
+- **Content area** — Each tab displays its associated `content` when active
+- **Default active** — Control the initially active tab via `defaultActiveKey`
+
+---
+
+## Customization
+
+MTabs is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--tabs-header-gap` | Gap between tab headers | `--gap-4xl` |
+| `--tabs-header-padding-x` | Horizontal padding of the tab header row | `--gap-l` |
+| `--tabs-item-gap` | Gap between icon and label inside a tab | `--gap-l` |
+| `--tabs-item-padding` | Padding of each tab item | `--gap-s` |
+| `--tabs-radius` | Corner radius of the tab panel | `--radius-xs` |
+
+**Colors** have no per-component token by design — they bind to shared semantic roles so
+MTabs stays in lock-step with the rest of the system.
+
+| State | Semantic role | → primitive (default) |
+|-------|----------------|-----------------------|
+| default | `--color-text-secondary` | `--palette-base-600` |
+| hover / selected | `--color-action-secondary-rest` | `--palette-secondary-600` |
+| disabled | `--color-text-tertiary` | `--palette-base-400` |
+| header border | `--color-border-default` | `--palette-alpha-black-12` |
+| panel background | `--color-surface` | `--palette-base-0` |
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+## Props
+
+<Controls />

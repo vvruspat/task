@@ -1,0 +1,315 @@
+@layer components {
+	/* ── Token contract ───────────────────────────────────────────────
+	   Public override API: --button-*  |  Private (read by body): --_*
+	   Defaults fall through to semantic dimension roles — never raw
+	   --space-N/--radius-N. Per-size defaults are (re)declared on size classes. */
+	.button {
+		--_radius: var(--button-radius, var(--radius-control));
+		--_gap: var(--button-gap, var(--gap-control));
+		--_px: var(--button-px, var(--padding-control-x-m));
+		--_py: var(--button-py, var(--padding-control-y-m));
+		--_font-size: var(--button-font-size, var(--font-size-md));
+	}
+
+	.s {
+		--_px: var(--button-px, var(--padding-control-x-s));
+		--_py: var(--button-py, var(--padding-control-y-s));
+		--_font-size: var(--button-font-size, var(--font-size-sm));
+	}
+	.m {
+		--_px: var(--button-px, var(--padding-control-x-m));
+		--_py: var(--button-py, var(--padding-control-y-m));
+		--_font-size: var(--button-font-size, var(--font-size-md));
+	}
+	.l {
+		--_px: var(--button-px, var(--padding-control-x-l));
+		--_py: var(--button-py, var(--padding-control-y-l));
+		--_font-size: var(--button-font-size, var(--font-size-lg));
+	}
+
+	/* round = square icon control */
+	.round {
+		--_radius: var(--button-radius-round, 50%);
+	}
+	.round.s {
+		--_icon-pad: var(--button-icon-padding, var(--padding-icon-s));
+		--_icon-size: var(--button-icon-size, var(--size-control-s));
+		--_font-size: var(--button-font-size, var(--font-size-md));
+	}
+	.round.m {
+		--_icon-pad: var(--button-icon-padding, var(--padding-icon-m));
+		--_icon-size: var(--button-icon-size, var(--size-control-m));
+		--_font-size: var(--button-font-size, var(--font-size-lg));
+	}
+	.round.l {
+		--_icon-pad: var(--button-icon-padding, var(--padding-icon-l));
+		--_icon-size: var(--button-icon-size, var(--size-control-l));
+		--_font-size: var(--button-font-size, var(--font-size-xl));
+	}
+
+	/* ── Structure ────────────────────────────────────────────────── */
+	.after,
+	.before,
+	.button,
+	.buttonContent {
+		display: flex;
+		justify-content: stretch;
+		align-items: stretch;
+	}
+
+	.button {
+		border: none;
+		transition: color 0.2s ease-in-out;
+		cursor: pointer;
+		box-sizing: border-box;
+	}
+
+	.linkButton {
+		display: inline-flex;
+		text-decoration: none;
+	}
+
+	.buttonContent {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.buttonContentWrapper {
+		width: 100%;
+	}
+
+	.after,
+	.before,
+	.buttonContent {
+		font-family: var(--font-family-primary);
+		line-height: normal;
+	}
+
+	/* ── Geometry (tokenized) ─────────────────────────────────────── */
+	.primary,
+	.secondary,
+	.tertiary,
+	.outlined,
+	.transparent {
+		padding: var(--_py) var(--_px);
+		gap: var(--_gap);
+		font-size: var(--_font-size);
+		border-radius: var(--_radius);
+	}
+
+	.transparent {
+		padding-inline: 0;
+	}
+
+	.round {
+		padding: var(--_icon-pad);
+		width: var(--_icon-size);
+		height: var(--_icon-size);
+		font-size: var(--_font-size);
+		border-radius: var(--_radius);
+	}
+
+	/* ── Enabled — colors ─────────────────────────────────────────── */
+	.primary {
+		color: var(--color-action-foreground);
+		background: var(--color-action-rest);
+	}
+
+	.secondary {
+		color: var(--color-action-secondary-foreground);
+		background: var(--color-action-secondary-rest);
+	}
+
+	.tertiary {
+		color: var(--color-action-tertiary-foreground);
+		background: var(--color-action-tertiary-rest);
+	}
+
+	.round {
+		color: var(--color-text-primary);
+		background: var(--color-action-subtle-rest);
+		border: 1px solid transparent;
+		transition: background-color 0.2s ease-in-out;
+	}
+
+	.outlined {
+		color: var(--color-action-outlined-foreground);
+		background: var(--color-action-outlined-bg);
+		border: 1px solid var(--color-action-outlined-border);
+	}
+
+	.transparent {
+		color: var(--color-action-transparent-foreground);
+		background: transparent;
+	}
+
+	.primary:focus-visible,
+	.secondary:focus-visible,
+	.tertiary:focus-visible,
+	.round:focus-visible,
+	.outlined:focus-visible,
+	.transparent:focus-visible {
+		outline: var(--focus-ring-width) solid var(--color-focus-ring);
+		outline-offset: var(--focus-ring-offset);
+	}
+
+	.round span {
+		overflow: hidden;
+	}
+
+	/* ── Disabled ─────────────────────────────────────────────────── */
+	.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	.primary:disabled,
+	.primary:disabled:hover,
+	.primary:disabled:active,
+	.primary.disabled,
+	.primary.disabled:hover,
+	.primary.disabled:active {
+		background: var(--color-action-disabled);
+		color: var(--color-action-foreground-disabled);
+		cursor: not-allowed;
+	}
+
+	.secondary:disabled,
+	.secondary:disabled:hover,
+	.secondary:disabled:active,
+	.secondary.disabled,
+	.secondary.disabled:hover,
+	.secondary.disabled:active {
+		background: var(--color-action-disabled);
+		color: var(--color-action-foreground-disabled);
+		cursor: not-allowed;
+	}
+
+	.tertiary:disabled,
+	.tertiary:disabled:hover,
+	.tertiary:disabled:active,
+	.tertiary.disabled,
+	.tertiary.disabled:hover,
+	.tertiary.disabled:active {
+		color: var(--color-action-foreground-disabled);
+		background: var(--color-action-disabled);
+		cursor: not-allowed;
+	}
+
+	.round:disabled,
+	.round:disabled:hover,
+	.round:disabled:active,
+	.round.disabled,
+	.round.disabled:hover,
+	.round.disabled:active {
+		color: var(--color-action-foreground-disabled);
+		background: var(--color-action-subtle-rest);
+		cursor: default;
+		border-color: transparent;
+	}
+
+	.outlined:disabled,
+	.outlined:disabled:hover,
+	.outlined:disabled:active,
+	.outlined.disabled,
+	.outlined.disabled:hover,
+	.outlined.disabled:active {
+		border: 1px solid var(--color-action-outlined-border);
+		background: var(--color-action-disabled);
+		color: var(--color-action-foreground-disabled);
+		cursor: not-allowed;
+	}
+
+	.transparent:disabled,
+	.transparent:disabled:hover,
+	.transparent:disabled:active,
+	.transparent.disabled,
+	.transparent.disabled:hover,
+	.transparent.disabled:active {
+		background: transparent;
+		color: var(--color-action-transparent-foreground-disabled);
+		cursor: not-allowed;
+	}
+
+	/* ── Hover ────────────────────────────────────────────────────── */
+	.primary:hover {
+		background: var(--color-action-hover);
+	}
+
+	.secondary:hover {
+		background: var(--color-action-secondary-hover);
+	}
+
+	.tertiary:hover {
+		background: var(--color-action-tertiary-hover);
+	}
+
+	.round:hover {
+		background: var(--color-action-subtle-hover);
+		border-color: transparent;
+	}
+
+	.outlined:hover {
+		border: 1px solid var(--color-action-outlined-border);
+	}
+
+	.transparent:hover {
+		background: transparent;
+	}
+
+	/* ── Active ───────────────────────────────────────────────────── */
+	.primary:active {
+		background: var(--color-action-active);
+	}
+
+	.secondary:active {
+		background: var(--color-action-secondary-active);
+	}
+
+	.tertiary:active {
+		background: var(--color-action-tertiary-active);
+	}
+
+	.round:active {
+		background: var(--color-action-subtle-active);
+		border-color: transparent;
+	}
+
+	.outlined:active {
+		color: var(--color-action-outlined-foreground);
+		border: 1px solid var(--color-action-outlined-border);
+	}
+
+	.transparent:active {
+		background: transparent;
+	}
+
+	.primary .buttonContent {
+		font-weight: 500;
+	}
+
+	.secondary .buttonContent {
+		font-weight: 500;
+	}
+
+	.tertiary .buttonContent {
+		font-weight: 500;
+	}
+
+	.round .buttonContent {
+		font-weight: 500;
+	}
+
+	.outlined .buttonContent {
+		font-weight: 500;
+	}
+
+	.stretch {
+		width: 100%;
+	}
+
+	.button.noPadding {
+		padding: 0;
+	}
+}

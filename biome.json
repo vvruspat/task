@@ -6,7 +6,16 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!node_modules", "!dist", "!build", "!coverage", "!.turbo", "!graphify-out"]
+    "includes": [
+      "**",
+      "!node_modules",
+      "!dist",
+      "!build",
+      "!coverage",
+      "!.turbo",
+      "!graphify-out",
+      "!packages/ui/src"
+    ]
   },
   "formatter": {
     "enabled": true,

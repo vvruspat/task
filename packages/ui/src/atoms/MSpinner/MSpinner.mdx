@@ -1,0 +1,73 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as SpinnerStories from './MSpinner.stories';
+
+<Meta of={SpinnerStories} />
+
+# MSpinner
+
+A lightweight loading indicator. Supports four color modes and seven sizes.
+
+---
+
+## Overview
+
+### Modes
+
+<Canvas of={SpinnerStories.AllModes} />
+
+### Sizes
+
+<Canvas of={SpinnerStories.AllSizes} />
+
+---
+
+## Modes
+
+| Mode | Description |
+|------|-------------|
+| `base` | Neutral / grayscale |
+| `primary` | Brand primary color |
+| `secondary` | Secondary brand color |
+| `tertiary` | Tertiary brand color |
+
+## Sizes
+
+`xs` · `s` · `m` · `l` · `xl` · `3xl` · `4xl`
+
+---
+
+## Customization
+
+MSpinner is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role;
+per-size defaults are (re)declared on size classes):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--spinner-size` | Diameter | `calc(--gap-{xs,s,m,l,xl,2xl,3xl,4xl} * 2)` per size |
+| `--spinner-border-width` | Ring thickness | `calc(--gap-{xs,s,m,l,xl,2xl,3xl,4xl} * 0.15)` per size |
+| `--spinner-radius` | Corner radius | `50%` |
+
+**Colors** have no per-spinner token by design — they bind to shared semantic roles so the
+spinner stays in lock-step with the rest of the system.
+
+| Mode | Semantic role | → primitive (default) |
+|------|---------------|-----------------------|
+| base | `--color-text-secondary` | `--palette-base-600` |
+| primary | `--color-action-rest` | `--palette-primary-700` |
+| secondary | `--color-action-secondary-rest` | `--palette-secondary-600` |
+| tertiary | `--color-action-subtle-foreground` | `--palette-base-500` |
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+---
+
+## Playground
+
+<Canvas of={SpinnerStories.Regular} />
+
+## Props
+
+<Controls />

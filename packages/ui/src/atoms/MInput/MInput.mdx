@@ -1,0 +1,86 @@
+import { Canvas, Meta, Controls } from '@storybook/addon-docs/blocks';
+
+import * as InputStories from './MInput.stories';
+
+<Meta of={InputStories} />
+
+# MInput
+
+A text input field with support for labels, captions, icon slots (`before`/`after`), and three validation statuses.
+
+---
+
+## Overview
+
+All statuses at a glance.
+
+<Canvas of={InputStories.AllStatuses} />
+
+---
+
+## Statuses
+
+| Status | Description |
+|--------|-------------|
+| `regular` | Default, no validation feedback |
+| `valid` | Input is valid — green accent |
+| `invalid` | Input has an error — red accent |
+
+### Regular
+
+<Canvas of={InputStories.Regular} />
+
+### Valid
+
+<Canvas of={InputStories.Valid} />
+
+### Invalid
+
+<Canvas of={InputStories.Invalid} />
+
+---
+
+## States
+
+### Disabled
+
+<Canvas of={InputStories.Disabled} />
+
+---
+
+## Customization
+
+MInput is styled with CSS variables. See **Guides/Theming & Customization** for the
+override mechanism (global / zonal / instance). Below is the component's public token API.
+
+**Geometry — component tokens** (override per-component; default falls to a semantic role):
+
+| Token | Controls | Default |
+|-------|----------|---------|
+| `--input-radius` | Container corner radius | `--radius-control-sm` · mobile/tablet: `--radius-control` |
+| `--input-gap` | Gap between `before`/input/`after`/clear slots | `--gap-control` |
+| `--input-px` | Horizontal padding | `--padding-control-x-s` · mobile/tablet: `--padding-control-x-m` |
+| `--input-py` | Vertical padding | `--padding-control-y-m` · mobile/tablet: `--gap-m` |
+
+**Colors & focus** have no per-input token by design — they bind to shared semantic
+roles so the input stays in lock-step with the rest of the system.
+
+| Status | Semantic role | → primitive (default) |
+|--------|---------------|-----------------------|
+| regular | `--color-input-border` / `-bg` | `--palette-alpha-black-12` / `--palette-base-0` |
+| regular | `--color-input-text` / `-placeholder` | `--palette-base-400` / `--palette-base-300` |
+| regular (hover/focus) | `--color-input-text-hover` / `-placeholder-hover` | `--palette-base-800` / `--palette-base-400` |
+| valid | `--color-border-success` | `--palette-success-700` |
+| invalid | `--color-border-error` / `--color-status-error` | `--palette-error-600` / `--palette-error-800` |
+| disabled | `--color-text-disabled` / `--color-input-bg-disabled` | `--palette-base-300` / `--palette-base-100` |
+| focus ring | `--color-focus-ring` | `--palette-primary-700` |
+
+Focus geometry is the shared `--focus-ring-width` / `--focus-ring-offset`.
+
+> Recoloring for a whole brand is a global concern — see **Guides/Theming & Customization**.
+
+---
+
+## Props
+
+<Controls />

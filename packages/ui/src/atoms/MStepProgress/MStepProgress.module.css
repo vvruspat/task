@@ -1,0 +1,73 @@
+@layer components {
+	/* ── Token contract ───────────────────────────────────────────────
+	   Public override API: --step-progress-*  |  Private (read by body): --_*
+	   Defaults fall through to semantic dimension roles — never raw
+	   --space-N/--radius-N/--size-N. */
+	.step-progress-list {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	.step-progress-item {
+		--_py: var(--step-progress-padding-y, var(--gap-xs));
+		--_px: var(--step-progress-padding-x, var(--gap-s));
+		--_radius: var(--step-progress-radius, var(--radius-xs));
+		margin: 0;
+		padding: var(--_py) var(--_px);
+		border-style: solid;
+		border-width: 0;
+		border-radius: var(--_radius);
+	}
+
+	.step-progress-mode-pending {
+		border-color: var(--color-surface-overlay);
+		background-color: var(--color-surface-overlay);
+		color: var(--color-surface-overlay);
+	}
+
+	.step-progress-label {
+		color: var(--color-surface-overlay);
+		font-weight: 500;
+	}
+
+	.step-progress-mode-info {
+		border-color: transparent;
+		background-color: var(--color-status-info-surface);
+		color: var(--color-status-info);
+	}
+
+	.step-progress-label-mode-info {
+		color: var(--color-status-info-border);
+	}
+
+	.step-progress-mode-warning {
+		border-color: transparent;
+		background-color: var(--color-status-warning-surface);
+		color: var(--color-status-warning);
+	}
+
+	.step-progress-label-mode-warning {
+		color: var(--color-status-warning-border);
+	}
+
+	.step-progress-mode-error {
+		border-color: transparent;
+		background-color: var(--color-status-error-surface);
+		color: var(--color-status-error);
+	}
+
+	.step-progress-label-mode-error {
+		color: var(--color-status-error-border);
+	}
+
+	.step-progress-mode-success {
+		border-color: transparent;
+		background-color: var(--palette-success-600);
+		color: var(--color-status-success-surface);
+	}
+
+	.step-progress-label-mode-success {
+		color: var(--palette-success-600);
+	}
+}
