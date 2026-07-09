@@ -24,6 +24,16 @@ test("AgentController forwards Telegram agent run requests to the service", asyn
     telegramChatId: "-100987654321",
     sourceMessageId: "42",
     inputText: "@task what is next?",
+    attachments: [
+      {
+        kind: "photo",
+        fileId: "photo-file-id",
+        fileUniqueId: null,
+        width: 1280,
+        height: 720,
+        sizeBytes: null,
+      },
+    ],
   };
 
   assert.deepEqual(

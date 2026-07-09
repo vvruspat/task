@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  type CreateTelegramAgentRunInput,
   createTelegramBackendClient,
   TelegramBackendClientError,
   type TelegramBackendFetch,
@@ -11,11 +12,21 @@ const requestBody = {
   telegramId: "123456789",
   telegramChatId: "-100987654321",
 };
-const agentRunRequestBody = {
+const agentRunRequestBody: CreateTelegramAgentRunInput = {
   telegramId: "123456789",
   telegramChatId: "-100987654321",
   sourceMessageId: "42",
   inputText: "@task what is next?",
+  attachments: [
+    {
+      kind: "photo",
+      fileId: "photo-file-id",
+      fileUniqueId: "photo-unique-id",
+      width: 1280,
+      height: 720,
+      sizeBytes: "2048",
+    },
+  ],
 };
 
 test("TelegramBackendClient posts Telegram context with bot shared secret", async () => {

@@ -63,6 +63,7 @@ export async function processTelegramUpdate(
         telegramChatId: action.message.chat.telegramChatId,
         sourceMessageId: action.message.messageId,
         inputText: action.message.text,
+        attachments: action.message.attachments,
       },
     });
     const reply = createReply(

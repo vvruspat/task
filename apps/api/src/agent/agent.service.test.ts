@@ -21,6 +21,16 @@ const input: CreateTelegramAgentRunInput = {
   telegramChatId: "-100987654321",
   sourceMessageId: "42",
   inputText: "@task what is next?",
+  attachments: [
+    {
+      kind: "document",
+      fileId: "document-file-id",
+      fileUniqueId: "document-unique-id",
+      fileName: "chart.pdf",
+      mimeType: "application/pdf",
+      sizeBytes: "1024",
+    },
+  ],
 };
 
 test("AgentService returns a typed Telegram agent run intake response", async () => {

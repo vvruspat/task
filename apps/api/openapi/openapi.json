@@ -3961,6 +3961,74 @@
         },
         "required": ["status"]
       },
+      "TelegramAgentRunDocumentAttachmentDto": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["document"]
+          },
+          "fileId": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "fileUniqueId": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 256
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255
+          },
+          "mimeType": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255
+          },
+          "sizeBytes": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 32,
+            "pattern": "^\\d+$"
+          }
+        },
+        "required": ["kind", "fileId", "fileUniqueId", "fileName", "mimeType", "sizeBytes"]
+      },
+      "TelegramAgentRunPhotoAttachmentDto": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["photo"]
+          },
+          "fileId": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "fileUniqueId": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 256
+          },
+          "width": {
+            "type": "number",
+            "minimum": 1
+          },
+          "height": {
+            "type": "number",
+            "minimum": 1
+          },
+          "sizeBytes": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 32,
+            "pattern": "^\\d+$"
+          }
+        },
+        "required": ["kind", "fileId", "fileUniqueId", "width", "height", "sizeBytes"]
+      },
       "CreateTelegramAgentRunDto": {
         "type": "object",
         "properties": {
@@ -3980,9 +4048,23 @@
             "type": "string",
             "example": "@task what is next for the album?",
             "minLength": 1
+          },
+          "attachments": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/TelegramAgentRunDocumentAttachmentDto"
+                },
+                {
+                  "$ref": "#/components/schemas/TelegramAgentRunPhotoAttachmentDto"
+                }
+              ]
+            }
           }
         },
-        "required": ["telegramId", "telegramChatId", "inputText"]
+        "required": ["telegramId", "telegramChatId", "inputText", "attachments"]
       },
       "AgentRunIntakeResponseDto": {
         "type": "object",
