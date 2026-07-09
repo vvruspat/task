@@ -19,9 +19,15 @@ import type {
   CreateTaskTelegramFileAttachmentRequest,
   GetProjectRequest,
   GetTaskRequest,
+  GetWorkspaceRequest,
+  ListActiveProjectsRequest,
   ListActiveTasksRequest,
   ListTaskAttachmentsRequest,
   ListTaskCommentsRequest,
+  ListTaskSkillsRequest,
+  ListWorkspaceMembersRequest,
+  ListWorkspaceStatusesRequest,
+  ListWorkspacesRequest,
   MoveTaskResponse,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
@@ -44,6 +50,7 @@ import {
   createSummaryToolHandlers,
   parseProjectSummaryToolInput,
   parseTaskSummaryToolInput,
+  parseWorkspaceSummaryToolInput,
   SummaryToolInputError,
 } from "./summary-tools.js";
 
@@ -51,6 +58,70 @@ const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "22222222-2222-4222-8222-222222222222";
 const taskId = "66666666-6666-4666-8666-666666666666";
 const userId = "55555555-5555-4555-8555-555555555555";
+const secondUserId = "77777777-7777-4777-8777-777777777777";
+
+const workspaceSummary: WorkspaceSummaryResponse = {
+  id: workspaceId,
+  name: "Studio",
+  slug: "studio",
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-06T00:00:00.000Z",
+};
+
+const workspaceAdminMember: WorkspaceMemberResponse = {
+  id: "12121212-1212-4121-8121-121212121212",
+  workspaceId,
+  userId,
+  role: "admin",
+  displayName: "Alex",
+  email: "alex@example.com",
+  avatarUrl: null,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+};
+
+const workspaceDetail: WorkspaceDetailResponse = {
+  ...workspaceSummary,
+  members: [workspaceAdminMember],
+};
+
+const workspaceMembers: WorkspaceMemberResponse[] = [
+  workspaceAdminMember,
+  {
+    id: "13131313-1313-4131-8131-131313131313",
+    workspaceId,
+    userId: secondUserId,
+    role: "member",
+    displayName: "Sam",
+    email: null,
+    avatarUrl: null,
+    createdAt: "2026-01-02T00:00:00.000Z",
+    updatedAt: "2026-01-02T00:00:00.000Z",
+  },
+];
+
+const workspaceStatuses: WorkspaceStatusResponse[] = [
+  {
+    id: "88888888-8888-4888-8888-888888888888",
+    workspaceId,
+    name: "In progress",
+    color: "#3b82f6",
+    position: "1000",
+    isDone: false,
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  },
+  {
+    id: "99999999-9999-4999-8999-999999999999",
+    workspaceId,
+    name: "Done",
+    color: "#22c55e",
+    position: "2000",
+    isDone: true,
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  },
+];
 
 const taskDetail: TaskDetailResponse = {
   id: taskId,
@@ -84,6 +155,34 @@ const projectDetail: ProjectDetailResponse = {
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt: "2026-01-04T00:00:00.000Z",
 };
+
+const workspaceProjects: ProjectSummaryResponse[] = [
+  {
+    ...projectDetail,
+    updatedAt: "2026-01-04T00:00:00.000Z",
+  },
+  {
+    ...projectDetail,
+    id: "33333333-3333-4333-8333-333333333333",
+    title: "Video Release",
+    status: "active",
+    updatedAt: "2026-01-05T00:00:00.000Z",
+  },
+];
+
+const taskSkills: TaskSkillSummaryResponse[] = [
+  {
+    id: "44444444-4444-4444-8444-444444444444",
+    workspaceId,
+    name: "Song",
+    description: "Song production template",
+    aliases: ["track"],
+    createdByUserId: userId,
+    archivedAt: null,
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  },
+];
 
 const projectTasks: TaskSummaryResponse[] = [
   {
@@ -163,6 +262,27 @@ const attachments: TaskAttachmentResponse[] = [
   },
 ];
 
+test("parseWorkspaceSummaryToolInput validates and normalizes workspace summary identifiers", () => {
+  assert.deepEqual(
+    parseWorkspaceSummaryToolInput({
+      workspaceId: ` ${workspaceId} `,
+      userId,
+    }),
+    {
+      workspaceId,
+      userId,
+    },
+  );
+  assert.deepEqual(parseWorkspaceSummaryToolInput({ userId }), { userId });
+
+  assert.throws(
+    () => parseWorkspaceSummaryToolInput({ workspaceId: "bad", userId }),
+    SummaryToolInputError,
+  );
+  assert.throws(() => parseWorkspaceSummaryToolInput({ workspaceId }), SummaryToolInputError);
+  assert.throws(() => parseWorkspaceSummaryToolInput(null), SummaryToolInputError);
+});
+
 test("parseProjectSummaryToolInput validates and normalizes project summary identifiers", () => {
   assert.deepEqual(
     parseProjectSummaryToolInput({
@@ -215,6 +335,124 @@ test("parseTaskSummaryToolInput validates and normalizes task summary identifier
   assert.throws(() => parseTaskSummaryToolInput(null), SummaryToolInputError);
 });
 
+test("summary workspace handler aggregates workspace context with explicit workspace", async () => {
+  const getTaskCalls: GetTaskRequest[] = [];
+  const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
+  const listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [];
+  const getWorkspaceCalls: GetWorkspaceRequest[] = [];
+  const listWorkspaceMembersCalls: ListWorkspaceMembersRequest[] = [];
+  const listActiveProjectsCalls: ListActiveProjectsRequest[] = [];
+  const listWorkspaceStatusesCalls: ListWorkspaceStatusesRequest[] = [];
+  const listTaskSkillsCalls: ListTaskSkillsRequest[] = [];
+  const listWorkspacesCalls: ListWorkspacesRequest[] = [];
+  const handlers = createSummaryToolHandlers(
+    createBackendClientStub({
+      getTaskCalls,
+      listTaskCommentsCalls,
+      listTaskAttachmentsCalls,
+      getWorkspaceCalls,
+      listWorkspaceMembersCalls,
+      listActiveProjectsCalls,
+      listWorkspaceStatusesCalls,
+      listTaskSkillsCalls,
+      listWorkspacesCalls,
+    }),
+  );
+
+  const summary = await handlers.workspace({ workspaceId, userId });
+
+  assert.deepEqual(listWorkspacesCalls, []);
+  assert.deepEqual(getWorkspaceCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listWorkspaceMembersCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listActiveProjectsCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listWorkspaceStatusesCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listTaskSkillsCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(summary, {
+    workspace: {
+      id: workspaceId,
+      name: "Studio",
+      slug: "studio",
+      updatedAt: "2026-01-06T00:00:00.000Z",
+    },
+    counts: {
+      members: 2,
+      projects: 2,
+      statuses: 2,
+      taskSkills: 1,
+    },
+    members: [
+      {
+        userId,
+        role: "admin",
+        displayName: "Alex",
+      },
+      {
+        userId: secondUserId,
+        role: "member",
+        displayName: "Sam",
+      },
+    ],
+    recentProjects: [
+      {
+        id: "33333333-3333-4333-8333-333333333333",
+        title: "Video Release",
+        status: "active",
+        archivedAt: null,
+        updatedAt: "2026-01-05T00:00:00.000Z",
+      },
+      {
+        id: projectId,
+        title: "Album Release",
+        status: "active",
+        archivedAt: null,
+        updatedAt: "2026-01-04T00:00:00.000Z",
+      },
+    ],
+    statuses: [
+      {
+        id: "88888888-8888-4888-8888-888888888888",
+        name: "In progress",
+        isDone: false,
+      },
+      {
+        id: "99999999-9999-4999-8999-999999999999",
+        name: "Done",
+        isDone: true,
+      },
+    ],
+    taskSkills: [
+      {
+        id: "44444444-4444-4444-8444-444444444444",
+        name: "Song",
+        aliases: ["track"],
+      },
+    ],
+  });
+});
+
+test("summary workspace handler falls back to the first visible workspace", async () => {
+  const getTaskCalls: GetTaskRequest[] = [];
+  const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
+  const listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [];
+  const getWorkspaceCalls: GetWorkspaceRequest[] = [];
+  const listWorkspacesCalls: ListWorkspacesRequest[] = [];
+  const handlers = createSummaryToolHandlers(
+    createBackendClientStub({
+      getTaskCalls,
+      listTaskCommentsCalls,
+      listTaskAttachmentsCalls,
+      getWorkspaceCalls,
+      listWorkspacesCalls,
+    }),
+  );
+
+  const summary = await handlers.workspace({ userId });
+
+  assert.equal(summary.workspace.id, workspaceId);
+  assert.deepEqual(listWorkspacesCalls, [{ userId }]);
+  assert.deepEqual(getWorkspaceCalls, [{ workspaceId, userId }]);
+});
+
 test("summary project handler aggregates project detail and active tasks", async () => {
   const getTaskCalls: GetTaskRequest[] = [];
   const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
@@ -222,13 +460,13 @@ test("summary project handler aggregates project detail and active tasks", async
   const getProjectCalls: GetProjectRequest[] = [];
   const listActiveTasksCalls: ListActiveTasksRequest[] = [];
   const handlers = createSummaryToolHandlers(
-    createBackendClientStub(
+    createBackendClientStub({
       getTaskCalls,
       listTaskCommentsCalls,
       listTaskAttachmentsCalls,
       getProjectCalls,
       listActiveTasksCalls,
-    ),
+    }),
   );
 
   const summary = await handlers.project({ workspaceId, projectId, userId });
@@ -290,7 +528,11 @@ test("summary task handler aggregates task detail, comments, and attachments", a
   const listTaskCommentsCalls: ListTaskCommentsRequest[] = [];
   const listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [];
   const handlers = createSummaryToolHandlers(
-    createBackendClientStub(getTaskCalls, listTaskCommentsCalls, listTaskAttachmentsCalls),
+    createBackendClientStub({
+      getTaskCalls,
+      listTaskCommentsCalls,
+      listTaskAttachmentsCalls,
+    }),
   );
 
   const summary = await handlers.task({ workspaceId, projectId, taskId, userId });
@@ -357,25 +599,50 @@ test("summary task handler aggregates task detail, comments, and attachments", a
   });
 });
 
-function createBackendClientStub(
-  getTaskCalls: GetTaskRequest[],
-  listTaskCommentsCalls: ListTaskCommentsRequest[],
-  listTaskAttachmentsCalls: ListTaskAttachmentsRequest[],
-  getProjectCalls: GetProjectRequest[] = [],
-  listActiveTasksCalls: ListActiveTasksRequest[] = [],
-): TaskBackendClient {
+type BackendClientStubCalls = {
+  getTaskCalls: GetTaskRequest[];
+  listTaskCommentsCalls: ListTaskCommentsRequest[];
+  listTaskAttachmentsCalls: ListTaskAttachmentsRequest[];
+  getProjectCalls?: GetProjectRequest[];
+  listActiveTasksCalls?: ListActiveTasksRequest[];
+  listWorkspacesCalls?: ListWorkspacesRequest[];
+  getWorkspaceCalls?: GetWorkspaceRequest[];
+  listWorkspaceMembersCalls?: ListWorkspaceMembersRequest[];
+  listWorkspaceStatusesCalls?: ListWorkspaceStatusesRequest[];
+  listTaskSkillsCalls?: ListTaskSkillsRequest[];
+  listActiveProjectsCalls?: ListActiveProjectsRequest[];
+};
+
+function createBackendClientStub(calls: BackendClientStubCalls): TaskBackendClient {
+  const getProjectCalls = calls.getProjectCalls ?? [];
+  const listActiveTasksCalls = calls.listActiveTasksCalls ?? [];
+  const listWorkspacesCalls = calls.listWorkspacesCalls ?? [];
+  const getWorkspaceCalls = calls.getWorkspaceCalls ?? [];
+  const listWorkspaceMembersCalls = calls.listWorkspaceMembersCalls ?? [];
+  const listWorkspaceStatusesCalls = calls.listWorkspaceStatusesCalls ?? [];
+  const listTaskSkillsCalls = calls.listTaskSkillsCalls ?? [];
+  const listActiveProjectsCalls = calls.listActiveProjectsCalls ?? [];
+
   return {
-    listWorkspaces: async (): Promise<WorkspaceSummaryResponse[]> => {
-      throw new Error("Not implemented.");
+    listWorkspaces: async (request): Promise<WorkspaceSummaryResponse[]> => {
+      listWorkspacesCalls.push(request);
+
+      return [workspaceSummary];
     },
-    getWorkspace: async (): Promise<WorkspaceDetailResponse> => {
-      throw new Error("Not implemented.");
+    getWorkspace: async (request): Promise<WorkspaceDetailResponse> => {
+      getWorkspaceCalls.push(request);
+
+      return workspaceDetail;
     },
-    listWorkspaceMembers: async (): Promise<WorkspaceMemberResponse[]> => {
-      throw new Error("Not implemented.");
+    listWorkspaceMembers: async (request): Promise<WorkspaceMemberResponse[]> => {
+      listWorkspaceMembersCalls.push(request);
+
+      return workspaceMembers;
     },
-    listWorkspaceStatuses: async (): Promise<WorkspaceStatusResponse[]> => {
-      throw new Error("Not implemented.");
+    listWorkspaceStatuses: async (request): Promise<WorkspaceStatusResponse[]> => {
+      listWorkspaceStatusesCalls.push(request);
+
+      return workspaceStatuses;
     },
     listPendingConfirmationRequests: async (): Promise<ConfirmationRequestSummaryResponse[]> => {
       throw new Error("Not implemented.");
@@ -392,8 +659,10 @@ function createBackendClientStub(
     confirmConfirmationRequest: async (): Promise<ConfirmConfirmationRequestResponse> => {
       throw new Error("Not implemented.");
     },
-    listTaskSkills: async (): Promise<TaskSkillSummaryResponse[]> => {
-      throw new Error("Not implemented.");
+    listTaskSkills: async (request): Promise<TaskSkillSummaryResponse[]> => {
+      listTaskSkillsCalls.push(request);
+
+      return taskSkills;
     },
     getTaskSkill: async (): Promise<TaskSkillDetailResponse> => {
       throw new Error("Not implemented.");
@@ -413,8 +682,10 @@ function createBackendClientStub(
     updateTaskSkillDefinition: async (): Promise<TaskSkillDetailResponse> => {
       throw new Error("Not implemented.");
     },
-    listActiveProjects: async (): Promise<ProjectSummaryResponse[]> => {
-      throw new Error("Not implemented.");
+    listActiveProjects: async (request): Promise<ProjectSummaryResponse[]> => {
+      listActiveProjectsCalls.push(request);
+
+      return workspaceProjects;
     },
     getProject: async (request): Promise<ProjectDetailResponse> => {
       getProjectCalls.push(request);
@@ -436,7 +707,7 @@ function createBackendClientStub(
       return projectTasks;
     },
     listTaskComments: async (request): Promise<TaskCommentResponse[]> => {
-      listTaskCommentsCalls.push(request);
+      calls.listTaskCommentsCalls.push(request);
 
       return comments;
     },
@@ -444,7 +715,7 @@ function createBackendClientStub(
       throw new Error("Not implemented.");
     },
     listTaskAttachments: async (request): Promise<TaskAttachmentResponse[]> => {
-      listTaskAttachmentsCalls.push(request);
+      calls.listTaskAttachmentsCalls.push(request);
 
       return attachments;
     },
@@ -464,7 +735,7 @@ function createBackendClientStub(
       throw new Error("Not implemented.");
     },
     getTask: async (request): Promise<TaskDetailResponse> => {
-      getTaskCalls.push(request);
+      calls.getTaskCalls.push(request);
 
       return taskDetail;
     },

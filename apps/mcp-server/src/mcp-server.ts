@@ -154,6 +154,11 @@ const projectSummaryInputSchema = {
   userId: z.string().uuid(),
 };
 
+const workspaceSummaryInputSchema = {
+  userId: z.string().uuid(),
+  workspaceId: z.string().uuid().optional(),
+};
+
 const attachmentCreateLinkInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -555,6 +560,17 @@ export function registerSummaryTools(
       inputSchema: taskSummaryInputSchema,
     },
     async (input) => toToolResult(await handlers.task(input)),
+  );
+
+  registrar.registerTool(
+    "summary.workspace",
+    {
+      title: "Summarize workspace",
+      description:
+        "Summarize one visible workspace with members, projects, statuses, and task skills.",
+      inputSchema: workspaceSummaryInputSchema,
+    },
+    async (input) => toToolResult(await handlers.workspace(input)),
   );
 }
 

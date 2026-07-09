@@ -892,6 +892,10 @@ test("registerSummaryTools registers summary tools", async () => {
     projectId: string;
     userId: string;
   }> = [];
+  const workspaceSummaryCalls: Array<{
+    workspaceId: string;
+    userId: string;
+  }> = [];
   const registrar = createRegistrar(toolCalls);
 
   registerSummaryTools(registrar, {
@@ -957,14 +961,42 @@ test("registerSummaryTools registers summary tools", async () => {
         recentAttachments: [],
       };
     },
+    workspace: async (input: unknown) => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected workspace summary input.");
+      }
+      workspaceSummaryCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        userId: readString(input, "userId"),
+      });
+      return {
+        workspace: {
+          id: workspaceId,
+          name: "Studio",
+          slug: "studio",
+          updatedAt: timestamp,
+        },
+        counts: {
+          members: 1,
+          projects: 1,
+          statuses: 1,
+          taskSkills: 1,
+        },
+        members: [],
+        recentProjects: [],
+        statuses: [],
+        taskSkills: [],
+      };
+    },
   });
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["summary.project", "summary.task"],
+    ["summary.project", "summary.task", "summary.workspace"],
   );
   assert.equal(toolCalls[0]?.config.title, "Summarize project");
   assert.equal(toolCalls[1]?.config.title, "Summarize task");
+  assert.equal(toolCalls[2]?.config.title, "Summarize workspace");
 
   const projectSummaryCall = toolCalls[0];
   assert.ok(projectSummaryCall !== undefined);
@@ -1027,6 +1059,33 @@ test("registerSummaryTools registers summary tools", async () => {
     recentAttachments: [],
   });
   assert.deepEqual(summaryCalls, [{ workspaceId, projectId, taskId: rootTaskId, userId }]);
+
+  const workspaceSummaryCall = toolCalls[2];
+  assert.ok(workspaceSummaryCall !== undefined);
+  const workspaceSummaryResult = await workspaceSummaryCall.callback({
+    workspaceId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(workspaceSummaryResult)), {
+    workspace: {
+      id: workspaceId,
+      name: "Studio",
+      slug: "studio",
+      updatedAt: timestamp,
+    },
+    counts: {
+      members: 1,
+      projects: 1,
+      statuses: 1,
+      taskSkills: 1,
+    },
+    members: [],
+    recentProjects: [],
+    statuses: [],
+    taskSkills: [],
+  });
+  assert.deepEqual(workspaceSummaryCalls, [{ workspaceId, userId }]);
 });
 
 test("registerTaskTools registers task tools", async () => {
