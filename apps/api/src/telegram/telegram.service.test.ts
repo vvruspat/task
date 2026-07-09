@@ -6,6 +6,7 @@ import type {
 } from "./telegram.contracts.js";
 import { TelegramService } from "./telegram.service.js";
 import type { TelegramContextStore } from "./telegram.store.js";
+import { TelegramMiniAppInitDataVerifier } from "./telegram-mini-app-init-data.verifier.js";
 
 const input: ResolveTelegramContextInput = {
   telegramId: "123456789",
@@ -19,7 +20,7 @@ test("TelegramService returns resolved Telegram context", async () => {
     workspaceId: "33333333-3333-4333-8333-333333333333",
     defaultProjectId: "44444444-4444-4444-8444-444444444444",
   });
-  const service = new TelegramService(store);
+  const service = new TelegramService(store, createMiniAppInitDataVerifier());
 
   assert.deepEqual(
     { ...(await service.resolveContext(input)) },
@@ -36,6 +37,7 @@ test("TelegramService returns resolved Telegram context", async () => {
 test("TelegramService returns explicit unlinked user state", async () => {
   const service = new TelegramService(
     new RecordingTelegramContextStore({ status: "telegram_user_unlinked" }),
+    createMiniAppInitDataVerifier(),
   );
 
   assert.deepEqual(
@@ -52,6 +54,7 @@ test("TelegramService returns explicit unlinked chat state", async () => {
       status: "telegram_chat_unlinked",
       userId: "22222222-2222-4222-8222-222222222222",
     }),
+    createMiniAppInitDataVerifier(),
   );
 
   assert.deepEqual(
@@ -70,6 +73,7 @@ test("TelegramService returns explicit workspace membership mismatch state", asy
       userId: "22222222-2222-4222-8222-222222222222",
       workspaceId: "33333333-3333-4333-8333-333333333333",
     }),
+    createMiniAppInitDataVerifier(),
   );
 
   assert.deepEqual(
@@ -92,4 +96,12 @@ class RecordingTelegramContextStore implements TelegramContextStore {
 
     return this.resolution;
   }
+}
+
+function createMiniAppInitDataVerifier(): TelegramMiniAppInitDataVerifier {
+  return new TelegramMiniAppInitDataVerifier({
+    botToken: null,
+    maxAgeSeconds: 86_400,
+    now: () => new Date("2026-07-09T12:00:00.000Z"),
+  });
 }

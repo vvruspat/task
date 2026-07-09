@@ -3,6 +3,15 @@ export type ResolveTelegramContextInput = {
   telegramChatId: string;
 };
 
+export type VerifyTelegramMiniAppInitDataInput = {
+  initData: string;
+};
+
+export type VerifiedTelegramMiniAppInitData = {
+  telegramId: string;
+  authDate: string;
+};
+
 export type TelegramConfirmationCallbackAction = "confirm" | "cancel";
 
 export type TelegramConfirmationCallbackInput = {

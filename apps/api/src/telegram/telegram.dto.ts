@@ -5,11 +5,18 @@ import type {
   TelegramConfirmationCallbackInput,
   TelegramConfirmationCallbackResult,
   TelegramContextResolution,
+  VerifiedTelegramMiniAppInitData,
+  VerifyTelegramMiniAppInitDataInput,
 } from "./telegram.contracts.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const telegramUserIdPattern = /^\d+$/u;
 const telegramChatIdPattern = /^-?\d+$/u;
+const maxInitDataLength = 8192;
+
+type TelegramMiniAppInitDataPayload = {
+  initData?: unknown;
+};
 
 export class ResolveTelegramContextDto implements ResolveTelegramContextInput {
   @ApiProperty({ example: "123456789" })
@@ -24,6 +31,22 @@ export class ParseResolveTelegramContextBodyPipe
 {
   transform(value: unknown): ResolveTelegramContextInput {
     return parseResolveTelegramContextInput(value);
+  }
+}
+
+export class VerifyTelegramMiniAppInitDataDto implements VerifyTelegramMiniAppInitDataInput {
+  @ApiProperty({
+    description: "Raw Telegram.WebApp.initData query string.",
+    maxLength: maxInitDataLength,
+  })
+  readonly initData: string = "";
+}
+
+export class ParseVerifyTelegramMiniAppInitDataBodyPipe
+  implements PipeTransform<unknown, VerifyTelegramMiniAppInitDataInput>
+{
+  transform(value: unknown): VerifyTelegramMiniAppInitDataInput {
+    return parseVerifyTelegramMiniAppInitDataInput(value);
   }
 }
 
@@ -103,6 +126,19 @@ export class TelegramContextResolutionDto {
   }
 }
 
+export class VerifiedTelegramMiniAppInitDataDto implements VerifiedTelegramMiniAppInitData {
+  @ApiProperty({ example: "123456789" })
+  readonly telegramId: string;
+
+  @ApiProperty({ example: "1720468800" })
+  readonly authDate: string;
+
+  constructor(result: VerifiedTelegramMiniAppInitData) {
+    this.telegramId = result.telegramId;
+    this.authDate = result.authDate;
+  }
+}
+
 function parseResolveTelegramContextInput(value: unknown): ResolveTelegramContextInput {
   if (!isUnknownRecord(value)) {
     throw new BadRequestException("Telegram context payload must be an object.");
@@ -112,6 +148,29 @@ function parseResolveTelegramContextInput(value: unknown): ResolveTelegramContex
     telegramId: readTelegramId(value, "telegramId", telegramUserIdPattern),
     telegramChatId: readTelegramId(value, "telegramChatId", telegramChatIdPattern),
   };
+}
+
+function parseVerifyTelegramMiniAppInitDataInput(
+  value: unknown,
+): VerifyTelegramMiniAppInitDataInput {
+  if (!isTelegramMiniAppInitDataPayload(value)) {
+    throw new BadRequestException("Telegram Mini App initData payload must be an object.");
+  }
+
+  const initData = value.initData;
+
+  if (
+    typeof initData !== "string" ||
+    initData.trim() !== initData ||
+    initData.length === 0 ||
+    initData.length > maxInitDataLength
+  ) {
+    throw new BadRequestException(
+      `Telegram Mini App initData must be a non-empty string up to ${maxInitDataLength} characters without surrounding whitespace.`,
+    );
+  }
+
+  return { initData };
 }
 
 function parseTelegramConfirmationCallbackInput(value: unknown): TelegramConfirmationCallbackInput {
@@ -128,6 +187,10 @@ function parseTelegramConfirmationCallbackInput(value: unknown): TelegramConfirm
 }
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isTelegramMiniAppInitDataPayload(value: unknown): value is TelegramMiniAppInitDataPayload {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 

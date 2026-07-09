@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
 import test from "node:test";
 import type {
   ConfirmationRequestDetail,
@@ -15,9 +16,13 @@ import type {
   ResolveTelegramContextInput,
   TelegramContextResolution,
 } from "./telegram.contracts.js";
-import { TelegramController } from "./telegram.controller.js";
+import { TelegramController, TelegramMiniAppController } from "./telegram.controller.js";
 import { TelegramService } from "./telegram.service.js";
 import type { TelegramContextStore } from "./telegram.store.js";
+import { TelegramMiniAppInitDataVerifier } from "./telegram-mini-app-init-data.verifier.js";
+
+const botToken = "123456:telegram-bot-token";
+const now = new Date("2026-07-09T12:00:00.000Z");
 
 test("TelegramController forwards resolve context requests to the service", async () => {
   const store = new RecordingTelegramContextStore({
@@ -27,7 +32,7 @@ test("TelegramController forwards resolve context requests to the service", asyn
     defaultProjectId: null,
   });
   const controller = new TelegramController(
-    new TelegramService(store),
+    new TelegramService(store, createMiniAppInitDataVerifier()),
     new ConfirmationsService(new RecordingConfirmationRequestsStore()),
   );
   const input = {
@@ -56,7 +61,7 @@ test("TelegramController confirms callbacks after resolving Telegram context", a
   });
   const confirmationsStore = new RecordingConfirmationRequestsStore();
   const controller = new TelegramController(
-    new TelegramService(telegramStore),
+    new TelegramService(telegramStore, createMiniAppInitDataVerifier()),
     new ConfirmationsService(confirmationsStore),
   );
 
@@ -86,7 +91,7 @@ test("TelegramController rejects callbacks when Telegram context is not resolved
   const telegramStore = new RecordingTelegramContextStore({ status: "telegram_user_unlinked" });
   const confirmationsStore = new RecordingConfirmationRequestsStore();
   const controller = new TelegramController(
-    new TelegramService(telegramStore),
+    new TelegramService(telegramStore, createMiniAppInitDataVerifier()),
     new ConfirmationsService(confirmationsStore),
   );
 
@@ -101,6 +106,35 @@ test("TelegramController rejects callbacks when Telegram context is not resolved
     { name: "ForbiddenException" },
   );
   assert.equal(confirmationsStore.lastCancelRequest, null);
+});
+
+test("TelegramMiniAppController verifies initData through the service", () => {
+  const controller = new TelegramMiniAppController(
+    new TelegramService(
+      new RecordingTelegramContextStore({ status: "telegram_user_unlinked" }),
+      new TelegramMiniAppInitDataVerifier({
+        botToken,
+        maxAgeSeconds: 86_400,
+        now: () => now,
+      }),
+    ),
+  );
+  const authDate = String(Math.floor(now.getTime() / 1000));
+
+  assert.deepEqual(
+    {
+      ...controller.verifyInitData({
+        initData: createSignedInitData({
+          authDate,
+          userJson: JSON.stringify({ id: 123456789, first_name: "Alex" }),
+        }),
+      }),
+    },
+    {
+      telegramId: "123456789",
+      authDate,
+    },
+  );
 });
 
 const confirmationRequest: ConfirmationRequestDetail = {
@@ -177,3 +211,46 @@ type ConfirmationMutationRequest = {
   confirmationRequestId: string;
   userId: string;
 };
+
+function createMiniAppInitDataVerifier(): TelegramMiniAppInitDataVerifier {
+  return new TelegramMiniAppInitDataVerifier({
+    botToken: null,
+    maxAgeSeconds: 86_400,
+    now: () => new Date("2026-07-09T12:00:00.000Z"),
+  });
+}
+
+type SignedInitDataInput = {
+  authDate: string;
+  userJson: string;
+};
+
+function createSignedInitData(input: SignedInitDataInput): string {
+  const fields = new URLSearchParams();
+
+  fields.set("auth_date", input.authDate);
+  fields.set("user", input.userJson);
+
+  const dataCheckString = [...fields.entries()]
+    .sort(([leftKey], [rightKey]) => compareDataCheckKeys(leftKey, rightKey))
+    .map(([key, value]) => `${key}=${value}`)
+    .join("\n");
+  const secretKey = createHmac("sha256", "WebAppData").update(botToken).digest();
+  const hash = createHmac("sha256", secretKey).update(dataCheckString).digest("hex");
+
+  fields.set("hash", hash);
+
+  return fields.toString();
+}
+
+function compareDataCheckKeys(leftKey: string, rightKey: string): number {
+  if (leftKey < rightKey) {
+    return -1;
+  }
+
+  if (leftKey > rightKey) {
+    return 1;
+  }
+
+  return 0;
+}

@@ -559,6 +559,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/telegram/mini-app/init-data/verify": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Verify Telegram Mini App initData and return the stable identity */
+    post: operations["TelegramMiniAppController_verifyInitData"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/internal/agent/telegram/runs": {
     parameters: {
       query?: never;
@@ -1149,6 +1166,16 @@ export interface components {
       action: "confirm" | "cancel";
       /** @enum {string} */
       status: "confirmed" | "cancelled";
+    };
+    VerifyTelegramMiniAppInitDataDto: {
+      /** @description Raw Telegram.WebApp.initData query string. */
+      initData: string;
+    };
+    VerifiedTelegramMiniAppInitDataDto: {
+      /** @example 123456789 */
+      telegramId: string;
+      /** @example 1720468800 */
+      authDate: string;
     };
     TelegramAgentRunDocumentAttachmentDto: {
       /** @enum {string} */
@@ -2997,6 +3024,43 @@ export interface operations {
       };
       /** @description Confirmation request is missing or not visible. */
       404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramMiniAppController_verifyInitData: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["VerifyTelegramMiniAppInitDataDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["VerifiedTelegramMiniAppInitDataDto"];
+        };
+      };
+      /** @description Telegram Mini App initData payload is malformed. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram Mini App initData is invalid or expired. */
+      401: {
         headers: {
           [name: string]: unknown;
         };

@@ -15,14 +15,18 @@ import { ConfirmationsService } from "../confirmations/confirmations.service.js"
 import type {
   ResolveTelegramContextInput,
   TelegramConfirmationCallbackInput,
+  VerifyTelegramMiniAppInitDataInput,
 } from "./telegram.contracts.js";
 import {
   ParseResolveTelegramContextBodyPipe,
   ParseTelegramConfirmationCallbackBodyPipe,
+  ParseVerifyTelegramMiniAppInitDataBodyPipe,
   ResolveTelegramContextDto,
   TelegramConfirmationCallbackDto,
   TelegramConfirmationCallbackResultDto,
   TelegramContextResolutionDto,
+  VerifiedTelegramMiniAppInitDataDto,
+  VerifyTelegramMiniAppInitDataDto,
 } from "./telegram.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { TelegramService } from "./telegram.service.js";
@@ -87,6 +91,25 @@ export class TelegramController {
       action: input.action,
       status: input.action === "confirm" ? "confirmed" : "cancelled",
     });
+  }
+}
+
+@ApiTags("telegram")
+@Controller("telegram/mini-app")
+export class TelegramMiniAppController {
+  constructor(private readonly telegramService: TelegramService) {}
+
+  @Post("init-data/verify")
+  @ApiOperation({ summary: "Verify Telegram Mini App initData and return the stable identity" })
+  @ApiBody({ type: VerifyTelegramMiniAppInitDataDto })
+  @ApiOkResponse({ type: VerifiedTelegramMiniAppInitDataDto })
+  @ApiBadRequestResponse({ description: "Telegram Mini App initData payload is malformed." })
+  @ApiUnauthorizedResponse({ description: "Telegram Mini App initData is invalid or expired." })
+  verifyInitData(
+    @Body(new ParseVerifyTelegramMiniAppInitDataBodyPipe())
+    input: VerifyTelegramMiniAppInitDataInput,
+  ): VerifiedTelegramMiniAppInitDataDto {
+    return this.telegramService.verifyMiniAppInitData(input);
   }
 }
 
