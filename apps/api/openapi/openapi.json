@@ -164,6 +164,141 @@
         "tags": ["workspaces"]
       }
     },
+    "/workspaces/{workspaceId}/dashboard": {
+      "get": {
+        "operationId": "DashboardController_getOverview",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardOverviewDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace is missing or not visible."
+          }
+        },
+        "summary": "Get the workspace dashboard overview",
+        "tags": ["dashboard"]
+      }
+    },
+    "/workspaces/{workspaceId}/my-tasks": {
+      "get": {
+        "operationId": "DashboardController_listMyTasks",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "queue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": ["today", "upcoming", "overdue", "review"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyTasksPageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "My tasks query is invalid."
+          },
+          "404": {
+            "description": "Workspace is missing or not visible."
+          }
+        },
+        "summary": "List the current user's active tasks by queue",
+        "tags": ["dashboard"]
+      }
+    },
     "/workspaces/{workspaceId}/projects": {
       "get": {
         "operationId": "ProjectsController_listActiveProjects",
@@ -2852,6 +2987,241 @@
           }
         },
         "required": ["id", "name", "slug", "createdAt", "updatedAt", "members"]
+      },
+      "DashboardProjectDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "title", "status", "updatedAt"]
+      },
+      "DashboardTaskCountsDto": {
+        "type": "object",
+        "properties": {
+          "assigned": {
+            "type": "number"
+          },
+          "overdue": {
+            "type": "number"
+          },
+          "dueSoon": {
+            "type": "number"
+          }
+        },
+        "required": ["assigned", "overdue", "dueSoon"]
+      },
+      "DashboardActivityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "eventType", "entityType", "entityId", "actorUserId", "createdAt"]
+      },
+      "DashboardConfirmationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "agentRunId", "kind", "expiresAt", "createdAt"]
+      },
+      "DashboardAgentRunDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["telegram", "web", "mini_app"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["running", "waiting_confirmation", "completed", "failed"]
+          },
+          "inputText": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "source", "status", "inputText", "createdAt"]
+      },
+      "DashboardOverviewDto": {
+        "type": "object",
+        "properties": {
+          "activeProjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardProjectDto"
+            }
+          },
+          "taskCounts": {
+            "$ref": "#/components/schemas/DashboardTaskCountsDto"
+          },
+          "recentActivity": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardActivityDto"
+            }
+          },
+          "pendingConfirmations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardConfirmationDto"
+            }
+          },
+          "recentAgentRuns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardAgentRunDto"
+            }
+          }
+        },
+        "required": [
+          "activeProjects",
+          "taskCounts",
+          "recentActivity",
+          "pendingConfirmations",
+          "recentAgentRuns"
+        ]
+      },
+      "MyTaskItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectTitle": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "dueAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "statusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "position": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "projectTitle",
+          "title",
+          "dueAt",
+          "statusId",
+          "statusName",
+          "statusColor",
+          "position",
+          "updatedAt"
+        ]
+      },
+      "MyTasksPageDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MyTaskItemDto"
+            }
+          },
+          "page": {
+            "type": "number",
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["items", "page", "pageSize", "total"]
       },
       "ProjectSummaryDto": {
         "type": "object",

@@ -1,6 +1,9 @@
 import type { components, operations } from "./generated/openapi.js";
 
 export type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
+export type DashboardOverview = components["schemas"]["DashboardOverviewDto"];
+export type ConfirmationRequestSummary = components["schemas"]["ConfirmationRequestSummaryDto"];
+export type ConfirmationRequestDetail = components["schemas"]["ConfirmationRequestDetailDto"];
 export type CreateTaskCommentInput = components["schemas"]["CreateTaskCommentDto"];
 export type CreateTaskFileAttachmentInput = components["schemas"]["CreateTaskFileAttachmentDto"];
 export type CreateTaskLinkAttachmentInput = components["schemas"]["CreateTaskLinkAttachmentDto"];
@@ -22,6 +25,7 @@ type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
 type UpdateProjectOperation = operations["ProjectsController_updateProject"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskOperation = operations["TasksController_updateTask"];
+type ListMyTasksOperation = operations["DashboardController_listMyTasks"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -66,6 +70,12 @@ export type TaskApiClientOptions = {
 
 export type WorkspaceScopedInput = {
   workspaceId: string;
+};
+export type ListMyTasksRequestInput = WorkspaceScopedInput &
+  NonNullable<ListMyTasksOperation["parameters"]["query"]>;
+export type MyTasksPage = components["schemas"]["MyTasksPageDto"];
+export type ConfirmationRequestScopedInput = WorkspaceScopedInput & {
+  confirmationRequestId: string;
 };
 
 export type ProjectScopedInput = WorkspaceScopedInput & {
@@ -126,6 +136,17 @@ export type TaskApiClient = {
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   getHealth(): Promise<HealthResponse>;
+  getDashboardOverview(input: WorkspaceScopedInput): Promise<DashboardOverview>;
+  listPendingConfirmationRequests(
+    input: WorkspaceScopedInput,
+  ): Promise<ConfirmationRequestSummary[]>;
+  confirmConfirmationRequest(
+    input: ConfirmationRequestScopedInput,
+  ): Promise<ConfirmationRequestDetail>;
+  cancelConfirmationRequest(
+    input: ConfirmationRequestScopedInput,
+  ): Promise<ConfirmationRequestDetail>;
+  listMyTasks(input: ListMyTasksRequestInput): Promise<MyTasksPage>;
   listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
   listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
   listTaskComments(input: TaskScopedInput): Promise<TaskComment[]>;
@@ -292,6 +313,46 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: false,
         trustedUserId: null,
       }),
+    getDashboardOverview: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/dashboard`,
+        dashboardOverviewParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    listMyTasks: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/my-tasks${toMyTasksQuery(input)}`,
+        myTasksPageParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    listPendingConfirmationRequests: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/confirmation-requests`,
+        confirmationRequestSummaryArrayParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    confirmConfirmationRequest: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `${confirmationRequestPath(input)}/confirm`,
+        confirmationRequestDetailParser,
+        { method: "PATCH", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    cancelConfirmationRequest: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `${confirmationRequestPath(input)}/cancel`,
+        confirmationRequestDetailParser,
+        { method: "PATCH", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
     listAgentRuns: (input) =>
       request(
         options.fetch,
@@ -462,10 +523,40 @@ function encodePathSegment(value: string): string {
 function taskPath(input: TaskScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/${encodePathSegment(input.taskId)}`;
 }
+function toMyTasksQuery(input: ListMyTasksRequestInput): string {
+  const parameters = new URLSearchParams();
+  if (input.queue !== undefined) parameters.set("queue", input.queue);
+  if (input.projectId !== undefined) parameters.set("projectId", input.projectId);
+  if (input.statusId !== undefined) parameters.set("statusId", input.statusId);
+  if (input.page !== undefined) parameters.set("page", String(input.page));
+  if (input.pageSize !== undefined) parameters.set("pageSize", String(input.pageSize));
+  const text = parameters.toString();
+  return text.length === 0 ? "" : `?${text}`;
+}
+function confirmationRequestPath(input: ConfirmationRequestScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/confirmation-requests/${encodePathSegment(input.confirmationRequestId)}`;
+}
 
 const healthResponseParser: ResponseParser<HealthResponse> = {
   isValid: isHealthResponse,
   label: "health response",
+};
+const dashboardOverviewParser: ResponseParser<DashboardOverview> = {
+  isValid: isDashboardOverview,
+  label: "dashboard overview",
+};
+const myTasksPageParser: ResponseParser<MyTasksPage> = {
+  isValid: isMyTasksPage,
+  label: "my tasks page",
+};
+const confirmationRequestSummaryArrayParser: ResponseParser<ConfirmationRequestSummary[]> = {
+  isValid: (value): value is ConfirmationRequestSummary[] =>
+    isArrayOf(value, isConfirmationRequest),
+  label: "confirmation request list",
+};
+const confirmationRequestDetailParser: ResponseParser<ConfirmationRequestDetail> = {
+  isValid: isConfirmationRequest,
+  label: "confirmation request",
 };
 
 const agentRunSummaryArrayParser: ResponseParser<AgentRunSummary[]> = {
@@ -568,6 +659,103 @@ function isAgentRunSummary(value: unknown): value is AgentRunSummary {
 
 function isProjectSummary(value: unknown): value is ProjectSummary {
   return isProjectDetail(value);
+}
+function isDashboardOverview(value: unknown): value is DashboardOverview {
+  return (
+    isJsonObject(value) &&
+    isArrayOf(readProperty(value, "activeProjects"), isDashboardProject) &&
+    isDashboardTaskCounts(readProperty(value, "taskCounts")) &&
+    isArrayOf(readProperty(value, "recentActivity"), isDashboardActivity) &&
+    isArrayOf(readProperty(value, "pendingConfirmations"), isDashboardConfirmation) &&
+    isArrayOf(readProperty(value, "recentAgentRuns"), isDashboardAgentRun)
+  );
+}
+function isMyTasksPage(value: unknown): value is MyTasksPage {
+  return (
+    isJsonObject(value) &&
+    isArrayOf(readProperty(value, "items"), isMyTaskItem) &&
+    isNonNegativeInteger(readProperty(value, "page")) &&
+    isPositiveInteger(readProperty(value, "pageSize")) &&
+    isNonNegativeInteger(readProperty(value, "total"))
+  );
+}
+function isDashboardProject(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "title") &&
+    hasNullableString(value, "status") &&
+    hasString(value, "updatedAt")
+  );
+}
+function isDashboardTaskCounts(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    isNonNegativeInteger(readProperty(value, "assigned")) &&
+    isNonNegativeInteger(readProperty(value, "overdue")) &&
+    isNonNegativeInteger(readProperty(value, "dueSoon"))
+  );
+}
+function isDashboardActivity(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "eventType") &&
+    hasString(value, "entityType") &&
+    hasString(value, "entityId") &&
+    hasNullableString(value, "actorUserId") &&
+    hasString(value, "createdAt")
+  );
+}
+function isDashboardConfirmation(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "agentRunId") &&
+    hasString(value, "kind") &&
+    hasString(value, "expiresAt") &&
+    hasString(value, "createdAt")
+  );
+}
+function isDashboardAgentRun(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    isAgentRunSource(readProperty(value, "source")) &&
+    isAgentRunStatus(readProperty(value, "status")) &&
+    hasString(value, "inputText") &&
+    hasString(value, "createdAt")
+  );
+}
+function isMyTaskItem(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "projectId") &&
+    hasString(value, "projectTitle") &&
+    hasString(value, "title") &&
+    hasNullableString(value, "dueAt") &&
+    hasNullableString(value, "statusId") &&
+    hasNullableString(value, "statusName") &&
+    hasNullableString(value, "statusColor") &&
+    hasString(value, "position") &&
+    hasString(value, "updatedAt")
+  );
+}
+function isConfirmationRequest(value: unknown): value is ConfirmationRequestDetail {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "agentRunId") &&
+    hasString(value, "userId") &&
+    hasString(value, "kind") &&
+    isJsonObject(readProperty(value, "preview")) &&
+    hasString(value, "status") &&
+    hasString(value, "expiresAt") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
 }
 
 function isProjectDetail(value: unknown): value is ProjectDetail {
@@ -717,6 +905,16 @@ function hasString(value: JsonObject, key: string): boolean {
 function hasOptionalNullableString(value: JsonObject, key: string): boolean {
   const propertyValue = readProperty(value, key);
   return propertyValue === undefined || propertyValue === null || typeof propertyValue === "string";
+}
+function hasNullableString(value: JsonObject, key: string): boolean {
+  const propertyValue = readProperty(value, key);
+  return propertyValue === null || typeof propertyValue === "string";
+}
+function isNonNegativeInteger(value: unknown): boolean {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0;
+}
+function isPositiveInteger(value: unknown): boolean {
+  return typeof value === "number" && Number.isInteger(value) && value >= 1;
 }
 
 function readString(value: JsonObject, key: string): string | null {

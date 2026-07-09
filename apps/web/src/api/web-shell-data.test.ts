@@ -4,12 +4,18 @@ import type {
   AgentRunSummary,
   ArchiveProjectRequestInput,
   ArchiveTaskRequestInput,
+  ConfirmationRequestDetail,
+  ConfirmationRequestScopedInput,
+  ConfirmationRequestSummary,
   CreateProjectRequestInput,
   CreateTaskCommentRequestInput,
   CreateTaskFileAttachmentRequestInput,
   CreateTaskLinkAttachmentRequestInput,
   CreateTaskRequestInput,
   CreateTaskTelegramFileAttachmentRequestInput,
+  DashboardOverview,
+  ListMyTasksRequestInput,
+  MyTasksPage,
   ProjectDetail,
   ProjectSummary,
   TaskApiClient,
@@ -330,6 +336,32 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async getHealth(): Promise<never> {
     throw new Error("getHealth is not used by the web shell loader.");
+  }
+
+  async getDashboardOverview(_input: { workspaceId: string }): Promise<DashboardOverview> {
+    throw new Error("getDashboardOverview is not used by the web shell loader.");
+  }
+
+  async listPendingConfirmationRequests(_input: {
+    workspaceId: string;
+  }): Promise<ConfirmationRequestSummary[]> {
+    throw new Error("listPendingConfirmationRequests is not used by the web shell loader.");
+  }
+
+  async confirmConfirmationRequest(
+    _input: ConfirmationRequestScopedInput,
+  ): Promise<ConfirmationRequestDetail> {
+    throw new Error("confirmConfirmationRequest is not used by the web shell loader.");
+  }
+
+  async cancelConfirmationRequest(
+    _input: ConfirmationRequestScopedInput,
+  ): Promise<ConfirmationRequestDetail> {
+    throw new Error("cancelConfirmationRequest is not used by the web shell loader.");
+  }
+
+  async listMyTasks(_input: ListMyTasksRequestInput): Promise<MyTasksPage> {
+    throw new Error("listMyTasks is not used by the web shell loader.");
   }
 
   async listAgentRuns(input: { workspaceId: string }): Promise<AgentRunSummary[]> {

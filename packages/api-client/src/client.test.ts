@@ -565,6 +565,50 @@ test("createTaskApiClient rejects malformed success responses", async () => {
   });
 });
 
+test("createTaskApiClient rejects malformed nested dashboard response objects", async () => {
+  const malformedResponses: unknown[] = [
+    { ...dashboardOverview(), activeProjects: [{ id: projectId }] },
+    { ...dashboardOverview(), taskCounts: { assigned: -1, overdue: 0, dueSoon: 0 } },
+    { ...dashboardOverview(), recentActivity: [{ id: taskId }] },
+    { ...dashboardOverview(), pendingConfirmations: [{ id: taskId }] },
+    { ...dashboardOverview(), recentAgentRuns: [{ id: taskId }] },
+  ];
+  const fetcher = new RecordingFetch(sequence(malformedResponses));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  for (const _response of malformedResponses) {
+    await assert.rejects(() => client.getDashboardOverview({ workspaceId }), {
+      message: "Task API returned malformed dashboard overview.",
+      name: "TaskApiClientError",
+      status: 200,
+    });
+  }
+});
+
+test("createTaskApiClient rejects malformed nested my-task page items", async () => {
+  const fetcher = new RecordingFetch(
+    single({
+      items: [{ id: taskId, projectId, projectTitle: "Album" }],
+      page: 1,
+      pageSize: 25,
+      total: 1,
+    }),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  await assert.rejects(() => client.listMyTasks({ workspaceId }), {
+    message: "Task API returned malformed my tasks page.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
+});
+
 type FetchCall = {
   init: TaskApiRequestInit;
   url: string;
@@ -692,6 +736,43 @@ function agentRunSummary(): unknown {
     error: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:01:00.000Z",
+  };
+}
+
+function dashboardOverview(): Record<string, unknown> {
+  return {
+    activeProjects: [
+      { id: projectId, title: "Album", status: null, updatedAt: "2026-07-08T10:00:00.000Z" },
+    ],
+    taskCounts: { assigned: 1, overdue: 0, dueSoon: 1 },
+    recentActivity: [
+      {
+        id: taskId,
+        eventType: "task.created",
+        entityType: "task",
+        entityId: taskId,
+        actorUserId: null,
+        createdAt: "2026-07-08T10:00:00.000Z",
+      },
+    ],
+    pendingConfirmations: [
+      {
+        id: taskId,
+        agentRunId: taskId,
+        kind: "task.create",
+        expiresAt: "2026-07-08T10:10:00.000Z",
+        createdAt: "2026-07-08T10:00:00.000Z",
+      },
+    ],
+    recentAgentRuns: [
+      {
+        id: taskId,
+        source: "web",
+        status: "completed",
+        inputText: "Create a task",
+        createdAt: "2026-07-08T10:00:00.000Z",
+      },
+    ],
   };
 }
 
