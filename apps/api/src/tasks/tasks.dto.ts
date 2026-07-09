@@ -1,6 +1,8 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
+  AddTaskSubtaskInput,
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   TaskDetail,
@@ -37,6 +39,34 @@ export class CreateTaskDto implements CreateTaskInput {
 export class ParseCreateTaskBodyPipe implements PipeTransform<unknown, CreateTaskInput> {
   transform(value: unknown): CreateTaskInput {
     return parseCreateTaskInput(value);
+  }
+}
+
+export class AddTaskSubtaskDto implements AddTaskSubtaskInput {
+  @ApiProperty({ example: "Record bass", minLength: 1 })
+  readonly title: string = "";
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
+
+  @ApiPropertyOptional({ nullable: true, pattern: numericStringPattern.source, type: String })
+  readonly position?: string | null;
+
+  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String })
+  readonly dueAt?: string | null;
+
+  @ApiPropertyOptional({ additionalProperties: true, type: "object" })
+  readonly metadata?: Record<string, unknown>;
+}
+
+export class AddTaskSubtasksDto implements AddTaskSubtasksInput {
+  @ApiProperty({ isArray: true, minItems: 1, type: AddTaskSubtaskDto })
+  readonly subtasks: AddTaskSubtaskDto[] = [];
+}
+
+export class ParseAddTaskSubtasksBodyPipe implements PipeTransform<unknown, AddTaskSubtasksInput> {
+  transform(value: unknown): AddTaskSubtasksInput {
+    return parseAddTaskSubtasksInput(value);
   }
 }
 
@@ -206,6 +236,58 @@ function parseCreateTaskInput(value: unknown): CreateTaskInput {
   if (parentTaskId !== undefined) {
     input.parentTaskId = parentTaskId;
   }
+
+  if (description !== undefined) {
+    input.description = description;
+  }
+
+  if (position !== undefined) {
+    input.position = position;
+  }
+
+  if (dueAt !== undefined) {
+    input.dueAt = dueAt;
+  }
+
+  if (metadata !== undefined) {
+    input.metadata = metadata;
+  }
+
+  return input;
+}
+
+function parseAddTaskSubtasksInput(value: unknown): AddTaskSubtasksInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task subtasks payload must be an object.");
+  }
+
+  const subtasks = value["subtasks"];
+
+  if (!Array.isArray(subtasks) || subtasks.length === 0) {
+    throw new BadRequestException("Task subtasks payload must include at least one subtask.");
+  }
+
+  return {
+    subtasks: subtasks.map(parseAddTaskSubtaskInput),
+  };
+}
+
+function parseAddTaskSubtaskInput(value: unknown): AddTaskSubtaskInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task subtask payloads must be objects.");
+  }
+
+  const title = readRequiredNonEmptyString(value, "title");
+  const description = readOptionalNullableString(value, "description");
+  const position = readOptionalNullableString(value, "position");
+  const dueAt = readOptionalNullableDateTime(value, "dueAt");
+  const metadata = readOptionalRecord(value, "metadata");
+
+  if (position !== undefined && position !== null && !numericStringPattern.test(position)) {
+    throw new BadRequestException("Task position must be a numeric string.");
+  }
+
+  const input: AddTaskSubtaskInput = { title };
 
   if (description !== undefined) {
     input.description = description;

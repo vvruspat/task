@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import type {
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   UpdateTaskAssigneeInput,
@@ -69,6 +70,32 @@ export class TasksService {
     }
 
     return new TaskDetailDto(result.task);
+  }
+
+  async addTaskSubtasks(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: AddTaskSubtasksInput,
+  ): Promise<TaskDetailDto[]> {
+    const result = await this.readStore.addSubtasksForProject(
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      input,
+    );
+
+    if (result.status === "task_not_found") {
+      throw new NotFoundException("Task was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot create tasks in this workspace.");
+    }
+
+    return result.tasks.map((task) => new TaskDetailDto(task));
   }
 
   async updateTaskStatus(

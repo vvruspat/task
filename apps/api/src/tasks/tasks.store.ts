@@ -1,4 +1,5 @@
 import type {
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   TaskDetail,
@@ -22,6 +23,18 @@ export type TaskCreateResult =
     }
   | {
       status: "invalid_parent_task";
+    };
+
+export type TaskAddSubtasksResult =
+  | {
+      status: "created";
+      tasks: TaskDetail[];
+    }
+  | {
+      status: "task_not_found";
+    }
+  | {
+      status: "forbidden";
     };
 
 export type TaskUpdateStatusResult =
@@ -123,6 +136,13 @@ export type TaskReadStore = {
     userId: string,
     input: CreateTaskInput,
   ): Promise<TaskCreateResult>;
+  addSubtasksForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: AddTaskSubtasksInput,
+  ): Promise<TaskAddSubtasksResult>;
   updateForProject(
     workspaceId: string,
     projectId: string,
