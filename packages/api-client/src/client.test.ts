@@ -9,6 +9,7 @@ import {
 
 const workspaceId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const projectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+const taskId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
 const trustedUserId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
 
 test("createTaskApiClient fetches health without trusted user context", async () => {
@@ -188,14 +189,14 @@ test("createTaskApiClient patches task updates with trusted user context", async
     await client.updateTask({
       body,
       projectId,
-      taskId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      taskId,
       workspaceId,
     }),
     taskSummary(),
   );
   assert.equal(
     fetcher.calls[0]?.url,
-    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/dddddddd-dddd-4ddd-8ddd-dddddddddddd`,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
   );
   assert.equal(fetcher.calls[0]?.init.method, "PATCH");
   assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
@@ -211,8 +212,6 @@ test("createTaskApiClient deletes tasks with trusted user context", async () => 
     fetch: fetcher.fetch,
     trustedUserId,
   });
-  const taskId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
-
   assert.deepEqual(
     await client.archiveTask({ projectId, taskId, workspaceId }),
     archivedTaskSummary(),
@@ -226,6 +225,146 @@ test("createTaskApiClient deletes tasks with trusted user context", async () => 
   assert.equal(fetcher.calls[0]?.init.headers["content-type"], undefined);
   assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
   assert.equal(fetcher.calls[0]?.init.body, undefined);
+});
+
+test("createTaskApiClient lists task comments and attachments with trusted user context", async () => {
+  const fetcher = new RecordingFetch(sequence([[taskComment()], [taskAttachment()]]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.listTaskComments({ projectId, taskId, workspaceId }), [
+    taskComment(),
+  ]);
+  assert.deepEqual(await client.listTaskAttachments({ projectId, taskId, workspaceId }), [
+    taskAttachment(),
+  ]);
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/comments`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "GET");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+  assert.equal(
+    fetcher.calls[1]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/attachments`,
+  );
+  assert.equal(fetcher.calls[1]?.init.method, "GET");
+  assert.equal(fetcher.calls[1]?.init.headers["x-task-user-id"], trustedUserId);
+});
+
+test("createTaskApiClient creates task comments with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(taskComment()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const body = {
+    body: "Bass take is ready.",
+  };
+
+  assert.deepEqual(
+    await client.createTaskComment({ body, projectId, taskId, workspaceId }),
+    taskComment(),
+  );
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/comments`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "POST");
+  assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
+});
+
+test("createTaskApiClient creates task attachments with trusted user context", async () => {
+  const fetcher = new RecordingFetch(
+    sequence([
+      taskAttachment({ kind: "link", title: "Bass take", url: "https://example.com/bass" }),
+      taskAttachment({ kind: "file", storageKey: "workspaces/studio/bass.wav" }),
+      taskAttachment({
+        kind: "telegram_file",
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+      }),
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(
+    await client.createTaskLinkAttachment({
+      body: {
+        title: "Bass take",
+        url: "https://example.com/bass",
+      },
+      projectId,
+      taskId,
+      workspaceId,
+    }),
+    taskAttachment({ kind: "link", title: "Bass take", url: "https://example.com/bass" }),
+  );
+  assert.deepEqual(
+    await client.createTaskFileAttachment({
+      body: {
+        storageKey: "workspaces/studio/bass.wav",
+      },
+      projectId,
+      taskId,
+      workspaceId,
+    }),
+    taskAttachment({ kind: "file", storageKey: "workspaces/studio/bass.wav" }),
+  );
+  assert.deepEqual(
+    await client.createTaskTelegramFileAttachment({
+      body: {
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+      },
+      projectId,
+      taskId,
+      workspaceId,
+    }),
+    taskAttachment({
+      kind: "telegram_file",
+      telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    }),
+  );
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/attachments/links`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "POST");
+  assert.equal(
+    fetcher.calls[0]?.init.body,
+    JSON.stringify({
+      title: "Bass take",
+      url: "https://example.com/bass",
+    }),
+  );
+  assert.equal(
+    fetcher.calls[1]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/attachments/files`,
+  );
+  assert.equal(fetcher.calls[1]?.init.method, "POST");
+  assert.equal(
+    fetcher.calls[1]?.init.body,
+    JSON.stringify({ storageKey: "workspaces/studio/bass.wav" }),
+  );
+  assert.equal(
+    fetcher.calls[2]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/attachments/telegram-files`,
+  );
+  assert.equal(fetcher.calls[2]?.init.method, "POST");
+  assert.equal(
+    fetcher.calls[2]?.init.body,
+    JSON.stringify({ telegramFileId: "BQACAgIAAxkBAAIBR2Z" }),
+  );
 });
 
 test("createTaskApiClient validates supported list responses", async () => {
@@ -378,6 +517,8 @@ test("createTaskApiClient rejects malformed success responses", async () => {
       { id: workspaceId },
       { id: workspaceId },
       [{ id: workspaceId }],
+      [{ id: workspaceId }],
+      [{ id: workspaceId }],
     ]),
   );
   const client = createTaskApiClient({
@@ -409,6 +550,16 @@ test("createTaskApiClient rejects malformed success responses", async () => {
   );
   await assert.rejects(() => client.listAgentRuns({ workspaceId }), {
     message: "Task API returned malformed agent run summary list.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
+  await assert.rejects(() => client.listTaskComments({ projectId, taskId, workspaceId }), {
+    message: "Task API returned malformed task comment list.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
+  await assert.rejects(() => client.listTaskAttachments({ projectId, taskId, workspaceId }), {
+    message: "Task API returned malformed task attachment list.",
     name: "TaskApiClientError",
     status: 200,
   });
@@ -546,7 +697,7 @@ function agentRunSummary(): unknown {
 
 function taskSummary(): Record<string, unknown> {
   return {
-    id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    id: taskId,
     workspaceId,
     projectId,
     parentTaskId: null,
@@ -597,5 +748,43 @@ function workspaceStatus(): unknown {
     isDone: false,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function taskComment(): unknown {
+  return {
+    id: "11111111-1111-4111-8111-111111111111",
+    workspaceId,
+    taskId,
+    authorUserId: trustedUserId,
+    body: "Bass take is ready.",
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function taskAttachment(
+  overrides: Partial<{
+    kind: "file" | "link" | "telegram_file";
+    storageKey: string | null;
+    telegramFileId: string | null;
+    title: string | null;
+    url: string | null;
+  }> = {},
+): unknown {
+  return {
+    id: "22222222-2222-4222-8222-222222222222",
+    workspaceId,
+    targetType: "task",
+    targetId: taskId,
+    kind: overrides.kind ?? "link",
+    title: overrides.title ?? "Bass take",
+    url: overrides.url ?? "https://example.com/bass",
+    storageKey: overrides.storageKey ?? null,
+    telegramFileId: overrides.telegramFileId ?? null,
+    mimeType: null,
+    sizeBytes: null,
+    createdByUserId: trustedUserId,
+    createdAt: "2026-07-08T10:00:00.000Z",
   };
 }

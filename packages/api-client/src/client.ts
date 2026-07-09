@@ -1,9 +1,16 @@
 import type { components, operations } from "./generated/openapi.js";
 
 export type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
+export type CreateTaskCommentInput = components["schemas"]["CreateTaskCommentDto"];
+export type CreateTaskFileAttachmentInput = components["schemas"]["CreateTaskFileAttachmentDto"];
+export type CreateTaskLinkAttachmentInput = components["schemas"]["CreateTaskLinkAttachmentDto"];
+export type CreateTaskTelegramFileAttachmentInput =
+  components["schemas"]["CreateTaskTelegramFileAttachmentDto"];
 export type HealthResponse = components["schemas"]["HealthResponseDto"];
 export type ProjectDetail = components["schemas"]["ProjectDetailDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
+export type TaskAttachment = components["schemas"]["TaskAttachmentDto"];
+export type TaskComment = components["schemas"]["TaskCommentDto"];
 export type TaskDetail = components["schemas"]["TaskDetailDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
 export type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
@@ -89,13 +96,39 @@ export type UpdateTaskRequestInput = ArchiveTaskRequestInput & {
   body: UpdateTaskInput;
 };
 
+export type TaskScopedInput = ArchiveTaskRequestInput;
+
+export type CreateTaskCommentRequestInput = TaskScopedInput & {
+  body: CreateTaskCommentInput;
+};
+
+export type CreateTaskLinkAttachmentRequestInput = TaskScopedInput & {
+  body: CreateTaskLinkAttachmentInput;
+};
+
+export type CreateTaskFileAttachmentRequestInput = TaskScopedInput & {
+  body: CreateTaskFileAttachmentInput;
+};
+
+export type CreateTaskTelegramFileAttachmentRequestInput = TaskScopedInput & {
+  body: CreateTaskTelegramFileAttachmentInput;
+};
+
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
   archiveTask(input: ArchiveTaskRequestInput): Promise<TaskDetail>;
+  createTaskComment(input: CreateTaskCommentRequestInput): Promise<TaskComment>;
+  createTaskFileAttachment(input: CreateTaskFileAttachmentRequestInput): Promise<TaskAttachment>;
+  createTaskLinkAttachment(input: CreateTaskLinkAttachmentRequestInput): Promise<TaskAttachment>;
+  createTaskTelegramFileAttachment(
+    input: CreateTaskTelegramFileAttachmentRequestInput,
+  ): Promise<TaskAttachment>;
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   getHealth(): Promise<HealthResponse>;
   listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
+  listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
+  listTaskComments(input: TaskScopedInput): Promise<TaskComment[]>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
   listStatuses(input: WorkspaceScopedInput): Promise<WorkspaceStatus[]>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
@@ -194,6 +227,52 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    createTaskComment: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/comments`, taskCommentParser, {
+        body: input.body,
+        method: "POST",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    createTaskFileAttachment: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `${taskPath(input)}/attachments/files`,
+        taskAttachmentParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    createTaskLinkAttachment: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `${taskPath(input)}/attachments/links`,
+        taskAttachmentParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    createTaskTelegramFileAttachment: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `${taskPath(input)}/attachments/telegram-files`,
+        taskAttachmentParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     updateTask: (input) =>
       request(
         options.fetch,
@@ -273,6 +352,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    listTaskAttachments: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/attachments`, taskAttachmentArrayParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    listTaskComments: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/comments`, taskCommentArrayParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     listWorkspaces: () =>
       request(options.fetch, baseUrl, "/workspaces", workspaceSummaryArrayParser, {
         method: "GET",
@@ -368,6 +459,10 @@ function encodePathSegment(value: string): string {
   return encodeURIComponent(value);
 }
 
+function taskPath(input: TaskScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/${encodePathSegment(input.taskId)}`;
+}
+
 const healthResponseParser: ResponseParser<HealthResponse> = {
   isValid: isHealthResponse,
   label: "health response",
@@ -396,6 +491,26 @@ const taskSummaryArrayParser: ResponseParser<TaskSummary[]> = {
 const taskDetailParser: ResponseParser<TaskDetail> = {
   isValid: isTaskDetail,
   label: "task detail",
+};
+
+const taskAttachmentArrayParser: ResponseParser<TaskAttachment[]> = {
+  isValid: (value): value is TaskAttachment[] => isArrayOf(value, isTaskAttachment),
+  label: "task attachment list",
+};
+
+const taskAttachmentParser: ResponseParser<TaskAttachment> = {
+  isValid: isTaskAttachment,
+  label: "task attachment",
+};
+
+const taskCommentArrayParser: ResponseParser<TaskComment[]> = {
+  isValid: (value): value is TaskComment[] => isArrayOf(value, isTaskComment),
+  label: "task comment list",
+};
+
+const taskCommentParser: ResponseParser<TaskComment> = {
+  isValid: isTaskComment,
+  label: "task comment",
 };
 
 const taskSkillSummaryArrayParser: ResponseParser<TaskSkillSummary[]> = {
@@ -498,6 +613,38 @@ function isTaskDetail(value: unknown): value is TaskDetail {
   );
 }
 
+function isTaskAttachment(value: unknown): value is TaskAttachment {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    isTaskAttachmentTargetType(readProperty(value, "targetType")) &&
+    hasString(value, "targetId") &&
+    isTaskAttachmentKind(readProperty(value, "kind")) &&
+    hasOptionalNullableString(value, "title") &&
+    hasOptionalNullableString(value, "url") &&
+    hasOptionalNullableString(value, "storageKey") &&
+    hasOptionalNullableString(value, "telegramFileId") &&
+    hasOptionalNullableString(value, "mimeType") &&
+    hasOptionalNullableString(value, "sizeBytes") &&
+    hasString(value, "createdByUserId") &&
+    hasString(value, "createdAt")
+  );
+}
+
+function isTaskComment(value: unknown): value is TaskComment {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "taskId") &&
+    hasString(value, "authorUserId") &&
+    hasString(value, "body") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
+}
+
 function isTaskSkillSummary(value: unknown): value is TaskSkillSummary {
   return (
     isJsonObject(value) &&
@@ -553,6 +700,14 @@ function isAgentRunStatus(value: unknown): boolean {
     value === "completed" ||
     value === "failed"
   );
+}
+
+function isTaskAttachmentKind(value: unknown): boolean {
+  return value === "file" || value === "link" || value === "telegram_file";
+}
+
+function isTaskAttachmentTargetType(value: unknown): boolean {
+  return value === "task" || value === "project" || value === "comment";
 }
 
 function hasString(value: JsonObject, key: string): boolean {
