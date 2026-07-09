@@ -90,8 +90,8 @@
     "semantic_hash": ""
   },
   "turbo.json": {
-    "mtime": 1783337760.6009479,
-    "ast_hash": "0bdeaecab10df2b118bc25e2bb623f3a",
+    "mtime": 1783602189.1890783,
+    "ast_hash": "35bcb8d3d8fe883cd0d4dc2bc5e00bc7",
     "semantic_hash": ""
   },
   "biome.json": {
@@ -140,7 +140,7 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/index.ts": {
-    "mtime": 1783598687.1808383,
+    "mtime": 1783602213.596975,
     "ast_hash": "8fa10232bd28c5c4d848e36c309ff0ea",
     "semantic_hash": ""
   },
@@ -180,7 +180,7 @@
     "semantic_hash": ""
   },
   "packages/ui/package.json": {
-    "mtime": 1783601738.2164645,
+    "mtime": 1783602189.1886148,
     "ast_hash": "9f9b877c6a60cb17c04ece6fff59b805",
     "semantic_hash": ""
   },
@@ -250,7 +250,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1783599730.0126808,
+    "mtime": 1783602213.4138916,
     "ast_hash": "0c93f9df71956102aa43dc986a13977c",
     "semantic_hash": ""
   },
@@ -680,7 +680,7 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1783599730.0535798,
+    "mtime": 1783602213.5967696,
     "ast_hash": "e3734a75effa5e70d8d4561ce2231088",
     "semantic_hash": ""
   },
@@ -1230,12 +1230,12 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/client.test.ts": {
-    "mtime": 1783598687.1798046,
+    "mtime": 1783602213.5956428,
     "ast_hash": "0ff46942fad0e919cb46c5b9e7c9af6a",
     "semantic_hash": ""
   },
   "packages/api-client/src/client.ts": {
-    "mtime": 1783598687.180685,
+    "mtime": 1783602213.5957642,
     "ast_hash": "3bda3b3caa144aa6d0bae73a67150a09",
     "semantic_hash": ""
   },
@@ -1410,8 +1410,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/ProjectsView.tsx": {
-    "mtime": 1783601767.9181776,
-    "ast_hash": "c1c112d6887a7bd8a87318baa01a7380",
+    "mtime": 1783601811.8535304,
+    "ast_hash": "9106c80f37532067b688c2ee01c636e5",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/SettingsView.tsx": {
@@ -1465,8 +1465,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/WorkspacePrimitives.tsx": {
-    "mtime": 1783601767.9237564,
-    "ast_hash": "64bcc8fdc5d3f0e691c4e6a2e021421b",
+    "mtime": 1783601811.8530872,
+    "ast_hash": "ec97f841c9a3961f8eac5d8000c2b268",
     "semantic_hash": ""
   },
   "packages/ui/global-types.d.ts": {
