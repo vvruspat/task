@@ -1,5 +1,6 @@
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   TaskBackendClient,
   TaskDetailResponse,
   TaskSummaryResponse,
@@ -32,6 +33,11 @@ export type TaskUpdateToolInput = TaskGetToolInput & {
   title?: string;
   description?: string | null;
   metadata?: Record<string, unknown>;
+};
+
+export type TaskMoveToolInput = TaskGetToolInput & {
+  parentTaskId: string | null;
+  position: string;
 };
 
 export type TaskCreateToolInput = {
@@ -74,6 +80,7 @@ export type TaskToolHandlers = {
   archive(input: unknown): Promise<TaskDetailResponse>;
   create(input: unknown): Promise<TaskDetailResponse>;
   update(input: unknown): Promise<TaskDetailResponse>;
+  move(input: unknown): Promise<TaskDetailResponse>;
   setStatus(input: unknown): Promise<TaskDetailResponse>;
   setAssignee(input: unknown): Promise<TaskDetailResponse>;
   setDueDate(input: unknown): Promise<TaskDetailResponse>;
@@ -119,6 +126,17 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
         taskId: parsedInput.taskId,
         userId: parsedInput.userId,
         body: toUpdateTaskInput(parsedInput),
+      });
+    },
+    move: (input) => {
+      const parsedInput = parseTaskMoveToolInput(input);
+
+      return client.moveTask({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toMoveTaskInput(parsedInput),
       });
     },
     setStatus: (input) => {
@@ -216,6 +234,19 @@ export function parseTaskSetDueDateToolInput(input: unknown): TaskSetDueDateTool
     taskId: readRequiredUuid(record, "taskId"),
     userId: readRequiredUuid(record, "userId"),
     dueAt: readRequiredNullableDateTime(record, "dueAt"),
+  };
+}
+
+export function parseTaskMoveToolInput(input: unknown): TaskMoveToolInput {
+  const record = readRecord(input, "task move tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+    parentTaskId: readRequiredNullableUuid(record, "parentTaskId"),
+    position: readRequiredNumericString(record, "position"),
   };
 }
 
@@ -371,6 +402,13 @@ function toUpdateTaskInput(input: TaskUpdateToolInput): UpdateTaskInput {
   return body;
 }
 
+function toMoveTaskInput(input: TaskMoveToolInput): MoveTaskInput {
+  return {
+    parentTaskId: input.parentTaskId,
+    position: input.position,
+  };
+}
+
 function toUpdateTaskStatusInput(input: TaskSetStatusToolInput): UpdateTaskStatusInput {
   return {
     statusId: input.statusId,
@@ -498,6 +536,22 @@ function readRequiredNullableUuid(
 
   if (!uuidV4Pattern.test(trimmedValue)) {
     throw new TaskToolInputError(`${propertyName} must be a UUID v4 string or null.`);
+  }
+
+  return trimmedValue;
+}
+
+function readRequiredNumericString(record: Record<string, unknown>, propertyName: string): string {
+  const value = record[propertyName];
+
+  if (typeof value !== "string") {
+    throw new TaskToolInputError(`${propertyName} must be a numeric string.`);
+  }
+
+  const trimmedValue = value.trim();
+
+  if (!numericStringPattern.test(trimmedValue)) {
+    throw new TaskToolInputError(`${propertyName} must be a numeric string.`);
   }
 
   return trimmedValue;

@@ -4,6 +4,7 @@ import type {
   ApplyTaskSkillResponse,
   ArchiveTaskRequest,
   CreateTaskRequest,
+  MoveTaskRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
   ProjectSummaryResponse,
@@ -23,6 +24,7 @@ import {
   parseTaskArchiveToolInput,
   parseTaskCreateToolInput,
   parseTaskGetToolInput,
+  parseTaskMoveToolInput,
   parseTaskSearchToolInput,
   parseTaskSetAssigneeToolInput,
   parseTaskSetDueDateToolInput,
@@ -249,6 +251,75 @@ test("parseTaskUpdateToolInput validates and normalizes task update payloads", (
         userId,
         metadata: [],
       }),
+    TaskToolInputError,
+  );
+});
+
+test("parseTaskMoveToolInput validates and normalizes task move payloads", () => {
+  assert.deepEqual(
+    parseTaskMoveToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      parentTaskId: ` ${secondTaskId} `,
+      position: " 3000 ",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      parentTaskId: secondTaskId,
+      position: "3000",
+    },
+  );
+
+  assert.deepEqual(
+    parseTaskMoveToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      parentTaskId: null,
+      position: "-100.5",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      parentTaskId: null,
+      position: "-100.5",
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseTaskMoveToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        parentTaskId: "bad",
+        position: "1000",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskMoveToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        parentTaskId: null,
+        position: "first",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () => parseTaskMoveToolInput({ workspaceId, projectId, taskId: firstTaskId, userId }),
     TaskToolInputError,
   );
 });
@@ -534,6 +605,36 @@ test("task update handler forwards task payloads to the backend client", async (
   ]);
 });
 
+test("task move handler forwards move payloads to the backend client", async () => {
+  const calls: MoveTaskRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], [], [], [], [], [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.move({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      parentTaskId: secondTaskId,
+      position: "3000",
+    }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      body: {
+        parentTaskId: secondTaskId,
+        position: "3000",
+      },
+    },
+  ]);
+});
+
 test("task set status handler forwards status payloads to the backend client", async () => {
   const calls: UpdateTaskStatusRequest[] = [];
   const client = createBackendClientStub(tasks, [], [], [], calls);
@@ -633,6 +734,7 @@ function createBackendClientStub(
   updateTaskDueDateCalls: UpdateTaskDueDateRequest[] = [],
   archiveTaskCalls: ArchiveTaskRequest[] = [],
   updateTaskCalls: UpdateTaskRequest[] = [],
+  moveTaskCalls: MoveTaskRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -727,6 +829,11 @@ function createBackendClientStub(
     },
     updateTask: async (request): Promise<TaskDetailResponse> => {
       updateTaskCalls.push(request);
+
+      return taskDetail;
+    },
+    moveTask: async (request): Promise<TaskDetailResponse> => {
+      moveTaskCalls.push(request);
 
       return taskDetail;
     },
