@@ -16,6 +16,16 @@ export type AgentRuntimeResult = {
   tokenUsage: Record<string, unknown> | null;
   cost: Record<string, unknown> | null;
   error: string | null;
+  toolCalls: AgentRuntimeToolCall[];
+};
+
+export type AgentRuntimeToolCall = {
+  toolName: string;
+  arguments: Record<string, unknown>;
+  result: Record<string, unknown> | null;
+  status: "pending" | "success" | "error";
+  error: string | null;
+  completedAt: Date | null;
 };
 
 export type TelegramAgentRuntimeContext = {
@@ -68,6 +78,7 @@ export class StubAgentRuntime implements AgentRuntime {
       tokenUsage: null,
       cost: null,
       error: null,
+      toolCalls: [],
     };
   }
 }
@@ -168,6 +179,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         tokenUsage: readOpenRouterUsage(body),
         cost: null,
         error: null,
+        toolCalls: [],
       };
     } catch (error: unknown) {
       return buildFailedRuntimeResult(model, readRuntimeErrorMessage(error));
@@ -194,6 +206,7 @@ function buildFailedRuntimeResult(model: string, error: string): AgentRuntimeRes
     tokenUsage: null,
     cost: null,
     error,
+    toolCalls: [],
   };
 }
 

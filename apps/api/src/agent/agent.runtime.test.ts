@@ -58,6 +58,7 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
     },
     cost: null,
     error: null,
+    toolCalls: [],
   });
 
   const call = getOnlyCall(fetcher);
@@ -128,6 +129,7 @@ test("OpenRouterAgentRuntime stores failed runs for non-OK OpenRouter responses"
     tokenUsage: null,
     cost: null,
     error: "OpenRouter request failed with status 401: Invalid API key",
+    toolCalls: [],
   });
 });
 
@@ -146,6 +148,7 @@ test("OpenRouterAgentRuntime stores failed runs for malformed success responses"
     tokenUsage: null,
     cost: null,
     error: "OpenRouter response did not include assistant content.",
+    toolCalls: [],
   });
 });
 
@@ -180,6 +183,7 @@ test("OpenRouterAgentRuntime retries with fallback model after primary failure",
     },
     cost: null,
     error: null,
+    toolCalls: [],
   });
   assert.equal(fetcher.calls.length, 2);
   assert.deepEqual(
@@ -213,6 +217,7 @@ test("OpenRouterAgentRuntime stores combined failure context after fallback fail
     cost: null,
     error:
       "openai/gpt-4.1-mini: OpenRouter request failed with status 429: rate limited | anthropic/claude-3.5-sonnet: OpenRouter response did not include assistant content.",
+    toolCalls: [],
   });
 });
 
@@ -232,6 +237,7 @@ test("OpenRouterAgentRuntime stores failed runs for fetch failures", async () =>
     tokenUsage: null,
     cost: null,
     error: "network unavailable",
+    toolCalls: [],
   });
 });
 

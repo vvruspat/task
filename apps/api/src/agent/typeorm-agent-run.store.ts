@@ -4,6 +4,7 @@ import type { DataSource } from "typeorm";
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   AgentRunEntity,
+  AgentToolCallEntity,
   TelegramChatEntity,
   TelegramIdentityEntity,
   WorkspaceMemberEntity,
@@ -97,23 +98,46 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
 
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunEntity> {
     const dataSource = await this.getInitializedDataSource();
-    const repository = dataSource.getRepository(AgentRunEntity);
-    const run = repository.create({
-      workspaceId: input.workspaceId,
-      userId: input.userId,
-      source: "telegram",
-      sourceThreadId: input.sourceThreadId,
-      sourceMessageId: input.sourceMessageId,
-      model: input.runtimeResult.model,
-      inputText: input.inputText,
-      normalizedIntent: input.runtimeResult.normalizedIntent,
-      finalResponse: input.runtimeResult.finalResponse,
-      status: input.runtimeResult.status,
-      tokenUsage: input.runtimeResult.tokenUsage,
-      cost: input.runtimeResult.cost,
-      error: input.runtimeResult.error,
+
+    return dataSource.transaction(async (entityManager) => {
+      const runRepository = entityManager.getRepository(AgentRunEntity);
+      const run = await runRepository.save(
+        runRepository.create({
+          workspaceId: input.workspaceId,
+          userId: input.userId,
+          source: "telegram",
+          sourceThreadId: input.sourceThreadId,
+          sourceMessageId: input.sourceMessageId,
+          model: input.runtimeResult.model,
+          inputText: input.inputText,
+          normalizedIntent: input.runtimeResult.normalizedIntent,
+          finalResponse: input.runtimeResult.finalResponse,
+          status: input.runtimeResult.status,
+          tokenUsage: input.runtimeResult.tokenUsage,
+          cost: input.runtimeResult.cost,
+          error: input.runtimeResult.error,
+        }),
+      );
+
+      if (input.runtimeResult.toolCalls.length > 0) {
+        const toolCallRepository = entityManager.getRepository(AgentToolCallEntity);
+        const toolCalls = input.runtimeResult.toolCalls.map((toolCall) =>
+          toolCallRepository.create({
+            agentRunId: run.id,
+            toolName: toolCall.toolName,
+            arguments: toolCall.arguments,
+            result: toolCall.result,
+            status: toolCall.status,
+            error: toolCall.error,
+            completedAt: toolCall.completedAt,
+          }),
+        );
+
+        await toolCallRepository.save(toolCalls);
+      }
+
+      return run;
     });
-    return repository.save(run);
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {
