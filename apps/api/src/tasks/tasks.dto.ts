@@ -261,7 +261,7 @@ function parseAddTaskSubtasksInput(value: unknown): AddTaskSubtasksInput {
     throw new BadRequestException("Task subtasks payload must be an object.");
   }
 
-  const subtasks = value["subtasks"];
+  const subtasks = readUnknownProperty(value, "subtasks");
 
   if (!Array.isArray(subtasks) || subtasks.length === 0) {
     throw new BadRequestException("Task subtasks payload must include at least one subtask.");
@@ -380,6 +380,10 @@ function parseUpdateTaskDueDateInput(value: unknown): UpdateTaskDueDateInput {
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readUnknownProperty(value: Record<string, unknown>, propertyName: string): unknown {
+  return value[propertyName];
 }
 
 function readRequiredNonEmptyString(value: Record<string, unknown>, propertyName: string): string {
