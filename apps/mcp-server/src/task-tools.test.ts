@@ -86,12 +86,14 @@ test("parseTaskSearchToolInput validates and normalizes task search payloads", (
       projectId,
       userId,
       query: "  arrange  ",
+      limit: 1,
     }),
     {
       workspaceId,
       projectId,
       userId,
       query: "arrange",
+      limit: 1,
     },
   );
 
@@ -103,6 +105,18 @@ test("parseTaskSearchToolInput validates and normalizes task search payloads", (
 
   assert.throws(
     () => parseTaskSearchToolInput({ workspaceId, projectId, userId, query: "" }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSearchToolInput({ workspaceId, projectId, userId, limit: 0 }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSearchToolInput({ workspaceId, projectId, userId, limit: 21 }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSearchToolInput({ workspaceId, projectId, userId, limit: 1.5 }),
     TaskToolInputError,
   );
   assert.throws(
@@ -565,6 +579,23 @@ test("task search handler filters active tasks by title", async () => {
   assert.deepEqual(await handlers.search({ workspaceId, projectId, userId, query: "ARRANGE" }), [
     arrangeTask,
   ]);
+});
+
+test("task search handler applies a bounded limit after filtering", async () => {
+  const client = createBackendClientStub([
+    arrangeTask,
+    {
+      ...arrangeTask,
+      id: "88888888-8888-4888-8888-888888888888",
+      title: "Arrange drums",
+    },
+  ]);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.search({ workspaceId, projectId, userId, query: "arrange", limit: 1 }),
+    [arrangeTask],
+  );
 });
 
 test("task search handler forwards project identifiers to the backend client", async () => {

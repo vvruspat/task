@@ -158,11 +158,13 @@ test("parseProjectSearchToolInput validates and normalizes project search payloa
       workspaceId,
       userId,
       query: "  album  ",
+      limit: 1,
     }),
     {
       workspaceId,
       userId,
       query: "album",
+      limit: 1,
     },
   );
 
@@ -173,6 +175,18 @@ test("parseProjectSearchToolInput validates and normalizes project search payloa
 
   assert.throws(
     () => parseProjectSearchToolInput({ workspaceId, userId, query: "" }),
+    ProjectToolInputError,
+  );
+  assert.throws(
+    () => parseProjectSearchToolInput({ workspaceId, userId, limit: 0 }),
+    ProjectToolInputError,
+  );
+  assert.throws(
+    () => parseProjectSearchToolInput({ workspaceId, userId, limit: 21 }),
+    ProjectToolInputError,
+  );
+  assert.throws(
+    () => parseProjectSearchToolInput({ workspaceId, userId, limit: 1.5 }),
     ProjectToolInputError,
   );
   assert.throws(
@@ -193,6 +207,22 @@ test("project search handler filters active projects by title", async () => {
   const handlers = createProjectToolHandlers(client);
 
   assert.deepEqual(await handlers.search({ workspaceId, userId, query: "album" }), [albumProject]);
+});
+
+test("project search handler applies a bounded limit after filtering", async () => {
+  const client = createBackendClientStub([
+    albumProject,
+    {
+      ...albumProject,
+      id: "88888888-8888-4888-8888-888888888888",
+      title: "Album Remix",
+    },
+  ]);
+  const handlers = createProjectToolHandlers(client);
+
+  assert.deepEqual(await handlers.search({ workspaceId, userId, query: "album", limit: 1 }), [
+    albumProject,
+  ]);
 });
 
 test("project get handler forwards project identifiers to the backend client", async () => {

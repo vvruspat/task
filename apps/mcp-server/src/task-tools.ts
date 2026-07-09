@@ -13,12 +13,14 @@ import type {
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const numericStringPattern = /^-?\d+(\.\d+)?$/;
+const maxSearchResultLimit = 20;
 
 export type TaskSearchToolInput = {
   workspaceId: string;
   projectId: string;
   userId: string;
   query?: string;
+  limit?: number;
 };
 
 export type TaskGetToolInput = {
@@ -215,13 +217,12 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
         userId: parsedInput.userId,
       });
 
-      if (parsedInput.query === undefined) {
-        return tasks;
-      }
+      const matchingTasks =
+        parsedInput.query === undefined
+          ? tasks
+          : filterTasks(tasks, normalizeSearchText(parsedInput.query));
 
-      const normalizedQuery = normalizeSearchText(parsedInput.query);
-
-      return tasks.filter((task) => normalizeSearchText(task.title).includes(normalizedQuery));
+      return limitResults(matchingTasks, parsedInput.limit);
     },
   };
 }
@@ -419,9 +420,14 @@ export function parseTaskSearchToolInput(input: unknown): TaskSearchToolInput {
     userId: readRequiredUuid(record, "userId"),
   };
   const query = readOptionalNonEmptyString(record, "query");
+  const limit = readOptionalLimit(record, "limit");
 
   if (query !== undefined) {
     parsedInput.query = query;
+  }
+
+  if (limit !== undefined) {
+    parsedInput.limit = limit;
   }
 
   return parsedInput;
@@ -530,6 +536,18 @@ function normalizeSearchText(value: string): string {
   return value.trim().toLocaleLowerCase();
 }
 
+function limitResults<T>(items: T[], limit: number | undefined): T[] {
+  if (limit === undefined) {
+    return items;
+  }
+
+  return items.slice(0, limit);
+}
+
+function filterTasks(tasks: TaskSummaryResponse[], normalizedQuery: string): TaskSummaryResponse[] {
+  return tasks.filter((task) => normalizeSearchText(task.title).includes(normalizedQuery));
+}
+
 function readRecord(value: unknown, label: string): Record<string, unknown> {
   if (!isUnknownRecord(value)) {
     throw new TaskToolInputError(`${label} must be an object.`);
@@ -589,6 +607,27 @@ function readOptionalNonEmptyString(
   }
 
   return readRequiredNonEmptyString(record, propertyName);
+}
+
+function readOptionalLimit(
+  record: Record<string, unknown>,
+  propertyName: string,
+): number | undefined {
+  const value = record[propertyName];
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (typeof value !== "number" || !Number.isInteger(value)) {
+    throw new TaskToolInputError(`${propertyName} must be an integer.`);
+  }
+
+  if (value < 1 || value > maxSearchResultLimit) {
+    throw new TaskToolInputError(`${propertyName} must be between 1 and ${maxSearchResultLimit}.`);
+  }
+
+  return value;
 }
 
 function readOptionalNullableString(

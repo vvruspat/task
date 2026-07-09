@@ -51,6 +51,7 @@ const taskSkillSearchInputSchema = {
   workspaceId: z.string().uuid(),
   userId: z.string().uuid(),
   query: z.string().min(1).optional(),
+  limit: z.number().int().min(1).max(20).optional(),
 };
 
 const taskSkillGetInputSchema = {
@@ -119,6 +120,7 @@ const projectSearchInputSchema = {
   workspaceId: z.string().uuid(),
   userId: z.string().uuid(),
   query: z.string().min(1).optional(),
+  limit: z.number().int().min(1).max(20).optional(),
 };
 
 const statusListInputSchema = {
@@ -233,6 +235,7 @@ const taskSearchInputSchema = {
   projectId: z.string().uuid(),
   userId: z.string().uuid(),
   query: z.string().min(1).optional(),
+  limit: z.number().int().min(1).max(20).optional(),
 };
 
 const taskGetInputSchema = {

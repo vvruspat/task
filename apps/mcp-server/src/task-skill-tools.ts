@@ -16,6 +16,7 @@ import type {
 } from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const maxSearchResultLimit = 20;
 
 export type TaskSkillApplyToolInput = {
   workspaceId: string;
@@ -33,6 +34,7 @@ export type TaskSkillSearchToolInput = {
   workspaceId: string;
   userId: string;
   query?: string;
+  limit?: number;
 };
 
 export type TaskSkillGetToolInput = {
@@ -105,19 +107,12 @@ export function createTaskSkillToolHandlers(client: TaskBackendClient): TaskSkil
         userId: parsedInput.userId,
       });
 
-      if (parsedInput.query === undefined) {
-        return skills;
-      }
+      const matchingSkills =
+        parsedInput.query === undefined
+          ? skills
+          : filterSkills(skills, normalizeSearchText(parsedInput.query));
 
-      const normalizedQuery = normalizeSearchText(parsedInput.query);
-
-      return skills.filter((skill) => {
-        if (normalizeSearchText(skill.name).includes(normalizedQuery)) {
-          return true;
-        }
-
-        return skill.aliases.some((alias) => normalizeSearchText(alias).includes(normalizedQuery));
-      });
+      return limitResults(matchingSkills, parsedInput.limit);
     },
     get: (input) => {
       const parsedInput = parseTaskSkillGetToolInput(input);
@@ -198,9 +193,14 @@ export function parseTaskSkillSearchToolInput(input: unknown): TaskSkillSearchTo
     userId: readRequiredUuid(record, "userId"),
   };
   const query = readOptionalNonEmptyString(record, "query");
+  const limit = readOptionalLimit(record, "limit");
 
   if (query !== undefined) {
     parsedInput.query = query;
+  }
+
+  if (limit !== undefined) {
+    parsedInput.limit = limit;
   }
 
   return parsedInput;
@@ -486,6 +486,50 @@ function readOptionalNullableString(
   }
 
   return readRequiredNonEmptyString(record, propertyName);
+}
+
+function readOptionalLimit(
+  record: Record<string, unknown>,
+  propertyName: string,
+): number | undefined {
+  const value = record[propertyName];
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (typeof value !== "number" || !Number.isInteger(value)) {
+    throw new TaskSkillToolInputError(`${propertyName} must be an integer.`);
+  }
+
+  if (value < 1 || value > maxSearchResultLimit) {
+    throw new TaskSkillToolInputError(
+      `${propertyName} must be between 1 and ${maxSearchResultLimit}.`,
+    );
+  }
+
+  return value;
+}
+
+function filterSkills(
+  skills: TaskSkillSummaryResponse[],
+  normalizedQuery: string,
+): TaskSkillSummaryResponse[] {
+  return skills.filter((skill) => {
+    if (normalizeSearchText(skill.name).includes(normalizedQuery)) {
+      return true;
+    }
+
+    return skill.aliases.some((alias) => normalizeSearchText(alias).includes(normalizedQuery));
+  });
+}
+
+function limitResults<T>(items: T[], limit: number | undefined): T[] {
+  if (limit === undefined) {
+    return items;
+  }
+
+  return items.slice(0, limit);
 }
 
 function normalizeSearchText(value: string): string {

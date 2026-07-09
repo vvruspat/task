@@ -143,17 +143,31 @@ test("parseTaskSkillSearchToolInput validates and normalizes search payloads", (
       workspaceId,
       userId,
       query: " song ",
+      limit: 1,
     }),
     {
       workspaceId,
       userId,
       query: "song",
+      limit: 1,
     },
   );
 
   assert.throws(() => parseTaskSkillSearchToolInput(null), TaskSkillToolInputError);
   assert.throws(
     () => parseTaskSkillSearchToolInput({ workspaceId, userId, query: "" }),
+    TaskSkillToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSkillSearchToolInput({ workspaceId, userId, limit: 0 }),
+    TaskSkillToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSkillSearchToolInput({ workspaceId, userId, limit: 21 }),
+    TaskSkillToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSkillSearchToolInput({ workspaceId, userId, limit: 1.5 }),
     TaskSkillToolInputError,
   );
 });
@@ -379,6 +393,26 @@ test("task skill search handler filters by name and aliases", async () => {
   );
 
   assert.deepEqual(await handlers.search({ workspaceId, userId, query: "track" }), [
+    taskSkillSummary,
+  ]);
+});
+
+test("task skill search handler applies a bounded limit after filtering", async () => {
+  const handlers = createTaskSkillToolHandlers(
+    createBackendClientStub([], {
+      taskSkills: [
+        taskSkillSummary,
+        {
+          ...taskSkillSummary,
+          id: "88888888-8888-4888-8888-888888888888",
+          name: "Songwriting",
+          aliases: ["writing"],
+        },
+      ],
+    }),
+  );
+
+  assert.deepEqual(await handlers.search({ workspaceId, userId, query: "song", limit: 1 }), [
     taskSkillSummary,
   ]);
 });
