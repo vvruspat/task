@@ -1,15 +1,20 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import type { ConfirmationRequestSummaryDto } from "../confirmations/confirmations.dto.js";
+import type { ConfirmationsService } from "../confirmations/confirmations.service.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
 import { AgentRunIntakeResponseDto, AgentRunSummaryDto } from "./agent.dto.js";
 import type { AgentRuntime } from "./agent.runtime.js";
 import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import type { AgentRunStore } from "./agent.store.js";
 
+const maxPendingConfirmationRequestsInIntakeResponse = 5;
+
 @Injectable()
 export class AgentService {
   constructor(
     private readonly agentRunStore: AgentRunStore,
     private readonly agentRuntime: AgentRuntime,
+    private readonly confirmationsService: ConfirmationsService,
   ) {}
 
   async createTelegramRun(input: CreateTelegramAgentRunInput): Promise<AgentRunIntakeResponseDto> {
@@ -36,7 +41,7 @@ export class AgentService {
       });
 
       if (existingRun !== null) {
-        return mapAgentRunToIntakeResponse(existingRun);
+        return this.mapAgentRunToIntakeResponse(existingRun);
       }
     }
 
@@ -56,7 +61,7 @@ export class AgentService {
       runtimeResult,
     });
 
-    return mapAgentRunToIntakeResponse(run);
+    return this.mapAgentRunToIntakeResponse(run);
   }
 
   async listWorkspaceRuns(workspaceId: string, userId: string): Promise<AgentRunSummaryDto[]> {
@@ -68,9 +73,49 @@ export class AgentService {
 
     return runs.map((run) => mapAgentRunToSummary(run));
   }
+
+  private async mapAgentRunToIntakeResponse(
+    run: AgentRunForIntakeResponse,
+  ): Promise<AgentRunIntakeResponseDto> {
+    const pendingConfirmationRequests = await this.listPendingConfirmationRequestsForRun(run);
+
+    return new AgentRunIntakeResponseDto({
+      agentRunId: run.id,
+      workspaceId: run.workspaceId,
+      userId: run.userId,
+      source: run.source,
+      sourceMessageId: run.sourceMessageId,
+      status: run.status,
+      responseText: run.finalResponse ?? agentRuntimeNotConnectedResponse,
+      pendingConfirmationRequests: pendingConfirmationRequests.map((request) => ({
+        id: request.id,
+        kind: request.kind,
+        preview: request.preview,
+        expiresAt: request.expiresAt.toISOString(),
+      })),
+      createdAt: run.createdAt.toISOString(),
+    });
+  }
+
+  private async listPendingConfirmationRequestsForRun(
+    run: AgentRunForIntakeResponse,
+  ): Promise<ConfirmationRequestSummaryDto[]> {
+    if (run.status !== "waiting_confirmation") {
+      return [];
+    }
+
+    const requests = await this.confirmationsService.listPendingConfirmationRequests(
+      run.workspaceId,
+      run.userId,
+    );
+
+    return requests
+      .filter((request) => request.agentRunId === run.id)
+      .slice(0, maxPendingConfirmationRequestsInIntakeResponse);
+  }
 }
 
-function mapAgentRunToIntakeResponse(run: {
+type AgentRunForIntakeResponse = {
   id: string;
   workspaceId: string;
   userId: string;
@@ -79,18 +124,7 @@ function mapAgentRunToIntakeResponse(run: {
   status: "running" | "waiting_confirmation" | "completed" | "failed";
   finalResponse: string | null;
   createdAt: Date;
-}): AgentRunIntakeResponseDto {
-  return new AgentRunIntakeResponseDto({
-    agentRunId: run.id,
-    workspaceId: run.workspaceId,
-    userId: run.userId,
-    source: run.source,
-    sourceMessageId: run.sourceMessageId,
-    status: run.status,
-    responseText: run.finalResponse ?? agentRuntimeNotConnectedResponse,
-    createdAt: run.createdAt.toISOString(),
-  });
-}
+};
 
 function mapAgentRunToSummary(run: {
   id: string;

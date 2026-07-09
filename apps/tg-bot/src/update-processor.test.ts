@@ -93,6 +93,7 @@ const agentRunResponse: TelegramAgentRunIntakeResponse = {
   sourceMessageId: "20",
   status: "completed",
   responseText: "Request recorded. Agent execution is not connected yet.",
+  pendingConfirmationRequests: [],
   createdAt: "2026-07-08T00:00:00.000Z",
 };
 
@@ -149,6 +150,59 @@ test("processTelegramUpdate records resolved commands and replies with agent res
     assert.deepEqual(result.agentRun, agentRunResponse);
     assert.deepEqual(result.sentMessage, { messageId: "45" });
   }
+});
+
+test("processTelegramUpdate attaches confirmation buttons for waiting agent runs", async () => {
+  const waitingAgentRunResponse: TelegramAgentRunIntakeResponse = {
+    ...agentRunResponse,
+    status: "waiting_confirmation",
+    responseText: "Нужно подтверждение.",
+    pendingConfirmationRequests: [
+      {
+        id: "11111111-1111-4111-8111-111111111111",
+        kind: "task.create",
+        preview: { title: "Записать бас" },
+        expiresAt: "2026-07-08T01:00:00.000Z",
+      },
+    ],
+  };
+  const backendClient = new RecordingTelegramBackendClient(
+    {
+      status: "resolved",
+      userId: "22222222-2222-4222-8222-222222222222",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      defaultProjectId: null,
+    },
+    waitingAgentRunResponse,
+  );
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+
+  const result = await processTelegramUpdate(telegramUpdate, {
+    backendClient,
+    replySender,
+  });
+
+  assert.equal(result.kind, "agent_run_reply_sent");
+  assert.deepEqual(replySender.lastAction, {
+    kind: "reply",
+    telegramChatId: "-100987654321",
+    replyToMessageId: "20",
+    text: "Нужно подтверждение.",
+    inlineKeyboard: {
+      rows: [
+        [
+          {
+            text: "Подтвердить",
+            callbackData: "task:confirmation:11111111-1111-4111-8111-111111111111:confirm",
+          },
+          {
+            text: "Отменить",
+            callbackData: "task:confirmation:11111111-1111-4111-8111-111111111111:cancel",
+          },
+        ],
+      ],
+    },
+  });
 });
 
 test("processTelegramUpdate applies confirmation callbacks and replies with the result", async () => {

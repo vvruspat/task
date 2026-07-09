@@ -3,6 +3,7 @@ import { ApiExtraModels, ApiProperty, ApiPropertyOptional, getSchemaPath } from 
 import type { AgentRunStatus } from "../persistence/types/core-persistence.types.js";
 import type {
   AgentRunIntakeResponse,
+  AgentRunPendingConfirmationRequest,
   AgentRunSummary,
   CreateTelegramAgentRunInput,
   TelegramAgentRunAttachmentInput,
@@ -115,6 +116,27 @@ export class ParseCreateTelegramAgentRunBodyPipe
   }
 }
 
+export class AgentRunPendingConfirmationRequestDto implements AgentRunPendingConfirmationRequest {
+  @ApiProperty({ format: "uuid" })
+  readonly id: string;
+
+  @ApiProperty({ example: "task_skill.apply" })
+  readonly kind: string;
+
+  @ApiProperty({ additionalProperties: true, type: "object" })
+  readonly preview: Record<string, unknown>;
+
+  @ApiProperty({ format: "date-time" })
+  readonly expiresAt: string;
+
+  constructor(request: AgentRunPendingConfirmationRequest) {
+    this.id = request.id;
+    this.kind = request.kind;
+    this.preview = request.preview;
+    this.expiresAt = request.expiresAt;
+  }
+}
+
 export class AgentRunIntakeResponseDto implements AgentRunIntakeResponse {
   @ApiProperty({ format: "uuid" })
   readonly agentRunId: string;
@@ -137,6 +159,9 @@ export class AgentRunIntakeResponseDto implements AgentRunIntakeResponse {
   @ApiProperty({ example: "Request recorded. Agent execution is not connected yet." })
   readonly responseText: string;
 
+  @ApiProperty({ isArray: true, type: AgentRunPendingConfirmationRequestDto })
+  readonly pendingConfirmationRequests: AgentRunPendingConfirmationRequestDto[];
+
   @ApiProperty({ format: "date-time" })
   readonly createdAt: string;
 
@@ -148,6 +173,9 @@ export class AgentRunIntakeResponseDto implements AgentRunIntakeResponse {
     this.sourceMessageId = response.sourceMessageId;
     this.status = response.status;
     this.responseText = response.responseText;
+    this.pendingConfirmationRequests = response.pendingConfirmationRequests.map(
+      (request) => new AgentRunPendingConfirmationRequestDto(request),
+    );
     this.createdAt = response.createdAt;
   }
 }

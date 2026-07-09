@@ -6,10 +6,15 @@ import {
 } from "./backend-client.js";
 import {
   handleTelegramUpdate,
+  type TelegramInlineKeyboardMarkup,
   type TelegramReplyAction,
   type TelegramResolvedMessageAction,
 } from "./message-handler.js";
-import type { TelegramReplySender, TelegramSendMessageResult } from "./telegram-sender.js";
+import {
+  createTelegramConfirmationInlineKeyboard,
+  type TelegramReplySender,
+  type TelegramSendMessageResult,
+} from "./telegram-sender.js";
 import {
   parseTelegramConfirmationCallbackContext,
   type TelegramConfirmationCallbackContext,
@@ -90,6 +95,7 @@ export async function processTelegramUpdate(
       action.message.chat.telegramChatId,
       action.message.messageId,
       agentRun.responseText,
+      createAgentRunInlineKeyboard(agentRun),
     );
 
     return {
@@ -249,15 +255,33 @@ type TelegramCallbackReplyTarget = {
   messageId: string;
 };
 
+function createAgentRunInlineKeyboard(
+  agentRun: TelegramAgentRunIntakeResponse,
+): TelegramInlineKeyboardMarkup | undefined {
+  if (agentRun.status !== "waiting_confirmation") {
+    return undefined;
+  }
+
+  const [confirmationRequest] = agentRun.pendingConfirmationRequests;
+
+  if (confirmationRequest === undefined) {
+    return undefined;
+  }
+
+  return createTelegramConfirmationInlineKeyboard(confirmationRequest.id);
+}
+
 function createReply(
   telegramChatId: string,
   replyToMessageId: string,
   text: string,
+  inlineKeyboard?: TelegramInlineKeyboardMarkup,
 ): TelegramReplyAction {
   return {
     kind: "reply",
     telegramChatId,
     replyToMessageId,
     text,
+    ...(inlineKeyboard === undefined ? {} : { inlineKeyboard }),
   };
 }

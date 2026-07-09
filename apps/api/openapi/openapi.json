@@ -4158,6 +4158,28 @@
         },
         "required": ["telegramId", "telegramChatId", "inputText", "attachments"]
       },
+      "AgentRunPendingConfirmationRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "example": "task_skill.apply"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["id", "kind", "preview", "expiresAt"]
+      },
       "AgentRunIntakeResponseDto": {
         "type": "object",
         "properties": {
@@ -4189,6 +4211,12 @@
             "type": "string",
             "example": "Request recorded. Agent execution is not connected yet."
           },
+          "pendingConfirmationRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunPendingConfirmationRequestDto"
+            }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4201,6 +4229,7 @@
           "source",
           "status",
           "responseText",
+          "pendingConfirmationRequests",
           "createdAt"
         ]
       },

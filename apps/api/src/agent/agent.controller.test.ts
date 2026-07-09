@@ -1,5 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import type {
+  ConfirmationRequestDetail,
+  ConfirmationRequestSummary,
+  CreateConfirmationRequestInput,
+} from "../confirmations/confirmations.contracts.js";
+import { ConfirmationsService } from "../confirmations/confirmations.service.js";
+import type {
+  ConfirmationRequestCancelResult,
+  ConfirmationRequestConfirmResult,
+  ConfirmationRequestCreateResult,
+  ConfirmationRequestsStore,
+} from "../confirmations/confirmations.store.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
 import { AgentController } from "./agent.controller.js";
 import type { AgentRuntime, TelegramAgentRuntimeRequest } from "./agent.runtime.js";
@@ -18,7 +30,9 @@ test("AgentController forwards Telegram agent run requests to the service", asyn
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
-  const controller = new AgentController(new AgentService(store, new StaticAgentRuntime()));
+  const controller = new AgentController(
+    new AgentService(store, new StaticAgentRuntime(), createConfirmationsService()),
+  );
   const input: CreateTelegramAgentRunInput = {
     telegramId: "123456789",
     telegramChatId: "-100987654321",
@@ -46,6 +60,7 @@ test("AgentController forwards Telegram agent run requests to the service", asyn
       sourceMessageId: "42",
       status: "completed",
       responseText: "Request recorded. Agent execution is not connected yet.",
+      pendingConfirmationRequests: [],
       createdAt: "2026-07-08T00:00:00.000Z",
     },
   );
@@ -58,7 +73,9 @@ test("AgentRunsController forwards workspace agent run list requests to the serv
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
-  const controller = new AgentRunsController(new AgentService(store, new StaticAgentRuntime()));
+  const controller = new AgentRunsController(
+    new AgentService(store, new StaticAgentRuntime(), createConfirmationsService()),
+  );
   const runs = await controller.listWorkspaceRuns(
     "22222222-2222-4222-8222-222222222222",
     "33333333-3333-4333-8333-333333333333",
@@ -165,6 +182,51 @@ class StaticAgentRuntime implements AgentRuntime {
       cost: null,
       error: null,
     };
+  }
+}
+
+function createConfirmationsService(): ConfirmationsService {
+  return new ConfirmationsService(new EmptyConfirmationRequestsStore());
+}
+
+class EmptyConfirmationRequestsStore implements ConfirmationRequestsStore {
+  async listPendingForWorkspace(
+    _workspaceId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestSummary[]> {
+    return [];
+  }
+
+  async getForWorkspace(
+    _workspaceId: string,
+    _confirmationRequestId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestDetail | null> {
+    return null;
+  }
+
+  async createForWorkspace(
+    _workspaceId: string,
+    _userId: string,
+    _input: CreateConfirmationRequestInput,
+  ): Promise<ConfirmationRequestCreateResult> {
+    return { status: "workspace_not_found" };
+  }
+
+  async cancelForWorkspace(
+    _workspaceId: string,
+    _confirmationRequestId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestCancelResult> {
+    return { status: "workspace_not_found" };
+  }
+
+  async confirmForWorkspace(
+    _workspaceId: string,
+    _confirmationRequestId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestConfirmResult> {
+    return { status: "workspace_not_found" };
   }
 }
 

@@ -76,6 +76,14 @@ test("TelegramBackendClient posts Telegram agent runs with bot shared secret", a
     sourceMessageId: "42",
     status: "completed",
     responseText: "Request recorded. Agent execution is not connected yet.",
+    pendingConfirmationRequests: [
+      {
+        id: "44444444-4444-4444-8444-444444444444",
+        kind: "task.create",
+        preview: { title: "Записать бас" },
+        expiresAt: "2026-07-08T01:00:00.000Z",
+      },
+    ],
     createdAt: "2026-07-08T00:00:00.000Z",
   });
   const client = createTelegramBackendClient({
@@ -92,6 +100,14 @@ test("TelegramBackendClient posts Telegram agent runs with bot shared secret", a
     sourceMessageId: "42",
     status: "completed",
     responseText: "Request recorded. Agent execution is not connected yet.",
+    pendingConfirmationRequests: [
+      {
+        id: "44444444-4444-4444-8444-444444444444",
+        kind: "task.create",
+        preview: { title: "Записать бас" },
+        expiresAt: "2026-07-08T01:00:00.000Z",
+      },
+    ],
     createdAt: "2026-07-08T00:00:00.000Z",
   });
   assert.equal(fetch.lastInput, "https://api.example.test/internal/agent/telegram/runs");
@@ -238,6 +254,7 @@ test("TelegramBackendClient throws typed errors for malformed agent intake respo
       sourceMessageId: "42",
       status: "unknown",
       responseText: "Request recorded. Agent execution is not connected yet.",
+      pendingConfirmationRequests: [],
       createdAt: "2026-07-08T00:00:00.000Z",
     }).call,
   });

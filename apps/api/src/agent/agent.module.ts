@@ -1,6 +1,8 @@
 import { Module, type Provider } from "@nestjs/common";
 import { BotSharedSecretGuard } from "../auth/bot-shared-secret.guard.js";
 import { loadApiConfig } from "../config.js";
+import { ConfirmationsModule } from "../confirmations/confirmations.module.js";
+import { ConfirmationsService } from "../confirmations/confirmations.service.js";
 import { DatabaseModule } from "../database/database.module.js";
 import { AgentController } from "./agent.controller.js";
 import {
@@ -27,13 +29,16 @@ const agentRuntimeProvider: Provider<AgentRuntime> = {
 
 const agentServiceProvider: Provider<AgentService> = {
   provide: AgentService,
-  useFactory: (agentRunStore: AgentRunStore, agentRuntime: AgentRuntime): AgentService =>
-    new AgentService(agentRunStore, agentRuntime),
-  inject: [TypeOrmAgentRunStore, agentRuntimeToken],
+  useFactory: (
+    agentRunStore: AgentRunStore,
+    agentRuntime: AgentRuntime,
+    confirmationsService: ConfirmationsService,
+  ): AgentService => new AgentService(agentRunStore, agentRuntime, confirmationsService),
+  inject: [TypeOrmAgentRunStore, agentRuntimeToken, ConfirmationsService],
 };
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, ConfirmationsModule],
   controllers: [AgentController, AgentRunsController],
   providers: [
     BotSharedSecretGuard,

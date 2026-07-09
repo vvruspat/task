@@ -132,11 +132,24 @@ test("AgentRunIntakeResponseDto maps agent run intake responses", () => {
     sourceMessageId: "42",
     status: "completed",
     responseText: "Request recorded. Agent execution is not connected yet.",
+    pendingConfirmationRequests: [
+      {
+        id: "44444444-4444-4444-8444-444444444444",
+        kind: "task.create",
+        preview: { title: "Записать бас" },
+        expiresAt: "2026-07-08T01:00:00.000Z",
+      },
+    ],
     createdAt: "2026-07-08T00:00:00.000Z",
   });
 
   assert.deepEqual(
-    { ...response },
+    {
+      ...response,
+      pendingConfirmationRequests: response.pendingConfirmationRequests.map((request) => ({
+        ...request,
+      })),
+    },
     {
       agentRunId: "11111111-1111-4111-8111-111111111111",
       workspaceId: "22222222-2222-4222-8222-222222222222",
@@ -145,6 +158,14 @@ test("AgentRunIntakeResponseDto maps agent run intake responses", () => {
       sourceMessageId: "42",
       status: "completed",
       responseText: "Request recorded. Agent execution is not connected yet.",
+      pendingConfirmationRequests: [
+        {
+          id: "44444444-4444-4444-8444-444444444444",
+          kind: "task.create",
+          preview: { title: "Записать бас" },
+          expiresAt: "2026-07-08T01:00:00.000Z",
+        },
+      ],
       createdAt: "2026-07-08T00:00:00.000Z",
     },
   );

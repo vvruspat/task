@@ -1,6 +1,18 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import type {
+  ConfirmationRequestDetail,
+  ConfirmationRequestSummary,
+  CreateConfirmationRequestInput,
+} from "../confirmations/confirmations.contracts.js";
+import { ConfirmationsService } from "../confirmations/confirmations.service.js";
+import type {
+  ConfirmationRequestCancelResult,
+  ConfirmationRequestConfirmResult,
+  ConfirmationRequestCreateResult,
+  ConfirmationRequestsStore,
+} from "../confirmations/confirmations.store.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
 import type {
   AgentRuntime,
@@ -48,7 +60,7 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
     cost: null,
     error: null,
   });
-  const service = new AgentService(store, runtime);
+  const service = new AgentService(store, runtime, createConfirmationsService());
 
   assert.deepEqual(
     { ...(await service.createTelegramRun(input)) },
@@ -60,6 +72,7 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
       sourceMessageId: "42",
       status: "completed",
       responseText: agentRuntimeNotConnectedResponse,
+      pendingConfirmationRequests: [],
       createdAt: "2026-07-08T00:00:00.000Z",
     },
   );
@@ -117,7 +130,7 @@ test("AgentService returns an existing Telegram run without invoking runtime on 
     existingRun,
   );
   const runtime = new RecordingAgentRuntime();
-  const service = new AgentService(store, runtime);
+  const service = new AgentService(store, runtime, createConfirmationsService());
 
   assert.deepEqual(
     { ...(await service.createTelegramRun(input)) },
@@ -129,6 +142,7 @@ test("AgentService returns an existing Telegram run without invoking runtime on 
       sourceMessageId: "42",
       status: "completed",
       responseText: "Already handled.",
+      pendingConfirmationRequests: [],
       createdAt: "2026-07-08T00:01:00.000Z",
     },
   );
@@ -140,6 +154,51 @@ test("AgentService returns an existing Telegram run without invoking runtime on 
   });
   assert.equal(runtime.lastRequest, null);
   assert.equal(store.lastPersistInput, null);
+});
+
+test("AgentService includes pending confirmation requests for waiting Telegram runs", async () => {
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+  const runtime = new RecordingAgentRuntime({
+    model: "openai/gpt-4.1-mini",
+    normalizedIntent: { kind: "openrouter_chat_completion" },
+    finalResponse: "Нужно подтверждение.",
+    status: "waiting_confirmation",
+    tokenUsage: null,
+    cost: null,
+    error: null,
+  });
+  const service = new AgentService(
+    store,
+    runtime,
+    createConfirmationsService([
+      createConfirmationRequestSummary({
+        id: "55555555-5555-4555-8555-555555555555",
+        agentRunId: "11111111-1111-4111-8111-111111111111",
+      }),
+      createConfirmationRequestSummary({
+        id: "66666666-6666-4666-8666-666666666666",
+        agentRunId: "44444444-4444-4444-8444-444444444444",
+      }),
+    ]),
+  );
+
+  const response = await service.createTelegramRun(input);
+
+  assert.deepEqual(
+    response.pendingConfirmationRequests.map((request) => ({ ...request })),
+    [
+      {
+        id: "55555555-5555-4555-8555-555555555555",
+        kind: "task.create",
+        preview: { title: "Записать бас" },
+        expiresAt: "2026-07-08T01:00:00.000Z",
+      },
+    ],
+  );
 });
 
 test("AgentService lists workspace agent runs as summary DTOs", async () => {
@@ -171,7 +230,11 @@ test("AgentService lists workspace agent runs as summary DTOs", async () => {
       },
     ],
   );
-  const service = new AgentService(store, new RecordingAgentRuntime());
+  const service = new AgentService(
+    store,
+    new RecordingAgentRuntime(),
+    createConfirmationsService(),
+  );
 
   assert.deepEqual(
     (
@@ -213,7 +276,11 @@ test("AgentService hides agent runs for inaccessible workspaces", async () => {
     null,
     null,
   );
-  const service = new AgentService(store, new RecordingAgentRuntime());
+  const service = new AgentService(
+    store,
+    new RecordingAgentRuntime(),
+    createConfirmationsService(),
+  );
 
   await assert.rejects(
     () =>
@@ -229,6 +296,7 @@ test("AgentService rejects unlinked Telegram users", async () => {
   const service = new AgentService(
     new RecordingAgentRunStore({ status: "telegram_user_unlinked" }),
     new RecordingAgentRuntime(),
+    createConfirmationsService(),
   );
 
   await assert.rejects(() => service.createTelegramRun(input), NotFoundException);
@@ -238,6 +306,7 @@ test("AgentService rejects unlinked Telegram chats", async () => {
   const service = new AgentService(
     new RecordingAgentRunStore({ status: "telegram_chat_unlinked" }),
     new RecordingAgentRuntime(),
+    createConfirmationsService(),
   );
 
   await assert.rejects(() => service.createTelegramRun(input), NotFoundException);
@@ -247,6 +316,7 @@ test("AgentService rejects users outside the Telegram chat workspace", async () 
   const service = new AgentService(
     new RecordingAgentRunStore({ status: "user_not_in_chat_workspace" }),
     new RecordingAgentRuntime(),
+    createConfirmationsService(),
   );
 
   await assert.rejects(() => service.createTelegramRun(input), ForbiddenException);
@@ -329,6 +399,72 @@ class RecordingAgentRuntime implements AgentRuntime {
     this.lastRequest = request;
 
     return this.result;
+  }
+}
+
+function createConfirmationsService(
+  requests: ConfirmationRequestSummary[] = [],
+): ConfirmationsService {
+  return new ConfirmationsService(new RecordingConfirmationRequestsStore(requests));
+}
+
+function createConfirmationRequestSummary(
+  overrides: Pick<ConfirmationRequestSummary, "id" | "agentRunId">,
+): ConfirmationRequestSummary {
+  return {
+    id: overrides.id,
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    agentRunId: overrides.agentRunId,
+    userId: "33333333-3333-4333-8333-333333333333",
+    kind: "task.create",
+    preview: { title: "Записать бас" },
+    status: "pending",
+    expiresAt: new Date("2026-07-08T01:00:00.000Z"),
+    createdAt: new Date("2026-07-08T00:00:00.000Z"),
+    updatedAt: new Date("2026-07-08T00:00:00.000Z"),
+  };
+}
+
+class RecordingConfirmationRequestsStore implements ConfirmationRequestsStore {
+  constructor(private readonly requests: ConfirmationRequestSummary[]) {}
+
+  async listPendingForWorkspace(
+    _workspaceId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestSummary[]> {
+    return this.requests;
+  }
+
+  async getForWorkspace(
+    _workspaceId: string,
+    _confirmationRequestId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestDetail | null> {
+    return null;
+  }
+
+  async createForWorkspace(
+    _workspaceId: string,
+    _userId: string,
+    _input: CreateConfirmationRequestInput,
+  ): Promise<ConfirmationRequestCreateResult> {
+    return { status: "workspace_not_found" };
+  }
+
+  async cancelForWorkspace(
+    _workspaceId: string,
+    _confirmationRequestId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestCancelResult> {
+    return { status: "workspace_not_found" };
+  }
+
+  async confirmForWorkspace(
+    _workspaceId: string,
+    _confirmationRequestId: string,
+    _userId: string,
+  ): Promise<ConfirmationRequestConfirmResult> {
+    return { status: "workspace_not_found" };
   }
 }
 
