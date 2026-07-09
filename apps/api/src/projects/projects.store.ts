@@ -1,4 +1,9 @@
-import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projects.contracts.js";
+import type {
+  CreateProjectInput,
+  ProjectDetail,
+  ProjectSummary,
+  UpdateProjectInput,
+} from "./projects.contracts.js";
 
 export type ProjectCreateResult =
   | {
@@ -24,6 +29,18 @@ export type ProjectArchiveResult =
       status: "forbidden";
     };
 
+export type ProjectUpdateResult =
+  | {
+      project: ProjectDetail;
+      status: "updated";
+    }
+  | {
+      status: "project_not_found";
+    }
+  | {
+      status: "forbidden";
+    };
+
 export type ProjectReadStore = {
   listActiveForWorkspace(workspaceId: string, userId: string): Promise<ProjectSummary[] | null>;
   getForWorkspace(
@@ -36,6 +53,12 @@ export type ProjectReadStore = {
     userId: string,
     input: CreateProjectInput,
   ): Promise<ProjectCreateResult>;
+  updateForWorkspace(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: UpdateProjectInput,
+  ): Promise<ProjectUpdateResult>;
   archiveForWorkspace(
     workspaceId: string,
     projectId: string,

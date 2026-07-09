@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -14,12 +14,14 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import type { CreateProjectInput } from "./projects.contracts.js";
+import type { CreateProjectInput, UpdateProjectInput } from "./projects.contracts.js";
 import {
   CreateProjectDto,
   ParseCreateProjectBodyPipe,
+  ParseUpdateProjectBodyPipe,
   ProjectDetailDto,
   ProjectSummaryDto,
+  UpdateProjectDto,
 } from "./projects.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { ProjectsService } from "./projects.service.js";
@@ -75,6 +77,26 @@ export class ProjectsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<ProjectDetailDto> {
     return this.projectsService.archiveProject(workspaceId, projectId, userId);
+  }
+
+  @Patch(":projectId")
+  @ApiOperation({ summary: "Update one active project in a visible workspace" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiBody({ type: UpdateProjectDto })
+  @ApiOkResponse({ type: ProjectDetailDto })
+  @ApiBadRequestResponse({ description: "Project payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update projects in this workspace." })
+  @ApiNotFoundResponse({
+    description: "Workspace or active project is missing or not visible to the current user.",
+  })
+  updateProject(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateProjectBodyPipe()) input: UpdateProjectInput,
+  ): Promise<ProjectDetailDto> {
+    return this.projectsService.updateProject(workspaceId, projectId, userId, input);
   }
 
   @Get(":projectId")

@@ -1,13 +1,19 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
-import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projects.contracts.js";
+import type {
+  CreateProjectInput,
+  ProjectDetail,
+  ProjectSummary,
+  UpdateProjectInput,
+} from "./projects.contracts.js";
 import { ProjectDetailDto, ProjectSummaryDto } from "./projects.dto.js";
 import { ProjectsService } from "./projects.service.js";
 import type {
   ProjectArchiveResult,
   ProjectCreateResult,
   ProjectReadStore,
+  ProjectUpdateResult,
 } from "./projects.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -98,6 +104,38 @@ test("ProjectsService archives projects for writable workspace members", async (
   assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
 });
 
+test("ProjectsService updates projects for writable workspace members", async () => {
+  const input: UpdateProjectInput = {
+    title: "Updated release",
+    description: "Updated planning",
+    status: null,
+    position: "3000",
+  };
+  const service = new ProjectsService(
+    createReadStore({
+      updateResult: {
+        project: {
+          ...projectSummary,
+          title: input.title ?? projectSummary.title,
+          description: input.description ?? null,
+          status: input.status ?? null,
+          position: input.position ?? null,
+        },
+        status: "updated",
+      },
+    }),
+  );
+
+  const response = await service.updateProject(workspaceId, projectId, userId, input);
+
+  assert.ok(response instanceof ProjectDetailDto);
+  assert.equal(response.id, projectId);
+  assert.equal(response.title, input.title);
+  assert.equal(response.description, input.description);
+  assert.equal(response.status, input.status);
+  assert.equal(response.position, input.position);
+});
+
 test("ProjectsService hides inaccessible workspaces and missing projects", async () => {
   const service = new ProjectsService(createReadStore({ project: null, projects: null }));
 
@@ -109,6 +147,10 @@ test("ProjectsService hides inaccessible workspaces and missing projects", async
   );
   await assert.rejects(
     () => service.archiveProject(workspaceId, projectId, userId),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () => service.updateProject(workspaceId, projectId, userId, { title: "Hidden" }),
     NotFoundException,
   );
 });
@@ -131,11 +173,21 @@ test("ProjectsService rejects project archives without write permission", async 
   );
 });
 
+test("ProjectsService rejects project updates without write permission", async () => {
+  const service = new ProjectsService(createReadStore({ updateResult: { status: "forbidden" } }));
+
+  await assert.rejects(
+    () => service.updateProject(workspaceId, projectId, userId, { title: "Hidden" }),
+    ForbiddenException,
+  );
+});
+
 function createReadStore(options: {
   projects?: ProjectSummary[] | null;
   project?: ProjectDetail | null;
   createResult?: ProjectCreateResult;
   archiveResult?: ProjectArchiveResult;
+  updateResult?: ProjectUpdateResult;
 }): ProjectReadStore {
   return {
     listActiveForWorkspace: async (): Promise<ProjectSummary[] | null> =>
@@ -144,6 +196,8 @@ function createReadStore(options: {
       options.project === undefined ? null : options.project,
     createForWorkspace: async (): Promise<ProjectCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
+    updateForWorkspace: async (): Promise<ProjectUpdateResult> =>
+      options.updateResult ?? { status: "project_not_found" },
     archiveForWorkspace: async (): Promise<ProjectArchiveResult> =>
       options.archiveResult ?? { status: "project_not_found" },
   };

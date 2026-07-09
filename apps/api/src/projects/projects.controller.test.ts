@@ -1,14 +1,20 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
-import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projects.contracts.js";
+import type {
+  CreateProjectInput,
+  ProjectDetail,
+  ProjectSummary,
+  UpdateProjectInput,
+} from "./projects.contracts.js";
 import { ProjectsController } from "./projects.controller.js";
-import { ParseCreateProjectBodyPipe } from "./projects.dto.js";
+import { ParseCreateProjectBodyPipe, ParseUpdateProjectBodyPipe } from "./projects.dto.js";
 import { ProjectsService } from "./projects.service.js";
 import type {
   ProjectArchiveResult,
   ProjectCreateResult,
   ProjectReadStore,
+  ProjectUpdateResult,
 } from "./projects.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -89,6 +95,30 @@ test("ProjectsController uses trusted current user context for project archives"
   assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
 });
 
+test("ProjectsController uses trusted current user context for project updates", async () => {
+  const input: UpdateProjectInput = { description: "Updated planning", status: null };
+  const controller = new ProjectsController(
+    new ProjectsService(
+      createReadStore({
+        updateResult: {
+          project: {
+            ...projectSummary,
+            description: input.description ?? null,
+            status: input.status ?? null,
+          },
+          status: "updated",
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.updateProject(workspaceId, projectId, userId, input);
+
+  assert.equal(response.id, projectId);
+  assert.equal(response.description, input.description);
+  assert.equal(response.status, input.status);
+});
+
 test("ParseCreateProjectBodyPipe validates and normalizes project create payloads", () => {
   const pipe = new ParseCreateProjectBodyPipe();
 
@@ -113,17 +143,46 @@ test("ParseCreateProjectBodyPipe validates and normalizes project create payload
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseUpdateProjectBodyPipe validates and normalizes project update payloads", () => {
+  const pipe = new ParseUpdateProjectBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      title: "  Next release  ",
+      description: "",
+      status: " active ",
+      position: "2000",
+    }),
+    {
+      title: "Next release",
+      description: null,
+      status: "active",
+      position: "2000",
+    },
+  );
+  assert.deepEqual(pipe.transform({ status: null }), { status: null });
+
+  assert.throws(() => pipe.transform({}), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ position: "first" }), BadRequestException);
+  assert.throws(() => pipe.transform({ status: 1 }), BadRequestException);
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createReadStore(options: {
   projects?: ProjectSummary[] | null;
   project?: ProjectDetail | null;
   createResult?: ProjectCreateResult;
   archiveResult?: ProjectArchiveResult;
+  updateResult?: ProjectUpdateResult;
 }): ProjectReadStore {
   return {
     listActiveForWorkspace: async (): Promise<ProjectSummary[] | null> => options.projects ?? [],
     getForWorkspace: async (): Promise<ProjectDetail | null> => options.project ?? null,
     createForWorkspace: async (): Promise<ProjectCreateResult> =>
       options.createResult ?? { status: "workspace_not_found" },
+    updateForWorkspace: async (): Promise<ProjectUpdateResult> =>
+      options.updateResult ?? { status: "project_not_found" },
     archiveForWorkspace: async (): Promise<ProjectArchiveResult> =>
       options.archiveResult ?? { status: "project_not_found" },
   };
