@@ -59,6 +59,7 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
     tokenUsage: null,
     cost: null,
     error: null,
+    toolCalls: [],
   });
   const service = new AgentService(store, runtime, createConfirmationsService());
 
@@ -98,8 +99,61 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
       tokenUsage: null,
       cost: null,
       error: null,
+      toolCalls: [],
     },
   });
+});
+
+test("AgentService passes runtime tool-call logs to persistence", async () => {
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+  const runtime = new RecordingAgentRuntime({
+    model: "openai/gpt-4.1-mini",
+    normalizedIntent: {
+      kind: "mocked_tool_execution",
+      source: "telegram",
+    },
+    finalResponse: "Task created.",
+    status: "completed",
+    tokenUsage: null,
+    cost: null,
+    error: null,
+    toolCalls: [
+      {
+        toolName: "tasks.create",
+        arguments: {
+          title: "Follow up with Marina",
+        },
+        result: {
+          taskId: "55555555-5555-4555-8555-555555555555",
+        },
+        status: "success",
+        error: null,
+        completedAt: new Date("2026-07-08T00:00:03.000Z"),
+      },
+    ],
+  });
+  const service = new AgentService(store, runtime, createConfirmationsService());
+
+  await service.createTelegramRun(input);
+
+  assert.deepEqual(store.lastPersistInput?.runtimeResult.toolCalls, [
+    {
+      toolName: "tasks.create",
+      arguments: {
+        title: "Follow up with Marina",
+      },
+      result: {
+        taskId: "55555555-5555-4555-8555-555555555555",
+      },
+      status: "success",
+      error: null,
+      completedAt: new Date("2026-07-08T00:00:03.000Z"),
+    },
+  ]);
 });
 
 test("AgentService returns an existing Telegram run without invoking runtime on retries", async () => {
@@ -170,6 +224,7 @@ test("AgentService includes pending confirmation requests for waiting Telegram r
     tokenUsage: null,
     cost: null,
     error: null,
+    toolCalls: [],
   });
   const service = new AgentService(
     store,
@@ -392,6 +447,7 @@ class RecordingAgentRuntime implements AgentRuntime {
       tokenUsage: null,
       cost: null,
       error: null,
+      toolCalls: [],
     },
   ) {}
 

@@ -181,6 +181,7 @@ class StaticAgentRuntime implements AgentRuntime {
       tokenUsage: null,
       cost: null,
       error: null,
+      toolCalls: [],
     };
   }
 }

@@ -1,6 +1,6 @@
 import type { AgentRunRecord } from "../persistence/types/core-persistence.types.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
-import type { AgentRuntimeResult } from "./agent.runtime.js";
+import type { AgentRuntimeResult, AgentRuntimeToolCall } from "./agent.runtime.js";
 
 export type TelegramAgentRunContextResult =
   | {
@@ -26,6 +26,8 @@ export type PersistTelegramAgentRunInput = {
   inputText: string;
   runtimeResult: AgentRuntimeResult;
 };
+
+export type PersistAgentToolCallInput = AgentRuntimeToolCall;
 
 export type FindTelegramAgentRunInput = {
   workspaceId: string;
