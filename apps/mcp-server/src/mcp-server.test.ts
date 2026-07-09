@@ -920,6 +920,7 @@ test("registerTaskTools registers task tools", async () => {
       "task.add_subtasks",
       "task.move",
       "task.set_assignee",
+      "task.assign",
       "task.set_due_date",
       "task.get",
       "task.archive",
@@ -932,10 +933,11 @@ test("registerTaskTools registers task tools", async () => {
   assert.equal(toolCalls[3]?.config.title, "Add subtasks");
   assert.equal(toolCalls[4]?.config.title, "Move task");
   assert.equal(toolCalls[5]?.config.title, "Set task assignee");
-  assert.equal(toolCalls[6]?.config.title, "Set task due date");
-  assert.equal(toolCalls[7]?.config.title, "Get task");
-  assert.equal(toolCalls[8]?.config.title, "Archive task");
-  assert.equal(toolCalls[9]?.config.title, "Search tasks");
+  assert.equal(toolCalls[6]?.config.title, "Assign task");
+  assert.equal(toolCalls[7]?.config.title, "Set task due date");
+  assert.equal(toolCalls[8]?.config.title, "Get task");
+  assert.equal(toolCalls[9]?.config.title, "Archive task");
+  assert.equal(toolCalls[10]?.config.title, "Search tasks");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -1063,7 +1065,28 @@ test("registerTaskTools registers task tools", async () => {
   });
 
   assert.deepEqual(JSON.parse(readTextResult(assigneeResult)), taskResponse);
+
+  const assignCall = toolCalls[6];
+  assert.ok(assignCall !== undefined);
+  const assignResult = await assignCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    assigneeUserId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(assignResult)), taskResponse);
   assert.deepEqual(assigneeCalls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        assigneeUserId,
+      },
+    },
     {
       workspaceId,
       projectId,
@@ -1075,7 +1098,7 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const dueDateCall = toolCalls[6];
+  const dueDateCall = toolCalls[7];
   assert.ok(dueDateCall !== undefined);
   const dueDateResult = await dueDateCall.callback({
     workspaceId,
@@ -1098,7 +1121,7 @@ test("registerTaskTools registers task tools", async () => {
     },
   ]);
 
-  const getCall = toolCalls[7];
+  const getCall = toolCalls[8];
   assert.ok(getCall !== undefined);
   const getResult = await getCall.callback({
     workspaceId,
@@ -1109,7 +1132,7 @@ test("registerTaskTools registers task tools", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(getResult)), taskResponse);
 
-  const archiveCall = toolCalls[8];
+  const archiveCall = toolCalls[9];
   assert.ok(archiveCall !== undefined);
   const archiveResult = await archiveCall.callback({
     workspaceId,
@@ -1124,7 +1147,7 @@ test("registerTaskTools registers task tools", async () => {
   });
   assert.deepEqual(archiveCalls, [{ workspaceId, projectId, taskId: rootTaskId, userId }]);
 
-  const searchCall = toolCalls[9];
+  const searchCall = toolCalls[10];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
