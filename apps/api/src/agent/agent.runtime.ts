@@ -2,6 +2,11 @@ import { Injectable } from "@nestjs/common";
 import type { ApiOpenRouterConfig } from "../config.js";
 import type { AgentRunStatus } from "../persistence/types/core-persistence.types.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
+import {
+  type AgentToolOperationCall,
+  type AgentToolOperationDispatcher,
+  StaticAgentToolOperationDispatcher,
+} from "./agent-tool-dispatcher.js";
 
 export const agentRuntimeNotConnectedResponse =
   "Request recorded. Agent execution is not connected yet.";
@@ -87,6 +92,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
   constructor(
     private readonly config: ApiOpenRouterConfig,
     private readonly fetcher: OpenRouterFetch = defaultOpenRouterFetch,
+    private readonly toolDispatcher: AgentToolOperationDispatcher = new StaticAgentToolOperationDispatcher(),
   ) {}
 
   async handleTelegramRequest(request: TelegramAgentRuntimeRequest): Promise<AgentRuntimeResult> {
@@ -159,14 +165,31 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
       }
 
       const body = await response.json();
-      const content = readOpenRouterAssistantContent(body);
+      const message = readOpenRouterAssistantMessage(body);
 
-      if (content === null) {
+      if (message === null) {
         return buildFailedRuntimeResult(
           model,
-          "OpenRouter response did not include assistant content.",
+          "OpenRouter response did not include an assistant message.",
         );
       }
+
+      const content = readOpenRouterAssistantContent(message);
+      const parsedToolCalls = readOpenRouterToolCalls(message);
+
+      if (parsedToolCalls.status === "error") {
+        return buildFailedRuntimeResult(model, parsedToolCalls.error);
+      }
+
+      if (content === null && parsedToolCalls.toolCalls.length === 0) {
+        return buildFailedRuntimeResult(
+          model,
+          "OpenRouter response did not include assistant content or tool calls.",
+        );
+      }
+
+      const toolCalls = await this.dispatchToolCalls(parsedToolCalls.toolCalls);
+      const failedToolCall = toolCalls.find((toolCall) => toolCall.status === "error") ?? null;
 
       return {
         model,
@@ -174,15 +197,42 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           kind: "openrouter_chat_completion",
           source: "telegram",
         },
-        finalResponse: content,
-        status: "completed",
+        finalResponse: content ?? "Agent operation dispatch recorded.",
+        status: failedToolCall === null ? "completed" : "failed",
         tokenUsage: readOpenRouterUsage(body),
         cost: null,
-        error: null,
-        toolCalls: [],
+        error: failedToolCall?.error ?? null,
+        toolCalls,
       };
     } catch (error: unknown) {
       return buildFailedRuntimeResult(model, readRuntimeErrorMessage(error));
+    }
+  }
+
+  private async dispatchToolCalls(
+    toolCalls: AgentToolOperationCall[],
+  ): Promise<AgentRuntimeToolCall[]> {
+    const dispatchedToolCalls: AgentRuntimeToolCall[] = [];
+
+    for (const toolCall of toolCalls) {
+      dispatchedToolCalls.push(await this.dispatchToolCall(toolCall));
+    }
+
+    return dispatchedToolCalls;
+  }
+
+  private async dispatchToolCall(toolCall: AgentToolOperationCall): Promise<AgentRuntimeToolCall> {
+    try {
+      return await this.toolDispatcher.dispatchToolCall(toolCall);
+    } catch (error: unknown) {
+      return {
+        toolName: toolCall.toolName,
+        arguments: toolCall.arguments,
+        result: null,
+        status: "error",
+        error: readRuntimeErrorMessage(error),
+        completedAt: new Date(),
+      };
     }
   }
 }
@@ -210,7 +260,7 @@ function buildFailedRuntimeResult(model: string, error: string): AgentRuntimeRes
   };
 }
 
-function readOpenRouterAssistantContent(value: unknown): string | null {
+function readOpenRouterAssistantMessage(value: unknown): OpenRouterMessage | null {
   if (!isRecord(value)) {
     return null;
   }
@@ -231,9 +281,106 @@ function readOpenRouterAssistantContent(value: unknown): string | null {
     return null;
   }
 
-  const content = firstChoice.message.content;
+  return firstChoice.message;
+}
+
+function readOpenRouterAssistantContent(message: OpenRouterMessage): string | null {
+  const content = message.content;
 
   return typeof content === "string" && content.trim().length > 0 ? content : null;
+}
+
+function readOpenRouterToolCalls(message: OpenRouterMessage): ReadOpenRouterToolCallsResult {
+  const toolCalls = message.tool_calls;
+
+  if (toolCalls === undefined) {
+    return { status: "success", toolCalls: [] };
+  }
+
+  if (!Array.isArray(toolCalls)) {
+    return {
+      status: "error",
+      error: "OpenRouter assistant tool_calls must be an array.",
+    };
+  }
+
+  const parsedToolCalls: AgentToolOperationCall[] = [];
+
+  for (const toolCall of toolCalls) {
+    const parsedToolCall = readOpenRouterToolCall(toolCall);
+
+    if (parsedToolCall.status === "error") {
+      return parsedToolCall;
+    }
+
+    parsedToolCalls.push(parsedToolCall.toolCall);
+  }
+
+  return { status: "success", toolCalls: parsedToolCalls };
+}
+
+function readOpenRouterToolCall(value: unknown): ReadOpenRouterToolCallResult {
+  if (!isOpenRouterToolCall(value) || !isOpenRouterFunctionToolCall(value.function)) {
+    return {
+      status: "error",
+      error: "OpenRouter assistant tool call must include a function name and arguments.",
+    };
+  }
+
+  const toolName = value.function.name;
+
+  if (typeof toolName !== "string" || toolName.trim().length === 0) {
+    return {
+      status: "error",
+      error: "OpenRouter assistant tool call function name must be a non-empty string.",
+    };
+  }
+
+  const argumentsJson = value.function.arguments;
+
+  if (typeof argumentsJson !== "string") {
+    return {
+      status: "error",
+      error: "OpenRouter assistant tool call function arguments must be a JSON object string.",
+    };
+  }
+
+  const parsedArguments = parseToolCallArguments(argumentsJson);
+
+  if (parsedArguments.status === "error") {
+    return parsedArguments;
+  }
+
+  return {
+    status: "success",
+    toolCall: {
+      toolName,
+      arguments: parsedArguments.arguments,
+    },
+  };
+}
+
+function parseToolCallArguments(value: string): ParseToolCallArgumentsResult {
+  try {
+    const parsedValue: unknown = JSON.parse(value);
+
+    if (!isRecord(parsedValue)) {
+      return {
+        status: "error",
+        error: "OpenRouter assistant tool call function arguments must parse to an object.",
+      };
+    }
+
+    return {
+      status: "success",
+      arguments: parsedValue,
+    };
+  } catch {
+    return {
+      status: "error",
+      error: "OpenRouter assistant tool call function arguments must be valid JSON.",
+    };
+  }
 }
 
 function readOpenRouterUsage(value: unknown): Record<string, unknown> | null {
@@ -288,6 +435,7 @@ type OpenRouterChoice = {
 
 type OpenRouterMessage = {
   content?: unknown;
+  tool_calls?: unknown;
 };
 
 type OpenRouterErrorResponse = {
@@ -297,6 +445,45 @@ type OpenRouterErrorResponse = {
 type OpenRouterError = {
   message?: unknown;
 };
+
+type OpenRouterToolCall = {
+  function?: unknown;
+};
+
+type OpenRouterFunctionToolCall = {
+  name?: unknown;
+  arguments?: unknown;
+};
+
+type ReadOpenRouterToolCallsResult =
+  | {
+      status: "success";
+      toolCalls: AgentToolOperationCall[];
+    }
+  | {
+      status: "error";
+      error: string;
+    };
+
+type ReadOpenRouterToolCallResult =
+  | {
+      status: "success";
+      toolCall: AgentToolOperationCall;
+    }
+  | {
+      status: "error";
+      error: string;
+    };
+
+type ParseToolCallArgumentsResult =
+  | {
+      status: "success";
+      arguments: Record<string, unknown>;
+    }
+  | {
+      status: "error";
+      error: string;
+    };
 
 function isOpenRouterCompletionResponse(value: unknown): value is OpenRouterCompletionResponse {
   return isRecord(value);
@@ -315,5 +502,13 @@ function isOpenRouterErrorResponse(value: unknown): value is OpenRouterErrorResp
 }
 
 function isOpenRouterError(value: unknown): value is OpenRouterError {
+  return isRecord(value);
+}
+
+function isOpenRouterToolCall(value: unknown): value is OpenRouterToolCall {
+  return isRecord(value);
+}
+
+function isOpenRouterFunctionToolCall(value: unknown): value is OpenRouterFunctionToolCall {
   return isRecord(value);
 }

@@ -1,12 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  type AgentRuntimeToolCall,
   OpenRouterAgentRuntime,
   type OpenRouterFetch,
   type OpenRouterFetchInit,
   type OpenRouterFetchResponse,
   openRouterChatCompletionsEndpoint,
 } from "./agent.runtime.js";
+import type {
+  AgentToolOperationCall,
+  AgentToolOperationDispatcher,
+} from "./agent-tool-dispatcher.js";
 
 const request = {
   input: {
@@ -84,6 +89,171 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   });
 });
 
+test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed operations", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: "Task created.",
+            tool_calls: [
+              {
+                type: "function",
+                function: {
+                  name: "tasks.create",
+                  arguments: JSON.stringify({
+                    workspaceId: "22222222-2222-4222-8222-222222222222",
+                    projectId: "44444444-4444-4444-8444-444444444444",
+                    title: "Follow up with Marina",
+                  }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+      usage: {
+        total_tokens: 24,
+      },
+    }),
+  );
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    {
+      toolName: "tasks.create",
+      arguments: {
+        workspaceId: "22222222-2222-4222-8222-222222222222",
+        projectId: "44444444-4444-4444-8444-444444444444",
+        title: "Follow up with Marina",
+      },
+      result: {
+        taskId: "55555555-5555-4555-8555-555555555555",
+      },
+      status: "success",
+      error: null,
+      completedAt: new Date("2026-07-08T00:00:03.000Z"),
+    },
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  assert.deepEqual(await runtime.handleTelegramRequest(request), {
+    model: "openai/gpt-4.1-mini",
+    normalizedIntent: {
+      kind: "openrouter_chat_completion",
+      source: "telegram",
+    },
+    finalResponse: "Task created.",
+    status: "completed",
+    tokenUsage: {
+      total_tokens: 24,
+    },
+    cost: null,
+    error: null,
+    toolCalls: [
+      {
+        toolName: "tasks.create",
+        arguments: {
+          workspaceId: "22222222-2222-4222-8222-222222222222",
+          projectId: "44444444-4444-4444-8444-444444444444",
+          title: "Follow up with Marina",
+        },
+        result: {
+          taskId: "55555555-5555-4555-8555-555555555555",
+        },
+        status: "success",
+        error: null,
+        completedAt: new Date("2026-07-08T00:00:03.000Z"),
+      },
+    ],
+  });
+  assert.deepEqual(dispatcher.calls, [
+    {
+      toolName: "tasks.create",
+      arguments: {
+        workspaceId: "22222222-2222-4222-8222-222222222222",
+        projectId: "44444444-4444-4444-8444-444444444444",
+        title: "Follow up with Marina",
+      },
+    },
+  ]);
+});
+
+test("OpenRouterAgentRuntime logs dispatcher errors as failed tool calls", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: "Could not create task.",
+            tool_calls: [
+              {
+                type: "function",
+                function: {
+                  name: "tasks.create",
+                  arguments: JSON.stringify({ title: "Follow up" }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+  );
+  const runtime = new OpenRouterAgentRuntime(
+    config,
+    fetcher.fetch,
+    new ThrowingAgentToolOperationDispatcher("backend unavailable"),
+  );
+  const result = await runtime.handleTelegramRequest(request);
+
+  assert.equal(result.status, "failed");
+  assert.equal(result.error, "backend unavailable");
+  assert.equal(result.toolCalls.length, 1);
+  assert.deepEqual(result.toolCalls[0]?.toolName, "tasks.create");
+  assert.deepEqual(result.toolCalls[0]?.arguments, { title: "Follow up" });
+  assert.deepEqual(result.toolCalls[0]?.result, null);
+  assert.deepEqual(result.toolCalls[0]?.status, "error");
+  assert.deepEqual(result.toolCalls[0]?.error, "backend unavailable");
+  assert.ok(result.toolCalls[0]?.completedAt instanceof Date);
+});
+
+test("OpenRouterAgentRuntime rejects malformed assistant tool call arguments", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: "Task created.",
+            tool_calls: [
+              {
+                type: "function",
+                function: {
+                  name: "tasks.create",
+                  arguments: "[]",
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+  );
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch);
+
+  assert.deepEqual(await runtime.handleTelegramRequest(request), {
+    model: "openai/gpt-4.1-mini",
+    normalizedIntent: {
+      kind: "openrouter_chat_completion",
+      source: "telegram",
+    },
+    finalResponse: "Agent execution failed before producing a response.",
+    status: "failed",
+    tokenUsage: null,
+    cost: null,
+    error: "OpenRouter assistant tool call function arguments must parse to an object.",
+    toolCalls: [],
+  });
+});
+
 test("OpenRouterAgentRuntime sends configured attribution headers", async () => {
   const fetcher = new RecordingOpenRouterFetch(
     jsonResponse(200, {
@@ -147,7 +317,7 @@ test("OpenRouterAgentRuntime stores failed runs for malformed success responses"
     status: "failed",
     tokenUsage: null,
     cost: null,
-    error: "OpenRouter response did not include assistant content.",
+    error: "OpenRouter response did not include an assistant message.",
     toolCalls: [],
   });
 });
@@ -216,7 +386,7 @@ test("OpenRouterAgentRuntime stores combined failure context after fallback fail
     tokenUsage: null,
     cost: null,
     error:
-      "openai/gpt-4.1-mini: OpenRouter request failed with status 429: rate limited | anthropic/claude-3.5-sonnet: OpenRouter response did not include assistant content.",
+      "openai/gpt-4.1-mini: OpenRouter request failed with status 429: rate limited | anthropic/claude-3.5-sonnet: OpenRouter response did not include an assistant message.",
     toolCalls: [],
   });
 });
@@ -271,6 +441,34 @@ class RecordingOpenRouterFetch {
 
     return response;
   };
+}
+
+class RecordingAgentToolOperationDispatcher implements AgentToolOperationDispatcher {
+  readonly calls: AgentToolOperationCall[] = [];
+  private responseIndex = 0;
+
+  constructor(private readonly responses: AgentRuntimeToolCall[]) {}
+
+  async dispatchToolCall(call: AgentToolOperationCall): Promise<AgentRuntimeToolCall> {
+    this.calls.push(call);
+
+    const response = this.responses[this.responseIndex];
+    this.responseIndex += 1;
+
+    if (response === undefined) {
+      throw new Error("No recorded agent tool dispatch response.");
+    }
+
+    return response;
+  }
+}
+
+class ThrowingAgentToolOperationDispatcher implements AgentToolOperationDispatcher {
+  constructor(private readonly message: string) {}
+
+  async dispatchToolCall(_call: AgentToolOperationCall): Promise<AgentRuntimeToolCall> {
+    throw new Error(this.message);
+  }
 }
 
 function jsonResponse(status: number, body: unknown): OpenRouterFetchResponse {
