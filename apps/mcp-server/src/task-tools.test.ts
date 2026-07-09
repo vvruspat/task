@@ -14,6 +14,7 @@ import type {
   TaskSummaryResponse,
   UpdateTaskAssigneeRequest,
   UpdateTaskDueDateRequest,
+  UpdateTaskRequest,
   UpdateTaskStatusRequest,
   WorkspaceStatusResponse,
 } from "./backend-client.js";
@@ -26,6 +27,7 @@ import {
   parseTaskSetAssigneeToolInput,
   parseTaskSetDueDateToolInput,
   parseTaskSetStatusToolInput,
+  parseTaskUpdateToolInput,
   TaskToolInputError,
 } from "./task-tools.js";
 
@@ -195,6 +197,56 @@ test("parseTaskCreateToolInput validates and normalizes task create payloads", (
         projectId,
         userId,
         title: "Arrange",
+        metadata: [],
+      }),
+    TaskToolInputError,
+  );
+});
+
+test("parseTaskUpdateToolInput validates and normalizes task update payloads", () => {
+  assert.deepEqual(
+    parseTaskUpdateToolInput({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      title: "  Arrange outro  ",
+      description: "   ",
+      metadata: { source: "manual" },
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      title: "Arrange outro",
+      description: null,
+      metadata: { source: "manual" },
+    },
+  );
+
+  assert.throws(
+    () => parseTaskUpdateToolInput({ workspaceId, projectId, taskId: firstTaskId, userId }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskUpdateToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
+        title: "",
+      }),
+    TaskToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseTaskUpdateToolInput({
+        workspaceId,
+        projectId,
+        taskId: firstTaskId,
+        userId,
         metadata: [],
       }),
     TaskToolInputError,
@@ -450,6 +502,38 @@ test("task archive handler forwards task identifiers to the backend client", asy
   ]);
 });
 
+test("task update handler forwards task payloads to the backend client", async () => {
+  const calls: UpdateTaskRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], [], [], [], [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.update({
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      title: "Arrange outro",
+      description: null,
+      metadata: { source: "manual" },
+    }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+      body: {
+        title: "Arrange outro",
+        description: null,
+        metadata: { source: "manual" },
+      },
+    },
+  ]);
+});
+
 test("task set status handler forwards status payloads to the backend client", async () => {
   const calls: UpdateTaskStatusRequest[] = [];
   const client = createBackendClientStub(tasks, [], [], [], calls);
@@ -548,6 +632,7 @@ function createBackendClientStub(
   updateTaskAssigneeCalls: UpdateTaskAssigneeRequest[] = [],
   updateTaskDueDateCalls: UpdateTaskDueDateRequest[] = [],
   archiveTaskCalls: ArchiveTaskRequest[] = [],
+  updateTaskCalls: UpdateTaskRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -637,6 +722,11 @@ function createBackendClientStub(
     },
     createTask: async (request): Promise<TaskDetailResponse> => {
       createTaskCalls.push(request);
+
+      return taskDetail;
+    },
+    updateTask: async (request): Promise<TaskDetailResponse> => {
+      updateTaskCalls.push(request);
 
       return taskDetail;
     },

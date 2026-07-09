@@ -34,6 +34,7 @@ type CreateTaskLinkAttachmentOperation =
   operations["AttachmentsController_createTaskLinkAttachment"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
+type UpdateTaskOperation = operations["TasksController_updateTask"];
 type ArchiveTaskOperation = operations["TasksController_archiveTask"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type UpdateTaskAssigneeOperation = operations["TasksController_updateTaskAssignee"];
@@ -94,6 +95,9 @@ export type UpdateProjectInput =
 export type UpdateProjectResponse =
   UpdateProjectOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskInput = UpdateTaskOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskResponse =
+  UpdateTaskOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateTaskStatusInput =
   UpdateTaskStatusOperation["requestBody"]["content"]["application/json"];
 export type UpdateTaskAssigneeInput =
@@ -351,6 +355,14 @@ export type ArchiveTaskRequest = {
   userId: string;
 };
 
+export type UpdateTaskRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  body: UpdateTaskInput;
+};
+
 export type UpdateTaskStatusRequest = {
   workspaceId: string;
   projectId: string;
@@ -420,6 +432,7 @@ export type TaskBackendClient = {
   ): Promise<TaskAttachmentResponse>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
+  updateTask(request: UpdateTaskRequest): Promise<UpdateTaskResponse>;
   archiveTask(request: ArchiveTaskRequest): Promise<ArchiveTaskResponse>;
   updateTaskStatus(request: UpdateTaskStatusRequest): Promise<TaskDetailResponse>;
   updateTaskAssignee(request: UpdateTaskAssigneeRequest): Promise<TaskDetailResponse>;
@@ -689,6 +702,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.userId,
         readTaskDetail,
       ),
+    updateTask: (request) =>
+      patchJson(
+        fetchImplementation,
+        baseUrl,
+        buildProjectTaskPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        request.body,
+        readTaskDetail,
+      ),
     updateTaskStatus: (request) =>
       patchJson(
         fetchImplementation,
@@ -775,6 +797,7 @@ async function patchJson<ResponseBody>(
     | UpdateTaskSkillMetadataInput
     | UpdateTaskSkillDefinitionInput
     | UpdateProjectInput
+    | UpdateTaskInput
     | Record<string, never>,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
@@ -830,6 +853,8 @@ async function writeJson<ResponseBody>(
     | UpdateTaskDueDateInput
     | UpdateTaskSkillMetadataInput
     | UpdateTaskSkillDefinitionInput
+    | UpdateProjectInput
+    | UpdateTaskInput
     | Record<string, never>,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {

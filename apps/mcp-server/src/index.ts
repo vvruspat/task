@@ -75,6 +75,9 @@ export {
   type UpdateTaskAssigneeRequest,
   type UpdateTaskDueDateInput,
   type UpdateTaskDueDateRequest,
+  type UpdateTaskInput,
+  type UpdateTaskRequest,
+  type UpdateTaskResponse,
   type UpdateTaskSkillDefinitionInput,
   type UpdateTaskSkillDefinitionRequest,
   type UpdateTaskSkillDefinitionResponse,
@@ -190,6 +193,7 @@ export {
   parseTaskSetAssigneeToolInput,
   parseTaskSetDueDateToolInput,
   parseTaskSetStatusToolInput,
+  parseTaskUpdateToolInput,
   type TaskCreateToolInput,
   type TaskGetToolInput,
   type TaskSearchToolInput,
@@ -198,6 +202,7 @@ export {
   type TaskSetStatusToolInput,
   type TaskToolHandlers,
   TaskToolInputError,
+  type TaskUpdateToolInput,
 } from "./task-tools.js";
 export {
   createWorkspaceToolHandlers,
