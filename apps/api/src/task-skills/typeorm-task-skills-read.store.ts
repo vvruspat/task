@@ -750,7 +750,7 @@ function toTaskSkillVersionSummary(version: TaskSkillVersionEntity): TaskSkillVe
 }
 
 function readDefinitionSubtaskTitles(definition: Record<string, unknown>): string[] | null {
-  const subtasks = definition["subtasks"];
+  const subtasks = readUnknownProperty(definition, "subtasks");
 
   if (!Array.isArray(subtasks) || subtasks.length === 0) {
     return null;
@@ -763,7 +763,7 @@ function readDefinitionSubtaskTitles(definition: Record<string, unknown>): strin
       return null;
     }
 
-    const title = subtask["title"];
+    const title = readUnknownProperty(subtask, "title");
 
     if (typeof title !== "string") {
       return null;
@@ -783,6 +783,10 @@ function readDefinitionSubtaskTitles(definition: Record<string, unknown>): strin
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readUnknownProperty(value: Record<string, unknown>, propertyName: string): unknown {
+  return value[propertyName];
 }
 
 function buildApplySubtasks(

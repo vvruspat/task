@@ -466,7 +466,7 @@ function readRequiredDefinition(
     throw new BadRequestException(`Task skill ${propertyName} must be an object.`);
   }
 
-  const subtasks = propertyValue["subtasks"];
+  const subtasks = readUnknownProperty(propertyValue, "subtasks");
 
   if (!Array.isArray(subtasks) || subtasks.length === 0) {
     throw new BadRequestException("Task skill definition.subtasks must be a non-empty array.");
@@ -477,7 +477,7 @@ function readRequiredDefinition(
       throw new BadRequestException("Task skill definition.subtasks must contain objects.");
     }
 
-    const title = subtask["title"];
+    const title = readUnknownProperty(subtask, "title");
 
     if (typeof title !== "string" || title.trim().length === 0) {
       throw new BadRequestException("Task skill definition.subtasks titles must not be empty.");
@@ -485,6 +485,10 @@ function readRequiredDefinition(
   }
 
   return propertyValue;
+}
+
+function readUnknownProperty(value: Record<string, unknown>, propertyName: string): unknown {
+  return value[propertyName];
 }
 
 export class TaskSkillVersionSummaryDto implements TaskSkillVersionSummary {
