@@ -177,6 +177,23 @@ export interface paths {
     patch: operations["ProjectsController_updateProject"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/matrix": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the task matrix for a visible project */
+    get: operations["ProjectMatrixController_getProjectMatrix"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks": {
     parameters: {
       query?: never;
@@ -930,6 +947,29 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    ProjectMatrixStageDto: {
+      /** Format: uuid */
+      id?: string | null;
+      /** @example In progress */
+      name: string;
+      /** @example #2563EB */
+      color?: string | null;
+      /** @example 1000 */
+      position: string;
+      isDone: boolean;
+    };
+    ProjectMatrixCellDto: {
+      /** Format: uuid */
+      columnTaskId: string;
+      /** Format: uuid */
+      stageId?: string | null;
+      tasks: components["schemas"]["TaskSummaryDto"][];
+    };
+    ProjectMatrixDto: {
+      columns: components["schemas"]["TaskSummaryDto"][];
+      stages: components["schemas"]["ProjectMatrixStageDto"][];
+      cells: components["schemas"]["ProjectMatrixCellDto"][];
     };
     CreateTaskDto: {
       /** @example Record bass */
@@ -1857,6 +1897,38 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace or active project is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProjectMatrixController_getProjectMatrix: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProjectMatrixDto"];
+        };
+      };
+      /** @description Workspace or active project is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;

@@ -11,6 +11,7 @@ export type CreateTaskTelegramFileAttachmentInput =
   components["schemas"]["CreateTaskTelegramFileAttachmentDto"];
 export type HealthResponse = components["schemas"]["HealthResponseDto"];
 export type ProjectDetail = components["schemas"]["ProjectDetailDto"];
+export type ProjectMatrix = components["schemas"]["ProjectMatrixDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 export type TaskAttachment = components["schemas"]["TaskAttachmentDto"];
 export type TaskActivityEvent = components["schemas"]["TaskActivityEventDto"];
@@ -24,6 +25,7 @@ export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
 type UpdateProjectOperation = operations["ProjectsController_updateProject"];
+type GetProjectMatrixOperation = operations["ProjectMatrixController_getProjectMatrix"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskOperation = operations["TasksController_updateTask"];
 type AddTaskSubtasksOperation = operations["TasksController_addTaskSubtasks"];
@@ -96,6 +98,9 @@ export type ConfirmationRequestScopedInput = WorkspaceScopedInput & {
 export type ProjectScopedInput = WorkspaceScopedInput & {
   projectId: string;
 };
+
+export type GetProjectMatrixRequestInput = WorkspaceScopedInput &
+  NonNullable<GetProjectMatrixOperation["parameters"]["path"]>;
 
 export type CreateProjectRequestInput = WorkspaceScopedInput & {
   body: CreateProjectInput;
@@ -174,6 +179,7 @@ export type TaskApiClient = {
   getHealth(): Promise<HealthResponse>;
   getTask(input: TaskScopedInput): Promise<TaskDetail>;
   getDashboardOverview(input: WorkspaceScopedInput): Promise<DashboardOverview>;
+  getProjectMatrix(input: GetProjectMatrixRequestInput): Promise<ProjectMatrix>;
   listPendingConfirmationRequests(
     input: WorkspaceScopedInput,
   ): Promise<ConfirmationRequestSummary[]>;
@@ -454,6 +460,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    getProjectMatrix: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/matrix`,
+        projectMatrixParser,
+        {
+          method: "GET",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     listStatuses: (input) =>
       request(
         options.fetch,
@@ -661,6 +679,10 @@ const projectSummaryArrayParser: ResponseParser<ProjectSummary[]> = {
 const projectDetailParser: ResponseParser<ProjectDetail> = {
   isValid: isProjectDetail,
   label: "project detail",
+};
+const projectMatrixParser: ResponseParser<ProjectMatrix> = {
+  isValid: isProjectMatrix,
+  label: "project matrix",
 };
 
 const taskSummaryArrayParser: ResponseParser<TaskSummary[]> = {
@@ -870,6 +892,81 @@ function isProjectDetail(value: unknown): value is ProjectDetail {
     hasOptionalNullableString(value, "archivedAt") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")
+  );
+}
+
+function isProjectMatrix(value: unknown): value is ProjectMatrix {
+  if (!isJsonObject(value)) return false;
+
+  const columns = readProperty(value, "columns");
+  const stages = readProperty(value, "stages");
+  const cells = readProperty(value, "cells");
+
+  if (
+    !isArrayOf(columns, isTaskSummary) ||
+    !isArrayOf(stages, isProjectMatrixStage) ||
+    !isArrayOf(cells, isProjectMatrixCell)
+  ) {
+    return false;
+  }
+  const columnIds = new Set<string>();
+  for (const column of columns) {
+    const columnId = readProperty(column, "id");
+    if (typeof columnId !== "string") return false;
+    columnIds.add(columnId);
+  }
+
+  const stageKeys = new Set<string>();
+  for (const stage of stages) {
+    const stageId = readProperty(stage, "id");
+    if (typeof stageId !== "string" && stageId !== null) return false;
+    stageKeys.add(toProjectMatrixStageKey(stageId));
+  }
+
+  if (columnIds.size !== columns.length || stageKeys.size !== stages.length) return false;
+  if (cells.length !== columns.length * stages.length) return false;
+
+  const cellKeys = new Set<string>();
+  for (const cell of cells) {
+    const columnTaskId = readProperty(cell, "columnTaskId");
+    const stageId = readProperty(cell, "stageId");
+    if (typeof columnTaskId !== "string" || (typeof stageId !== "string" && stageId !== null)) {
+      return false;
+    }
+
+    if (!columnIds.has(columnTaskId) || !stageKeys.has(toProjectMatrixStageKey(stageId))) {
+      return false;
+    }
+
+    const cellKey = `${columnTaskId}:${toProjectMatrixStageKey(stageId)}`;
+    if (cellKeys.has(cellKey)) return false;
+    cellKeys.add(cellKey);
+  }
+
+  return cellKeys.size === columns.length * stages.length;
+}
+
+function toProjectMatrixStageKey(stageId: string | null): string {
+  return stageId === null ? "null" : `status:${stageId}`;
+}
+
+function isProjectMatrixStage(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasNullableString(value, "id") &&
+    hasString(value, "name") &&
+    hasNullableString(value, "color") &&
+    hasString(value, "position") &&
+    typeof readProperty(value, "isDone") === "boolean"
+  );
+}
+
+function isProjectMatrixCell(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "columnTaskId") &&
+    hasNullableString(value, "stageId") &&
+    isArrayOf(readProperty(value, "tasks"), isTaskSummary)
   );
 }
 

@@ -1,20 +1,33 @@
 import type { MDataGridHeaderType, MDataGridRowType } from "@task/ui/app";
-import { MDataGrid, MOperationalContentGrid, MText } from "@task/ui/app";
+import { MButton, MDataGrid, MOperationalContentGrid, MText } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { buildTaskTableRows, buildTaskTableSummary } from "../workspaceViewModels.js";
 import type { ProjectSummary, TaskSummary } from "./types.js";
 import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type TaskTableViewProps = {
+  onOpenTask(taskId: string): void;
   projects: ProjectSummary[];
   tasks: TaskSummary[];
 };
 
-export function TaskTableView({ projects, tasks }: TaskTableViewProps): ReactElement {
+export function TaskTableView({ onOpenTask, projects, tasks }: TaskTableViewProps): ReactElement {
   const rows = buildTaskTableRows(projects, tasks);
   const summary = buildTaskTableSummary(tasks);
   const headers: MDataGridHeaderType[] = [
-    { field: "title", label: "Task", sortable: true },
+    {
+      field: "title",
+      label: "Task",
+      renderCell: (value, row) =>
+        typeof value === "string" ? (
+          <MButton mode="transparent" noPadding onClick={() => onOpenTask(String(row.id))}>
+            {value}
+          </MButton>
+        ) : (
+          ""
+        ),
+      sortable: true,
+    },
     { field: "projectTitle", label: "Project", sortable: true },
     { field: "parentLabel", label: "Parent", sortable: true },
     { field: "assigneeLabel", label: "Assignee", sortable: true },

@@ -13,10 +13,11 @@ import type { TaskSummary } from "./types.js";
 import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type MatrixViewProps = {
+  onOpenTask(taskId: string): void;
   tasks: TaskSummary[];
 };
 
-export function MatrixView({ tasks }: MatrixViewProps): ReactElement {
+export function MatrixView({ onOpenTask, tasks }: MatrixViewProps): ReactElement {
   const columns = buildMatrixColumns(tasks);
   const summary = buildMatrixSummary(tasks);
 
@@ -37,7 +38,18 @@ export function MatrixView({ tasks }: MatrixViewProps): ReactElement {
               </MFlex>
               <MFlex align="stretch" direction="column" gap="s">
                 {column.cells.map((cell) => (
-                  <MOperationalBoardCard key={cell.id}>
+                  <MOperationalBoardCard
+                    key={cell.id}
+                    onClick={() => onOpenTask(cell.id)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        onOpenTask(cell.id);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                  >
                     <MHeading mode="h5">{cell.title}</MHeading>
                     <MFlex gap="xs">
                       <MText as="span">{cell.assigneeLabel}</MText>

@@ -34,6 +34,7 @@ export type ProjectsViewProps = {
   onArchiveProject(projectId: string): Promise<void>;
   onCreateProject(title: string): Promise<void>;
   onCreateTask(projectId: string, title: string): Promise<void>;
+  onOpenTask(taskId: string): void;
   onSelectProject(projectId: string): void;
   onUpdateProject(projectId: string, input: ProjectUpdateInput): Promise<void>;
   projectActionState: ProjectActionState;
@@ -48,6 +49,7 @@ export function ProjectsView({
   onArchiveProject,
   onCreateProject,
   onCreateTask,
+  onOpenTask,
   onSelectProject,
   onUpdateProject,
   projectActionState,
@@ -120,6 +122,7 @@ export function ProjectsView({
           doneStatusIds={doneStatusIds}
           onArchiveProject={onArchiveProject}
           onCreateTask={onCreateTask}
+          onOpenTask={onOpenTask}
           onUpdateProject={onUpdateProject}
           project={selectedProject}
           taskActionState={taskActionState}
@@ -188,6 +191,7 @@ function ProjectDetail({
   doneStatusIds,
   onArchiveProject,
   onCreateTask,
+  onOpenTask,
   onUpdateProject,
   project,
   taskActionState,
@@ -196,6 +200,7 @@ function ProjectDetail({
   doneStatusIds: ReadonlySet<string>;
   onArchiveProject(projectId: string): Promise<void>;
   onCreateTask(projectId: string, title: string): Promise<void>;
+  onOpenTask(taskId: string): void;
   onUpdateProject(projectId: string, input: ProjectUpdateInput): Promise<void>;
   project: ProjectSummary;
   taskActionState: ProjectActionState;
@@ -254,7 +259,9 @@ function ProjectDetail({
         ) : (
           parentTasks.map((task) => (
             <MFlex as="article" justify="space-between" key={task.id} wrap="nowrap">
-              <MText as="span">{task.title}</MText>
+              <MButton mode="transparent" noPadding onClick={() => onOpenTask(task.id)}>
+                {task.title}
+              </MButton>
               <MText as="span" mode="secondary">
                 {task.completedTaskCount}/{task.totalTaskCount} · {task.updatedAtLabel}
               </MText>

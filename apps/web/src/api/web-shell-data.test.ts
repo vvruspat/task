@@ -15,10 +15,12 @@ import type {
   CreateTaskRequestInput,
   CreateTaskTelegramFileAttachmentRequestInput,
   DashboardOverview,
+  GetProjectMatrixRequestInput,
   ListMyTasksRequestInput,
   MoveTaskRequestInput,
   MyTasksPage,
   ProjectDetail,
+  ProjectMatrix,
   ProjectSummary,
   TaskActivityEvent,
   TaskApiClient,
@@ -385,6 +387,10 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async getDashboardOverview(_input: { workspaceId: string }): Promise<DashboardOverview> {
     throw new Error("getDashboardOverview is not used by the web shell loader.");
+  }
+
+  async getProjectMatrix(_input: GetProjectMatrixRequestInput): Promise<ProjectMatrix> {
+    throw new Error("getProjectMatrix is not used by the web shell loader.");
   }
 
   async listPendingConfirmationRequests(_input: {

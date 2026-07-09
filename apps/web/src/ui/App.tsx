@@ -53,6 +53,7 @@ import {
   parseWorkspaceNavigation,
   type WorkspaceRouteId,
 } from "./navigation.js";
+import { canLeaveTaskWithDraft } from "./taskNavigationGuard.js";
 import type { ConfirmationActionState, ConfirmationLoadState } from "./views/ConfirmationsView.js";
 
 const LazyDashboardView = lazy(() => import("./views/DashboardView.js"));
@@ -73,6 +74,7 @@ type AppRoute = {
 type WorkspaceNavigationUpdate = SetStateAction<{
   projectId: string | null;
   routeId: WorkspaceRouteId;
+  taskId: string | null;
 }>;
 
 const routes: AppRoute[] = [
@@ -182,6 +184,7 @@ export function App(): ReactElement {
     status: "idle",
   });
   const [taskCreateState, setTaskCreateState] = useState<FormSubmissionState>({ status: "idle" });
+  const [taskDrawerDirty, setTaskDrawerDirty] = useState(false);
   const [confirmationLoadState, setConfirmationLoadState] = useState<ConfirmationLoadState>({
     status: "loading",
   });
@@ -224,6 +227,16 @@ export function App(): ReactElement {
     loadState.status === "loaded" &&
     data.selectedWorkspaceId !== null &&
     selectedProjectId !== null;
+  const taskClient = useMemo(() => {
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    return configResult.status === "configured"
+      ? createTaskApiClient({
+          baseUrl: configResult.config.apiBaseUrl,
+          fetch: async (url, init) => fetch(url, init),
+          trustedUserId: configResult.config.trustedUserId,
+        })
+      : null;
+  }, []);
 
   useEffect(() => {
     const configResult = parseWebShellConfig(webShellEnvironment);
@@ -304,12 +317,24 @@ export function App(): ReactElement {
   useEffect(() => {
     const handlePopState = (): void => {
       const nextState = parseWorkspaceNavigation(window.location.search);
+      if (
+        !canLeaveTaskWithDraft(navigationStateRef.current, nextState, taskDrawerDirty, () =>
+          window.confirm("Discard unsaved task changes?"),
+        )
+      ) {
+        window.history.pushState(
+          null,
+          "",
+          createWorkspaceNavigationUrl(window.location, navigationStateRef.current),
+        );
+        return;
+      }
       navigationStateRef.current = nextState;
       setNavigationState(nextState);
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [taskDrawerDirty]);
 
   useEffect(() => {
     if (
@@ -349,6 +374,13 @@ export function App(): ReactElement {
   const updateNavigation = (nextState: WorkspaceNavigationUpdate): void => {
     const resolvedState =
       typeof nextState === "function" ? nextState(navigationStateRef.current) : nextState;
+    if (
+      !canLeaveTaskWithDraft(navigationStateRef.current, resolvedState, taskDrawerDirty, () =>
+        window.confirm("Discard unsaved task changes?"),
+      )
+    )
+      return;
+    setTaskDrawerDirty(false);
     navigationStateRef.current = resolvedState;
     window.history.pushState(
       null,
@@ -748,6 +780,12 @@ export function App(): ReactElement {
               onArchiveProject={handleArchiveProject}
               onCreateProject={handleCreateProject}
               onCreateTask={(projectId, title) => handleCreateTask(title, projectId)}
+              onCloseTask={() =>
+                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId: null }))
+              }
+              onOpenTask={(taskId) =>
+                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId }))
+              }
               onSelectProject={(projectId) =>
                 updateNavigation((currentNavigation) => ({
                   ...currentNavigation,
@@ -756,19 +794,53 @@ export function App(): ReactElement {
                 }))
               }
               onUpdateProject={handleUpdateProject}
+              onTaskUpdated={(updatedTask) =>
+                setLoadState((currentState) =>
+                  currentState.status === "loaded"
+                    ? {
+                        data: {
+                          ...currentState.data,
+                          tasks: currentState.data.tasks.map((task) =>
+                            task.id === updatedTask.id ? updatedTask : task,
+                          ),
+                        },
+                        status: "loaded",
+                      }
+                    : currentState,
+                )
+              }
+              onTaskDirtyChange={setTaskDrawerDirty}
               projectActionState={projectCreateState}
               route={activeRoute}
               projects={data.projects}
               selectedProjectId={selectedProjectId}
+              selectedTaskId={navigationState.taskId}
               selectedWorkspaceId={data.selectedWorkspaceId}
               skills={data.skills}
               statuses={data.statuses}
               taskActionState={taskCreateState}
               tasks={data.tasks}
+              taskClient={taskClient}
               workspaces={data.workspaces}
             />
           )}
         </Suspense>
+        {navigationState.taskId !== null &&
+        (activeRoute.id === "dashboard" || activeRoute.id === "confirmations") ? (
+          <MAlert mode="error">
+            <MText as="p">
+              Task details can only be opened from a workspace task view. Clear this unavailable
+              task link to continue.
+            </MText>
+            <MButton
+              onClick={() =>
+                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId: null }))
+              }
+            >
+              Clear task link
+            </MButton>
+          </MAlert>
+        ) : null}
       </MOperationalWorkspace>
     </MOperationalShell>
   );

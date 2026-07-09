@@ -14,12 +14,18 @@ import type { ProjectSummary, TaskSummary, WorkspaceStatus } from "./types.js";
 import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type KanbanViewProps = {
+  onOpenTask(taskId: string): void;
   projects: ProjectSummary[];
   statuses: WorkspaceStatus[];
   tasks: TaskSummary[];
 };
 
-export function KanbanView({ projects, statuses, tasks }: KanbanViewProps): ReactElement {
+export function KanbanView({
+  onOpenTask,
+  projects,
+  statuses,
+  tasks,
+}: KanbanViewProps): ReactElement {
   const columns = buildKanbanColumns(projects, statuses, tasks);
   const summary = buildKanbanSummary(statuses, tasks);
 
@@ -38,7 +44,18 @@ export function KanbanView({ projects, statuses, tasks }: KanbanViewProps): Reac
               </MFlex>
               <MFlex align="stretch" direction="column" gap="s">
                 {column.tasks.map((task) => (
-                  <MOperationalBoardCard key={task.id}>
+                  <MOperationalBoardCard
+                    key={task.id}
+                    onClick={() => onOpenTask(task.id)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        onOpenTask(task.id);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                  >
                     <MHeading mode="h5">{task.title}</MHeading>
                     <MText as="p" mode="secondary">
                       {task.projectTitle}

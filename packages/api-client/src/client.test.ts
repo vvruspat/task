@@ -113,6 +113,23 @@ test("createTaskApiClient patches project updates with trusted user context", as
   assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
 });
 
+test("createTaskApiClient fetches a project matrix with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(projectMatrix()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.getProjectMatrix({ projectId, workspaceId }), projectMatrix());
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/matrix`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "GET");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+});
+
 test("createTaskApiClient builds project-scoped endpoint paths", async () => {
   const fetcher = new RecordingFetch(single([taskSummary()]));
   const client = createTaskApiClient({
@@ -480,6 +497,21 @@ test("createTaskApiClient rejects agent run listing without trusted user context
   assert.equal(fetcher.calls.length, 0);
 });
 
+test("createTaskApiClient rejects project matrix reads without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(projectMatrix()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+  });
+
+  await assert.rejects(() => client.getProjectMatrix({ projectId, workspaceId }), {
+    message: "Task API trustedUserId is required for workspace requests.",
+    name: "TaskApiClientError",
+    status: null,
+  });
+  assert.equal(fetcher.calls.length, 0);
+});
+
 test("createTaskApiClient rejects task creation without trusted user context", async () => {
   const fetcher = new RecordingFetch(single(taskSummary()));
   const client = createTaskApiClient({
@@ -656,6 +688,44 @@ test("createTaskApiClient rejects malformed nested dashboard response objects", 
   }
 });
 
+test("createTaskApiClient rejects malformed project matrices", async () => {
+  const matrix = projectMatrix();
+  const malformedResponses: unknown[] = [
+    { ...matrix, columns: [taskSummary(), taskSummary()] },
+    { ...matrix, stages: [matrix.stages[0], matrix.stages[0]] },
+    { ...matrix, cells: [matrix.cells[0], matrix.cells[0]] },
+    { ...matrix, cells: matrix.cells.slice(0, 1) },
+    {
+      ...matrix,
+      cells: [
+        { ...matrix.cells[0], columnTaskId: "00000000-0000-4000-8000-000000000000" },
+        matrix.cells[1],
+      ],
+    },
+    {
+      ...matrix,
+      cells: [
+        matrix.cells[0],
+        { ...matrix.cells[1], stageId: "00000000-0000-4000-8000-000000000000" },
+      ],
+    },
+  ];
+  const fetcher = new RecordingFetch(sequence(malformedResponses));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  for (const _response of malformedResponses) {
+    await assert.rejects(() => client.getProjectMatrix({ projectId, workspaceId }), {
+      message: "Task API returned malformed project matrix.",
+      name: "TaskApiClientError",
+      status: 200,
+    });
+  }
+});
+
 test("createTaskApiClient rejects malformed nested my-task page items", async () => {
   const fetcher = new RecordingFetch(
     single({
@@ -787,6 +857,38 @@ function archivedProjectSummary(): unknown {
     archivedAt: "2026-07-08T10:30:00.000Z",
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+type ProjectMatrixFixture = {
+  cells: Array<{ columnTaskId: string; stageId: string | null; tasks: Record<string, unknown>[] }>;
+  columns: Record<string, unknown>[];
+  stages: Array<{
+    color: string | null;
+    id: string | null;
+    isDone: boolean;
+    name: string;
+    position: string;
+  }>;
+};
+
+function projectMatrix(): ProjectMatrixFixture {
+  return {
+    columns: [taskSummary()],
+    stages: [
+      { id: null, name: "Unassigned", color: null, position: "-1", isDone: false },
+      {
+        id: "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        name: "In progress",
+        color: "#3b82f6",
+        position: "1000",
+        isDone: false,
+      },
+    ],
+    cells: [
+      { columnTaskId: taskId, stageId: null, tasks: [] },
+      { columnTaskId: taskId, stageId: "ffffffff-ffff-4fff-8fff-ffffffffffff", tasks: [] },
+    ],
   };
 }
 

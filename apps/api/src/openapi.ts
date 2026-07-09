@@ -10,6 +10,11 @@ import {
 } from "./attachments/attachments.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
 import {
+  ProjectMatrixCellDto,
+  ProjectMatrixDto,
+  ProjectMatrixStageDto,
+} from "./project-matrix/project-matrix.dto.js";
+import {
   CreateProjectDto,
   ProjectDetailDto,
   ProjectSummaryDto,
@@ -68,6 +73,9 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       UpdateProjectDto,
       ProjectSummaryDto,
       ProjectDetailDto,
+      ProjectMatrixStageDto,
+      ProjectMatrixCellDto,
+      ProjectMatrixDto,
       WorkspaceStatusDto,
       CreateTaskSkillDto,
       PreviewTaskSkillApplyDto,

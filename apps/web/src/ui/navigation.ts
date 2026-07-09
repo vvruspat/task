@@ -15,11 +15,13 @@ export type WorkspaceRouteId = (typeof workspaceRouteIds)[number];
 export type WorkspaceNavigationState = {
   projectId: string | null;
   routeId: WorkspaceRouteId;
+  taskId: string | null;
 };
 
 const defaultNavigationState: WorkspaceNavigationState = {
   projectId: null,
   routeId: "dashboard",
+  taskId: null,
 };
 
 export function parseWorkspaceNavigation(search: string): WorkspaceNavigationState {
@@ -32,6 +34,7 @@ export function parseWorkspaceNavigation(search: string): WorkspaceNavigationSta
   return {
     projectId: query.get("project"),
     routeId,
+    taskId: query.get("task"),
   };
 }
 
@@ -46,6 +49,12 @@ export function createWorkspaceNavigationUrl(
     query.delete("project");
   } else {
     query.set("project", state.projectId);
+  }
+
+  if (state.taskId === null) {
+    query.delete("task");
+  } else {
+    query.set("task", state.taskId);
   }
 
   const search = query.toString();
