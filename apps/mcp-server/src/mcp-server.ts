@@ -497,6 +497,17 @@ export function registerAttachmentTools(
   );
 
   registrar.registerTool(
+    "attachment.resolve_pending_telegram_file",
+    {
+      title: "Resolve pending Telegram file attachment",
+      description:
+        "Attach Telegram file metadata from resolved Telegram context to a writable task.",
+      inputSchema: attachmentCreateTelegramFileInputSchema,
+    },
+    async (input) => toToolResult(await handlers.createTelegramFile(input)),
+  );
+
+  registrar.registerTool(
     "attachment.list",
     {
       title: "List attachments",
