@@ -7,11 +7,13 @@ import type {
 } from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const maxSearchResultLimit = 20;
 
 export type ProjectSearchToolInput = {
   workspaceId: string;
   userId: string;
   query?: string;
+  limit?: number;
 };
 
 export type ProjectGetToolInput = {
@@ -99,15 +101,12 @@ export function createProjectToolHandlers(client: TaskBackendClient): ProjectToo
         userId: parsedInput.userId,
       });
 
-      if (parsedInput.query === undefined) {
-        return projects;
-      }
+      const matchingProjects =
+        parsedInput.query === undefined
+          ? projects
+          : filterProjects(projects, normalizeSearchText(parsedInput.query));
 
-      const normalizedQuery = normalizeSearchText(parsedInput.query);
-
-      return projects.filter((project) =>
-        normalizeSearchText(project.title).includes(normalizedQuery),
-      );
+      return limitResults(matchingProjects, parsedInput.limit);
     },
   };
 }
@@ -247,12 +246,32 @@ export function parseProjectSearchToolInput(input: unknown): ProjectSearchToolIn
     userId: readRequiredUuid(record, "userId"),
   };
   const query = readOptionalNonEmptyString(record, "query");
+  const limit = readOptionalLimit(record, "limit");
 
   if (query !== undefined) {
     parsedInput.query = query;
   }
 
+  if (limit !== undefined) {
+    parsedInput.limit = limit;
+  }
+
   return parsedInput;
+}
+
+function limitResults<T>(items: T[], limit: number | undefined): T[] {
+  if (limit === undefined) {
+    return items;
+  }
+
+  return items.slice(0, limit);
+}
+
+function filterProjects(
+  projects: ProjectSummaryResponse[],
+  normalizedQuery: string,
+): ProjectSummaryResponse[] {
+  return projects.filter((project) => normalizeSearchText(project.title).includes(normalizedQuery));
 }
 
 function normalizeSearchText(value: string): string {
@@ -308,6 +327,29 @@ function readOptionalNonEmptyString(
   }
 
   return readRequiredNonEmptyString(record, propertyName);
+}
+
+function readOptionalLimit(
+  record: Record<string, unknown>,
+  propertyName: string,
+): number | undefined {
+  const value = record[propertyName];
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (typeof value !== "number" || !Number.isInteger(value)) {
+    throw new ProjectToolInputError(`${propertyName} must be an integer.`);
+  }
+
+  if (value < 1 || value > maxSearchResultLimit) {
+    throw new ProjectToolInputError(
+      `${propertyName} must be between 1 and ${maxSearchResultLimit}.`,
+    );
+  }
+
+  return value;
 }
 
 function readOptionalNullableNonEmptyString(

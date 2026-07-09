@@ -389,6 +389,7 @@ test("registerProjectTools registers project tools", async () => {
         workspaceId,
         userId,
         query: "album",
+        limit: 1,
       });
       return [projectResponse];
     },
@@ -474,6 +475,7 @@ test("registerProjectTools registers project tools", async () => {
     workspaceId,
     userId,
     query: "album",
+    limit: 1,
   });
 
   assert.deepEqual(JSON.parse(readTextResult(searchResult)), [projectResponse]);
@@ -1345,6 +1347,7 @@ test("registerTaskTools registers task tools", async () => {
         projectId,
         userId,
         query: "intro",
+        limit: 1,
       });
       return [taskResponse];
     },
@@ -1593,6 +1596,7 @@ test("registerTaskTools registers task tools", async () => {
     projectId,
     userId,
     query: "intro",
+    limit: 1,
   });
 
   assert.deepEqual(JSON.parse(readTextResult(searchResult)), [taskResponse]);
@@ -1609,6 +1613,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
         workspaceId,
         userId,
         query: "song",
+        limit: 1,
       });
       return [taskSkillResponse];
     },
@@ -1726,6 +1731,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     workspaceId,
     userId,
     query: "song",
+    limit: 1,
   });
 
   assert.deepEqual(JSON.parse(readTextResult(searchResult)), [taskSkillResponse]);
