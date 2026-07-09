@@ -123,6 +123,30 @@ test("createTaskApiClient posts task creation payloads with trusted user context
   assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
 });
 
+test("createTaskApiClient deletes tasks with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(archivedTaskSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const taskId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+
+  assert.deepEqual(
+    await client.archiveTask({ projectId, taskId, workspaceId }),
+    archivedTaskSummary(),
+  );
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "DELETE");
+  assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["content-type"], undefined);
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+  assert.equal(fetcher.calls[0]?.init.body, undefined);
+});
+
 test("createTaskApiClient validates supported list responses", async () => {
   const fetcher = new RecordingFetch(
     sequence([[projectSummary()], [taskSkillSummary()], [workspaceStatus()]]),
@@ -177,6 +201,29 @@ test("createTaskApiClient rejects task creation without trusted user context", a
 
   await assert.rejects(
     () => client.createTask({ body: { title: "Intro" }, projectId, workspaceId }),
+    {
+      message: "Task API trustedUserId is required for workspace requests.",
+      name: "TaskApiClientError",
+      status: null,
+    },
+  );
+  assert.equal(fetcher.calls.length, 0);
+});
+
+test("createTaskApiClient rejects task archives without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(taskSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+  });
+
+  await assert.rejects(
+    () =>
+      client.archiveTask({
+        projectId,
+        taskId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        workspaceId,
+      }),
     {
       message: "Task API trustedUserId is required for workspace requests.",
       name: "TaskApiClientError",
@@ -386,7 +433,7 @@ function agentRunSummary(): unknown {
   };
 }
 
-function taskSummary(): unknown {
+function taskSummary(): Record<string, unknown> {
   return {
     id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
     workspaceId,
@@ -405,6 +452,13 @@ function taskSummary(): unknown {
     archivedAt: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function archivedTaskSummary(): unknown {
+  return {
+    ...taskSummary(),
+    archivedAt: "2026-07-08T10:30:00.000Z",
   };
 }
 

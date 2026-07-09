@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
+  ArchiveTaskRequest,
   CreateTaskRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
@@ -18,6 +19,7 @@ import type {
 } from "./backend-client.js";
 import {
   createTaskToolHandlers,
+  parseTaskArchiveToolInput,
   parseTaskCreateToolInput,
   parseTaskGetToolInput,
   parseTaskSearchToolInput,
@@ -113,6 +115,23 @@ test("parseTaskGetToolInput validates task get payloads", () => {
 
   assert.throws(
     () => parseTaskGetToolInput({ workspaceId, projectId, taskId: "bad", userId }),
+    TaskToolInputError,
+  );
+});
+
+test("parseTaskArchiveToolInput validates task archive payloads", () => {
+  assert.deepEqual(
+    parseTaskArchiveToolInput({ workspaceId, projectId, taskId: firstTaskId, userId }),
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+    },
+  );
+
+  assert.throws(
+    () => parseTaskArchiveToolInput({ workspaceId, projectId, taskId: "bad", userId }),
     TaskToolInputError,
   );
 });
@@ -412,6 +431,25 @@ test("task create handler forwards task payloads to the backend client", async (
   ]);
 });
 
+test("task archive handler forwards task identifiers to the backend client", async () => {
+  const calls: ArchiveTaskRequest[] = [];
+  const client = createBackendClientStub(tasks, [], [], [], [], [], [], calls);
+  const handlers = createTaskToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.archive({ workspaceId, projectId, taskId: firstTaskId, userId }),
+    taskDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId: firstTaskId,
+      userId,
+    },
+  ]);
+});
+
 test("task set status handler forwards status payloads to the backend client", async () => {
   const calls: UpdateTaskStatusRequest[] = [];
   const client = createBackendClientStub(tasks, [], [], [], calls);
@@ -509,6 +547,7 @@ function createBackendClientStub(
   updateTaskStatusCalls: UpdateTaskStatusRequest[] = [],
   updateTaskAssigneeCalls: UpdateTaskAssigneeRequest[] = [],
   updateTaskDueDateCalls: UpdateTaskDueDateRequest[] = [],
+  archiveTaskCalls: ArchiveTaskRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -607,6 +646,11 @@ function createBackendClientStub(
     },
     updateTaskDueDate: async (request): Promise<TaskDetailResponse> => {
       updateTaskDueDateCalls.push(request);
+
+      return taskDetail;
+    },
+    archiveTask: async (request): Promise<TaskDetailResponse> => {
+      archiveTaskCalls.push(request);
 
       return taskDetail;
     },

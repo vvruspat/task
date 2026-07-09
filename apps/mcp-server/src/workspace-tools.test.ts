@@ -181,6 +181,9 @@ function createBackendClientStub(): TaskBackendClient {
     previewTaskSkillApply: async () => {
       throw new Error("previewTaskSkillApply is not used by workspace tools.");
     },
+    archiveTask: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     applyTaskSkill: async () => {
       throw new Error("applyTaskSkill is not used by workspace tools.");
     },

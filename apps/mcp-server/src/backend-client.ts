@@ -32,6 +32,7 @@ type CreateTaskLinkAttachmentOperation =
   operations["AttachmentsController_createTaskLinkAttachment"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
+type ArchiveTaskOperation = operations["TasksController_archiveTask"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type UpdateTaskAssigneeOperation = operations["TasksController_updateTaskAssignee"];
 type UpdateTaskDueDateOperation = operations["TasksController_updateTaskDueDate"];
@@ -105,6 +106,8 @@ export type TaskAttachmentResponse =
   ListTaskAttachmentsOperation["responses"]["200"]["content"]["application/json"][number];
 export type TaskDetailResponse =
   GetTaskOperation["responses"]["200"]["content"]["application/json"];
+export type ArchiveTaskResponse =
+  ArchiveTaskOperation["responses"]["200"]["content"]["application/json"];
 type TaskSkillApplyPreviewSubtaskResponse =
   components["schemas"]["TaskSkillApplyPreviewSubtaskDto"];
 
@@ -320,6 +323,13 @@ export type CreateTaskRequest = {
   body: CreateTaskInput;
 };
 
+export type ArchiveTaskRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+};
+
 export type UpdateTaskStatusRequest = {
   workspaceId: string;
   projectId: string;
@@ -387,6 +397,7 @@ export type TaskBackendClient = {
   ): Promise<TaskAttachmentResponse>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
+  archiveTask(request: ArchiveTaskRequest): Promise<ArchiveTaskResponse>;
   updateTaskStatus(request: UpdateTaskStatusRequest): Promise<TaskDetailResponse>;
   updateTaskAssignee(request: UpdateTaskAssigneeRequest): Promise<TaskDetailResponse>;
   updateTaskDueDate(request: UpdateTaskDueDateRequest): Promise<TaskDetailResponse>;
@@ -628,6 +639,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildProjectTasksPath(request.workspaceId, request.projectId),
         request.userId,
         request.body,
+        readTaskDetail,
+      ),
+    archiveTask: (request) =>
+      deleteJson(
+        fetchImplementation,
+        baseUrl,
+        buildProjectTaskPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
         readTaskDetail,
       ),
     updateTaskStatus: (request) =>

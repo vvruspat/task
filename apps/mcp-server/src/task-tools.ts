@@ -25,6 +25,8 @@ export type TaskGetToolInput = {
   userId: string;
 };
 
+export type TaskArchiveToolInput = TaskGetToolInput;
+
 export type TaskCreateToolInput = {
   workspaceId: string;
   projectId: string;
@@ -62,6 +64,7 @@ export type TaskSetDueDateToolInput = {
 };
 
 export type TaskToolHandlers = {
+  archive(input: unknown): Promise<TaskDetailResponse>;
   create(input: unknown): Promise<TaskDetailResponse>;
   setStatus(input: unknown): Promise<TaskDetailResponse>;
   setAssignee(input: unknown): Promise<TaskDetailResponse>;
@@ -79,6 +82,16 @@ export class TaskToolInputError extends Error {
 
 export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandlers {
   return {
+    archive: (input) => {
+      const parsedInput = parseTaskArchiveToolInput(input);
+
+      return client.archiveTask({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+      });
+    },
     create: (input) => {
       const parsedInput = parseTaskCreateToolInput(input);
 
@@ -226,6 +239,17 @@ export function parseTaskCreateToolInput(input: unknown): TaskCreateToolInput {
 
 export function parseTaskGetToolInput(input: unknown): TaskGetToolInput {
   const record = readRecord(input, "task get tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+}
+
+export function parseTaskArchiveToolInput(input: unknown): TaskArchiveToolInput {
+  const record = readRecord(input, "task archive tool input");
 
   return {
     workspaceId: readRequiredUuid(record, "workspaceId"),

@@ -924,6 +924,37 @@ test("createTask posts typed payloads with trusted user context", async () => {
   assert.deepEqual(response, taskDetailResponse);
 });
 
+test("archiveTask deletes one active task with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const archivedTask: TaskDetailResponse = {
+    ...taskDetailResponse,
+    archivedAt: timestamp,
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, archivedTask);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.archiveTask({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+  });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/tasks/${rootTaskId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "DELETE");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.equal("body" in readDeleteInit(fetchCalls[0]?.init), false);
+  assert.deepEqual(response, archivedTask);
+});
+
 test("updateTaskStatus patches typed payloads with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, taskDetailResponse);
@@ -1183,6 +1214,16 @@ function readPostInit(
 ): Extract<TaskBackendFetchInit, { method: "POST" }> {
   if (init?.method !== "POST") {
     throw new Error("Expected POST fetch init.");
+  }
+
+  return init;
+}
+
+function readDeleteInit(
+  init: TaskBackendFetchInit | undefined,
+): Extract<TaskBackendFetchInit, { method: "DELETE" }> {
+  if (init?.method !== "DELETE") {
+    throw new Error("Expected DELETE fetch init.");
   }
 
   return init;
