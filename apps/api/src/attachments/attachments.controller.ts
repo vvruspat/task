@@ -17,12 +17,15 @@ import {
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
 } from "./attachments.contracts.js";
 import {
   CreateTaskFileAttachmentDto,
   CreateTaskLinkAttachmentDto,
+  CreateTaskTelegramFileAttachmentDto,
   ParseCreateTaskFileAttachmentBodyPipe,
   ParseCreateTaskLinkAttachmentBodyPipe,
+  ParseCreateTaskTelegramFileAttachmentBodyPipe,
   TaskAttachmentDto,
 } from "./attachments.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
@@ -96,6 +99,35 @@ export class AttachmentsController {
     @Body(new ParseCreateTaskFileAttachmentBodyPipe()) input: CreateTaskFileAttachmentInput,
   ): Promise<TaskAttachmentDto> {
     return this.attachmentsService.createTaskFileAttachment(
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      input,
+    );
+  }
+
+  @Post("telegram-files")
+  @ApiOperation({ summary: "Attach Telegram file metadata to a visible task" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiParam({ format: "uuid", name: "taskId" })
+  @ApiBody({ type: CreateTaskTelegramFileAttachmentDto })
+  @ApiCreatedResponse({ type: TaskAttachmentDto })
+  @ApiBadRequestResponse({ description: "Attachment payload is invalid." })
+  @ApiForbiddenResponse({
+    description: "Current user cannot attach Telegram files in this workspace.",
+  })
+  @ApiNotFoundResponse({ description: "Workspace, project, or task is missing or not visible." })
+  createTaskTelegramFileAttachment(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @Param("taskId", uuidV4Pipe) taskId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseCreateTaskTelegramFileAttachmentBodyPipe())
+    input: CreateTaskTelegramFileAttachmentInput,
+  ): Promise<TaskAttachmentDto> {
+    return this.attachmentsService.createTaskTelegramFileAttachment(
       workspaceId,
       projectId,
       taskId,

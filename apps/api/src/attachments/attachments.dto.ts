@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
   TaskAttachment,
 } from "./attachments.contracts.js";
 
@@ -28,6 +29,20 @@ export class CreateTaskFileAttachmentDto implements CreateTaskFileAttachmentInpu
   readonly sizeBytes?: string | null;
 }
 
+export class CreateTaskTelegramFileAttachmentDto implements CreateTaskTelegramFileAttachmentInput {
+  @ApiProperty({ example: "BQACAgIAAxkBAAIBR2Z..." })
+  readonly telegramFileId: string = "";
+
+  @ApiPropertyOptional({ nullable: true, type: String, example: "Bass take.wav" })
+  readonly title?: string | null;
+
+  @ApiPropertyOptional({ nullable: true, type: String, example: "audio/wav" })
+  readonly mimeType?: string | null;
+
+  @ApiPropertyOptional({ nullable: true, type: String, example: "18432000" })
+  readonly sizeBytes?: string | null;
+}
+
 export class ParseCreateTaskLinkAttachmentBodyPipe
   implements PipeTransform<unknown, CreateTaskLinkAttachmentInput>
 {
@@ -41,6 +56,14 @@ export class ParseCreateTaskFileAttachmentBodyPipe
 {
   transform(value: unknown): CreateTaskFileAttachmentInput {
     return parseCreateTaskFileAttachmentInput(value);
+  }
+}
+
+export class ParseCreateTaskTelegramFileAttachmentBodyPipe
+  implements PipeTransform<unknown, CreateTaskTelegramFileAttachmentInput>
+{
+  transform(value: unknown): CreateTaskTelegramFileAttachmentInput {
+    return parseCreateTaskTelegramFileAttachmentInput(value);
   }
 }
 
@@ -127,6 +150,34 @@ function parseCreateTaskFileAttachmentInput(value: unknown): CreateTaskFileAttac
   const mimeType = readOptionalNullableString(value, "mimeType");
   const sizeBytes = readOptionalNullableSizeBytes(value, "sizeBytes");
   const input: CreateTaskFileAttachmentInput = { storageKey };
+
+  if (title !== undefined) {
+    input.title = title;
+  }
+
+  if (mimeType !== undefined) {
+    input.mimeType = mimeType;
+  }
+
+  if (sizeBytes !== undefined) {
+    input.sizeBytes = sizeBytes;
+  }
+
+  return input;
+}
+
+function parseCreateTaskTelegramFileAttachmentInput(
+  value: unknown,
+): CreateTaskTelegramFileAttachmentInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Attachment payload must be an object.");
+  }
+
+  const telegramFileId = readRequiredString(value, "telegramFileId");
+  const title = readOptionalNullableString(value, "title");
+  const mimeType = readOptionalNullableString(value, "mimeType");
+  const sizeBytes = readOptionalNullableSizeBytes(value, "sizeBytes");
+  const input: CreateTaskTelegramFileAttachmentInput = { telegramFileId };
 
   if (title !== undefined) {
     input.title = title;

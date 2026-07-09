@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
 } from "./attachments.contracts.js";
 import { TaskAttachmentDto } from "./attachments.dto.js";
 import type { TaskAttachmentsStore } from "./attachments.store.js";
@@ -77,6 +78,34 @@ export class AttachmentsService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot attach files to tasks in this workspace.");
+    }
+
+    return new TaskAttachmentDto(result.attachment);
+  }
+
+  async createTaskTelegramFileAttachment(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: CreateTaskTelegramFileAttachmentInput,
+  ): Promise<TaskAttachmentDto> {
+    const result = await this.attachmentsStore.createTelegramFileForTask(
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      input,
+    );
+
+    if (result.status === "task_not_found") {
+      throw new NotFoundException("Task was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException(
+        "Current user cannot attach Telegram files to tasks in this workspace.",
+      );
     }
 
     return new TaskAttachmentDto(result.attachment);

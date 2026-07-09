@@ -4,12 +4,14 @@ import { BadRequestException } from "@nestjs/common";
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
+  CreateTaskTelegramFileAttachmentInput,
   TaskAttachment,
 } from "./attachments.contracts.js";
 import { AttachmentsController } from "./attachments.controller.js";
 import {
   ParseCreateTaskFileAttachmentBodyPipe,
   ParseCreateTaskLinkAttachmentBodyPipe,
+  ParseCreateTaskTelegramFileAttachmentBodyPipe,
 } from "./attachments.dto.js";
 import { AttachmentsService } from "./attachments.service.js";
 import type { TaskAttachmentCreateResult, TaskAttachmentsStore } from "./attachments.store.js";
@@ -116,6 +118,46 @@ test("AttachmentsController uses trusted current user context for file attachmen
   assert.equal(response.sizeBytes, input.sizeBytes);
 });
 
+test("AttachmentsController uses trusted current user context for Telegram file attachment creates", async () => {
+  const input: CreateTaskTelegramFileAttachmentInput = {
+    telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+    title: "Bass take.wav",
+    mimeType: "audio/wav",
+    sizeBytes: "18432000",
+  };
+  const controller = new AttachmentsController(
+    new AttachmentsService(
+      createAttachmentsStore({
+        createResult: {
+          attachment: {
+            ...taskAttachment,
+            kind: "telegram_file",
+            title: input.title ?? null,
+            url: null,
+            telegramFileId: input.telegramFileId,
+            mimeType: input.mimeType ?? null,
+            sizeBytes: input.sizeBytes ?? null,
+          },
+          status: "created",
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.createTaskTelegramFileAttachment(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
+
+  assert.equal(response.kind, "telegram_file");
+  assert.equal(response.telegramFileId, input.telegramFileId);
+  assert.equal(response.mimeType, input.mimeType);
+  assert.equal(response.sizeBytes, input.sizeBytes);
+});
+
 test("ParseCreateTaskLinkAttachmentBodyPipe validates and normalizes link payloads", () => {
   const pipe = new ParseCreateTaskLinkAttachmentBodyPipe();
 
@@ -196,6 +238,54 @@ test("ParseCreateTaskFileAttachmentBodyPipe validates and normalizes file payloa
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseCreateTaskTelegramFileAttachmentBodyPipe validates and normalizes Telegram file payloads", () => {
+  const pipe = new ParseCreateTaskTelegramFileAttachmentBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      telegramFileId: "  BQACAgIAAxkBAAIBR2Z  ",
+      title: "  Bass take.wav  ",
+      mimeType: "  audio/wav  ",
+      sizeBytes: "  18432000  ",
+    }),
+    {
+      telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+      title: "Bass take.wav",
+      mimeType: "audio/wav",
+      sizeBytes: "18432000",
+    },
+  );
+  assert.deepEqual(pipe.transform({ telegramFileId: "telegram-file-id" }), {
+    telegramFileId: "telegram-file-id",
+  });
+  assert.deepEqual(
+    pipe.transform({
+      telegramFileId: "telegram-file-id",
+      title: "",
+      mimeType: "",
+      sizeBytes: null,
+    }),
+    {
+      telegramFileId: "telegram-file-id",
+      title: null,
+      mimeType: null,
+      sizeBytes: null,
+    },
+  );
+
+  assert.throws(() => pipe.transform({ telegramFileId: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ telegramFileId: 1 }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ telegramFileId: "telegram-file-id", sizeBytes: "-1" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ telegramFileId: "telegram-file-id", sizeBytes: 1 }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 function createAttachmentsStore(options: {
   attachments?: TaskAttachment[] | null;
   createResult?: TaskAttachmentCreateResult;
@@ -206,6 +296,8 @@ function createAttachmentsStore(options: {
     createLinkForTask: async (): Promise<TaskAttachmentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
     createFileForTask: async (): Promise<TaskAttachmentCreateResult> =>
+      options.createResult ?? { status: "task_not_found" },
+    createTelegramFileForTask: async (): Promise<TaskAttachmentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
   };
 }
