@@ -14,6 +14,7 @@ type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
 type UpdateProjectOperation = operations["ProjectsController_updateProject"];
 type CreateTaskOperation = operations["TasksController_createTask"];
+type UpdateTaskOperation = operations["TasksController_updateTask"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -24,6 +25,9 @@ export type UpdateProjectInput =
 export type UpdateProjectResponse =
   UpdateProjectOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskInput = UpdateTaskOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskResponse =
+  UpdateTaskOperation["responses"]["200"]["content"]["application/json"];
 
 export type TaskApiRequestHeaders = {
   accept: "application/json";
@@ -81,6 +85,10 @@ export type ArchiveTaskRequestInput = ProjectScopedInput & {
   taskId: string;
 };
 
+export type UpdateTaskRequestInput = ArchiveTaskRequestInput & {
+  body: UpdateTaskInput;
+};
+
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
   archiveTask(input: ArchiveTaskRequestInput): Promise<TaskDetail>;
@@ -94,6 +102,7 @@ export type TaskApiClient = {
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
   listWorkspaces(): Promise<WorkspaceSummary[]>;
   updateProject(input: UpdateProjectRequestInput): Promise<UpdateProjectResponse>;
+  updateTask(input: UpdateTaskRequestInput): Promise<UpdateTaskResponse>;
 };
 
 type JsonObject = Record<string, unknown>;
@@ -181,6 +190,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         {
           body: input.body,
           method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    updateTask: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/${encodePathSegment(input.taskId)}`,
+        taskDetailParser,
+        {
+          body: input.body,
+          method: "PATCH",
           requiresTrustedUserId: true,
           trustedUserId: options.trustedUserId,
         },

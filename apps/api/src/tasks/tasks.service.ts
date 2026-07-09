@@ -8,6 +8,7 @@ import type {
   CreateTaskInput,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
+  UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
@@ -94,6 +95,32 @@ export class TasksService {
 
     if (result.status === "invalid_status") {
       throw new BadRequestException("Task status must belong to the same workspace.");
+    }
+
+    return new TaskDetailDto(result.task);
+  }
+
+  async updateTask(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: UpdateTaskInput,
+  ): Promise<TaskDetailDto> {
+    const result = await this.readStore.updateForProject(
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      input,
+    );
+
+    if (result.status === "task_not_found") {
+      throw new NotFoundException("Task was not found.");
+    }
+
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot update tasks in this workspace.");
     }
 
     return new TaskDetailDto(result.task);

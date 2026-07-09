@@ -16,6 +16,7 @@ import type {
   TaskSummary,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
+  UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import type {
@@ -24,6 +25,7 @@ import type {
   TaskReadStore,
   TaskUpdateAssigneeResult,
   TaskUpdateDueDateResult,
+  TaskUpdateResult,
   TaskUpdateStatusResult,
 } from "./tasks.store.js";
 
@@ -202,6 +204,66 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
         payload: {
           projectId,
           statusId: input.statusId,
+        },
+      });
+
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+      return updatedTask;
+    });
+
+    return { status: "updated", task: toTaskSummary(savedTask) };
+  }
+
+  async updateForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: UpdateTaskInput,
+  ): Promise<TaskUpdateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "task_not_found" };
+    }
+
+    if (!taskWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+
+    if (task === null) {
+      return { status: "task_not_found" };
+    }
+
+    const updatedFields = getUpdatedTaskFields(input);
+    const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      if (input.title !== undefined) {
+        task.title = input.title;
+      }
+
+      if (input.description !== undefined) {
+        task.description = input.description;
+      }
+
+      if (input.metadata !== undefined) {
+        task.metadata = input.metadata;
+      }
+
+      const updatedTask = await manager.getRepository(TaskEntity).save(task);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        workspaceId,
+        actorUserId: userId,
+        eventType: "task.updated",
+        entityType: "task",
+        entityId: updatedTask.id,
+        payload: {
+          fields: updatedFields,
+          projectId,
+          title: updatedTask.title,
         },
       });
 
@@ -442,6 +504,24 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       throw error;
     }
   }
+}
+
+function getUpdatedTaskFields(input: UpdateTaskInput): string[] {
+  const fields: string[] = [];
+
+  if (input.title !== undefined) {
+    fields.push("title");
+  }
+
+  if (input.description !== undefined) {
+    fields.push("description");
+  }
+
+  if (input.metadata !== undefined) {
+    fields.push("metadata");
+  }
+
+  return fields;
 }
 
 function toTaskSummary(task: TaskEntity): TaskSummary {

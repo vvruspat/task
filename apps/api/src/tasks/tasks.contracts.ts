@@ -29,6 +29,12 @@ export type CreateTaskInput = {
   metadata?: Record<string, unknown>;
 };
 
+export type UpdateTaskInput = {
+  title?: string;
+  description?: string | null;
+  metadata?: Record<string, unknown>;
+};
+
 export type UpdateTaskStatusInput = {
   statusId: string | null;
 };
