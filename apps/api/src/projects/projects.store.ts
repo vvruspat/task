@@ -12,6 +12,18 @@ export type ProjectCreateResult =
       status: "forbidden";
     };
 
+export type ProjectArchiveResult =
+  | {
+      project: ProjectDetail;
+      status: "archived";
+    }
+  | {
+      status: "project_not_found";
+    }
+  | {
+      status: "forbidden";
+    };
+
 export type ProjectReadStore = {
   listActiveForWorkspace(workspaceId: string, userId: string): Promise<ProjectSummary[] | null>;
   getForWorkspace(
@@ -24,4 +36,9 @@ export type ProjectReadStore = {
     userId: string,
     input: CreateProjectInput,
   ): Promise<ProjectCreateResult>;
+  archiveForWorkspace(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+  ): Promise<ProjectArchiveResult>;
 };

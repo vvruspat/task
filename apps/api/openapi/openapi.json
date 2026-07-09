@@ -268,6 +268,59 @@
       }
     },
     "/workspaces/{workspaceId}/projects/{projectId}": {
+      "delete": {
+        "operationId": "ProjectsController_archiveProject",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot archive projects in this workspace."
+          },
+          "404": {
+            "description": "Workspace or active project is missing or not visible to the current user."
+          }
+        },
+        "summary": "Archive one active project in a visible workspace",
+        "tags": ["projects"]
+      },
       "get": {
         "operationId": "ProjectsController_getProject",
         "parameters": [

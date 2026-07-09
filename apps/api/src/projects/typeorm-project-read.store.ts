@@ -9,7 +9,11 @@ import {
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import type { CreateProjectInput, ProjectDetail, ProjectSummary } from "./projects.contracts.js";
-import type { ProjectCreateResult, ProjectReadStore } from "./projects.store.js";
+import type {
+  ProjectArchiveResult,
+  ProjectCreateResult,
+  ProjectReadStore,
+} from "./projects.store.js";
 
 const projectWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
 
@@ -51,6 +55,7 @@ export class TypeOrmProjectReadStore implements ProjectReadStore {
     }
 
     const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      archivedAt: IsNull(),
       id: projectId,
       workspaceId,
     });
@@ -106,6 +111,57 @@ export class TypeOrmProjectReadStore implements ProjectReadStore {
     });
 
     return { project: toProjectSummary(savedProject), status: "created" };
+  }
+
+  async archiveForWorkspace(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+  ): Promise<ProjectArchiveResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+
+    if (membership === null) {
+      return { status: "project_not_found" };
+    }
+
+    if (!projectWriteRoles.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      archivedAt: IsNull(),
+      id: projectId,
+      workspaceId,
+    });
+
+    if (project === null) {
+      return { status: "project_not_found" };
+    }
+
+    const archivedProject = await dataSource.transaction(
+      async (manager): Promise<ProjectEntity> => {
+        project.archivedAt = new Date();
+
+        const savedProject = await manager.getRepository(ProjectEntity).save(project);
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "project.archived",
+          entityType: "project",
+          entityId: savedProject.id,
+          payload: {
+            title: savedProject.title,
+          },
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        return savedProject;
+      },
+    );
+
+    return { project: toProjectSummary(archivedProject), status: "archived" };
   }
 
   private async hasWorkspaceMembership(
