@@ -645,6 +645,16 @@ export function registerTaskTools(
   );
 
   registrar.registerTool(
+    "task.assign",
+    {
+      title: "Assign task",
+      description: "Set or clear one visible task assignee.",
+      inputSchema: taskSetAssigneeInputSchema,
+    },
+    async (input) => toToolResult(await handlers.setAssignee(input)),
+  );
+
+  registrar.registerTool(
     "task.set_due_date",
     {
       title: "Set task due date",
