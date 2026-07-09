@@ -13,6 +13,7 @@ import type {
   TaskSkillSummary,
   TaskSummary,
   UpdateProjectRequestInput,
+  UpdateTaskRequestInput,
   WorkspaceStatus,
   WorkspaceSummary,
 } from "@task/api-client";
@@ -297,6 +298,10 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async updateProject(_input: UpdateProjectRequestInput): Promise<never> {
     throw new Error("updateProject is not used by the web shell loader.");
+  }
+
+  async updateTask(_input: UpdateTaskRequestInput): Promise<never> {
+    throw new Error("updateTask is not used by the web shell loader.");
   }
 
   async getHealth(): Promise<never> {

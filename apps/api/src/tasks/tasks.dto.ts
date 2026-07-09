@@ -6,6 +6,7 @@ import type {
   TaskSummary,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
+  UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 
@@ -35,6 +36,23 @@ export class CreateTaskDto implements CreateTaskInput {
 export class ParseCreateTaskBodyPipe implements PipeTransform<unknown, CreateTaskInput> {
   transform(value: unknown): CreateTaskInput {
     return parseCreateTaskInput(value);
+  }
+}
+
+export class UpdateTaskDto implements UpdateTaskInput {
+  @ApiPropertyOptional({ example: "Record bass", minLength: 1 })
+  readonly title?: string;
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
+
+  @ApiPropertyOptional({ additionalProperties: true, type: "object" })
+  readonly metadata?: Record<string, unknown>;
+}
+
+export class ParseUpdateTaskBodyPipe implements PipeTransform<unknown, UpdateTaskInput> {
+  transform(value: unknown): UpdateTaskInput {
+    return parseUpdateTaskInput(value);
   }
 }
 
@@ -193,6 +211,35 @@ function parseCreateTaskInput(value: unknown): CreateTaskInput {
   return input;
 }
 
+function parseUpdateTaskInput(value: unknown): UpdateTaskInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task payload must be an object.");
+  }
+
+  const title = readOptionalNonEmptyString(value, "title");
+  const description = readOptionalNullableString(value, "description");
+  const metadata = readOptionalRecord(value, "metadata");
+  const input: UpdateTaskInput = {};
+
+  if (title !== undefined) {
+    input.title = title;
+  }
+
+  if (description !== undefined) {
+    input.description = description;
+  }
+
+  if (metadata !== undefined) {
+    input.metadata = metadata;
+  }
+
+  if (Object.keys(input).length === 0) {
+    throw new BadRequestException("Task update payload must include at least one field.");
+  }
+
+  return input;
+}
+
 function parseUpdateTaskStatusInput(value: unknown): UpdateTaskStatusInput {
   if (!isUnknownRecord(value)) {
     throw new BadRequestException("Task status payload must be an object.");
@@ -229,6 +276,29 @@ function isUnknownRecord(value: unknown): value is Record<string, unknown> {
 
 function readRequiredNonEmptyString(value: Record<string, unknown>, propertyName: string): string {
   const propertyValue = value[propertyName];
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Task ${propertyName} must be a string.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+
+  if (trimmedValue.length === 0) {
+    throw new BadRequestException(`Task ${propertyName} must not be empty.`);
+  }
+
+  return trimmedValue;
+}
+
+function readOptionalNonEmptyString(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | undefined {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === undefined) {
+    return undefined;
+  }
 
   if (typeof propertyValue !== "string") {
     throw new BadRequestException(`Task ${propertyName} must be a string.`);

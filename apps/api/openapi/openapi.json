@@ -559,6 +559,204 @@
         "tags": ["tasks"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}": {
+      "patch": {
+        "operationId": "TasksController_updateTask",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot update tasks in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "Update one active task in a visible project",
+        "tags": ["tasks"]
+      },
+      "delete": {
+        "operationId": "TasksController_archiveTask",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskDetailDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot archive tasks in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or active task is missing or not visible."
+          }
+        },
+        "summary": "Archive one active task in a visible project",
+        "tags": ["tasks"]
+      },
+      "get": {
+        "operationId": "TasksController_getTask",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "Get one task in a visible project",
+        "tags": ["tasks"]
+      }
+    },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/status": {
       "patch": {
         "operationId": "TasksController_updateTaskStatus",
@@ -787,129 +985,6 @@
           }
         },
         "summary": "Update one task due date in a visible project",
-        "tags": ["tasks"]
-      }
-    },
-    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}": {
-      "delete": {
-        "operationId": "TasksController_archiveTask",
-        "parameters": [
-          {
-            "name": "x-task-user-id",
-            "in": "header",
-            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "workspaceId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          },
-          {
-            "name": "projectId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          },
-          {
-            "name": "taskId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TaskDetailDto"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Current user cannot archive tasks in this workspace."
-          },
-          "404": {
-            "description": "Workspace, project, or active task is missing or not visible."
-          }
-        },
-        "summary": "Archive one active task in a visible project",
-        "tags": ["tasks"]
-      },
-      "get": {
-        "operationId": "TasksController_getTask",
-        "parameters": [
-          {
-            "name": "x-task-user-id",
-            "in": "header",
-            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "workspaceId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          },
-          {
-            "name": "projectId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          },
-          {
-            "name": "taskId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TaskDetailDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Workspace, project, or task is missing or not visible."
-          }
-        },
-        "summary": "Get one task in a visible project",
         "tags": ["tasks"]
       }
     },
@@ -2688,6 +2763,24 @@
           "createdAt",
           "updatedAt"
         ]
+      },
+      "UpdateTaskDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Record bass",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
       },
       "UpdateTaskStatusDto": {
         "type": "object",

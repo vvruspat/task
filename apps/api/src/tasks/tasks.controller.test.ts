@@ -7,12 +7,14 @@ import type {
   TaskSummary,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
+  UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import { TasksController } from "./tasks.controller.js";
 import {
   ParseCreateTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
+  ParseUpdateTaskBodyPipe,
   ParseUpdateTaskDueDateBodyPipe,
   ParseUpdateTaskStatusBodyPipe,
 } from "./tasks.dto.js";
@@ -23,6 +25,7 @@ import type {
   TaskReadStore,
   TaskUpdateAssigneeResult,
   TaskUpdateDueDateResult,
+  TaskUpdateResult,
   TaskUpdateStatusResult,
 } from "./tasks.store.js";
 
@@ -112,6 +115,30 @@ test("TasksController uses trusted current user context for task status updates"
 
   assert.equal(response.id, taskId);
   assert.equal(response.statusId, statusId);
+});
+
+test("TasksController uses trusted current user context for task updates", async () => {
+  const input: UpdateTaskInput = { description: "Second take", metadata: { take: 2 } };
+  const controller = new TasksController(
+    new TasksService(
+      createReadStore({
+        updateResult: {
+          status: "updated",
+          task: {
+            ...taskSummary,
+            description: input.description ?? null,
+            metadata: input.metadata ?? {},
+          },
+        },
+      }),
+    ),
+  );
+
+  const response = await controller.updateTask(workspaceId, projectId, taskId, userId, input);
+
+  assert.equal(response.id, taskId);
+  assert.equal(response.description, input.description);
+  assert.deepEqual(response.metadata, input.metadata);
 });
 
 test("TasksController uses trusted current user context for task assignee updates", async () => {
@@ -212,6 +239,30 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseUpdateTaskBodyPipe validates and normalizes task update payloads", () => {
+  const pipe = new ParseUpdateTaskBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      title: "  Record bass DI  ",
+      description: "",
+      metadata: { instrument: "bass" },
+    }),
+    {
+      title: "Record bass DI",
+      description: null,
+      metadata: { instrument: "bass" },
+    },
+  );
+  assert.deepEqual(pipe.transform({ description: null }), { description: null });
+
+  assert.throws(() => pipe.transform({}), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ metadata: [] }), BadRequestException);
+  assert.throws(() => pipe.transform({ description: 1 }), BadRequestException);
+  assert.throws(() => pipe.transform(null), BadRequestException);
+});
+
 test("ParseUpdateTaskStatusBodyPipe validates task status payloads", () => {
   const pipe = new ParseUpdateTaskStatusBodyPipe();
 
@@ -259,6 +310,7 @@ function createReadStore(options: {
   task?: TaskDetail | null;
   archiveResult?: TaskArchiveResult;
   createResult?: TaskCreateResult;
+  updateResult?: TaskUpdateResult;
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
   updateDueDateResult?: TaskUpdateDueDateResult;
@@ -270,6 +322,8 @@ function createReadStore(options: {
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },
+    updateForProject: async (): Promise<TaskUpdateResult> =>
+      options.updateResult ?? { status: "task_not_found" },
     archiveForProject: async (): Promise<TaskArchiveResult> =>
       options.archiveResult ?? { status: "task_not_found" },
     updateStatusForProject: async (): Promise<TaskUpdateStatusResult> =>

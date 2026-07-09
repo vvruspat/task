@@ -144,6 +144,25 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get one task in a visible project */
+    get: operations["TasksController_getTask"];
+    put?: never;
+    post?: never;
+    /** Archive one active task in a visible project */
+    delete: operations["TasksController_archiveTask"];
+    options?: never;
+    head?: never;
+    /** Update one active task in a visible project */
+    patch: operations["TasksController_updateTask"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/status": {
     parameters: {
       query?: never;
@@ -193,24 +212,6 @@ export interface paths {
     head?: never;
     /** Update one task due date in a visible project */
     patch: operations["TasksController_updateTaskDueDate"];
-    trace?: never;
-  };
-  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get one task in a visible project */
-    get: operations["TasksController_getTask"];
-    put?: never;
-    post?: never;
-    /** Archive one active task in a visible project */
-    delete: operations["TasksController_archiveTask"];
-    options?: never;
-    head?: never;
-    patch?: never;
     trace?: never;
   };
   "/workspaces/{workspaceId}/task-skills": {
@@ -716,6 +717,14 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    UpdateTaskDto: {
+      /** @example Record bass */
+      title?: string;
+      description?: string | null;
+      metadata?: {
+        [key: string]: unknown;
+      };
     };
     UpdateTaskStatusDto: {
       /** Format: uuid */
@@ -1460,6 +1469,130 @@ export interface operations {
       };
     };
   };
+  TasksController_getTask: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_archiveTask: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Current user cannot archive tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or active task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_updateTask: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTaskDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Task payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   TasksController_updateTaskStatus: {
     parameters: {
       query?: never;
@@ -1605,79 +1738,6 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace, project, or task is missing or not visible. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  TasksController_getTask: {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
-        "x-task-user-id": string;
-      };
-      path: {
-        workspaceId: string;
-        projectId: string;
-        taskId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["TaskDetailDto"];
-        };
-      };
-      /** @description Workspace, project, or task is missing or not visible. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  TasksController_archiveTask: {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
-        "x-task-user-id": string;
-      };
-      path: {
-        workspaceId: string;
-        projectId: string;
-        taskId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["TaskDetailDto"];
-        };
-      };
-      /** @description Current user cannot archive tasks in this workspace. */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Workspace, project, or active task is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;

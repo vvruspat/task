@@ -171,6 +171,39 @@ test("createTaskApiClient posts task creation payloads with trusted user context
   assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
 });
 
+test("createTaskApiClient patches task updates with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(taskSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const body = {
+    description: "Updated task notes.",
+    metadata: { take: 2 },
+    title: "Updated task",
+  };
+
+  assert.deepEqual(
+    await client.updateTask({
+      body,
+      projectId,
+      taskId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      workspaceId,
+    }),
+    taskSummary(),
+  );
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/dddddddd-dddd-4ddd-8ddd-dddddddddddd`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "PATCH");
+  assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["content-type"], "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
+});
+
 test("createTaskApiClient deletes tasks with trusted user context", async () => {
   const fetcher = new RecordingFetch(single(archivedTaskSummary()));
   const client = createTaskApiClient({

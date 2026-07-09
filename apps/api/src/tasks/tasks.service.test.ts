@@ -7,6 +7,7 @@ import type {
   TaskSummary,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
+  UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
 import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
@@ -17,6 +18,7 @@ import type {
   TaskReadStore,
   TaskUpdateAssigneeResult,
   TaskUpdateDueDateResult,
+  TaskUpdateResult,
   TaskUpdateStatusResult,
 } from "./tasks.store.js";
 
@@ -116,6 +118,35 @@ test("TasksService updates task status for writable workspace members", async ()
   assert.equal(response.statusId, statusId);
 });
 
+test("TasksService updates task metadata for writable workspace members", async () => {
+  const input: UpdateTaskInput = {
+    title: "Record bass DI",
+    description: "Second take",
+    metadata: { instrument: "bass" },
+  };
+  const service = new TasksService(
+    createReadStore({
+      updateResult: {
+        status: "updated",
+        task: {
+          ...taskSummary,
+          title: input.title ?? taskSummary.title,
+          description: input.description ?? null,
+          metadata: input.metadata ?? {},
+        },
+      },
+    }),
+  );
+
+  const response = await service.updateTask(workspaceId, projectId, taskId, userId, input);
+
+  assert.ok(response instanceof TaskDetailDto);
+  assert.equal(response.id, taskId);
+  assert.equal(response.title, input.title);
+  assert.equal(response.description, input.description);
+  assert.deepEqual(response.metadata, input.metadata);
+});
+
 test("TasksService updates task assignee for writable workspace members", async () => {
   const input: UpdateTaskAssigneeInput = { assigneeUserId };
   const service = new TasksService(
@@ -189,6 +220,10 @@ test("TasksService hides inaccessible projects and missing tasks", async () => {
     NotFoundException,
   );
   await assert.rejects(
+    () => service.updateTask(workspaceId, projectId, taskId, userId, { title: "Hidden" }),
+    NotFoundException,
+  );
+  await assert.rejects(
     () => service.updateTaskAssignee(workspaceId, projectId, taskId, userId, { assigneeUserId }),
     NotFoundException,
   );
@@ -218,6 +253,15 @@ test("TasksService rejects status updates without write permission", async () =>
 
   await assert.rejects(
     () => service.updateTaskStatus(workspaceId, projectId, taskId, userId, { statusId }),
+    ForbiddenException,
+  );
+});
+
+test("TasksService rejects task updates without write permission", async () => {
+  const service = new TasksService(createReadStore({ updateResult: { status: "forbidden" } }));
+
+  await assert.rejects(
+    () => service.updateTask(workspaceId, projectId, taskId, userId, { title: "Hidden" }),
     ForbiddenException,
   );
 });
@@ -292,6 +336,7 @@ function createReadStore(options: {
   task?: TaskDetail | null;
   archiveResult?: TaskArchiveResult;
   createResult?: TaskCreateResult;
+  updateResult?: TaskUpdateResult;
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
   updateDueDateResult?: TaskUpdateDueDateResult;
@@ -303,6 +348,8 @@ function createReadStore(options: {
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },
+    updateForProject: async (): Promise<TaskUpdateResult> =>
+      options.updateResult ?? { status: "task_not_found" },
     archiveForProject: async (): Promise<TaskArchiveResult> =>
       options.archiveResult ?? { status: "task_not_found" },
     updateStatusForProject: async (): Promise<TaskUpdateStatusResult> =>
