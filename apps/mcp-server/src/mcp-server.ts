@@ -431,6 +431,16 @@ export function registerAttachmentTools(
   handlers: AttachmentToolHandlers,
 ): void {
   registrar.registerTool(
+    "attachment.add_link",
+    {
+      title: "Add link attachment",
+      description: "Attach one http or https link to a writable task.",
+      inputSchema: attachmentCreateLinkInputSchema,
+    },
+    async (input) => toToolResult(await handlers.createLink(input)),
+  );
+
+  registrar.registerTool(
     "attachment.create_link",
     {
       title: "Create link attachment",
