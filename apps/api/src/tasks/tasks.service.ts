@@ -6,14 +6,16 @@ import {
 } from "@nestjs/common";
 import type {
   AddTaskSubtasksInput,
+  BulkUpdateTasksInput,
   CreateTaskInput,
+  ListTaskTableInput,
   MoveTaskInput,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
-import { TaskDetailDto, TaskSummaryDto } from "./tasks.dto.js";
+import { TaskDetailDto, TaskSummaryDto, TaskTablePageDto } from "./tasks.dto.js";
 import type { TaskReadStore } from "./tasks.store.js";
 
 @Injectable()
@@ -47,6 +49,39 @@ export class TasksService {
     }
 
     return new TaskDetailDto(task);
+  }
+
+  async listTaskTable(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: ListTaskTableInput,
+  ): Promise<TaskTablePageDto> {
+    const page = await this.readStore.listTableForProject(workspaceId, projectId, userId, input);
+
+    if (page === null) throw new NotFoundException("Project was not found.");
+
+    return new TaskTablePageDto(page);
+  }
+
+  async bulkUpdateTasks(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: BulkUpdateTasksInput,
+  ): Promise<TaskDetailDto[]> {
+    const result = await this.readStore.bulkUpdateForProject(workspaceId, projectId, userId, input);
+
+    if (result.status === "project_not_found" || result.status === "invalid_task")
+      throw new NotFoundException("One or more tasks were not found.");
+    if (result.status === "forbidden")
+      throw new ForbiddenException("Current user cannot update tasks in this workspace.");
+    if (result.status === "invalid_status")
+      throw new BadRequestException("Task status must belong to the same workspace.");
+    if (result.status === "invalid_assignee")
+      throw new BadRequestException("Task assignee must belong to the same workspace.");
+
+    return result.tasks.map((task) => new TaskDetailDto(task));
   }
 
   async createTask(

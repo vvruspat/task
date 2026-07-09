@@ -3,10 +3,13 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
   AddTaskSubtaskInput,
   AddTaskSubtasksInput,
+  BulkUpdateTasksInput,
   CreateTaskInput,
+  ListTaskTableInput,
   MoveTaskInput,
   TaskDetail,
   TaskSummary,
+  TaskTablePage,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
@@ -140,6 +143,126 @@ export class ParseUpdateTaskDueDateBodyPipe
   }
 }
 
+export class ListTaskTableQueryDto implements ListTaskTableInput {
+  @ApiPropertyOptional({ minLength: 1, maxLength: 200 }) readonly search?: string;
+  @ApiPropertyOptional({ format: "uuid", type: String }) readonly statusId?: string;
+  @ApiPropertyOptional({ enum: ["unassigned"] }) readonly statusFilter?: "unassigned";
+  @ApiPropertyOptional({ format: "uuid", type: String }) readonly assigneeUserId?: string;
+  @ApiPropertyOptional({ enum: ["unassigned"] }) readonly assigneeFilter?: "unassigned";
+  @ApiPropertyOptional({ format: "date-time" }) readonly dueFrom?: string;
+  @ApiPropertyOptional({ format: "date-time" }) readonly dueTo?: string;
+  @ApiPropertyOptional({ enum: ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"], default: "updatedAt" }) readonly sortBy: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt" = "updatedAt";
+  @ApiPropertyOptional({ enum: ["asc", "desc"], default: "desc" }) readonly sortDirection: "asc" | "desc" = "desc";
+  @ApiPropertyOptional({ minimum: 1, default: 1 }) readonly page: number = 1;
+  @ApiPropertyOptional({ minimum: 1, maximum: 100, default: 50 }) readonly pageSize: number = 50;
+}
+
+export class ParseListTaskTableQueryPipe implements PipeTransform<unknown, ListTaskTableInput> {
+  transform(value: unknown): ListTaskTableInput {
+    if (!isUnknownRecord(value)) throw new BadRequestException("Task table query must be an object.");
+    const optionalUuid = (key: string): string | undefined => {
+      const raw = value[key];
+      if (raw === undefined) return undefined;
+      if (typeof raw !== "string" || !uuidV4Pattern.test(raw.trim()))
+        throw new BadRequestException(`${key} must be a UUID v4 string.`);
+      return raw.trim();
+    };
+    const optionalDate = (key: string): string | undefined => {
+      const raw = value[key];
+      if (raw === undefined) return undefined;
+      if (typeof raw !== "string" || raw.trim() === "" || !Number.isFinite(Date.parse(raw)))
+        throw new BadRequestException(`${key} must be an ISO date-time string.`);
+      return new Date(Date.parse(raw)).toISOString();
+    };
+    const positive = (key: string, fallback: number, maximum: number): number => {
+      const raw = value[key];
+      if (raw === undefined) return fallback;
+      if (typeof raw !== "string" || !/^\d+$/.test(raw))
+        throw new BadRequestException(`${key} must be a positive integer.`);
+      const parsed = Number(raw);
+      if (parsed < 1 || parsed > maximum)
+        throw new BadRequestException(`${key} must be between 1 and ${maximum}.`);
+      return parsed;
+    };
+    const sortByRaw = value["sortBy"];
+    const sortBy = sortByRaw === undefined ? "updatedAt" : sortByRaw;
+    if (!isTaskTableSortField(sortBy))
+      throw new BadRequestException("sortBy is invalid.");
+    const sortDirectionRaw = value["sortDirection"];
+    const sortDirection = sortDirectionRaw === undefined ? "desc" : sortDirectionRaw;
+    if (sortDirection !== "asc" && sortDirection !== "desc")
+      throw new BadRequestException("sortDirection must be asc or desc.");
+    const input: ListTaskTableInput = {
+      sortBy,
+      sortDirection,
+      page: positive("page", 1, Number.MAX_SAFE_INTEGER),
+      pageSize: positive("pageSize", 50, 100),
+    };
+    const search = value["search"];
+    if (search !== undefined) {
+      if (typeof search !== "string" || search.trim().length === 0 || search.trim().length > 200)
+        throw new BadRequestException("search must be a non-empty string no longer than 200 characters.");
+      input.search = search.trim();
+    }
+    const statusId = optionalUuid("statusId");
+    const assigneeUserId = optionalUuid("assigneeUserId");
+    const statusFilter = value["statusFilter"];
+    const assigneeFilter = value["assigneeFilter"];
+    if (statusFilter !== undefined && statusFilter !== "unassigned")
+      throw new BadRequestException("statusFilter must be unassigned.");
+    if (assigneeFilter !== undefined && assigneeFilter !== "unassigned")
+      throw new BadRequestException("assigneeFilter must be unassigned.");
+    if (statusId !== undefined && statusFilter !== undefined)
+      throw new BadRequestException("statusId and statusFilter cannot be combined.");
+    if (assigneeUserId !== undefined && assigneeFilter !== undefined)
+      throw new BadRequestException("assigneeUserId and assigneeFilter cannot be combined.");
+    const dueFrom = optionalDate("dueFrom");
+    const dueTo = optionalDate("dueTo");
+    if (dueFrom !== undefined && dueTo !== undefined && dueFrom > dueTo)
+      throw new BadRequestException("dueFrom must not be after dueTo.");
+    if (statusId !== undefined) input.statusId = statusId;
+    if (statusFilter !== undefined) input.statusFilter = statusFilter;
+    if (assigneeUserId !== undefined) input.assigneeUserId = assigneeUserId;
+    if (assigneeFilter !== undefined) input.assigneeFilter = assigneeFilter;
+    if (dueFrom !== undefined) input.dueFrom = dueFrom;
+    if (dueTo !== undefined) input.dueTo = dueTo;
+    return input;
+  }
+}
+
+export class BulkUpdateTasksDto implements BulkUpdateTasksInput {
+  @ApiProperty({ isArray: true, minItems: 1, maxItems: 100, format: "uuid", type: String }) readonly taskIds: string[] = [];
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly statusId?: string | null;
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly assigneeUserId?: string | null;
+  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String }) readonly dueAt?: string | null;
+}
+
+export class ParseBulkUpdateTasksBodyPipe implements PipeTransform<unknown, BulkUpdateTasksInput> {
+  transform(value: unknown): BulkUpdateTasksInput {
+    if (!isUnknownRecord(value)) throw new BadRequestException("Task bulk update payload must be an object.");
+    const rawTaskIds = value["taskIds"];
+    if (!Array.isArray(rawTaskIds) || rawTaskIds.length === 0 || rawTaskIds.length > 100)
+      throw new BadRequestException("taskIds must contain between 1 and 100 UUID v4 strings.");
+    const taskIds = rawTaskIds.map((taskId) => {
+      if (typeof taskId !== "string" || !uuidV4Pattern.test(taskId.trim()))
+        throw new BadRequestException("taskIds must contain UUID v4 strings.");
+      return taskId.trim();
+    });
+    if (new Set(taskIds).size !== taskIds.length)
+      throw new BadRequestException("taskIds must not contain duplicates.");
+    const statusId = readOptionalNullableUuid(value, "statusId");
+    const assigneeUserId = readOptionalNullableUuid(value, "assigneeUserId");
+    const dueAt = readOptionalNullableDateTime(value, "dueAt");
+    if (statusId === undefined && assigneeUserId === undefined && dueAt === undefined)
+      throw new BadRequestException("Task bulk update payload must include at least one field.");
+    const input: BulkUpdateTasksInput = { taskIds };
+    if (statusId !== undefined) input.statusId = statusId;
+    if (assigneeUserId !== undefined) input.assigneeUserId = assigneeUserId;
+    if (dueAt !== undefined) input.dueAt = dueAt;
+    return input;
+  }
+}
+
 export class TaskSummaryDto implements TaskSummary {
   @ApiProperty({ format: "uuid" })
   readonly id: string;
@@ -214,6 +337,19 @@ export class TaskSummaryDto implements TaskSummary {
 }
 
 export class TaskDetailDto extends TaskSummaryDto implements TaskDetail {}
+
+export class TaskTablePageDto implements TaskTablePage {
+  @ApiProperty({ type: TaskSummaryDto, isArray: true }) readonly items: TaskSummaryDto[];
+  @ApiProperty({ minimum: 1 }) readonly page: number;
+  @ApiProperty({ minimum: 1, maximum: 100 }) readonly pageSize: number;
+  @ApiProperty({ minimum: 0 }) readonly total: number;
+  constructor(value: TaskTablePage) {
+    this.items = value.items.map((task) => new TaskSummaryDto(task));
+    this.page = value.page;
+    this.pageSize = value.pageSize;
+    this.total = value.total;
+  }
+}
 
 function parseCreateTaskInput(value: unknown): CreateTaskInput {
   if (!isUnknownRecord(value)) {
@@ -380,6 +516,19 @@ function parseUpdateTaskDueDateInput(value: unknown): UpdateTaskDueDateInput {
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isTaskTableSortField(
+  value: unknown,
+): value is "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt" {
+  return (
+    value === "title" ||
+    value === "status" ||
+    value === "assignee" ||
+    value === "dueAt" ||
+    value === "createdAt" ||
+    value === "updatedAt"
+  );
 }
 
 function readUnknownProperty(value: Record<string, unknown>, propertyName: string): unknown {

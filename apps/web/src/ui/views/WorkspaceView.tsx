@@ -94,7 +94,13 @@ export default function WorkspaceView({
   if (route.id === "matrix") {
     return (
       <>
-        <MatrixView onOpenTask={onOpenTask} tasks={tasks} />
+        <MatrixView
+          client={taskClient}
+          onOpenTask={onOpenTask}
+          onTaskUpdated={onTaskUpdated}
+          projectId={selectedProjectId}
+          workspaceId={selectedWorkspaceId}
+        />
         {taskDrawer}
       </>
     );

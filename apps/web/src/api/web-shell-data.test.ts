@@ -5,6 +5,7 @@ import type {
   AgentRunSummary,
   ArchiveProjectRequestInput,
   ArchiveTaskRequestInput,
+  BulkUpdateTasksRequestInput,
   ConfirmationRequestDetail,
   ConfirmationRequestScopedInput,
   ConfirmationRequestSummary,
@@ -17,6 +18,7 @@ import type {
   DashboardOverview,
   GetProjectMatrixRequestInput,
   ListMyTasksRequestInput,
+  ListTaskTableRequestInput,
   MoveTaskRequestInput,
   MyTasksPage,
   ProjectDetail,
@@ -29,6 +31,7 @@ import type {
   TaskDetail,
   TaskSkillSummary,
   TaskSummary,
+  TaskTablePage,
   UpdateProjectRequestInput,
   UpdateTaskAssigneeRequestInput,
   UpdateTaskDueDateRequestInput,
@@ -415,6 +418,10 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("listMyTasks is not used by the web shell loader.");
   }
 
+  async listTaskTable(_input: ListTaskTableRequestInput): Promise<TaskTablePage> {
+    throw new Error("listTaskTable is not used by the web shell loader.");
+  }
+
   async listAgentRuns(input: { workspaceId: string }): Promise<AgentRunSummary[]> {
     this.calls.push(`listAgentRuns:${input.workspaceId}`);
     return this.data.agentRuns;
@@ -479,6 +486,10 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async updateTaskStatus(_input: UpdateTaskStatusRequestInput): Promise<never> {
     throw new Error("updateTaskStatus is not used by the web shell loader.");
+  }
+
+  async bulkUpdateTasks(_input: BulkUpdateTasksRequestInput): Promise<never> {
+    throw new Error("bulkUpdateTasks is not used by the web shell loader.");
   }
 }
 

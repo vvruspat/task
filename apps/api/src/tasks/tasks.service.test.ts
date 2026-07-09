@@ -7,6 +7,7 @@ import type {
   MoveTaskInput,
   TaskDetail,
   TaskSummary,
+  TaskTablePage,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
@@ -17,6 +18,7 @@ import { TasksService } from "./tasks.service.js";
 import type {
   TaskAddSubtasksResult,
   TaskArchiveResult,
+  TaskBulkUpdateResult,
   TaskCreateResult,
   TaskMoveResult,
   TaskReadStore,
@@ -76,6 +78,38 @@ test("TasksService returns one visible task DTO", async () => {
   assert.ok(response instanceof TaskDetailDto);
   assert.equal(response.id, taskId);
   assert.equal(response.projectId, projectId);
+});
+
+test("TasksService maps a paginated task table", async () => {
+  const service = new TasksService(
+    createReadStore({ tablePage: { items: [taskSummary], page: 2, pageSize: 25, total: 26 } }),
+  );
+  const response = await service.listTaskTable(workspaceId, projectId, userId, {
+    page: 2,
+    pageSize: 25,
+    sortBy: "updatedAt",
+    sortDirection: "desc",
+  });
+  assert.equal(response.total, 26);
+  assert.equal(response.items[0]?.id, taskId);
+});
+
+test("TasksService returns all bulk-updated tasks or rejects the entire request", async () => {
+  const service = new TasksService(
+    createReadStore({ bulkUpdateResult: { status: "updated", tasks: [{ ...taskSummary, statusId }] } }),
+  );
+  const response = await service.bulkUpdateTasks(workspaceId, projectId, userId, {
+    taskIds: [taskId],
+    statusId,
+  });
+  assert.equal(response[0]?.statusId, statusId);
+  const rejected = new TasksService(
+    createReadStore({ bulkUpdateResult: { status: "invalid_task" } }),
+  );
+  await assert.rejects(
+    () => rejected.bulkUpdateTasks(workspaceId, projectId, userId, { taskIds: [taskId], statusId }),
+    NotFoundException,
+  );
 });
 
 test("TasksService creates a task for writable workspace members", async () => {
@@ -457,10 +491,14 @@ function createReadStore(options: {
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
   updateDueDateResult?: TaskUpdateDueDateResult;
+  tablePage?: TaskTablePage | null;
+  bulkUpdateResult?: TaskBulkUpdateResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
       options.tasks === undefined ? [] : options.tasks,
+    listTableForProject: async (): Promise<TaskTablePage | null> =>
+      options.tablePage === undefined ? { items: [], page: 1, pageSize: 50, total: 0 } : options.tablePage,
     getForProject: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
@@ -479,5 +517,7 @@ function createReadStore(options: {
       options.updateAssigneeResult ?? { status: "task_not_found" },
     updateDueDateForProject: async (): Promise<TaskUpdateDueDateResult> =>
       options.updateDueDateResult ?? { status: "task_not_found" },
+    bulkUpdateForProject: async (): Promise<TaskBulkUpdateResult> =>
+      options.bulkUpdateResult ?? { status: "invalid_task" },
   };
 }

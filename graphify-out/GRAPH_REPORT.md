@@ -1,16 +1,16 @@
 # Graph Report - task  (2026-07-10)
 
 ## Corpus Check
-- 662 files · ~218,965 words
+- 663 files · ~214,250 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4361 nodes · 8531 edges · 332 communities (308 shown, 24 thin omitted)
+- 4409 nodes · 8660 edges · 344 communities (327 shown, 17 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c86375cc`
+- Built from commit: `4752e84f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -207,11 +207,13 @@
 - [[_COMMUNITY_Community 193|Community 193]]
 - [[_COMMUNITY_Community 194|Community 194]]
 - [[_COMMUNITY_Community 195|Community 195]]
+- [[_COMMUNITY_Community 196|Community 196]]
 - [[_COMMUNITY_Community 197|Community 197]]
 - [[_COMMUNITY_Community 198|Community 198]]
 - [[_COMMUNITY_Community 199|Community 199]]
 - [[_COMMUNITY_Community 200|Community 200]]
 - [[_COMMUNITY_Community 201|Community 201]]
+- [[_COMMUNITY_Community 202|Community 202]]
 - [[_COMMUNITY_Community 203|Community 203]]
 - [[_COMMUNITY_Community 204|Community 204]]
 - [[_COMMUNITY_Community 205|Community 205]]
@@ -238,16 +240,26 @@
 - [[_COMMUNITY_Community 226|Community 226]]
 - [[_COMMUNITY_Community 227|Community 227]]
 - [[_COMMUNITY_Community 331|Community 331]]
+- [[_COMMUNITY_Community 332|Community 332]]
+- [[_COMMUNITY_Community 333|Community 333]]
 - [[_COMMUNITY_Community 334|Community 334]]
 - [[_COMMUNITY_Community 335|Community 335]]
+- [[_COMMUNITY_Community 336|Community 336]]
+- [[_COMMUNITY_Community 337|Community 337]]
+- [[_COMMUNITY_Community 338|Community 338]]
+- [[_COMMUNITY_Community 339|Community 339]]
+- [[_COMMUNITY_Community 340|Community 340]]
+- [[_COMMUNITY_Community 341|Community 341]]
+- [[_COMMUNITY_Community 342|Community 342]]
+- [[_COMMUNITY_Community 343|Community 343]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `MFlex()` - 51 edges
-2. `executeMigrationQueries()` - 37 edges
-3. `RecordingTaskApiClient` - 37 edges
+2. `RecordingTaskApiClient` - 39 edges
+3. `executeMigrationQueries()` - 37 edges
 4. `ApiDataSourceProvider` - 30 edges
-5. `TaskDetailDto` - 27 edges
-6. `isJsonObject()` - 25 edges
+5. `TaskDetailDto` - 29 edges
+6. `isJsonObject()` - 26 edges
 7. `WorkspaceMemberEntity` - 24 edges
 8. `createTaskMcpServer()` - 23 edges
 9. `compilerOptions` - 23 edges
@@ -256,19 +268,19 @@
 ## Surprising Connections (you probably didn't know these)
 - `RecordingTaskApiClient` --implements--> `TaskApiClient`  [EXTRACTED]
   apps/web/src/api/web-shell-data.test.ts → packages/api-client/src/client.ts
-- `createTelegramBotRuntimeFromEnvironment()` --calls--> `loadTelegramBotConfig()`  [INFERRED]
-  apps/tg-bot/src/runtime.ts → apps/tg-bot/src/config.ts
 - `RecordingTaskApiClient` --references--> `CreateProjectRequestInput`  [EXTRACTED]
   apps/web/src/api/web-shell-data.test.ts → packages/api-client/src/client.ts
 - `RecordingTaskApiClient` --references--> `CreateTaskRequestInput`  [EXTRACTED]
   apps/web/src/api/web-shell-data.test.ts → packages/api-client/src/client.ts
 - `createWebShellDataLoader()` --calls--> `createTaskApiClient()`  [EXTRACTED]
   apps/web/src/api/web-shell-data.ts → packages/api-client/src/client.ts
+- `createWebShellProjectCreator()` --calls--> `createTaskApiClient()`  [EXTRACTED]
+  apps/web/src/api/web-shell-data.ts → packages/api-client/src/client.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (332 total, 24 thin omitted)
+## Communities (344 total, 17 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.11
@@ -295,7 +307,7 @@ Cohesion: 0.18
 Nodes (11): Agent and MCP design, Agent run audit, Example flow: apply a skill with overrides, Example flow: create a song from a skill, Example flow: create a task skill, Fuzzy resolution, MCP and OpenAPI, Permissions (+3 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.06
+Cohesion: 0.07
 Nodes (34): DashboardActivity, DashboardAgentRun, DashboardConfirmation, DashboardOverview, DashboardProject, DashboardTaskCounts, ListMyTasksInput, MyTaskItem (+26 more)
 
 ### Community 7 - "Community 7"
@@ -351,12 +363,12 @@ Cohesion: 0.05
 Nodes (37): import, types, dependencies, clsx, @heroicons/react, @internationalized/date, js-convert-case, mime-types (+29 more)
 
 ### Community 23 - "Community 23"
-Cohesion: 0.16
-Nodes (10): ClearableProps, useClearable(), MLabel(), Basic, meta, Story, RadioProps, TextareaProps (+2 more)
+Cohesion: 0.24
+Nodes (6): ClearableProps, useClearable(), RadioProps, TextareaProps, MInput(), BasicInputProps
 
 ### Community 24 - "Community 24"
-Cohesion: 0.12
-Nodes (16): CreateTelegramAgentRunInput, AgentRuntimeResult, PersistedAgentRun, RecordingAgentRunStore, AgentRunForIntakeResponse, RecordingAgentRunStore, AgentRunStore, FindTelegramAgentRunInput (+8 more)
+Cohesion: 0.15
+Nodes (13): CreateTelegramAgentRunInput, TelegramAgentRunAttachmentInput, AgentRuntimeResult, PersistedAgentRun, RecordingAgentRunStore, CreateTelegramAgentRunDto, AgentRunForIntakeResponse, RecordingAgentRunStore (+5 more)
 
 ### Community 25 - "Community 25"
 Cohesion: 0.15
@@ -387,16 +399,16 @@ Cohesion: 0.09
 Nodes (22): compilerOptions, baseUrl, declarationMap, emitDeclarationOnly, exactOptionalPropertyTypes, ignoreDeprecations, jsx, lib (+14 more)
 
 ### Community 32 - "Community 32"
-Cohesion: 0.10
-Nodes (20): ProjectMatrix, ProjectMatrixCell, ProjectMatrixColumn, ProjectMatrixStage, ProjectMatrixController, uuidV4Pipe, ProjectMatrixCellDto, ProjectMatrixDto (+12 more)
+Cohesion: 0.13
+Nodes (16): ApiTrustedCurrentUser(), parseTrustedCurrentUserId(), TrustedCurrentUserHeader, TrustedCurrentUserId, TrustedCurrentUserRequest, ProjectMatrix, ProjectMatrixCell, ProjectMatrixColumn (+8 more)
 
 ### Community 33 - "Community 33"
 Cohesion: 0.03
-Nodes (77): components, $defs, operations, paths, webhooks, AddTaskSubtasksInput, AddTaskSubtasksOperation, agentRunSummaryArrayParser (+69 more)
+Nodes (79): $defs, operations, paths, webhooks, AddTaskSubtasksInput, AddTaskSubtasksOperation, agentRunSummaryArrayParser, ArchiveProjectOperation (+71 more)
 
 ### Community 36 - "Community 36"
-Cohesion: 0.17
-Nodes (16): TaskDetail, archivedAt, createdAt, taskSummary, TaskAddSubtasksResult, TaskArchiveResult, TaskCreateResult, TaskMoveResult (+8 more)
+Cohesion: 0.13
+Nodes (24): TaskDetail, TaskSummary, TaskTableSortDirection, TaskTableSortField, taskTableSortFields, archivedAt, createdAt, taskSummary (+16 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.09
@@ -432,31 +444,31 @@ Nodes (8): compilerOptions, incremental, rootDir, tsBuildInfoFile, exclude, exte
 
 ### Community 45 - "Community 45"
 Cohesion: 0.05
-Nodes (32): AgentHistoryRunRow, AgentHistorySummary, AgentRunSummary, compareMyTasks(), countRecentlyUpdatedTasks(), formatDateLabel(), formatOptionalDateLabel(), hasDateValue() (+24 more)
+Nodes (33): AgentHistoryRunRow, AgentHistorySummary, AgentRunSummary, buildKanbanTaskCards(), compareMyTasks(), countRecentlyUpdatedTasks(), formatDateLabel(), formatOptionalDateLabel() (+25 more)
 
 ### Community 46 - "Community 46"
 Cohesion: 0.13
 Nodes (12): assertFreshAuthDate(), isValidHash(), isWebAppUserPayload(), readSingleRequiredParam(), readWebAppUser(), TelegramMiniAppInitDataVerifier, TelegramMiniAppInitDataVerifierConfig, authDate (+4 more)
 
 ### Community 47 - "Community 47"
-Cohesion: 0.18
-Nodes (28): ConfirmationCallbackPayload, isSafeInteger(), isUnknownRecord(), parseTelegramConfirmationCallbackContext(), parseTelegramMessageContext(), readAttachments(), readBoolean(), readConfirmationCallbackPayload() (+20 more)
+Cohesion: 0.13
+Nodes (35): ConfirmationCallbackPayload, isSafeInteger(), isUnknownRecord(), parseTelegramConfirmationCallbackContext(), parseTelegramMessageContext(), readAttachments(), readBoolean(), readConfirmationCallbackPayload() (+27 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.14
-Nodes (15): LinkTelegramIdentityInput, LinkTelegramIdentityResult, ResolveTelegramContextInput, TelegramConfirmationCallbackAction, TelegramContextResolution, RecordingTelegramContextStore, ResolveTelegramContextDto, TelegramContextResolutionDto (+7 more)
+Cohesion: 0.16
+Nodes (14): LinkTelegramIdentityInput, LinkTelegramIdentityResult, ResolveTelegramContextInput, TelegramConfirmationCallbackAction, TelegramContextResolution, ConfirmationMutationRequest, confirmationRequest, now (+6 more)
 
 ### Community 50 - "Community 50"
 Cohesion: 0.11
 Nodes (31): ActivityEventEntity, AgentToolCallEntity, AttachmentEntity, CommentEntity, ConfirmationRequestEntity, ProjectEntity, StatusEntity, TaskEntity (+23 more)
 
 ### Community 51 - "Community 51"
-Cohesion: 0.09
-Nodes (25): AddTaskSubtaskInput, AddTaskSubtasksInput, CreateTaskInput, MoveTaskInput, UpdateTaskAssigneeInput, UpdateTaskDueDateInput, UpdateTaskInput, UpdateTaskStatusInput (+17 more)
+Cohesion: 0.12
+Nodes (18): BulkUpdateTasksInput, CreateTaskInput, UpdateTaskAssigneeInput, UpdateTaskDueDateInput, UpdateTaskInput, UpdateTaskStatusInput, TasksController, uuidV4Pipe (+10 more)
 
 ### Community 52 - "Community 52"
-Cohesion: 0.15
-Nodes (24): PreviewTaskSkillApplyOverrides, TaskSkillVersionSummary, CreateTaskSkillDto, isUnknownRecord(), parseCloneTaskSkillInput(), ParseCreateTaskSkillBodyPipe, parseCreateTaskSkillInput(), ParsePreviewTaskSkillApplyBodyPipe (+16 more)
+Cohesion: 0.36
+Nodes (5): TaskSkillApplyPreviewSubtask, TaskSkillApplyPreviewSubtaskSource, TaskSkillVersionSummary, TaskSkillApplyPreviewSubtaskDto, TaskSkillVersionSummaryDto
 
 ### Community 53 - "Community 53"
 Cohesion: 0.11
@@ -475,28 +487,28 @@ Cohesion: 0.05
 Nodes (60): ArchiveTaskSkillResponse, CloneTaskSkillInput, CloneTaskSkillRequest, CloneTaskSkillResponse, CreateTaskSkillInput, CreateTaskSkillRequest, CreateTaskSkillResponse, PreviewTaskSkillApplyInput (+52 more)
 
 ### Community 57 - "Community 57"
-Cohesion: 0.15
-Nodes (11): requestBody, CreateTelegramAgentRunInput, TelegramBackendFetch, TelegramBackendFetchInit, TelegramConfirmationCallbackInput, agentRunRequestBody, confirmationCallbackRequestBody, RecordingTelegramBackendFetch (+3 more)
+Cohesion: 0.10
+Nodes (16): requestBody, CreateTelegramAgentRunInput, TelegramBackendFetch, TelegramBackendFetchInit, TelegramConfirmationCallbackInput, agentRunRequestBody, confirmationCallbackRequestBody, RecordingTelegramBackendFetch (+8 more)
 
 ### Community 58 - "Community 58"
-Cohesion: 0.12
-Nodes (14): applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, cloneInput, createdAt, createInput, definitionUpdateInput (+6 more)
+Cohesion: 0.13
+Nodes (13): applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, cloneInput, createdAt, createInput, definitionUpdateInput (+5 more)
 
 ### Community 59 - "Community 59"
-Cohesion: 0.17
-Nodes (9): VerifiedTelegramMiniAppInitData, VerifyTelegramMiniAppInitDataInput, isResolvedTelegramContext(), ResolvedTelegramContextDto, TelegramController, TelegramMiniAppController, VerifiedTelegramMiniAppInitDataDto, VerifyTelegramMiniAppInitDataDto (+1 more)
+Cohesion: 0.15
+Nodes (11): VerifiedTelegramMiniAppInitData, VerifyTelegramMiniAppInitDataInput, isResolvedTelegramContext(), ResolvedTelegramContextDto, TelegramController, TelegramMiniAppController, VerifiedTelegramMiniAppInitDataDto, VerifyTelegramMiniAppInitDataDto (+3 more)
 
 ### Community 60 - "Community 60"
-Cohesion: 0.05
-Nodes (33): createWebShellProject(), parseWebShellConfig(), ApiData, projectSummary(), RecordingTaskApiClient, taskSummary(), AddTaskSubtasksRequestInput, AgentRunSummary (+25 more)
+Cohesion: 0.04
+Nodes (34): parseWebShellConfig(), ApiData, projectSummary(), RecordingTaskApiClient, taskSummary(), AddTaskSubtasksRequestInput, AgentRunSummary, ArchiveProjectRequestInput (+26 more)
 
 ### Community 61 - "Community 61"
 Cohesion: 0.03
 Nodes (107): isUnknownRecord(), postJson(), readOptionalNullableString(), readRecord(), readString(), AddTaskSubtasksOperation, ApplyTaskSkillOperation, ArchiveProjectOperation (+99 more)
 
 ### Community 62 - "Community 62"
-Cohesion: 0.05
-Nodes (33): CaptionProps, CheckboxProps, MFieldDescription(), MFieldDescriptionProps, Basic, meta, Story, LabelProps (+25 more)
+Cohesion: 0.07
+Nodes (26): CaptionProps, CheckboxProps, MFieldDescription(), MFieldDescriptionProps, Basic, meta, Story, LabelProps (+18 more)
 
 ### Community 63 - "Community 63"
 Cohesion: 0.09
@@ -507,8 +519,8 @@ Cohesion: 0.11
 Nodes (21): CreateTaskCommentInput, TaskComment, CommentsController, createdAt, taskComment, uuidV4Pipe, CreateTaskCommentDto, isUnknownRecord() (+13 more)
 
 ### Community 65 - "Community 65"
-Cohesion: 0.14
-Nodes (15): ConfirmationRequestSummary, TaskApiClient, ConfirmationActionState, ConfirmationLoadState, ConfirmationsView(), ConfirmationsViewProps, ConfirmationApi, ConfirmationRequestLoadResult (+7 more)
+Cohesion: 0.13
+Nodes (15): ConfirmationRequestDetail, ConfirmationRequestScopedInput, ConfirmationRequestSummary, ConfirmationActionState, ConfirmationLoadState, ConfirmationsView(), ConfirmationsViewProps, ConfirmationApi (+7 more)
 
 ### Community 66 - "Community 66"
 Cohesion: 0.06
@@ -531,16 +543,16 @@ Cohesion: 0.05
 Nodes (50): requestBody, ConfirmationRequestDetailResponse, ConfirmationRequestSummaryResponse, ConfirmConfirmationRequestResponse, CreateConfirmationRequestInput, ProjectSummaryResponse, TaskBackendClientError, TaskDetailResponse (+42 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 0.24
-Nodes (10): formatInvalidValue(), parseBackendBaseUrl(), parsePort(), InvalidTelegramBotEnvironmentError, loadTelegramBotConfig(), parseOptionalSecret(), parseRequiredSecret(), parseTelegramBotConfig() (+2 more)
+Cohesion: 0.13
+Nodes (7): MDataGridPagination(), MDataGridPaginationProps, MSelect(), MSelectOption, SelectComponentProps, MThemeSelectorProps, themeOptions
 
 ### Community 72 - "Community 72"
 Cohesion: 0.08
 Nodes (11): TaskApiClientError, TaskApiFetch, TaskApiRequestInit, archivedTaskSummary(), FetchCall, MockResponseOptions, projectMatrix(), ProjectMatrixFixture (+3 more)
 
 ### Community 73 - "Community 73"
-Cohesion: 0.13
-Nodes (24): renderTaskDrawer(), AgentRunSummary, ProjectSummary, TaskSkillSummary, TaskSummary, WorkspaceStatus, WorkspaceSummary, WorkspaceView() (+16 more)
+Cohesion: 0.11
+Nodes (19): ProjectMatrix, AgentRunSummary, ProjectSummary, TaskSkillSummary, TaskSummary, WorkspaceStatus, WorkspaceSummary, buildMatrixCells() (+11 more)
 
 ### Community 74 - "Community 74"
 Cohesion: 0.25
@@ -559,12 +571,12 @@ Cohesion: 0.25
 Nodes (7): description, license, name, packageManager, private, version, workspaces
 
 ### Community 78 - "Community 78"
-Cohesion: 0.08
-Nodes (13): MAlertProps, FileInputProps, ListComponentProps, MList(), SelectOption, Basic, meta, Story (+5 more)
+Cohesion: 0.12
+Nodes (8): ListComponentProps, MList(), SelectOption, Basic, meta, Story, mockData, ListItemProps
 
 ### Community 79 - "Community 79"
 Cohesion: 0.14
-Nodes (17): AgentCommandPanel(), DashboardPanelHeader(), DashboardPanelHeaderProps, FormSubmissionState, ProjectSummary, TaskSkillSummary, TaskSummary, MyTasksPanel() (+9 more)
+Nodes (18): AgentCommandPanel(), DashboardPanelHeader(), DashboardPanelHeaderProps, FormSubmissionState, ProjectSummary, TaskSkillSummary, TaskSummary, MyTasksPanel() (+10 more)
 
 ### Community 80 - "Community 80"
 Cohesion: 0.17
@@ -572,31 +584,35 @@ Nodes (16): TelegramConfirmationCallbackInput, TelegramConfirmationCallbackResul
 
 ### Community 81 - "Community 81"
 Cohesion: 0.08
-Nodes (17): MAvatarProps, MAvatarFallback(), MAvatarFallbackProps, ButtonProps, LinkButtonProps, MLinkButton(), LinkButton, meta (+9 more)
+Nodes (18): MAlertProps, MAvatarProps, MAvatarFallback(), MAvatarFallbackProps, ButtonProps, LinkButtonProps, MLinkButton(), LinkButton (+10 more)
 
 ### Community 82 - "Community 82"
-Cohesion: 0.06
-Nodes (53): agentRuntimeToken, AgentRuntimeToolCall, buildFailedRuntimeResult(), defaultOpenRouterFetch(), isOpenRouterChoice(), isOpenRouterCompletionResponse(), isOpenRouterError(), isOpenRouterErrorResponse() (+45 more)
+Cohesion: 0.13
+Nodes (28): agentRuntimeToken, isOpenRouterChoice(), isOpenRouterCompletionResponse(), isOpenRouterError(), isOpenRouterErrorResponse(), isOpenRouterFunctionToolCall(), isOpenRouterMessage(), isOpenRouterToolCall() (+20 more)
 
 ### Community 83 - "Community 83"
-Cohesion: 0.18
-Nodes (16): AgentHistoryViewProps, FallbackWorkspaceRouteViewProps, KanbanViewProps, SettingsViewProps, IconComponent, ProjectSummary, TaskSkillSummary, TaskSummary (+8 more)
+Cohesion: 0.13
+Nodes (31): renderTaskDrawer(), WorkspaceView(), WorkspaceViewProps, buildAgentHistoryRows(), buildAgentHistorySummary(), buildKanbanColumns(), buildKanbanSummary(), buildSettingsSummary() (+23 more)
 
 ### Community 84 - "Community 84"
-Cohesion: 0.03
-Nodes (43): CardProps, argTypes, Basic, Collapsed, ContentOnly, defaultRadius, meta, NoPadding (+35 more)
+Cohesion: 0.04
+Nodes (36): CardProps, Basic, meta, Story, MFlex(), MFlexProps, Basic, meta (+28 more)
 
 ### Community 85 - "Community 85"
-Cohesion: 0.09
-Nodes (27): TelegramReplyAction, RecordingTelegramBotApiFetch, createSendMessageBody(), isUnknownRecord(), readInlineKeyboardButtonText(), readInlineKeyboardCallbackData(), readMessageId(), readProperty() (+19 more)
+Cohesion: 0.12
+Nodes (22): TelegramReplyAction, createSendMessageBody(), isUnknownRecord(), readInlineKeyboardButtonText(), readInlineKeyboardCallbackData(), readMessageId(), readProperty(), readRecord() (+14 more)
+
+### Community 86 - "Community 86"
+Cohesion: 0.38
+Nodes (3): CreateAgentRunTables1783296420000, createAgentRunTablesSql, dropAgentRunTablesSql
 
 ### Community 87 - "Community 87"
-Cohesion: 0.08
-Nodes (46): normalizeBaseUrl(), createTelegramBackendClient(), TelegramBotConfig, createTelegramBotRuntime(), createTelegramBotRuntimeFromEnvironment(), CreateTelegramBotRuntimeFromEnvironmentOptions, CreateTelegramBotRuntimeOptions, createTelegramReplySender() (+38 more)
+Cohesion: 0.07
+Nodes (50): normalizeBaseUrl(), formatInvalidValue(), parseBackendBaseUrl(), parsePort(), createTelegramBackendClient(), InvalidTelegramBotEnvironmentError, loadTelegramBotConfig(), parseOptionalSecret() (+42 more)
 
 ### Community 88 - "Community 88"
-Cohesion: 0.08
-Nodes (18): ApiDataSource, CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateProjectsTable1783296060000, CreateTasksTable1783296120000, CreateTaskSkillsTables1783296180000, CreateCommentsTable1783296240000, CreateAttachmentsTable1783296300000 (+10 more)
+Cohesion: 0.12
+Nodes (9): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateTaskSkillsTables1783296180000, CreateActivityEventsTable1783296360000, CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, CreateTelegramTables1783296540000 (+1 more)
 
 ### Community 89 - "Community 89"
 Cohesion: 0.15
@@ -608,59 +624,59 @@ Nodes (28): CreateTaskCommentInput, CreateTaskCommentRequest, PreviewTaskSkillAp
 
 ### Community 91 - "Community 91"
 Cohesion: 0.12
-Nodes (26): createReply(), handleTelegramUpdate(), readResolvedContext(), TelegramInlineKeyboardButton, TelegramInlineKeyboardMarkup, TelegramMessageHandlerAction, TelegramMessageHandlerOptions, TelegramResolvedContext (+18 more)
+Nodes (25): createReply(), handleTelegramUpdate(), readResolvedContext(), TelegramInlineKeyboardButton, TelegramInlineKeyboardMarkup, TelegramMessageHandlerAction, TelegramMessageHandlerOptions, TelegramResolvedContext (+17 more)
 
 ### Community 92 - "Community 92"
 Cohesion: 0.25
 Nodes (7): compilerOptions, noEmit, strict, extends, files, references, $schema
 
 ### Community 93 - "Community 93"
-Cohesion: 0.14
-Nodes (9): CalendarIcon(), MDatepickerProps, CalendarIcon(), MDateRangePickerProps, toInputValue(), getPlacement(), MDropdown(), MDropdownProps (+1 more)
+Cohesion: 0.15
+Nodes (12): defaultOpenRouterFetch(), OpenRouterFetch, OpenRouterFetchInit, OpenRouterFetchResponse, config, isOpenRouterRequestBody(), OpenRouterFetchCall, OpenRouterRequestBody (+4 more)
 
 ### Community 94 - "Community 94"
 Cohesion: 0.09
 Nodes (32): CreateTaskFileAttachmentInput, CreateTaskLinkAttachmentInput, CreateTaskTelegramFileAttachmentInput, TaskAttachment, AttachmentsController, createdAt, taskAttachment, uuidV4Pipe (+24 more)
 
 ### Community 95 - "Community 95"
-Cohesion: 0.06
-Nodes (28): TaskActivityEvent, ActivityController, uuidV4Pipe, TaskActivityEventDto, activityServiceProvider, ActivityService, event, TaskActivityStore (+20 more)
+Cohesion: 0.17
+Nodes (9): TaskActivityEvent, ActivityController, uuidV4Pipe, TaskActivityEventDto, activityServiceProvider, ActivityService, event, TaskActivityStore (+1 more)
 
 ### Community 98 - "Community 98"
 Cohesion: 0.09
 Nodes (25): compareCellValues(), getComparableCellValue(), getReadableCellValue(), MDataGrid(), MDataGridProps, SortConfig, dateFormatter, Default (+17 more)
 
 ### Community 99 - "Community 99"
-Cohesion: 0.06
-Nodes (39): ActivityModule, AgentModule, formatInvalidValue(), parsePort(), AttachmentsModule, CommentsModule, ConfirmationsModule, DashboardModule (+31 more)
+Cohesion: 0.13
+Nodes (8): ApiDataSource, ApiDataSourceProvider, DatabaseModule, AppModule, loadApiConfig(), generateOpenApi(), bootstrap(), createOpenApiDocument()
 
 ### Community 100 - "Community 100"
 Cohesion: 0.05
-Nodes (45): applyArchivedProjectToWebShellData(), archiveWebShellProject(), createWebShellDataLoader(), createWebShellProjectCreator(), createWebShellTask(), createWebShellTaskCreator(), loadWebShellData(), loadWebShellProjectTasks() (+37 more)
+Nodes (46): applyArchivedProjectToWebShellData(), archiveWebShellProject(), createWebShellDataLoader(), createWebShellProject(), createWebShellProjectCreator(), createWebShellTask(), createWebShellTaskCreator(), loadWebShellData() (+38 more)
 
 ### Community 101 - "Community 101"
 Cohesion: 0.20
 Nodes (9): compilerOptions, allowImportingTsExtensions, noEmit, outDir, types, exclude, extends, include (+1 more)
 
 ### Community 102 - "Community 102"
-Cohesion: 0.14
-Nodes (15): TaskSkillDetail, TaskSkillApplyForWorkspaceResult, TaskSkillApplyPreviewResult, TaskSkillArchiveResult, TaskSkillCloneResult, TaskSkillCreateResult, TaskSkillDefinitionUpdateResult, TaskSkillMetadataUpdateResult (+7 more)
+Cohesion: 0.13
+Nodes (17): TaskSkillsModule, taskSkillsServiceProvider, TaskSkillApplyForWorkspaceResult, TaskSkillApplyPreviewResult, TaskSkillArchiveResult, TaskSkillCloneResult, TaskSkillCreateResult, TaskSkillDefinitionUpdateResult (+9 more)
 
 ### Community 103 - "Community 103"
-Cohesion: 0.16
-Nodes (34): hasNullableString(), hasOptionalNullableString(), hasString(), isAgentRunSource(), isAgentRunStatus(), isAgentRunSummary(), isArrayOf(), isConfirmationRequest() (+26 more)
+Cohesion: 0.15
+Nodes (36): hasNullableString(), hasOptionalNullableString(), hasString(), isAgentRunSource(), isAgentRunStatus(), isAgentRunSummary(), isArrayOf(), isConfirmationRequest() (+28 more)
 
 ### Community 104 - "Community 104"
 Cohesion: 0.10
 Nodes (29): WorkspaceDetailResponse, WorkspaceMemberResponse, WorkspaceSummaryResponse, createWorkspaceToolHandlers(), getWorkspaceMemberMatchRank(), getWorkspaceMemberSearchValues(), isUnknownRecord(), normalizeSearchValue() (+21 more)
 
 ### Community 105 - "Community 105"
-Cohesion: 0.05
-Nodes (14): MDataGridPagination(), MDataGridPaginationProps, MDatetimeProps, Basic, meta, Story, InputProps, MSelect() (+6 more)
+Cohesion: 0.04
+Nodes (19): MDateRange, CalendarIcon(), MDatepickerProps, CalendarIcon(), MDateRangePickerProps, toInputValue(), MDatetimeProps, MDrawer() (+11 more)
 
 ### Community 106 - "Community 106"
-Cohesion: 0.14
-Nodes (9): AgentRunIntakeResponse, AgentRunSummary, AgentController, AgentRunIntakeResponseDto, AgentRunSummaryDto, ParseCreateTelegramAgentRunBodyPipe, AgentRunsController, uuidV4Pipe (+1 more)
+Cohesion: 0.16
+Nodes (8): AgentRunIntakeResponse, AgentRunSummary, AgentController, AgentRunIntakeResponseDto, AgentRunSummaryDto, AgentRunsController, uuidV4Pipe, AgentService
 
 ### Community 107 - "Community 107"
 Cohesion: 0.08
@@ -671,8 +687,8 @@ Cohesion: 0.25
 Nodes (7): compilerOptions, emitDecoratorMetadata, experimentalDecorators, strict, useDefineForClassFields, extends, $schema
 
 ### Community 109 - "Community 109"
-Cohesion: 0.17
-Nodes (8): StaticAgentRuntime, AgentRuntime, AgentRuntimeResult, StubAgentRuntime, TelegramAgentRuntimeRequest, input, PersistedAgentRun, RecordingAgentRuntime
+Cohesion: 0.15
+Nodes (13): WorkspaceStatus, StatusesController, createdAt, workspaceStatus, uuidV4Pipe, WorkspaceStatusDto, statusesServiceProvider, StatusesService (+5 more)
 
 ### Community 110 - "Community 110"
 Cohesion: 0.09
@@ -680,15 +696,15 @@ Nodes (28): agentRuntimeProvider, agentServiceProvider, CreateConfirmationReques
 
 ### Community 111 - "Community 111"
 Cohesion: 0.15
-Nodes (23): AgentRunPendingConfirmationRequest, TelegramAgentRunAttachmentInput, TelegramAgentRunDocumentAttachmentInput, TelegramAgentRunPhotoAttachmentInput, AgentRunPendingConfirmationRequestDto, CreateTelegramAgentRunDto, isUnknownRecord(), parseCreateTelegramAgentRunInput() (+15 more)
+Nodes (22): AgentRunPendingConfirmationRequest, TelegramAgentRunDocumentAttachmentInput, TelegramAgentRunPhotoAttachmentInput, AgentRunPendingConfirmationRequestDto, isUnknownRecord(), ParseCreateTelegramAgentRunBodyPipe, parseCreateTelegramAgentRunInput(), readAttachment() (+14 more)
 
 ### Community 112 - "Community 112"
-Cohesion: 0.19
-Nodes (8): PreviewTaskSkillApplyInput, TaskSkillApplyPreview, TaskSkillApplyPreviewSubtask, TaskSkillApplyPreviewSubtaskSource, TaskSkillApplyResult, TaskSkillApplyPreviewDto, TaskSkillApplyPreviewSubtaskDto, TaskSkillApplyResultDto
+Cohesion: 0.26
+Nodes (5): PreviewTaskSkillApplyInput, TaskSkillApplyPreview, TaskSkillApplyResult, TaskSkillApplyPreviewDto, TaskSkillApplyResultDto
 
 ### Community 113 - "Community 113"
-Cohesion: 0.12
-Nodes (26): isUnknownRecord(), parseAddTaskSubtaskInput(), ParseAddTaskSubtasksBodyPipe, parseAddTaskSubtasksInput(), ParseCreateTaskBodyPipe, parseCreateTaskInput(), ParseMoveTaskBodyPipe, parseMoveTaskInput() (+18 more)
+Cohesion: 0.11
+Nodes (29): AddTaskSubtaskInput, AddTaskSubtaskDto, isTaskTableSortField(), isUnknownRecord(), parseAddTaskSubtaskInput(), parseAddTaskSubtasksInput(), ParseBulkUpdateTasksBodyPipe, ParseCreateTaskBodyPipe (+21 more)
 
 ### Community 114 - "Community 114"
 Cohesion: 0.07
@@ -699,20 +715,20 @@ Cohesion: 0.13
 Nodes (15): cache, persistent, cache, outputs, dependsOn, outputs, dependsOn, cache (+7 more)
 
 ### Community 116 - "Community 116"
-Cohesion: 0.14
-Nodes (12): CloneTaskSkillInput, CreateTaskSkillInput, UpdateTaskSkillDefinitionInput, UpdateTaskSkillMetadataInput, TaskSkillsController, uuidV4Pipe, CloneTaskSkillDto, ParseCloneTaskSkillBodyPipe (+4 more)
+Cohesion: 0.13
+Nodes (14): CloneTaskSkillInput, CreateTaskSkillInput, TaskSkillDetail, UpdateTaskSkillDefinitionInput, UpdateTaskSkillMetadataInput, TaskSkillsController, uuidV4Pipe, CloneTaskSkillDto (+6 more)
 
 ### Community 117 - "Community 117"
-Cohesion: 0.33
-Nodes (6): LonghandProperty, MBox(), MBoxProps, MBoxSpace, resolveSpacing(), SPACE_VAR
+Cohesion: 0.16
+Nodes (16): formatInvalidValue(), parsePort(), ApiBotAuthConfig, ApiConfig, ApiDatabaseConfig, ApiEnvironment, ApiTelegramMiniAppConfig, InvalidApiEnvironmentError (+8 more)
 
 ### Community 118 - "Community 118"
 Cohesion: 0.18
 Nodes (10): App-local CSS migration map, Frontend UI-kit refactor plan, PR 1: UI foundation, PR 2: View layout cleanup, PR 3: Form and input primitives, PR 4: Product navigation and route primitives, PR 5: Complex operational views, PR phases and ownership (+2 more)
 
 ### Community 119 - "Community 119"
-Cohesion: 0.18
-Nodes (12): TaskAttachment, TaskComment, Feedback, LoadState, TaskContent(), TaskDetailDrawer(), TaskDetailDrawerProps, formatTaskDueDateInput() (+4 more)
+Cohesion: 0.23
+Nodes (11): TaskApiClient, Feedback, LoadState, TaskContent(), TaskDetailDrawer(), TaskDetailDrawerProps, formatTaskDueDateInput(), hasTaskDraftChanges() (+3 more)
 
 ### Community 120 - "Community 120"
 Cohesion: 0.33
@@ -720,7 +736,7 @@ Nodes (5): compilerOptions, jsx, strict, extends, $schema
 
 ### Community 121 - "Community 121"
 Cohesion: 0.19
-Nodes (8): createCorePersistenceTablesSql, dropCorePersistenceTablesSql, MigrationQueryExecutor, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, addAgentRunSourceThreadIdSql, dropAgentRunSourceThreadIdSql, RecordingQueryRunner
+Nodes (8): createCorePersistenceTablesSql, dropCorePersistenceTablesSql, MigrationQueryExecutor, createActivityEventsTableSql, dropActivityEventsTableSql, createInvitesTableSql, dropInvitesTableSql, RecordingQueryRunner
 
 ### Community 122 - "Community 122"
 Cohesion: 0.48
@@ -743,32 +759,28 @@ Cohesion: 0.25
 Nodes (7): AllSizes, Basic, meta, Pending, sizes, Story, WithFallback
 
 ### Community 127 - "Community 127"
-Cohesion: 0.29
-Nodes (6): AllVariants, argTypes, Disabled, meta, Regular, Story
-
-### Community 128 - "Community 128"
-Cohesion: 0.50
-Nodes (3): LinkedTelegramIdentity, LinkTelegramMiniAppIdentityInput, LinkedTelegramIdentityDto
+Cohesion: 0.17
+Nodes (8): AgentRuntimeToolCall, RecordingAgentToolOperationDispatcher, ThrowingAgentToolOperationDispatcher, AgentToolOperationDispatcher, AgentToolOperationDispatchResult, defaultPendingResult, StaticAgentToolOperationDispatcher, ApiOpenRouterConfig
 
 ### Community 129 - "Community 129"
 Cohesion: 0.60
-Nodes (4): buildTaskTableRows(), buildTaskTableSummary(), TaskTableView(), TaskTableViewProps
+Nodes (4): buildTemplateSkillRows(), buildTemplateSkillSummary(), TemplatesView(), TemplatesViewProps
 
 ### Community 130 - "Community 130"
 Cohesion: 0.13
 Nodes (9): useMediaQuery(), usePlatform(), MFormFieldProp, MPlatform(), MPlatformProps, mockedUsePlatform, MRequired(), MFormField() (+1 more)
 
 ### Community 131 - "Community 131"
-Cohesion: 0.14
-Nodes (11): dateToCalendarDate(), MCalendarHeaderProps, MCalendarProps, MDateRange, monthYearClassNames, FocusableCalendarState, MCalendarMonthYearClassNames, MCalendarMonthYearControls() (+3 more)
+Cohesion: 0.15
+Nodes (10): dateToCalendarDate(), MCalendarHeaderProps, MCalendarProps, monthYearClassNames, FocusableCalendarState, MCalendarMonthYearClassNames, MCalendarMonthYearControls(), MCalendarMonthYearControlsProps (+2 more)
 
 ### Community 132 - "Community 132"
 Cohesion: 0.13
 Nodes (14): Agent rules, API and OpenAPI, Async and data consistency, Atomicity, Error handling, Git hygiene, graphify, Reuse and boundaries (+6 more)
 
 ### Community 133 - "Community 133"
-Cohesion: 0.13
-Nodes (11): Basic, ComplexContentStory, DefaultIcons, InitiallyExpanded, meta, MultipleExpanded, Story, MCaption() (+3 more)
+Cohesion: 0.09
+Nodes (15): Basic, ComplexContentStory, DefaultIcons, InitiallyExpanded, meta, MultipleExpanded, Story, MCaption() (+7 more)
 
 ### Community 134 - "Community 134"
 Cohesion: 0.14
@@ -809,6 +821,10 @@ Nodes (10): Customization, Disabled, Invalid, Overview, Props, Regular, States, 
 ### Community 143 - "Community 143"
 Cohesion: 0.18
 Nodes (10): Active, Customization, Disabled, Invalid, Overview, Props, Regular, States (+2 more)
+
+### Community 144 - "Community 144"
+Cohesion: 0.17
+Nodes (8): StaticAgentRuntime, AgentRuntime, AgentRuntimeResult, StubAgentRuntime, TelegramAgentRuntimeRequest, input, PersistedAgentRun, RecordingAgentRuntime
 
 ### Community 145 - "Community 145"
 Cohesion: 0.18
@@ -854,6 +870,10 @@ Nodes (6): devDependencies, @biomejs/biome, turbo, @types/node, typescript, $sch
 Cohesion: 0.22
 Nodes (8): AllModes, AllSizes, Basic, Disabled, meta, modes, sizes, Story
 
+### Community 156 - "Community 156"
+Cohesion: 0.29
+Nodes (5): CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql, createApiDataSource(), createTypeOrmDataSourceOptions()
+
 ### Community 157 - "Community 157"
 Cohesion: 0.22
 Nodes (8): AllStatuses, argTypes, Disabled, Invalid, meta, Regular, Story, Valid
@@ -865,6 +885,10 @@ Nodes (7): AllVariants, argTypes, Disabled, meta, Rectangular, Regular, Story
 ### Community 159 - "Community 159"
 Cohesion: 0.22
 Nodes (8): 1. Global — a brand / theme, 2. Zonal — a region of the page, 3. Instance — one element, Cascade layers, The three altitudes of override, The three tiers, Theming & Customization, What you can override
+
+### Community 160 - "Community 160"
+Cohesion: 0.38
+Nodes (3): CreateTasksTable1783296120000, createTasksTableSql, dropTasksTableSql
 
 ### Community 162 - "Community 162"
 Cohesion: 0.25
@@ -883,8 +907,8 @@ Cohesion: 0.25
 Nodes (7): argTypes, Disabled, Invalid, meta, Regular, Story, Valid
 
 ### Community 166 - "Community 166"
-Cohesion: 0.10
-Nodes (22): MGrid(), MGridProps, Basic, meta, Story, BoardCardProps, BoardColumnProps, MOperationalBoardCard() (+14 more)
+Cohesion: 0.08
+Nodes (28): LonghandProperty, MBox(), MBoxProps, MBoxSpace, resolveSpacing(), SPACE_VAR, MGrid(), MGridProps (+20 more)
 
 ### Community 168 - "Community 168"
 Cohesion: 0.25
@@ -895,8 +919,8 @@ Cohesion: 0.29
 Nodes (3): AccordionItemProps, AccordionProps, sampleItems
 
 ### Community 170 - "Community 170"
-Cohesion: 0.25
-Nodes (7): AllModes, AllSizes, meta, modes, Regular, sizes, Story
+Cohesion: 0.18
+Nodes (8): Active, AllStatuses, argTypes, Disabled, Invalid, meta, Regular, Story
 
 ### Community 171 - "Community 171"
 Cohesion: 0.29
@@ -915,8 +939,20 @@ Cohesion: 0.29
 Nodes (5): HeadingProps, MHeading(), Basic, meta, Story
 
 ### Community 175 - "Community 175"
-Cohesion: 0.25
-Nodes (4): ConfirmationMutationRequest, confirmationRequest, now, SignedInitDataInput
+Cohesion: 0.13
+Nodes (16): ActivityModule, AgentModule, AttachmentsModule, CommentsModule, ConfirmationsModule, DashboardModule, ProjectsModule, HealthResponse (+8 more)
+
+### Community 176 - "Community 176"
+Cohesion: 0.27
+Nodes (5): CreateCommentsTable1783296240000, createCommentsTableSql, dropCommentsTableSql, apiEntities, apiMigrations
+
+### Community 177 - "Community 177"
+Cohesion: 0.38
+Nodes (3): CreateAttachmentsTable1783296300000, createAttachmentsTableSql, dropAttachmentsTableSql
+
+### Community 178 - "Community 178"
+Cohesion: 0.17
+Nodes (20): PreviewTaskSkillApplyOverrides, isUnknownRecord(), ParseCloneTaskSkillBodyPipe, parseCloneTaskSkillInput(), ParseCreateTaskSkillBodyPipe, parseCreateTaskSkillInput(), ParsePreviewTaskSkillApplyBodyPipe, parsePreviewTaskSkillApplyInput() (+12 more)
 
 ### Community 179 - "Community 179"
 Cohesion: 0.29
@@ -933,6 +969,10 @@ Nodes (5): Customization, Overview, Props, States, MDatepicker
 ### Community 183 - "Community 183"
 Cohesion: 0.33
 Nodes (5): Customization, Overview, Props, States, MDatetime
+
+### Community 184 - "Community 184"
+Cohesion: 0.33
+Nodes (4): TypeOrmAgentRunStore, AgentRunEntity, AgentRunRecord, AgentRunStatus
 
 ### Community 185 - "Community 185"
 Cohesion: 0.33
@@ -978,6 +1018,10 @@ Nodes (4): Customization, Overview, Props, MDescriptionList
 Cohesion: 0.40
 Nodes (4): Customization, Definition, Grid, Usage
 
+### Community 196 - "Community 196"
+Cohesion: 0.18
+Nodes (8): ProjectMatrixStage, ProjectMatrixStageDto, buildProjectMatrix(), projectMatrixTaskOrder, stages, toCellKey(), TypeOrmProjectMatrixReadStore, unassignedStage
+
 ### Community 197 - "Community 197"
 Cohesion: 0.40
 Nodes (4): Captions, Customization, Definition, Usage
@@ -998,9 +1042,13 @@ Nodes (4): Customization, Definition, Tab, Usage
 Cohesion: 0.40
 Nodes (3): Basic, meta, Story
 
+### Community 202 - "Community 202"
+Cohesion: 0.25
+Nodes (3): input, now, SignedInitDataInput
+
 ### Community 203 - "Community 203"
-Cohesion: 0.47
-Nodes (5): buildMatrixCells(), buildMatrixColumns(), buildMatrixSummary(), MatrixView(), MatrixViewProps
+Cohesion: 0.40
+Nodes (5): buildFailedRuntimeResult(), OpenRouterAgentRuntime, readOpenRouterError(), readRuntimeErrorMessage(), AgentToolOperationCall
 
 ### Community 204 - "Community 204"
 Cohesion: 0.50
@@ -1066,6 +1114,14 @@ Nodes (3): Color Palette, Primitives, Semantic roles (current theme)
 Cohesion: 0.67
 Nodes (3): dependsOn, outputs, build
 
+### Community 332 - "Community 332"
+Cohesion: 0.20
+Nodes (9): argTypes, Basic, Collapsed, ContentOnly, defaultRadius, meta, NoPadding, Story (+1 more)
+
+### Community 333 - "Community 333"
+Cohesion: 0.38
+Nodes (3): AddAgentRunSourceThreadId1783296660000, addAgentRunSourceThreadIdSql, dropAgentRunSourceThreadIdSql
+
 ### Community 334 - "Community 334"
 Cohesion: 0.67
 Nodes (3): test, dependsOn, outputs
@@ -1074,22 +1130,54 @@ Nodes (3): test, dependsOn, outputs
 Cohesion: 0.67
 Nodes (3): typecheck, dependsOn, outputs
 
+### Community 336 - "Community 336"
+Cohesion: 0.50
+Nodes (3): LinkedTelegramIdentity, LinkTelegramMiniAppIdentityInput, LinkedTelegramIdentityDto
+
+### Community 337 - "Community 337"
+Cohesion: 0.38
+Nodes (4): ListTaskTableInput, TaskTablePage, ListTaskTableQueryDto, TaskTablePageDto
+
+### Community 338 - "Community 338"
+Cohesion: 0.33
+Nodes (3): MoveTaskInput, MoveTaskDto, ParseMoveTaskBodyPipe
+
+### Community 339 - "Community 339"
+Cohesion: 0.28
+Nodes (5): MDivider(), MDividerProp, Basic, meta, Story
+
+### Community 340 - "Community 340"
+Cohesion: 0.29
+Nodes (6): AllVariants, argTypes, meta, Regular, Sizes, Story
+
+### Community 341 - "Community 341"
+Cohesion: 0.29
+Nodes (3): Basic, meta, Story
+
+### Community 342 - "Community 342"
+Cohesion: 0.33
+Nodes (3): AddTaskSubtasksInput, AddTaskSubtasksDto, ParseAddTaskSubtasksBodyPipe
+
+### Community 343 - "Community 343"
+Cohesion: 0.40
+Nodes (3): WorkspaceMetricItem, WorkspacePanelHeaderProps, WorkspacePanelProps
+
 ## Knowledge Gaps
-- **1507 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+1502 more)
+- **1518 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+1513 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `operations` connect `Community 33` to `Community 75`, `Community 61`?**
   _High betweenness centrality (0.052) - this node is a cross-community bridge._
-- **Why does `components` connect `Community 33` to `Community 100`, `Community 73`, `Community 45`, `Community 79`, `Community 83`, `Community 61`?**
-  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+- **Why does `components` connect `Community 79` to `Community 33`, `Community 100`, `Community 73`, `Community 45`, `Community 83`, `Community 61`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **Why does `TaskBackendClient` connect `Community 90` to `Community 66`, `Community 68`, `Community 69`, `Community 70`, `Community 104`, `Community 17`, `Community 18`, `Community 54`, `Community 56`, `Community 61`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _1507 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1518 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

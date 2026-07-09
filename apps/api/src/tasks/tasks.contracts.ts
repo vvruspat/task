@@ -63,3 +63,35 @@ export type UpdateTaskAssigneeInput = {
 export type UpdateTaskDueDateInput = {
   dueAt: string | null;
 };
+
+export const taskTableSortFields = ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"] as const;
+export type TaskTableSortField = (typeof taskTableSortFields)[number];
+export type TaskTableSortDirection = "asc" | "desc";
+
+export type ListTaskTableInput = {
+  search?: string;
+  statusId?: string;
+  statusFilter?: "unassigned";
+  assigneeUserId?: string;
+  assigneeFilter?: "unassigned";
+  dueFrom?: string;
+  dueTo?: string;
+  sortBy: TaskTableSortField;
+  sortDirection: TaskTableSortDirection;
+  page: number;
+  pageSize: number;
+};
+
+export type TaskTablePage = {
+  items: TaskSummary[];
+  page: number;
+  pageSize: number;
+  total: number;
+};
+
+export type BulkUpdateTasksInput = {
+  taskIds: string[];
+  statusId?: string | null;
+  assigneeUserId?: string | null;
+  dueAt?: string | null;
+};

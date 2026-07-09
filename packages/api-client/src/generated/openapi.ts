@@ -212,6 +212,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/table": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List active project tasks for the scalable table */
+    get: operations["TasksController_listTaskTable"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/bulk": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Atomically update up to 100 active project tasks */
+    patch: operations["TasksController_bulkUpdateTasks"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/subtasks": {
     parameters: {
       query?: never;
@@ -971,18 +1005,20 @@ export interface components {
       stages: components["schemas"]["ProjectMatrixStageDto"][];
       cells: components["schemas"]["ProjectMatrixCellDto"][];
     };
-    CreateTaskDto: {
-      /** @example Record bass */
-      title: string;
+    TaskTablePageDto: {
+      items: components["schemas"]["TaskSummaryDto"][];
+      page: number;
+      pageSize: number;
+      total: number;
+    };
+    BulkUpdateTasksDto: {
+      taskIds: string[];
       /** Format: uuid */
-      parentTaskId?: string | null;
-      description?: string | null;
-      position?: string | null;
+      statusId?: string | null;
+      /** Format: uuid */
+      assigneeUserId?: string | null;
       /** Format: date-time */
       dueAt?: string | null;
-      metadata?: {
-        [key: string]: unknown;
-      };
     };
     TaskDetailDto: {
       /** Format: uuid */
@@ -1019,6 +1055,19 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    CreateTaskDto: {
+      /** @example Record bass */
+      title: string;
+      /** Format: uuid */
+      parentTaskId?: string | null;
+      description?: string | null;
+      position?: string | null;
+      /** Format: date-time */
+      dueAt?: string | null;
+      metadata?: {
+        [key: string]: unknown;
+      };
     };
     AddTaskSubtaskDto: {
       /** @example Record bass */
@@ -1464,6 +1513,35 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    ListTaskTableQueryDto: {
+      search?: string;
+      /** Format: uuid */
+      statusId?: string;
+      /** @enum {string} */
+      statusFilter?: "unassigned";
+      /** Format: uuid */
+      assigneeUserId?: string;
+      /** @enum {string} */
+      assigneeFilter?: "unassigned";
+      /** Format: date-time */
+      dueFrom?: string;
+      /** Format: date-time */
+      dueTo?: string;
+      /**
+       * @default updatedAt
+       * @enum {string}
+       */
+      sortBy: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt";
+      /**
+       * @default desc
+       * @enum {string}
+       */
+      sortDirection: "asc" | "desc";
+      /** @default 1 */
+      page: number;
+      /** @default 50 */
+      pageSize: number;
     };
   };
   responses: never;
@@ -2011,6 +2089,109 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace or project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_listTaskTable: {
+    parameters: {
+      query?: {
+        pageSize?: number;
+        page?: number;
+        sortDirection?: "asc" | "desc";
+        sortBy?: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt";
+        dueTo?: string;
+        dueFrom?: string;
+        /** @description Filter tasks without an assignee. Cannot be combined with assigneeUserId. */
+        assigneeFilter?: "unassigned";
+        assigneeUserId?: string;
+        /** @description Filter tasks without a status. Cannot be combined with statusId. */
+        statusFilter?: "unassigned";
+        statusId?: string;
+        search?: string;
+      };
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskTablePageDto"];
+        };
+      };
+      /** @description Task table query is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_bulkUpdateTasks: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkUpdateTasksDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"][];
+        };
+      };
+      /** @description Bulk update payload or referenced task fields are invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or one of the tasks is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;

@@ -18,6 +18,7 @@ export type TaskActivityEvent = components["schemas"]["TaskActivityEventDto"];
 export type TaskComment = components["schemas"]["TaskCommentDto"];
 export type TaskDetail = components["schemas"]["TaskDetailDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
+export type TaskTablePage = components["schemas"]["TaskTablePageDto"];
 export type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
@@ -34,6 +35,8 @@ type UpdateTaskAssigneeOperation = operations["TasksController_updateTaskAssigne
 type UpdateTaskDueDateOperation = operations["TasksController_updateTaskDueDate"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type ListMyTasksOperation = operations["DashboardController_listMyTasks"];
+type ListTaskTableOperation = operations["TasksController_listTaskTable"];
+type BulkUpdateTasksOperation = operations["TasksController_bulkUpdateTasks"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -56,6 +59,8 @@ export type UpdateTaskDueDateInput =
   UpdateTaskDueDateOperation["requestBody"]["content"]["application/json"];
 export type UpdateTaskStatusInput =
   UpdateTaskStatusOperation["requestBody"]["content"]["application/json"];
+export type BulkUpdateTasksInput =
+  BulkUpdateTasksOperation["requestBody"]["content"]["application/json"];
 
 export type TaskApiRequestHeaders = {
   accept: "application/json";
@@ -90,6 +95,8 @@ export type WorkspaceScopedInput = {
 };
 export type ListMyTasksRequestInput = WorkspaceScopedInput &
   NonNullable<ListMyTasksOperation["parameters"]["query"]>;
+export type ListTaskTableRequestInput = ProjectScopedInput &
+  NonNullable<ListTaskTableOperation["parameters"]["query"]>;
 export type MyTasksPage = components["schemas"]["MyTasksPageDto"];
 export type ConfirmationRequestScopedInput = WorkspaceScopedInput & {
   confirmationRequestId: string;
@@ -145,6 +152,7 @@ export type UpdateTaskDueDateRequestInput = TaskScopedInput & {
 export type UpdateTaskStatusRequestInput = TaskScopedInput & {
   body: UpdateTaskStatusInput;
 };
+export type BulkUpdateTasksRequestInput = ProjectScopedInput & { body: BulkUpdateTasksInput };
 
 export type TaskScopedInput = ArchiveTaskRequestInput;
 
@@ -190,6 +198,7 @@ export type TaskApiClient = {
     input: ConfirmationRequestScopedInput,
   ): Promise<ConfirmationRequestDetail>;
   listMyTasks(input: ListMyTasksRequestInput): Promise<MyTasksPage>;
+  listTaskTable(input: ListTaskTableRequestInput): Promise<TaskTablePage>;
   listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
   listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
   listTaskActivity(input: TaskScopedInput): Promise<TaskActivityEvent[]>;
@@ -205,6 +214,7 @@ export type TaskApiClient = {
   updateTaskDueDate(input: UpdateTaskDueDateRequestInput): Promise<TaskDetail>;
   updateTaskStatus(input: UpdateTaskStatusRequestInput): Promise<TaskDetail>;
   moveTask(input: MoveTaskRequestInput): Promise<TaskDetail>;
+  bulkUpdateTasks(input: BulkUpdateTasksRequestInput): Promise<TaskDetail[]>;
 };
 
 type JsonObject = Record<string, unknown>;
@@ -390,6 +400,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: true,
         trustedUserId: options.trustedUserId,
       }),
+    bulkUpdateTasks: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/bulk`,
+        taskDetailArrayParser,
+        {
+          body: input.body,
+          method: "PATCH",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     getHealth: () =>
       request(options.fetch, baseUrl, "/health", healthResponseParser, {
         method: "GET",
@@ -410,6 +433,14 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/my-tasks${toMyTasksQuery(input)}`,
         myTasksPageParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    listTaskTable: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/table${toTaskTableQuery(input)}`,
+        taskTablePageParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
     listPendingConfirmationRequests: (input) =>
@@ -640,6 +671,22 @@ function toMyTasksQuery(input: ListMyTasksRequestInput): string {
   const text = parameters.toString();
   return text.length === 0 ? "" : `?${text}`;
 }
+function toTaskTableQuery(input: ListTaskTableRequestInput): string {
+  const parameters = new URLSearchParams();
+  if (input.search !== undefined) parameters.set("search", input.search);
+  if (input.statusId !== undefined) parameters.set("statusId", input.statusId);
+  if (input.statusFilter !== undefined) parameters.set("statusFilter", input.statusFilter);
+  if (input.assigneeUserId !== undefined) parameters.set("assigneeUserId", input.assigneeUserId);
+  if (input.assigneeFilter !== undefined) parameters.set("assigneeFilter", input.assigneeFilter);
+  if (input.dueFrom !== undefined) parameters.set("dueFrom", input.dueFrom);
+  if (input.dueTo !== undefined) parameters.set("dueTo", input.dueTo);
+  if (input.sortBy !== undefined) parameters.set("sortBy", input.sortBy);
+  if (input.sortDirection !== undefined) parameters.set("sortDirection", input.sortDirection);
+  if (input.page !== undefined) parameters.set("page", String(input.page));
+  if (input.pageSize !== undefined) parameters.set("pageSize", String(input.pageSize));
+  const text = parameters.toString();
+  return text.length === 0 ? "" : `?${text}`;
+}
 function confirmationRequestPath(input: ConfirmationRequestScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/confirmation-requests/${encodePathSegment(input.confirmationRequestId)}`;
 }
@@ -655,6 +702,10 @@ const dashboardOverviewParser: ResponseParser<DashboardOverview> = {
 const myTasksPageParser: ResponseParser<MyTasksPage> = {
   isValid: isMyTasksPage,
   label: "my tasks page",
+};
+const taskTablePageParser: ResponseParser<TaskTablePage> = {
+  isValid: isTaskTablePage,
+  label: "task table page",
 };
 const confirmationRequestSummaryArrayParser: ResponseParser<ConfirmationRequestSummary[]> = {
   isValid: (value): value is ConfirmationRequestSummary[] =>
@@ -796,6 +847,15 @@ function isMyTasksPage(value: unknown): value is MyTasksPage {
     isJsonObject(value) &&
     isArrayOf(readProperty(value, "items"), isMyTaskItem) &&
     isNonNegativeInteger(readProperty(value, "page")) &&
+    isPositiveInteger(readProperty(value, "pageSize")) &&
+    isNonNegativeInteger(readProperty(value, "total"))
+  );
+}
+function isTaskTablePage(value: unknown): value is TaskTablePage {
+  return (
+    isJsonObject(value) &&
+    isArrayOf(readProperty(value, "items"), isTaskSummary) &&
+    isPositiveInteger(readProperty(value, "page")) &&
     isPositiveInteger(readProperty(value, "pageSize")) &&
     isNonNegativeInteger(readProperty(value, "total"))
   );

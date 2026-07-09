@@ -1,5 +1,5 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
-import { type DataSource, IsNull } from "typeorm";
+import { type DataSource, In, IsNull } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
@@ -12,10 +12,13 @@ import {
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import type {
   AddTaskSubtasksInput,
+  BulkUpdateTasksInput,
   CreateTaskInput,
+  ListTaskTableInput,
   MoveTaskInput,
   TaskDetail,
   TaskSummary,
+  TaskTablePage,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
@@ -24,6 +27,7 @@ import type {
 import type {
   TaskAddSubtasksResult,
   TaskArchiveResult,
+  TaskBulkUpdateResult,
   TaskCreateResult,
   TaskMoveResult,
   TaskReadStore,
@@ -34,6 +38,14 @@ import type {
 } from "./tasks.store.js";
 
 const taskWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
+const taskTableOrderColumns = {
+  title: "task.title",
+  status: "status.name",
+  assignee: "task.assignee_user_id",
+  dueAt: "task.due_at",
+  createdAt: "task.created_at",
+  updatedAt: "task.updated_at",
+} as const;
 
 @Injectable()
 export class TypeOrmTaskReadStore implements TaskReadStore {
@@ -59,6 +71,106 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     });
 
     return tasks.map(toTaskSummary);
+  }
+
+  async listTableForProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: ListTaskTableInput,
+  ): Promise<TaskTablePage | null> {
+    const dataSource = await this.getInitializedDataSource();
+    if (!(await this.canReadProject(dataSource, workspaceId, projectId, userId))) return null;
+
+    const query = dataSource
+      .getRepository(TaskEntity)
+      .createQueryBuilder("task")
+      .leftJoin(StatusEntity, "status", "status.id = task.status_id AND status.workspace_id = task.workspace_id")
+      .where("task.workspace_id = :workspaceId", { workspaceId })
+      .andWhere("task.project_id = :projectId", { projectId })
+      .andWhere("task.archived_at IS NULL");
+    if (input.search !== undefined)
+      query.andWhere("(LOWER(task.title) LIKE :search OR LOWER(COALESCE(task.description, '')) LIKE :search)", {
+        search: `%${input.search.toLowerCase()}%`,
+      });
+    if (input.statusFilter === "unassigned") query.andWhere("task.status_id IS NULL");
+    if (input.statusId !== undefined)
+      query.andWhere("task.status_id = :statusId", { statusId: input.statusId });
+    if (input.assigneeFilter === "unassigned") query.andWhere("task.assignee_user_id IS NULL");
+    if (input.assigneeUserId !== undefined)
+      query.andWhere("task.assignee_user_id = :assigneeUserId", { assigneeUserId: input.assigneeUserId });
+    if (input.dueFrom !== undefined) query.andWhere("task.due_at >= :dueFrom", { dueFrom: input.dueFrom });
+    if (input.dueTo !== undefined) query.andWhere("task.due_at <= :dueTo", { dueTo: input.dueTo });
+
+    const total = await query.getCount();
+    const orderColumn = taskTableOrderColumns[input.sortBy];
+    const direction = input.sortDirection === "asc" ? "ASC" : "DESC";
+    const tasks = await query
+      .orderBy(orderColumn, direction, orderColumn === "task.due_at" ? "NULLS LAST" : undefined)
+      .addOrderBy("task.id", "ASC")
+      .offset((input.page - 1) * input.pageSize)
+      .limit(input.pageSize)
+      .getMany();
+    return { items: tasks.map(toTaskSummary), page: input.page, pageSize: input.pageSize, total };
+  }
+
+  async bulkUpdateForProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: BulkUpdateTasksInput,
+  ): Promise<TaskBulkUpdateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    return dataSource.transaction(async (manager): Promise<TaskBulkUpdateResult> => {
+      const membership = await manager.getRepository(WorkspaceMemberEntity).findOneBy({ workspaceId, userId });
+      if (membership === null) return { status: "project_not_found" };
+      if (!taskWriteRoles.has(membership.role)) return { status: "forbidden" };
+      const project = await manager.getRepository(ProjectEntity).findOneBy({ id: projectId, workspaceId });
+      if (project === null) return { status: "project_not_found" };
+      if (input.statusId !== undefined && input.statusId !== null) {
+        const status = await manager.getRepository(StatusEntity).findOneBy({ id: input.statusId, workspaceId });
+        if (status === null) return { status: "invalid_status" };
+      }
+      if (input.assigneeUserId !== undefined && input.assigneeUserId !== null) {
+        const assignee = await manager.getRepository(WorkspaceMemberEntity).findOneBy({
+          workspaceId,
+          userId: input.assigneeUserId,
+        });
+        if (assignee === null) return { status: "invalid_assignee" };
+      }
+      const tasks = await manager.getRepository(TaskEntity).findBy({
+        id: In(input.taskIds),
+        workspaceId,
+        projectId,
+        archivedAt: IsNull(),
+      });
+      if (tasks.length !== input.taskIds.length) return { status: "invalid_task" };
+      for (const task of tasks) {
+        if (input.statusId !== undefined) task.statusId = input.statusId;
+        if (input.assigneeUserId !== undefined) task.assigneeUserId = input.assigneeUserId;
+        if (input.dueAt !== undefined) task.dueAt = input.dueAt === null ? null : new Date(input.dueAt);
+      }
+      const savedTasks = await manager.getRepository(TaskEntity).save(tasks);
+      const events = savedTasks.map((task) =>
+        manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "task.bulk_updated",
+          entityType: "task",
+          entityId: task.id,
+          payload: { projectId, fields: getBulkUpdatedTaskFields(input) },
+        }),
+      );
+      await manager.getRepository(ActivityEventEntity).save(events);
+      const tasksById = new Map(savedTasks.map((task) => [task.id, task]));
+      return {
+        status: "updated",
+        tasks: input.taskIds.flatMap((taskId) => {
+          const task = tasksById.get(taskId);
+          return task === undefined ? [] : [toTaskSummary(task)];
+        }),
+      };
+    });
   }
 
   async getForProject(
@@ -685,6 +797,14 @@ function getUpdatedTaskFields(input: UpdateTaskInput): string[] {
     fields.push("metadata");
   }
 
+  return fields;
+}
+
+function getBulkUpdatedTaskFields(input: BulkUpdateTasksInput): string[] {
+  const fields: string[] = [];
+  if (input.statusId !== undefined) fields.push("statusId");
+  if (input.assigneeUserId !== undefined) fields.push("assigneeUserId");
+  if (input.dueAt !== undefined) fields.push("dueAt");
   return fields;
 }
 

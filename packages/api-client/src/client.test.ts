@@ -130,6 +130,29 @@ test("createTaskApiClient fetches a project matrix with trusted user context", a
   assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
 });
 
+test("createTaskApiClient serializes explicit unassigned task-table filters", async () => {
+  const fetcher = new RecordingFetch(
+    single({ items: [taskSummary()], page: 1, pageSize: 50, total: 1 }),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await client.listTaskTable({
+    assigneeFilter: "unassigned",
+    projectId,
+    statusFilter: "unassigned",
+    workspaceId,
+  });
+
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/table?statusFilter=unassigned&assigneeFilter=unassigned`,
+  );
+});
+
 test("createTaskApiClient builds project-scoped endpoint paths", async () => {
   const fetcher = new RecordingFetch(single([taskSummary()]));
   const client = createTaskApiClient({

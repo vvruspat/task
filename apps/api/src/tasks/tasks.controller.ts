@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -8,6 +8,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from "@nestjs/swagger";
 import {
@@ -16,7 +17,9 @@ import {
 } from "../auth/trusted-current-user.decorator.js";
 import type {
   AddTaskSubtasksInput,
+  BulkUpdateTasksInput,
   CreateTaskInput,
+  ListTaskTableInput,
   MoveTaskInput,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
@@ -25,16 +28,20 @@ import type {
 } from "./tasks.contracts.js";
 import {
   AddTaskSubtasksDto,
+  BulkUpdateTasksDto,
   CreateTaskDto,
   MoveTaskDto,
   ParseAddTaskSubtasksBodyPipe,
+  ParseBulkUpdateTasksBodyPipe,
   ParseCreateTaskBodyPipe,
+  ParseListTaskTableQueryPipe,
   ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
   ParseUpdateTaskBodyPipe,
   ParseUpdateTaskDueDateBodyPipe,
   ParseUpdateTaskStatusBodyPipe,
   TaskDetailDto,
+  TaskTablePageDto,
   TaskSummaryDto,
   UpdateTaskAssigneeDto,
   UpdateTaskDto,
@@ -64,6 +71,51 @@ export class TasksController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskSummaryDto[]> {
     return this.tasksService.listActiveTasks(workspaceId, projectId, userId);
+  }
+
+  @Get("table")
+  @ApiOperation({ summary: "List active project tasks for the scalable table" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiQuery({ name: "search", required: false, type: String })
+  @ApiQuery({ name: "statusId", required: false, format: "uuid", type: String })
+  @ApiQuery({ name: "statusFilter", required: false, enum: ["unassigned"], description: "Filter tasks without a status. Cannot be combined with statusId." })
+  @ApiQuery({ name: "assigneeUserId", required: false, format: "uuid", type: String })
+  @ApiQuery({ name: "assigneeFilter", required: false, enum: ["unassigned"], description: "Filter tasks without an assignee. Cannot be combined with assigneeUserId." })
+  @ApiQuery({ name: "dueFrom", required: false, format: "date-time", type: String })
+  @ApiQuery({ name: "dueTo", required: false, format: "date-time", type: String })
+  @ApiQuery({ name: "sortBy", required: false, enum: ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"] })
+  @ApiQuery({ name: "sortDirection", required: false, enum: ["asc", "desc"] })
+  @ApiQuery({ name: "page", required: false, type: Number, minimum: 1 })
+  @ApiQuery({ name: "pageSize", required: false, type: Number, minimum: 1, maximum: 100 })
+  @ApiOkResponse({ type: TaskTablePageDto })
+  @ApiBadRequestResponse({ description: "Task table query is invalid." })
+  @ApiNotFoundResponse({ description: "Workspace or project is missing or not visible." })
+  listTaskTable(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Query(new ParseListTaskTableQueryPipe()) input: ListTaskTableInput,
+  ): Promise<TaskTablePageDto> {
+    return this.tasksService.listTaskTable(workspaceId, projectId, userId, input);
+  }
+
+  @Patch("bulk")
+  @ApiOperation({ summary: "Atomically update up to 100 active project tasks" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiBody({ type: BulkUpdateTasksDto })
+  @ApiOkResponse({ isArray: true, type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Bulk update payload or referenced task fields are invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update tasks in this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace, project, or one of the tasks is missing or not visible." })
+  bulkUpdateTasks(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseBulkUpdateTasksBodyPipe()) input: BulkUpdateTasksInput,
+  ): Promise<TaskDetailDto[]> {
+    return this.tasksService.bulkUpdateTasks(workspaceId, projectId, userId, input);
   }
 
   @Post()

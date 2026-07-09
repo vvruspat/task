@@ -9,6 +9,7 @@ import { createOpenApiDocument } from "./openapi.js";
 
 async function generateOpenApi(): Promise<void> {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
+    abortOnError: false,
     logger: false,
   });
   const document = createOpenApiDocument(app);

@@ -1,6 +1,7 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
 import { type DataSource, IsNull } from "typeorm";
-import type { ApiDataSourceProvider } from "../database/database.module.js";
+// biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
+import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   ProjectEntity,
   StatusEntity,

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { components } from "@task/api-client";
+import type { components, ProjectMatrix } from "@task/api-client";
+import { buildProjectMatrixModel, isSameMatrixScope } from "./workspace/matrixViewModels.js";
 import {
   buildAgentHistoryRows,
   buildAgentHistorySummary,
@@ -229,6 +230,83 @@ test("buildMatrixSummary counts parent, child, due, and unassigned tasks", () =>
       subtaskCount: 2,
       unassignedTaskCount: 2,
     },
+  );
+});
+
+test("buildProjectMatrixModel keeps stable stages and materializes every empty cell", () => {
+  const matrix: ProjectMatrix = {
+    cells: [
+      {
+        columnTaskId: secondParentTaskId,
+        stageId: firstStatusId,
+        tasks: [
+          taskSummary({ id: "12121212-1212-4121-8121-121212121212", statusId: firstStatusId }),
+        ],
+      },
+      {
+        columnTaskId: firstParentTaskId,
+        stageId: null,
+        tasks: [taskSummary({ id: "13131313-1313-4131-8131-131313131313", statusId: null })],
+      },
+    ],
+    columns: [
+      taskSummary({ id: secondParentTaskId, position: "2000", title: "Song B" }),
+      taskSummary({ id: firstParentTaskId, position: "1000", title: "Song A" }),
+    ],
+    stages: [
+      { color: null, id: null, isDone: false, name: "Unassigned", position: "0000" },
+      { color: "#22c55e", id: secondStatusId, isDone: true, name: "Done", position: "2000" },
+      { color: "#3b82f6", id: firstStatusId, isDone: false, name: "Working", position: "1000" },
+    ],
+  };
+
+  const model = buildProjectMatrixModel(matrix);
+
+  assert.deepEqual(
+    model.stages.map((stage) => stage.name),
+    ["Unassigned", "Working", "Done"],
+  );
+  assert.equal(
+    model.stages.filter((stage) => stage.id === null).length,
+    1,
+    "the backend-provided Unassigned stage must not be duplicated",
+  );
+  assert.deepEqual(
+    model.columns.map((column) => column.title),
+    ["Song A", "Song B"],
+  );
+  assert.deepEqual(
+    model.columns.map((column) => column.cells.map((cell) => cell.tasks.length)),
+    [
+      [1, 0, 0],
+      [0, 1, 0],
+    ],
+  );
+  assert.equal(model.taskCount, 2);
+  assert.equal(model.unassignedTaskCount, 1);
+});
+
+test("isSameMatrixScope rejects stale project and workspace mutation responses", () => {
+  assert.equal(
+    isSameMatrixScope(
+      { projectId: firstProjectId, workspaceId },
+      { projectId: firstProjectId, workspaceId },
+    ),
+    true,
+  );
+  assert.equal(
+    isSameMatrixScope(
+      { projectId: firstProjectId, workspaceId },
+      { projectId: secondProjectId, workspaceId },
+    ),
+    false,
+  );
+  assert.equal(
+    isSameMatrixScope(
+      { projectId: firstProjectId, workspaceId },
+      { projectId: firstProjectId, workspaceId: secondWorkspaceId },
+    ),
+    false,
   );
 });
 

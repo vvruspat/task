@@ -810,6 +810,233 @@
         "tags": ["tasks"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/table": {
+      "get": {
+        "operationId": "TasksController_listTaskTable",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": ["asc", "desc"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "dueTo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "dueFrom",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "assigneeFilter",
+            "required": false,
+            "in": "query",
+            "description": "Filter tasks without an assignee. Cannot be combined with assigneeUserId.",
+            "schema": {
+              "enum": ["unassigned"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "assigneeUserId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusFilter",
+            "required": false,
+            "in": "query",
+            "description": "Filter tasks without a status. Cannot be combined with statusId.",
+            "schema": {
+              "enum": ["unassigned"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskTablePageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task table query is invalid."
+          },
+          "404": {
+            "description": "Workspace or project is missing or not visible."
+          }
+        },
+        "summary": "List active project tasks for the scalable table",
+        "tags": ["tasks"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/bulk": {
+      "patch": {
+        "operationId": "TasksController_bulkUpdateTasks",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkUpdateTasksDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDetailDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bulk update payload or referenced task fields are invalid."
+          },
+          "403": {
+            "description": "Current user cannot update tasks in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or one of the tasks is missing or not visible."
+          }
+        },
+        "summary": "Atomically update up to 100 active project tasks",
+        "tags": ["tasks"]
+      }
+    },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/subtasks": {
       "post": {
         "operationId": "TasksController_addTaskSubtasks",
@@ -3690,39 +3917,60 @@
         },
         "required": ["columns", "stages", "cells"]
       },
-      "CreateTaskDto": {
+      "TaskTablePageDto": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "example": "Record bass",
-            "minLength": 1
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskSummaryDto"
+            }
           },
-          "parentTaskId": {
+          "page": {
+            "type": "number",
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["items", "page", "pageSize", "total"]
+      },
+      "BulkUpdateTasksDto": {
+        "type": "object",
+        "properties": {
+          "taskIds": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "statusId": {
             "type": "string",
             "format": "uuid",
             "nullable": true
           },
-          "description": {
+          "assigneeUserId": {
             "type": "string",
+            "format": "uuid",
             "nullable": true
-          },
-          "position": {
-            "type": "string",
-            "nullable": true,
-            "pattern": "^-?\\d+(\\.\\d+)?$"
           },
           "dueAt": {
             "type": "string",
             "format": "date-time",
             "nullable": true
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": true
           }
         },
-        "required": ["title"]
+        "required": ["taskIds"]
       },
       "TaskDetailDto": {
         "type": "object",
@@ -3814,6 +4062,40 @@
           "createdAt",
           "updatedAt"
         ]
+      },
+      "CreateTaskDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Record bass",
+            "minLength": 1
+          },
+          "parentTaskId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "position": {
+            "type": "string",
+            "nullable": true,
+            "pattern": "^-?\\d+(\\.\\d+)?$"
+          },
+          "dueAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["title"]
       },
       "AddTaskSubtaskDto": {
         "type": "object",
@@ -5022,6 +5304,61 @@
           "createdAt",
           "updatedAt"
         ]
+      },
+      "ListTaskTableQueryDto": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "statusId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "statusFilter": {
+            "type": "string",
+            "enum": ["unassigned"]
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assigneeFilter": {
+            "type": "string",
+            "enum": ["unassigned"]
+          },
+          "dueFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dueTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"],
+            "default": "updatedAt"
+          },
+          "sortDirection": {
+            "type": "string",
+            "enum": ["asc", "desc"],
+            "default": "desc"
+          },
+          "page": {
+            "type": "number",
+            "minimum": 1,
+            "default": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 50
+          }
+        }
       }
     }
   }
