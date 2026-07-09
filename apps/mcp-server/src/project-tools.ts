@@ -19,6 +19,8 @@ export type ProjectGetToolInput = {
   userId: string;
 };
 
+export type ProjectArchiveToolInput = ProjectGetToolInput;
+
 export type ProjectCreateToolInput = {
   workspaceId: string;
   userId: string;
@@ -32,6 +34,7 @@ export type ProjectToolHandlers = {
   search(input: unknown): Promise<ProjectSummaryResponse[]>;
   get(input: unknown): Promise<ProjectDetailResponse>;
   create(input: unknown): Promise<ProjectDetailResponse>;
+  archive(input: unknown): Promise<ProjectDetailResponse>;
 };
 
 export class ProjectToolInputError extends Error {
@@ -43,6 +46,15 @@ export class ProjectToolInputError extends Error {
 
 export function createProjectToolHandlers(client: TaskBackendClient): ProjectToolHandlers {
   return {
+    archive: (input) => {
+      const parsedInput = parseProjectArchiveToolInput(input);
+
+      return client.archiveProject({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        userId: parsedInput.userId,
+      });
+    },
     create: (input) => {
       const parsedInput = parseProjectCreateToolInput(input);
 
@@ -109,6 +121,16 @@ export function parseProjectCreateToolInput(input: unknown): ProjectCreateToolIn
 
 export function parseProjectGetToolInput(input: unknown): ProjectGetToolInput {
   const record = readRecord(input, "project get tool input");
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+}
+
+export function parseProjectArchiveToolInput(input: unknown): ProjectArchiveToolInput {
+  const record = readRecord(input, "project archive tool input");
 
   return {
     workspaceId: readRequiredUuid(record, "workspaceId"),

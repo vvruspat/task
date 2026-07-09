@@ -11,10 +11,13 @@ export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 
 type CreateProjectOperation = operations["ProjectsController_createProject"];
+type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
+export type ArchiveProjectResponse =
+  ArchiveProjectOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
 
 export type TaskApiRequestHeaders = {
@@ -57,6 +60,10 @@ export type CreateProjectRequestInput = WorkspaceScopedInput & {
   body: CreateProjectInput;
 };
 
+export type ArchiveProjectRequestInput = WorkspaceScopedInput & {
+  projectId: string;
+};
+
 export type CreateTaskRequestInput = ProjectScopedInput & {
   body: CreateTaskInput;
 };
@@ -66,6 +73,7 @@ export type ArchiveTaskRequestInput = ProjectScopedInput & {
 };
 
 export type TaskApiClient = {
+  archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
   archiveTask(input: ArchiveTaskRequestInput): Promise<TaskDetail>;
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
@@ -104,6 +112,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
   const baseUrl = normalizeBaseUrl(options.baseUrl);
 
   return {
+    archiveProject: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}`,
+        projectDetailParser,
+        {
+          method: "DELETE",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     archiveTask: (input) =>
       request(
         options.fetch,

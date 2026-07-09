@@ -64,6 +64,29 @@ test("createTaskApiClient posts project creation payloads with trusted user cont
   assert.equal(fetcher.calls[0]?.init.body, JSON.stringify(body));
 });
 
+test("createTaskApiClient deletes projects with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(archivedProjectSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(
+    await client.archiveProject({ projectId, workspaceId }),
+    archivedProjectSummary(),
+  );
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "DELETE");
+  assert.equal(fetcher.calls[0]?.init.headers.accept, "application/json");
+  assert.equal(fetcher.calls[0]?.init.headers["content-type"], undefined);
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+  assert.equal(fetcher.calls[0]?.init.body, undefined);
+});
+
 test("createTaskApiClient builds project-scoped endpoint paths", async () => {
   const fetcher = new RecordingFetch(single([taskSummary()]));
   const client = createTaskApiClient({
@@ -251,6 +274,21 @@ test("createTaskApiClient rejects project creation without trusted user context"
   assert.equal(fetcher.calls.length, 0);
 });
 
+test("createTaskApiClient rejects project archives without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(projectSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+  });
+
+  await assert.rejects(() => client.archiveProject({ projectId, workspaceId }), {
+    message: "Task API trustedUserId is required for workspace requests.",
+    name: "TaskApiClientError",
+    status: null,
+  });
+  assert.equal(fetcher.calls.length, 0);
+});
+
 test("createTaskApiClient throws typed errors for non-2xx responses", async () => {
   const fetcher = new RecordingFetch(single([]), {
     ok: false,
@@ -411,6 +449,21 @@ function projectSummary(): unknown {
     position: "1000",
     createdByUserId: trustedUserId,
     archivedAt: null,
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function archivedProjectSummary(): unknown {
+  return {
+    id: projectId,
+    workspaceId,
+    title: "Album release",
+    description: null,
+    status: "active",
+    position: "1000",
+    createdByUserId: trustedUserId,
+    archivedAt: "2026-07-08T10:30:00.000Z",
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
   };

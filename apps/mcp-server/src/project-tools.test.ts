@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
+  ArchiveProjectRequest,
   CreateProjectRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
@@ -16,6 +17,7 @@ import type {
 import {
   createProjectToolHandlers,
   ProjectToolInputError,
+  parseProjectArchiveToolInput,
   parseProjectCreateToolInput,
   parseProjectGetToolInput,
   parseProjectSearchToolInput,
@@ -95,6 +97,19 @@ test("parseProjectGetToolInput validates project get payloads", () => {
 
   assert.throws(
     () => parseProjectGetToolInput({ workspaceId, projectId: "bad", userId }),
+    ProjectToolInputError,
+  );
+});
+
+test("parseProjectArchiveToolInput validates project archive payloads", () => {
+  assert.deepEqual(parseProjectArchiveToolInput({ workspaceId, projectId, userId }), {
+    workspaceId,
+    projectId,
+    userId,
+  });
+
+  assert.throws(
+    () => parseProjectArchiveToolInput({ workspaceId, projectId: "bad", userId }),
     ProjectToolInputError,
   );
 });
@@ -181,10 +196,20 @@ test("project create handler forwards project payloads to the backend client", a
   ]);
 });
 
+test("project archive handler forwards project identifiers to the backend client", async () => {
+  const calls: ArchiveProjectRequest[] = [];
+  const client = createBackendClientStub(projects, [], [], calls);
+  const handlers = createProjectToolHandlers(client);
+
+  assert.deepEqual(await handlers.archive({ workspaceId, projectId, userId }), projectDetail);
+  assert.deepEqual(calls, [{ workspaceId, projectId, userId }]);
+});
+
 function createBackendClientStub(
   projects: ProjectSummaryResponse[],
   getProjectCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
   createProjectCalls: CreateProjectRequest[] = [],
+  archiveProjectCalls: ArchiveProjectRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -249,6 +274,11 @@ function createBackendClientStub(
     },
     createProject: async (request): Promise<ProjectDetailResponse> => {
       createProjectCalls.push(request);
+
+      return projectDetail;
+    },
+    archiveProject: async (request): Promise<ProjectDetailResponse> => {
+      archiveProjectCalls.push(request);
 
       return projectDetail;
     },

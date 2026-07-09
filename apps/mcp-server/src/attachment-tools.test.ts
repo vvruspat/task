@@ -242,6 +242,9 @@ function createBackendClientStub(
     createTaskComment: async (): Promise<TaskCommentResponse> => {
       throw new Error("Not implemented.");
     },
+    archiveProject: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async (): Promise<ProjectDetailResponse> => {
       throw new Error("Not implemented.");
     },
