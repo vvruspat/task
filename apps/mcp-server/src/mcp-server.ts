@@ -210,6 +210,28 @@ const taskUpdateInputSchema = {
   metadata: z.record(z.string(), z.unknown()).optional(),
 };
 
+const taskAddSubtasksInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  subtasks: z
+    .array(
+      z.object({
+        title: z.string().min(1),
+        description: z.string().nullable().optional(),
+        position: z
+          .string()
+          .regex(/^-?\d+(\.\d+)?$/)
+          .nullable()
+          .optional(),
+        dueAt: z.string().datetime().nullable().optional(),
+        metadata: z.record(z.string(), z.unknown()).optional(),
+      }),
+    )
+    .min(1),
+};
+
 const taskMoveInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -274,6 +296,7 @@ type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskArchiveMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskCreateMcpArgs = z.output<z.ZodObject<typeof taskCreateInputSchema>>;
+type TaskAddSubtasksMcpArgs = z.output<z.ZodObject<typeof taskAddSubtasksInputSchema>>;
 type TaskUpdateMcpArgs = z.output<z.ZodObject<typeof taskUpdateInputSchema>>;
 type TaskMoveMcpArgs = z.output<z.ZodObject<typeof taskMoveInputSchema>>;
 type TaskSetStatusMcpArgs = z.output<z.ZodObject<typeof taskSetStatusInputSchema>>;
@@ -306,6 +329,7 @@ type TaskMcpToolCallback = (
     | TaskGetMcpArgs
     | TaskArchiveMcpArgs
     | TaskCreateMcpArgs
+    | TaskAddSubtasksMcpArgs
     | TaskUpdateMcpArgs
     | TaskMoveMcpArgs
     | TaskSetStatusMcpArgs
@@ -340,6 +364,7 @@ export type TaskMcpToolRegistrar = {
         | typeof taskSearchInputSchema
         | typeof taskGetInputSchema
         | typeof taskCreateInputSchema
+        | typeof taskAddSubtasksInputSchema
         | typeof taskUpdateInputSchema
         | typeof taskMoveInputSchema
         | typeof taskSetStatusInputSchema
@@ -553,6 +578,16 @@ export function registerTaskTools(
       inputSchema: taskUpdateInputSchema,
     },
     async (input) => toToolResult(await handlers.update(input)),
+  );
+
+  registrar.registerTool(
+    "task.add_subtasks",
+    {
+      title: "Add subtasks",
+      description: "Create one or more subtasks under an active task.",
+      inputSchema: taskAddSubtasksInputSchema,
+    },
+    async (input) => toToolResult(await handlers.addSubtasks(input)),
   );
 
   registrar.registerTool(

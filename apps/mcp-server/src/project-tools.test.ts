@@ -371,6 +371,9 @@ function createBackendClientStub(
     createTask: async (): Promise<TaskDetailResponse> => {
       throw new Error("Not implemented.");
     },
+    addTaskSubtasks: async (): Promise<TaskDetailResponse[]> => {
+      throw new Error("Not implemented.");
+    },
     updateTask: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },

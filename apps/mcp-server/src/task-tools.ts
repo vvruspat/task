@@ -1,4 +1,5 @@
 import type {
+  AddTaskSubtasksInput,
   CreateTaskInput,
   MoveTaskInput,
   TaskBackendClient,
@@ -40,6 +41,18 @@ export type TaskMoveToolInput = TaskGetToolInput & {
   position: string;
 };
 
+export type TaskAddSubtaskToolInput = {
+  title: string;
+  description?: string | null;
+  position?: string | null;
+  dueAt?: string | null;
+  metadata?: Record<string, unknown>;
+};
+
+export type TaskAddSubtasksToolInput = TaskGetToolInput & {
+  subtasks: TaskAddSubtaskToolInput[];
+};
+
 export type TaskCreateToolInput = {
   workspaceId: string;
   projectId: string;
@@ -79,6 +92,7 @@ export type TaskSetDueDateToolInput = {
 export type TaskToolHandlers = {
   archive(input: unknown): Promise<TaskDetailResponse>;
   create(input: unknown): Promise<TaskDetailResponse>;
+  addSubtasks(input: unknown): Promise<TaskDetailResponse[]>;
   update(input: unknown): Promise<TaskDetailResponse>;
   move(input: unknown): Promise<TaskDetailResponse>;
   setStatus(input: unknown): Promise<TaskDetailResponse>;
@@ -115,6 +129,17 @@ export function createTaskToolHandlers(client: TaskBackendClient): TaskToolHandl
         projectId: parsedInput.projectId,
         userId: parsedInput.userId,
         body: toCreateTaskInput(parsedInput),
+      });
+    },
+    addSubtasks: (input) => {
+      const parsedInput = parseTaskAddSubtasksToolInput(input);
+
+      return client.addTaskSubtasks({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toAddTaskSubtasksInput(parsedInput),
       });
     },
     update: (input) => {
@@ -248,6 +273,52 @@ export function parseTaskMoveToolInput(input: unknown): TaskMoveToolInput {
     parentTaskId: readRequiredNullableUuid(record, "parentTaskId"),
     position: readRequiredNumericString(record, "position"),
   };
+}
+
+export function parseTaskAddSubtasksToolInput(input: unknown): TaskAddSubtasksToolInput {
+  const record = readRecord(input, "task add subtasks tool input");
+  const subtasks = readRequiredArray(record, "subtasks");
+
+  if (subtasks.length === 0) {
+    throw new TaskToolInputError("subtasks must include at least one subtask.");
+  }
+
+  return {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    taskId: readRequiredUuid(record, "taskId"),
+    userId: readRequiredUuid(record, "userId"),
+    subtasks: subtasks.map(parseTaskAddSubtaskToolInput),
+  };
+}
+
+function parseTaskAddSubtaskToolInput(input: unknown): TaskAddSubtaskToolInput {
+  const record = readRecord(input, "task add subtask tool input");
+  const parsedInput: TaskAddSubtaskToolInput = {
+    title: readRequiredNonEmptyString(record, "title"),
+  };
+  const description = readOptionalNullableString(record, "description");
+  const position = readOptionalNullableNumericString(record, "position");
+  const dueAt = readOptionalNullableDateTime(record, "dueAt");
+  const metadata = readOptionalRecord(record, "metadata");
+
+  if (description !== undefined) {
+    parsedInput.description = description;
+  }
+
+  if (position !== undefined) {
+    parsedInput.position = position;
+  }
+
+  if (dueAt !== undefined) {
+    parsedInput.dueAt = dueAt;
+  }
+
+  if (metadata !== undefined) {
+    parsedInput.metadata = metadata;
+  }
+
+  return parsedInput;
 }
 
 export function parseTaskCreateToolInput(input: unknown): TaskCreateToolInput {
@@ -384,6 +455,34 @@ function toCreateTaskInput(input: TaskCreateToolInput): CreateTaskInput {
   return body;
 }
 
+function toAddTaskSubtasksInput(input: TaskAddSubtasksToolInput): AddTaskSubtasksInput {
+  return {
+    subtasks: input.subtasks.map((subtask) => {
+      const bodySubtask: AddTaskSubtasksInput["subtasks"][number] = {
+        title: subtask.title,
+      };
+
+      if (subtask.description !== undefined) {
+        bodySubtask.description = subtask.description;
+      }
+
+      if (subtask.position !== undefined) {
+        bodySubtask.position = subtask.position;
+      }
+
+      if (subtask.dueAt !== undefined) {
+        bodySubtask.dueAt = subtask.dueAt;
+      }
+
+      if (subtask.metadata !== undefined) {
+        bodySubtask.metadata = subtask.metadata;
+      }
+
+      return bodySubtask;
+    }),
+  };
+}
+
 function toUpdateTaskInput(input: TaskUpdateToolInput): UpdateTaskInput {
   const body: UpdateTaskInput = {};
 
@@ -467,6 +566,16 @@ function readRequiredNonEmptyString(record: Record<string, unknown>, propertyNam
   }
 
   return trimmedValue;
+}
+
+function readRequiredArray(record: Record<string, unknown>, propertyName: string): unknown[] {
+  const value = record[propertyName];
+
+  if (!Array.isArray(value)) {
+    throw new TaskToolInputError(`${propertyName} must be an array.`);
+  }
+
+  return value;
 }
 
 function readOptionalNonEmptyString(

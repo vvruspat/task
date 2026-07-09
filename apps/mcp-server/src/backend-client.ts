@@ -34,6 +34,7 @@ type CreateTaskLinkAttachmentOperation =
   operations["AttachmentsController_createTaskLinkAttachment"];
 type GetTaskOperation = operations["TasksController_getTask"];
 type CreateTaskOperation = operations["TasksController_createTask"];
+type AddTaskSubtasksOperation = operations["TasksController_addTaskSubtasks"];
 type UpdateTaskOperation = operations["TasksController_updateTask"];
 type MoveTaskOperation = operations["TasksController_moveTask"];
 type ArchiveTaskOperation = operations["TasksController_archiveTask"];
@@ -96,6 +97,10 @@ export type UpdateProjectInput =
 export type UpdateProjectResponse =
   UpdateProjectOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["application/json"];
+export type AddTaskSubtasksInput =
+  AddTaskSubtasksOperation["requestBody"]["content"]["application/json"];
+export type AddTaskSubtasksResponse =
+  AddTaskSubtasksOperation["responses"]["201"]["content"]["application/json"];
 export type UpdateTaskInput = UpdateTaskOperation["requestBody"]["content"]["application/json"];
 export type UpdateTaskResponse =
   UpdateTaskOperation["responses"]["200"]["content"]["application/json"];
@@ -351,6 +356,14 @@ export type CreateTaskRequest = {
   body: CreateTaskInput;
 };
 
+export type AddTaskSubtasksRequest = {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+  userId: string;
+  body: AddTaskSubtasksInput;
+};
+
 export type ArchiveTaskRequest = {
   workspaceId: string;
   projectId: string;
@@ -443,6 +456,7 @@ export type TaskBackendClient = {
   ): Promise<TaskAttachmentResponse>;
   getTask(request: GetTaskRequest): Promise<TaskDetailResponse>;
   createTask(request: CreateTaskRequest): Promise<TaskDetailResponse>;
+  addTaskSubtasks(request: AddTaskSubtasksRequest): Promise<AddTaskSubtasksResponse>;
   updateTask(request: UpdateTaskRequest): Promise<UpdateTaskResponse>;
   moveTask(request: MoveTaskRequest): Promise<MoveTaskResponse>;
   archiveTask(request: ArchiveTaskRequest): Promise<ArchiveTaskResponse>;
@@ -706,6 +720,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         request.body,
         readTaskDetail,
       ),
+    addTaskSubtasks: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSubtasksPath(request.workspaceId, request.projectId, request.taskId),
+        request.userId,
+        request.body,
+        readTaskDetailList,
+      ),
     archiveTask: (request) =>
       deleteJson(
         fetchImplementation,
@@ -798,6 +821,7 @@ async function postJson<ResponseBody>(
     | CloneTaskSkillInput
     | CreateProjectInput
     | CreateTaskInput
+    | AddTaskSubtasksInput
     | CreateTaskCommentInput
     | CreateTaskLinkAttachmentInput
     | CreateConfirmationRequestInput,
@@ -867,6 +891,7 @@ async function writeJson<ResponseBody>(
     | CloneTaskSkillInput
     | CreateProjectInput
     | CreateTaskInput
+    | AddTaskSubtasksInput
     | CreateTaskCommentInput
     | CreateTaskLinkAttachmentInput
     | CreateConfirmationRequestInput
@@ -1025,6 +1050,10 @@ function buildProjectTaskPath(workspaceId: string, projectId: string, taskId: st
   return `${buildProjectTasksPath(workspaceId, projectId)}/${encodeURIComponent(taskId)}`;
 }
 
+function buildTaskSubtasksPath(workspaceId: string, projectId: string, taskId: string): string {
+  return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/subtasks`;
+}
+
 function buildProjectTaskMovePath(workspaceId: string, projectId: string, taskId: string): string {
   return `${buildProjectTaskPath(workspaceId, projectId, taskId)}/move`;
 }
@@ -1123,6 +1152,14 @@ function readTaskSummaryList(value: unknown): TaskSummaryResponse[] {
   }
 
   return value.map(readTaskSummary);
+}
+
+function readTaskDetailList(value: unknown): TaskDetailResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("task detail list must be an array.");
+  }
+
+  return value.map(readTaskDetail);
 }
 
 function readTaskCommentList(value: unknown): TaskCommentResponse[] {
