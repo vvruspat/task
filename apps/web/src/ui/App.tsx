@@ -1,4 +1,5 @@
 import type { TaskApiFetch } from "@task/api-client";
+import { Badge, Box, Button, Heading, IconButton, Inline, Stack, Surface, Text } from "@task/ui";
 import {
   Bot,
   CalendarClock,
@@ -338,77 +339,93 @@ export function App(): ReactElement {
   };
 
   return (
-    <main className="app-shell">
-      <aside className="sidebar" aria-label="Workspace navigation">
-        <div className="brand-row">
-          <div className="brand-mark" aria-hidden="true">
+    <Box as="main" className="app-shell">
+      <Stack as="aside" className="sidebar" gap="xl" aria-label="Workspace navigation">
+        <Inline className="brand-row" gap="md" wrap="nowrap">
+          <Box className="brand-mark" aria-hidden="true">
             t
-          </div>
-          <div>
-            <p className="eyebrow">Workspace</p>
-            <h1>tAsk</h1>
-          </div>
-        </div>
+          </Box>
+          <Stack gap="xs">
+            <Text className="eyebrow" size="sm" tone="inverse" weight="strong">
+              Workspace
+            </Text>
+            <Heading as="h1" size="md" tone="inverse">
+              tAsk
+            </Heading>
+          </Stack>
+        </Inline>
 
-        <nav className="nav-list" aria-label="Primary">
+        <Stack as="nav" className="nav-list" gap="xs" aria-label="Primary">
           {routes.map((route) => (
-            <button
+            <Button
               className={route.id === activeRoute.id ? "nav-item is-active" : "nav-item"}
               key={route.id}
               onClick={() => setActiveRouteId(route.id)}
+              before={<route.icon aria-hidden="true" className="nav-icon" />}
               title={route.description}
-              type="button"
+              variant="ghost"
             >
-              <route.icon aria-hidden="true" className="nav-icon" />
               <span>{route.label}</span>
-            </button>
+            </Button>
           ))}
-        </nav>
-      </aside>
+        </Stack>
+      </Stack>
 
-      <section className="workspace">
-        <header className="topbar">
-          <button className="icon-button" title="Toggle navigation" type="button">
+      <Box as="section" className="workspace">
+        <Inline as="header" className="topbar" gap="md" wrap="nowrap">
+          <IconButton label="Toggle navigation">
             <PanelLeft aria-hidden="true" />
-          </button>
-          <label className="command-bar">
+          </IconButton>
+          <Inline as="label" className="command-bar" gap="md" wrap="nowrap">
             <Search aria-hidden="true" />
             <input
               aria-label="Search tasks and projects"
               placeholder="Search tasks, projects, skills"
             />
-          </label>
-          <button className="primary-action" type="button">
-            <Command aria-hidden="true" />
-            <span>Ask agent</span>
-          </button>
-        </header>
+          </Inline>
+          <Button before={<Command aria-hidden="true" />}>Ask agent</Button>
+        </Inline>
 
-        <section className="route-header" aria-labelledby="route-title">
-          <div>
-            <p className="eyebrow">Current view</p>
-            <h2 id="route-title">{activeRoute.label}</h2>
-            <p>{activeRoute.description}</p>
-          </div>
-          <ul className="status-strip" aria-label="Workspace status summary">
-            <li>
-              <ListTodo aria-hidden="true" />
+        <Inline
+          as="section"
+          className="route-header"
+          align="start"
+          justify="space-between"
+          gap="xl"
+          aria-labelledby="route-title"
+        >
+          <Stack gap="sm">
+            <Text className="eyebrow" size="sm" tone="muted" weight="strong">
+              Current view
+            </Text>
+            <Heading as="h2" id="route-title" size="lg">
+              {activeRoute.label}
+            </Heading>
+            <Text className="route-description" tone="muted">
+              {activeRoute.description}
+            </Text>
+          </Stack>
+          <Inline
+            as="ul"
+            className="status-strip"
+            gap="sm"
+            justify="end"
+            aria-label="Workspace status summary"
+          >
+            <Badge as="li" before={<ListTodo aria-hidden="true" />}>
               {data.tasks.length} tasks
-            </li>
-            <li>
-              <FolderKanban aria-hidden="true" />
+            </Badge>
+            <Badge as="li" before={<FolderKanban aria-hidden="true" />}>
               {data.projects.length} projects
-            </li>
-            <li>
-              <Sparkles aria-hidden="true" />
+            </Badge>
+            <Badge as="li" before={<Sparkles aria-hidden="true" />}>
               {data.skills.length} skills
-            </li>
-            <li>
-              <CalendarClock aria-hidden="true" />
+            </Badge>
+            <Badge as="li" before={<CalendarClock aria-hidden="true" />}>
               {dueSoonCount} due soon
-            </li>
-          </ul>
-        </section>
+            </Badge>
+          </Inline>
+        </Inline>
 
         {loadState.status !== "loaded" ? <ShellStatePanel state={loadState} /> : null}
         {loadState.status === "loaded" && data.workspaces.length === 0 ? (
@@ -420,7 +437,7 @@ export function App(): ReactElement {
           />
         ) : null}
 
-        <Suspense fallback={<div className="loading-state">Loading view</div>}>
+        <Suspense fallback={<Box className="loading-state">Loading view</Box>}>
           {activeRoute.id === "my-tasks" ? (
             <LazyDashboardView
               createProjectDisabled={!canCreateProject}
@@ -447,8 +464,8 @@ export function App(): ReactElement {
             />
           )}
         </Suspense>
-      </section>
-    </main>
+      </Box>
+    </Box>
   );
 }
 
@@ -469,10 +486,17 @@ function ShellStatePanel({
       : state.message;
 
   return (
-    <section className={`state-panel ${state.status}`} aria-live="polite">
-      <h3>{title}</h3>
-      <p>{message}</p>
-    </section>
+    <Surface
+      as="section"
+      className={`state-panel ${state.status}`}
+      tone={state.status === "error" ? "warning" : "default"}
+      aria-live="polite"
+    >
+      <Heading as="h3" size="sm">
+        {title}
+      </Heading>
+      <Text tone="muted">{message}</Text>
+    </Surface>
   );
 }
 

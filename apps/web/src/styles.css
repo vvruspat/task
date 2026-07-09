@@ -16,13 +16,8 @@ body {
   min-width: 320px;
 }
 
-button,
 input {
   font: inherit;
-}
-
-button {
-  cursor: pointer;
 }
 
 .app-shell {
@@ -32,26 +27,16 @@ button {
 }
 
 .sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
   padding: 24px 18px;
   color: #f6f1e8;
   background: #17211c;
 }
 
-.brand-row,
-.topbar,
 .panel-header,
-.status-strip,
 .task-row,
 .table-row {
   display: flex;
   align-items: center;
-}
-
-.brand-row {
-  gap: 12px;
 }
 
 .brand-mark {
@@ -67,10 +52,6 @@ button {
 }
 
 .eyebrow {
-  margin: 0 0 4px;
-  color: #6a756f;
-  font-size: 0.72rem;
-  font-weight: 700;
   text-transform: uppercase;
 }
 
@@ -96,12 +77,6 @@ h1 {
   gap: 6px;
 }
 
-.nav-item,
-.icon-button,
-.primary-action {
-  border: 0;
-}
-
 .nav-item {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
@@ -124,8 +99,7 @@ h1 {
 }
 
 .nav-icon,
-.icon-button svg,
-.primary-action svg,
+.command-bar svg,
 .status-strip svg,
 .muted-icon,
 .state-icon {
@@ -134,32 +108,16 @@ h1 {
 }
 
 .workspace {
-  min-width: 0;
   padding: 18px 22px 28px;
 }
 
 .topbar {
-  gap: 12px;
   min-height: 52px;
-}
-
-.icon-button {
-  display: grid;
-  width: 40px;
-  height: 40px;
-  place-items: center;
-  border-radius: 8px;
-  color: #2d3a33;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px #d8d1c4;
 }
 
 .command-bar {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
-  gap: 10px;
-  align-items: center;
-  min-width: 0;
   max-width: 720px;
   height: 42px;
   flex: 1;
@@ -176,59 +134,21 @@ h1 {
   color: #17211c;
 }
 
-.primary-action {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  padding: 0 14px;
-  border-radius: 8px;
-  color: #ffffff;
-  background: #335c67;
-}
-
 .route-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
   padding: 22px 0;
   border-bottom: 1px solid #d8d1c4;
 }
 
-.route-header h2 {
-  margin-bottom: 8px;
-  font-size: 1.9rem;
-}
-
-.route-header p {
+.route-description {
   max-width: 620px;
-  margin-bottom: 0;
-  color: #59645e;
 }
 
 .status-strip {
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
   align-content: flex-start;
   max-width: 420px;
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.status-strip li {
-  display: inline-flex;
-  gap: 7px;
-  align-items: center;
-  min-height: 34px;
-  padding: 0 10px;
-  border: 1px solid #d8d1c4;
-  border-radius: 999px;
-  color: #2d3a33;
-  background: #ffffff;
-  font-size: 0.9rem;
 }
 
 .content-grid {
@@ -847,19 +767,10 @@ h1 {
 .state-panel {
   margin-top: 18px;
   padding: 14px 16px;
-  border: 1px solid #d8d1c4;
-  border-radius: 8px;
-  background: #ffffff;
 }
 
 .state-panel h3 {
   margin-bottom: 6px;
-  font-size: 1rem;
-}
-
-.state-panel p {
-  margin-bottom: 0;
-  color: #59645e;
 }
 
 .state-panel.error {
@@ -960,7 +871,7 @@ h1 {
     grid-template-columns: 40px minmax(0, 1fr);
   }
 
-  .topbar .primary-action {
+  .topbar .ui-button {
     grid-column: span 2;
   }
 
