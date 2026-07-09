@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  AddTaskSubtasksRequestInput,
   AgentRunSummary,
   ArchiveProjectRequestInput,
   ArchiveTaskRequestInput,
@@ -15,9 +16,11 @@ import type {
   CreateTaskTelegramFileAttachmentRequestInput,
   DashboardOverview,
   ListMyTasksRequestInput,
+  MoveTaskRequestInput,
   MyTasksPage,
   ProjectDetail,
   ProjectSummary,
+  TaskActivityEvent,
   TaskApiClient,
   TaskAttachment,
   TaskComment,
@@ -25,11 +28,15 @@ import type {
   TaskSkillSummary,
   TaskSummary,
   UpdateProjectRequestInput,
+  UpdateTaskAssigneeRequestInput,
+  UpdateTaskDueDateRequestInput,
   UpdateTaskRequestInput,
+  UpdateTaskStatusRequestInput,
   WorkspaceStatus,
   WorkspaceSummary,
 } from "@task/api-client";
 import {
+  applyArchivedProjectToWebShellData,
   createWebShellProject,
   createWebShellTask,
   loadWebShellData,
@@ -52,6 +59,36 @@ test("parseWebShellConfig accepts required Vite environment values", () => {
       },
       status: "configured",
     },
+  );
+});
+
+test("applyArchivedProjectToWebShellData clears deep-linked project tasks and selects the next active project", () => {
+  const deepLinkedProjectId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+  const nextProjectId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+  const result = applyArchivedProjectToWebShellData(
+    {
+      agentRuns: [],
+      projects: [
+        projectSummary({ id: projectId, title: "Default" }),
+        projectSummary({ id: deepLinkedProjectId, title: "Deep link" }),
+        projectSummary({ id: nextProjectId, title: "Next" }),
+      ],
+      selectedProjectId: projectId,
+      selectedWorkspaceId: workspaceId,
+      skills: [],
+      statuses: [],
+      tasks: [taskSummary({ projectId: deepLinkedProjectId })],
+      workspaces: [workspaceSummary()],
+    },
+    projectSummary({ archivedAt: "2026-07-10T10:00:00.000Z", id: deepLinkedProjectId }),
+    deepLinkedProjectId,
+  );
+
+  assert.equal(result.selectedProjectId, projectId);
+  assert.deepEqual(result.tasks, []);
+  assert.equal(
+    result.projects.find((project) => project.id === deepLinkedProjectId)?.archivedAt,
+    "2026-07-10T10:00:00.000Z",
   );
 });
 
@@ -326,6 +363,14 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("archiveTask is not used by the web shell loader.");
   }
 
+  async addTaskSubtasks(_input: AddTaskSubtasksRequestInput): Promise<never> {
+    throw new Error("addTaskSubtasks is not used by the web shell loader.");
+  }
+
+  async getTask(_input: ArchiveTaskRequestInput): Promise<never> {
+    throw new Error("getTask is not used by the web shell loader.");
+  }
+
   async updateProject(_input: UpdateProjectRequestInput): Promise<never> {
     throw new Error("updateProject is not used by the web shell loader.");
   }
@@ -377,6 +422,10 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("listTaskAttachments is not used by the web shell loader.");
   }
 
+  async listTaskActivity(_input: ArchiveTaskRequestInput): Promise<TaskActivityEvent[]> {
+    throw new Error("listTaskActivity is not used by the web shell loader.");
+  }
+
   async listTaskComments(_input: {
     projectId: string;
     taskId: string;
@@ -409,6 +458,22 @@ class RecordingTaskApiClient implements TaskApiClient {
     this.calls.push("listWorkspaces");
     return this.data.workspaces;
   }
+
+  async moveTask(_input: MoveTaskRequestInput): Promise<never> {
+    throw new Error("moveTask is not used by the web shell loader.");
+  }
+
+  async updateTaskAssignee(_input: UpdateTaskAssigneeRequestInput): Promise<never> {
+    throw new Error("updateTaskAssignee is not used by the web shell loader.");
+  }
+
+  async updateTaskDueDate(_input: UpdateTaskDueDateRequestInput): Promise<never> {
+    throw new Error("updateTaskDueDate is not used by the web shell loader.");
+  }
+
+  async updateTaskStatus(_input: UpdateTaskStatusRequestInput): Promise<never> {
+    throw new Error("updateTaskStatus is not used by the web shell loader.");
+  }
 }
 
 function workspaceSummary(): WorkspaceSummary {
@@ -438,7 +503,7 @@ function agentRunSummary(): AgentRunSummary {
   };
 }
 
-function projectSummary(): ProjectSummary {
+function projectSummary(overrides: Partial<ProjectSummary> = {}): ProjectSummary {
   return {
     id: projectId,
     workspaceId,
@@ -450,10 +515,11 @@ function projectSummary(): ProjectSummary {
     archivedAt: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+    ...overrides,
   };
 }
 
-function taskSummary(): TaskSummary {
+function taskSummary(overrides: Partial<TaskSummary> = {}): TaskSummary {
   return {
     id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
     workspaceId,
@@ -472,6 +538,7 @@ function taskSummary(): TaskSummary {
     archivedAt: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+    ...overrides,
   };
 }
 

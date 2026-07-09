@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ActivityModule } from "./activity/activity.module.js";
 import { AgentModule } from "./agent/agent.module.js";
 import { AppController } from "./app.controller.js";
 import { AppService } from "./app.service.js";
@@ -15,6 +16,7 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
 
 @Module({
   imports: [
+    ActivityModule,
     WorkspacesModule,
     DashboardModule,
     ProjectsModule,

@@ -41,6 +41,70 @@
         "tags": ["health"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/activity": {
+      "get": {
+        "operationId": "ActivityController_listTaskActivity",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskActivityEventDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "List activity history for a visible task",
+        "tags": ["activity"]
+      }
+    },
     "/workspaces": {
       "get": {
         "operationId": "WorkspacesController_listWorkspaces",
@@ -2885,6 +2949,47 @@
           }
         },
         "required": ["status", "service", "version"]
+      },
+      "TaskActivityEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "actorUserId",
+          "eventType",
+          "entityId",
+          "entityType",
+          "payload",
+          "createdAt"
+        ]
       },
       "WorkspaceSummaryDto": {
         "type": "object",

@@ -10,14 +10,17 @@ import {
   buildMatrixSummary,
   buildMyTaskRows,
   buildMyTaskSummary,
+  buildProjectDetailSummary,
   buildProjectOverviewRows,
   buildProjectOverviewSummary,
+  buildProjectParentTaskProgress,
   buildSettingsSummary,
   buildSettingsWorkspaceRows,
   buildTaskTableRows,
   buildTaskTableSummary,
   buildTemplateSkillRows,
   buildTemplateSkillSummary,
+  formatProjectActionFeedback,
 } from "./workspaceViewModels.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
@@ -533,6 +536,71 @@ test("buildProjectOverviewSummary counts loaded project tasks", () => {
       unassignedTaskCount: 1,
     },
   );
+});
+
+test("buildProjectDetailSummary counts completed project work using done statuses", () => {
+  assert.deepEqual(
+    buildProjectDetailSummary(
+      [
+        taskSummary({ id: firstParentTaskId, statusId: firstStatusId }),
+        taskSummary({
+          assigneeUserId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          id: secondParentTaskId,
+          statusId: secondStatusId,
+        }),
+      ],
+      new Set([secondStatusId]),
+    ),
+    { completedTaskCount: 1, parentTaskCount: 2, taskCount: 2, unassignedTaskCount: 1 },
+  );
+});
+
+test("buildProjectParentTaskProgress uses child tasks when a parent has children", () => {
+  assert.deepEqual(
+    buildProjectParentTaskProgress(
+      [
+        taskSummary({ id: firstParentTaskId, position: "1000", title: "Intro" }),
+        taskSummary({
+          id: secondParentTaskId,
+          position: "2000",
+          statusId: secondStatusId,
+          title: "Finale",
+        }),
+        taskSummary({
+          id: "11111111-1111-4111-8111-111111111111",
+          parentTaskId: firstParentTaskId,
+          statusId: secondStatusId,
+          title: "Mix",
+        }),
+        taskSummary({
+          id: "22222222-2222-4222-8222-222222222222",
+          parentTaskId: firstParentTaskId,
+          statusId: firstStatusId,
+          title: "Record",
+        }),
+      ],
+      new Set([secondStatusId]),
+    ).map(({ completedTaskCount, title, totalTaskCount }) => ({
+      completedTaskCount,
+      title,
+      totalTaskCount,
+    })),
+    [
+      { completedTaskCount: 1, title: "Intro", totalTaskCount: 2 },
+      { completedTaskCount: 1, title: "Finale", totalTaskCount: 1 },
+    ],
+  );
+});
+
+test("formatProjectActionFeedback returns actionable errors and hides pending states", () => {
+  assert.equal(
+    formatProjectActionFeedback("Project", {
+      message: "A visible workspace is required before archiving projects.",
+      status: "error",
+    }),
+    "Project: A visible workspace is required before archiving projects.",
+  );
+  assert.equal(formatProjectActionFeedback("Task", { status: "submitting" }), null);
 });
 
 test("buildTaskTableRows maps loaded tasks into table rows", () => {

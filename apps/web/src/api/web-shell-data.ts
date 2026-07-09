@@ -33,6 +33,8 @@ export type WebShellDataLoader = () => Promise<WebShellData>;
 export type WebShellProjectCreator = (input: WebShellProjectCreateInput) => Promise<ProjectDetail>;
 
 export type WebShellProjectCreateInput = {
+  description?: string | null;
+  status?: string | null;
   title: string;
 };
 
@@ -49,6 +51,12 @@ export type WebShellTaskCreateInput = {
 export type WebShellTaskCreateTarget = {
   projectId: string;
   workspaceId: string;
+};
+
+export type WebShellProjectUpdateInput = {
+  description?: string | null;
+  status?: string | null;
+  title?: string;
 };
 
 export type WebShellConfigResult =
@@ -148,9 +156,68 @@ export async function createWebShellProject(
   return client.createProject({
     body: {
       title,
+      ...(input.description === undefined ? {} : { description: input.description }),
+      ...(input.status === undefined ? {} : { status: input.status }),
     },
     workspaceId: target.workspaceId,
   });
+}
+
+export async function updateWebShellProject(
+  client: TaskApiClient,
+  target: WebShellProjectCreateTarget & { projectId: string },
+  input: WebShellProjectUpdateInput,
+): Promise<ProjectDetail> {
+  const title = input.title?.trim();
+
+  if (title !== undefined && title.length === 0) {
+    throw new Error("Project title is required.");
+  }
+
+  return client.updateProject({
+    body: {
+      ...(input.description === undefined ? {} : { description: input.description }),
+      ...(input.status === undefined ? {} : { status: input.status }),
+      ...(title === undefined ? {} : { title }),
+    },
+    projectId: target.projectId,
+    workspaceId: target.workspaceId,
+  });
+}
+
+export async function archiveWebShellProject(
+  client: TaskApiClient,
+  target: WebShellProjectCreateTarget & { projectId: string },
+): Promise<ProjectDetail> {
+  return client.archiveProject(target);
+}
+
+export async function loadWebShellProjectTasks(
+  client: TaskApiClient,
+  target: WebShellTaskCreateTarget,
+): Promise<TaskSummary[]> {
+  return client.listTasks(target);
+}
+
+export function applyArchivedProjectToWebShellData(
+  data: WebShellData,
+  archivedProject: ProjectDetail,
+  effectiveSelectedProjectId: string | null,
+): WebShellData {
+  const projects = data.projects.map((project) =>
+    project.id === archivedProject.id ? archivedProject : project,
+  );
+  const wasEffectiveProjectArchived = effectiveSelectedProjectId === archivedProject.id;
+  const nextProjectId = wasEffectiveProjectArchived
+    ? (projects.find((project) => !isArchivedProject(project))?.id ?? null)
+    : data.selectedProjectId;
+
+  return {
+    ...data,
+    projects,
+    selectedProjectId: nextProjectId,
+    tasks: wasEffectiveProjectArchived ? [] : data.tasks,
+  };
 }
 
 export async function loadWebShellData(client: TaskApiClient): Promise<WebShellData> {
@@ -215,4 +282,11 @@ export async function createWebShellTask(
     projectId: target.projectId,
     workspaceId: target.workspaceId,
   });
+}
+
+function isArchivedProject(project: ProjectSummary): boolean {
+  return (
+    (project.archivedAt !== null && project.archivedAt !== undefined) ||
+    project.status?.toLowerCase() === "archived"
+  );
 }

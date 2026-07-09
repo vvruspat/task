@@ -3,7 +3,7 @@ import { AgentHistoryView } from "./workspace/AgentHistoryView.js";
 import { FallbackWorkspaceRouteView } from "./workspace/FallbackWorkspaceRouteView.js";
 import { KanbanView } from "./workspace/KanbanView.js";
 import { MatrixView } from "./workspace/MatrixView.js";
-import { ProjectsView } from "./workspace/ProjectsView.js";
+import { type ProjectActionState, ProjectsView } from "./workspace/ProjectsView.js";
 import { SettingsView } from "./workspace/SettingsView.js";
 import { TaskTableView } from "./workspace/TaskTableView.js";
 import { TemplatesView } from "./workspace/TemplatesView.js";
@@ -20,23 +20,40 @@ import type {
 type WorkspaceViewProps = {
   agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];
+  onArchiveProject(projectId: string): Promise<void>;
+  onCreateProject(title: string): Promise<void>;
+  onCreateTask(projectId: string, title: string): Promise<void>;
+  onSelectProject(projectId: string): void;
+  onUpdateProject(
+    projectId: string,
+    input: { description: string | null; title: string },
+  ): Promise<void>;
+  projectActionState: ProjectActionState;
   route: WorkspaceRoute;
   skills: TaskSkillSummary[];
   selectedProjectId: string | null;
   selectedWorkspaceId: string | null;
   statuses: WorkspaceStatus[];
+  taskActionState: ProjectActionState;
   tasks: TaskSummary[];
   workspaces: WorkspaceSummary[];
 };
 
 export default function WorkspaceView({
   agentRuns,
+  onArchiveProject,
+  onCreateProject,
+  onCreateTask,
+  onSelectProject,
+  onUpdateProject,
+  projectActionState,
   projects,
   route,
   selectedProjectId,
   selectedWorkspaceId,
   skills,
   statuses,
+  taskActionState,
   tasks,
   workspaces,
 }: WorkspaceViewProps): ReactElement {
@@ -49,7 +66,21 @@ export default function WorkspaceView({
   }
 
   if (route.id === "projects") {
-    return <ProjectsView projects={projects} tasks={tasks} />;
+    return (
+      <ProjectsView
+        onArchiveProject={onArchiveProject}
+        onCreateProject={onCreateProject}
+        onCreateTask={onCreateTask}
+        onSelectProject={onSelectProject}
+        onUpdateProject={onUpdateProject}
+        projectActionState={projectActionState}
+        projects={projects}
+        selectedProjectId={selectedProjectId}
+        statuses={statuses}
+        tasks={tasks}
+        taskActionState={taskActionState}
+      />
+    );
   }
 
   if (route.id === "table") {

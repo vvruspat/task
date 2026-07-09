@@ -38,6 +38,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/activity": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List activity history for a visible task */
+    get: operations["ActivityController_listTaskActivity"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces": {
     parameters: {
       query?: never;
@@ -682,6 +699,21 @@ export interface components {
        * @example 0.0.0
        */
       version: string;
+    };
+    TaskActivityEventDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      actorUserId: string | null;
+      eventType: string;
+      /** Format: uuid */
+      entityId: string;
+      entityType: string;
+      payload: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      createdAt: string;
     };
     WorkspaceSummaryDto: {
       /** Format: uuid */
@@ -1437,6 +1469,39 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["HealthResponseDto"];
         };
+      };
+    };
+  };
+  ActivityController_listTaskActivity: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskActivityEventDto"][];
+        };
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };

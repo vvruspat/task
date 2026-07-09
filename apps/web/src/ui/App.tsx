@@ -37,10 +37,14 @@ import {
 import type { ComponentType, ReactElement, SetStateAction, SVGProps } from "react";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
+  applyArchivedProjectToWebShellData,
+  archiveWebShellProject,
   createWebShellDataLoader,
   createWebShellProjectCreator,
   createWebShellTaskCreator,
+  loadWebShellProjectTasks,
   parseWebShellConfig,
+  updateWebShellProject,
   type WebShellData,
   type WebShellEnvironment,
 } from "../api/web-shell-data.js";
@@ -307,6 +311,41 @@ export function App(): ReactElement {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
+  useEffect(() => {
+    if (
+      loadState.status !== "loaded" ||
+      data.selectedWorkspaceId === null ||
+      selectedProjectId === null
+    ) {
+      return;
+    }
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") return;
+    let isCurrent = true;
+    const client = createTaskApiClient({
+      baseUrl: configResult.config.apiBaseUrl,
+      fetch: async (url, init) => fetch(url, init),
+      trustedUserId: configResult.config.trustedUserId,
+    });
+    void loadWebShellProjectTasks(client, {
+      projectId: selectedProjectId,
+      workspaceId: data.selectedWorkspaceId,
+    })
+      .then((tasks) => {
+        if (isCurrent) {
+          setLoadState((currentState) =>
+            currentState.status === "loaded"
+              ? { data: { ...currentState.data, tasks }, status: "loaded" }
+              : currentState,
+          );
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      isCurrent = false;
+    };
+  }, [data.selectedWorkspaceId, loadState.status, selectedProjectId]);
+
   const updateNavigation = (nextState: WorkspaceNavigationUpdate): void => {
     const resolvedState =
       typeof nextState === "function" ? nextState(navigationStateRef.current) : nextState;
@@ -391,7 +430,10 @@ export function App(): ReactElement {
     }
   };
 
-  const handleCreateTask = async (title: string): Promise<void> => {
+  const handleCreateTask = async (
+    title: string,
+    targetProjectId: string | null = selectedProjectId,
+  ): Promise<void> => {
     if (loadState.status !== "loaded") {
       setTaskCreateState({
         message: "Workspace data must finish loading before creating tasks.",
@@ -400,7 +442,7 @@ export function App(): ReactElement {
       return;
     }
 
-    if (loadState.data.selectedWorkspaceId === null || selectedProjectId === null) {
+    if (loadState.data.selectedWorkspaceId === null || targetProjectId === null) {
       setTaskCreateState({
         message: "Create a workspace project before adding tasks.",
         status: "error",
@@ -426,7 +468,7 @@ export function App(): ReactElement {
         config: configResult.config,
         fetch: browserFetch,
         target: {
-          projectId: selectedProjectId,
+          projectId: targetProjectId,
           workspaceId: loadState.data.selectedWorkspaceId,
         },
       });
@@ -454,6 +496,71 @@ export function App(): ReactElement {
         message: readErrorMessage(error),
         status: "error",
       });
+    }
+  };
+
+  const handleUpdateProject = async (
+    projectId: string,
+    input: { description: string | null; title: string },
+  ): Promise<void> => {
+    if (loadState.status !== "loaded" || loadState.data.selectedWorkspaceId === null) {
+      throw new Error("A visible workspace is required before updating projects.");
+    }
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") throw new Error(configResult.message);
+    const client = createTaskApiClient({
+      baseUrl: configResult.config.apiBaseUrl,
+      fetch: async (url, init) => fetch(url, init),
+      trustedUserId: configResult.config.trustedUserId,
+    });
+    const updatedProject = await updateWebShellProject(
+      client,
+      { projectId, workspaceId: loadState.data.selectedWorkspaceId },
+      input,
+    );
+    setLoadState((currentState) =>
+      currentState.status === "loaded"
+        ? {
+            data: {
+              ...currentState.data,
+              projects: currentState.data.projects.map((project) =>
+                project.id === updatedProject.id ? updatedProject : project,
+              ),
+            },
+            status: "loaded",
+          }
+        : currentState,
+    );
+  };
+
+  const handleArchiveProject = async (projectId: string): Promise<void> => {
+    if (loadState.status !== "loaded" || loadState.data.selectedWorkspaceId === null) {
+      throw new Error("A visible workspace is required before archiving projects.");
+    }
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") throw new Error(configResult.message);
+    const client = createTaskApiClient({
+      baseUrl: configResult.config.apiBaseUrl,
+      fetch: async (url, init) => fetch(url, init),
+      trustedUserId: configResult.config.trustedUserId,
+    });
+    const archivedProject = await archiveWebShellProject(client, {
+      projectId,
+      workspaceId: loadState.data.selectedWorkspaceId,
+    });
+    let nextProjectId: string | null = null;
+    setLoadState((currentState) => {
+      if (currentState.status !== "loaded") return currentState;
+      const data = applyArchivedProjectToWebShellData(
+        currentState.data,
+        archivedProject,
+        selectedProjectId,
+      );
+      nextProjectId = data.selectedProjectId;
+      return { data, status: "loaded" };
+    });
+    if (selectedProjectId === projectId) {
+      updateNavigation((currentNavigation) => ({ ...currentNavigation, projectId: nextProjectId }));
     }
   };
 
@@ -638,12 +745,25 @@ export function App(): ReactElement {
           ) : (
             <LazyWorkspaceView
               agentRuns={data.agentRuns}
+              onArchiveProject={handleArchiveProject}
+              onCreateProject={handleCreateProject}
+              onCreateTask={(projectId, title) => handleCreateTask(title, projectId)}
+              onSelectProject={(projectId) =>
+                updateNavigation((currentNavigation) => ({
+                  ...currentNavigation,
+                  projectId,
+                  routeId: "projects",
+                }))
+              }
+              onUpdateProject={handleUpdateProject}
+              projectActionState={projectCreateState}
               route={activeRoute}
               projects={data.projects}
               selectedProjectId={selectedProjectId}
               selectedWorkspaceId={data.selectedWorkspaceId}
               skills={data.skills}
               statuses={data.statuses}
+              taskActionState={taskCreateState}
               tasks={data.tasks}
               workspaces={data.workspaces}
             />

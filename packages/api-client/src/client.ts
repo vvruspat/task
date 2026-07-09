@@ -13,6 +13,7 @@ export type HealthResponse = components["schemas"]["HealthResponseDto"];
 export type ProjectDetail = components["schemas"]["ProjectDetailDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 export type TaskAttachment = components["schemas"]["TaskAttachmentDto"];
+export type TaskActivityEvent = components["schemas"]["TaskActivityEventDto"];
 export type TaskComment = components["schemas"]["TaskCommentDto"];
 export type TaskDetail = components["schemas"]["TaskDetailDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
@@ -25,6 +26,11 @@ type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
 type UpdateProjectOperation = operations["ProjectsController_updateProject"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskOperation = operations["TasksController_updateTask"];
+type AddTaskSubtasksOperation = operations["TasksController_addTaskSubtasks"];
+type MoveTaskOperation = operations["TasksController_moveTask"];
+type UpdateTaskAssigneeOperation = operations["TasksController_updateTaskAssignee"];
+type UpdateTaskDueDateOperation = operations["TasksController_updateTaskDueDate"];
+type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type ListMyTasksOperation = operations["DashboardController_listMyTasks"];
 
 export type CreateProjectInput =
@@ -39,6 +45,15 @@ export type CreateTaskInput = CreateTaskOperation["requestBody"]["content"]["app
 export type UpdateTaskInput = UpdateTaskOperation["requestBody"]["content"]["application/json"];
 export type UpdateTaskResponse =
   UpdateTaskOperation["responses"]["200"]["content"]["application/json"];
+export type AddTaskSubtasksInput =
+  AddTaskSubtasksOperation["requestBody"]["content"]["application/json"];
+export type MoveTaskInput = MoveTaskOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskAssigneeInput =
+  UpdateTaskAssigneeOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskDueDateInput =
+  UpdateTaskDueDateOperation["requestBody"]["content"]["application/json"];
+export type UpdateTaskStatusInput =
+  UpdateTaskStatusOperation["requestBody"]["content"]["application/json"];
 
 export type TaskApiRequestHeaders = {
   accept: "application/json";
@@ -106,6 +121,26 @@ export type UpdateTaskRequestInput = ArchiveTaskRequestInput & {
   body: UpdateTaskInput;
 };
 
+export type AddTaskSubtasksRequestInput = TaskScopedInput & {
+  body: AddTaskSubtasksInput;
+};
+
+export type MoveTaskRequestInput = TaskScopedInput & {
+  body: MoveTaskInput;
+};
+
+export type UpdateTaskAssigneeRequestInput = TaskScopedInput & {
+  body: UpdateTaskAssigneeInput;
+};
+
+export type UpdateTaskDueDateRequestInput = TaskScopedInput & {
+  body: UpdateTaskDueDateInput;
+};
+
+export type UpdateTaskStatusRequestInput = TaskScopedInput & {
+  body: UpdateTaskStatusInput;
+};
+
 export type TaskScopedInput = ArchiveTaskRequestInput;
 
 export type CreateTaskCommentRequestInput = TaskScopedInput & {
@@ -127,6 +162,7 @@ export type CreateTaskTelegramFileAttachmentRequestInput = TaskScopedInput & {
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
   archiveTask(input: ArchiveTaskRequestInput): Promise<TaskDetail>;
+  addTaskSubtasks(input: AddTaskSubtasksRequestInput): Promise<TaskDetail[]>;
   createTaskComment(input: CreateTaskCommentRequestInput): Promise<TaskComment>;
   createTaskFileAttachment(input: CreateTaskFileAttachmentRequestInput): Promise<TaskAttachment>;
   createTaskLinkAttachment(input: CreateTaskLinkAttachmentRequestInput): Promise<TaskAttachment>;
@@ -136,6 +172,7 @@ export type TaskApiClient = {
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   getHealth(): Promise<HealthResponse>;
+  getTask(input: TaskScopedInput): Promise<TaskDetail>;
   getDashboardOverview(input: WorkspaceScopedInput): Promise<DashboardOverview>;
   listPendingConfirmationRequests(
     input: WorkspaceScopedInput,
@@ -149,6 +186,7 @@ export type TaskApiClient = {
   listMyTasks(input: ListMyTasksRequestInput): Promise<MyTasksPage>;
   listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
   listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
+  listTaskActivity(input: TaskScopedInput): Promise<TaskActivityEvent[]>;
   listTaskComments(input: TaskScopedInput): Promise<TaskComment[]>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
   listStatuses(input: WorkspaceScopedInput): Promise<WorkspaceStatus[]>;
@@ -157,6 +195,10 @@ export type TaskApiClient = {
   listWorkspaces(): Promise<WorkspaceSummary[]>;
   updateProject(input: UpdateProjectRequestInput): Promise<UpdateProjectResponse>;
   updateTask(input: UpdateTaskRequestInput): Promise<UpdateTaskResponse>;
+  updateTaskAssignee(input: UpdateTaskAssigneeRequestInput): Promise<TaskDetail>;
+  updateTaskDueDate(input: UpdateTaskDueDateRequestInput): Promise<TaskDetail>;
+  updateTaskStatus(input: UpdateTaskStatusRequestInput): Promise<TaskDetail>;
+  moveTask(input: MoveTaskRequestInput): Promise<TaskDetail>;
 };
 
 type JsonObject = Record<string, unknown>;
@@ -209,6 +251,13 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    addTaskSubtasks: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/subtasks`, taskDetailArrayParser, {
+        body: input.body,
+        method: "POST",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     createProject: (input) =>
       request(
         options.fetch,
@@ -307,6 +356,34 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    moveTask: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/move`, taskDetailParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    updateTaskStatus: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/status`, taskDetailParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    updateTaskAssignee: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/assignee`, taskDetailParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    updateTaskDueDate: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/due-date`, taskDetailParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     getHealth: () =>
       request(options.fetch, baseUrl, "/health", healthResponseParser, {
         method: "GET",
@@ -419,8 +496,20 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: true,
         trustedUserId: options.trustedUserId,
       }),
+    listTaskActivity: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/activity`, taskActivityEventArrayParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     listTaskComments: (input) =>
       request(options.fetch, baseUrl, `${taskPath(input)}/comments`, taskCommentArrayParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    getTask: (input) =>
+      request(options.fetch, baseUrl, taskPath(input), taskDetailParser, {
         method: "GET",
         requiresTrustedUserId: true,
         trustedUserId: options.trustedUserId,
@@ -579,6 +668,11 @@ const taskSummaryArrayParser: ResponseParser<TaskSummary[]> = {
   label: "task summary list",
 };
 
+const taskDetailArrayParser: ResponseParser<TaskDetail[]> = {
+  isValid: (value: unknown): value is TaskDetail[] => isArrayOf(value, isTaskDetail),
+  label: "task detail array",
+};
+
 const taskDetailParser: ResponseParser<TaskDetail> = {
   isValid: isTaskDetail,
   label: "task detail",
@@ -587,6 +681,11 @@ const taskDetailParser: ResponseParser<TaskDetail> = {
 const taskAttachmentArrayParser: ResponseParser<TaskAttachment[]> = {
   isValid: (value): value is TaskAttachment[] => isArrayOf(value, isTaskAttachment),
   label: "task attachment list",
+};
+
+const taskActivityEventArrayParser: ResponseParser<TaskActivityEvent[]> = {
+  isValid: (value: unknown): value is TaskActivityEvent[] => isArrayOf(value, isTaskActivityEvent),
+  label: "task activity event array",
 };
 
 const taskAttachmentParser: ResponseParser<TaskAttachment> = {
@@ -816,6 +915,19 @@ function isTaskAttachment(value: unknown): value is TaskAttachment {
     hasOptionalNullableString(value, "mimeType") &&
     hasOptionalNullableString(value, "sizeBytes") &&
     hasString(value, "createdByUserId") &&
+    hasString(value, "createdAt")
+  );
+}
+
+function isTaskActivityEvent(value: unknown): value is TaskActivityEvent {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasNullableString(value, "actorUserId") &&
+    hasString(value, "eventType") &&
+    hasString(value, "entityId") &&
+    hasString(value, "entityType") &&
+    isJsonObject(readProperty(value, "payload")) &&
     hasString(value, "createdAt")
   );
 }

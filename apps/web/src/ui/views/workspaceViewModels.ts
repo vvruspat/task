@@ -124,6 +124,25 @@ export type ProjectOverviewSummary = {
   unassignedTaskCount: number;
 };
 
+export type ProjectParentTaskProgress = {
+  completedTaskCount: number;
+  id: string;
+  title: string;
+  totalTaskCount: number;
+  updatedAtLabel: string;
+};
+
+export type ProjectDetailSummary = {
+  completedTaskCount: number;
+  parentTaskCount: number;
+  taskCount: number;
+  unassignedTaskCount: number;
+};
+
+export type ProjectActionFeedbackInput =
+  | { status: "idle" | "submitting" }
+  | { message: string; status: "error" | "success" };
+
 export type TaskTableRow = {
   assigneeLabel: string;
   dueDateLabel: string;
@@ -394,6 +413,57 @@ export function buildProjectOverviewSummary(
     taskCount: tasks.length,
     unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
   };
+}
+
+export function buildProjectDetailSummary(
+  tasks: TaskSummary[],
+  doneStatusIds: ReadonlySet<string>,
+): ProjectDetailSummary {
+  return {
+    completedTaskCount: tasks.filter(
+      (task) =>
+        task.statusId !== null && task.statusId !== undefined && doneStatusIds.has(task.statusId),
+    ).length,
+    parentTaskCount: tasks.filter((task) => !hasParentTaskValue(task.parentTaskId)).length,
+    taskCount: tasks.length,
+    unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
+  };
+}
+
+export function formatProjectActionFeedback(
+  action: string,
+  state: ProjectActionFeedbackInput,
+): string | null {
+  if (!("message" in state)) {
+    return null;
+  }
+  return `${action}: ${state.message}`;
+}
+
+export function buildProjectParentTaskProgress(
+  tasks: TaskSummary[],
+  doneStatusIds: ReadonlySet<string>,
+): ProjectParentTaskProgress[] {
+  return tasks
+    .filter((task) => !hasParentTaskValue(task.parentTaskId))
+    .sort(compareTaskPosition)
+    .map((parentTask) => {
+      const childTasks = tasks.filter((task) => task.parentTaskId === parentTask.id);
+      const progressTasks = childTasks.length === 0 ? [parentTask] : childTasks;
+
+      return {
+        completedTaskCount: progressTasks.filter(
+          (task) =>
+            task.statusId !== null &&
+            task.statusId !== undefined &&
+            doneStatusIds.has(task.statusId),
+        ).length,
+        id: parentTask.id,
+        title: parentTask.title,
+        totalTaskCount: progressTasks.length,
+        updatedAtLabel: formatDateLabel(parentTask.updatedAt),
+      };
+    });
 }
 
 export function buildTaskTableRows(

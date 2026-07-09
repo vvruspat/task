@@ -227,6 +227,74 @@ test("createTaskApiClient deletes tasks with trusted user context", async () => 
   assert.equal(fetcher.calls[0]?.init.body, undefined);
 });
 
+test("createTaskApiClient reads task detail and activity with trusted user context", async () => {
+  const fetcher = new RecordingFetch(sequence([taskSummary(), [taskActivityEvent()]]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.getTask({ projectId, taskId, workspaceId }), taskSummary());
+  assert.deepEqual(await client.listTaskActivity({ projectId, taskId, workspaceId }), [
+    taskActivityEvent(),
+  ]);
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "GET");
+  assert.equal(
+    fetcher.calls[1]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/activity`,
+  );
+  assert.equal(fetcher.calls[1]?.init.method, "GET");
+});
+
+test("createTaskApiClient provides all task detail mutations", async () => {
+  const fetcher = new RecordingFetch(
+    sequence([[taskSummary()], taskSummary(), taskSummary(), taskSummary(), taskSummary()]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await client.addTaskSubtasks({
+    body: { subtasks: [{ title: "Mix" }] },
+    projectId,
+    taskId,
+    workspaceId,
+  });
+  await client.moveTask({
+    body: { parentTaskId: null, position: "2000" },
+    projectId,
+    taskId,
+    workspaceId,
+  });
+  await client.updateTaskStatus({ body: { statusId: null }, projectId, taskId, workspaceId });
+  await client.updateTaskAssignee({
+    body: { assigneeUserId: null },
+    projectId,
+    taskId,
+    workspaceId,
+  });
+  await client.updateTaskDueDate({ body: { dueAt: null }, projectId, taskId, workspaceId });
+
+  const basePath = `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`;
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method]),
+    [
+      [`${basePath}/subtasks`, "POST"],
+      [`${basePath}/move`, "PATCH"],
+      [`${basePath}/status`, "PATCH"],
+      [`${basePath}/assignee`, "PATCH"],
+      [`${basePath}/due-date`, "PATCH"],
+    ],
+  );
+});
+
 test("createTaskApiClient lists task comments and attachments with trusted user context", async () => {
   const fetcher = new RecordingFetch(sequence([[taskComment()], [taskAttachment()]]));
   const client = createTaskApiClient({
@@ -866,6 +934,18 @@ function taskAttachment(
     mimeType: null,
     sizeBytes: null,
     createdByUserId: trustedUserId,
+    createdAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function taskActivityEvent(): unknown {
+  return {
+    id: "33333333-3333-4333-8333-333333333333",
+    actorUserId: trustedUserId,
+    eventType: "task.updated",
+    entityId: taskId,
+    entityType: "task",
+    payload: { projectId },
     createdAt: "2026-07-08T10:00:00.000Z",
   };
 }
