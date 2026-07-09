@@ -255,6 +255,7 @@ test("registerWorkspaceTools registers workspace context tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const getCurrentCalls: GetWorkspaceRequest[] = [];
   const memberCalls: ListWorkspaceMembersRequest[] = [];
+  const resolveUserInputs: unknown[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerWorkspaceTools(registrar, {
@@ -278,14 +279,19 @@ test("registerWorkspaceTools registers workspace context tools", async () => {
       });
       return [workspaceMemberResponse];
     },
+    resolveUser: async (input: unknown): Promise<WorkspaceMemberResponse[]> => {
+      resolveUserInputs.push(input);
+      return [workspaceMemberResponse];
+    },
   });
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["workspace.get_current", "user.list_workspace_members"],
+    ["workspace.get_current", "user.list_workspace_members", "user.resolve"],
   );
   assert.equal(toolCalls[0]?.config.title, "Get current workspace");
   assert.equal(toolCalls[1]?.config.title, "List workspace members");
+  assert.equal(toolCalls[2]?.config.title, "Resolve user");
 
   const getCurrentCall = toolCalls[0];
   assert.ok(getCurrentCall !== undefined);
@@ -306,6 +312,19 @@ test("registerWorkspaceTools registers workspace context tools", async () => {
 
   assert.deepEqual(JSON.parse(readTextResult(memberResult)), [workspaceMemberResponse]);
   assert.deepEqual(memberCalls, [{ workspaceId, userId }]);
+
+  const resolveUserCall = toolCalls[2];
+  assert.ok(resolveUserCall !== undefined);
+  const resolveUserInput = {
+    workspaceId,
+    userId,
+    query: "alex",
+    limit: 1,
+  };
+  const resolveUserResult = await resolveUserCall.callback(resolveUserInput);
+
+  assert.deepEqual(JSON.parse(readTextResult(resolveUserResult)), [workspaceMemberResponse]);
+  assert.deepEqual(resolveUserInputs, [resolveUserInput]);
 });
 
 test("registerProjectTools registers project tools", async () => {

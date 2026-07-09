@@ -26,6 +26,13 @@ const workspaceMemberListInputSchema = {
   userId: z.string().uuid(),
 };
 
+const workspaceUserResolveInputSchema = {
+  workspaceId: z.string().uuid(),
+  userId: z.string().uuid(),
+  query: z.string().min(1),
+  limit: z.number().int().min(1).max(20).optional(),
+};
+
 const taskSkillApplyInputSchema = {
   workspaceId: z.string().uuid(),
   taskSkillId: z.string().uuid(),
@@ -323,6 +330,7 @@ type ConfirmationGetMcpArgs = z.output<z.ZodObject<typeof confirmationGetInputSc
 type ConfirmationCreateMcpArgs = z.output<z.ZodObject<typeof confirmationCreateInputSchema>>;
 type WorkspaceGetCurrentMcpArgs = z.output<z.ZodObject<typeof workspaceGetCurrentInputSchema>>;
 type WorkspaceMemberListMcpArgs = z.output<z.ZodObject<typeof workspaceMemberListInputSchema>>;
+type WorkspaceUserResolveMcpArgs = z.output<z.ZodObject<typeof workspaceUserResolveInputSchema>>;
 type StatusListMcpArgs = z.output<z.ZodObject<typeof statusListInputSchema>>;
 type CommentListMcpArgs = z.output<z.ZodObject<typeof commentListInputSchema>>;
 type CommentCreateMcpArgs = z.output<z.ZodObject<typeof commentCreateInputSchema>>;
@@ -357,6 +365,7 @@ type TaskMcpToolCallback = (
     | ConfirmationCreateMcpArgs
     | WorkspaceGetCurrentMcpArgs
     | WorkspaceMemberListMcpArgs
+    | WorkspaceUserResolveMcpArgs
     | StatusListMcpArgs
     | CommentListMcpArgs
     | CommentCreateMcpArgs
@@ -395,6 +404,7 @@ export type TaskMcpToolRegistrar = {
         | typeof confirmationCreateInputSchema
         | typeof workspaceGetCurrentInputSchema
         | typeof workspaceMemberListInputSchema
+        | typeof workspaceUserResolveInputSchema
         | typeof statusListInputSchema
         | typeof commentListInputSchema
         | typeof commentCreateInputSchema
@@ -468,6 +478,16 @@ export function registerWorkspaceTools(
       inputSchema: workspaceMemberListInputSchema,
     },
     async (input) => toToolResult(await handlers.listMembers(input)),
+  );
+
+  registrar.registerTool(
+    "user.resolve",
+    {
+      title: "Resolve user",
+      description: "Resolve visible workspace members by display name, email, or user id.",
+      inputSchema: workspaceUserResolveInputSchema,
+    },
+    async (input) => toToolResult(await handlers.resolveUser(input)),
   );
 }
 
