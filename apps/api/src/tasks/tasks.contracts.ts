@@ -35,6 +35,11 @@ export type UpdateTaskInput = {
   metadata?: Record<string, unknown>;
 };
 
+export type MoveTaskInput = {
+  parentTaskId: string | null;
+  position: string;
+};
+
 export type UpdateTaskStatusInput = {
   statusId: string | null;
 };

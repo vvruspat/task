@@ -1,5 +1,6 @@
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
@@ -48,6 +49,21 @@ export type TaskUpdateResult =
     }
   | {
       status: "forbidden";
+    };
+
+export type TaskMoveResult =
+  | {
+      status: "updated";
+      task: TaskDetail;
+    }
+  | {
+      status: "task_not_found";
+    }
+  | {
+      status: "forbidden";
+    }
+  | {
+      status: "invalid_parent_task";
     };
 
 export type TaskUpdateAssigneeResult =
@@ -114,6 +130,13 @@ export type TaskReadStore = {
     userId: string,
     input: UpdateTaskInput,
   ): Promise<TaskUpdateResult>;
+  moveForProject(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+    input: MoveTaskInput,
+  ): Promise<TaskMoveResult>;
   updateStatusForProject(
     workspaceId: string,
     projectId: string,

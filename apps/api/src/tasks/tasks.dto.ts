@@ -2,6 +2,7 @@ import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
   CreateTaskInput,
+  MoveTaskInput,
   TaskDetail,
   TaskSummary,
   UpdateTaskAssigneeInput,
@@ -53,6 +54,20 @@ export class UpdateTaskDto implements UpdateTaskInput {
 export class ParseUpdateTaskBodyPipe implements PipeTransform<unknown, UpdateTaskInput> {
   transform(value: unknown): UpdateTaskInput {
     return parseUpdateTaskInput(value);
+  }
+}
+
+export class MoveTaskDto implements MoveTaskInput {
+  @ApiProperty({ format: "uuid", nullable: true, type: String })
+  readonly parentTaskId: string | null = null;
+
+  @ApiProperty({ example: "1000", pattern: numericStringPattern.source })
+  readonly position: string = "0";
+}
+
+export class ParseMoveTaskBodyPipe implements PipeTransform<unknown, MoveTaskInput> {
+  transform(value: unknown): MoveTaskInput {
+    return parseMoveTaskInput(value);
   }
 }
 
@@ -240,6 +255,17 @@ function parseUpdateTaskInput(value: unknown): UpdateTaskInput {
   return input;
 }
 
+function parseMoveTaskInput(value: unknown): MoveTaskInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task move payload must be an object.");
+  }
+
+  const parentTaskId = readRequiredNullableUuid(value, "parentTaskId");
+  const position = readRequiredNumericString(value, "position");
+
+  return { parentTaskId, position };
+}
+
 function parseUpdateTaskStatusInput(value: unknown): UpdateTaskStatusInput {
   if (!isUnknownRecord(value)) {
     throw new BadRequestException("Task status payload must be an object.");
@@ -367,6 +393,22 @@ function readRequiredNullableUuid(
 
   if (!uuidV4Pattern.test(trimmedValue)) {
     throw new BadRequestException(`Task ${propertyName} must be a UUID v4 string or null.`);
+  }
+
+  return trimmedValue;
+}
+
+function readRequiredNumericString(value: Record<string, unknown>, propertyName: string): string {
+  const propertyValue = value[propertyName];
+
+  if (typeof propertyValue !== "string") {
+    throw new BadRequestException(`Task ${propertyName} must be a numeric string.`);
+  }
+
+  const trimmedValue = propertyValue.trim();
+
+  if (!numericStringPattern.test(trimmedValue)) {
+    throw new BadRequestException(`Task ${propertyName} must be a numeric string.`);
   }
 
   return trimmedValue;

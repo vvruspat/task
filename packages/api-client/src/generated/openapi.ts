@@ -163,6 +163,23 @@ export interface paths {
     patch: operations["TasksController_updateTask"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/move": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Move one active task within a visible project */
+    patch: operations["TasksController_moveTask"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/status": {
     parameters: {
       query?: never;
@@ -725,6 +742,12 @@ export interface components {
       metadata?: {
         [key: string]: unknown;
       };
+    };
+    MoveTaskDto: {
+      /** Format: uuid */
+      parentTaskId: string | null;
+      /** @example 1000 */
+      position: string;
     };
     UpdateTaskStatusDto: {
       /** Format: uuid */
@@ -1571,6 +1594,57 @@ export interface operations {
         };
       };
       /** @description Task payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_moveTask: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MoveTaskDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Task move payload is invalid. */
       400: {
         headers: {
           [name: string]: unknown;
