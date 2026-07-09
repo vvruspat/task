@@ -551,12 +551,12 @@ export function registerAttachmentTools(
   registrar.registerTool(
     "attachment.resolve_pending_telegram_file",
     {
-      title: "Resolve pending Telegram file attachment",
+      title: "Resolve Telegram file attachment",
       description:
-        "Attach Telegram file metadata from resolved Telegram context to a writable task.",
+        "Attach resolved Telegram file metadata to a writable task. This does not read a separate pending-file store.",
       inputSchema: attachmentCreateTelegramFileInputSchema,
     },
-    async (input) => toToolResult(await handlers.createTelegramFile(input)),
+    async (input) => toToolResult(await handlers.resolvePendingTelegramFile(input)),
   );
 
   registrar.registerTool(

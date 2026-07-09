@@ -51,6 +51,7 @@ export type AttachmentToolHandlers = {
   createLink(input: unknown): Promise<TaskAttachmentResponse>;
   createFile(input: unknown): Promise<TaskAttachmentResponse>;
   createTelegramFile(input: unknown): Promise<TaskAttachmentResponse>;
+  resolvePendingTelegramFile(input: unknown): Promise<TaskAttachmentResponse>;
 };
 
 export class AttachmentToolInputError extends Error {
@@ -85,6 +86,17 @@ export function createAttachmentToolHandlers(client: TaskBackendClient): Attachm
       });
     },
     createTelegramFile: (input) => {
+      const parsedInput = parseAttachmentCreateTelegramFileToolInput(input);
+
+      return client.createTaskTelegramFileAttachment({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        taskId: parsedInput.taskId,
+        userId: parsedInput.userId,
+        body: toCreateTaskTelegramFileAttachmentInput(parsedInput),
+      });
+    },
+    resolvePendingTelegramFile: (input) => {
       const parsedInput = parseAttachmentCreateTelegramFileToolInput(input);
 
       return client.createTaskTelegramFileAttachment({
