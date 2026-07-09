@@ -238,6 +238,7 @@ type AttachmentListMcpArgs = z.output<z.ZodObject<typeof attachmentListInputSche
 type AttachmentCreateLinkMcpArgs = z.output<z.ZodObject<typeof attachmentCreateLinkInputSchema>>;
 type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema>>;
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
+type ProjectArchiveMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
 type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
@@ -266,6 +267,7 @@ type TaskMcpToolCallback = (
     | AttachmentCreateLinkMcpArgs
     | ProjectSearchMcpArgs
     | ProjectGetMcpArgs
+    | ProjectArchiveMcpArgs
     | ProjectCreateMcpArgs
     | TaskSearchMcpArgs
     | TaskGetMcpArgs
@@ -448,6 +450,16 @@ export function registerProjectTools(
       inputSchema: projectGetInputSchema,
     },
     async (input) => toToolResult(await handlers.get(input)),
+  );
+
+  registrar.registerTool(
+    "project.archive",
+    {
+      title: "Archive project",
+      description: "Archive one active project in a visible workspace.",
+      inputSchema: projectGetInputSchema,
+    },
+    async (input) => toToolResult(await handlers.archive(input)),
   );
 
   registrar.registerTool(

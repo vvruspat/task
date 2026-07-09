@@ -729,6 +729,32 @@ test("createProject posts typed payloads with trusted user context", async () =>
   assert.deepEqual(response, projectDetail);
 });
 
+test("archiveProject deletes one active project with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const archivedProject: ProjectDetailResponse = {
+    ...projectDetail,
+    archivedAt: timestamp,
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, archivedProject);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+
+  const response = await client.archiveProject({ workspaceId, projectId, userId });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "DELETE");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
+  assert.equal("body" in readDeleteInit(fetchCalls[0]?.init), false);
+  assert.deepEqual(response, archivedProject);
+});
+
 test("listActiveTasks gets typed task summaries with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, [taskSummary]);

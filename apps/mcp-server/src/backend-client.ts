@@ -24,6 +24,7 @@ type GetTaskSkillOperation = operations["TaskSkillsController_getTaskSkill"];
 type ListActiveProjectsOperation = operations["ProjectsController_listActiveProjects"];
 type GetProjectOperation = operations["ProjectsController_getProject"];
 type CreateProjectOperation = operations["ProjectsController_createProject"];
+type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
 type ListActiveTasksOperation = operations["TasksController_listActiveTasks"];
 type ListTaskCommentsOperation = operations["CommentsController_listTaskComments"];
 type CreateTaskCommentOperation = operations["CommentsController_createTaskComment"];
@@ -98,6 +99,8 @@ export type ProjectSummaryResponse =
   ListActiveProjectsOperation["responses"]["200"]["content"]["application/json"][number];
 export type ProjectDetailResponse =
   GetProjectOperation["responses"]["200"]["content"]["application/json"];
+export type ArchiveProjectResponse =
+  ArchiveProjectOperation["responses"]["200"]["content"]["application/json"];
 export type TaskSummaryResponse =
   ListActiveTasksOperation["responses"]["200"]["content"]["application/json"][number];
 export type TaskCommentResponse =
@@ -273,6 +276,12 @@ export type CreateProjectRequest = {
   body: CreateProjectInput;
 };
 
+export type ArchiveProjectRequest = {
+  workspaceId: string;
+  projectId: string;
+  userId: string;
+};
+
 export type ListActiveTasksRequest = {
   workspaceId: string;
   projectId: string;
@@ -388,6 +397,7 @@ export type TaskBackendClient = {
   listActiveProjects(request: ListActiveProjectsRequest): Promise<ProjectSummaryResponse[]>;
   getProject(request: GetProjectRequest): Promise<ProjectDetailResponse>;
   createProject(request: CreateProjectRequest): Promise<ProjectDetailResponse>;
+  archiveProject(request: ArchiveProjectRequest): Promise<ArchiveProjectResponse>;
   listActiveTasks(request: ListActiveTasksRequest): Promise<TaskSummaryResponse[]>;
   listTaskComments(request: ListTaskCommentsRequest): Promise<TaskCommentResponse[]>;
   createTaskComment(request: CreateTaskCommentRequest): Promise<TaskCommentResponse>;
@@ -580,6 +590,14 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildWorkspaceProjectsPath(request.workspaceId),
         request.userId,
         request.body,
+        readProjectDetail,
+      ),
+    archiveProject: (request) =>
+      deleteJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceProjectPath(request.workspaceId, request.projectId),
+        request.userId,
         readProjectDetail,
       ),
     listActiveTasks: (request) =>

@@ -12,6 +12,8 @@ export {
 
 export {
   type ApplyTaskSkillResponse,
+  type ArchiveProjectRequest,
+  type ArchiveProjectResponse,
   type ArchiveTaskSkillRequest,
   type ArchiveTaskSkillResponse,
   type CancelConfirmationRequestRequest,
@@ -133,11 +135,13 @@ export {
 } from "./mcp-server.js";
 export {
   createProjectToolHandlers,
+  type ProjectArchiveToolInput,
   type ProjectCreateToolInput,
   type ProjectGetToolInput,
   type ProjectSearchToolInput,
   type ProjectToolHandlers,
   ProjectToolInputError,
+  parseProjectArchiveToolInput,
   parseProjectCreateToolInput,
   parseProjectGetToolInput,
   parseProjectSearchToolInput,
