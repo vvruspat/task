@@ -11,6 +11,7 @@ import {
 } from "./confirmation-tools.js";
 import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-tools.js";
 import { createStatusToolHandlers, type StatusToolHandlers } from "./status-tools.js";
+import { createSummaryToolHandlers, type SummaryToolHandlers } from "./summary-tools.js";
 import { createTaskSkillToolHandlers, type TaskSkillToolHandlers } from "./task-skill-tools.js";
 import { createTaskToolHandlers, type TaskToolHandlers } from "./task-tools.js";
 import { createWorkspaceToolHandlers, type WorkspaceToolHandlers } from "./workspace-tools.js";
@@ -134,6 +135,13 @@ const commentCreateInputSchema = {
 };
 
 const attachmentListInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+};
+
+const taskSummaryInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
   taskId: z.string().uuid(),
@@ -420,6 +428,7 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
   registerTaskTools(server, createTaskToolHandlers(options.backendClient));
   registerCommentTools(server, createCommentToolHandlers(options.backendClient));
   registerAttachmentTools(server, createAttachmentToolHandlers(options.backendClient));
+  registerSummaryTools(server, createSummaryToolHandlers(options.backendClient));
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
   registerConfirmationTools(server, createConfirmationToolHandlers(options.backendClient));
 
@@ -515,6 +524,21 @@ export function registerAttachmentTools(
       inputSchema: attachmentListInputSchema,
     },
     async (input) => toToolResult(await handlers.list(input)),
+  );
+}
+
+export function registerSummaryTools(
+  registrar: TaskMcpToolRegistrar,
+  handlers: SummaryToolHandlers,
+): void {
+  registrar.registerTool(
+    "summary.task",
+    {
+      title: "Summarize task",
+      description: "Summarize one visible task with recent comments and attachments.",
+      inputSchema: taskSummaryInputSchema,
+    },
+    async (input) => toToolResult(await handlers.task(input)),
   );
 }
 
