@@ -41,7 +41,15 @@ export type AgentRunIntakeResponse = {
   sourceMessageId: string | null;
   status: AgentRunStatus;
   responseText: string;
+  pendingConfirmationRequests: AgentRunPendingConfirmationRequest[];
   createdAt: string;
+};
+
+export type AgentRunPendingConfirmationRequest = {
+  id: string;
+  kind: string;
+  preview: Record<string, unknown>;
+  expiresAt: string;
 };
 
 export type AgentRunSummary = {

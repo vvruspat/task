@@ -188,6 +188,10 @@ function readTelegramAgentRunIntakeResponse(value: unknown): TelegramAgentRunInt
     sourceMessageId: readOptionalNullableString(record, "sourceMessageId") ?? null,
     status: readAgentRunStatus(record, "status"),
     responseText: readString(record, "responseText"),
+    pendingConfirmationRequests: readPendingConfirmationRequests(
+      record,
+      "pendingConfirmationRequests",
+    ),
     createdAt: readString(record, "createdAt"),
   };
 }
@@ -210,6 +214,35 @@ function readRecord(value: unknown, label: string): Record<string, unknown> {
   }
 
   return value;
+}
+
+function readPendingConfirmationRequests(
+  record: Record<string, unknown>,
+  propertyName: string,
+): TelegramAgentRunIntakeResponse["pendingConfirmationRequests"] {
+  const value = record[propertyName];
+
+  if (!Array.isArray(value)) {
+    throw new TelegramBackendClientError(`${propertyName} must be an array.`);
+  }
+
+  return value.map((item, index) => {
+    const request = readRecord(item, `${propertyName}[${index}]`);
+
+    return {
+      id: readString(request, "id"),
+      kind: readString(request, "kind"),
+      preview: readRecordProperty(request, "preview"),
+      expiresAt: readString(request, "expiresAt"),
+    };
+  });
+}
+
+function readRecordProperty(
+  record: Record<string, unknown>,
+  propertyName: string,
+): Record<string, unknown> {
+  return readRecord(record[propertyName], propertyName);
 }
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {

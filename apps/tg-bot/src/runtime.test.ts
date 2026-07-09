@@ -104,6 +104,7 @@ test("createTelegramBotRuntimeFromEnvironment records resolved updates through a
       sourceMessageId: "20",
       status: "completed",
       responseText: "Request recorded. Agent execution is not connected yet.",
+      pendingConfirmationRequests: [],
       createdAt: "2026-07-08T00:00:00.000Z",
     },
   ]);
@@ -172,6 +173,7 @@ test("createTelegramBotRuntimeFromEnvironment records resolved updates through a
       sourceMessageId: "20",
       status: "completed",
       responseText: "Request recorded. Agent execution is not connected yet.",
+      pendingConfirmationRequests: [],
       createdAt: "2026-07-08T00:00:00.000Z",
     });
   }

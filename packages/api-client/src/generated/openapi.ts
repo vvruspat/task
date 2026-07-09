@@ -1181,6 +1181,17 @@ export interface components {
         | components["schemas"]["TelegramAgentRunPhotoAttachmentDto"]
       )[];
     };
+    AgentRunPendingConfirmationRequestDto: {
+      /** Format: uuid */
+      id: string;
+      /** @example task_skill.apply */
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      expiresAt: string;
+    };
     AgentRunIntakeResponseDto: {
       /** Format: uuid */
       agentRunId: string;
@@ -1195,6 +1206,7 @@ export interface components {
       status: "running" | "waiting_confirmation" | "completed" | "failed";
       /** @example Request recorded. Agent execution is not connected yet. */
       responseText: string;
+      pendingConfirmationRequests: components["schemas"]["AgentRunPendingConfirmationRequestDto"][];
       /** Format: date-time */
       createdAt: string;
     };
