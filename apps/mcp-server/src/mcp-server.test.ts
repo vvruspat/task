@@ -623,12 +623,26 @@ test("registerAttachmentTools registers attachment tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["attachment.create_link", "attachment.list"],
+    ["attachment.add_link", "attachment.create_link", "attachment.list"],
   );
-  assert.equal(toolCalls[0]?.config.title, "Create link attachment");
-  assert.equal(toolCalls[1]?.config.title, "List attachments");
+  assert.equal(toolCalls[0]?.config.title, "Add link attachment");
+  assert.equal(toolCalls[1]?.config.title, "Create link attachment");
+  assert.equal(toolCalls[2]?.config.title, "List attachments");
 
-  const createLinkCall = toolCalls[0];
+  const addLinkCall = toolCalls[0];
+  assert.ok(addLinkCall !== undefined);
+  const addLinkResult = await addLinkCall.callback({
+    workspaceId,
+    projectId,
+    taskId: rootTaskId,
+    userId,
+    url: "https://example.com/reference",
+    title: "Reference mix",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(addLinkResult)), attachmentResponse);
+
+  const createLinkCall = toolCalls[1];
   assert.ok(createLinkCall !== undefined);
   const createLinkResult = await createLinkCall.callback({
     workspaceId,
@@ -651,9 +665,19 @@ test("registerAttachmentTools registers attachment tools", async () => {
         title: "Reference mix",
       },
     },
+    {
+      workspaceId,
+      projectId,
+      taskId: rootTaskId,
+      userId,
+      body: {
+        url: "https://example.com/reference",
+        title: "Reference mix",
+      },
+    },
   ]);
 
-  const listCall = toolCalls[1];
+  const listCall = toolCalls[2];
   assert.ok(listCall !== undefined);
   const listResult = await listCall.callback({
     workspaceId,
