@@ -1,6 +1,8 @@
 import type {
   ApplyTaskSkillResponse,
   ArchiveTaskSkillResponse,
+  CloneTaskSkillInput,
+  CloneTaskSkillResponse,
   CreateTaskSkillInput,
   CreateTaskSkillResponse,
   PreviewTaskSkillApplyInput,
@@ -41,6 +43,15 @@ export type TaskSkillGetToolInput = {
 
 export type TaskSkillArchiveToolInput = TaskSkillGetToolInput;
 
+export type TaskSkillCloneToolInput = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+  name: string;
+  description?: string | null;
+  aliases?: string[];
+};
+
 export type TaskSkillCreateToolInput = {
   workspaceId: string;
   userId: string;
@@ -70,6 +81,7 @@ export type TaskSkillToolHandlers = {
   search(input: unknown): Promise<TaskSkillSummaryResponse[]>;
   get(input: unknown): Promise<TaskSkillDetailResponse>;
   create(input: unknown): Promise<CreateTaskSkillResponse>;
+  clone(input: unknown): Promise<CloneTaskSkillResponse>;
   archive(input: unknown): Promise<ArchiveTaskSkillResponse>;
   updateMetadata(input: unknown): Promise<UpdateTaskSkillMetadataResponse>;
   updateDefinition(input: unknown): Promise<UpdateTaskSkillDefinitionResponse>;
@@ -123,6 +135,16 @@ export function createTaskSkillToolHandlers(client: TaskBackendClient): TaskSkil
         workspaceId: parsedInput.workspaceId,
         userId: parsedInput.userId,
         body: toCreateTaskSkillInput(parsedInput),
+      });
+    },
+    clone: (input) => {
+      const parsedInput = parseTaskSkillCloneToolInput(input);
+
+      return client.cloneTaskSkill({
+        workspaceId: parsedInput.workspaceId,
+        taskSkillId: parsedInput.taskSkillId,
+        userId: parsedInput.userId,
+        body: toCloneTaskSkillInput(parsedInput),
       });
     },
     archive: (input) => {
@@ -201,6 +223,28 @@ export function parseTaskSkillCreateToolInput(input: unknown): TaskSkillCreateTo
     userId: readRequiredUuid(record, "userId"),
     name: readRequiredNonEmptyString(record, "name"),
     definition: readRequiredRecord(record, "definition"),
+  };
+  const description = readOptionalNullableString(record, "description");
+  const aliases = readOptionalStringArray(record, "aliases");
+
+  if (description !== undefined) {
+    parsedInput.description = description;
+  }
+
+  if (aliases !== undefined) {
+    parsedInput.aliases = aliases;
+  }
+
+  return parsedInput;
+}
+
+export function parseTaskSkillCloneToolInput(input: unknown): TaskSkillCloneToolInput {
+  const record = readRecord(input, "task skill clone tool input");
+  const parsedInput: TaskSkillCloneToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    taskSkillId: readRequiredUuid(record, "taskSkillId"),
+    userId: readRequiredUuid(record, "userId"),
+    name: readRequiredNonEmptyString(record, "name"),
   };
   const description = readOptionalNullableString(record, "description");
   const aliases = readOptionalStringArray(record, "aliases");
@@ -327,6 +371,22 @@ function toCreateTaskSkillInput(input: TaskSkillCreateToolInput): CreateTaskSkil
   const body: CreateTaskSkillInput = {
     name: input.name,
     definition: input.definition,
+  };
+
+  if (input.description !== undefined) {
+    body.description = input.description;
+  }
+
+  if (input.aliases !== undefined) {
+    body.aliases = input.aliases;
+  }
+
+  return body;
+}
+
+function toCloneTaskSkillInput(input: TaskSkillCloneToolInput): CloneTaskSkillInput {
+  const body: CloneTaskSkillInput = {
+    name: input.name,
   };
 
   if (input.description !== undefined) {

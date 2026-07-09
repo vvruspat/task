@@ -60,6 +60,15 @@ const taskSkillCreateInputSchema = {
   definition: z.record(z.string(), z.unknown()),
 };
 
+const taskSkillCloneInputSchema = {
+  workspaceId: z.string().uuid(),
+  taskSkillId: z.string().uuid(),
+  userId: z.string().uuid(),
+  name: z.string().min(1),
+  description: z.string().min(1).nullable().optional(),
+  aliases: z.array(z.string().min(1)).optional(),
+};
+
 const taskSkillUpdateMetadataInputSchema = {
   workspaceId: z.string().uuid(),
   taskSkillId: z.string().uuid(),
@@ -547,6 +556,16 @@ export function registerTaskSkillApplyTools(
       inputSchema: taskSkillCreateInputSchema,
     },
     async (input) => toToolResult(await handlers.create(input)),
+  );
+
+  registrar.registerTool(
+    "skill.clone",
+    {
+      title: "Clone task skill",
+      description: "Clone one active task skill into a new workspace-scoped skill.",
+      inputSchema: taskSkillCloneInputSchema,
+    },
+    async (input) => toToolResult(await handlers.clone(input)),
   );
 
   registrar.registerTool(

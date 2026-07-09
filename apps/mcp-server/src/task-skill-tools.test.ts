@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   ApplyTaskSkillResponse,
+  CloneTaskSkillRequest,
   CreateTaskSkillRequest,
   PreviewTaskSkillApplyResponse,
   TaskAttachmentResponse,
@@ -20,6 +21,7 @@ import {
   createTaskSkillToolHandlers,
   parseTaskSkillApplyToolInput,
   parseTaskSkillArchiveToolInput,
+  parseTaskSkillCloneToolInput,
   parseTaskSkillCreateToolInput,
   parseTaskSkillGetToolInput,
   parseTaskSkillSearchToolInput,
@@ -57,6 +59,15 @@ const createInput = {
   definition: {
     subtasks: [{ title: "Lyrics" }],
   },
+};
+
+const cloneInput = {
+  workspaceId,
+  taskSkillId,
+  userId,
+  name: " Song copy ",
+  description: null,
+  aliases: [" copy ", "copy"],
 };
 
 const previewResponse: PreviewTaskSkillApplyResponse = {
@@ -209,6 +220,34 @@ test("parseTaskSkillCreateToolInput validates and normalizes create payloads", (
   );
   assert.throws(
     () => parseTaskSkillCreateToolInput({ ...createInput, aliases: [""] }),
+    TaskSkillToolInputError,
+  );
+});
+
+test("parseTaskSkillCloneToolInput validates and normalizes clone payloads", () => {
+  assert.deepEqual(parseTaskSkillCloneToolInput(cloneInput), {
+    workspaceId,
+    taskSkillId,
+    userId,
+    name: "Song copy",
+    description: null,
+    aliases: ["copy"],
+  });
+  assert.deepEqual(parseTaskSkillCloneToolInput({ ...cloneInput, description: " Copied " }), {
+    workspaceId,
+    taskSkillId,
+    userId,
+    name: "Song copy",
+    description: "Copied",
+    aliases: ["copy"],
+  });
+  assert.throws(() => parseTaskSkillCloneToolInput(null), TaskSkillToolInputError);
+  assert.throws(
+    () => parseTaskSkillCloneToolInput({ ...cloneInput, name: "" }),
+    TaskSkillToolInputError,
+  );
+  assert.throws(
+    () => parseTaskSkillCloneToolInput({ ...cloneInput, aliases: [1] }),
     TaskSkillToolInputError,
   );
 });
@@ -381,6 +420,37 @@ test("task skill create handler forwards payloads to the backend client", async 
   ]);
 });
 
+test("task skill clone handler forwards payloads to the backend client", async () => {
+  const calls: CloneTaskSkillRequest[] = [];
+  const clonedTaskSkill: TaskSkillDetailResponse = {
+    ...taskSkillDetail,
+    id: "88888888-8888-4888-8888-888888888888",
+    name: "Song copy",
+    description: null,
+    aliases: ["copy"],
+  };
+  const handlers = createTaskSkillToolHandlers(
+    createBackendClientStub([], {
+      cloneTaskSkillCalls: calls,
+      taskSkillDetailResponse: clonedTaskSkill,
+    }),
+  );
+
+  assert.deepEqual(await handlers.clone(cloneInput), clonedTaskSkill);
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      taskSkillId,
+      userId,
+      body: {
+        name: "Song copy",
+        description: null,
+        aliases: ["copy"],
+      },
+    },
+  ]);
+});
+
 test("task skill archive handler forwards identifiers to the backend client", async () => {
   const calls: Array<{ workspaceId: string; taskSkillId: string; userId: string }> = [];
   const archivedTaskSkill: TaskSkillDetailResponse = {
@@ -516,6 +586,7 @@ function createBackendClientStub(
   calls: TaskSkillApplyRequest[],
   options: {
     archiveTaskSkillCalls?: Array<{ workspaceId: string; taskSkillId: string; userId: string }>;
+    cloneTaskSkillCalls?: CloneTaskSkillRequest[];
     createTaskSkillCalls?: CreateTaskSkillRequest[];
     getTaskSkillCalls?: Array<{ workspaceId: string; taskSkillId: string; userId: string }>;
     listTaskSkillCalls?: Array<{ workspaceId: string; userId: string }>;
@@ -565,6 +636,11 @@ function createBackendClientStub(
     },
     createTaskSkill: async (request): Promise<TaskSkillDetailResponse> => {
       options.createTaskSkillCalls?.push(request);
+
+      return options.taskSkillDetailResponse ?? taskSkillDetail;
+    },
+    cloneTaskSkill: async (request): Promise<TaskSkillDetailResponse> => {
+      options.cloneTaskSkillCalls?.push(request);
 
       return options.taskSkillDetailResponse ?? taskSkillDetail;
     },

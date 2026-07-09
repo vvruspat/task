@@ -847,6 +847,23 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
       });
       return taskSkillDetailResponse;
     },
+    clone: async (input: unknown): Promise<TaskSkillDetailResponse> => {
+      assert.deepEqual(input, {
+        workspaceId,
+        taskSkillId,
+        userId,
+        name: "Song copy",
+        description: null,
+        aliases: ["copy"],
+      });
+      return {
+        ...taskSkillDetailResponse,
+        id: "88888888-8888-4888-8888-888888888888",
+        name: "Song copy",
+        description: null,
+        aliases: ["copy"],
+      };
+    },
     archive: async (input: unknown): Promise<TaskSkillDetailResponse> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -899,6 +916,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
       "skill.search",
       "skill.get",
       "skill.create",
+      "skill.clone",
       "skill.archive",
       "skill.update_metadata",
       "skill.update_definition",
@@ -909,11 +927,12 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
   assert.equal(toolCalls[0]?.config.title, "Search task skills");
   assert.equal(toolCalls[1]?.config.title, "Get task skill");
   assert.equal(toolCalls[2]?.config.title, "Create task skill");
-  assert.equal(toolCalls[3]?.config.title, "Archive task skill");
-  assert.equal(toolCalls[4]?.config.title, "Update task skill metadata");
-  assert.equal(toolCalls[5]?.config.title, "Update task skill definition");
-  assert.equal(toolCalls[6]?.config.title, "Preview task skill application");
-  assert.equal(toolCalls[7]?.config.title, "Apply task skill");
+  assert.equal(toolCalls[3]?.config.title, "Clone task skill");
+  assert.equal(toolCalls[4]?.config.title, "Archive task skill");
+  assert.equal(toolCalls[5]?.config.title, "Update task skill metadata");
+  assert.equal(toolCalls[6]?.config.title, "Update task skill definition");
+  assert.equal(toolCalls[7]?.config.title, "Preview task skill application");
+  assert.equal(toolCalls[8]?.config.title, "Apply task skill");
 
   const previewCall = toolCalls[0];
   assert.ok(previewCall !== undefined);
@@ -950,7 +969,26 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
 
   assert.deepEqual(JSON.parse(readTextResult(createResult)), taskSkillDetailResponse);
 
-  const archiveCall = toolCalls[3];
+  const cloneCall = toolCalls[3];
+  assert.ok(cloneCall !== undefined);
+  const cloneResult = await cloneCall.callback({
+    workspaceId,
+    taskSkillId,
+    userId,
+    name: "Song copy",
+    description: null,
+    aliases: ["copy"],
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(cloneResult)), {
+    ...taskSkillDetailResponse,
+    id: "88888888-8888-4888-8888-888888888888",
+    name: "Song copy",
+    description: null,
+    aliases: ["copy"],
+  });
+
+  const archiveCall = toolCalls[4];
   assert.ok(archiveCall !== undefined);
   const archiveResult = await archiveCall.callback({
     workspaceId,
@@ -963,7 +1001,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     archivedAt: timestamp,
   });
 
-  const updateMetadataCall = toolCalls[4];
+  const updateMetadataCall = toolCalls[5];
   assert.ok(updateMetadataCall !== undefined);
   const updateMetadataResult = await updateMetadataCall.callback({
     workspaceId,
@@ -979,7 +1017,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     aliases: ["single"],
   });
 
-  const updateDefinitionCall = toolCalls[5];
+  const updateDefinitionCall = toolCalls[6];
   assert.ok(updateDefinitionCall !== undefined);
   const updateDefinitionResult = await updateDefinitionCall.callback({
     workspaceId,
@@ -992,7 +1030,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
 
   assert.deepEqual(JSON.parse(readTextResult(updateDefinitionResult)), taskSkillDetailResponse);
 
-  const previewApplyCall = toolCalls[6];
+  const previewApplyCall = toolCalls[7];
   assert.ok(previewApplyCall !== undefined);
   const previewResult = await previewApplyCall.callback(toolInput);
 
@@ -1007,7 +1045,7 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     },
   });
 
-  const applyCall = toolCalls[7];
+  const applyCall = toolCalls[8];
   assert.ok(applyCall !== undefined);
   const applyResult = await applyCall.callback(toolInput);
 
@@ -1177,6 +1215,11 @@ function createBackendClientStub(): TaskBackendClient {
     listTaskSkills: async (): Promise<TaskSkillSummaryResponse[]> => [taskSkillResponse],
     getTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
     createTaskSkill: async (): Promise<TaskSkillDetailResponse> => taskSkillDetailResponse,
+    cloneTaskSkill: async (): Promise<TaskSkillDetailResponse> => ({
+      ...taskSkillDetailResponse,
+      id: "88888888-8888-4888-8888-888888888888",
+      name: "Song copy",
+    }),
     archiveTaskSkill: async (): Promise<TaskSkillDetailResponse> => ({
       ...taskSkillDetailResponse,
       archivedAt: timestamp,

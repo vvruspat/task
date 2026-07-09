@@ -3,6 +3,7 @@ import type { components, operations } from "@task/api-client";
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
 type CreateTaskSkillOperation = operations["TaskSkillsController_createTaskSkill"];
+type CloneTaskSkillOperation = operations["TaskSkillsController_cloneTaskSkill"];
 type ArchiveTaskSkillOperation = operations["TaskSkillsController_archiveTaskSkill"];
 type UpdateTaskSkillMetadataOperation = operations["TaskSkillsController_updateTaskSkillMetadata"];
 type UpdateTaskSkillDefinitionOperation =
@@ -45,6 +46,10 @@ export type CreateTaskSkillInput =
   CreateTaskSkillOperation["requestBody"]["content"]["application/json"];
 export type CreateTaskSkillResponse =
   CreateTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type CloneTaskSkillInput =
+  CloneTaskSkillOperation["requestBody"]["content"]["application/json"];
+export type CloneTaskSkillResponse =
+  CloneTaskSkillOperation["responses"]["201"]["content"]["application/json"];
 export type ArchiveTaskSkillResponse =
   ArchiveTaskSkillOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateTaskSkillMetadataInput =
@@ -160,6 +165,13 @@ export type CreateTaskSkillRequest = {
   workspaceId: string;
   userId: string;
   body: CreateTaskSkillInput;
+};
+
+export type CloneTaskSkillRequest = {
+  workspaceId: string;
+  taskSkillId: string;
+  userId: string;
+  body: CloneTaskSkillInput;
 };
 
 export type UpdateTaskSkillMetadataRequest = {
@@ -355,6 +367,7 @@ export type TaskBackendClient = {
   listTaskSkills(request: ListTaskSkillsRequest): Promise<TaskSkillSummaryResponse[]>;
   getTaskSkill(request: GetTaskSkillRequest): Promise<TaskSkillDetailResponse>;
   createTaskSkill(request: CreateTaskSkillRequest): Promise<CreateTaskSkillResponse>;
+  cloneTaskSkill(request: CloneTaskSkillRequest): Promise<CloneTaskSkillResponse>;
   archiveTaskSkill(request: ArchiveTaskSkillRequest): Promise<ArchiveTaskSkillResponse>;
   updateTaskSkillMetadata(
     request: UpdateTaskSkillMetadataRequest,
@@ -494,6 +507,15 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         fetchImplementation,
         baseUrl,
         buildTaskSkillsPath(request.workspaceId),
+        request.userId,
+        request.body,
+        readTaskSkillDetail,
+      ),
+    cloneTaskSkill: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildTaskSkillClonePath(request.workspaceId, request.taskSkillId),
         request.userId,
         request.body,
         readTaskSkillDetail,
@@ -671,6 +693,7 @@ async function postJson<ResponseBody>(
   body:
     | PreviewTaskSkillApplyInput
     | CreateTaskSkillInput
+    | CloneTaskSkillInput
     | CreateProjectInput
     | CreateTaskInput
     | CreateTaskCommentInput
@@ -736,6 +759,7 @@ async function writeJson<ResponseBody>(
   body:
     | PreviewTaskSkillApplyInput
     | CreateTaskSkillInput
+    | CloneTaskSkillInput
     | CreateProjectInput
     | CreateTaskInput
     | CreateTaskCommentInput
@@ -830,6 +854,10 @@ function buildTaskSkillPath(workspaceId: string, taskSkillId: string): string {
 
 function buildTaskSkillDefinitionPath(workspaceId: string, taskSkillId: string): string {
   return `${buildTaskSkillPath(workspaceId, taskSkillId)}/definition`;
+}
+
+function buildTaskSkillClonePath(workspaceId: string, taskSkillId: string): string {
+  return `${buildTaskSkillPath(workspaceId, taskSkillId)}/clone`;
 }
 
 function buildWorkspacesPath(): string {
