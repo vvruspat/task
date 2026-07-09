@@ -164,6 +164,16 @@ const projectCreateInputSchema = {
   position: z.string().min(1).nullable().optional(),
 };
 
+const projectUpdateInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
+  title: z.string().min(1).optional(),
+  description: z.string().min(1).nullable().optional(),
+  status: z.string().min(1).nullable().optional(),
+  position: z.string().min(1).nullable().optional(),
+};
+
 const taskSearchInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -240,6 +250,7 @@ type ProjectSearchMcpArgs = z.output<z.ZodObject<typeof projectSearchInputSchema
 type ProjectGetMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectArchiveMcpArgs = z.output<z.ZodObject<typeof projectGetInputSchema>>;
 type ProjectCreateMcpArgs = z.output<z.ZodObject<typeof projectCreateInputSchema>>;
+type ProjectUpdateMcpArgs = z.output<z.ZodObject<typeof projectUpdateInputSchema>>;
 type TaskSearchMcpArgs = z.output<z.ZodObject<typeof taskSearchInputSchema>>;
 type TaskGetMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
 type TaskArchiveMcpArgs = z.output<z.ZodObject<typeof taskGetInputSchema>>;
@@ -269,6 +280,7 @@ type TaskMcpToolCallback = (
     | ProjectGetMcpArgs
     | ProjectArchiveMcpArgs
     | ProjectCreateMcpArgs
+    | ProjectUpdateMcpArgs
     | TaskSearchMcpArgs
     | TaskGetMcpArgs
     | TaskArchiveMcpArgs
@@ -301,6 +313,7 @@ export type TaskMcpToolRegistrar = {
         | typeof projectSearchInputSchema
         | typeof projectGetInputSchema
         | typeof projectCreateInputSchema
+        | typeof projectUpdateInputSchema
         | typeof taskSearchInputSchema
         | typeof taskGetInputSchema
         | typeof taskCreateInputSchema
@@ -460,6 +473,16 @@ export function registerProjectTools(
       inputSchema: projectGetInputSchema,
     },
     async (input) => toToolResult(await handlers.archive(input)),
+  );
+
+  registrar.registerTool(
+    "project.update",
+    {
+      title: "Update project",
+      description: "Update one active project in a visible workspace.",
+      inputSchema: projectUpdateInputSchema,
+    },
+    async (input) => toToolResult(await handlers.update(input)),
   );
 
   registrar.registerTool(

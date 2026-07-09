@@ -755,6 +755,39 @@ test("archiveProject deletes one active project with trusted user context", asyn
   assert.deepEqual(response, archivedProject);
 });
 
+test("updateProject patches project metadata with trusted user context", async () => {
+  const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const updatedProject: ProjectDetailResponse = {
+    ...projectDetail,
+    description: "Updated plan",
+    status: null,
+    title: "Updated Album Release",
+  };
+  const fetchImplementation = createJsonFetch(fetchCalls, updatedProject);
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: fetchImplementation,
+  });
+  const body = {
+    description: "Updated plan",
+    status: null,
+    title: "Updated Album Release",
+  };
+
+  const response = await client.updateProject({ workspaceId, projectId, userId, body });
+
+  assert.equal(fetchCalls.length, 1);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}`,
+  );
+  assert.equal(fetchCalls[0]?.init.method, "PATCH");
+  assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.equal(fetchCalls[0]?.init.headers["content-type"], "application/json");
+  assert.deepEqual(readJsonBody(fetchCalls[0]?.init), body);
+  assert.deepEqual(response, updatedProject);
+});
+
 test("listActiveTasks gets typed task summaries with trusted user context", async () => {
   const fetchCalls: { input: string; init: TaskBackendFetchInit }[] = [];
   const fetchImplementation = createJsonFetch(fetchCalls, [taskSummary]);

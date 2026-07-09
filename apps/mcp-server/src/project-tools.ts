@@ -3,6 +3,7 @@ import type {
   ProjectDetailResponse,
   ProjectSummaryResponse,
   TaskBackendClient,
+  UpdateProjectInput,
 } from "./backend-client.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -21,6 +22,13 @@ export type ProjectGetToolInput = {
 
 export type ProjectArchiveToolInput = ProjectGetToolInput;
 
+export type ProjectUpdateToolInput = ProjectGetToolInput & {
+  title?: string;
+  description?: string | null;
+  status?: string | null;
+  position?: string | null;
+};
+
 export type ProjectCreateToolInput = {
   workspaceId: string;
   userId: string;
@@ -35,6 +43,7 @@ export type ProjectToolHandlers = {
   get(input: unknown): Promise<ProjectDetailResponse>;
   create(input: unknown): Promise<ProjectDetailResponse>;
   archive(input: unknown): Promise<ProjectDetailResponse>;
+  update(input: unknown): Promise<ProjectDetailResponse>;
 };
 
 export class ProjectToolInputError extends Error {
@@ -62,6 +71,16 @@ export function createProjectToolHandlers(client: TaskBackendClient): ProjectToo
         workspaceId: parsedInput.workspaceId,
         userId: parsedInput.userId,
         body: toCreateProjectInput(parsedInput),
+      });
+    },
+    update: (input) => {
+      const parsedInput = parseProjectUpdateToolInput(input);
+
+      return client.updateProject({
+        workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
+        userId: parsedInput.userId,
+        body: toUpdateProjectInput(parsedInput),
       });
     },
     get: (input) => {
@@ -139,10 +158,72 @@ export function parseProjectArchiveToolInput(input: unknown): ProjectArchiveTool
   };
 }
 
+export function parseProjectUpdateToolInput(input: unknown): ProjectUpdateToolInput {
+  const record = readRecord(input, "project update tool input");
+  const parsedInput: ProjectUpdateToolInput = {
+    workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
+    userId: readRequiredUuid(record, "userId"),
+  };
+  const title = readOptionalNonEmptyString(record, "title");
+  const description = readOptionalNullableNonEmptyString(record, "description");
+  const status = readOptionalNullableNonEmptyString(record, "status");
+  const position = readOptionalNullableNonEmptyString(record, "position");
+
+  if (title !== undefined) {
+    parsedInput.title = title;
+  }
+
+  if (description !== undefined) {
+    parsedInput.description = description;
+  }
+
+  if (status !== undefined) {
+    parsedInput.status = status;
+  }
+
+  if (position !== undefined) {
+    parsedInput.position = position;
+  }
+
+  if (
+    title === undefined &&
+    description === undefined &&
+    status === undefined &&
+    position === undefined
+  ) {
+    throw new ProjectToolInputError("project update tool input must include at least one field.");
+  }
+
+  return parsedInput;
+}
+
 function toCreateProjectInput(input: ProjectCreateToolInput): CreateProjectInput {
   const body: CreateProjectInput = {
     title: input.title,
   };
+
+  if (input.description !== undefined) {
+    body.description = input.description;
+  }
+
+  if (input.status !== undefined) {
+    body.status = input.status;
+  }
+
+  if (input.position !== undefined) {
+    body.position = input.position;
+  }
+
+  return body;
+}
+
+function toUpdateProjectInput(input: ProjectUpdateToolInput): UpdateProjectInput {
+  const body: UpdateProjectInput = {};
+
+  if (input.title !== undefined) {
+    body.title = input.title;
+  }
 
   if (input.description !== undefined) {
     body.description = input.description;

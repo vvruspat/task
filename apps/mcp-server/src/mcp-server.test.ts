@@ -24,6 +24,7 @@ import type {
   TaskSkillDetailResponse,
   TaskSkillSummaryResponse,
   TaskSummaryResponse,
+  UpdateProjectRequest,
   UpdateTaskAssigneeRequest,
   UpdateTaskDueDateRequest,
   UpdateTaskStatusRequest,
@@ -305,6 +306,7 @@ test("registerProjectTools registers project tools", async () => {
   const toolCalls: RegisteredToolCall[] = [];
   const createCalls: CreateProjectRequest[] = [];
   const archiveCalls: ArchiveProjectRequest[] = [];
+  const updateCalls: UpdateProjectRequest[] = [];
   const registrar = createRegistrar(toolCalls);
 
   registerProjectTools(registrar, {
@@ -343,6 +345,20 @@ test("registerProjectTools registers project tools", async () => {
         archivedAt: timestamp,
       };
     },
+    update: async (input: unknown): Promise<ProjectDetailResponse> => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected project update input.");
+      }
+      updateCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        userId: readString(input, "userId"),
+        body: {
+          title: readString(input, "title"),
+        },
+      });
+      return projectDetailResponse;
+    },
     search: async (input: unknown): Promise<ProjectSummaryResponse[]> => {
       assert.deepEqual(input, {
         workspaceId,
@@ -355,12 +371,13 @@ test("registerProjectTools registers project tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["project.create", "project.get", "project.archive", "project.search"],
+    ["project.create", "project.get", "project.archive", "project.update", "project.search"],
   );
   assert.equal(toolCalls[0]?.config.title, "Create project");
   assert.equal(toolCalls[1]?.config.title, "Get project");
   assert.equal(toolCalls[2]?.config.title, "Archive project");
-  assert.equal(toolCalls[3]?.config.title, "Search projects");
+  assert.equal(toolCalls[3]?.config.title, "Update project");
+  assert.equal(toolCalls[4]?.config.title, "Search projects");
 
   const createCall = toolCalls[0];
   assert.ok(createCall !== undefined);
@@ -405,7 +422,28 @@ test("registerProjectTools registers project tools", async () => {
   });
   assert.deepEqual(archiveCalls, [{ workspaceId, projectId, userId }]);
 
-  const searchCall = toolCalls[3];
+  const updateCall = toolCalls[3];
+  assert.ok(updateCall !== undefined);
+  const updateResult = await updateCall.callback({
+    workspaceId,
+    projectId,
+    userId,
+    title: "Updated Release",
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(updateResult)), projectDetailResponse);
+  assert.deepEqual(updateCalls, [
+    {
+      workspaceId,
+      projectId,
+      userId,
+      body: {
+        title: "Updated Release",
+      },
+    },
+  ]);
+
+  const searchCall = toolCalls[4];
   assert.ok(searchCall !== undefined);
   const searchResult = await searchCall.callback({
     workspaceId,
@@ -1297,6 +1335,9 @@ function createBackendClientStub(): TaskBackendClient {
     listTaskAttachments: async (): Promise<TaskAttachmentResponse[]> => [attachmentResponse],
     createTaskLinkAttachment: async (): Promise<TaskAttachmentResponse> => attachmentResponse,
     archiveProject: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
+    updateProject: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
     createProject: async (): Promise<ProjectDetailResponse> => projectDetailResponse,

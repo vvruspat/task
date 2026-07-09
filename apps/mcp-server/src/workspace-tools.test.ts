@@ -154,6 +154,9 @@ function createBackendClientStub(): TaskBackendClient {
     archiveProject: async (): Promise<never> => {
       throw new Error("Not implemented.");
     },
+    updateProject: async (): Promise<never> => {
+      throw new Error("Not implemented.");
+    },
     createProject: async () => {
       throw new Error("createProject is not used by workspace tools.");
     },

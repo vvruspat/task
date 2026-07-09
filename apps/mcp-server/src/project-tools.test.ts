@@ -12,6 +12,7 @@ import type {
   TaskCommentResponse,
   TaskDetailResponse,
   TaskSummaryResponse,
+  UpdateProjectRequest,
   WorkspaceStatusResponse,
 } from "./backend-client.js";
 import {
@@ -21,6 +22,7 @@ import {
   parseProjectCreateToolInput,
   parseProjectGetToolInput,
   parseProjectSearchToolInput,
+  parseProjectUpdateToolInput,
 } from "./project-tools.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -110,6 +112,42 @@ test("parseProjectArchiveToolInput validates project archive payloads", () => {
 
   assert.throws(
     () => parseProjectArchiveToolInput({ workspaceId, projectId: "bad", userId }),
+    ProjectToolInputError,
+  );
+});
+
+test("parseProjectUpdateToolInput validates and normalizes project update payloads", () => {
+  assert.deepEqual(
+    parseProjectUpdateToolInput({
+      workspaceId,
+      projectId,
+      userId,
+      title: "  Updated Release  ",
+      description: null,
+      status: " active ",
+      position: " 2000 ",
+    }),
+    {
+      workspaceId,
+      projectId,
+      userId,
+      title: "Updated Release",
+      description: null,
+      status: "active",
+      position: "2000",
+    },
+  );
+
+  assert.throws(
+    () => parseProjectUpdateToolInput({ workspaceId, projectId, userId }),
+    ProjectToolInputError,
+  );
+  assert.throws(
+    () => parseProjectUpdateToolInput({ workspaceId, projectId, userId, title: "" }),
+    ProjectToolInputError,
+  );
+  assert.throws(
+    () => parseProjectUpdateToolInput({ workspaceId, projectId: "bad", userId, title: "Next" }),
     ProjectToolInputError,
   );
 });
@@ -205,11 +243,42 @@ test("project archive handler forwards project identifiers to the backend client
   assert.deepEqual(calls, [{ workspaceId, projectId, userId }]);
 });
 
+test("project update handler forwards project payloads to the backend client", async () => {
+  const calls: UpdateProjectRequest[] = [];
+  const client = createBackendClientStub(projects, [], [], [], calls);
+  const handlers = createProjectToolHandlers(client);
+
+  assert.deepEqual(
+    await handlers.update({
+      workspaceId,
+      projectId,
+      userId,
+      title: "Updated Release",
+      description: null,
+      status: "active",
+    }),
+    projectDetail,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      userId,
+      body: {
+        title: "Updated Release",
+        description: null,
+        status: "active",
+      },
+    },
+  ]);
+});
+
 function createBackendClientStub(
   projects: ProjectSummaryResponse[],
   getProjectCalls: Array<{ workspaceId: string; projectId: string; userId: string }> = [],
   createProjectCalls: CreateProjectRequest[] = [],
   archiveProjectCalls: ArchiveProjectRequest[] = [],
+  updateProjectCalls: UpdateProjectRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -279,6 +348,11 @@ function createBackendClientStub(
     },
     archiveProject: async (request): Promise<ProjectDetailResponse> => {
       archiveProjectCalls.push(request);
+
+      return projectDetail;
+    },
+    updateProject: async (request): Promise<ProjectDetailResponse> => {
+      updateProjectCalls.push(request);
 
       return projectDetail;
     },
