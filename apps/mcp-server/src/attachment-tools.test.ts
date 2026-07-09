@@ -5,12 +5,14 @@ import {
   createAttachmentToolHandlers,
   parseAttachmentCreateFileToolInput,
   parseAttachmentCreateLinkToolInput,
+  parseAttachmentCreateTelegramFileToolInput,
   parseAttachmentListToolInput,
 } from "./attachment-tools.js";
 import type {
   ApplyTaskSkillResponse,
   CreateTaskFileAttachmentRequest,
   CreateTaskLinkAttachmentRequest,
+  CreateTaskTelegramFileAttachmentRequest,
   ListTaskAttachmentsRequest,
   PreviewTaskSkillApplyResponse,
   ProjectDetailResponse,
@@ -53,6 +55,17 @@ const fileAttachment: TaskAttachmentResponse = {
   storageKey: "workspaces/acme/tasks/reference-mix.wav",
   mimeType: "audio/wav",
   sizeBytes: "18432000",
+};
+
+const telegramFileAttachment: TaskAttachmentResponse = {
+  ...taskAttachment,
+  kind: "telegram_file",
+  title: "Reference from Telegram",
+  url: null,
+  storageKey: null,
+  telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+  mimeType: "audio/mpeg",
+  sizeBytes: "2048",
 };
 
 test("parseAttachmentCreateLinkToolInput validates and normalizes link attachment payloads", () => {
@@ -200,6 +213,89 @@ test("parseAttachmentCreateFileToolInput validates and normalizes file attachmen
   );
 });
 
+test("parseAttachmentCreateTelegramFileToolInput validates and normalizes Telegram file payloads", () => {
+  assert.deepEqual(
+    parseAttachmentCreateTelegramFileToolInput({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      telegramFileId: " BQACAgIAAxkBAAIBR2Z ",
+      title: " Reference from Telegram ",
+      mimeType: " audio/mpeg ",
+      sizeBytes: " 2048 ",
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+      title: "Reference from Telegram",
+      mimeType: "audio/mpeg",
+      sizeBytes: "2048",
+    },
+  );
+  assert.deepEqual(
+    parseAttachmentCreateTelegramFileToolInput({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      telegramFileId: "telegram-file-id",
+      title: "",
+      mimeType: "",
+      sizeBytes: null,
+    }),
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      telegramFileId: "telegram-file-id",
+      title: null,
+      mimeType: null,
+      sizeBytes: null,
+    },
+  );
+
+  assert.throws(
+    () =>
+      parseAttachmentCreateTelegramFileToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        telegramFileId: "",
+      }),
+    AttachmentToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseAttachmentCreateTelegramFileToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        telegramFileId: "telegram-file-id",
+        sizeBytes: "-1",
+      }),
+    AttachmentToolInputError,
+  );
+  assert.throws(
+    () =>
+      parseAttachmentCreateTelegramFileToolInput({
+        workspaceId,
+        projectId,
+        taskId,
+        userId,
+        telegramFileId: "telegram-file-id",
+        sizeBytes: 2048,
+      }),
+    AttachmentToolInputError,
+  );
+});
+
 test("parseAttachmentListToolInput validates and normalizes attachment list payloads", () => {
   assert.deepEqual(
     parseAttachmentListToolInput({
@@ -292,6 +388,41 @@ test("attachment create file handler forwards file payloads to the backend clien
   ]);
 });
 
+test("attachment create Telegram file handler forwards Telegram file payloads to the backend client", async () => {
+  const calls: CreateTaskTelegramFileAttachmentRequest[] = [];
+  const handlers = createAttachmentToolHandlers(
+    createBackendClientStub([telegramFileAttachment], [], [], [], calls),
+  );
+
+  assert.deepEqual(
+    await handlers.createTelegramFile({
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      telegramFileId: " BQACAgIAAxkBAAIBR2Z ",
+      title: " Reference from Telegram ",
+      mimeType: " audio/mpeg ",
+      sizeBytes: " 2048 ",
+    }),
+    telegramFileAttachment,
+  );
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+      body: {
+        telegramFileId: "BQACAgIAAxkBAAIBR2Z",
+        title: "Reference from Telegram",
+        mimeType: "audio/mpeg",
+        sizeBytes: "2048",
+      },
+    },
+  ]);
+});
+
 test("attachment list handler forwards task identifiers to the backend client", async () => {
   const calls: ListTaskAttachmentsRequest[] = [];
   const handlers = createAttachmentToolHandlers(createBackendClientStub([taskAttachment], calls));
@@ -307,6 +438,7 @@ function createBackendClientStub(
   listTaskAttachmentsCalls: ListTaskAttachmentsRequest[] = [],
   createTaskLinkAttachmentCalls: CreateTaskLinkAttachmentRequest[] = [],
   createTaskFileAttachmentCalls: CreateTaskFileAttachmentRequest[] = [],
+  createTaskTelegramFileAttachmentCalls: CreateTaskTelegramFileAttachmentRequest[] = [],
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {
@@ -371,6 +503,11 @@ function createBackendClientStub(
       createTaskFileAttachmentCalls.push(request);
 
       return fileAttachment;
+    },
+    createTaskTelegramFileAttachment: async (request): Promise<TaskAttachmentResponse> => {
+      createTaskTelegramFileAttachmentCalls.push(request);
+
+      return telegramFileAttachment;
     },
     listTaskComments: async (): Promise<TaskCommentResponse[]> => {
       throw new Error("Not implemented.");

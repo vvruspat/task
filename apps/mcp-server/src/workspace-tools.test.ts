@@ -172,6 +172,9 @@ function createBackendClientStub(): TaskBackendClient {
     createTaskFileAttachment: async () => {
       throw new Error("createTaskFileAttachment is not used by workspace tools.");
     },
+    createTaskTelegramFileAttachment: async () => {
+      throw new Error("createTaskTelegramFileAttachment is not used by workspace tools.");
+    },
     getTask: async () => {
       throw new Error("getTask is not used by workspace tools.");
     },

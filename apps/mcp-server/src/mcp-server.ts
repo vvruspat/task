@@ -160,6 +160,17 @@ const attachmentCreateFileInputSchema = {
   sizeBytes: z.string().nullable().optional(),
 };
 
+const attachmentCreateTelegramFileInputSchema = {
+  workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
+  taskId: z.string().uuid(),
+  userId: z.string().uuid(),
+  telegramFileId: z.string().min(1),
+  title: z.string().nullable().optional(),
+  mimeType: z.string().nullable().optional(),
+  sizeBytes: z.string().nullable().optional(),
+};
+
 const projectGetInputSchema = {
   workspaceId: z.string().uuid(),
   projectId: z.string().uuid(),
@@ -472,6 +483,17 @@ export function registerAttachmentTools(
       inputSchema: attachmentCreateFileInputSchema,
     },
     async (input) => toToolResult(await handlers.createFile(input)),
+  );
+
+  registrar.registerTool(
+    "attachment.add_telegram_file",
+    {
+      title: "Add Telegram file attachment",
+      description:
+        "Attach Telegram file metadata from resolved Telegram context to a writable task.",
+      inputSchema: attachmentCreateTelegramFileInputSchema,
+    },
+    async (input) => toToolResult(await handlers.createTelegramFile(input)),
   );
 
   registrar.registerTool(
