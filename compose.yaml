@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: task-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: task_user
+      POSTGRES_PASSWORD: task_password
+      POSTGRES_DB: task_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - task-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_user -d task_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  task-postgres-data:
