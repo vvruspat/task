@@ -18,6 +18,16 @@ export type TelegramReplyAction = {
   telegramChatId: string | null;
   replyToMessageId: string | null;
   text: string;
+  inlineKeyboard?: TelegramInlineKeyboardMarkup;
+};
+
+export type TelegramInlineKeyboardMarkup = {
+  rows: TelegramInlineKeyboardButton[][];
+};
+
+export type TelegramInlineKeyboardButton = {
+  text: string;
+  callbackData: string;
 };
 
 export type TelegramResolvedMessageAction = {

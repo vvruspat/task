@@ -1,4 +1,4 @@
-import type { TelegramReplyAction } from "./message-handler.js";
+import type { TelegramInlineKeyboardMarkup, TelegramReplyAction } from "./message-handler.js";
 
 export type TelegramBotApiPostHeaders = {
   accept: string;
@@ -44,6 +44,14 @@ type TelegramSendMessageBody = {
     message_id: number;
     allow_sending_without_reply: true;
   };
+  reply_markup?: {
+    inline_keyboard: TelegramInlineKeyboardButtonBody[][];
+  };
+};
+
+type TelegramInlineKeyboardButtonBody = {
+  text: string;
+  callback_data: string;
 };
 
 export class TelegramReplySenderError extends Error {
@@ -110,7 +118,78 @@ function createSendMessageBody(action: TelegramReplyAction): TelegramSendMessage
     };
   }
 
+  if (action.inlineKeyboard !== undefined) {
+    const inlineKeyboard = toTelegramInlineKeyboardBody(action.inlineKeyboard);
+
+    if (inlineKeyboard.length > 0) {
+      body.reply_markup = {
+        inline_keyboard: inlineKeyboard,
+      };
+    }
+  }
+
   return body;
+}
+
+function toTelegramInlineKeyboardBody(
+  markup: TelegramInlineKeyboardMarkup,
+): TelegramInlineKeyboardButtonBody[][] {
+  return markup.rows
+    .map((row) => row.map(toTelegramInlineKeyboardButtonBody))
+    .filter((row) => row.length > 0);
+}
+
+function toTelegramInlineKeyboardButtonBody(
+  button: TelegramInlineKeyboardMarkup["rows"][number][number],
+): TelegramInlineKeyboardButtonBody {
+  return {
+    text: readInlineKeyboardButtonText(button.text),
+    callback_data: readInlineKeyboardCallbackData(button.callbackData),
+  };
+}
+
+function readInlineKeyboardButtonText(value: string): string {
+  const trimmedValue = value.trim();
+
+  if (trimmedValue.length === 0 || trimmedValue.length > 64) {
+    throw new TelegramReplySenderError("Telegram inline keyboard button text length is invalid.");
+  }
+
+  return trimmedValue;
+}
+
+function readInlineKeyboardCallbackData(value: string): string {
+  const trimmedValue = value.trim();
+  const byteLength = Buffer.byteLength(trimmedValue, "utf8");
+
+  if (byteLength < 1 || byteLength > 64) {
+    throw new TelegramReplySenderError("Telegram inline keyboard callback data length is invalid.");
+  }
+
+  return trimmedValue;
+}
+
+export function createTelegramConfirmationInlineKeyboard(
+  confirmationRequestId: string,
+): TelegramInlineKeyboardMarkup {
+  if (!uuidV4Pattern.test(confirmationRequestId)) {
+    throw new TelegramReplySenderError("Confirmation request id must be a UUID v4 string.");
+  }
+
+  return {
+    rows: [
+      [
+        {
+          text: "Подтвердить",
+          callbackData: `task:confirmation:${confirmationRequestId}:confirm`,
+        },
+        {
+          text: "Отменить",
+          callbackData: `task:confirmation:${confirmationRequestId}:cancel`,
+        },
+      ],
+    ],
+  };
 }
 
 function readSendMessageResponse(value: unknown): TelegramSendMessageResult {
@@ -176,3 +255,4 @@ function isUnknownRecord(value: unknown): value is Record<string, unknown> {
 }
 
 const telegramMessageIdPattern = /^[1-9]\d*$/;
+const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
