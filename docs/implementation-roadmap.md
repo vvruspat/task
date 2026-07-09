@@ -42,7 +42,7 @@ Goal: make contract drift and basic quality gates automatic.
 
 Goal: make real users able to link Telegram safely and operate within a workspace.
 
-- Implement Telegram Mini App `initData` verification in the backend.
+- Implement Telegram Mini App `initData` verification in the backend. Initial backend verification endpoint is in place; durable replay/linking storage remains follow-up work.
 - Add a user linking flow that maps stable `telegram_id` to internal users.
 - Add workspace/chat linking or invite handling for Telegram chats.
 - Expose minimal web/Mini App screens for linking state, success, and failure.

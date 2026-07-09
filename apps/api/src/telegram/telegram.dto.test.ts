@@ -4,8 +4,10 @@ import { BadRequestException } from "@nestjs/common";
 import {
   ParseResolveTelegramContextBodyPipe,
   ParseTelegramConfirmationCallbackBodyPipe,
+  ParseVerifyTelegramMiniAppInitDataBodyPipe,
   TelegramConfirmationCallbackResultDto,
   TelegramContextResolutionDto,
+  VerifiedTelegramMiniAppInitDataDto,
 } from "./telegram.dto.js";
 
 test("ParseResolveTelegramContextBodyPipe validates stable Telegram identifiers", () => {
@@ -39,6 +41,23 @@ test("ParseResolveTelegramContextBodyPipe rejects usernames and malformed identi
     () => pipe.transform({ telegramId: "123456789", telegramChatId: "chat" }),
     BadRequestException,
   );
+});
+
+test("ParseVerifyTelegramMiniAppInitDataBodyPipe validates raw initData", () => {
+  const pipe = new ParseVerifyTelegramMiniAppInitDataBodyPipe();
+
+  assert.deepEqual(pipe.transform({ initData: "auth_date=1720468800&hash=abc" }), {
+    initData: "auth_date=1720468800&hash=abc",
+  });
+});
+
+test("ParseVerifyTelegramMiniAppInitDataBodyPipe rejects malformed initData payloads", () => {
+  const pipe = new ParseVerifyTelegramMiniAppInitDataBodyPipe();
+
+  assert.throws(() => pipe.transform(null), BadRequestException);
+  assert.throws(() => pipe.transform({ initData: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ initData: " auth_date=1720468800" }), BadRequestException);
+  assert.throws(() => pipe.transform({ initData: 1720468800 }), BadRequestException);
 });
 
 test("TelegramContextResolutionDto preserves resolved context fields", () => {
@@ -118,6 +137,21 @@ test("TelegramConfirmationCallbackResultDto preserves callback result fields", (
       confirmationRequestId: "11111111-1111-4111-8111-111111111111",
       action: "cancel",
       status: "cancelled",
+    },
+  );
+});
+
+test("VerifiedTelegramMiniAppInitDataDto preserves stable identity fields", () => {
+  const dto = new VerifiedTelegramMiniAppInitDataDto({
+    telegramId: "123456789",
+    authDate: "1720468800",
+  });
+
+  assert.deepEqual(
+    { ...dto },
+    {
+      telegramId: "123456789",
+      authDate: "1720468800",
     },
   );
 });

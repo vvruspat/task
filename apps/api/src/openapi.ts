@@ -41,6 +41,8 @@ import {
 import {
   ResolveTelegramContextDto,
   TelegramContextResolutionDto,
+  VerifiedTelegramMiniAppInitDataDto,
+  VerifyTelegramMiniAppInitDataDto,
 } from "./telegram/telegram.dto.js";
 import {
   WorkspaceDetailDto,
@@ -92,6 +94,8 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       TaskAttachmentDto,
       ResolveTelegramContextDto,
       TelegramContextResolutionDto,
+      VerifyTelegramMiniAppInitDataDto,
+      VerifiedTelegramMiniAppInitDataDto,
     ],
   });
 }

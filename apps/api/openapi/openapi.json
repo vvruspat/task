@@ -2531,6 +2531,42 @@
         "tags": ["telegram"]
       }
     },
+    "/telegram/mini-app/init-data/verify": {
+      "post": {
+        "operationId": "TelegramMiniAppController_verifyInitData",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyTelegramMiniAppInitDataDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifiedTelegramMiniAppInitDataDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram Mini App initData payload is malformed."
+          },
+          "401": {
+            "description": "Telegram Mini App initData is invalid or expired."
+          }
+        },
+        "summary": "Verify Telegram Mini App initData and return the stable identity",
+        "tags": ["telegram"]
+      }
+    },
     "/internal/agent/telegram/runs": {
       "post": {
         "operationId": "AgentController_createTelegramRun",
@@ -4052,6 +4088,31 @@
           }
         },
         "required": ["confirmationRequestId", "action", "status"]
+      },
+      "VerifyTelegramMiniAppInitDataDto": {
+        "type": "object",
+        "properties": {
+          "initData": {
+            "type": "string",
+            "description": "Raw Telegram.WebApp.initData query string.",
+            "maxLength": 8192
+          }
+        },
+        "required": ["initData"]
+      },
+      "VerifiedTelegramMiniAppInitDataDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "authDate": {
+            "type": "string",
+            "example": "1720468800"
+          }
+        },
+        "required": ["telegramId", "authDate"]
       },
       "TelegramAgentRunDocumentAttachmentDto": {
         "type": "object",

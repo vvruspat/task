@@ -20,6 +20,12 @@ test("parseApiConfig leaves bot auth unset when TELEGRAM_BOT_SHARED_SECRET is ab
   assert.equal(config.botAuth, null);
 });
 
+test("parseApiConfig leaves Telegram Mini App config unset when TELEGRAM_BOT_TOKEN is absent", () => {
+  const config = parseApiConfig({});
+
+  assert.equal(config.telegramMiniApp, null);
+});
+
 test("parseApiConfig leaves OpenRouter config unset when agent runtime env is absent", () => {
   const config = parseApiConfig({});
 
@@ -30,6 +36,12 @@ test("parseApiConfig accepts a valid TELEGRAM_BOT_SHARED_SECRET", () => {
   const config = parseApiConfig({ TELEGRAM_BOT_SHARED_SECRET: "bot-secret" });
 
   assert.deepEqual(config.botAuth, { sharedSecret: "bot-secret" });
+});
+
+test("parseApiConfig accepts a valid TELEGRAM_BOT_TOKEN", () => {
+  const config = parseApiConfig({ TELEGRAM_BOT_TOKEN: "123456:telegram-bot-token" });
+
+  assert.deepEqual(config.telegramMiniApp, { botToken: "123456:telegram-bot-token" });
 });
 
 test("parseApiConfig rejects invalid TELEGRAM_BOT_SHARED_SECRET values", () => {
@@ -43,9 +55,32 @@ test("parseApiConfig rejects invalid TELEGRAM_BOT_SHARED_SECRET values", () => {
   }
 });
 
+test("parseApiConfig rejects invalid TELEGRAM_BOT_TOKEN values", () => {
+  const invalidTokens = ["", " token", "token "];
+
+  for (const botToken of invalidTokens) {
+    assert.throws(
+      () => parseApiConfig({ TELEGRAM_BOT_TOKEN: botToken }),
+      InvalidApiEnvironmentError,
+    );
+  }
+});
+
 test("parseApiConfig redacts invalid TELEGRAM_BOT_SHARED_SECRET values in error messages", () => {
   assert.throws(
     () => parseApiConfig({ TELEGRAM_BOT_SHARED_SECRET: " secret-token " }),
+    (error: unknown) => {
+      assert.ok(error instanceof InvalidApiEnvironmentError);
+      assert.match(error.message, /Received "\[redacted\]"/);
+      assert.doesNotMatch(error.message, /secret-token/);
+      return true;
+    },
+  );
+});
+
+test("parseApiConfig redacts invalid TELEGRAM_BOT_TOKEN values in error messages", () => {
+  assert.throws(
+    () => parseApiConfig({ TELEGRAM_BOT_TOKEN: " secret-token " }),
     (error: unknown) => {
       assert.ok(error instanceof InvalidApiEnvironmentError);
       assert.match(error.message, /Received "\[redacted\]"/);

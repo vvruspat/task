@@ -7,6 +7,7 @@ export type ApiEnvironment = {
   OPENROUTER_SITE_URL?: string;
   PORT?: string;
   TELEGRAM_BOT_SHARED_SECRET?: string;
+  TELEGRAM_BOT_TOKEN?: string;
 };
 
 export type ApiDatabaseConfig = {
@@ -18,10 +19,15 @@ export type ApiConfig = {
   database: ApiDatabaseConfig | null;
   openRouter: ApiOpenRouterConfig | null;
   port: number;
+  telegramMiniApp: ApiTelegramMiniAppConfig | null;
 };
 
 export type ApiBotAuthConfig = {
   sharedSecret: string;
+};
+
+export type ApiTelegramMiniAppConfig = {
+  botToken: string;
 };
 
 export type ApiOpenRouterConfig = {
@@ -52,6 +58,7 @@ export function parseApiConfig(environment: ApiEnvironment): ApiConfig {
     database: parseDatabaseConfig(environment.DATABASE_URL),
     openRouter: parseOpenRouterConfig(environment),
     port: parsePort(environment.PORT),
+    telegramMiniApp: parseTelegramMiniAppConfig(environment.TELEGRAM_BOT_TOKEN),
   };
 }
 
@@ -142,6 +149,24 @@ function parseBotAuthConfig(value: string | undefined): ApiBotAuthConfig | null 
 
   return {
     sharedSecret: value,
+  };
+}
+
+function parseTelegramMiniAppConfig(value: string | undefined): ApiTelegramMiniAppConfig | null {
+  if (value === undefined) {
+    return null;
+  }
+
+  if (value.trim() !== value || value.length === 0) {
+    throw new InvalidApiEnvironmentError(
+      "TELEGRAM_BOT_TOKEN",
+      value,
+      "must be a non-empty string without surrounding whitespace",
+    );
+  }
+
+  return {
+    botToken: value,
   };
 }
 
@@ -270,6 +295,7 @@ function formatInvalidValue(variableName: keyof ApiEnvironment, value: string): 
   if (
     variableName === "DATABASE_URL" ||
     variableName === "OPENROUTER_API_KEY" ||
+    variableName === "TELEGRAM_BOT_TOKEN" ||
     variableName === "TELEGRAM_BOT_SHARED_SECRET"
   ) {
     return "[redacted]";
