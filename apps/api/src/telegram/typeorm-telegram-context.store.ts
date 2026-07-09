@@ -13,6 +13,7 @@ import type {
   LinkTelegramIdentityResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
+  TelegramIdentityLinkStatus,
 } from "./telegram.contracts.js";
 import type { TelegramContextStore } from "./telegram.store.js";
 
@@ -21,6 +22,24 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
   private initialization: Promise<DataSource> | null = null;
 
   constructor(private readonly dataSourceProvider: ApiDataSourceProvider) {}
+
+  async getIdentityLinkStatus(userId: string): Promise<TelegramIdentityLinkStatus | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const identity = await dataSource.getRepository(TelegramIdentityEntity).findOne({
+      where: { userId },
+      order: { linkedAt: "ASC" },
+    });
+
+    if (identity === null) {
+      return null;
+    }
+
+    return {
+      telegramId: identity.telegramId,
+      linkedAt: identity.linkedAt,
+      lastSeenAt: identity.lastSeenAt,
+    };
+  }
 
   async resolveContext(input: ResolveTelegramContextInput): Promise<TelegramContextResolution> {
     const dataSource = await this.getInitializedDataSource();

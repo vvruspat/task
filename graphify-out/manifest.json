@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/index.ts": {
-    "mtime": 1783638538.5327284,
-    "ast_hash": "c56f916992cde3cec70d67be7769bdf1",
+    "mtime": 1783639395.38388,
+    "ast_hash": "437587d701b28618b0cc5edc96533ffa",
     "semantic_hash": ""
   },
   "packages/api-client/tsconfig.json": {
@@ -250,8 +250,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1783638019.4357922,
-    "ast_hash": "54c5be054b6ec1a03d35b40a10e3995a",
+    "mtime": 1783639657.7704165,
+    "ast_hash": "d91e43942359b4f6c9212818969f57cf",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -680,8 +680,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1783639207.6182756,
-    "ast_hash": "19463ec5dfe73f52aa815ce447f711ff",
+    "mtime": 1783639658.2986188,
+    "ast_hash": "c3070c11b8ed8faafd1f2acea195633d",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
@@ -990,18 +990,18 @@
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.contracts.ts": {
-    "mtime": 1783607153.6878989,
-    "ast_hash": "5afa68bee0ad692a9a784858d85c4d8a",
+    "mtime": 1783639302.2731717,
+    "ast_hash": "71fb140836efcc2bd8e8031c262562a4",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.controller.test.ts": {
-    "mtime": 1783607153.687968,
-    "ast_hash": "b17bf57a192939a49289c738222428b0",
+    "mtime": 1783639551.4338863,
+    "ast_hash": "ad969020f1d7e7ff49b8a13aa4d6e571",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.controller.ts": {
-    "mtime": 1783607153.6880276,
-    "ast_hash": "bca308c4391f62a548c860eae8fddc42",
+    "mtime": 1783639333.7321055,
+    "ast_hash": "529c7c34d0c6b3c419e388a0de7b3a7a",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.dto.test.ts": {
@@ -1010,8 +1010,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.dto.ts": {
-    "mtime": 1783607153.6881506,
-    "ast_hash": "3b0632877c7b43a57ae3d2beb4222e98",
+    "mtime": 1783639302.2741642,
+    "ast_hash": "110ae620d671dd3a91c1453352a51a5f",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.module.ts": {
@@ -1020,23 +1020,23 @@
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.service.test.ts": {
-    "mtime": 1783607153.6882682,
-    "ast_hash": "49c57c9bfb0848b6ccabb43e1f3fe3c3",
+    "mtime": 1783639551.4334095,
+    "ast_hash": "b448d5e034480c752f13d51c03163aea",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.service.ts": {
-    "mtime": 1783607153.6883326,
-    "ast_hash": "6105bdf1219ac13cde1fa7078502fd71",
+    "mtime": 1783639302.274572,
+    "ast_hash": "5cdc366c91e739a98cc3ab7016c460a7",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.store.ts": {
-    "mtime": 1783607153.688385,
-    "ast_hash": "c000316853c2589ae375a2fb5df6b282",
+    "mtime": 1783639302.273433,
+    "ast_hash": "02ab1f60437bcd62744ea7d1926620b5",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/typeorm-telegram-context.store.ts": {
-    "mtime": 1783607153.6884396,
-    "ast_hash": "8045580f91b6adcabaf2e11d1738d5e6",
+    "mtime": 1783639302.27376,
+    "ast_hash": "65550f5d322988cfff354b1e4bd93219",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/backend-client.test.ts": {
@@ -1210,8 +1210,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/WorkspaceView.tsx": {
-    "mtime": 1783638728.558683,
-    "ast_hash": "95b1e404cf63845e712d0aaa27a51365",
+    "mtime": 1783639285.378595,
+    "ast_hash": "ea1d86651989976224ffb9432917e433",
     "semantic_hash": ""
   },
   "apps/web/src/vite-env.d.ts": {
@@ -1230,18 +1230,18 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/client.test.ts": {
-    "mtime": 1783638413.5909495,
-    "ast_hash": "76b2d3bf580816c25df0efa2fdf9456d",
+    "mtime": 1783639596.0709507,
+    "ast_hash": "b95c801d7434b65ef249dbebfe43e569",
     "semantic_hash": ""
   },
   "packages/api-client/src/client.ts": {
-    "mtime": 1783638538.532441,
-    "ast_hash": "1d1e19922061ce2c32871f783d043040",
+    "mtime": 1783639391.7288666,
+    "ast_hash": "df04ccd3d123964d6ec2afe9cb5e0794",
     "semantic_hash": ""
   },
   "apps/web/src/api/web-shell-data.test.ts": {
-    "mtime": 1783638516.2153494,
-    "ast_hash": "2f9879ec09b99b6691f057cac8a3de72",
+    "mtime": 1783639501.1249034,
+    "ast_hash": "a7be79a4b76a6277dab085e1c0483e9c",
     "semantic_hash": ""
   },
   "apps/web/src/api/web-shell-data.ts": {
@@ -1255,8 +1255,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/WorkspaceView.test.tsx": {
-    "mtime": 1783638264.6386688,
-    "ast_hash": "eeae8ae5b014326ecc826963b612adc7",
+    "mtime": 1783639371.7518625,
+    "ast_hash": "8651ae43a8cbbe415d5260b6f2ebd6cc",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent-runs.controller.ts": {
@@ -1385,8 +1385,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspaceViewModels.ts": {
-    "mtime": 1783638205.8363519,
-    "ast_hash": "4dd162e62250ddcd41b3873ad40e8720",
+    "mtime": 1783639363.135586,
+    "ast_hash": "015b513463dbed60ccb11464143c764d",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/AgentHistoryView.tsx": {
@@ -1400,8 +1400,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/KanbanView.tsx": {
-    "mtime": 1783636654.1490006,
-    "ast_hash": "6ad47f53a08245b35dcbfc0bc599365f",
+    "mtime": 1783639491.5713458,
+    "ast_hash": "9f04adc5b6029adb5e61877697cb47cc",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/MatrixView.tsx": {

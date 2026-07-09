@@ -26,6 +26,13 @@ export type TaskSkillApplyPreview = components["schemas"]["TaskSkillApplyPreview
 export type TaskSkillApplyResult = components["schemas"]["TaskSkillApplyResultDto"];
 export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
+export type WorkspaceDetail = components["schemas"]["WorkspaceDetailDto"];
+export type WorkspaceMember = components["schemas"]["WorkspaceMemberDto"];
+export type VerifyTelegramMiniAppInitDataInput =
+  components["schemas"]["VerifyTelegramMiniAppInitDataDto"];
+export type LinkedTelegramIdentity = components["schemas"]["LinkedTelegramIdentityDto"];
+export type TelegramIdentityLinkStatus =
+  components["schemas"]["TelegramIdentityLinkStatusDto"];
 
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
@@ -102,6 +109,10 @@ export type PreviewTaskSkillApplyResponse =
   PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
 export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+
+export type LinkTelegramMiniAppIdentityRequestInput = {
+  body: VerifyTelegramMiniAppInitDataInput;
+};
 
 export type TaskApiRequestHeaders = {
   accept: "application/json";
@@ -249,6 +260,8 @@ export type TaskApiClient = {
   getTask(input: TaskScopedInput): Promise<TaskDetail>;
   getTaskSkill(input: TaskSkillScopedInput): Promise<GetTaskSkillResponse>;
   getDashboardOverview(input: WorkspaceScopedInput): Promise<DashboardOverview>;
+  getTelegramIdentityLinkStatus(): Promise<TelegramIdentityLinkStatus>;
+  getWorkspace(input: WorkspaceScopedInput): Promise<WorkspaceDetail>;
   getProjectMatrix(input: GetProjectMatrixRequestInput): Promise<ProjectMatrix>;
   listPendingConfirmationRequests(
     input: WorkspaceScopedInput,
@@ -267,9 +280,13 @@ export type TaskApiClient = {
   listTaskComments(input: TaskScopedInput): Promise<TaskComment[]>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
   listStatuses(input: WorkspaceScopedInput): Promise<WorkspaceStatus[]>;
+  listWorkspaceMembers(input: WorkspaceScopedInput): Promise<WorkspaceMember[]>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
   listWorkspaces(): Promise<WorkspaceSummary[]>;
+  linkTelegramMiniAppIdentity(
+    input: LinkTelegramMiniAppIdentityRequestInput,
+  ): Promise<LinkedTelegramIdentity>;
   archiveTaskSkill(input: TaskSkillScopedInput): Promise<ArchiveTaskSkillResponse>;
   updateTaskSkillMetadata(
     input: UpdateTaskSkillMetadataRequestInput,
@@ -486,6 +503,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    linkTelegramMiniAppIdentity: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        "/telegram/mini-app/identity/link",
+        linkedTelegramIdentityParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     getHealth: () =>
       request(options.fetch, baseUrl, "/health", healthResponseParser, {
         method: "GET",
@@ -498,6 +528,22 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/dashboard`,
         dashboardOverviewParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    getTelegramIdentityLinkStatus: () =>
+      request(
+        options.fetch,
+        baseUrl,
+        "/telegram/mini-app/identity/link-status",
+        telegramIdentityLinkStatusParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    getWorkspace: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}`,
+        workspaceDetailParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
     listMyTasks: (input) =>
@@ -587,6 +633,14 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           requiresTrustedUserId: true,
           trustedUserId: options.trustedUserId,
         },
+      ),
+    listWorkspaceMembers: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/members`,
+        workspaceMemberArrayParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
     listTaskSkills: (input) =>
       request(
@@ -833,6 +887,22 @@ function confirmationRequestPath(input: ConfirmationRequestScopedInput): string 
 const healthResponseParser: ResponseParser<HealthResponse> = {
   isValid: isHealthResponse,
   label: "health response",
+};
+const workspaceDetailParser: ResponseParser<WorkspaceDetail> = {
+  isValid: isWorkspaceDetail,
+  label: "workspace detail",
+};
+const workspaceMemberArrayParser: ResponseParser<WorkspaceMember[]> = {
+  isValid: (value): value is WorkspaceMember[] => isArrayOf(value, isWorkspaceMember),
+  label: "workspace member list",
+};
+const telegramIdentityLinkStatusParser: ResponseParser<TelegramIdentityLinkStatus> = {
+  isValid: isTelegramIdentityLinkStatus,
+  label: "Telegram identity link status",
+};
+const linkedTelegramIdentityParser: ResponseParser<LinkedTelegramIdentity> = {
+  isValid: isLinkedTelegramIdentity,
+  label: "linked Telegram identity",
 };
 const dashboardOverviewParser: ResponseParser<DashboardOverview> = {
   isValid: isDashboardOverview,
@@ -1336,6 +1406,47 @@ function isWorkspaceStatus(value: unknown): value is WorkspaceStatus {
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")
   );
+}
+
+function isWorkspaceDetail(value: unknown): value is WorkspaceDetail {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "name") &&
+    hasString(value, "slug") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt") &&
+    isArrayOf(readProperty(value, "members"), isWorkspaceMember)
+  );
+}
+
+function isWorkspaceMember(value: unknown): value is WorkspaceMember {
+  const role = isJsonObject(value) ? readProperty(value, "role") : undefined;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "userId") &&
+    (role === "owner" || role === "admin" || role === "member" || role === "guest") &&
+    hasString(value, "displayName") &&
+    hasOptionalNullableString(value, "email") &&
+    hasOptionalNullableString(value, "avatarUrl") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
+}
+
+function isTelegramIdentityLinkStatus(value: unknown): value is TelegramIdentityLinkStatus {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "telegramId") &&
+    hasString(value, "linkedAt") &&
+    hasNullableString(value, "lastSeenAt")
+  );
+}
+
+function isLinkedTelegramIdentity(value: unknown): value is LinkedTelegramIdentity {
+  return isJsonObject(value) && hasString(value, "telegramId") && hasString(value, "userId");
 }
 
 function isJsonObject(value: unknown): value is JsonObject {

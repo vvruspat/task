@@ -265,6 +265,20 @@ export function buildKanbanSummary(
   };
 }
 
+export function getAdjacentKanbanStatusId(
+  statuses: WorkspaceStatus[],
+  currentStatusId: string | null,
+  direction: "next" | "previous",
+): string | null {
+  const statusIds = [null, ...[...statuses].sort(compareStatusPosition).map((status) => status.id)];
+  const currentIndex = statusIds.indexOf(currentStatusId);
+  if (currentIndex === -1) return currentStatusId;
+  const adjacentIndex = direction === "next" ? currentIndex + 1 : currentIndex - 1;
+  if (adjacentIndex < 0 || adjacentIndex >= statusIds.length) return currentStatusId;
+  const adjacentStatusId = statusIds[adjacentIndex];
+  return adjacentStatusId === undefined ? currentStatusId : adjacentStatusId;
+}
+
 export function buildMatrixColumns(tasks: TaskSummary[]): MatrixColumn[] {
   const parentTasks = [...tasks]
     .filter((task) => !hasParentTaskValue(task.parentTaskId))

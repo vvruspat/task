@@ -3,6 +3,7 @@ import type {
   LinkTelegramMiniAppIdentityInput,
   ResolveTelegramContextInput,
   TelegramContextResolution,
+  TelegramIdentityLinkStatus,
   VerifyTelegramMiniAppInitDataInput,
 } from "./telegram.contracts.js";
 import {
@@ -30,6 +31,10 @@ export class TelegramService {
     input: VerifyTelegramMiniAppInitDataInput,
   ): VerifiedTelegramMiniAppInitDataDto {
     return new VerifiedTelegramMiniAppInitDataDto(this.miniAppInitDataVerifier.verify(input));
+  }
+
+  async getMiniAppIdentityLinkStatus(userId: string): Promise<TelegramIdentityLinkStatus | null> {
+    return this.telegramContextStore.getIdentityLinkStatus(userId);
   }
 
   async linkMiniAppIdentity(

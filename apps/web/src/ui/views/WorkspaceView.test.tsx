@@ -24,6 +24,7 @@ import {
   filterAgentHistoryRows,
   filterTemplateSkillRows,
   formatProjectActionFeedback,
+  getAdjacentKanbanStatusId,
 } from "./workspaceViewModels.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
@@ -144,6 +145,19 @@ test("buildKanbanSummary counts columns, done tasks, and unset tasks", () => {
       unsetTaskCount: 1,
     },
   );
+});
+
+test("getAdjacentKanbanStatusId follows ordered statuses and keeps board boundaries stable", () => {
+  const statuses = [
+    workspaceStatus({ id: secondStatusId, position: "2000" }),
+    workspaceStatus({ id: firstStatusId, position: "1000" }),
+  ];
+
+  assert.equal(getAdjacentKanbanStatusId(statuses, null, "next"), firstStatusId);
+  assert.equal(getAdjacentKanbanStatusId(statuses, firstStatusId, "next"), secondStatusId);
+  assert.equal(getAdjacentKanbanStatusId(statuses, secondStatusId, "next"), secondStatusId);
+  assert.equal(getAdjacentKanbanStatusId(statuses, firstStatusId, "previous"), null);
+  assert.equal(getAdjacentKanbanStatusId(statuses, unknownStatusId, "previous"), unknownStatusId);
 });
 
 test("buildMatrixColumns orders parents and groups child tasks", () => {

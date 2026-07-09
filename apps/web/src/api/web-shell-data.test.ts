@@ -22,6 +22,7 @@ import type {
   GetProjectMatrixRequestInput,
   ListMyTasksRequestInput,
   ListTaskTableRequestInput,
+  LinkTelegramMiniAppIdentityRequestInput,
   MoveTaskRequestInput,
   MyTasksPage,
   PreviewTaskSkillApplyRequestInput,
@@ -431,6 +432,14 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("getDashboardOverview is not used by the web shell loader.");
   }
 
+  async getTelegramIdentityLinkStatus(): Promise<never> {
+    throw new Error("getTelegramIdentityLinkStatus is not used by the web shell loader.");
+  }
+
+  async getWorkspace(_input: { workspaceId: string }): Promise<never> {
+    throw new Error("getWorkspace is not used by the web shell loader.");
+  }
+
   async getProjectMatrix(_input: GetProjectMatrixRequestInput): Promise<ProjectMatrix> {
     throw new Error("getProjectMatrix is not used by the web shell loader.");
   }
@@ -496,6 +505,10 @@ class RecordingTaskApiClient implements TaskApiClient {
     return this.data.statuses;
   }
 
+  async listWorkspaceMembers(_input: { workspaceId: string }): Promise<never> {
+    throw new Error("listWorkspaceMembers is not used by the web shell loader.");
+  }
+
   async listTaskSkills(input: { workspaceId: string }): Promise<TaskSkillSummary[]> {
     this.calls.push(`listTaskSkills:${input.workspaceId}`);
     return this.data.skills;
@@ -509,6 +522,12 @@ class RecordingTaskApiClient implements TaskApiClient {
   async listWorkspaces(): Promise<WorkspaceSummary[]> {
     this.calls.push("listWorkspaces");
     return this.data.workspaces;
+  }
+
+  async linkTelegramMiniAppIdentity(
+    _input: LinkTelegramMiniAppIdentityRequestInput,
+  ): Promise<never> {
+    throw new Error("linkTelegramMiniAppIdentity is not used by the web shell loader.");
   }
 
   async moveTask(_input: MoveTaskRequestInput): Promise<never> {

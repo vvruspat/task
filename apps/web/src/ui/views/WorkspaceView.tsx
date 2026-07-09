@@ -85,7 +85,15 @@ export default function WorkspaceView({
   if (route.id === "kanban") {
     return (
       <>
-        <KanbanView onOpenTask={onOpenTask} projects={projects} statuses={statuses} tasks={tasks} />
+        <KanbanView
+          client={taskClient}
+          onOpenTask={onOpenTask}
+          onTaskUpdated={onTaskUpdated}
+          projects={projects}
+          statuses={statuses}
+          tasks={tasks}
+          workspaceId={selectedWorkspaceId}
+        />
         {taskDrawer}
       </>
     );

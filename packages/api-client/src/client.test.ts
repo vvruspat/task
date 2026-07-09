@@ -42,6 +42,38 @@ test("createTaskApiClient sends trusted user context for workspace requests", as
   assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
 });
 
+test("createTaskApiClient exposes Settings and Telegram link endpoints with trusted context", async () => {
+  const fetcher = new RecordingFetch(
+    sequence([
+      workspaceDetail(),
+      [workspaceMember()],
+      telegramIdentityLinkStatus(),
+      { telegramId: "123456789", userId: trustedUserId },
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await client.getWorkspace({ workspaceId });
+  await client.listWorkspaceMembers({ workspaceId });
+  await client.getTelegramIdentityLinkStatus();
+  await client.linkTelegramMiniAppIdentity({ body: { initData: "query=value" } });
+
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method, call.init.headers["x-task-user-id"]]),
+    [
+      [`https://task.example/workspaces/${workspaceId}`, "GET", trustedUserId],
+      [`https://task.example/workspaces/${workspaceId}/members`, "GET", trustedUserId],
+      ["https://task.example/telegram/mini-app/identity/link-status", "GET", trustedUserId],
+      ["https://task.example/telegram/mini-app/identity/link", "POST", trustedUserId],
+    ],
+  );
+  assert.equal(fetcher.calls[3]?.init.body, JSON.stringify({ initData: "query=value" }));
+});
+
 test("createTaskApiClient posts project creation payloads with trusted user context", async () => {
   const fetcher = new RecordingFetch(single(projectSummary()));
   const client = createTaskApiClient({
@@ -648,6 +680,37 @@ test("createTaskApiClient rejects agent run listing without trusted user context
   assert.equal(fetcher.calls.length, 0);
 });
 
+test("createTaskApiClient rejects Settings and Telegram link requests without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(workspaceDetail()));
+  const client = createTaskApiClient({ baseUrl: "https://task.example", fetch: fetcher.fetch });
+
+  await assert.rejects(() => client.getWorkspace({ workspaceId }), { name: "TaskApiClientError" });
+  await assert.rejects(() => client.getTelegramIdentityLinkStatus(), { name: "TaskApiClientError" });
+  await assert.rejects(
+    () => client.linkTelegramMiniAppIdentity({ body: { initData: "query=value" } }),
+    { name: "TaskApiClientError" },
+  );
+  assert.equal(fetcher.calls.length, 0);
+});
+
+test("createTaskApiClient rejects malformed Settings and Telegram link responses", async () => {
+  const fetcher = new RecordingFetch(sequence([{ id: workspaceId }, { telegramId: 123 }]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await assert.rejects(() => client.getWorkspace({ workspaceId }), {
+    message: "Task API returned malformed workspace detail.",
+    name: "TaskApiClientError",
+  });
+  await assert.rejects(() => client.getTelegramIdentityLinkStatus(), {
+    message: "Task API returned malformed Telegram identity link status.",
+    name: "TaskApiClientError",
+  });
+});
+
 test("createTaskApiClient rejects project matrix reads without trusted user context", async () => {
   const fetcher = new RecordingFetch(single(projectMatrix()));
   const client = createTaskApiClient({
@@ -978,6 +1041,39 @@ function workspaceSummary(): unknown {
     slug: "studio",
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function workspaceMember(): unknown {
+  return {
+    id: "11111111-1111-4111-8111-111111111111",
+    workspaceId,
+    userId: trustedUserId,
+    role: "owner",
+    displayName: "Alex",
+    email: null,
+    avatarUrl: null,
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function workspaceDetail(): unknown {
+  return {
+    id: workspaceId,
+    name: "Studio",
+    slug: "studio",
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+    members: [workspaceMember()],
+  };
+}
+
+function telegramIdentityLinkStatus(): unknown {
+  return {
+    telegramId: "123456789",
+    linkedAt: "2026-07-10T08:00:00.000Z",
+    lastSeenAt: null,
   };
 }
 

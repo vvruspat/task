@@ -27,6 +27,12 @@ export type LinkedTelegramIdentity = {
   userId: string;
 };
 
+export type TelegramIdentityLinkStatus = {
+  telegramId: string;
+  linkedAt: Date;
+  lastSeenAt: Date | null;
+};
+
 export type LinkTelegramIdentityResult =
   | {
       status: "linked";

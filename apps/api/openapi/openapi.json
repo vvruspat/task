@@ -3009,6 +3009,40 @@
         "tags": ["telegram"]
       }
     },
+    "/telegram/mini-app/identity/link-status": {
+      "get": {
+        "operationId": "TelegramMiniAppController_getIdentityLinkStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramIdentityLinkStatusDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user has no linked Telegram identity."
+          }
+        },
+        "summary": "Get the current user's Telegram Mini App identity link status",
+        "tags": ["telegram"]
+      }
+    },
     "/telegram/mini-app/init-data/verify": {
       "post": {
         "operationId": "TelegramMiniAppController_verifyInitData",
@@ -5022,6 +5056,25 @@
           }
         },
         "required": ["confirmationRequestId", "action", "status"]
+      },
+      "TelegramIdentityLinkStatusDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "linkedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["telegramId", "linkedAt"]
       },
       "VerifyTelegramMiniAppInitDataDto": {
         "type": "object",
