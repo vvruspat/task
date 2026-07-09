@@ -361,6 +361,39 @@ export function buildSettingsSummary(input: {
   };
 }
 
+export function getTelegramMiniAppInitData(
+  value: unknown = typeof window === "undefined" ? undefined : window,
+): string | null {
+  if (!isUnknownRecord(value)) return null;
+  const telegram = readUnknownProperty(value, "Telegram");
+  if (!isUnknownRecord(telegram)) return null;
+  const webApp = readUnknownProperty(telegram, "WebApp");
+  if (!isUnknownRecord(webApp)) return null;
+  const initData = readUnknownProperty(webApp, "initData");
+  return typeof initData === "string" && initData.trim().length > 0 ? initData : null;
+}
+
+export function isTelegramIdentityUnlinkedError(error: unknown): boolean {
+  if (!isUnknownRecord(error)) return false;
+  const status = readUnknownProperty(error, "status");
+  return status === 403 || status === 404;
+}
+
+export function shouldShowTelegramLinkAction(input: {
+  initData: string | null;
+  linkState: "unlinked" | "linked" | "loading" | "error" | "unavailable";
+}): boolean {
+  return input.linkState === "unlinked" && input.initData !== null;
+}
+
+function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function readUnknownProperty(value: Record<string, unknown>, key: string): unknown {
+  return value[key];
+}
+
 export function buildAgentHistorySummary(input: {
   agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];

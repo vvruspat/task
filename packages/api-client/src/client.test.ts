@@ -685,7 +685,9 @@ test("createTaskApiClient rejects Settings and Telegram link requests without tr
   const client = createTaskApiClient({ baseUrl: "https://task.example", fetch: fetcher.fetch });
 
   await assert.rejects(() => client.getWorkspace({ workspaceId }), { name: "TaskApiClientError" });
-  await assert.rejects(() => client.getTelegramIdentityLinkStatus(), { name: "TaskApiClientError" });
+  await assert.rejects(() => client.getTelegramIdentityLinkStatus(), {
+    name: "TaskApiClientError",
+  });
   await assert.rejects(
     () => client.linkTelegramMiniAppIdentity({ body: { initData: "query=value" } }),
     { name: "TaskApiClientError" },
@@ -961,6 +963,39 @@ test("createTaskApiClient rejects malformed nested my-task page items", async ()
   });
 });
 
+test("createTaskApiClient searches a workspace with encoded pagination input", async () => {
+  const fetcher = new RecordingFetch(single(searchPage()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  assert.deepEqual(
+    await client.search({ workspaceId, query: "launch plan", page: 2, pageSize: 10 }),
+    searchPage(),
+  );
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/search?query=launch+plan&page=2&pageSize=10`,
+  );
+});
+
+test("createTaskApiClient rejects malformed search result pages", async () => {
+  const fetcher = new RecordingFetch(
+    single({ items: [{ id: taskId, type: "task" }], page: 1, pageSize: 20, total: 1 }),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  await assert.rejects(() => client.search({ workspaceId, query: "launch" }), {
+    message: "Task API returned malformed search page.",
+    name: "TaskApiClientError",
+    status: 200,
+  });
+});
+
 type FetchCall = {
   init: TaskApiRequestInit;
   url: string;
@@ -1190,6 +1225,15 @@ function dashboardOverview(): Record<string, unknown> {
         createdAt: "2026-07-08T10:00:00.000Z",
       },
     ],
+  };
+}
+
+function searchPage(): Record<string, unknown> {
+  return {
+    items: [{ id: taskId, type: "task", title: "Launch plan", description: null, projectId }],
+    page: 2,
+    pageSize: 10,
+    total: 11,
   };
 }
 

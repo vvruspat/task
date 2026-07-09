@@ -2,6 +2,7 @@ import type { components, operations } from "./generated/openapi.js";
 
 export type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
 export type DashboardOverview = components["schemas"]["DashboardOverviewDto"];
+export type SearchPage = components["schemas"]["SearchPageDto"];
 export type ConfirmationRequestSummary = components["schemas"]["ConfirmationRequestSummaryDto"];
 export type ConfirmationRequestDetail = components["schemas"]["ConfirmationRequestDetailDto"];
 export type CreateTaskCommentInput = components["schemas"]["CreateTaskCommentDto"];
@@ -31,8 +32,7 @@ export type WorkspaceMember = components["schemas"]["WorkspaceMemberDto"];
 export type VerifyTelegramMiniAppInitDataInput =
   components["schemas"]["VerifyTelegramMiniAppInitDataDto"];
 export type LinkedTelegramIdentity = components["schemas"]["LinkedTelegramIdentityDto"];
-export type TelegramIdentityLinkStatus =
-  components["schemas"]["TelegramIdentityLinkStatusDto"];
+export type TelegramIdentityLinkStatus = components["schemas"]["TelegramIdentityLinkStatusDto"];
 
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
@@ -46,6 +46,7 @@ type UpdateTaskAssigneeOperation = operations["TasksController_updateTaskAssigne
 type UpdateTaskDueDateOperation = operations["TasksController_updateTaskDueDate"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type ListMyTasksOperation = operations["DashboardController_listMyTasks"];
+type SearchOperation = operations["SearchController_search"];
 type ListTaskTableOperation = operations["TasksController_listTaskTable"];
 type BulkUpdateTasksOperation = operations["TasksController_bulkUpdateTasks"];
 type CreateTaskSkillOperation = operations["TaskSkillsController_createTaskSkill"];
@@ -147,6 +148,8 @@ export type WorkspaceScopedInput = {
 };
 export type ListMyTasksRequestInput = WorkspaceScopedInput &
   NonNullable<ListMyTasksOperation["parameters"]["query"]>;
+export type SearchRequestInput = WorkspaceScopedInput &
+  NonNullable<SearchOperation["parameters"]["query"]>;
 export type ListTaskTableRequestInput = ProjectScopedInput &
   NonNullable<ListTaskTableOperation["parameters"]["query"]>;
 export type MyTasksPage = components["schemas"]["MyTasksPageDto"];
@@ -273,6 +276,7 @@ export type TaskApiClient = {
     input: ConfirmationRequestScopedInput,
   ): Promise<ConfirmationRequestDetail>;
   listMyTasks(input: ListMyTasksRequestInput): Promise<MyTasksPage>;
+  search(input: SearchRequestInput): Promise<SearchPage>;
   listTaskTable(input: ListTaskTableRequestInput): Promise<TaskTablePage>;
   listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
   listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
@@ -552,6 +556,14 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/my-tasks${toMyTasksQuery(input)}`,
         myTasksPageParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    search: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/search${toSearchQuery(input)}`,
+        searchPageParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
     listTaskTable: (input) =>
@@ -864,6 +876,13 @@ function toMyTasksQuery(input: ListMyTasksRequestInput): string {
   const text = parameters.toString();
   return text.length === 0 ? "" : `?${text}`;
 }
+function toSearchQuery(input: SearchRequestInput): string {
+  const parameters = new URLSearchParams();
+  parameters.set("query", input.query);
+  if (input.page !== undefined) parameters.set("page", String(input.page));
+  if (input.pageSize !== undefined) parameters.set("pageSize", String(input.pageSize));
+  return `?${parameters.toString()}`;
+}
 function toTaskTableQuery(input: ListTaskTableRequestInput): string {
   const parameters = new URLSearchParams();
   if (input.search !== undefined) parameters.set("search", input.search);
@@ -911,6 +930,10 @@ const dashboardOverviewParser: ResponseParser<DashboardOverview> = {
 const myTasksPageParser: ResponseParser<MyTasksPage> = {
   isValid: isMyTasksPage,
   label: "my tasks page",
+};
+const searchPageParser: ResponseParser<SearchPage> = {
+  isValid: isSearchPage,
+  label: "search page",
 };
 const taskTablePageParser: ResponseParser<TaskTablePage> = {
   isValid: isTaskTablePage,
@@ -1071,6 +1094,28 @@ function isMyTasksPage(value: unknown): value is MyTasksPage {
     isPositiveInteger(readProperty(value, "pageSize")) &&
     isNonNegativeInteger(readProperty(value, "total"))
   );
+}
+function isSearchPage(value: unknown): value is SearchPage {
+  return (
+    isJsonObject(value) &&
+    isArrayOf(readProperty(value, "items"), isSearchResult) &&
+    isPositiveInteger(readProperty(value, "page")) &&
+    isPositiveInteger(readProperty(value, "pageSize")) &&
+    isNonNegativeInteger(readProperty(value, "total"))
+  );
+}
+function isSearchResult(value: unknown): value is JsonObject {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    isSearchResultType(readProperty(value, "type")) &&
+    hasString(value, "title") &&
+    hasNullableString(value, "description") &&
+    hasNullableString(value, "projectId")
+  );
+}
+function isSearchResultType(value: unknown): value is "project" | "task" | "task_skill" | "user" {
+  return value === "project" || value === "task" || value === "task_skill" || value === "user";
 }
 function isTaskTablePage(value: unknown): value is TaskTablePage {
   return (

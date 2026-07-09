@@ -177,6 +177,23 @@ export interface paths {
     patch: operations["ProjectsController_updateProject"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/search": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Search visible projects, tasks, task skills, and workspace members */
+    get: operations["SearchController_search"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/matrix": {
     parameters: {
       query?: never;
@@ -962,6 +979,22 @@ export interface components {
       /** @example active */
       status?: string | null;
       position?: string | null;
+    };
+    SearchResultDto: {
+      /** Format: uuid */
+      id: string;
+      /** @enum {string} */
+      type: "project" | "task" | "task_skill" | "user";
+      title: string;
+      description: string | null;
+      /** Format: uuid */
+      projectId: string | null;
+    };
+    SearchPageDto: {
+      items: components["schemas"]["SearchResultDto"][];
+      page: number;
+      pageSize: number;
+      total: number;
     };
     TaskSummaryDto: {
       /** Format: uuid */
@@ -2000,6 +2033,48 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace or active project is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SearchController_search: {
+    parameters: {
+      query: {
+        pageSize?: number;
+        page?: number;
+        query: string;
+      };
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SearchPageDto"];
+        };
+      };
+      /** @description Search query is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;

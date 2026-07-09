@@ -20,15 +20,17 @@ import type {
   CreateTaskTelegramFileAttachmentRequestInput,
   DashboardOverview,
   GetProjectMatrixRequestInput,
+  LinkTelegramMiniAppIdentityRequestInput,
   ListMyTasksRequestInput,
   ListTaskTableRequestInput,
-  LinkTelegramMiniAppIdentityRequestInput,
   MoveTaskRequestInput,
   MyTasksPage,
   PreviewTaskSkillApplyRequestInput,
   ProjectDetail,
   ProjectMatrix,
   ProjectSummary,
+  SearchPage,
+  SearchRequestInput,
   TaskActivityEvent,
   TaskApiClient,
   TaskAttachment,
@@ -464,6 +466,10 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async listMyTasks(_input: ListMyTasksRequestInput): Promise<MyTasksPage> {
     throw new Error("listMyTasks is not used by the web shell loader.");
+  }
+
+  async search(_input: SearchRequestInput): Promise<SearchPage> {
+    throw new Error("search is not used by the web shell loader.");
   }
 
   async listTaskTable(_input: ListTaskTableRequestInput): Promise<TaskTablePage> {

@@ -187,6 +187,7 @@ export default function WorkspaceView({
     return (
       <>
         <SettingsView
+          client={taskClient}
           projects={projects}
           selectedProjectId={selectedProjectId}
           selectedWorkspaceId={selectedWorkspaceId}
