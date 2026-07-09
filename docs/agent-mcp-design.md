@@ -116,10 +116,14 @@ task.update
 task.move
 task.add_subtasks
 task.set_status
-task.assign
+task.set_assignee
+task.assign              # alias for task.set_assignee
+task.set_due_date
 task.archive
 task.comment
 ```
+
+`task.set_assignee` and `task.set_due_date` accept `null` values to clear the assignee or due date.
 
 ### Task skill tools
 
