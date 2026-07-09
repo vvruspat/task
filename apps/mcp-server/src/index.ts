@@ -172,6 +172,9 @@ export {
 } from "./status-tools.js";
 export {
   createSummaryToolHandlers,
+  type ProjectSummaryToolInput,
+  type ProjectSummaryToolResponse,
+  parseProjectSummaryToolInput,
   parseTaskSummaryToolInput,
   type SummaryToolHandlers,
   SummaryToolInputError,

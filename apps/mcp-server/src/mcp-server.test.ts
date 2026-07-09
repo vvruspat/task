@@ -887,9 +887,44 @@ test("registerSummaryTools registers summary tools", async () => {
     taskId: string;
     userId: string;
   }> = [];
+  const projectSummaryCalls: Array<{
+    workspaceId: string;
+    projectId: string;
+    userId: string;
+  }> = [];
   const registrar = createRegistrar(toolCalls);
 
   registerSummaryTools(registrar, {
+    project: async (input: unknown) => {
+      if (!isUnknownRecord(input)) {
+        throw new Error("Expected project summary input.");
+      }
+      projectSummaryCalls.push({
+        workspaceId: readString(input, "workspaceId"),
+        projectId: readString(input, "projectId"),
+        userId: readString(input, "userId"),
+      });
+      return {
+        project: {
+          id: projectId,
+          workspaceId,
+          title: "Album Release",
+          description: null,
+          status: "active",
+          archivedAt: null,
+          updatedAt: timestamp,
+        },
+        counts: {
+          tasks: 1,
+          parentTasks: 1,
+          subtasks: 0,
+          assignedTasks: 1,
+          unassignedTasks: 0,
+          dueTasks: 1,
+        },
+        recentTasks: [],
+      };
+    },
     task: async (input: unknown) => {
       if (!isUnknownRecord(input)) {
         throw new Error("Expected task summary input.");
@@ -926,11 +961,42 @@ test("registerSummaryTools registers summary tools", async () => {
 
   assert.deepEqual(
     toolCalls.map((call) => call.name),
-    ["summary.task"],
+    ["summary.project", "summary.task"],
   );
-  assert.equal(toolCalls[0]?.config.title, "Summarize task");
+  assert.equal(toolCalls[0]?.config.title, "Summarize project");
+  assert.equal(toolCalls[1]?.config.title, "Summarize task");
 
-  const summaryCall = toolCalls[0];
+  const projectSummaryCall = toolCalls[0];
+  assert.ok(projectSummaryCall !== undefined);
+  const projectSummaryResult = await projectSummaryCall.callback({
+    workspaceId,
+    projectId,
+    userId,
+  });
+
+  assert.deepEqual(JSON.parse(readTextResult(projectSummaryResult)), {
+    project: {
+      id: projectId,
+      workspaceId,
+      title: "Album Release",
+      description: null,
+      status: "active",
+      archivedAt: null,
+      updatedAt: timestamp,
+    },
+    counts: {
+      tasks: 1,
+      parentTasks: 1,
+      subtasks: 0,
+      assignedTasks: 1,
+      unassignedTasks: 0,
+      dueTasks: 1,
+    },
+    recentTasks: [],
+  });
+  assert.deepEqual(projectSummaryCalls, [{ workspaceId, projectId, userId }]);
+
+  const summaryCall = toolCalls[1];
   assert.ok(summaryCall !== undefined);
   const summaryResult = await summaryCall.callback({
     workspaceId,
