@@ -2,9 +2,12 @@ import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiExtraModels, ApiProperty, ApiPropertyOptional, getSchemaPath } from "@nestjs/swagger";
 import type { AgentRunStatus } from "../persistence/types/core-persistence.types.js";
 import type {
+  AgentRunConfirmationLink,
+  AgentRunDetail,
   AgentRunIntakeResponse,
   AgentRunPendingConfirmationRequest,
   AgentRunSummary,
+  AgentRunToolCallAudit,
   CreateTelegramAgentRunInput,
   TelegramAgentRunAttachmentInput,
   TelegramAgentRunDocumentAttachmentInput,
@@ -230,6 +233,75 @@ export class AgentRunSummaryDto implements AgentRunSummary {
     this.error = summary.error;
     this.createdAt = summary.createdAt;
     this.updatedAt = summary.updatedAt;
+  }
+}
+
+export class AgentRunToolCallAuditDto implements AgentRunToolCallAudit {
+  @ApiProperty({ format: "uuid" }) readonly id: string;
+  @ApiProperty() readonly toolName: string;
+  @ApiProperty({ additionalProperties: true, type: "object" }) readonly arguments: Record<
+    string,
+    unknown
+  >;
+  @ApiPropertyOptional({ additionalProperties: true, nullable: true, type: "object" })
+  readonly result: Record<string, unknown> | null;
+  @ApiProperty({ enum: ["pending", "success", "error"] })
+  readonly status: AgentRunToolCallAudit["status"];
+  @ApiPropertyOptional({ nullable: true, type: String }) readonly error: string | null;
+  @ApiProperty({ format: "date-time" }) readonly createdAt: string;
+  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String }) readonly completedAt:
+    | string
+    | null;
+
+  constructor(value: AgentRunToolCallAudit) {
+    this.id = value.id;
+    this.toolName = value.toolName;
+    this.arguments = value.arguments;
+    this.result = value.result;
+    this.status = value.status;
+    this.error = value.error;
+    this.createdAt = value.createdAt;
+    this.completedAt = value.completedAt;
+  }
+}
+
+export class AgentRunConfirmationLinkDto implements AgentRunConfirmationLink {
+  @ApiProperty({ format: "uuid" }) readonly id: string;
+  @ApiProperty() readonly kind: string;
+  @ApiProperty({ additionalProperties: true, type: "object" }) readonly preview: Record<
+    string,
+    unknown
+  >;
+  @ApiProperty({ enum: ["pending", "confirmed", "cancelled", "expired"] })
+  readonly status: AgentRunConfirmationLink["status"];
+  @ApiProperty({ format: "date-time" }) readonly expiresAt: string;
+  @ApiProperty({ format: "date-time" }) readonly createdAt: string;
+  @ApiProperty({ format: "date-time" }) readonly updatedAt: string;
+
+  constructor(value: AgentRunConfirmationLink) {
+    this.id = value.id;
+    this.kind = value.kind;
+    this.preview = value.preview;
+    this.status = value.status;
+    this.expiresAt = value.expiresAt;
+    this.createdAt = value.createdAt;
+    this.updatedAt = value.updatedAt;
+  }
+}
+
+export class AgentRunDetailDto extends AgentRunSummaryDto implements AgentRunDetail {
+  @ApiProperty({ isArray: true, type: AgentRunToolCallAuditDto })
+  readonly toolCalls: AgentRunToolCallAuditDto[];
+
+  @ApiProperty({ isArray: true, type: AgentRunConfirmationLinkDto })
+  readonly confirmationRequests: AgentRunConfirmationLinkDto[];
+
+  constructor(value: AgentRunDetail) {
+    super(value);
+    this.toolCalls = value.toolCalls.map((toolCall) => new AgentRunToolCallAuditDto(toolCall));
+    this.confirmationRequests = value.confirmationRequests.map(
+      (request) => new AgentRunConfirmationLinkDto(request),
+    );
   }
 }
 

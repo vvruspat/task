@@ -228,6 +228,74 @@
         "tags": ["workspaces"]
       }
     },
+    "/workspaces/{workspaceId}/members/{memberId}/role": {
+      "patch": {
+        "operationId": "WorkspacesController_updateMemberRole",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkspaceMemberRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceMemberDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Workspace member role payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot update this workspace member role."
+          },
+          "404": {
+            "description": "Workspace member is missing or not visible to the current user."
+          }
+        },
+        "summary": "Update one workspace member role",
+        "tags": ["workspaces"]
+      }
+    },
     "/workspaces/{workspaceId}/dashboard": {
       "get": {
         "operationId": "DashboardController_getOverview",
@@ -2286,6 +2354,190 @@
         },
         "summary": "List statuses for one visible workspace",
         "tags": ["statuses"]
+      },
+      "post": {
+        "operationId": "StatusesController_createStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceStatusDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot manage statuses in this workspace."
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          },
+          "409": {
+            "description": "A workspace status with this name already exists."
+          }
+        },
+        "summary": "Create a status in one workspace",
+        "tags": ["statuses"]
+      }
+    },
+    "/workspaces/{workspaceId}/statuses/{statusId}": {
+      "patch": {
+        "operationId": "StatusesController_updateStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkspaceStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceStatusDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot manage statuses in this workspace."
+          },
+          "404": {
+            "description": "Workspace status is missing or not visible to the current user."
+          },
+          "409": {
+            "description": "A workspace status with this name already exists."
+          }
+        },
+        "summary": "Update a status in one workspace",
+        "tags": ["statuses"]
+      },
+      "delete": {
+        "operationId": "StatusesController_deleteStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceStatusDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot manage statuses in this workspace."
+          },
+          "404": {
+            "description": "Workspace status is missing or not visible to the current user."
+          }
+        },
+        "summary": "Delete a status from one workspace",
+        "tags": ["statuses"]
       }
     },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/comments": {
@@ -3305,6 +3557,58 @@
         "summary": "List current user agent run history in a visible workspace",
         "tags": ["agent"]
       }
+    },
+    "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
+      "get": {
+        "operationId": "AgentRunsController_getWorkspaceRun",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentRunId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace or agent run is missing or not visible to the current user."
+          }
+        },
+        "summary": "Get one current user agent run with safe audit records",
+        "tags": ["agent"]
+      }
     }
   },
   "info": {
@@ -3481,6 +3785,16 @@
           }
         },
         "required": ["id", "name", "slug", "createdAt", "updatedAt", "members"]
+      },
+      "UpdateWorkspaceMemberRoleDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member", "guest"]
+          }
+        },
+        "required": ["role"]
       },
       "DashboardProjectDto": {
         "type": "object",
@@ -4781,6 +5095,55 @@
           "updatedAt"
         ]
       },
+      "CreateWorkspaceStatusDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "In progress",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "example": "#3b82f6",
+            "minLength": 1
+          },
+          "position": {
+            "type": "string",
+            "example": "1000",
+            "pattern": "^-?\\d+(\\.\\d+)?$"
+          },
+          "isDone": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": ["name", "color", "position"]
+      },
+      "UpdateWorkspaceStatusDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "In progress",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "example": "#3b82f6",
+            "minLength": 1
+          },
+          "position": {
+            "type": "string",
+            "example": "1000",
+            "pattern": "^-?\\d+(\\.\\d+)?$"
+          },
+          "isDone": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
       "TaskCommentDto": {
         "type": "object",
         "properties": {
@@ -5483,6 +5846,155 @@
           "status",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "AgentRunToolCallAuditDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "toolName": {
+            "type": "string"
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": true,
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "success", "error"]
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["id", "toolName", "arguments", "status", "createdAt"]
+      },
+      "AgentRunConfirmationLinkDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "confirmed", "cancelled", "expired"]
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["id", "kind", "preview", "status", "expiresAt", "createdAt", "updatedAt"]
+      },
+      "AgentRunDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["telegram", "web", "mini_app"]
+          },
+          "sourceMessageId": {
+            "type": "string",
+            "nullable": true
+          },
+          "model": {
+            "type": "string",
+            "nullable": true
+          },
+          "inputText": {
+            "type": "string",
+            "example": "@task what is next for the album?"
+          },
+          "finalResponse": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["running", "waiting_confirmation", "completed", "failed"]
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "toolCalls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunToolCallAuditDto"
+            }
+          },
+          "confirmationRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunConfirmationLinkDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "userId",
+          "source",
+          "inputText",
+          "status",
+          "createdAt",
+          "updatedAt",
+          "toolCalls",
+          "confirmationRequests"
         ]
       },
       "ListTaskTableQueryDto": {

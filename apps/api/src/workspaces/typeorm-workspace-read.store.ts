@@ -7,11 +7,24 @@ import {
   WorkspaceEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
-import type { WorkspaceDetail, WorkspaceMember, WorkspaceSummary } from "./workspaces.contracts.js";
-import type { WorkspaceReadStore } from "./workspaces.store.js";
+import type {
+  UpdateWorkspaceMemberRoleInput,
+  WorkspaceDetail,
+  WorkspaceMember,
+  WorkspaceSummary,
+} from "./workspaces.contracts.js";
+import type {
+  WorkspaceMemberManagementStore,
+  WorkspaceMemberRoleUpdateResult,
+  WorkspaceReadStore,
+} from "./workspaces.store.js";
+
+const memberRoleManagers = new Set(["owner", "admin"]);
 
 @Injectable()
-export class TypeOrmWorkspaceReadStore implements WorkspaceReadStore {
+export class TypeOrmWorkspaceReadStore
+  implements WorkspaceReadStore, WorkspaceMemberManagementStore
+{
   private initialization: Promise<DataSource> | null = null;
 
   constructor(private readonly dataSourceProvider: ApiDataSourceProvider) {}
@@ -67,6 +80,48 @@ export class TypeOrmWorkspaceReadStore implements WorkspaceReadStore {
     }
 
     return this.listMembersForWorkspace(workspaceId);
+  }
+
+  async updateMemberRole(
+    workspaceId: string,
+    memberId: string,
+    userId: string,
+    input: UpdateWorkspaceMemberRoleInput,
+  ): Promise<WorkspaceMemberRoleUpdateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const memberRepository = dataSource.getRepository(WorkspaceMemberEntity);
+    const actor = await memberRepository.findOneBy({ workspaceId, userId });
+
+    if (actor === null || !memberRoleManagers.has(actor.role)) {
+      return { status: "forbidden" };
+    }
+
+    const member = await memberRepository.findOneBy({ id: memberId, workspaceId });
+
+    if (member === null) {
+      return { status: "member_not_found" };
+    }
+
+    if (
+      member.role === "owner" ||
+      (actor.role === "admin" && (member.role === "admin" || input.role === "admin"))
+    ) {
+      return { status: "forbidden" };
+    }
+
+    const updatedMember = await dataSource.transaction(
+      async (manager): Promise<WorkspaceMemberEntity> => {
+        member.role = input.role;
+        return manager.getRepository(WorkspaceMemberEntity).save(member);
+      },
+    );
+    const user = await dataSource.getRepository(UserEntity).findOneBy({ id: updatedMember.userId });
+
+    if (user === null) {
+      return { status: "member_not_found" };
+    }
+
+    return { member: toWorkspaceMember(updatedMember, user), status: "updated" };
   }
 
   private async findWorkspaceForMember(

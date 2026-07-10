@@ -214,6 +214,21 @@ test("createTaskApiClient lists workspace agent runs with trusted user context",
   assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
 });
 
+test("createTaskApiClient gets a workspace agent run detail with trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(agentRunDetail()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.getAgentRun({ agentRunId: taskId, workspaceId }), agentRunDetail());
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/agent/runs/${taskId}`,
+  );
+});
+
 test("createTaskApiClient posts task creation payloads with trusted user context", async () => {
   const fetcher = new RecordingFetch(single(taskSummary()));
   const client = createTaskApiClient({
@@ -522,6 +537,49 @@ test("createTaskApiClient validates supported list responses", async () => {
   assert.deepEqual(await client.listStatuses({ workspaceId }), [workspaceStatus()]);
 });
 
+test("createTaskApiClient manages workspace statuses and member roles", async () => {
+  const fetcher = new RecordingFetch(
+    sequence([workspaceStatus(), workspaceStatus(), workspaceStatus(), workspaceMember()]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const statusId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+  const memberId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+
+  await client.createWorkspaceStatus({
+    body: { color: "#3b82f6", name: "In progress", position: "1000" },
+    workspaceId,
+  });
+  await client.updateWorkspaceStatus({ body: { isDone: true }, statusId, workspaceId });
+  await client.deleteWorkspaceStatus({ statusId, workspaceId });
+  await client.updateWorkspaceMemberRole({ body: { role: "guest" }, memberId, workspaceId });
+
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method, call.init.body]),
+    [
+      [
+        `https://task.example/workspaces/${workspaceId}/statuses`,
+        "POST",
+        JSON.stringify({ color: "#3b82f6", name: "In progress", position: "1000" }),
+      ],
+      [
+        `https://task.example/workspaces/${workspaceId}/statuses/${statusId}`,
+        "PATCH",
+        JSON.stringify({ isDone: true }),
+      ],
+      [`https://task.example/workspaces/${workspaceId}/statuses/${statusId}`, "DELETE", undefined],
+      [
+        `https://task.example/workspaces/${workspaceId}/members/${memberId}/role`,
+        "PATCH",
+        JSON.stringify({ role: "guest" }),
+      ],
+    ],
+  );
+});
+
 test("createTaskApiClient exposes task skill operations with typed request paths and payloads", async () => {
   const fetcher = new RecordingFetch(
     sequence([
@@ -678,6 +736,17 @@ test("createTaskApiClient rejects agent run listing without trusted user context
     status: null,
   });
   assert.equal(fetcher.calls.length, 0);
+});
+
+test("createTaskApiClient rejects agent run detail without trusted user context", async () => {
+  const fetcher = new RecordingFetch(single(agentRunDetail()));
+  const client = createTaskApiClient({ baseUrl: "https://task.example", fetch: fetcher.fetch });
+
+  await assert.rejects(() => client.getAgentRun({ agentRunId: taskId, workspaceId }), {
+    message: "Task API trustedUserId is required for workspace requests.",
+    name: "TaskApiClientError",
+    status: null,
+  });
 });
 
 test("createTaskApiClient rejects Settings and Telegram link requests without trusted user context", async () => {
@@ -1174,7 +1243,7 @@ function projectMatrix(): ProjectMatrixFixture {
   };
 }
 
-function agentRunSummary(): unknown {
+function agentRunSummary(): Record<string, unknown> {
   return {
     id: "11111111-1111-4111-8111-111111111111",
     workspaceId,
@@ -1188,6 +1257,35 @@ function agentRunSummary(): unknown {
     error: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:01:00.000Z",
+  };
+}
+
+function agentRunDetail(): Record<string, unknown> {
+  return {
+    ...agentRunSummary(),
+    toolCalls: [
+      {
+        id: "22222222-2222-4222-8222-222222222222",
+        toolName: "tasks.create",
+        arguments: { title: "Follow up" },
+        result: { taskId },
+        status: "success",
+        error: null,
+        createdAt: "2026-07-08T10:00:01.000Z",
+        completedAt: "2026-07-08T10:00:02.000Z",
+      },
+    ],
+    confirmationRequests: [
+      {
+        id: "33333333-3333-4333-8333-333333333333",
+        kind: "task.create",
+        preview: { title: "Follow up" },
+        status: "confirmed",
+        expiresAt: "2026-07-08T11:00:00.000Z",
+        createdAt: "2026-07-08T10:00:00.000Z",
+        updatedAt: "2026-07-08T10:01:00.000Z",
+      },
+    ],
   };
 }
 

@@ -1,6 +1,7 @@
 import type { components, operations } from "./generated/openapi.js";
 
 export type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
+export type AgentRunDetail = components["schemas"]["AgentRunDetailDto"];
 export type DashboardOverview = components["schemas"]["DashboardOverviewDto"];
 export type SearchPage = components["schemas"]["SearchPageDto"];
 export type ConfirmationRequestSummary = components["schemas"]["ConfirmationRequestSummaryDto"];
@@ -29,6 +30,9 @@ export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 export type WorkspaceDetail = components["schemas"]["WorkspaceDetailDto"];
 export type WorkspaceMember = components["schemas"]["WorkspaceMemberDto"];
+export type CreateWorkspaceStatusInput = components["schemas"]["CreateWorkspaceStatusDto"];
+export type UpdateWorkspaceStatusInput = components["schemas"]["UpdateWorkspaceStatusDto"];
+export type UpdateWorkspaceMemberRoleInput = components["schemas"]["UpdateWorkspaceMemberRoleDto"];
 export type VerifyTelegramMiniAppInitDataInput =
   components["schemas"]["VerifyTelegramMiniAppInitDataDto"];
 export type LinkedTelegramIdentity = components["schemas"]["LinkedTelegramIdentityDto"];
@@ -58,6 +62,9 @@ type UpdateTaskSkillDefinitionOperation =
   operations["TaskSkillsController_updateTaskSkillDefinition"];
 type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTaskSkillApply"];
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
+type CreateWorkspaceStatusOperation = operations["StatusesController_createStatus"];
+type UpdateWorkspaceStatusOperation = operations["StatusesController_updateStatus"];
+type UpdateWorkspaceMemberRoleOperation = operations["WorkspacesController_updateMemberRole"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -110,6 +117,12 @@ export type PreviewTaskSkillApplyResponse =
   PreviewTaskSkillApplyOperation["responses"]["200"]["content"]["application/json"];
 export type ApplyTaskSkillResponse =
   ApplyTaskSkillOperation["responses"]["201"]["content"]["application/json"];
+export type CreateWorkspaceStatusResponse =
+  CreateWorkspaceStatusOperation["responses"]["201"]["content"]["application/json"];
+export type UpdateWorkspaceStatusResponse =
+  UpdateWorkspaceStatusOperation["responses"]["200"]["content"]["application/json"];
+export type UpdateWorkspaceMemberRoleResponse =
+  UpdateWorkspaceMemberRoleOperation["responses"]["200"]["content"]["application/json"];
 
 export type LinkTelegramMiniAppIdentityRequestInput = {
   body: VerifyTelegramMiniAppInitDataInput;
@@ -155,6 +168,10 @@ export type ListTaskTableRequestInput = ProjectScopedInput &
 export type MyTasksPage = components["schemas"]["MyTasksPageDto"];
 export type ConfirmationRequestScopedInput = WorkspaceScopedInput & {
   confirmationRequestId: string;
+};
+
+export type AgentRunScopedInput = WorkspaceScopedInput & {
+  agentRunId: string;
 };
 
 export type ProjectScopedInput = WorkspaceScopedInput & {
@@ -244,6 +261,17 @@ export type CreateTaskFileAttachmentRequestInput = TaskScopedInput & {
 export type CreateTaskTelegramFileAttachmentRequestInput = TaskScopedInput & {
   body: CreateTaskTelegramFileAttachmentInput;
 };
+export type WorkspaceStatusScopedInput = WorkspaceScopedInput & { statusId: string };
+export type CreateWorkspaceStatusRequestInput = WorkspaceScopedInput & {
+  body: CreateWorkspaceStatusInput;
+};
+export type UpdateWorkspaceStatusRequestInput = WorkspaceStatusScopedInput & {
+  body: UpdateWorkspaceStatusInput;
+};
+export type UpdateWorkspaceMemberRoleRequestInput = WorkspaceScopedInput & {
+  memberId: string;
+  body: UpdateWorkspaceMemberRoleInput;
+};
 
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
@@ -258,6 +286,9 @@ export type TaskApiClient = {
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   createTaskSkill(input: CreateTaskSkillRequestInput): Promise<CreateTaskSkillResponse>;
+  createWorkspaceStatus(
+    input: CreateWorkspaceStatusRequestInput,
+  ): Promise<CreateWorkspaceStatusResponse>;
   cloneTaskSkill(input: CloneTaskSkillRequestInput): Promise<CloneTaskSkillResponse>;
   getHealth(): Promise<HealthResponse>;
   getTask(input: TaskScopedInput): Promise<TaskDetail>;
@@ -279,6 +310,7 @@ export type TaskApiClient = {
   search(input: SearchRequestInput): Promise<SearchPage>;
   listTaskTable(input: ListTaskTableRequestInput): Promise<TaskTablePage>;
   listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
+  getAgentRun(input: AgentRunScopedInput): Promise<AgentRunDetail>;
   listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
   listTaskActivity(input: TaskScopedInput): Promise<TaskActivityEvent[]>;
   listTaskComments(input: TaskScopedInput): Promise<TaskComment[]>;
@@ -288,6 +320,7 @@ export type TaskApiClient = {
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
   listWorkspaces(): Promise<WorkspaceSummary[]>;
+  deleteWorkspaceStatus(input: WorkspaceStatusScopedInput): Promise<WorkspaceStatus>;
   linkTelegramMiniAppIdentity(
     input: LinkTelegramMiniAppIdentityRequestInput,
   ): Promise<LinkedTelegramIdentity>;
@@ -307,6 +340,12 @@ export type TaskApiClient = {
   updateTaskAssignee(input: UpdateTaskAssigneeRequestInput): Promise<TaskDetail>;
   updateTaskDueDate(input: UpdateTaskDueDateRequestInput): Promise<TaskDetail>;
   updateTaskStatus(input: UpdateTaskStatusRequestInput): Promise<TaskDetail>;
+  updateWorkspaceMemberRole(
+    input: UpdateWorkspaceMemberRoleRequestInput,
+  ): Promise<UpdateWorkspaceMemberRoleResponse>;
+  updateWorkspaceStatus(
+    input: UpdateWorkspaceStatusRequestInput,
+  ): Promise<UpdateWorkspaceStatusResponse>;
   moveTask(input: MoveTaskRequestInput): Promise<TaskDetail>;
   bulkUpdateTasks(input: BulkUpdateTasksRequestInput): Promise<TaskDetail[]>;
 };
@@ -610,6 +649,12 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    getAgentRun: (input) =>
+      request(options.fetch, baseUrl, `${agentRunPath(input)}`, agentRunDetailParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     listProjects: (input) =>
       request(
         options.fetch,
@@ -646,6 +691,32 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    createWorkspaceStatus: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/statuses`,
+        workspaceStatusParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    updateWorkspaceStatus: (input) =>
+      request(options.fetch, baseUrl, workspaceStatusPath(input), workspaceStatusParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    deleteWorkspaceStatus: (input) =>
+      request(options.fetch, baseUrl, workspaceStatusPath(input), workspaceStatusParser, {
+        method: "DELETE",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     listWorkspaceMembers: (input) =>
       request(
         options.fetch,
@@ -653,6 +724,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         `/workspaces/${encodePathSegment(input.workspaceId)}/members`,
         workspaceMemberArrayParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    updateWorkspaceMemberRole: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/members/${encodePathSegment(input.memberId)}/role`,
+        workspaceMemberParser,
+        {
+          body: input.body,
+          method: "PATCH",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
       ),
     listTaskSkills: (input) =>
       request(
@@ -903,6 +987,14 @@ function confirmationRequestPath(input: ConfirmationRequestScopedInput): string 
   return `/workspaces/${encodePathSegment(input.workspaceId)}/confirmation-requests/${encodePathSegment(input.confirmationRequestId)}`;
 }
 
+function workspaceStatusPath(input: WorkspaceStatusScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/statuses/${encodePathSegment(input.statusId)}`;
+}
+
+function agentRunPath(input: AgentRunScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/agent/runs/${encodePathSegment(input.agentRunId)}`;
+}
+
 const healthResponseParser: ResponseParser<HealthResponse> = {
   isValid: isHealthResponse,
   label: "health response",
@@ -914,6 +1006,14 @@ const workspaceDetailParser: ResponseParser<WorkspaceDetail> = {
 const workspaceMemberArrayParser: ResponseParser<WorkspaceMember[]> = {
   isValid: (value): value is WorkspaceMember[] => isArrayOf(value, isWorkspaceMember),
   label: "workspace member list",
+};
+const workspaceMemberParser: ResponseParser<WorkspaceMember> = {
+  isValid: isWorkspaceMember,
+  label: "workspace member",
+};
+const workspaceStatusParser: ResponseParser<WorkspaceStatus> = {
+  isValid: isWorkspaceStatus,
+  label: "workspace status",
 };
 const telegramIdentityLinkStatusParser: ResponseParser<TelegramIdentityLinkStatus> = {
   isValid: isTelegramIdentityLinkStatus,
@@ -952,6 +1052,10 @@ const confirmationRequestDetailParser: ResponseParser<ConfirmationRequestDetail>
 const agentRunSummaryArrayParser: ResponseParser<AgentRunSummary[]> = {
   isValid: (value): value is AgentRunSummary[] => isArrayOf(value, isAgentRunSummary),
   label: "agent run summary list",
+};
+const agentRunDetailParser: ResponseParser<AgentRunDetail> = {
+  isValid: isAgentRunDetail,
+  label: "agent run detail",
 };
 
 const projectSummaryArrayParser: ResponseParser<ProjectSummary[]> = {
@@ -1068,6 +1172,48 @@ function isAgentRunSummary(value: unknown): value is AgentRunSummary {
     hasOptionalNullableString(value, "finalResponse") &&
     isAgentRunStatus(readProperty(value, "status")) &&
     hasOptionalNullableString(value, "error") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
+}
+
+function isAgentRunDetail(value: unknown): value is AgentRunDetail {
+  return (
+    isAgentRunSummary(value) &&
+    isArrayOf(readProperty(value, "toolCalls"), isAgentRunToolCallAudit) &&
+    isArrayOf(readProperty(value, "confirmationRequests"), isAgentRunConfirmationLink)
+  );
+}
+
+function isAgentRunToolCallAudit(value: unknown): value is AgentRunDetail["toolCalls"][number] {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "toolName") &&
+    isJsonObject(readProperty(value, "arguments")) &&
+    hasOptionalNullableJsonObject(value, "result") &&
+    (readProperty(value, "status") === "pending" ||
+      readProperty(value, "status") === "success" ||
+      readProperty(value, "status") === "error") &&
+    hasOptionalNullableString(value, "error") &&
+    hasString(value, "createdAt") &&
+    hasOptionalNullableString(value, "completedAt")
+  );
+}
+
+function isAgentRunConfirmationLink(
+  value: unknown,
+): value is AgentRunDetail["confirmationRequests"][number] {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "kind") &&
+    isJsonObject(readProperty(value, "preview")) &&
+    (readProperty(value, "status") === "pending" ||
+      readProperty(value, "status") === "confirmed" ||
+      readProperty(value, "status") === "cancelled" ||
+      readProperty(value, "status") === "expired") &&
+    hasString(value, "expiresAt") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")
   );
@@ -1537,6 +1683,12 @@ function hasString(value: JsonObject, key: string): boolean {
 function hasOptionalNullableString(value: JsonObject, key: string): boolean {
   const propertyValue = readProperty(value, key);
   return propertyValue === undefined || propertyValue === null || typeof propertyValue === "string";
+}
+
+function hasOptionalNullableJsonObject(value: JsonObject, key: string): boolean {
+  const propertyValue = readProperty(value, key);
+
+  return propertyValue === null || isJsonObject(propertyValue);
 }
 function hasNullableString(value: JsonObject, key: string): boolean {
   const propertyValue = readProperty(value, key);

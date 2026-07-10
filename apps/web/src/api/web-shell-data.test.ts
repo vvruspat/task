@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type {
   AddTaskSubtasksRequestInput,
+  AgentRunDetail,
+  AgentRunScopedInput,
   AgentRunSummary,
   ApplyTaskSkillRequestInput,
   ArchiveProjectRequestInput,
@@ -18,6 +20,7 @@ import type {
   CreateTaskRequestInput,
   CreateTaskSkillRequestInput,
   CreateTaskTelegramFileAttachmentRequestInput,
+  CreateWorkspaceStatusRequestInput,
   DashboardOverview,
   GetProjectMatrixRequestInput,
   LinkTelegramMiniAppIdentityRequestInput,
@@ -47,7 +50,10 @@ import type {
   UpdateTaskSkillDefinitionRequestInput,
   UpdateTaskSkillMetadataRequestInput,
   UpdateTaskStatusRequestInput,
+  UpdateWorkspaceMemberRoleRequestInput,
+  UpdateWorkspaceStatusRequestInput,
   WorkspaceStatus,
+  WorkspaceStatusScopedInput,
   WorkspaceSummary,
 } from "@task/api-client";
 import {
@@ -356,6 +362,10 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("createTaskSkill is not used by the web shell loader.");
   }
 
+  async createWorkspaceStatus(_input: CreateWorkspaceStatusRequestInput): Promise<never> {
+    throw new Error("createWorkspaceStatus is not used by the web shell loader.");
+  }
+
   async cloneTaskSkill(_input: CloneTaskSkillRequestInput): Promise<never> {
     throw new Error("cloneTaskSkill is not used by the web shell loader.");
   }
@@ -398,6 +408,10 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("getTaskSkill is not used by the web shell loader.");
   }
 
+  async getAgentRun(_input: AgentRunScopedInput): Promise<AgentRunDetail> {
+    throw new Error("getAgentRun is not used by the web shell loader.");
+  }
+
   async archiveTaskSkill(_input: TaskSkillScopedInput): Promise<never> {
     throw new Error("archiveTaskSkill is not used by the web shell loader.");
   }
@@ -424,6 +438,14 @@ class RecordingTaskApiClient implements TaskApiClient {
 
   async updateTask(_input: UpdateTaskRequestInput): Promise<never> {
     throw new Error("updateTask is not used by the web shell loader.");
+  }
+
+  async updateWorkspaceMemberRole(_input: UpdateWorkspaceMemberRoleRequestInput): Promise<never> {
+    throw new Error("updateWorkspaceMemberRole is not used by the web shell loader.");
+  }
+
+  async updateWorkspaceStatus(_input: UpdateWorkspaceStatusRequestInput): Promise<never> {
+    throw new Error("updateWorkspaceStatus is not used by the web shell loader.");
   }
 
   async getHealth(): Promise<never> {
@@ -509,6 +531,10 @@ class RecordingTaskApiClient implements TaskApiClient {
   async listStatuses(input: { workspaceId: string }): Promise<WorkspaceStatus[]> {
     this.calls.push(`listStatuses:${input.workspaceId}`);
     return this.data.statuses;
+  }
+
+  async deleteWorkspaceStatus(_input: WorkspaceStatusScopedInput): Promise<never> {
+    throw new Error("deleteWorkspaceStatus is not used by the web shell loader.");
   }
 
   async listWorkspaceMembers(_input: { workspaceId: string }): Promise<never> {

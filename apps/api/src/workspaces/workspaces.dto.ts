@@ -1,5 +1,36 @@
+import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import type { WorkspaceDetail, WorkspaceMember, WorkspaceSummary } from "./workspaces.contracts.js";
+import type {
+  UpdateWorkspaceMemberRoleInput,
+  WorkspaceDetail,
+  WorkspaceMember,
+  WorkspaceSummary,
+} from "./workspaces.contracts.js";
+
+const assignableWorkspaceMemberRoles = ["admin", "member", "guest"] as const;
+
+export class UpdateWorkspaceMemberRoleDto implements UpdateWorkspaceMemberRoleInput {
+  @ApiProperty({ enum: assignableWorkspaceMemberRoles })
+  readonly role: UpdateWorkspaceMemberRoleInput["role"] = "member";
+}
+
+export class ParseUpdateWorkspaceMemberRoleBodyPipe
+  implements PipeTransform<unknown, UpdateWorkspaceMemberRoleInput>
+{
+  transform(value: unknown): UpdateWorkspaceMemberRoleInput {
+    if (!isUnknownRecord(value) || !("role" in value)) {
+      throw new BadRequestException("Workspace member role payload must include a role.");
+    }
+
+    const role = readProperty(value, "role");
+
+    if (!isAssignableWorkspaceMemberRole(role)) {
+      throw new BadRequestException("Workspace member role must be admin, member, or guest.");
+    }
+
+    return { role };
+  }
+}
 
 export class WorkspaceSummaryDto implements WorkspaceSummary {
   @ApiProperty({ format: "uuid" })
@@ -75,4 +106,18 @@ export class WorkspaceDetailDto extends WorkspaceSummaryDto implements Workspace
     super(workspace);
     this.members = workspace.members.map((member) => new WorkspaceMemberDto(member));
   }
+}
+
+function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readProperty(value: Record<string, unknown>, key: string): unknown {
+  return value[key];
+}
+
+function isAssignableWorkspaceMemberRole(
+  value: unknown,
+): value is UpdateWorkspaceMemberRoleInput["role"] {
+  return value === "admin" || value === "member" || value === "guest";
 }

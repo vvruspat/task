@@ -3,6 +3,7 @@ export { MAlert } from "./atoms/MAlert";
 export { MAvatar } from "./atoms/MAvatar";
 export { MBox } from "./atoms/MBox";
 export { MButton } from "./atoms/MButton";
+export { MCheckbox } from "./atoms/MCheckbox";
 export { MCard } from "./atoms/MCard";
 export { MDescriptionList } from "./atoms/MDescriptionList";
 export { MFlex } from "./atoms/MFlex";

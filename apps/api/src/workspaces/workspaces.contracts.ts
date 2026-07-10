@@ -23,3 +23,7 @@ export type WorkspaceMember = {
 export type WorkspaceDetail = WorkspaceSummary & {
   members: WorkspaceMember[];
 };
+
+export type UpdateWorkspaceMemberRoleInput = {
+  role: Exclude<WorkspaceMemberRole, "owner">;
+};

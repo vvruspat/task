@@ -7,6 +7,53 @@ type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 
+export function canManageWorkspaceSettings(role: "owner" | "admin" | "member" | "guest"): boolean {
+  return role === "owner" || role === "admin";
+}
+
+export type EditableWorkspaceMemberRole = "admin" | "member" | "guest";
+
+export function buildWorkspaceMemberRoleUpdateInput(role: EditableWorkspaceMemberRole): {
+  role: EditableWorkspaceMemberRole;
+} {
+  return { role };
+}
+
+export function buildWorkspaceStatusCreateInput(input: {
+  color: string;
+  isDone: boolean;
+  name: string;
+  position: string;
+}): { color: string; isDone: boolean; name: string; position: string } {
+  return { ...input, name: input.name.trim() };
+}
+
+export function shouldConfirmWorkspaceStatusDeletion(confirmed: boolean): boolean {
+  return confirmed;
+}
+
+export function shouldApplySettingsWorkspaceSettlement(
+  currentWorkspaceId: string | null,
+  capturedWorkspaceId: string,
+): boolean {
+  return currentWorkspaceId === capturedWorkspaceId;
+}
+
+export function getSettingsMutationSettlement(input: {
+  capturedWorkspaceId: string;
+  currentWorkspaceId: string | null;
+  errorMessage: string | null;
+}): { errorMessage: string | null; shouldRefresh: boolean } {
+  const isCurrent = shouldApplySettingsWorkspaceSettlement(
+    input.currentWorkspaceId,
+    input.capturedWorkspaceId,
+  );
+  return {
+    errorMessage: isCurrent ? input.errorMessage : null,
+    shouldRefresh: isCurrent && input.errorMessage === null,
+  };
+}
+
 export type ProjectOverviewRow = {
   description: string;
   dueSoonTaskCount: number;

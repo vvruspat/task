@@ -239,6 +239,10 @@ export function App(): ReactElement {
         })
       : null;
   }, []);
+  const trustedUserId = useMemo(() => {
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    return configResult.status === "configured" ? configResult.config.trustedUserId : null;
+  }, []);
 
   useEffect(() => {
     const configResult = parseWebShellConfig(webShellEnvironment);
@@ -799,6 +803,13 @@ export function App(): ReactElement {
               onOpenTask={(taskId) =>
                 updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId }))
               }
+              onOpenConfirmations={() =>
+                updateNavigation((currentNavigation) => ({
+                  ...currentNavigation,
+                  routeId: "confirmations",
+                  taskId: null,
+                }))
+              }
               onSelectProject={(projectId) =>
                 updateNavigation((currentNavigation) => ({
                   ...currentNavigation,
@@ -834,6 +845,7 @@ export function App(): ReactElement {
               taskActionState={taskCreateState}
               tasks={data.tasks}
               taskClient={taskClient}
+              currentUserId={trustedUserId}
               workspaces={data.workspaces}
             />
           )}

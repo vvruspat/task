@@ -106,6 +106,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/members/{memberId}/role": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update one workspace member role */
+    patch: operations["WorkspacesController_updateMemberRole"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/dashboard": {
     parameters: {
       query?: never;
@@ -482,11 +499,30 @@ export interface paths {
     /** List statuses for one visible workspace */
     get: operations["StatusesController_listStatuses"];
     put?: never;
-    post?: never;
+    /** Create a status in one workspace */
+    post: operations["StatusesController_createStatus"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/statuses/{statusId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete a status from one workspace */
+    delete: operations["StatusesController_deleteStatus"];
+    options?: never;
+    head?: never;
+    /** Update a status in one workspace */
+    patch: operations["StatusesController_updateStatus"];
     trace?: never;
   };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/comments": {
@@ -763,6 +799,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get one current user agent run with safe audit records */
+    get: operations["AgentRunsController_getWorkspaceRun"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -844,6 +897,10 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
       members: components["schemas"]["WorkspaceMemberDto"][];
+    };
+    UpdateWorkspaceMemberRoleDto: {
+      /** @enum {string} */
+      role: "admin" | "member" | "guest";
     };
     DashboardProjectDto: {
       /** Format: uuid */
@@ -1303,6 +1360,26 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
+    CreateWorkspaceStatusDto: {
+      /** @example In progress */
+      name: string;
+      /** @example #3b82f6 */
+      color: string;
+      /** @example 1000 */
+      position: string;
+      /** @example false */
+      isDone?: boolean;
+    };
+    UpdateWorkspaceStatusDto: {
+      /** @example In progress */
+      name?: string;
+      /** @example #3b82f6 */
+      color?: string;
+      /** @example 1000 */
+      position?: string;
+      /** @example false */
+      isDone?: boolean;
+    };
     TaskCommentDto: {
       /** Format: uuid */
       id: string;
@@ -1572,6 +1649,64 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
+    AgentRunToolCallAuditDto: {
+      /** Format: uuid */
+      id: string;
+      toolName: string;
+      arguments: {
+        [key: string]: unknown;
+      };
+      result?: {
+        [key: string]: unknown;
+      } | null;
+      /** @enum {string} */
+      status: "pending" | "success" | "error";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      completedAt?: string | null;
+    };
+    AgentRunConfirmationLinkDto: {
+      /** Format: uuid */
+      id: string;
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** @enum {string} */
+      status: "pending" | "confirmed" | "cancelled" | "expired";
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    AgentRunDetailDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      sourceMessageId?: string | null;
+      model?: string | null;
+      /** @example @task what is next for the album? */
+      inputText: string;
+      finalResponse?: string | null;
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      toolCalls: components["schemas"]["AgentRunToolCallAuditDto"][];
+      confirmationRequests: components["schemas"]["AgentRunConfirmationLinkDto"][];
+    };
     ListTaskTableQueryDto: {
       search?: string;
       /** Format: uuid */
@@ -1757,6 +1892,56 @@ export interface operations {
         };
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WorkspacesController_updateMemberRole: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        memberId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateWorkspaceMemberRoleDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceMemberDto"];
+        };
+      };
+      /** @description Workspace member role payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update this workspace member role. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace member is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;
@@ -3104,6 +3289,158 @@ export interface operations {
       };
     };
   };
+  StatusesController_createStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWorkspaceStatusDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"];
+        };
+      };
+      /** @description Status payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot manage statuses in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description A workspace status with this name already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  StatusesController_deleteStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        statusId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"];
+        };
+      };
+      /** @description Current user cannot manage statuses in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace status is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  StatusesController_updateStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        statusId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateWorkspaceStatusDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"];
+        };
+      };
+      /** @description Status payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot manage statuses in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace status is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description A workspace status with this name already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   CommentsController_listTaskComments: {
     parameters: {
       query?: never;
@@ -3855,6 +4192,38 @@ export interface operations {
         };
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentRunsController_getWorkspaceRun: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        agentRunId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentRunDetailDto"];
+        };
+      };
+      /** @description Workspace or agent run is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;

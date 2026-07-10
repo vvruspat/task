@@ -1,6 +1,9 @@
 import type {
+  CreateWorkspaceStatusInput,
   TaskApiClient,
   TelegramIdentityLinkStatus,
+  UpdateWorkspaceMemberRoleInput,
+  UpdateWorkspaceStatusInput,
   WorkspaceDetail,
   WorkspaceMember,
 } from "@task/api-client";
@@ -8,18 +11,27 @@ import {
   MAlert,
   MBox,
   MButton,
+  MCheckbox,
   MFlex,
   MHeading,
+  MInput,
   MOperationalContentGrid,
+  MSelect,
   MText,
 } from "@task/ui/app";
 import type { ReactElement } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   buildSettingsSummary,
   buildSettingsWorkspaceRows,
+  buildWorkspaceMemberRoleUpdateInput,
+  buildWorkspaceStatusCreateInput,
+  canManageWorkspaceSettings,
+  getSettingsMutationSettlement,
   getTelegramMiniAppInitData,
   isTelegramIdentityUnlinkedError,
+  shouldApplySettingsWorkspaceSettlement,
+  shouldConfirmWorkspaceStatusDeletion,
   shouldShowTelegramLinkAction,
 } from "../workspaceViewModels.js";
 import type {
@@ -45,6 +57,7 @@ type TelegramLinkState =
 
 export type SettingsViewProps = {
   client: TaskApiClient | null;
+  currentUserId: string | null;
   projects: ProjectSummary[];
   selectedProjectId: string | null;
   selectedWorkspaceId: string | null;
@@ -56,6 +69,7 @@ export type SettingsViewProps = {
 
 export function SettingsView({
   client,
+  currentUserId,
   projects,
   selectedProjectId,
   selectedWorkspaceId,
@@ -80,7 +94,14 @@ export function SettingsView({
   const [membersState, setMembersState] = useState<LoadState<WorkspaceMember[]>>({
     status: "idle",
   });
+  const [statusesState, setStatusesState] = useState<LoadState<WorkspaceStatus[]>>({
+    status: "idle",
+  });
+  const [settingsActionError, setSettingsActionError] = useState<string | null>(null);
+  const [activeActionWorkspaceId, setActiveActionWorkspaceId] = useState<string | null>(null);
   const [telegramState, setTelegramState] = useState<TelegramLinkState>({ status: "loading" });
+  const selectedWorkspaceIdRef = useRef(selectedWorkspaceId);
+  selectedWorkspaceIdRef.current = selectedWorkspaceId;
 
   const loadTelegramStatus = useCallback(async (): Promise<void> => {
     if (client === null) {
@@ -106,15 +127,22 @@ export function SettingsView({
   }, [loadTelegramStatus]);
 
   useEffect(() => {
+    setActiveActionWorkspaceId(null);
+    setSettingsActionError(null);
+  }, [selectedWorkspaceId]);
+
+  useEffect(() => {
     if (client === null || selectedWorkspaceId === null) {
       setWorkspaceState({ status: "idle" });
       setMembersState({ status: "idle" });
+      setStatusesState({ status: "idle" });
       return;
     }
 
     let cancelled = false;
     setWorkspaceState({ status: "loading" });
     setMembersState({ status: "loading" });
+    setStatusesState({ status: "loading" });
     void client
       .getWorkspace({ workspaceId: selectedWorkspaceId })
       .then((workspace) => {
@@ -131,11 +159,186 @@ export function SettingsView({
       .catch((error: unknown) => {
         if (!cancelled) setMembersState({ message: toErrorMessage(error), status: "error" });
       });
+    void client
+      .listStatuses({ workspaceId: selectedWorkspaceId })
+      .then((loadedStatuses) => {
+        if (!cancelled) setStatusesState({ status: "loaded", value: loadedStatuses });
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) setStatusesState({ message: toErrorMessage(error), status: "error" });
+      });
 
     return () => {
       cancelled = true;
     };
   }, [client, selectedWorkspaceId]);
+
+  const currentMember =
+    membersState.status === "loaded" && currentUserId !== null
+      ? (membersState.value.find((member) => member.userId === currentUserId) ?? null)
+      : null;
+  const canManageSettings =
+    currentMember !== null && canManageWorkspaceSettings(currentMember.role);
+  const isSettingsActionPending = activeActionWorkspaceId !== null;
+
+  const refreshMembers = useCallback(
+    async (workspaceId: string): Promise<void> => {
+      if (client === null) return;
+      const members = await client.listWorkspaceMembers({ workspaceId });
+      if (shouldApplySettingsWorkspaceSettlement(selectedWorkspaceIdRef.current, workspaceId)) {
+        setMembersState({ status: "loaded", value: members });
+      }
+    },
+    [client],
+  );
+
+  const refreshStatuses = useCallback(
+    async (workspaceId: string): Promise<void> => {
+      if (client === null) return;
+      const loadedStatuses = await client.listStatuses({ workspaceId });
+      if (shouldApplySettingsWorkspaceSettlement(selectedWorkspaceIdRef.current, workspaceId)) {
+        setStatusesState({ status: "loaded", value: loadedStatuses });
+      }
+    },
+    [client],
+  );
+
+  async function updateMemberRole(
+    memberId: string,
+    role: UpdateWorkspaceMemberRoleInput["role"],
+  ): Promise<void> {
+    if (client === null || selectedWorkspaceId === null) return;
+    const workspaceId = selectedWorkspaceId;
+    setSettingsActionError(null);
+    setActiveActionWorkspaceId(workspaceId);
+    try {
+      await client.updateWorkspaceMemberRole({
+        body: buildWorkspaceMemberRoleUpdateInput(role),
+        memberId,
+        workspaceId,
+      });
+      if (
+        getSettingsMutationSettlement({
+          capturedWorkspaceId: workspaceId,
+          currentWorkspaceId: selectedWorkspaceIdRef.current,
+          errorMessage: null,
+        }).shouldRefresh
+      ) {
+        await refreshMembers(workspaceId);
+      }
+    } catch (error: unknown) {
+      const settlement = getSettingsMutationSettlement({
+        capturedWorkspaceId: workspaceId,
+        currentWorkspaceId: selectedWorkspaceIdRef.current,
+        errorMessage: toErrorMessage(error),
+      });
+      if (settlement.errorMessage !== null) setSettingsActionError(settlement.errorMessage);
+    } finally {
+      if (shouldApplySettingsWorkspaceSettlement(selectedWorkspaceIdRef.current, workspaceId)) {
+        setActiveActionWorkspaceId(null);
+      }
+    }
+  }
+
+  async function createStatus(input: CreateWorkspaceStatusInput): Promise<void> {
+    if (client === null || selectedWorkspaceId === null) return;
+    const workspaceId = selectedWorkspaceId;
+    setSettingsActionError(null);
+    setActiveActionWorkspaceId(workspaceId);
+    try {
+      await client.createWorkspaceStatus({ body: input, workspaceId });
+      if (
+        getSettingsMutationSettlement({
+          capturedWorkspaceId: workspaceId,
+          currentWorkspaceId: selectedWorkspaceIdRef.current,
+          errorMessage: null,
+        }).shouldRefresh
+      ) {
+        await refreshStatuses(workspaceId);
+      }
+    } catch (error: unknown) {
+      const settlement = getSettingsMutationSettlement({
+        capturedWorkspaceId: workspaceId,
+        currentWorkspaceId: selectedWorkspaceIdRef.current,
+        errorMessage: toErrorMessage(error),
+      });
+      if (settlement.errorMessage !== null) setSettingsActionError(settlement.errorMessage);
+    } finally {
+      if (shouldApplySettingsWorkspaceSettlement(selectedWorkspaceIdRef.current, workspaceId)) {
+        setActiveActionWorkspaceId(null);
+      }
+    }
+  }
+
+  async function updateStatus(statusId: string, input: UpdateWorkspaceStatusInput): Promise<void> {
+    if (client === null || selectedWorkspaceId === null) return;
+    const workspaceId = selectedWorkspaceId;
+    setSettingsActionError(null);
+    setActiveActionWorkspaceId(workspaceId);
+    try {
+      await client.updateWorkspaceStatus({
+        body: input,
+        statusId,
+        workspaceId,
+      });
+      if (
+        getSettingsMutationSettlement({
+          capturedWorkspaceId: workspaceId,
+          currentWorkspaceId: selectedWorkspaceIdRef.current,
+          errorMessage: null,
+        }).shouldRefresh
+      ) {
+        await refreshStatuses(workspaceId);
+      }
+    } catch (error: unknown) {
+      const settlement = getSettingsMutationSettlement({
+        capturedWorkspaceId: workspaceId,
+        currentWorkspaceId: selectedWorkspaceIdRef.current,
+        errorMessage: toErrorMessage(error),
+      });
+      if (settlement.errorMessage !== null) setSettingsActionError(settlement.errorMessage);
+    } finally {
+      if (shouldApplySettingsWorkspaceSettlement(selectedWorkspaceIdRef.current, workspaceId)) {
+        setActiveActionWorkspaceId(null);
+      }
+    }
+  }
+
+  async function deleteStatus(status: WorkspaceStatus): Promise<void> {
+    if (client === null || selectedWorkspaceId === null) return;
+    if (
+      !shouldConfirmWorkspaceStatusDeletion(
+        window.confirm(`Delete status “${status.name}”? This cannot be undone.`),
+      )
+    )
+      return;
+    const workspaceId = selectedWorkspaceId;
+    setSettingsActionError(null);
+    setActiveActionWorkspaceId(workspaceId);
+    try {
+      await client.deleteWorkspaceStatus({ statusId: status.id, workspaceId });
+      if (
+        getSettingsMutationSettlement({
+          capturedWorkspaceId: workspaceId,
+          currentWorkspaceId: selectedWorkspaceIdRef.current,
+          errorMessage: null,
+        }).shouldRefresh
+      ) {
+        await refreshStatuses(workspaceId);
+      }
+    } catch (error: unknown) {
+      const settlement = getSettingsMutationSettlement({
+        capturedWorkspaceId: workspaceId,
+        currentWorkspaceId: selectedWorkspaceIdRef.current,
+        errorMessage: toErrorMessage(error),
+      });
+      if (settlement.errorMessage !== null) setSettingsActionError(settlement.errorMessage);
+    } finally {
+      if (shouldApplySettingsWorkspaceSettlement(selectedWorkspaceIdRef.current, workspaceId)) {
+        setActiveActionWorkspaceId(null);
+      }
+    }
+  }
 
   async function linkTelegramIdentity(): Promise<void> {
     if (client === null) {
@@ -205,6 +408,9 @@ export function SettingsView({
 
       <WorkspacePanel eyebrow="People" title="Members" titleId="settings-members-title">
         <MFlex align="stretch" direction="column" gap="m">
+          {settingsActionError === null ? null : (
+            <MAlert mode="error">{settingsActionError}</MAlert>
+          )}
           {membersState.status === "idle" ? (
             <MText as="p" mode="secondary">
               Select a workspace to view its members.
@@ -224,8 +430,57 @@ export function SettingsView({
             </MText>
           ) : null}
           {membersState.status === "loaded"
-            ? membersState.value.map((member) => <MemberRow key={member.id} member={member} />)
+            ? membersState.value.map((member) => (
+                <MemberRow
+                  canManage={canManageSettings}
+                  disabled={isSettingsActionPending}
+                  key={member.id}
+                  member={member}
+                  onRoleChange={(role) => void updateMemberRole(member.id, role)}
+                />
+              ))
             : null}
+        </MFlex>
+      </WorkspacePanel>
+
+      <WorkspacePanel eyebrow="Workflow" title="Statuses" titleId="settings-statuses-title">
+        <MFlex align="stretch" direction="column" gap="m">
+          {statusesState.status === "loading" ? (
+            <MText as="p" mode="secondary">
+              Loading statuses.
+            </MText>
+          ) : null}
+          {statusesState.status === "error" ? (
+            <MAlert mode="error">{statusesState.message}</MAlert>
+          ) : null}
+          {statusesState.status === "loaded" && statusesState.value.length === 0 ? (
+            <MText as="p" mode="secondary">
+              No statuses found.
+            </MText>
+          ) : null}
+          {statusesState.status === "loaded"
+            ? statusesState.value.map((status) => (
+                <StatusRow
+                  canManage={canManageSettings}
+                  disabled={isSettingsActionPending}
+                  key={status.id}
+                  onDelete={() => void deleteStatus(status)}
+                  onUpdate={(input) => void updateStatus(status.id, input)}
+                  status={status}
+                />
+              ))
+            : null}
+          {canManageSettings ? (
+            <CreateStatusForm
+              disabled={isSettingsActionPending}
+              onCreate={(input) => void createStatus(input)}
+            />
+          ) : null}
+          {membersState.status === "loaded" && !canManageSettings ? (
+            <MText as="p" mode="secondary">
+              Only workspace owners and admins can manage statuses.
+            </MText>
+          ) : null}
         </MFlex>
       </WorkspacePanel>
 
@@ -264,7 +519,19 @@ export function SettingsView({
   );
 }
 
-function MemberRow({ member }: { member: WorkspaceMember }): ReactElement {
+type EditableMemberRole = UpdateWorkspaceMemberRoleInput["role"];
+
+function MemberRow({
+  canManage,
+  disabled,
+  member,
+  onRoleChange,
+}: {
+  canManage: boolean;
+  disabled: boolean;
+  member: WorkspaceMember;
+  onRoleChange(role: EditableMemberRole): void;
+}): ReactElement {
   return (
     <MFlex as="article" align="start" gap="m" justify="space-between" wrap="nowrap">
       <MBox>
@@ -275,11 +542,145 @@ function MemberRow({ member }: { member: WorkspaceMember }): ReactElement {
           </MText>
         )}
       </MBox>
-      <MText as="p" mode="secondary">
-        {member.role}
-      </MText>
+      {canManage && member.role !== "owner" ? (
+        <MSelect
+          aria-label={`Role for ${member.displayName}`}
+          disabled={disabled}
+          options={memberRoleOptions}
+          onValueChange={(value) => {
+            if (isEditableMemberRole(value)) onRoleChange(value);
+          }}
+          value={member.role}
+        />
+      ) : (
+        <MText as="p" mode="secondary">
+          {member.role}
+        </MText>
+      )}
     </MFlex>
   );
+}
+
+function StatusRow({
+  canManage,
+  disabled,
+  onDelete,
+  onUpdate,
+  status,
+}: {
+  canManage: boolean;
+  disabled: boolean;
+  onDelete(): void;
+  onUpdate(input: UpdateWorkspaceStatusInput): void;
+  status: WorkspaceStatus;
+}): ReactElement {
+  const [name, setName] = useState(status.name);
+  const [color, setColor] = useState(status.color);
+  const [isDone, setIsDone] = useState(status.isDone);
+  useEffect(() => {
+    setName(status.name);
+    setColor(status.color);
+    setIsDone(status.isDone);
+  }, [status]);
+  if (!canManage)
+    return (
+      <MText as="p">
+        {status.name} · {status.isDone ? "Done" : "Open"}
+      </MText>
+    );
+  return (
+    <MFlex as="article" align="start" direction="column" gap="s">
+      <MInput
+        aria-label={`Status name for ${status.name}`}
+        disabled={disabled}
+        onChange={(event) => setName(event.target.value)}
+        value={name}
+      />
+      <MInput
+        aria-label={`Status color for ${status.name}`}
+        disabled={disabled}
+        onChange={(event) => setColor(event.target.value)}
+        value={color}
+      />
+      <MCheckbox
+        checked={isDone}
+        disabled={disabled}
+        label="Completed status"
+        onCheckedChange={setIsDone}
+      />
+      <MFlex gap="s">
+        <MButton disabled={disabled} onClick={() => onUpdate({ color, isDone, name })}>
+          Save status
+        </MButton>
+        <MButton disabled={disabled} mode="outlined" onClick={onDelete}>
+          Delete status
+        </MButton>
+      </MFlex>
+    </MFlex>
+  );
+}
+
+function CreateStatusForm({
+  disabled,
+  onCreate,
+}: {
+  disabled: boolean;
+  onCreate(input: CreateWorkspaceStatusInput): void;
+}): ReactElement {
+  const [name, setName] = useState("");
+  const [color, setColor] = useState("#64748b");
+  const [isDone, setIsDone] = useState(false);
+  return (
+    <MFlex
+      as="form"
+      align="start"
+      direction="column"
+      gap="s"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const trimmedName = name.trim();
+        if (trimmedName.length > 0) {
+          onCreate(
+            buildWorkspaceStatusCreateInput({ color, isDone, name: trimmedName, position: "1000" }),
+          );
+          setName("");
+        }
+      }}
+    >
+      <MHeading mode="h4">Add status</MHeading>
+      <MInput
+        aria-label="New status name"
+        disabled={disabled}
+        onChange={(event) => setName(event.target.value)}
+        value={name}
+      />
+      <MInput
+        aria-label="New status color"
+        disabled={disabled}
+        onChange={(event) => setColor(event.target.value)}
+        value={color}
+      />
+      <MCheckbox
+        checked={isDone}
+        disabled={disabled}
+        label="Completed status"
+        onCheckedChange={setIsDone}
+      />
+      <MButton disabled={disabled} type="submit">
+        Create status
+      </MButton>
+    </MFlex>
+  );
+}
+
+const memberRoleOptions = [
+  { key: "admin", value: "Admin" },
+  { key: "member", value: "Member" },
+  { key: "guest", value: "Guest" },
+];
+
+function isEditableMemberRole(value: string): value is EditableMemberRole {
+  return value === "admin" || value === "member" || value === "guest";
 }
 
 function TelegramLinkContent({

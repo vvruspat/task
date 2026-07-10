@@ -2,13 +2,14 @@ import { Module, type Provider } from "@nestjs/common";
 import { DatabaseModule } from "../database/database.module.js";
 import { StatusesController } from "./statuses.controller.js";
 import { StatusesService } from "./statuses.service.js";
-import type { StatusesReadStore } from "./statuses.store.js";
+import type { StatusesReadStore, StatusesWriteStore } from "./statuses.store.js";
 import { TypeOrmStatusesReadStore } from "./typeorm-statuses-read.store.js";
 
 const statusesServiceProvider: Provider<StatusesService> = {
   provide: StatusesService,
-  useFactory: (readStore: StatusesReadStore): StatusesService => new StatusesService(readStore),
-  inject: [TypeOrmStatusesReadStore],
+  useFactory: (readStore: StatusesReadStore, writeStore: StatusesWriteStore): StatusesService =>
+    new StatusesService(readStore, writeStore),
+  inject: [TypeOrmStatusesReadStore, TypeOrmStatusesReadStore],
 };
 
 @Module({

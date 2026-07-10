@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { NotFoundException } from "@nestjs/common";
-import type { WorkspaceDetail, WorkspaceMember, WorkspaceSummary } from "./workspaces.contracts.js";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import type {
+  UpdateWorkspaceMemberRoleInput,
+  WorkspaceDetail,
+  WorkspaceMember,
+  WorkspaceSummary,
+} from "./workspaces.contracts.js";
 import { WorkspaceMemberDto, WorkspaceSummaryDto } from "./workspaces.dto.js";
 import { WorkspacesService } from "./workspaces.service.js";
-import type { WorkspaceReadStore } from "./workspaces.store.js";
+import type { WorkspaceMemberManagementStore, WorkspaceReadStore } from "./workspaces.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
@@ -78,6 +83,30 @@ test("WorkspacesService hides missing or inaccessible workspaces", async () => {
   await assert.rejects(() => service.listMembers(workspaceId, userId), NotFoundException);
 });
 
+test("WorkspacesService returns updated member role and preserves management errors", async () => {
+  const service = new WorkspacesService(
+    createReadStore({}),
+    createManagementStore({ member: { ...workspaceMember, role: "admin" } }),
+  );
+
+  const response = await service.updateMemberRole(workspaceId, workspaceMember.id, userId, {
+    role: "admin",
+  });
+  assert.equal(response.role, "admin");
+
+  const forbiddenService = new WorkspacesService(
+    createReadStore({}),
+    createManagementStore({
+      result: "forbidden",
+    }),
+  );
+  await assert.rejects(
+    () =>
+      forbiddenService.updateMemberRole(workspaceId, workspaceMember.id, userId, { role: "guest" }),
+    ForbiddenException,
+  );
+});
+
 function createReadStore(options: {
   workspaces?: WorkspaceSummary[];
   workspace?: WorkspaceDetail | null;
@@ -87,5 +116,23 @@ function createReadStore(options: {
     listForUser: async (): Promise<WorkspaceSummary[]> => options.workspaces ?? [],
     getForUser: async (): Promise<WorkspaceDetail | null> => options.workspace ?? null,
     listMembersForUser: async (): Promise<WorkspaceMember[] | null> => options.members ?? null,
+  };
+}
+
+function createManagementStore(options: {
+  member?: WorkspaceMember;
+  result?: "forbidden" | "member_not_found";
+}): WorkspaceMemberManagementStore {
+  return {
+    updateMemberRole: async (
+      _workspaceId: string,
+      _memberId: string,
+      _userId: string,
+      _input: UpdateWorkspaceMemberRoleInput,
+    ) => {
+      if (options.result !== undefined) return { status: options.result };
+      if (options.member === undefined) return { status: "member_not_found" };
+      return { member: options.member, status: "updated" };
+    },
   };
 }

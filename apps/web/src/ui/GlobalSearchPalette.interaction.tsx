@@ -1,9 +1,15 @@
-import type { SearchPage, SearchRequestInput } from "@task/api-client";
+import type {
+  AgentRunDetail,
+  AgentRunSummary,
+  SearchPage,
+  SearchRequestInput,
+} from "@task/api-client";
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App.js";
 import { GlobalSearchPalette } from "./GlobalSearchPalette.js";
+import { AgentHistoryView } from "./views/workspace/AgentHistoryView.js";
 
 declare global {
   var IS_REACT_ACT_ENVIRONMENT: boolean | undefined;
@@ -105,6 +111,58 @@ describe("GlobalSearchPalette interactions", () => {
   });
 });
 
+describe("AgentHistoryView interactions", () => {
+  it("keeps the current run detail when an older selection resolves last", async () => {
+    const first = deferred<AgentRunDetail>();
+    const second = deferred<AgentRunDetail>();
+    const getAgentRun = vi
+      .fn()
+      .mockImplementation(
+        (input: { agentRunId: string; workspaceId: string }): Promise<AgentRunDetail> =>
+          input.agentRunId === firstRunId ? first.promise : second.promise,
+      );
+    const onOpenConfirmations = vi.fn();
+
+    render(
+      <AgentHistoryView
+        agentRuns={[
+          agentRunSummary({ id: firstRunId, inputText: "First run" }),
+          agentRunSummary({ id: secondRunId, inputText: "Second run" }),
+        ]}
+        client={{ getAgentRun }}
+        onOpenConfirmations={onOpenConfirmations}
+        projects={[]}
+        selectedProjectId={null}
+        selectedWorkspaceId={workspaceId}
+        skills={[]}
+        statuses={[]}
+        tasks={[]}
+        workspaces={[]}
+      />,
+    );
+
+    await act(async () => {
+      getButtonByText("Second run").click();
+    });
+    await act(async () => {
+      second.resolve(agentRunDetail(secondRunId, "Newest response"));
+    });
+    await act(async () => {
+      first.resolve(agentRunDetail(firstRunId, "Stale response"));
+    });
+
+    expect(getAgentRun).toHaveBeenCalledTimes(2);
+    expect(document.body.textContent).toContain("Newest response");
+    expect(document.body.textContent).not.toContain("Stale response");
+    expect(document.body.textContent).toContain("Tool-call audit");
+
+    await act(async () => {
+      getButtonByText("Open confirmations").click();
+    });
+    expect(onOpenConfirmations).toHaveBeenCalledOnce();
+  });
+});
+
 function deferred<T>(): Deferred<T> {
   let resolvePromise: ((value: T) => void) | undefined;
   const promise = new Promise<T>((resolve) => {
@@ -125,6 +183,14 @@ function getOptionByText(text: string): HTMLButtonElement {
   );
   if (option === undefined) throw new Error(`No command palette option contains ${text}.`);
   return option;
+}
+
+function getButtonByText(text: string): HTMLButtonElement {
+  const button = [...document.querySelectorAll<HTMLButtonElement>("button")].find((candidate) =>
+    candidate.textContent?.includes(text),
+  );
+  if (button === undefined) throw new Error(`No button contains ${text}.`);
+  return button;
 }
 
 function render(element: React.ReactNode): void {
@@ -149,6 +215,56 @@ function searchPage(title: string): SearchPage {
     page: 1,
     pageSize: 10,
     total: 1,
+  };
+}
+
+const firstRunId = "11111111-1111-4111-8111-111111111111";
+const secondRunId = "22222222-2222-4222-8222-222222222222";
+
+function agentRunSummary(overrides: Partial<AgentRunSummary> = {}): AgentRunSummary {
+  return {
+    createdAt: "2026-07-10T09:00:00.000Z",
+    error: null,
+    finalResponse: null,
+    id: firstRunId,
+    inputText: "First run",
+    model: "openai/gpt-5",
+    source: "web",
+    sourceMessageId: null,
+    status: "completed",
+    updatedAt: "2026-07-10T10:00:00.000Z",
+    userId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+    workspaceId,
+    ...overrides,
+  };
+}
+
+function agentRunDetail(id: string, finalResponse: string): AgentRunDetail {
+  return {
+    ...agentRunSummary({ finalResponse, id }),
+    confirmationRequests: [
+      {
+        createdAt: "2026-07-10T09:10:00.000Z",
+        expiresAt: "2026-07-11T09:10:00.000Z",
+        id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        kind: "task.create",
+        preview: { title: "Create task" },
+        status: "pending",
+        updatedAt: "2026-07-10T09:10:00.000Z",
+      },
+    ],
+    toolCalls: [
+      {
+        arguments: { projectId: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee" },
+        completedAt: "2026-07-10T09:05:00.000Z",
+        createdAt: "2026-07-10T09:04:00.000Z",
+        error: null,
+        id: "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        result: { created: true },
+        status: "success",
+        toolName: "create_task",
+      },
+    ],
   };
 }
 

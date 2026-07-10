@@ -1,5 +1,66 @@
-import { ApiProperty } from "@nestjs/swagger";
-import type { WorkspaceStatus } from "./statuses.contracts.js";
+import { BadRequestException, type PipeTransform } from "@nestjs/common";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import type {
+  CreateWorkspaceStatusInput,
+  UpdateWorkspaceStatusInput,
+  WorkspaceStatus,
+} from "./statuses.contracts.js";
+
+const numericStringPattern = /^-?\d+(\.\d+)?$/;
+
+export class CreateWorkspaceStatusDto implements CreateWorkspaceStatusInput {
+  @ApiProperty({ example: "In progress", minLength: 1 })
+  readonly name: string = "";
+
+  @ApiProperty({ example: "#3b82f6", minLength: 1 })
+  readonly color: string = "";
+
+  @ApiProperty({ example: "1000", pattern: numericStringPattern.source })
+  readonly position: string = "";
+
+  @ApiPropertyOptional({ example: false })
+  readonly isDone?: boolean;
+}
+
+export class UpdateWorkspaceStatusDto implements UpdateWorkspaceStatusInput {
+  @ApiPropertyOptional({ example: "In progress", minLength: 1 })
+  readonly name?: string;
+
+  @ApiPropertyOptional({ example: "#3b82f6", minLength: 1 })
+  readonly color?: string;
+
+  @ApiPropertyOptional({ example: "1000", pattern: numericStringPattern.source })
+  readonly position?: string;
+
+  @ApiPropertyOptional({ example: false })
+  readonly isDone?: boolean;
+}
+
+export class ParseCreateWorkspaceStatusBodyPipe
+  implements PipeTransform<unknown, CreateWorkspaceStatusInput>
+{
+  transform(value: unknown): CreateWorkspaceStatusInput {
+    const input = parseStatusInput(value, true);
+
+    if (input.name === undefined || input.color === undefined || input.position === undefined) {
+      throw new BadRequestException("Status payload must include name, color, and position.");
+    }
+
+    return { ...input, name: input.name, color: input.color, position: input.position };
+  }
+}
+
+export class ParseUpdateWorkspaceStatusBodyPipe
+  implements PipeTransform<unknown, UpdateWorkspaceStatusInput>
+{
+  transform(value: unknown): UpdateWorkspaceStatusInput {
+    const input = parseStatusInput(value, false);
+    if (Object.keys(input).length === 0) {
+      throw new BadRequestException("Status payload must include at least one field.");
+    }
+    return input;
+  }
+}
 
 export class WorkspaceStatusDto implements WorkspaceStatus {
   @ApiProperty({ format: "uuid" })
@@ -36,4 +97,59 @@ export class WorkspaceStatusDto implements WorkspaceStatus {
     this.createdAt = status.createdAt;
     this.updatedAt = status.updatedAt;
   }
+}
+
+function parseStatusInput(
+  value: unknown,
+  requireFields: boolean,
+): CreateWorkspaceStatusInput | UpdateWorkspaceStatusInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Status payload must be an object.");
+  }
+
+  const input: UpdateWorkspaceStatusInput = {};
+  const name = readOptionalNonEmptyString(value, "name");
+  const color = readOptionalNonEmptyString(value, "color");
+  const position = readOptionalNonEmptyString(value, "position");
+  const isDone = readOptionalBoolean(value, "isDone");
+
+  if (position !== undefined && !numericStringPattern.test(position)) {
+    throw new BadRequestException("Status position must be a numeric string.");
+  }
+
+  if (name !== undefined) input.name = name;
+  if (color !== undefined) input.color = color;
+  if (position !== undefined) input.position = position;
+  if (isDone !== undefined) input.isDone = isDone;
+
+  if (requireFields && Object.keys(input).length !== 3 && Object.keys(input).length !== 4) {
+    throw new BadRequestException("Status payload must include name, color, and position.");
+  }
+
+  return input;
+}
+
+function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readOptionalNonEmptyString(
+  value: Record<string, unknown>,
+  key: string,
+): string | undefined {
+  if (!(key in value)) return undefined;
+  const field = value[key];
+  if (typeof field !== "string" || field.trim().length === 0) {
+    throw new BadRequestException(`Status ${key} must be a non-empty string.`);
+  }
+  return field;
+}
+
+function readOptionalBoolean(value: Record<string, unknown>, key: string): boolean | undefined {
+  if (!(key in value)) return undefined;
+  const field = value[key];
+  if (typeof field !== "boolean") {
+    throw new BadRequestException("Status isDone must be a boolean.");
+  }
+  return field;
 }

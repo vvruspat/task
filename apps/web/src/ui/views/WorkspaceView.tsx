@@ -22,12 +22,14 @@ import type {
 
 type WorkspaceViewProps = {
   agentRuns: AgentRunSummary[];
+  currentUserId: string | null;
   projects: ProjectSummary[];
   onArchiveProject(projectId: string): Promise<void>;
   onCreateProject(title: string): Promise<void>;
   onCreateTask(projectId: string, title: string): Promise<void>;
   onCloseTask(): void;
   onOpenTask(taskId: string): void;
+  onOpenConfirmations(): void;
   onTaskDirtyChange(value: boolean): void;
   onTaskUpdated(task: import("@task/api-client").TaskDetail): void;
   onSelectProject(projectId: string): void;
@@ -50,11 +52,13 @@ type WorkspaceViewProps = {
 
 export default function WorkspaceView({
   agentRuns,
+  currentUserId,
   onArchiveProject,
   onCreateProject,
   onCreateTask,
   onCloseTask,
   onOpenTask,
+  onOpenConfirmations,
   onTaskDirtyChange,
   onTaskUpdated,
   onSelectProject,
@@ -170,6 +174,8 @@ export default function WorkspaceView({
       <>
         <AgentHistoryView
           agentRuns={agentRuns}
+          client={taskClient}
+          onOpenConfirmations={onOpenConfirmations}
           projects={projects}
           selectedProjectId={selectedProjectId}
           selectedWorkspaceId={selectedWorkspaceId}
@@ -188,6 +194,7 @@ export default function WorkspaceView({
       <>
         <SettingsView
           client={taskClient}
+          currentUserId={currentUserId}
           projects={projects}
           selectedProjectId={selectedProjectId}
           selectedWorkspaceId={selectedWorkspaceId}
