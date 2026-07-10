@@ -6,6 +6,7 @@ import type {
   TelegramConfirmationCallbackInput,
   TelegramConfirmationCallbackResult,
   TelegramContextResolution,
+  TelegramIdentityLinkStatus,
   VerifiedTelegramMiniAppInitData,
   VerifyTelegramMiniAppInitDataInput,
 } from "./telegram.contracts.js";
@@ -150,6 +151,23 @@ export class LinkedTelegramIdentityDto implements LinkedTelegramIdentity {
   constructor(identity: LinkedTelegramIdentity) {
     this.telegramId = identity.telegramId;
     this.userId = identity.userId;
+  }
+}
+
+export class TelegramIdentityLinkStatusDto implements TelegramIdentityLinkStatus {
+  @ApiProperty({ example: "123456789" })
+  readonly telegramId: string;
+
+  @ApiProperty({ format: "date-time" })
+  readonly linkedAt: Date;
+
+  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String })
+  readonly lastSeenAt: Date | null;
+
+  constructor(status: TelegramIdentityLinkStatus) {
+    this.telegramId = status.telegramId;
+    this.linkedAt = status.linkedAt;
+    this.lastSeenAt = status.lastSeenAt;
   }
 }
 

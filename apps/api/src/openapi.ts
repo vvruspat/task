@@ -10,6 +10,11 @@ import {
 } from "./attachments/attachments.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
 import {
+  ProjectMatrixCellDto,
+  ProjectMatrixDto,
+  ProjectMatrixStageDto,
+} from "./project-matrix/project-matrix.dto.js";
+import {
   CreateProjectDto,
   ProjectDetailDto,
   ProjectSummaryDto,
@@ -30,9 +35,12 @@ import {
   UpdateTaskSkillMetadataDto,
 } from "./task-skills/task-skills.dto.js";
 import {
+  BulkUpdateTasksDto,
   CreateTaskDto,
+  ListTaskTableQueryDto,
   TaskDetailDto,
   TaskSummaryDto,
+  TaskTablePageDto,
   UpdateTaskAssigneeDto,
   UpdateTaskDto,
   UpdateTaskDueDateDto,
@@ -68,6 +76,9 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       UpdateProjectDto,
       ProjectSummaryDto,
       ProjectDetailDto,
+      ProjectMatrixStageDto,
+      ProjectMatrixCellDto,
+      ProjectMatrixDto,
       WorkspaceStatusDto,
       CreateTaskSkillDto,
       PreviewTaskSkillApplyDto,
@@ -81,12 +92,15 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       TaskSkillVersionSummaryDto,
       TaskSkillDetailDto,
       CreateTaskDto,
+      BulkUpdateTasksDto,
+      ListTaskTableQueryDto,
       UpdateTaskDto,
       UpdateTaskStatusDto,
       UpdateTaskAssigneeDto,
       UpdateTaskDueDateDto,
       TaskSummaryDto,
       TaskDetailDto,
+      TaskTablePageDto,
       CreateTaskCommentDto,
       TaskCommentDto,
       CreateTaskFileAttachmentDto,

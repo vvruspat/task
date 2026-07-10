@@ -17,6 +17,7 @@ import type {
   LinkTelegramIdentityResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
+  TelegramIdentityLinkStatus,
 } from "./telegram.contracts.js";
 import { TelegramController, TelegramMiniAppController } from "./telegram.controller.js";
 import { TelegramService } from "./telegram.service.js";
@@ -173,6 +174,36 @@ test("TelegramMiniAppController links verified initData to the trusted current u
   });
 });
 
+test("TelegramMiniAppController maps linked and unlinked identity link statuses", async () => {
+  const linkedAt = new Date("2026-07-10T08:00:00.000Z");
+  const linkedController = new TelegramMiniAppController(
+    new TelegramService(
+      new RecordingTelegramContextStore({ status: "telegram_user_unlinked" }, undefined, {
+        telegramId: "123456789",
+        linkedAt,
+        lastSeenAt: null,
+      }),
+      new TelegramMiniAppInitDataVerifier({ botToken, maxAgeSeconds: 86_400, now: () => now }),
+    ),
+  );
+
+  assert.deepEqual(
+    { ...(await linkedController.getIdentityLinkStatus("22222222-2222-4222-8222-222222222222")) },
+    { telegramId: "123456789", linkedAt, lastSeenAt: null },
+  );
+
+  const unlinkedController = new TelegramMiniAppController(
+    new TelegramService(
+      new RecordingTelegramContextStore({ status: "telegram_user_unlinked" }),
+      new TelegramMiniAppInitDataVerifier({ botToken, maxAgeSeconds: 86_400, now: () => now }),
+    ),
+  );
+  await assert.rejects(
+    () => unlinkedController.getIdentityLinkStatus("22222222-2222-4222-8222-222222222222"),
+    { name: "ForbiddenException" },
+  );
+});
+
 const confirmationRequest: ConfirmationRequestDetail = {
   id: "11111111-1111-4111-8111-111111111111",
   workspaceId: "33333333-3333-4333-8333-333333333333",
@@ -192,14 +223,19 @@ class RecordingTelegramContextStore implements TelegramContextStore {
 
   constructor(
     private readonly resolution: TelegramContextResolution,
-    private readonly linkResult: LinkTelegramIdentityResult = {
+    private readonly linkResult: LinkTelegramIdentityResult | undefined = {
       status: "linked",
       identity: {
         telegramId: "123456789",
         userId: "22222222-2222-4222-8222-222222222222",
       },
     },
+    private readonly identityLinkStatus: TelegramIdentityLinkStatus | null = null,
   ) {}
+
+  async getIdentityLinkStatus(): Promise<TelegramIdentityLinkStatus | null> {
+    return this.identityLinkStatus;
+  }
 
   async resolveContext(input: ResolveTelegramContextInput): Promise<TelegramContextResolution> {
     this.lastInput = input;
@@ -210,7 +246,7 @@ class RecordingTelegramContextStore implements TelegramContextStore {
   async linkIdentity(input: LinkTelegramIdentityInput): Promise<LinkTelegramIdentityResult> {
     this.lastLinkInput = input;
 
-    return this.linkResult;
+    return this.linkResult ?? { status: "user_not_found" };
   }
 }
 

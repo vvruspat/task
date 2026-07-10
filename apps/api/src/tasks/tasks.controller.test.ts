@@ -7,6 +7,7 @@ import type {
   MoveTaskInput,
   TaskDetail,
   TaskSummary,
+  TaskTablePage,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
@@ -15,7 +16,9 @@ import type {
 import { TasksController } from "./tasks.controller.js";
 import {
   ParseAddTaskSubtasksBodyPipe,
+  ParseBulkUpdateTasksBodyPipe,
   ParseCreateTaskBodyPipe,
+  ParseListTaskTableQueryPipe,
   ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
   ParseUpdateTaskBodyPipe,
@@ -26,6 +29,7 @@ import { TasksService } from "./tasks.service.js";
 import type {
   TaskAddSubtasksResult,
   TaskArchiveResult,
+  TaskBulkUpdateResult,
   TaskCreateResult,
   TaskMoveResult,
   TaskReadStore,
@@ -429,6 +433,61 @@ test("ParseUpdateTaskDueDateBodyPipe validates task due date payloads", () => {
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("ParseListTaskTableQueryPipe applies table defaults and validates filters", () => {
+  const pipe = new ParseListTaskTableQueryPipe();
+  assert.deepEqual(pipe.transform({}), {
+    sortBy: "updatedAt",
+    sortDirection: "desc",
+    page: 1,
+    pageSize: 50,
+  });
+  assert.deepEqual(
+    pipe.transform({
+      search: "  bass ",
+      statusId,
+      page: "2",
+      pageSize: "25",
+      sortBy: "title",
+      sortDirection: "asc",
+    }),
+    { search: "bass", statusId, page: 2, pageSize: 25, sortBy: "title", sortDirection: "asc" },
+  );
+  assert.deepEqual(pipe.transform({ statusFilter: "unassigned", assigneeFilter: "unassigned" }), {
+    statusFilter: "unassigned",
+    assigneeFilter: "unassigned",
+    sortBy: "updatedAt",
+    sortDirection: "desc",
+    page: 1,
+    pageSize: 50,
+  });
+  assert.throws(() => pipe.transform({ sortBy: "unsafe" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ statusId, statusFilter: "unassigned" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ assigneeUserId, assigneeFilter: "unassigned" }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform({ pageSize: "101" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ dueFrom: "2026-02-01T00:00:00Z", dueTo: "2026-01-01T00:00:00Z" }),
+    BadRequestException,
+  );
+});
+
+test("ParseBulkUpdateTasksBodyPipe validates every selected task id and update", () => {
+  const pipe = new ParseBulkUpdateTasksBodyPipe();
+  assert.deepEqual(pipe.transform({ taskIds: [taskId], statusId, dueAt: null }), {
+    taskIds: [taskId],
+    statusId,
+    dueAt: null,
+  });
+  assert.throws(() => pipe.transform({ taskIds: [taskId] }), BadRequestException);
+  assert.throws(() => pipe.transform({ taskIds: [taskId, taskId], statusId }), BadRequestException);
+  assert.throws(() => pipe.transform({ taskIds: ["invalid"], statusId }), BadRequestException);
+});
+
 function createReadStore(options: {
   tasks?: TaskSummary[] | null;
   task?: TaskDetail | null;
@@ -440,10 +499,16 @@ function createReadStore(options: {
   updateStatusResult?: TaskUpdateStatusResult;
   updateAssigneeResult?: TaskUpdateAssigneeResult;
   updateDueDateResult?: TaskUpdateDueDateResult;
+  tablePage?: TaskTablePage | null;
+  bulkUpdateResult?: TaskBulkUpdateResult;
 }): TaskReadStore {
   return {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
       options.tasks === undefined ? [] : options.tasks,
+    listTableForProject: async (): Promise<TaskTablePage | null> =>
+      options.tablePage === undefined
+        ? { items: [], page: 1, pageSize: 50, total: 0 }
+        : options.tablePage,
     getForProject: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
@@ -462,5 +527,7 @@ function createReadStore(options: {
       options.updateAssigneeResult ?? { status: "task_not_found" },
     updateDueDateForProject: async (): Promise<TaskUpdateDueDateResult> =>
       options.updateDueDateResult ?? { status: "task_not_found" },
+    bulkUpdateForProject: async (): Promise<TaskBulkUpdateResult> =>
+      options.bulkUpdateResult ?? { status: "invalid_task" },
   };
 }

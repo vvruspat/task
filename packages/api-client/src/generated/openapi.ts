@@ -38,6 +38,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/activity": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List activity history for a visible task */
+    get: operations["ActivityController_listTaskActivity"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces": {
     parameters: {
       query?: never;
@@ -89,6 +106,57 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/members/{memberId}/role": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update one workspace member role */
+    patch: operations["WorkspacesController_updateMemberRole"];
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/dashboard": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the workspace dashboard overview */
+    get: operations["DashboardController_getOverview"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/my-tasks": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List the current user's active tasks by queue */
+    get: operations["DashboardController_listMyTasks"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects": {
     parameters: {
       query?: never;
@@ -126,6 +194,40 @@ export interface paths {
     patch: operations["ProjectsController_updateProject"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/search": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Search visible projects, tasks, task skills, and workspace members */
+    get: operations["SearchController_search"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/projects/{projectId}/matrix": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the task matrix for a visible project */
+    get: operations["ProjectMatrixController_getProjectMatrix"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks": {
     parameters: {
       query?: never;
@@ -142,6 +244,40 @@ export interface paths {
     options?: never;
     head?: never;
     patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/table": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List active project tasks for the scalable table */
+    get: operations["TasksController_listTaskTable"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/bulk": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Atomically update up to 100 active project tasks */
+    patch: operations["TasksController_bulkUpdateTasks"];
     trace?: never;
   };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/subtasks": {
@@ -363,11 +499,30 @@ export interface paths {
     /** List statuses for one visible workspace */
     get: operations["StatusesController_listStatuses"];
     put?: never;
-    post?: never;
+    /** Create a status in one workspace */
+    post: operations["StatusesController_createStatus"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/statuses/{statusId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete a status from one workspace */
+    delete: operations["StatusesController_deleteStatus"];
+    options?: never;
+    head?: never;
+    /** Update a status in one workspace */
+    patch: operations["StatusesController_updateStatus"];
     trace?: never;
   };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/comments": {
@@ -559,6 +714,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/telegram/mini-app/identity/link-status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the current user's Telegram Mini App identity link status */
+    get: operations["TelegramMiniAppController_getIdentityLinkStatus"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/telegram/mini-app/init-data/verify": {
     parameters: {
       query?: never;
@@ -627,6 +799,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get one current user agent run with safe audit records */
+    get: operations["AgentRunsController_getWorkspaceRun"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -648,6 +837,21 @@ export interface components {
        * @example 0.0.0
        */
       version: string;
+    };
+    TaskActivityEventDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      actorUserId: string | null;
+      eventType: string;
+      /** Format: uuid */
+      entityId: string;
+      entityType: string;
+      payload: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      createdAt: string;
     };
     WorkspaceSummaryDto: {
       /** Format: uuid */
@@ -693,6 +897,87 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
       members: components["schemas"]["WorkspaceMemberDto"][];
+    };
+    UpdateWorkspaceMemberRoleDto: {
+      /** @enum {string} */
+      role: "admin" | "member" | "guest";
+    };
+    DashboardProjectDto: {
+      /** Format: uuid */
+      id: string;
+      title: string;
+      status: string | null;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    DashboardTaskCountsDto: {
+      assigned: number;
+      overdue: number;
+      dueSoon: number;
+    };
+    DashboardActivityDto: {
+      /** Format: uuid */
+      id: string;
+      eventType: string;
+      entityType: string;
+      /** Format: uuid */
+      entityId: string;
+      /** Format: uuid */
+      actorUserId: string | null;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    DashboardConfirmationDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      agentRunId: string;
+      kind: string;
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    DashboardAgentRunDto: {
+      /** Format: uuid */
+      id: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      inputText: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    DashboardOverviewDto: {
+      activeProjects: components["schemas"]["DashboardProjectDto"][];
+      taskCounts: components["schemas"]["DashboardTaskCountsDto"];
+      recentActivity: components["schemas"]["DashboardActivityDto"][];
+      pendingConfirmations: components["schemas"]["DashboardConfirmationDto"][];
+      recentAgentRuns: components["schemas"]["DashboardAgentRunDto"][];
+    };
+    MyTaskItemDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      projectId: string;
+      projectTitle: string;
+      title: string;
+      /** Format: date-time */
+      dueAt: string | null;
+      /** Format: uuid */
+      statusId: string | null;
+      statusName: string | null;
+      statusColor: string | null;
+      position: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    MyTasksPageDto: {
+      items: components["schemas"]["MyTaskItemDto"][];
+      page: number;
+      pageSize: number;
+      total: number;
     };
     ProjectSummaryDto: {
       /** Format: uuid */
@@ -752,7 +1037,97 @@ export interface components {
       status?: string | null;
       position?: string | null;
     };
+    SearchResultDto: {
+      /** Format: uuid */
+      id: string;
+      /** @enum {string} */
+      type: "project" | "task" | "task_skill" | "user";
+      title: string;
+      description: string | null;
+      /** Format: uuid */
+      projectId: string | null;
+    };
+    SearchPageDto: {
+      items: components["schemas"]["SearchResultDto"][];
+      page: number;
+      pageSize: number;
+      total: number;
+    };
     TaskSummaryDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      projectId: string;
+      /** Format: uuid */
+      parentTaskId?: string | null;
+      /** @example Record bass */
+      title: string;
+      description?: string | null;
+      /** Format: uuid */
+      statusId?: string | null;
+      /** Format: uuid */
+      assigneeUserId?: string | null;
+      /** Format: uuid */
+      createdByUserId: string;
+      /** @example 1000 */
+      position: string;
+      /** Format: date-time */
+      dueAt?: string | null;
+      /** Format: uuid */
+      sourceSkillId?: string | null;
+      /** Format: uuid */
+      sourceSkillVersionId?: string | null;
+      metadata: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      archivedAt?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    ProjectMatrixStageDto: {
+      /** Format: uuid */
+      id?: string | null;
+      /** @example In progress */
+      name: string;
+      /** @example #2563EB */
+      color?: string | null;
+      /** @example 1000 */
+      position: string;
+      isDone: boolean;
+    };
+    ProjectMatrixCellDto: {
+      /** Format: uuid */
+      columnTaskId: string;
+      /** Format: uuid */
+      stageId?: string | null;
+      tasks: components["schemas"]["TaskSummaryDto"][];
+    };
+    ProjectMatrixDto: {
+      columns: components["schemas"]["TaskSummaryDto"][];
+      stages: components["schemas"]["ProjectMatrixStageDto"][];
+      cells: components["schemas"]["ProjectMatrixCellDto"][];
+    };
+    TaskTablePageDto: {
+      items: components["schemas"]["TaskSummaryDto"][];
+      page: number;
+      pageSize: number;
+      total: number;
+    };
+    BulkUpdateTasksDto: {
+      taskIds: string[];
+      /** Format: uuid */
+      statusId?: string | null;
+      /** Format: uuid */
+      assigneeUserId?: string | null;
+      /** Format: date-time */
+      dueAt?: string | null;
+    };
+    TaskDetailDto: {
       /** Format: uuid */
       id: string;
       /** Format: uuid */
@@ -800,42 +1175,6 @@ export interface components {
       metadata?: {
         [key: string]: unknown;
       };
-    };
-    TaskDetailDto: {
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      workspaceId: string;
-      /** Format: uuid */
-      projectId: string;
-      /** Format: uuid */
-      parentTaskId?: string | null;
-      /** @example Record bass */
-      title: string;
-      description?: string | null;
-      /** Format: uuid */
-      statusId?: string | null;
-      /** Format: uuid */
-      assigneeUserId?: string | null;
-      /** Format: uuid */
-      createdByUserId: string;
-      /** @example 1000 */
-      position: string;
-      /** Format: date-time */
-      dueAt?: string | null;
-      /** Format: uuid */
-      sourceSkillId?: string | null;
-      /** Format: uuid */
-      sourceSkillVersionId?: string | null;
-      metadata: {
-        [key: string]: unknown;
-      };
-      /** Format: date-time */
-      archivedAt?: string | null;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
     };
     AddTaskSubtaskDto: {
       /** @example Record bass */
@@ -1021,6 +1360,26 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
+    CreateWorkspaceStatusDto: {
+      /** @example In progress */
+      name: string;
+      /** @example #3b82f6 */
+      color: string;
+      /** @example 1000 */
+      position: string;
+      /** @example false */
+      isDone?: boolean;
+    };
+    UpdateWorkspaceStatusDto: {
+      /** @example In progress */
+      name?: string;
+      /** @example #3b82f6 */
+      color?: string;
+      /** @example 1000 */
+      position?: string;
+      /** @example false */
+      isDone?: boolean;
+    };
     TaskCommentDto: {
       /** Format: uuid */
       id: string;
@@ -1184,6 +1543,14 @@ export interface components {
       /** @enum {string} */
       status: "confirmed" | "cancelled";
     };
+    TelegramIdentityLinkStatusDto: {
+      /** @example 123456789 */
+      telegramId: string;
+      /** Format: date-time */
+      linkedAt: string;
+      /** Format: date-time */
+      lastSeenAt?: string | null;
+    };
     VerifyTelegramMiniAppInitDataDto: {
       /** @description Raw Telegram.WebApp.initData query string. */
       initData: string;
@@ -1282,6 +1649,93 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
+    AgentRunToolCallAuditDto: {
+      /** Format: uuid */
+      id: string;
+      toolName: string;
+      arguments: {
+        [key: string]: unknown;
+      };
+      result?: {
+        [key: string]: unknown;
+      } | null;
+      /** @enum {string} */
+      status: "pending" | "success" | "error";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      completedAt?: string | null;
+    };
+    AgentRunConfirmationLinkDto: {
+      /** Format: uuid */
+      id: string;
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** @enum {string} */
+      status: "pending" | "confirmed" | "cancelled" | "expired";
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    AgentRunDetailDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      sourceMessageId?: string | null;
+      model?: string | null;
+      /** @example @task what is next for the album? */
+      inputText: string;
+      finalResponse?: string | null;
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      toolCalls: components["schemas"]["AgentRunToolCallAuditDto"][];
+      confirmationRequests: components["schemas"]["AgentRunConfirmationLinkDto"][];
+    };
+    ListTaskTableQueryDto: {
+      search?: string;
+      /** Format: uuid */
+      statusId?: string;
+      /** @enum {string} */
+      statusFilter?: "unassigned";
+      /** Format: uuid */
+      assigneeUserId?: string;
+      /** @enum {string} */
+      assigneeFilter?: "unassigned";
+      /** Format: date-time */
+      dueFrom?: string;
+      /** Format: date-time */
+      dueTo?: string;
+      /**
+       * @default updatedAt
+       * @enum {string}
+       */
+      sortBy: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt";
+      /**
+       * @default desc
+       * @enum {string}
+       */
+      sortDirection: "asc" | "desc";
+      /** @default 1 */
+      page: number;
+      /** @default 50 */
+      pageSize: number;
+    };
   };
   responses: never;
   parameters: never;
@@ -1326,6 +1780,39 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["HealthResponseDto"];
         };
+      };
+    };
+  };
+  ActivityController_listTaskActivity: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskActivityEventDto"][];
+        };
+      };
+      /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
@@ -1405,6 +1892,131 @@ export interface operations {
         };
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WorkspacesController_updateMemberRole: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        memberId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateWorkspaceMemberRoleDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceMemberDto"];
+        };
+      };
+      /** @description Workspace member role payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update this workspace member role. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace member is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  DashboardController_getOverview: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DashboardOverviewDto"];
+        };
+      };
+      /** @description Workspace is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  DashboardController_listMyTasks: {
+    parameters: {
+      query?: {
+        pageSize?: number;
+        page?: number;
+        statusId?: string;
+        projectId?: string;
+        queue?: "today" | "upcoming" | "overdue" | "review";
+      };
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["MyTasksPageDto"];
+        };
+      };
+      /** @description My tasks query is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;
@@ -1614,6 +2226,80 @@ export interface operations {
       };
     };
   };
+  SearchController_search: {
+    parameters: {
+      query: {
+        pageSize?: number;
+        page?: number;
+        query: string;
+      };
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SearchPageDto"];
+        };
+      };
+      /** @description Search query is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProjectMatrixController_getProjectMatrix: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProjectMatrixDto"];
+        };
+      };
+      /** @description Workspace or active project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   TasksController_listActiveTasks: {
     parameters: {
       query?: never;
@@ -1688,6 +2374,109 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace or project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_listTaskTable: {
+    parameters: {
+      query?: {
+        pageSize?: number;
+        page?: number;
+        sortDirection?: "asc" | "desc";
+        sortBy?: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt";
+        dueTo?: string;
+        dueFrom?: string;
+        /** @description Filter tasks without an assignee. Cannot be combined with assigneeUserId. */
+        assigneeFilter?: "unassigned";
+        assigneeUserId?: string;
+        /** @description Filter tasks without a status. Cannot be combined with statusId. */
+        statusFilter?: "unassigned";
+        statusId?: string;
+        search?: string;
+      };
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskTablePageDto"];
+        };
+      };
+      /** @description Task table query is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TasksController_bulkUpdateTasks: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkUpdateTasksDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"][];
+        };
+      };
+      /** @description Bulk update payload or referenced task fields are invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update tasks in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or one of the tasks is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;
@@ -2500,6 +3289,158 @@ export interface operations {
       };
     };
   };
+  StatusesController_createStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWorkspaceStatusDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"];
+        };
+      };
+      /** @description Status payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot manage statuses in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description A workspace status with this name already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  StatusesController_deleteStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        statusId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"];
+        };
+      };
+      /** @description Current user cannot manage statuses in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace status is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  StatusesController_updateStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        statusId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateWorkspaceStatusDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"];
+        };
+      };
+      /** @description Status payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot manage statuses in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace status is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description A workspace status with this name already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   CommentsController_listTaskComments: {
     parameters: {
       query?: never;
@@ -3054,6 +3995,35 @@ export interface operations {
       };
     };
   };
+  TelegramMiniAppController_getIdentityLinkStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramIdentityLinkStatusDto"];
+        };
+      };
+      /** @description Current user has no linked Telegram identity. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   TelegramMiniAppController_verifyInitData: {
     parameters: {
       query?: never;
@@ -3222,6 +4192,38 @@ export interface operations {
         };
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentRunsController_getWorkspaceRun: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        agentRunId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentRunDetailDto"];
+        };
+      };
+      /** @description Workspace or agent run is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;

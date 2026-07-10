@@ -5,12 +5,14 @@ import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   AgentRunEntity,
   AgentToolCallEntity,
+  ConfirmationRequestEntity,
   TelegramChatEntity,
   TelegramIdentityEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
 import type {
+  AgentRunDetailRecord,
   AgentRunStore,
   FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
@@ -82,6 +84,45 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
         workspaceId,
       },
     });
+  }
+
+  async getDetailForWorkspace(
+    workspaceId: string,
+    agentRunId: string,
+    userId: string,
+  ): Promise<AgentRunDetailRecord | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      userId,
+      workspaceId,
+    });
+
+    if (membership === null) {
+      return null;
+    }
+
+    const run = await dataSource.getRepository(AgentRunEntity).findOneBy({
+      id: agentRunId,
+      userId,
+      workspaceId,
+    });
+
+    if (run === null) {
+      return null;
+    }
+
+    const [toolCalls, confirmationRequests] = await Promise.all([
+      dataSource.getRepository(AgentToolCallEntity).find({
+        order: { createdAt: "ASC" },
+        where: { agentRunId: run.id },
+      }),
+      dataSource.getRepository(ConfirmationRequestEntity).find({
+        order: { createdAt: "ASC" },
+        where: { agentRunId: run.id, userId, workspaceId },
+      }),
+    ]);
+
+    return { run, toolCalls, confirmationRequests };
   }
 
   async findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunEntity | null> {

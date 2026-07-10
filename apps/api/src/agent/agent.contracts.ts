@@ -1,6 +1,8 @@
 import type {
   AgentRunSource,
   AgentRunStatus,
+  AgentToolCallStatus,
+  ConfirmationRequestStatus,
 } from "../persistence/types/core-persistence.types.js";
 
 export type CreateTelegramAgentRunInput = {
@@ -65,4 +67,30 @@ export type AgentRunSummary = {
   error: string | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type AgentRunToolCallAudit = {
+  id: string;
+  toolName: string;
+  arguments: Record<string, unknown>;
+  result: Record<string, unknown> | null;
+  status: AgentToolCallStatus;
+  error: string | null;
+  createdAt: string;
+  completedAt: string | null;
+};
+
+export type AgentRunConfirmationLink = {
+  id: string;
+  kind: string;
+  preview: Record<string, unknown>;
+  status: ConfirmationRequestStatus;
+  expiresAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AgentRunDetail = AgentRunSummary & {
+  toolCalls: AgentRunToolCallAudit[];
+  confirmationRequests: AgentRunConfirmationLink[];
 };

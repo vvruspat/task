@@ -1,9 +1,12 @@
 import type {
   AddTaskSubtasksInput,
+  BulkUpdateTasksInput,
   CreateTaskInput,
+  ListTaskTableInput,
   MoveTaskInput,
   TaskDetail,
   TaskSummary,
+  TaskTablePage,
   UpdateTaskAssigneeInput,
   UpdateTaskDueDateInput,
   UpdateTaskInput,
@@ -118,12 +121,26 @@ export type TaskArchiveResult =
       status: "forbidden";
     };
 
+export type TaskBulkUpdateResult =
+  | { status: "updated"; tasks: TaskDetail[] }
+  | { status: "project_not_found" }
+  | { status: "forbidden" }
+  | { status: "invalid_task" }
+  | { status: "invalid_status" }
+  | { status: "invalid_assignee" };
+
 export type TaskReadStore = {
   listActiveForProject(
     workspaceId: string,
     projectId: string,
     userId: string,
   ): Promise<TaskSummary[] | null>;
+  listTableForProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: ListTaskTableInput,
+  ): Promise<TaskTablePage | null>;
   getForProject(
     workspaceId: string,
     projectId: string,
@@ -184,4 +201,10 @@ export type TaskReadStore = {
     taskId: string,
     userId: string,
   ): Promise<TaskArchiveResult>;
+  bulkUpdateForProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: BulkUpdateTasksInput,
+  ): Promise<TaskBulkUpdateResult>;
 };

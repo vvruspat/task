@@ -1,4 +1,8 @@
-import type { TaskApiFetch } from "@task/api-client";
+import {
+  type ConfirmationRequestSummary,
+  createTaskApiClient,
+  type TaskApiFetch,
+} from "@task/api-client";
 import {
   MAlert,
   MAvatar,
@@ -6,7 +10,6 @@ import {
   MButton,
   MFlex,
   MHeading,
-  MInput,
   MOperationalHeader,
   MOperationalShell,
   MOperationalSidebar,
@@ -21,7 +24,6 @@ import {
   CheckCircle2,
   ClipboardList,
   Columns3,
-  Command,
   FolderKanban,
   LayoutDashboard,
   ListTodo,
@@ -31,34 +33,62 @@ import {
   Sparkles,
   Table2,
 } from "lucide-react";
-import type { ComponentType, ReactElement, SVGProps } from "react";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import type { ComponentType, ReactElement, SetStateAction, SVGProps } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
+  applyArchivedProjectToWebShellData,
+  archiveWebShellProject,
   createWebShellDataLoader,
   createWebShellProjectCreator,
   createWebShellTaskCreator,
+  loadWebShellProjectTasks,
   parseWebShellConfig,
+  updateWebShellProject,
   type WebShellData,
   type WebShellEnvironment,
 } from "../api/web-shell-data.js";
+import { GlobalSearchPalette } from "./GlobalSearchPalette.js";
+import { isWorkspaceSearchShortcut } from "./globalSearchPaletteModels.js";
+import {
+  createWorkspaceNavigationUrl,
+  parseWorkspaceNavigation,
+  type WorkspaceRouteId,
+} from "./navigation.js";
+import { canLeaveTaskWithDraft } from "./taskNavigationGuard.js";
+import type { ConfirmationActionState, ConfirmationLoadState } from "./views/ConfirmationsView.js";
 
 const LazyDashboardView = lazy(() => import("./views/DashboardView.js"));
+const LazyConfirmationsView = lazy(() => import("./views/ConfirmationsView.js"));
 const LazyWorkspaceView = lazy(() => import("./views/WorkspaceView.js"));
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 type AppRoute = {
-  id: string;
-  label: string;
-  description: string;
-  icon: IconComponent;
-};
+  [RouteId in WorkspaceRouteId]: {
+    id: RouteId;
+    label: string;
+    description: string;
+    icon: IconComponent;
+  };
+}[WorkspaceRouteId];
+
+type WorkspaceNavigationUpdate = SetStateAction<{
+  projectId: string | null;
+  routeId: WorkspaceRouteId;
+  taskId: string | null;
+}>;
 
 const routes: AppRoute[] = [
   {
-    id: "my-tasks",
-    label: "My Tasks",
-    description: "Focused assignment and overdue queue.",
+    id: "dashboard",
+    label: "Dashboard",
+    description: "Workspace overview, priorities, and quick actions.",
+    icon: LayoutDashboard,
+  },
+  {
+    id: "confirmations",
+    label: "Confirmations",
+    description: "Actions waiting for an explicit approval.",
     icon: CheckCircle2,
   },
   {
@@ -147,11 +177,25 @@ const webShellEnvironment: WebShellEnvironment = {
 };
 
 export function App(): ReactElement {
-  const [activeRouteId, setActiveRouteId] = useState(routes[0]?.id ?? "my-tasks");
+  const [navigationState, setNavigationState] = useState(() =>
+    parseWorkspaceNavigation(window.location.search),
+  );
+  const navigationStateRef = useRef(navigationState);
   const [projectCreateState, setProjectCreateState] = useState<FormSubmissionState>({
     status: "idle",
   });
   const [taskCreateState, setTaskCreateState] = useState<FormSubmissionState>({ status: "idle" });
+  const [taskDrawerDirty, setTaskDrawerDirty] = useState(false);
+  const [isSearchPaletteOpen, setSearchPaletteOpen] = useState(false);
+  const [confirmationLoadState, setConfirmationLoadState] = useState<ConfirmationLoadState>({
+    status: "loading",
+  });
+  const [confirmationActionState, setConfirmationActionState] = useState<ConfirmationActionState>({
+    status: "idle",
+  });
+  const [confirmationRequests, setConfirmationRequests] = useState<ConfirmationRequestSummary[]>(
+    [],
+  );
   const [loadState, setLoadState] = useState<WebShellLoadState>(() => {
     const configResult = parseWebShellConfig(webShellEnvironment);
 
@@ -166,17 +210,39 @@ export function App(): ReactElement {
       status: "loading",
     };
   });
-  const activeRoute = useMemo(
-    () => routes.find((route) => route.id === activeRouteId) ?? routes[0],
-    [activeRouteId],
-  );
+  const activeRoute = useMemo(() => {
+    const route = routes.find((candidate) => candidate.id === navigationState.routeId);
+    if (route === undefined) {
+      throw new Error("Application routes are not configured.");
+    }
+    return route;
+  }, [navigationState.routeId]);
   const data = loadState.status === "loaded" ? loadState.data : emptyWebShellData;
+  const selectedProjectId =
+    navigationState.projectId !== null &&
+    data.projects.some((project) => project.id === navigationState.projectId)
+      ? navigationState.projectId
+      : data.selectedProjectId;
   const dueSoonCount = data.tasks.filter((task) => task.dueAt !== null).length;
   const canCreateProject = loadState.status === "loaded" && data.selectedWorkspaceId !== null;
   const canCreateTask =
     loadState.status === "loaded" &&
     data.selectedWorkspaceId !== null &&
-    data.selectedProjectId !== null;
+    selectedProjectId !== null;
+  const taskClient = useMemo(() => {
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    return configResult.status === "configured"
+      ? createTaskApiClient({
+          baseUrl: configResult.config.apiBaseUrl,
+          fetch: async (url, init) => fetch(url, init),
+          trustedUserId: configResult.config.trustedUserId,
+        })
+      : null;
+  }, []);
+  const trustedUserId = useMemo(() => {
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    return configResult.status === "configured" ? configResult.config.trustedUserId : null;
+  }, []);
 
   useEffect(() => {
     const configResult = parseWebShellConfig(webShellEnvironment);
@@ -215,9 +281,131 @@ export function App(): ReactElement {
     };
   }, []);
 
-  if (activeRoute === undefined) {
-    throw new Error("Application routes are not configured.");
-  }
+  useEffect(() => {
+    if (data.selectedWorkspaceId === null) {
+      setConfirmationRequests([]);
+      setConfirmationLoadState({ status: "loaded" });
+      return;
+    }
+
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") {
+      setConfirmationLoadState({ message: configResult.message, status: "error" });
+      return;
+    }
+
+    let isCurrent = true;
+    const client = createTaskApiClient({
+      baseUrl: configResult.config.apiBaseUrl,
+      fetch: async (url, init) => fetch(url, init),
+      trustedUserId: configResult.config.trustedUserId,
+    });
+    setConfirmationLoadState({ status: "loading" });
+    void client
+      .listPendingConfirmationRequests({ workspaceId: data.selectedWorkspaceId })
+      .then((requests) => {
+        if (isCurrent) {
+          setConfirmationRequests(requests);
+          setConfirmationLoadState({ status: "loaded" });
+        }
+      })
+      .catch((error: unknown) => {
+        if (isCurrent) {
+          setConfirmationLoadState({ message: readErrorMessage(error), status: "error" });
+        }
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [data.selectedWorkspaceId]);
+
+  useEffect(() => {
+    const handlePopState = (): void => {
+      const nextState = parseWorkspaceNavigation(window.location.search);
+      if (
+        !canLeaveTaskWithDraft(navigationStateRef.current, nextState, taskDrawerDirty, () =>
+          window.confirm("Discard unsaved task changes?"),
+        )
+      ) {
+        window.history.pushState(
+          null,
+          "",
+          createWorkspaceNavigationUrl(window.location, navigationStateRef.current),
+        );
+        return;
+      }
+      navigationStateRef.current = nextState;
+      setNavigationState(nextState);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [taskDrawerDirty]);
+
+  useEffect(() => {
+    const handleGlobalSearchShortcut = (event: KeyboardEvent): void => {
+      if (isWorkspaceSearchShortcut(event)) {
+        event.preventDefault();
+        setSearchPaletteOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleGlobalSearchShortcut);
+    return () => window.removeEventListener("keydown", handleGlobalSearchShortcut);
+  }, []);
+
+  useEffect(() => {
+    if (
+      loadState.status !== "loaded" ||
+      data.selectedWorkspaceId === null ||
+      selectedProjectId === null
+    ) {
+      return;
+    }
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") return;
+    let isCurrent = true;
+    const client = createTaskApiClient({
+      baseUrl: configResult.config.apiBaseUrl,
+      fetch: async (url, init) => fetch(url, init),
+      trustedUserId: configResult.config.trustedUserId,
+    });
+    void loadWebShellProjectTasks(client, {
+      projectId: selectedProjectId,
+      workspaceId: data.selectedWorkspaceId,
+    })
+      .then((tasks) => {
+        if (isCurrent) {
+          setLoadState((currentState) =>
+            currentState.status === "loaded"
+              ? { data: { ...currentState.data, tasks }, status: "loaded" }
+              : currentState,
+          );
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      isCurrent = false;
+    };
+  }, [data.selectedWorkspaceId, loadState.status, selectedProjectId]);
+
+  const updateNavigation = (nextState: WorkspaceNavigationUpdate): void => {
+    const resolvedState =
+      typeof nextState === "function" ? nextState(navigationStateRef.current) : nextState;
+    if (
+      !canLeaveTaskWithDraft(navigationStateRef.current, resolvedState, taskDrawerDirty, () =>
+        window.confirm("Discard unsaved task changes?"),
+      )
+    )
+      return;
+    setTaskDrawerDirty(false);
+    navigationStateRef.current = resolvedState;
+    window.history.pushState(
+      null,
+      "",
+      createWorkspaceNavigationUrl(window.location, resolvedState),
+    );
+    setNavigationState(resolvedState);
+  };
 
   const handleCreateProject = async (title: string): Promise<void> => {
     if (loadState.status !== "loaded") {
@@ -274,6 +462,10 @@ export function App(): ReactElement {
           status: "loaded",
         };
       });
+      updateNavigation((currentNavigation) => ({
+        ...currentNavigation,
+        projectId: createdProject.id,
+      }));
       setProjectCreateState({
         message: `Created ${createdProject.title}.`,
         status: "success",
@@ -287,7 +479,10 @@ export function App(): ReactElement {
     }
   };
 
-  const handleCreateTask = async (title: string): Promise<void> => {
+  const handleCreateTask = async (
+    title: string,
+    targetProjectId: string | null = selectedProjectId,
+  ): Promise<void> => {
     if (loadState.status !== "loaded") {
       setTaskCreateState({
         message: "Workspace data must finish loading before creating tasks.",
@@ -296,7 +491,7 @@ export function App(): ReactElement {
       return;
     }
 
-    if (loadState.data.selectedWorkspaceId === null || loadState.data.selectedProjectId === null) {
+    if (loadState.data.selectedWorkspaceId === null || targetProjectId === null) {
       setTaskCreateState({
         message: "Create a workspace project before adding tasks.",
         status: "error",
@@ -322,7 +517,7 @@ export function App(): ReactElement {
         config: configResult.config,
         fetch: browserFetch,
         target: {
-          projectId: loadState.data.selectedProjectId,
+          projectId: targetProjectId,
           workspaceId: loadState.data.selectedWorkspaceId,
         },
       });
@@ -353,6 +548,114 @@ export function App(): ReactElement {
     }
   };
 
+  const handleUpdateProject = async (
+    projectId: string,
+    input: { description: string | null; title: string },
+  ): Promise<void> => {
+    if (loadState.status !== "loaded" || loadState.data.selectedWorkspaceId === null) {
+      throw new Error("A visible workspace is required before updating projects.");
+    }
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") throw new Error(configResult.message);
+    const client = createTaskApiClient({
+      baseUrl: configResult.config.apiBaseUrl,
+      fetch: async (url, init) => fetch(url, init),
+      trustedUserId: configResult.config.trustedUserId,
+    });
+    const updatedProject = await updateWebShellProject(
+      client,
+      { projectId, workspaceId: loadState.data.selectedWorkspaceId },
+      input,
+    );
+    setLoadState((currentState) =>
+      currentState.status === "loaded"
+        ? {
+            data: {
+              ...currentState.data,
+              projects: currentState.data.projects.map((project) =>
+                project.id === updatedProject.id ? updatedProject : project,
+              ),
+            },
+            status: "loaded",
+          }
+        : currentState,
+    );
+  };
+
+  const handleArchiveProject = async (projectId: string): Promise<void> => {
+    if (loadState.status !== "loaded" || loadState.data.selectedWorkspaceId === null) {
+      throw new Error("A visible workspace is required before archiving projects.");
+    }
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") throw new Error(configResult.message);
+    const client = createTaskApiClient({
+      baseUrl: configResult.config.apiBaseUrl,
+      fetch: async (url, init) => fetch(url, init),
+      trustedUserId: configResult.config.trustedUserId,
+    });
+    const archivedProject = await archiveWebShellProject(client, {
+      projectId,
+      workspaceId: loadState.data.selectedWorkspaceId,
+    });
+    let nextProjectId: string | null = null;
+    setLoadState((currentState) => {
+      if (currentState.status !== "loaded") return currentState;
+      const data = applyArchivedProjectToWebShellData(
+        currentState.data,
+        archivedProject,
+        selectedProjectId,
+      );
+      nextProjectId = data.selectedProjectId;
+      return { data, status: "loaded" };
+    });
+    if (selectedProjectId === projectId) {
+      updateNavigation((currentNavigation) => ({ ...currentNavigation, projectId: nextProjectId }));
+    }
+  };
+
+  const resolveConfirmation = async (
+    confirmationRequestId: string,
+    action: "cancel" | "confirm",
+  ): Promise<void> => {
+    if (data.selectedWorkspaceId === null) {
+      setConfirmationActionState({
+        message: "A visible workspace is required to resolve confirmations.",
+        status: "error",
+      });
+      return;
+    }
+
+    const configResult = parseWebShellConfig(webShellEnvironment);
+    if (configResult.status === "missing_config") {
+      setConfirmationActionState({ message: configResult.message, status: "error" });
+      return;
+    }
+
+    setConfirmationActionState({
+      confirmationRequestId,
+      status: action === "confirm" ? "confirming" : "cancelling",
+    });
+    try {
+      const client = createTaskApiClient({
+        baseUrl: configResult.config.apiBaseUrl,
+        fetch: async (url, init) => fetch(url, init),
+        trustedUserId: configResult.config.trustedUserId,
+      });
+      const input = { confirmationRequestId, workspaceId: data.selectedWorkspaceId };
+      if (action === "confirm") {
+        await client.confirmConfirmationRequest(input);
+      } else {
+        await client.cancelConfirmationRequest(input);
+      }
+      setConfirmationRequests((requests) =>
+        requests.filter((request) => request.id !== confirmationRequestId),
+      );
+      setConfirmationActionState({ status: "idle" });
+    } catch (error: unknown) {
+      setConfirmationActionState({ message: readErrorMessage(error), status: "error" });
+    }
+  };
+
   return (
     <MOperationalShell
       sidebar={
@@ -371,7 +674,9 @@ export function App(): ReactElement {
             {routes.map((route) => (
               <MButton
                 key={route.id}
-                onClick={() => setActiveRouteId(route.id)}
+                onClick={() =>
+                  updateNavigation((currentState) => ({ ...currentState, routeId: route.id }))
+                }
                 before={<route.icon aria-hidden="true" />}
                 title={route.description}
                 mode={route.id === activeRoute.id ? "outlined" : "transparent"}
@@ -392,12 +697,17 @@ export function App(): ReactElement {
           <MButton aria-label="Toggle navigation" mode="round" noPadding>
             <PanelLeft aria-hidden="true" />
           </MButton>
-          <MInput
-            aria-label="Search tasks and projects"
+          <MButton
+            aria-haspopup="dialog"
+            aria-label="Search workspace. Press Command or Control K."
             before={<Search aria-hidden="true" />}
-            placeholder="Search tasks, projects, skills"
-          />
-          <MButton before={<Command aria-hidden="true" />}>Ask agent</MButton>
+            justify="start"
+            mode="outlined"
+            onClick={() => setSearchPaletteOpen(true)}
+            stretch
+          >
+            Search tasks, projects, skills
+          </MButton>
         </MOperationalToolbar>
 
         <MOperationalHeader aria-labelledby="route-title">
@@ -457,7 +767,7 @@ export function App(): ReactElement {
             </MText>
           }
         >
-          {activeRoute.id === "my-tasks" ? (
+          {activeRoute.id === "dashboard" ? (
             <LazyDashboardView
               createProjectDisabled={!canCreateProject}
               createProjectState={projectCreateState}
@@ -469,21 +779,101 @@ export function App(): ReactElement {
               skills={data.skills}
               tasks={data.tasks}
             />
+          ) : activeRoute.id === "confirmations" ? (
+            <LazyConfirmationsView
+              actionState={confirmationActionState}
+              confirmationRequests={confirmationRequests}
+              loadState={confirmationLoadState}
+              onCancel={(confirmationRequestId) =>
+                resolveConfirmation(confirmationRequestId, "cancel")
+              }
+              onConfirm={(confirmationRequestId) =>
+                resolveConfirmation(confirmationRequestId, "confirm")
+              }
+            />
           ) : (
             <LazyWorkspaceView
               agentRuns={data.agentRuns}
+              onArchiveProject={handleArchiveProject}
+              onCreateProject={handleCreateProject}
+              onCreateTask={(projectId, title) => handleCreateTask(title, projectId)}
+              onCloseTask={() =>
+                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId: null }))
+              }
+              onOpenTask={(taskId) =>
+                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId }))
+              }
+              onOpenConfirmations={() =>
+                updateNavigation((currentNavigation) => ({
+                  ...currentNavigation,
+                  routeId: "confirmations",
+                  taskId: null,
+                }))
+              }
+              onSelectProject={(projectId) =>
+                updateNavigation((currentNavigation) => ({
+                  ...currentNavigation,
+                  projectId,
+                  routeId: "projects",
+                }))
+              }
+              onUpdateProject={handleUpdateProject}
+              onTaskUpdated={(updatedTask) =>
+                setLoadState((currentState) =>
+                  currentState.status === "loaded"
+                    ? {
+                        data: {
+                          ...currentState.data,
+                          tasks: currentState.data.tasks.map((task) =>
+                            task.id === updatedTask.id ? updatedTask : task,
+                          ),
+                        },
+                        status: "loaded",
+                      }
+                    : currentState,
+                )
+              }
+              onTaskDirtyChange={setTaskDrawerDirty}
+              projectActionState={projectCreateState}
               route={activeRoute}
               projects={data.projects}
-              selectedProjectId={data.selectedProjectId}
+              selectedProjectId={selectedProjectId}
+              selectedTaskId={navigationState.taskId}
               selectedWorkspaceId={data.selectedWorkspaceId}
               skills={data.skills}
               statuses={data.statuses}
+              taskActionState={taskCreateState}
               tasks={data.tasks}
+              taskClient={taskClient}
+              currentUserId={trustedUserId}
               workspaces={data.workspaces}
             />
           )}
         </Suspense>
+        {navigationState.taskId !== null &&
+        (activeRoute.id === "dashboard" || activeRoute.id === "confirmations") ? (
+          <MAlert mode="error">
+            <MText as="p">
+              Task details can only be opened from a workspace task view. Clear this unavailable
+              task link to continue.
+            </MText>
+            <MButton
+              onClick={() =>
+                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId: null }))
+              }
+            >
+              Clear task link
+            </MButton>
+          </MAlert>
+        ) : null}
       </MOperationalWorkspace>
+      <GlobalSearchPalette
+        isOpen={isSearchPaletteOpen}
+        onClose={() => setSearchPaletteOpen(false)}
+        onNavigate={updateNavigation}
+        searchClient={taskClient}
+        workspaceId={data.selectedWorkspaceId}
+      />
     </MOperationalShell>
   );
 }

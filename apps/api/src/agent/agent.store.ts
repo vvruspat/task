@@ -1,4 +1,8 @@
-import type { AgentRunRecord } from "../persistence/types/core-persistence.types.js";
+import type {
+  AgentRunRecord,
+  AgentToolCallRecord,
+  ConfirmationRequestRecord,
+} from "../persistence/types/core-persistence.types.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
 import type { AgentRuntimeResult, AgentRuntimeToolCall } from "./agent.runtime.js";
 
@@ -36,11 +40,22 @@ export type FindTelegramAgentRunInput = {
   sourceMessageId: string;
 };
 
+export type AgentRunDetailRecord = {
+  run: AgentRunRecord;
+  toolCalls: AgentToolCallRecord[];
+  confirmationRequests: ConfirmationRequestRecord[];
+};
+
 export type AgentRunStore = {
   resolveTelegramRunContext(
     input: CreateTelegramAgentRunInput,
   ): Promise<TelegramAgentRunContextResult>;
   listForWorkspace(workspaceId: string, userId: string): Promise<AgentRunRecord[] | null>;
+  getDetailForWorkspace(
+    workspaceId: string,
+    agentRunId: string,
+    userId: string,
+  ): Promise<AgentRunDetailRecord | null>;
   findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunRecord | null>;
   createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunRecord>;
 };

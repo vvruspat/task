@@ -17,6 +17,7 @@ import { AgentController } from "./agent.controller.js";
 import type { AgentRuntime, TelegramAgentRuntimeRequest } from "./agent.runtime.js";
 import { AgentService } from "./agent.service.js";
 import type {
+  AgentRunDetailRecord,
   AgentRunStore,
   FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
@@ -104,6 +105,27 @@ test("AgentRunsController forwards workspace agent run list requests to the serv
   });
 });
 
+test("AgentRunsController forwards workspace-scoped agent run detail requests", async () => {
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+  const controller = new AgentRunsController(
+    new AgentService(store, new StaticAgentRuntime(), createConfirmationsService()),
+  );
+
+  await assert.rejects(
+    () =>
+      controller.getWorkspaceRun(
+        "22222222-2222-4222-8222-222222222222",
+        "11111111-1111-4111-8111-111111111111",
+        "33333333-3333-4333-8333-333333333333",
+      ),
+    { name: "NotFoundException" },
+  );
+});
+
 class RecordingAgentRunStore implements AgentRunStore {
   lastContextInput: CreateTelegramAgentRunInput | null = null;
   lastListInput: { workspaceId: string; userId: string } | null = null;
@@ -147,6 +169,14 @@ class RecordingAgentRunStore implements AgentRunStore {
         updatedAt: new Date("2026-07-08T00:00:00.000Z"),
       },
     ];
+  }
+
+  async getDetailForWorkspace(
+    _workspaceId: string,
+    _agentRunId: string,
+    _userId: string,
+  ): Promise<AgentRunDetailRecord | null> {
+    return null;
   }
 
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<PersistedAgentRun> {

@@ -41,6 +41,70 @@
         "tags": ["health"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/activity": {
+      "get": {
+        "operationId": "ActivityController_listTaskActivity",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskActivityEventDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          }
+        },
+        "summary": "List activity history for a visible task",
+        "tags": ["activity"]
+      }
+    },
     "/workspaces": {
       "get": {
         "operationId": "WorkspacesController_listWorkspaces",
@@ -162,6 +226,209 @@
         },
         "summary": "List members for one visible workspace",
         "tags": ["workspaces"]
+      }
+    },
+    "/workspaces/{workspaceId}/members/{memberId}/role": {
+      "patch": {
+        "operationId": "WorkspacesController_updateMemberRole",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkspaceMemberRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceMemberDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Workspace member role payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot update this workspace member role."
+          },
+          "404": {
+            "description": "Workspace member is missing or not visible to the current user."
+          }
+        },
+        "summary": "Update one workspace member role",
+        "tags": ["workspaces"]
+      }
+    },
+    "/workspaces/{workspaceId}/dashboard": {
+      "get": {
+        "operationId": "DashboardController_getOverview",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardOverviewDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace is missing or not visible."
+          }
+        },
+        "summary": "Get the workspace dashboard overview",
+        "tags": ["dashboard"]
+      }
+    },
+    "/workspaces/{workspaceId}/my-tasks": {
+      "get": {
+        "operationId": "DashboardController_listMyTasks",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "queue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": ["today", "upcoming", "overdue", "review"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyTasksPageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "My tasks query is invalid."
+          },
+          "404": {
+            "description": "Workspace is missing or not visible."
+          }
+        },
+        "summary": "List the current user's active tasks by queue",
+        "tags": ["dashboard"]
       }
     },
     "/workspaces/{workspaceId}/projects": {
@@ -438,6 +705,134 @@
         "tags": ["projects"]
       }
     },
+    "/workspaces/{workspaceId}/search": {
+      "get": {
+        "operationId": "SearchController_search",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "query",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 200,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Search query is invalid."
+          },
+          "404": {
+            "description": "Workspace is missing or not visible."
+          }
+        },
+        "summary": "Search visible projects, tasks, task skills, and workspace members",
+        "tags": ["search"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/matrix": {
+      "get": {
+        "operationId": "ProjectMatrixController_getProjectMatrix",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectMatrixDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace or active project is missing or not visible."
+          }
+        },
+        "summary": "Get the task matrix for a visible project",
+        "tags": ["projects"]
+      }
+    },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks": {
       "get": {
         "operationId": "TasksController_listActiveTasks",
@@ -556,6 +951,233 @@
           }
         },
         "summary": "Create a task in a visible project",
+        "tags": ["tasks"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/table": {
+      "get": {
+        "operationId": "TasksController_listTaskTable",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": ["asc", "desc"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "dueTo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "dueFrom",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "assigneeFilter",
+            "required": false,
+            "in": "query",
+            "description": "Filter tasks without an assignee. Cannot be combined with assigneeUserId.",
+            "schema": {
+              "enum": ["unassigned"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "assigneeUserId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusFilter",
+            "required": false,
+            "in": "query",
+            "description": "Filter tasks without a status. Cannot be combined with statusId.",
+            "schema": {
+              "enum": ["unassigned"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskTablePageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task table query is invalid."
+          },
+          "404": {
+            "description": "Workspace or project is missing or not visible."
+          }
+        },
+        "summary": "List active project tasks for the scalable table",
+        "tags": ["tasks"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/bulk": {
+      "patch": {
+        "operationId": "TasksController_bulkUpdateTasks",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkUpdateTasksDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDetailDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bulk update payload or referenced task fields are invalid."
+          },
+          "403": {
+            "description": "Current user cannot update tasks in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or one of the tasks is missing or not visible."
+          }
+        },
+        "summary": "Atomically update up to 100 active project tasks",
         "tags": ["tasks"]
       }
     },
@@ -1732,6 +2354,190 @@
         },
         "summary": "List statuses for one visible workspace",
         "tags": ["statuses"]
+      },
+      "post": {
+        "operationId": "StatusesController_createStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceStatusDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot manage statuses in this workspace."
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          },
+          "409": {
+            "description": "A workspace status with this name already exists."
+          }
+        },
+        "summary": "Create a status in one workspace",
+        "tags": ["statuses"]
+      }
+    },
+    "/workspaces/{workspaceId}/statuses/{statusId}": {
+      "patch": {
+        "operationId": "StatusesController_updateStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkspaceStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceStatusDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot manage statuses in this workspace."
+          },
+          "404": {
+            "description": "Workspace status is missing or not visible to the current user."
+          },
+          "409": {
+            "description": "A workspace status with this name already exists."
+          }
+        },
+        "summary": "Update a status in one workspace",
+        "tags": ["statuses"]
+      },
+      "delete": {
+        "operationId": "StatusesController_deleteStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceStatusDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot manage statuses in this workspace."
+          },
+          "404": {
+            "description": "Workspace status is missing or not visible to the current user."
+          }
+        },
+        "summary": "Delete a status from one workspace",
+        "tags": ["statuses"]
       }
     },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/comments": {
@@ -2531,6 +3337,40 @@
         "tags": ["telegram"]
       }
     },
+    "/telegram/mini-app/identity/link-status": {
+      "get": {
+        "operationId": "TelegramMiniAppController_getIdentityLinkStatus",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramIdentityLinkStatusDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user has no linked Telegram identity."
+          }
+        },
+        "summary": "Get the current user's Telegram Mini App identity link status",
+        "tags": ["telegram"]
+      }
+    },
     "/telegram/mini-app/init-data/verify": {
       "post": {
         "operationId": "TelegramMiniAppController_verifyInitData",
@@ -2717,6 +3557,58 @@
         "summary": "List current user agent run history in a visible workspace",
         "tags": ["agent"]
       }
+    },
+    "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
+      "get": {
+        "operationId": "AgentRunsController_getWorkspaceRun",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentRunId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace or agent run is missing or not visible to the current user."
+          }
+        },
+        "summary": "Get one current user agent run with safe audit records",
+        "tags": ["agent"]
+      }
     }
   },
   "info": {
@@ -2750,6 +3642,47 @@
           }
         },
         "required": ["status", "service", "version"]
+      },
+      "TaskActivityEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "actorUserId",
+          "eventType",
+          "entityId",
+          "entityType",
+          "payload",
+          "createdAt"
+        ]
       },
       "WorkspaceSummaryDto": {
         "type": "object",
@@ -2852,6 +3785,251 @@
           }
         },
         "required": ["id", "name", "slug", "createdAt", "updatedAt", "members"]
+      },
+      "UpdateWorkspaceMemberRoleDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member", "guest"]
+          }
+        },
+        "required": ["role"]
+      },
+      "DashboardProjectDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "title", "status", "updatedAt"]
+      },
+      "DashboardTaskCountsDto": {
+        "type": "object",
+        "properties": {
+          "assigned": {
+            "type": "number"
+          },
+          "overdue": {
+            "type": "number"
+          },
+          "dueSoon": {
+            "type": "number"
+          }
+        },
+        "required": ["assigned", "overdue", "dueSoon"]
+      },
+      "DashboardActivityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "eventType", "entityType", "entityId", "actorUserId", "createdAt"]
+      },
+      "DashboardConfirmationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "agentRunId", "kind", "expiresAt", "createdAt"]
+      },
+      "DashboardAgentRunDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["telegram", "web", "mini_app"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["running", "waiting_confirmation", "completed", "failed"]
+          },
+          "inputText": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "source", "status", "inputText", "createdAt"]
+      },
+      "DashboardOverviewDto": {
+        "type": "object",
+        "properties": {
+          "activeProjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardProjectDto"
+            }
+          },
+          "taskCounts": {
+            "$ref": "#/components/schemas/DashboardTaskCountsDto"
+          },
+          "recentActivity": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardActivityDto"
+            }
+          },
+          "pendingConfirmations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardConfirmationDto"
+            }
+          },
+          "recentAgentRuns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardAgentRunDto"
+            }
+          }
+        },
+        "required": [
+          "activeProjects",
+          "taskCounts",
+          "recentActivity",
+          "pendingConfirmations",
+          "recentAgentRuns"
+        ]
+      },
+      "MyTaskItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectTitle": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "dueAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "statusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "position": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "projectTitle",
+          "title",
+          "dueAt",
+          "statusId",
+          "statusName",
+          "statusColor",
+          "position",
+          "updatedAt"
+        ]
+      },
+      "MyTasksPageDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MyTaskItemDto"
+            }
+          },
+          "page": {
+            "type": "number",
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["items", "page", "pageSize", "total"]
       },
       "ProjectSummaryDto": {
         "type": "object",
@@ -3000,7 +4178,276 @@
           }
         }
       },
+      "SearchResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["project", "task", "task_skill", "user"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "required": ["id", "type", "title", "description", "projectId"]
+      },
+      "SearchPageDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResultDto"
+            }
+          },
+          "page": {
+            "type": "number",
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["items", "page", "pageSize", "total"]
+      },
       "TaskSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "parentTaskId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "example": "Record bass"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "createdByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "position": {
+            "type": "string",
+            "example": "1000"
+          },
+          "dueAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "sourceSkillId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "sourceSkillVersionId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "archivedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "projectId",
+          "title",
+          "createdByUserId",
+          "position",
+          "metadata",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ProjectMatrixStageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "In progress"
+          },
+          "color": {
+            "type": "string",
+            "example": "#2563EB",
+            "nullable": true
+          },
+          "position": {
+            "type": "string",
+            "example": "1000"
+          },
+          "isDone": {
+            "type": "boolean"
+          }
+        },
+        "required": ["name", "position", "isDone"]
+      },
+      "ProjectMatrixCellDto": {
+        "type": "object",
+        "properties": {
+          "columnTaskId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stageId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskSummaryDto"
+            }
+          }
+        },
+        "required": ["columnTaskId", "tasks"]
+      },
+      "ProjectMatrixDto": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskSummaryDto"
+            }
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectMatrixStageDto"
+            }
+          },
+          "cells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectMatrixCellDto"
+            }
+          }
+        },
+        "required": ["columns", "stages", "cells"]
+      },
+      "TaskTablePageDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskSummaryDto"
+            }
+          },
+          "page": {
+            "type": "number",
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["items", "page", "pageSize", "total"]
+      },
+      "BulkUpdateTasksDto": {
+        "type": "object",
+        "properties": {
+          "taskIds": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "statusId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "dueAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["taskIds"]
+      },
+      "TaskDetailDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -3124,97 +4571,6 @@
           }
         },
         "required": ["title"]
-      },
-      "TaskDetailDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "workspaceId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "projectId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "parentTaskId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "example": "Record bass"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "statusId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "assigneeUserId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "createdByUserId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "position": {
-            "type": "string",
-            "example": "1000"
-          },
-          "dueAt": {
-            "format": "date-time",
-            "type": "string",
-            "nullable": true
-          },
-          "sourceSkillId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "sourceSkillVersionId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "archivedAt": {
-            "format": "date-time",
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "workspaceId",
-          "projectId",
-          "title",
-          "createdByUserId",
-          "position",
-          "metadata",
-          "createdAt",
-          "updatedAt"
-        ]
       },
       "AddTaskSubtaskDto": {
         "type": "object",
@@ -3739,6 +5095,55 @@
           "updatedAt"
         ]
       },
+      "CreateWorkspaceStatusDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "In progress",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "example": "#3b82f6",
+            "minLength": 1
+          },
+          "position": {
+            "type": "string",
+            "example": "1000",
+            "pattern": "^-?\\d+(\\.\\d+)?$"
+          },
+          "isDone": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": ["name", "color", "position"]
+      },
+      "UpdateWorkspaceStatusDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "In progress",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "example": "#3b82f6",
+            "minLength": 1
+          },
+          "position": {
+            "type": "string",
+            "example": "1000",
+            "pattern": "^-?\\d+(\\.\\d+)?$"
+          },
+          "isDone": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
       "TaskCommentDto": {
         "type": "object",
         "properties": {
@@ -4142,6 +5547,25 @@
         },
         "required": ["confirmationRequestId", "action", "status"]
       },
+      "TelegramIdentityLinkStatusDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "linkedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["telegramId", "linkedAt"]
+      },
       "VerifyTelegramMiniAppInitDataDto": {
         "type": "object",
         "properties": {
@@ -4423,6 +5847,210 @@
           "createdAt",
           "updatedAt"
         ]
+      },
+      "AgentRunToolCallAuditDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "toolName": {
+            "type": "string"
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": true,
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "success", "error"]
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["id", "toolName", "arguments", "status", "createdAt"]
+      },
+      "AgentRunConfirmationLinkDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "confirmed", "cancelled", "expired"]
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["id", "kind", "preview", "status", "expiresAt", "createdAt", "updatedAt"]
+      },
+      "AgentRunDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["telegram", "web", "mini_app"]
+          },
+          "sourceMessageId": {
+            "type": "string",
+            "nullable": true
+          },
+          "model": {
+            "type": "string",
+            "nullable": true
+          },
+          "inputText": {
+            "type": "string",
+            "example": "@task what is next for the album?"
+          },
+          "finalResponse": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["running", "waiting_confirmation", "completed", "failed"]
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "toolCalls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunToolCallAuditDto"
+            }
+          },
+          "confirmationRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunConfirmationLinkDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "userId",
+          "source",
+          "inputText",
+          "status",
+          "createdAt",
+          "updatedAt",
+          "toolCalls",
+          "confirmationRequests"
+        ]
+      },
+      "ListTaskTableQueryDto": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "statusId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "statusFilter": {
+            "type": "string",
+            "enum": ["unassigned"]
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assigneeFilter": {
+            "type": "string",
+            "enum": ["unassigned"]
+          },
+          "dueFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dueTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"],
+            "default": "updatedAt"
+          },
+          "sortDirection": {
+            "type": "string",
+            "enum": ["asc", "desc"],
+            "default": "desc"
+          },
+          "page": {
+            "type": "number",
+            "minimum": 1,
+            "default": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 50
+          }
+        }
       }
     }
   }

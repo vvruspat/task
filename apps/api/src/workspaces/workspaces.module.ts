@@ -3,13 +3,15 @@ import { DatabaseModule } from "../database/database.module.js";
 import { TypeOrmWorkspaceReadStore } from "./typeorm-workspace-read.store.js";
 import { WorkspacesController } from "./workspaces.controller.js";
 import { WorkspacesService } from "./workspaces.service.js";
-import type { WorkspaceReadStore } from "./workspaces.store.js";
+import type { WorkspaceMemberManagementStore, WorkspaceReadStore } from "./workspaces.store.js";
 
 const workspacesServiceProvider: Provider<WorkspacesService> = {
   provide: WorkspacesService,
-  useFactory: (readStore: WorkspaceReadStore): WorkspacesService =>
-    new WorkspacesService(readStore),
-  inject: [TypeOrmWorkspaceReadStore],
+  useFactory: (
+    readStore: WorkspaceReadStore,
+    managementStore: WorkspaceMemberManagementStore,
+  ): WorkspacesService => new WorkspacesService(readStore, managementStore),
+  inject: [TypeOrmWorkspaceReadStore, TypeOrmWorkspaceReadStore],
 };
 
 @Module({

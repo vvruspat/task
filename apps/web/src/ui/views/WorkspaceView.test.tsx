@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { components } from "@task/api-client";
+import type { components, ProjectMatrix } from "@task/api-client";
+import { buildProjectMatrixModel, isSameMatrixScope } from "./workspace/matrixViewModels.js";
 import {
   buildAgentHistoryRows,
   buildAgentHistorySummary,
@@ -10,14 +11,20 @@ import {
   buildMatrixSummary,
   buildMyTaskRows,
   buildMyTaskSummary,
+  buildProjectDetailSummary,
   buildProjectOverviewRows,
   buildProjectOverviewSummary,
+  buildProjectParentTaskProgress,
   buildSettingsSummary,
   buildSettingsWorkspaceRows,
   buildTaskTableRows,
   buildTaskTableSummary,
   buildTemplateSkillRows,
   buildTemplateSkillSummary,
+  filterAgentHistoryRows,
+  filterTemplateSkillRows,
+  formatProjectActionFeedback,
+  getAdjacentKanbanStatusId,
 } from "./workspaceViewModels.js";
 
 type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
@@ -140,6 +147,19 @@ test("buildKanbanSummary counts columns, done tasks, and unset tasks", () => {
   );
 });
 
+test("getAdjacentKanbanStatusId follows ordered statuses and keeps board boundaries stable", () => {
+  const statuses = [
+    workspaceStatus({ id: secondStatusId, position: "2000" }),
+    workspaceStatus({ id: firstStatusId, position: "1000" }),
+  ];
+
+  assert.equal(getAdjacentKanbanStatusId(statuses, null, "next"), firstStatusId);
+  assert.equal(getAdjacentKanbanStatusId(statuses, firstStatusId, "next"), secondStatusId);
+  assert.equal(getAdjacentKanbanStatusId(statuses, secondStatusId, "next"), secondStatusId);
+  assert.equal(getAdjacentKanbanStatusId(statuses, firstStatusId, "previous"), null);
+  assert.equal(getAdjacentKanbanStatusId(statuses, unknownStatusId, "previous"), unknownStatusId);
+});
+
 test("buildMatrixColumns orders parents and groups child tasks", () => {
   assert.deepEqual(
     buildMatrixColumns([
@@ -226,6 +246,83 @@ test("buildMatrixSummary counts parent, child, due, and unassigned tasks", () =>
       subtaskCount: 2,
       unassignedTaskCount: 2,
     },
+  );
+});
+
+test("buildProjectMatrixModel keeps stable stages and materializes every empty cell", () => {
+  const matrix: ProjectMatrix = {
+    cells: [
+      {
+        columnTaskId: secondParentTaskId,
+        stageId: firstStatusId,
+        tasks: [
+          taskSummary({ id: "12121212-1212-4121-8121-121212121212", statusId: firstStatusId }),
+        ],
+      },
+      {
+        columnTaskId: firstParentTaskId,
+        stageId: null,
+        tasks: [taskSummary({ id: "13131313-1313-4131-8131-131313131313", statusId: null })],
+      },
+    ],
+    columns: [
+      taskSummary({ id: secondParentTaskId, position: "2000", title: "Song B" }),
+      taskSummary({ id: firstParentTaskId, position: "1000", title: "Song A" }),
+    ],
+    stages: [
+      { color: null, id: null, isDone: false, name: "Unassigned", position: "0000" },
+      { color: "#22c55e", id: secondStatusId, isDone: true, name: "Done", position: "2000" },
+      { color: "#3b82f6", id: firstStatusId, isDone: false, name: "Working", position: "1000" },
+    ],
+  };
+
+  const model = buildProjectMatrixModel(matrix);
+
+  assert.deepEqual(
+    model.stages.map((stage) => stage.name),
+    ["Unassigned", "Working", "Done"],
+  );
+  assert.equal(
+    model.stages.filter((stage) => stage.id === null).length,
+    1,
+    "the backend-provided Unassigned stage must not be duplicated",
+  );
+  assert.deepEqual(
+    model.columns.map((column) => column.title),
+    ["Song A", "Song B"],
+  );
+  assert.deepEqual(
+    model.columns.map((column) => column.cells.map((cell) => cell.tasks.length)),
+    [
+      [1, 0, 0],
+      [0, 1, 0],
+    ],
+  );
+  assert.equal(model.taskCount, 2);
+  assert.equal(model.unassignedTaskCount, 1);
+});
+
+test("isSameMatrixScope rejects stale project and workspace mutation responses", () => {
+  assert.equal(
+    isSameMatrixScope(
+      { projectId: firstProjectId, workspaceId },
+      { projectId: firstProjectId, workspaceId },
+    ),
+    true,
+  );
+  assert.equal(
+    isSameMatrixScope(
+      { projectId: firstProjectId, workspaceId },
+      { projectId: secondProjectId, workspaceId },
+    ),
+    false,
+  );
+  assert.equal(
+    isSameMatrixScope(
+      { projectId: firstProjectId, workspaceId },
+      { projectId: firstProjectId, workspaceId: secondWorkspaceId },
+    ),
+    false,
   );
 });
 
@@ -366,7 +463,10 @@ test("buildAgentHistoryRows maps loaded run summaries", () => {
     [
       {
         detail: "telegram - 2026-07-05",
+        error: null,
+        finalResponse: "Done.",
         id: "11111111-1111-4111-8111-111111111111",
+        model: "openai/gpt-5",
         statusLabel: "waiting_confirmation",
         title: "@task prepare label update",
         updatedAtLabel: "2026-07-06",
@@ -535,6 +635,71 @@ test("buildProjectOverviewSummary counts loaded project tasks", () => {
   );
 });
 
+test("buildProjectDetailSummary counts completed project work using done statuses", () => {
+  assert.deepEqual(
+    buildProjectDetailSummary(
+      [
+        taskSummary({ id: firstParentTaskId, statusId: firstStatusId }),
+        taskSummary({
+          assigneeUserId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          id: secondParentTaskId,
+          statusId: secondStatusId,
+        }),
+      ],
+      new Set([secondStatusId]),
+    ),
+    { completedTaskCount: 1, parentTaskCount: 2, taskCount: 2, unassignedTaskCount: 1 },
+  );
+});
+
+test("buildProjectParentTaskProgress uses child tasks when a parent has children", () => {
+  assert.deepEqual(
+    buildProjectParentTaskProgress(
+      [
+        taskSummary({ id: firstParentTaskId, position: "1000", title: "Intro" }),
+        taskSummary({
+          id: secondParentTaskId,
+          position: "2000",
+          statusId: secondStatusId,
+          title: "Finale",
+        }),
+        taskSummary({
+          id: "11111111-1111-4111-8111-111111111111",
+          parentTaskId: firstParentTaskId,
+          statusId: secondStatusId,
+          title: "Mix",
+        }),
+        taskSummary({
+          id: "22222222-2222-4222-8222-222222222222",
+          parentTaskId: firstParentTaskId,
+          statusId: firstStatusId,
+          title: "Record",
+        }),
+      ],
+      new Set([secondStatusId]),
+    ).map(({ completedTaskCount, title, totalTaskCount }) => ({
+      completedTaskCount,
+      title,
+      totalTaskCount,
+    })),
+    [
+      { completedTaskCount: 1, title: "Intro", totalTaskCount: 2 },
+      { completedTaskCount: 1, title: "Finale", totalTaskCount: 1 },
+    ],
+  );
+});
+
+test("formatProjectActionFeedback returns actionable errors and hides pending states", () => {
+  assert.equal(
+    formatProjectActionFeedback("Project", {
+      message: "A visible workspace is required before archiving projects.",
+      status: "error",
+    }),
+    "Project: A visible workspace is required before archiving projects.",
+  );
+  assert.equal(formatProjectActionFeedback("Task", { status: "submitting" }), null);
+});
+
 test("buildTaskTableRows maps loaded tasks into table rows", () => {
   const parentTaskId = "11111111-1111-4111-8111-111111111111";
 
@@ -631,6 +796,70 @@ test("buildTemplateSkillRows maps loaded task skills into template rows", () => 
         updatedAtLabel: "2026-07-06",
       },
     ],
+  );
+});
+
+test("filterTemplateSkillRows searches names, descriptions, and aliases", () => {
+  const skills = [
+    taskSkillSummary({
+      aliases: ["song"],
+      description: "Creates a song task tree",
+      id: "99999999-9999-4999-8999-999999999991",
+      name: "Song",
+    }),
+    taskSkillSummary({
+      aliases: ["ship"],
+      description: "Publishes a release",
+      id: "99999999-9999-4999-8999-999999999992",
+      name: "Release",
+    }),
+  ];
+
+  assert.deepEqual(
+    filterTemplateSkillRows(skills, "SONG").map((skill) => skill.id),
+    ["99999999-9999-4999-8999-999999999991"],
+  );
+  assert.deepEqual(
+    filterTemplateSkillRows(skills, "publishes").map((skill) => skill.id),
+    ["99999999-9999-4999-8999-999999999992"],
+  );
+  assert.deepEqual(
+    filterTemplateSkillRows(skills, "").map((skill) => skill.id),
+    skills.map((skill) => skill.id),
+  );
+});
+
+test("filterAgentHistoryRows searches available summary detail", () => {
+  const runs = [
+    agentRunSummary({
+      error: null,
+      finalResponse: "Created three tasks.",
+      id: "12121212-1212-4212-8212-121212121212",
+      inputText: "Plan the release",
+      model: "model-a",
+      source: "web",
+    }),
+    agentRunSummary({
+      error: "Connection failed",
+      finalResponse: null,
+      id: "34343434-3434-4434-8434-343434343434",
+      inputText: "What is next?",
+      model: null,
+      source: "telegram",
+    }),
+  ];
+
+  assert.deepEqual(
+    filterAgentHistoryRows(runs, "created three").map((run) => run.id),
+    ["12121212-1212-4212-8212-121212121212"],
+  );
+  assert.deepEqual(
+    filterAgentHistoryRows(runs, "connection").map((run) => run.id),
+    ["34343434-3434-4434-8434-343434343434"],
+  );
+  assert.deepEqual(
+    filterAgentHistoryRows(runs, "telegram").map((run) => run.id),
+    ["34343434-3434-4434-8434-343434343434"],
   );
 });
 

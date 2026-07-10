@@ -1,0 +1,3 @@
+.overlay { position: fixed; inset: 0; z-index: 1000; background: rgb(0 0 0 / 45%); }
+.modal { position: fixed; inset: 0 0 0 auto; width: min(42rem, 100vw); outline: none; }
+.drawer { height: 100%; overflow-y: auto; box-sizing: border-box; padding: 1.5rem; background: var(--m-color-background, #fff); box-shadow: -8px 0 24px rgb(0 0 0 / 18%); }

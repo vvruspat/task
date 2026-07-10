@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, ForbiddenException, Get, Post, UseGuards } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -31,6 +31,7 @@ import {
   TelegramConfirmationCallbackDto,
   TelegramConfirmationCallbackResultDto,
   TelegramContextResolutionDto,
+  TelegramIdentityLinkStatusDto,
   VerifiedTelegramMiniAppInitDataDto,
   VerifyTelegramMiniAppInitDataDto,
 } from "./telegram.dto.js";
@@ -104,6 +105,23 @@ export class TelegramController {
 @Controller("telegram/mini-app")
 export class TelegramMiniAppController {
   constructor(private readonly telegramService: TelegramService) {}
+
+  @Get("identity/link-status")
+  @ApiTrustedCurrentUser()
+  @ApiOperation({ summary: "Get the current user's Telegram Mini App identity link status" })
+  @ApiOkResponse({ type: TelegramIdentityLinkStatusDto })
+  @ApiForbiddenResponse({ description: "Current user has no linked Telegram identity." })
+  async getIdentityLinkStatus(
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<TelegramIdentityLinkStatusDto> {
+    const status = await this.telegramService.getMiniAppIdentityLinkStatus(userId);
+
+    if (status === null) {
+      throw new ForbiddenException("Telegram identity is not linked.");
+    }
+
+    return new TelegramIdentityLinkStatusDto(status);
+  }
 
   @Post("init-data/verify")
   @ApiOperation({ summary: "Verify Telegram Mini App initData and return the stable identity" })

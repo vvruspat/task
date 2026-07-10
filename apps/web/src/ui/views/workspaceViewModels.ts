@@ -7,6 +7,53 @@ type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 
+export function canManageWorkspaceSettings(role: "owner" | "admin" | "member" | "guest"): boolean {
+  return role === "owner" || role === "admin";
+}
+
+export type EditableWorkspaceMemberRole = "admin" | "member" | "guest";
+
+export function buildWorkspaceMemberRoleUpdateInput(role: EditableWorkspaceMemberRole): {
+  role: EditableWorkspaceMemberRole;
+} {
+  return { role };
+}
+
+export function buildWorkspaceStatusCreateInput(input: {
+  color: string;
+  isDone: boolean;
+  name: string;
+  position: string;
+}): { color: string; isDone: boolean; name: string; position: string } {
+  return { ...input, name: input.name.trim() };
+}
+
+export function shouldConfirmWorkspaceStatusDeletion(confirmed: boolean): boolean {
+  return confirmed;
+}
+
+export function shouldApplySettingsWorkspaceSettlement(
+  currentWorkspaceId: string | null,
+  capturedWorkspaceId: string,
+): boolean {
+  return currentWorkspaceId === capturedWorkspaceId;
+}
+
+export function getSettingsMutationSettlement(input: {
+  capturedWorkspaceId: string;
+  currentWorkspaceId: string | null;
+  errorMessage: string | null;
+}): { errorMessage: string | null; shouldRefresh: boolean } {
+  const isCurrent = shouldApplySettingsWorkspaceSettlement(
+    input.currentWorkspaceId,
+    input.capturedWorkspaceId,
+  );
+  return {
+    errorMessage: isCurrent ? input.errorMessage : null,
+    shouldRefresh: isCurrent && input.errorMessage === null,
+  };
+}
+
 export type ProjectOverviewRow = {
   description: string;
   dueSoonTaskCount: number;
@@ -111,7 +158,10 @@ export type AgentHistorySummary = {
 
 export type AgentHistoryRunRow = {
   detail: string;
+  error: string | null;
+  finalResponse: string | null;
   id: string;
+  model: string | null;
   statusLabel: string;
   title: string;
   updatedAtLabel: string;
@@ -123,6 +173,25 @@ export type ProjectOverviewSummary = {
   taskCount: number;
   unassignedTaskCount: number;
 };
+
+export type ProjectParentTaskProgress = {
+  completedTaskCount: number;
+  id: string;
+  title: string;
+  totalTaskCount: number;
+  updatedAtLabel: string;
+};
+
+export type ProjectDetailSummary = {
+  completedTaskCount: number;
+  parentTaskCount: number;
+  taskCount: number;
+  unassignedTaskCount: number;
+};
+
+export type ProjectActionFeedbackInput =
+  | { status: "idle" | "submitting" }
+  | { message: string; status: "error" | "success" };
 
 export type TaskTableRow = {
   assigneeLabel: string;
@@ -243,6 +312,20 @@ export function buildKanbanSummary(
   };
 }
 
+export function getAdjacentKanbanStatusId(
+  statuses: WorkspaceStatus[],
+  currentStatusId: string | null,
+  direction: "next" | "previous",
+): string | null {
+  const statusIds = [null, ...[...statuses].sort(compareStatusPosition).map((status) => status.id)];
+  const currentIndex = statusIds.indexOf(currentStatusId);
+  if (currentIndex === -1) return currentStatusId;
+  const adjacentIndex = direction === "next" ? currentIndex + 1 : currentIndex - 1;
+  if (adjacentIndex < 0 || adjacentIndex >= statusIds.length) return currentStatusId;
+  const adjacentStatusId = statusIds[adjacentIndex];
+  return adjacentStatusId === undefined ? currentStatusId : adjacentStatusId;
+}
+
 export function buildMatrixColumns(tasks: TaskSummary[]): MatrixColumn[] {
   const parentTasks = [...tasks]
     .filter((task) => !hasParentTaskValue(task.parentTaskId))
@@ -325,6 +408,39 @@ export function buildSettingsSummary(input: {
   };
 }
 
+export function getTelegramMiniAppInitData(
+  value: unknown = typeof window === "undefined" ? undefined : window,
+): string | null {
+  if (!isUnknownRecord(value)) return null;
+  const telegram = readUnknownProperty(value, "Telegram");
+  if (!isUnknownRecord(telegram)) return null;
+  const webApp = readUnknownProperty(telegram, "WebApp");
+  if (!isUnknownRecord(webApp)) return null;
+  const initData = readUnknownProperty(webApp, "initData");
+  return typeof initData === "string" && initData.trim().length > 0 ? initData : null;
+}
+
+export function isTelegramIdentityUnlinkedError(error: unknown): boolean {
+  if (!isUnknownRecord(error)) return false;
+  const status = readUnknownProperty(error, "status");
+  return status === 403 || status === 404;
+}
+
+export function shouldShowTelegramLinkAction(input: {
+  initData: string | null;
+  linkState: "unlinked" | "linked" | "loading" | "error" | "unavailable";
+}): boolean {
+  return input.linkState === "unlinked" && input.initData !== null;
+}
+
+function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function readUnknownProperty(value: Record<string, unknown>, key: string): unknown {
+  return value[key];
+}
+
 export function buildAgentHistorySummary(input: {
   agentRuns: AgentRunSummary[];
   projects: ProjectSummary[];
@@ -353,11 +469,55 @@ export function buildAgentHistorySummary(input: {
 export function buildAgentHistoryRows(agentRuns: AgentRunSummary[]): AgentHistoryRunRow[] {
   return agentRuns.map((run) => ({
     detail: `${run.source} - ${formatDateLabel(run.createdAt)}`,
+    error: run.error ?? null,
+    finalResponse: run.finalResponse ?? null,
     id: run.id,
+    model: run.model ?? null,
     statusLabel: run.status,
     title: run.inputText,
     updatedAtLabel: formatDateLabel(run.updatedAt),
   }));
+}
+
+export function filterTemplateSkillRows(
+  skills: TaskSkillSummary[],
+  query: string,
+): ReturnType<typeof buildTemplateSkillRows> {
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const rows = buildTemplateSkillRows(skills);
+
+  if (normalizedQuery.length === 0) {
+    return rows;
+  }
+
+  return rows.filter((skill) =>
+    [skill.name, skill.description, skill.aliasLabel].some((value) =>
+      value.toLocaleLowerCase().includes(normalizedQuery),
+    ),
+  );
+}
+
+export function filterAgentHistoryRows(
+  agentRuns: AgentRunSummary[],
+  query: string,
+): AgentHistoryRunRow[] {
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const rows = buildAgentHistoryRows(agentRuns);
+
+  if (normalizedQuery.length === 0) {
+    return rows;
+  }
+
+  return rows.filter((run) =>
+    [
+      run.title,
+      run.detail,
+      run.statusLabel,
+      run.model ?? "",
+      run.finalResponse ?? "",
+      run.error ?? "",
+    ].some((value) => value.toLocaleLowerCase().includes(normalizedQuery)),
+  );
 }
 
 export function buildProjectOverviewRows(
@@ -394,6 +554,57 @@ export function buildProjectOverviewSummary(
     taskCount: tasks.length,
     unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
   };
+}
+
+export function buildProjectDetailSummary(
+  tasks: TaskSummary[],
+  doneStatusIds: ReadonlySet<string>,
+): ProjectDetailSummary {
+  return {
+    completedTaskCount: tasks.filter(
+      (task) =>
+        task.statusId !== null && task.statusId !== undefined && doneStatusIds.has(task.statusId),
+    ).length,
+    parentTaskCount: tasks.filter((task) => !hasParentTaskValue(task.parentTaskId)).length,
+    taskCount: tasks.length,
+    unassignedTaskCount: tasks.filter(isTaskUnassigned).length,
+  };
+}
+
+export function formatProjectActionFeedback(
+  action: string,
+  state: ProjectActionFeedbackInput,
+): string | null {
+  if (!("message" in state)) {
+    return null;
+  }
+  return `${action}: ${state.message}`;
+}
+
+export function buildProjectParentTaskProgress(
+  tasks: TaskSummary[],
+  doneStatusIds: ReadonlySet<string>,
+): ProjectParentTaskProgress[] {
+  return tasks
+    .filter((task) => !hasParentTaskValue(task.parentTaskId))
+    .sort(compareTaskPosition)
+    .map((parentTask) => {
+      const childTasks = tasks.filter((task) => task.parentTaskId === parentTask.id);
+      const progressTasks = childTasks.length === 0 ? [parentTask] : childTasks;
+
+      return {
+        completedTaskCount: progressTasks.filter(
+          (task) =>
+            task.statusId !== null &&
+            task.statusId !== undefined &&
+            doneStatusIds.has(task.statusId),
+        ).length,
+        id: parentTask.id,
+        title: parentTask.title,
+        totalTaskCount: progressTasks.length,
+        updatedAtLabel: formatDateLabel(parentTask.updatedAt),
+      };
+    });
 }
 
 export function buildTaskTableRows(

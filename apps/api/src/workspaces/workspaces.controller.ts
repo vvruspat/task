@@ -1,5 +1,8 @@
-import { Controller, Get, Param, ParseUUIDPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch } from "@nestjs/common";
 import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -10,7 +13,14 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import { WorkspaceDetailDto, WorkspaceMemberDto, WorkspaceSummaryDto } from "./workspaces.dto.js";
+import type { UpdateWorkspaceMemberRoleInput } from "./workspaces.contracts.js";
+import {
+  ParseUpdateWorkspaceMemberRoleBodyPipe,
+  UpdateWorkspaceMemberRoleDto,
+  WorkspaceDetailDto,
+  WorkspaceMemberDto,
+  WorkspaceSummaryDto,
+} from "./workspaces.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { WorkspacesService } from "./workspaces.service.js";
 
@@ -51,5 +61,25 @@ export class WorkspacesController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<WorkspaceMemberDto[]> {
     return this.workspacesService.listMembers(workspaceId, userId);
+  }
+
+  @Patch(":workspaceId/members/:memberId/role")
+  @ApiOperation({ summary: "Update one workspace member role" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "memberId" })
+  @ApiBody({ type: UpdateWorkspaceMemberRoleDto })
+  @ApiOkResponse({ type: WorkspaceMemberDto })
+  @ApiBadRequestResponse({ description: "Workspace member role payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update this workspace member role." })
+  @ApiNotFoundResponse({
+    description: "Workspace member is missing or not visible to the current user.",
+  })
+  updateMemberRole(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("memberId", uuidV4Pipe) memberId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateWorkspaceMemberRoleBodyPipe()) input: UpdateWorkspaceMemberRoleInput,
+  ): Promise<WorkspaceMemberDto> {
+    return this.workspacesService.updateMemberRole(workspaceId, memberId, userId, input);
   }
 }

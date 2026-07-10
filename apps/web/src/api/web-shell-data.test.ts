@@ -1,29 +1,63 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  AddTaskSubtasksRequestInput,
+  AgentRunDetail,
+  AgentRunScopedInput,
   AgentRunSummary,
+  ApplyTaskSkillRequestInput,
   ArchiveProjectRequestInput,
   ArchiveTaskRequestInput,
+  BulkUpdateTasksRequestInput,
+  CloneTaskSkillRequestInput,
+  ConfirmationRequestDetail,
+  ConfirmationRequestScopedInput,
+  ConfirmationRequestSummary,
   CreateProjectRequestInput,
   CreateTaskCommentRequestInput,
   CreateTaskFileAttachmentRequestInput,
   CreateTaskLinkAttachmentRequestInput,
   CreateTaskRequestInput,
+  CreateTaskSkillRequestInput,
   CreateTaskTelegramFileAttachmentRequestInput,
+  CreateWorkspaceStatusRequestInput,
+  DashboardOverview,
+  GetProjectMatrixRequestInput,
+  LinkTelegramMiniAppIdentityRequestInput,
+  ListMyTasksRequestInput,
+  ListTaskTableRequestInput,
+  MoveTaskRequestInput,
+  MyTasksPage,
+  PreviewTaskSkillApplyRequestInput,
   ProjectDetail,
+  ProjectMatrix,
   ProjectSummary,
+  SearchPage,
+  SearchRequestInput,
+  TaskActivityEvent,
   TaskApiClient,
   TaskAttachment,
   TaskComment,
   TaskDetail,
+  TaskSkillScopedInput,
   TaskSkillSummary,
   TaskSummary,
+  TaskTablePage,
   UpdateProjectRequestInput,
+  UpdateTaskAssigneeRequestInput,
+  UpdateTaskDueDateRequestInput,
   UpdateTaskRequestInput,
+  UpdateTaskSkillDefinitionRequestInput,
+  UpdateTaskSkillMetadataRequestInput,
+  UpdateTaskStatusRequestInput,
+  UpdateWorkspaceMemberRoleRequestInput,
+  UpdateWorkspaceStatusRequestInput,
   WorkspaceStatus,
+  WorkspaceStatusScopedInput,
   WorkspaceSummary,
 } from "@task/api-client";
 import {
+  applyArchivedProjectToWebShellData,
   createWebShellProject,
   createWebShellTask,
   loadWebShellData,
@@ -46,6 +80,36 @@ test("parseWebShellConfig accepts required Vite environment values", () => {
       },
       status: "configured",
     },
+  );
+});
+
+test("applyArchivedProjectToWebShellData clears deep-linked project tasks and selects the next active project", () => {
+  const deepLinkedProjectId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+  const nextProjectId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+  const result = applyArchivedProjectToWebShellData(
+    {
+      agentRuns: [],
+      projects: [
+        projectSummary({ id: projectId, title: "Default" }),
+        projectSummary({ id: deepLinkedProjectId, title: "Deep link" }),
+        projectSummary({ id: nextProjectId, title: "Next" }),
+      ],
+      selectedProjectId: projectId,
+      selectedWorkspaceId: workspaceId,
+      skills: [],
+      statuses: [],
+      tasks: [taskSummary({ projectId: deepLinkedProjectId })],
+      workspaces: [workspaceSummary()],
+    },
+    projectSummary({ archivedAt: "2026-07-10T10:00:00.000Z", id: deepLinkedProjectId }),
+    deepLinkedProjectId,
+  );
+
+  assert.equal(result.selectedProjectId, projectId);
+  assert.deepEqual(result.tasks, []);
+  assert.equal(
+    result.projects.find((project) => project.id === deepLinkedProjectId)?.archivedAt,
+    "2026-07-10T10:00:00.000Z",
   );
 });
 
@@ -294,6 +358,18 @@ class RecordingTaskApiClient implements TaskApiClient {
     return taskSummary();
   }
 
+  async createTaskSkill(_input: CreateTaskSkillRequestInput): Promise<never> {
+    throw new Error("createTaskSkill is not used by the web shell loader.");
+  }
+
+  async createWorkspaceStatus(_input: CreateWorkspaceStatusRequestInput): Promise<never> {
+    throw new Error("createWorkspaceStatus is not used by the web shell loader.");
+  }
+
+  async cloneTaskSkill(_input: CloneTaskSkillRequestInput): Promise<never> {
+    throw new Error("cloneTaskSkill is not used by the web shell loader.");
+  }
+
   async createTaskComment(_input: CreateTaskCommentRequestInput): Promise<never> {
     throw new Error("createTaskComment is not used by the web shell loader.");
   }
@@ -320,6 +396,42 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("archiveTask is not used by the web shell loader.");
   }
 
+  async addTaskSubtasks(_input: AddTaskSubtasksRequestInput): Promise<never> {
+    throw new Error("addTaskSubtasks is not used by the web shell loader.");
+  }
+
+  async getTask(_input: ArchiveTaskRequestInput): Promise<never> {
+    throw new Error("getTask is not used by the web shell loader.");
+  }
+
+  async getTaskSkill(_input: TaskSkillScopedInput): Promise<never> {
+    throw new Error("getTaskSkill is not used by the web shell loader.");
+  }
+
+  async getAgentRun(_input: AgentRunScopedInput): Promise<AgentRunDetail> {
+    throw new Error("getAgentRun is not used by the web shell loader.");
+  }
+
+  async archiveTaskSkill(_input: TaskSkillScopedInput): Promise<never> {
+    throw new Error("archiveTaskSkill is not used by the web shell loader.");
+  }
+
+  async updateTaskSkillMetadata(_input: UpdateTaskSkillMetadataRequestInput): Promise<never> {
+    throw new Error("updateTaskSkillMetadata is not used by the web shell loader.");
+  }
+
+  async updateTaskSkillDefinition(_input: UpdateTaskSkillDefinitionRequestInput): Promise<never> {
+    throw new Error("updateTaskSkillDefinition is not used by the web shell loader.");
+  }
+
+  async previewTaskSkillApply(_input: PreviewTaskSkillApplyRequestInput): Promise<never> {
+    throw new Error("previewTaskSkillApply is not used by the web shell loader.");
+  }
+
+  async applyTaskSkill(_input: ApplyTaskSkillRequestInput): Promise<never> {
+    throw new Error("applyTaskSkill is not used by the web shell loader.");
+  }
+
   async updateProject(_input: UpdateProjectRequestInput): Promise<never> {
     throw new Error("updateProject is not used by the web shell loader.");
   }
@@ -328,8 +440,62 @@ class RecordingTaskApiClient implements TaskApiClient {
     throw new Error("updateTask is not used by the web shell loader.");
   }
 
+  async updateWorkspaceMemberRole(_input: UpdateWorkspaceMemberRoleRequestInput): Promise<never> {
+    throw new Error("updateWorkspaceMemberRole is not used by the web shell loader.");
+  }
+
+  async updateWorkspaceStatus(_input: UpdateWorkspaceStatusRequestInput): Promise<never> {
+    throw new Error("updateWorkspaceStatus is not used by the web shell loader.");
+  }
+
   async getHealth(): Promise<never> {
     throw new Error("getHealth is not used by the web shell loader.");
+  }
+
+  async getDashboardOverview(_input: { workspaceId: string }): Promise<DashboardOverview> {
+    throw new Error("getDashboardOverview is not used by the web shell loader.");
+  }
+
+  async getTelegramIdentityLinkStatus(): Promise<never> {
+    throw new Error("getTelegramIdentityLinkStatus is not used by the web shell loader.");
+  }
+
+  async getWorkspace(_input: { workspaceId: string }): Promise<never> {
+    throw new Error("getWorkspace is not used by the web shell loader.");
+  }
+
+  async getProjectMatrix(_input: GetProjectMatrixRequestInput): Promise<ProjectMatrix> {
+    throw new Error("getProjectMatrix is not used by the web shell loader.");
+  }
+
+  async listPendingConfirmationRequests(_input: {
+    workspaceId: string;
+  }): Promise<ConfirmationRequestSummary[]> {
+    throw new Error("listPendingConfirmationRequests is not used by the web shell loader.");
+  }
+
+  async confirmConfirmationRequest(
+    _input: ConfirmationRequestScopedInput,
+  ): Promise<ConfirmationRequestDetail> {
+    throw new Error("confirmConfirmationRequest is not used by the web shell loader.");
+  }
+
+  async cancelConfirmationRequest(
+    _input: ConfirmationRequestScopedInput,
+  ): Promise<ConfirmationRequestDetail> {
+    throw new Error("cancelConfirmationRequest is not used by the web shell loader.");
+  }
+
+  async listMyTasks(_input: ListMyTasksRequestInput): Promise<MyTasksPage> {
+    throw new Error("listMyTasks is not used by the web shell loader.");
+  }
+
+  async search(_input: SearchRequestInput): Promise<SearchPage> {
+    throw new Error("search is not used by the web shell loader.");
+  }
+
+  async listTaskTable(_input: ListTaskTableRequestInput): Promise<TaskTablePage> {
+    throw new Error("listTaskTable is not used by the web shell loader.");
   }
 
   async listAgentRuns(input: { workspaceId: string }): Promise<AgentRunSummary[]> {
@@ -343,6 +509,10 @@ class RecordingTaskApiClient implements TaskApiClient {
     workspaceId: string;
   }): Promise<TaskAttachment[]> {
     throw new Error("listTaskAttachments is not used by the web shell loader.");
+  }
+
+  async listTaskActivity(_input: ArchiveTaskRequestInput): Promise<TaskActivityEvent[]> {
+    throw new Error("listTaskActivity is not used by the web shell loader.");
   }
 
   async listTaskComments(_input: {
@@ -363,6 +533,14 @@ class RecordingTaskApiClient implements TaskApiClient {
     return this.data.statuses;
   }
 
+  async deleteWorkspaceStatus(_input: WorkspaceStatusScopedInput): Promise<never> {
+    throw new Error("deleteWorkspaceStatus is not used by the web shell loader.");
+  }
+
+  async listWorkspaceMembers(_input: { workspaceId: string }): Promise<never> {
+    throw new Error("listWorkspaceMembers is not used by the web shell loader.");
+  }
+
   async listTaskSkills(input: { workspaceId: string }): Promise<TaskSkillSummary[]> {
     this.calls.push(`listTaskSkills:${input.workspaceId}`);
     return this.data.skills;
@@ -376,6 +554,32 @@ class RecordingTaskApiClient implements TaskApiClient {
   async listWorkspaces(): Promise<WorkspaceSummary[]> {
     this.calls.push("listWorkspaces");
     return this.data.workspaces;
+  }
+
+  async linkTelegramMiniAppIdentity(
+    _input: LinkTelegramMiniAppIdentityRequestInput,
+  ): Promise<never> {
+    throw new Error("linkTelegramMiniAppIdentity is not used by the web shell loader.");
+  }
+
+  async moveTask(_input: MoveTaskRequestInput): Promise<never> {
+    throw new Error("moveTask is not used by the web shell loader.");
+  }
+
+  async updateTaskAssignee(_input: UpdateTaskAssigneeRequestInput): Promise<never> {
+    throw new Error("updateTaskAssignee is not used by the web shell loader.");
+  }
+
+  async updateTaskDueDate(_input: UpdateTaskDueDateRequestInput): Promise<never> {
+    throw new Error("updateTaskDueDate is not used by the web shell loader.");
+  }
+
+  async updateTaskStatus(_input: UpdateTaskStatusRequestInput): Promise<never> {
+    throw new Error("updateTaskStatus is not used by the web shell loader.");
+  }
+
+  async bulkUpdateTasks(_input: BulkUpdateTasksRequestInput): Promise<never> {
+    throw new Error("bulkUpdateTasks is not used by the web shell loader.");
   }
 }
 
@@ -406,7 +610,7 @@ function agentRunSummary(): AgentRunSummary {
   };
 }
 
-function projectSummary(): ProjectSummary {
+function projectSummary(overrides: Partial<ProjectSummary> = {}): ProjectSummary {
   return {
     id: projectId,
     workspaceId,
@@ -418,10 +622,11 @@ function projectSummary(): ProjectSummary {
     archivedAt: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+    ...overrides,
   };
 }
 
-function taskSummary(): TaskSummary {
+function taskSummary(overrides: Partial<TaskSummary> = {}): TaskSummary {
   return {
     id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
     workspaceId,
@@ -440,6 +645,7 @@ function taskSummary(): TaskSummary {
     archivedAt: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+    ...overrides,
   };
 }
 

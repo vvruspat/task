@@ -22,6 +22,7 @@ import type {
 import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import { AgentService } from "./agent.service.js";
 import type {
+  AgentRunDetailRecord,
   AgentRunStore,
   FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
@@ -321,6 +322,54 @@ test("AgentService lists workspace agent runs as summary DTOs", async () => {
   });
 });
 
+test("AgentService redacts sensitive strings in agent run summaries", async () => {
+  const store = new RecordingAgentRunStore(
+    {
+      status: "resolved",
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+      userId: "33333333-3333-4333-8333-333333333333",
+    },
+    null,
+    [
+      {
+        id: "44444444-4444-4444-8444-444444444444",
+        workspaceId: "22222222-2222-4222-8222-222222222222",
+        userId: "33333333-3333-4333-8333-333333333333",
+        source: "telegram",
+        sourceThreadId: "-100987654321",
+        sourceMessageId: "42",
+        model: null,
+        inputText: "@task access_token=list-secret",
+        normalizedIntent: null,
+        finalResponse: "Open https://api.example.test/?X-Amz-Signature=list-secret",
+        status: "failed",
+        tokenUsage: null,
+        cost: null,
+        error: "Request failed: Bearer list-secret",
+        createdAt: new Date("2026-07-08T00:01:00.000Z"),
+        updatedAt: new Date("2026-07-08T00:02:00.000Z"),
+      },
+    ],
+  );
+  const service = new AgentService(
+    store,
+    new RecordingAgentRuntime(),
+    createConfirmationsService(),
+  );
+
+  const response = await service.listWorkspaceRuns(
+    "22222222-2222-4222-8222-222222222222",
+    "33333333-3333-4333-8333-333333333333",
+  );
+
+  assert.equal(response[0]?.inputText, "@task access_token=[REDACTED]");
+  assert.equal(
+    response[0]?.finalResponse,
+    "Open https://api.example.test/?X-Amz-Signature=%5BREDACTED%5D",
+  );
+  assert.equal(response[0]?.error, "Request failed: Bearer [REDACTED]");
+});
+
 test("AgentService hides agent runs for inaccessible workspaces", async () => {
   const store = new RecordingAgentRunStore(
     {
@@ -341,6 +390,73 @@ test("AgentService hides agent runs for inaccessible workspaces", async () => {
     () =>
       service.listWorkspaceRuns(
         "22222222-2222-4222-8222-222222222222",
+        "33333333-3333-4333-8333-333333333333",
+      ),
+    NotFoundException,
+  );
+});
+
+test("AgentService redacts every externally returned agent audit surface", async () => {
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+  store.detailResult = createAgentRunDetailRecord();
+  const service = new AgentService(
+    store,
+    new RecordingAgentRuntime(),
+    createConfirmationsService(),
+  );
+
+  const response = await service.getWorkspaceRun(
+    "22222222-2222-4222-8222-222222222222",
+    "11111111-1111-4111-8111-111111111111",
+    "33333333-3333-4333-8333-333333333333",
+  );
+
+  assert.deepEqual(response.toolCalls[0]?.arguments, {
+    authorization: "[REDACTED]",
+    nested: {
+      apiKey: "[REDACTED]",
+      privateKey: "[REDACTED]",
+      signedUrl:
+        "https://signed.example.test/?X-Amz-Signature=%5BREDACTED%5D&sig=%5BREDACTED%5D&assertion=%5BREDACTED%5D&code=%5BREDACTED%5D",
+      title: "Follow up",
+      url: "https://api.example.test/tasks?access_token=%5BREDACTED%5D",
+      userInfoUrl: "https://%5BREDACTED%5D:%5BREDACTED%5D@api.example.test/tasks",
+    },
+  });
+  assert.deepEqual(response.toolCalls[0]?.result, { accessToken: "[REDACTED]" });
+  assert.equal(
+    response.toolCalls[0]?.error,
+    "Request failed: Bearer [REDACTED] https://api.example.test/?token=%5BREDACTED%5D",
+  );
+  assert.deepEqual(response.confirmationRequests[0]?.preview, {
+    accessKey: "[REDACTED]",
+    url: "https://api.example.test/?private_key=%5BREDACTED%5D",
+  });
+  assert.equal(response.inputText, "@task access_token=[REDACTED]");
+  assert.equal(response.finalResponse, "Open https://api.example.test/?token=%5BREDACTED%5D");
+  assert.equal(response.error, "Credential error: client_secret=[REDACTED]");
+});
+
+test("AgentService hides missing or inaccessible agent run details", async () => {
+  const service = new AgentService(
+    new RecordingAgentRunStore({
+      status: "resolved",
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+      userId: "33333333-3333-4333-8333-333333333333",
+    }),
+    new RecordingAgentRuntime(),
+    createConfirmationsService(),
+  );
+
+  await assert.rejects(
+    () =>
+      service.getWorkspaceRun(
+        "22222222-2222-4222-8222-222222222222",
+        "11111111-1111-4111-8111-111111111111",
         "33333333-3333-4333-8333-333333333333",
       ),
     NotFoundException,
@@ -382,6 +498,7 @@ class RecordingAgentRunStore implements AgentRunStore {
   lastFindInput: FindTelegramAgentRunInput | null = null;
   lastListInput: { workspaceId: string; userId: string } | null = null;
   lastPersistInput: PersistTelegramAgentRunInput | null = null;
+  detailResult: AgentRunDetailRecord | null = null;
 
   constructor(
     private readonly contextResult: TelegramAgentRunContextResult,
@@ -409,6 +526,14 @@ class RecordingAgentRunStore implements AgentRunStore {
     this.lastListInput = { workspaceId, userId };
 
     return this.workspaceRuns;
+  }
+
+  async getDetailForWorkspace(
+    _workspaceId: string,
+    _agentRunId: string,
+    _userId: string,
+  ): Promise<AgentRunDetailRecord | null> {
+    return this.detailResult;
   }
 
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<PersistedAgentRun> {
@@ -525,3 +650,64 @@ class RecordingConfirmationRequestsStore implements ConfirmationRequestsStore {
 }
 
 type PersistedAgentRun = Awaited<ReturnType<AgentRunStore["createTelegramRun"]>>;
+
+function createAgentRunDetailRecord(): AgentRunDetailRecord {
+  const run: PersistedAgentRun = {
+    id: "11111111-1111-4111-8111-111111111111",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+    source: "telegram",
+    sourceThreadId: "-100987654321",
+    sourceMessageId: "42",
+    model: null,
+    inputText: "@task access_token=run-secret",
+    normalizedIntent: null,
+    finalResponse: "Open https://api.example.test/?token=run-secret",
+    status: "waiting_confirmation",
+    tokenUsage: null,
+    cost: null,
+    error: "Credential error: client_secret=run-secret",
+    createdAt: new Date("2026-07-08T00:00:00.000Z"),
+    updatedAt: new Date("2026-07-08T00:00:00.000Z"),
+  };
+
+  return {
+    run,
+    toolCalls: [
+      {
+        id: "44444444-4444-4444-8444-444444444444",
+        agentRunId: run.id,
+        toolName: "tasks.create",
+        arguments: {
+          authorization: "Bearer secret",
+          nested: {
+            apiKey: "private",
+            privateKey: "private",
+            signedUrl:
+              "https://signed.example.test/?X-Amz-Signature=private&sig=private&assertion=private&code=private",
+            title: "Follow up",
+            url: "https://api.example.test/tasks?access_token=private",
+            userInfoUrl: "https://private-user:private-password@api.example.test/tasks",
+          },
+        },
+        result: { accessToken: "private" },
+        status: "success",
+        error: "Request failed: Bearer private https://api.example.test/?token=private",
+        createdAt: new Date("2026-07-08T00:00:01.000Z"),
+        completedAt: new Date("2026-07-08T00:00:02.000Z"),
+      },
+    ],
+    confirmationRequests: [
+      {
+        ...createConfirmationRequestSummary({
+          id: "55555555-5555-4555-8555-555555555555",
+          agentRunId: run.id,
+        }),
+        preview: {
+          accessKey: "private",
+          url: "https://api.example.test/?private_key=private",
+        },
+      },
+    ],
+  };
+}

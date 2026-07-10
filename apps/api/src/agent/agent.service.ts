@@ -1,8 +1,8 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import type { ConfirmationRequestSummaryDto } from "../confirmations/confirmations.dto.js";
 import type { ConfirmationsService } from "../confirmations/confirmations.service.js";
-import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
-import { AgentRunIntakeResponseDto, AgentRunSummaryDto } from "./agent.dto.js";
+import type { AgentRunDetail, CreateTelegramAgentRunInput } from "./agent.contracts.js";
+import { AgentRunDetailDto, AgentRunIntakeResponseDto, AgentRunSummaryDto } from "./agent.dto.js";
 import type { AgentRuntime } from "./agent.runtime.js";
 import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import type { AgentRunStore } from "./agent.store.js";
@@ -74,6 +74,41 @@ export class AgentService {
     return runs.map((run) => mapAgentRunToSummary(run));
   }
 
+  async getWorkspaceRun(
+    workspaceId: string,
+    agentRunId: string,
+    userId: string,
+  ): Promise<AgentRunDetailDto> {
+    const detail = await this.agentRunStore.getDetailForWorkspace(workspaceId, agentRunId, userId);
+
+    if (detail === null) {
+      throw new NotFoundException("Agent run was not found.");
+    }
+
+    return new AgentRunDetailDto({
+      ...mapAgentRunToAuditDetailValue(detail.run),
+      toolCalls: detail.toolCalls.map((toolCall) => ({
+        id: toolCall.id,
+        toolName: redactAuditString(toolCall.toolName),
+        arguments: redactSensitivePayload(toolCall.arguments),
+        result: toolCall.result === null ? null : redactSensitivePayload(toolCall.result),
+        status: toolCall.status,
+        error: toolCall.error === null ? null : redactAuditString(toolCall.error),
+        createdAt: toolCall.createdAt.toISOString(),
+        completedAt: toolCall.completedAt?.toISOString() ?? null,
+      })),
+      confirmationRequests: detail.confirmationRequests.map((request) => ({
+        id: request.id,
+        kind: redactAuditString(request.kind),
+        preview: redactSensitivePayload(request.preview),
+        status: request.status,
+        expiresAt: request.expiresAt.toISOString(),
+        createdAt: request.createdAt.toISOString(),
+        updatedAt: request.updatedAt.toISOString(),
+      })),
+    });
+  }
+
   private async mapAgentRunToIntakeResponse(
     run: AgentRunForIntakeResponse,
   ): Promise<AgentRunIntakeResponseDto> {
@@ -140,7 +175,24 @@ function mapAgentRunToSummary(run: {
   createdAt: Date;
   updatedAt: Date;
 }): AgentRunSummaryDto {
-  return new AgentRunSummaryDto({
+  return new AgentRunSummaryDto(mapAgentRunToAuditDetailValue(run));
+}
+
+function mapAgentRunToSummaryValue(run: {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  source: "telegram" | "web" | "mini_app";
+  sourceMessageId: string | null;
+  model: string | null;
+  inputText: string;
+  finalResponse: string | null;
+  status: "running" | "waiting_confirmation" | "completed" | "failed";
+  error: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}): Omit<AgentRunDetail, "toolCalls" | "confirmationRequests"> {
+  return {
     id: run.id,
     workspaceId: run.workspaceId,
     userId: run.userId,
@@ -153,5 +205,107 @@ function mapAgentRunToSummary(run: {
     error: run.error,
     createdAt: run.createdAt.toISOString(),
     updatedAt: run.updatedAt.toISOString(),
-  });
+  };
+}
+
+function mapAgentRunToAuditDetailValue(run: {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  source: "telegram" | "web" | "mini_app";
+  sourceMessageId: string | null;
+  model: string | null;
+  inputText: string;
+  finalResponse: string | null;
+  status: "running" | "waiting_confirmation" | "completed" | "failed";
+  error: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}): Omit<AgentRunDetail, "toolCalls" | "confirmationRequests"> {
+  const summary = mapAgentRunToSummaryValue(run);
+
+  return {
+    ...summary,
+    inputText: redactAuditString(summary.inputText),
+    finalResponse: summary.finalResponse === null ? null : redactAuditString(summary.finalResponse),
+    error: summary.error === null ? null : redactAuditString(summary.error),
+  };
+}
+
+const sensitivePayloadKeyPattern =
+  /(?:api|access|client|private|refresh|session)[_-]?(?:key|token|secret)|assertion|authorization|code|cookie|credential|pass(?:word|phrase)?|secret|(?:^|[_-])sig(?:nature)?(?:$|[_-])|token|x-amz-signature/iu;
+const redactedPayloadValue = "[REDACTED]";
+const sensitiveAssignmentPattern =
+  /\b((?:api|access|client|private|refresh|session)[_-]?(?:key|token|secret)|assertion|authorization|code|cookie|credential|pass(?:word|phrase)?|secret|sig(?:nature)?|token|x-amz-signature)\s*[=:]\s*[^\s,;&]+/giu;
+const bearerCredentialPattern = /\b(Bearer)\s+[^\s,;]+/giu;
+const privateKeyBlockPattern =
+  /-----BEGIN(?: [A-Z]+)? PRIVATE KEY-----[\s\S]*?-----END(?: [A-Z]+)? PRIVATE KEY-----/gu;
+
+function redactAuditString(value: string): string {
+  const redactedAssignments = value
+    .replace(privateKeyBlockPattern, redactedPayloadValue)
+    .replace(bearerCredentialPattern, "$1 [REDACTED]")
+    .replace(sensitiveAssignmentPattern, "$1=[REDACTED]");
+
+  return redactedAssignments.replaceAll(/https?:\/\/[^\s,]+/gu, redactCredentialUrl);
+}
+
+function redactCredentialUrl(value: string): string {
+  try {
+    const url = new URL(value);
+
+    for (const [key] of url.searchParams) {
+      if (sensitivePayloadKeyPattern.test(key)) {
+        url.searchParams.set(key, redactedPayloadValue);
+      }
+    }
+
+    if (url.username.length > 0) {
+      url.username = redactedPayloadValue;
+    }
+
+    if (url.password.length > 0) {
+      url.password = redactedPayloadValue;
+    }
+
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
+
+function redactSensitivePayload(value: Record<string, unknown>): Record<string, unknown> {
+  return redactPayloadRecord(value);
+}
+
+function redactPayloadRecord(value: Record<string, unknown>): Record<string, unknown> {
+  const redacted: Record<string, unknown> = {};
+
+  for (const [key, nestedValue] of Object.entries(value)) {
+    redacted[key] = sensitivePayloadKeyPattern.test(key)
+      ? redactedPayloadValue
+      : redactPayloadValue(nestedValue);
+  }
+
+  return redacted;
+}
+
+function redactPayloadValue(value: unknown): unknown {
+  if (typeof value === "string") {
+    return redactAuditString(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => redactPayloadValue(item));
+  }
+
+  if (isUnknownRecord(value)) {
+    return redactPayloadRecord(value);
+  }
+
+  return value;
+}
+
+function isUnknownRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
