@@ -195,8 +195,8 @@
     "semantic_hash": ""
   },
   "apps/api/package.json": {
-    "mtime": 1783607153.6782002,
-    "ast_hash": "daf7fc7c99817b1ad303f32bbb143935",
+    "mtime": 1783661246.7517307,
+    "ast_hash": "830637936a84965bb505756804d628d4",
     "semantic_hash": ""
   },
   "apps/api/tsconfig.json": {
@@ -250,7 +250,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1783641897.2748501,
+    "mtime": 1783642538.3508666,
     "ast_hash": "a27baf5c9fc33443268fb7cb69ec71e8",
     "semantic_hash": ""
   },
@@ -290,13 +290,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/main.ts": {
-    "mtime": 1783607153.6820896,
-    "ast_hash": "beb2fe14b6cefb0ae98e46850179df15",
+    "mtime": 1783661186.7087307,
+    "ast_hash": "c74209d22724ce76bb6e822a60b39ba3",
     "semantic_hash": ""
   },
   "apps/api/src/openapi.ts": {
-    "mtime": 1783637451.1959565,
-    "ast_hash": "7c6c5ac51ed3dd2a8eec171173806f09",
+    "mtime": 1783662143.692528,
+    "ast_hash": "80915ac71902203d46120ece1f66305f",
     "semantic_hash": ""
   },
   "apps/api/src/config.test.ts": {
@@ -470,13 +470,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296420000-create-agent-run-tables.ts": {
-    "mtime": 1783607153.6838105,
-    "ast_hash": "2bb8106d4c6932416e90681c78ad10ba",
+    "mtime": 1783661148.032801,
+    "ast_hash": "dd2eb9a9c5b94b76792773e265acc8d1",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/create-agent-run-tables.test.ts": {
-    "mtime": 1783607153.6842384,
-    "ast_hash": "1d813326df1f4569dcb07a386f177e25",
+    "mtime": 1783661148.032972,
+    "ast_hash": "33b211195de175acdf690594c657adb4",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/confirmation-request.entity.ts": {
@@ -635,23 +635,23 @@
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.contracts.ts": {
-    "mtime": 1783637950.6553335,
-    "ast_hash": "bf38a136f0eef3ce75469b0d8b236d91",
+    "mtime": 1783661191.9505968,
+    "ast_hash": "45d3c777599a4320dbf4a9aa6eddb0a1",
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.controller.test.ts": {
-    "mtime": 1783637962.883933,
-    "ast_hash": "7d79f1045fe6fde20d3237b877253051",
+    "mtime": 1783662143.6984725,
+    "ast_hash": "8de7f24928977cec99f456b2d6a2bb4a",
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.controller.ts": {
-    "mtime": 1783637950.655932,
-    "ast_hash": "a26df5ab4b4a13951375f67166b6c682",
+    "mtime": 1783662143.6969883,
+    "ast_hash": "ef6c44621113daf57cfd1cabce2605a0",
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.dto.ts": {
-    "mtime": 1783637950.65568,
-    "ast_hash": "7ba6f517e80ec63ac290bcbf1adb64b6",
+    "mtime": 1783662196.9083664,
+    "ast_hash": "8fef9888585f3bd52a68211c5bbc980c",
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.module.ts": {
@@ -660,8 +660,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.service.test.ts": {
-    "mtime": 1783637655.6184855,
-    "ast_hash": "91c5b491c0508d06ac52898e2897e829",
+    "mtime": 1783661191.9530406,
+    "ast_hash": "cac26f9beda75bbc210eb9228e0fe448",
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.service.ts": {
@@ -670,17 +670,17 @@
     "semantic_hash": ""
   },
   "apps/api/src/tasks/tasks.store.ts": {
-    "mtime": 1783637334.0942445,
-    "ast_hash": "d4878d22d8a52dfc5337b5d83dec0800",
+    "mtime": 1783662143.692866,
+    "ast_hash": "b776f65b2fa08550239d92c05b7f26c0",
     "semantic_hash": ""
   },
   "apps/api/src/tasks/typeorm-task-read.store.ts": {
-    "mtime": 1783637950.6562545,
-    "ast_hash": "ea654c47da64866366ef5c66a66c7c27",
+    "mtime": 1783661191.9541447,
+    "ast_hash": "3056c656132dde662461801378760222",
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1783641897.700985,
+    "mtime": 1783642538.8629973,
     "ast_hash": "0cac5d8ccaba93766c96f70feb409183",
     "semantic_hash": ""
   },
@@ -995,8 +995,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.controller.test.ts": {
-    "mtime": 1783639551.4338863,
-    "ast_hash": "ad969020f1d7e7ff49b8a13aa4d6e571",
+    "mtime": 1783661191.952416,
+    "ast_hash": "532c47014b964a95ab880edad9759128",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.controller.ts": {
@@ -1020,8 +1020,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.service.test.ts": {
-    "mtime": 1783639551.4334095,
-    "ast_hash": "b448d5e034480c752f13d51c03163aea",
+    "mtime": 1783661191.9529064,
+    "ast_hash": "376b255a07530318a9669e776413f218",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.service.ts": {
@@ -1185,13 +1185,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296660000-add-agent-run-source-thread-id.ts": {
-    "mtime": 1783607153.6840506,
-    "ast_hash": "d2fb3206af976c0a66ebb66ff5713a41",
+    "mtime": 1783661127.694791,
+    "ast_hash": "1cb2cace09eeafc6be95ad05615a4264",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/add-agent-run-source-thread-id.test.ts": {
-    "mtime": 1783607153.6841083,
-    "ast_hash": "dbded732024a3f4d42bb545c09da6496",
+    "mtime": 1783662143.6921859,
+    "ast_hash": "57be6a3e5577368ba5a3339d41e6b37f",
     "semantic_hash": ""
   },
   "apps/web/src/main.tsx": {
@@ -1415,8 +1415,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/SettingsView.tsx": {
-    "mtime": 1783642475.0112412,
-    "ast_hash": "b3a59fbe212a754dd038e9f3f71438e8",
+    "mtime": 1783662130.2036784,
+    "ast_hash": "854e048afef168819f9f8dfc7961621c",
     "semantic_hash": ""
   },
   "apps/web/src/ui/views/workspace/TaskTableView.tsx": {
@@ -3429,9 +3429,14 @@
     "ast_hash": "139920666e7a79d66dbcc54bccdecd63",
     "semantic_hash": ""
   },
-  "openapi/openapi.json": {
-    "mtime": 1783641421.7478204,
-    "ast_hash": "ef74670b34c3bc3d110c2b6d0de40580",
+  "apps/api/src/cors.test.ts": {
+    "mtime": 1783661186.7081623,
+    "ast_hash": "ac21b3cd4c1ade4c0032f3393326c936",
+    "semantic_hash": ""
+  },
+  "apps/api/src/cors.ts": {
+    "mtime": 1783661191.9468834,
+    "ast_hash": "bbb7a3ba1f321efc928a0217fd887e5a",
     "semantic_hash": ""
   }
 }

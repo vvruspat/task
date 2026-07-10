@@ -35,8 +35,8 @@ import {
   UpdateTaskSkillMetadataDto,
 } from "./task-skills/task-skills.dto.js";
 import {
-  CreateTaskDto,
   BulkUpdateTasksDto,
+  CreateTaskDto,
   ListTaskTableQueryDto,
   TaskDetailDto,
   TaskSummaryDto,

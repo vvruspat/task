@@ -129,9 +129,6 @@ export function SettingsView({
   useEffect(() => {
     setActiveActionWorkspaceId(null);
     setSettingsActionError(null);
-  }, [selectedWorkspaceId]);
-
-  useEffect(() => {
     if (client === null || selectedWorkspaceId === null) {
       setWorkspaceState({ status: "idle" });
       setMembersState({ status: "idle" });

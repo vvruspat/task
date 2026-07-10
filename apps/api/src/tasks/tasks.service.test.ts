@@ -96,7 +96,9 @@ test("TasksService maps a paginated task table", async () => {
 
 test("TasksService returns all bulk-updated tasks or rejects the entire request", async () => {
   const service = new TasksService(
-    createReadStore({ bulkUpdateResult: { status: "updated", tasks: [{ ...taskSummary, statusId }] } }),
+    createReadStore({
+      bulkUpdateResult: { status: "updated", tasks: [{ ...taskSummary, statusId }] },
+    }),
   );
   const response = await service.bulkUpdateTasks(workspaceId, projectId, userId, {
     taskIds: [taskId],
@@ -498,7 +500,9 @@ function createReadStore(options: {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
       options.tasks === undefined ? [] : options.tasks,
     listTableForProject: async (): Promise<TaskTablePage | null> =>
-      options.tablePage === undefined ? { items: [], page: 1, pageSize: 50, total: 0 } : options.tablePage,
+      options.tablePage === undefined
+        ? { items: [], page: 1, pageSize: 50, total: 0 }
+        : options.tablePage,
     getForProject: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>

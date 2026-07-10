@@ -95,11 +95,11 @@ test("TelegramService returns explicit workspace membership mismatch state", asy
 test("TelegramService returns the current user's linked Telegram identity status", async () => {
   const linkedAt = new Date("2026-07-10T08:00:00.000Z");
   const service = new TelegramService(
-    new RecordingTelegramContextStore(
-      { status: "telegram_user_unlinked" },
-      undefined,
-      { telegramId: "123456789", linkedAt, lastSeenAt: null },
-    ),
+    new RecordingTelegramContextStore({ status: "telegram_user_unlinked" }, undefined, {
+      telegramId: "123456789",
+      linkedAt,
+      lastSeenAt: null,
+    }),
     createMiniAppInitDataVerifier(),
   );
 

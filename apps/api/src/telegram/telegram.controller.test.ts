@@ -178,11 +178,11 @@ test("TelegramMiniAppController maps linked and unlinked identity link statuses"
   const linkedAt = new Date("2026-07-10T08:00:00.000Z");
   const linkedController = new TelegramMiniAppController(
     new TelegramService(
-      new RecordingTelegramContextStore(
-        { status: "telegram_user_unlinked" },
-        undefined,
-        { telegramId: "123456789", linkedAt, lastSeenAt: null },
-      ),
+      new RecordingTelegramContextStore({ status: "telegram_user_unlinked" }, undefined, {
+        telegramId: "123456789",
+        linkedAt,
+        lastSeenAt: null,
+      }),
       new TelegramMiniAppInitDataVerifier({ botToken, maxAgeSeconds: 86_400, now: () => now }),
     ),
   );

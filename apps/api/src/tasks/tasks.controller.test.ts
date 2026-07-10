@@ -16,8 +16,8 @@ import type {
 import { TasksController } from "./tasks.controller.js";
 import {
   ParseAddTaskSubtasksBodyPipe,
-  ParseCreateTaskBodyPipe,
   ParseBulkUpdateTasksBodyPipe,
+  ParseCreateTaskBodyPipe,
   ParseListTaskTableQueryPipe,
   ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
@@ -442,7 +442,14 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
     pageSize: 50,
   });
   assert.deepEqual(
-    pipe.transform({ search: "  bass ", statusId, page: "2", pageSize: "25", sortBy: "title", sortDirection: "asc" }),
+    pipe.transform({
+      search: "  bass ",
+      statusId,
+      page: "2",
+      pageSize: "25",
+      sortBy: "title",
+      sortDirection: "asc",
+    }),
     { search: "bass", statusId, page: 2, pageSize: 25, sortBy: "title", sortDirection: "asc" },
   );
   assert.deepEqual(pipe.transform({ statusFilter: "unassigned", assigneeFilter: "unassigned" }), {
@@ -454,13 +461,19 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
     pageSize: 50,
   });
   assert.throws(() => pipe.transform({ sortBy: "unsafe" }), BadRequestException);
-  assert.throws(() => pipe.transform({ statusId, statusFilter: "unassigned" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ statusId, statusFilter: "unassigned" }),
+    BadRequestException,
+  );
   assert.throws(
     () => pipe.transform({ assigneeUserId, assigneeFilter: "unassigned" }),
     BadRequestException,
   );
   assert.throws(() => pipe.transform({ pageSize: "101" }), BadRequestException);
-  assert.throws(() => pipe.transform({ dueFrom: "2026-02-01T00:00:00Z", dueTo: "2026-01-01T00:00:00Z" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ dueFrom: "2026-02-01T00:00:00Z", dueTo: "2026-01-01T00:00:00Z" }),
+    BadRequestException,
+  );
 });
 
 test("ParseBulkUpdateTasksBodyPipe validates every selected task id and update", () => {
@@ -493,7 +506,9 @@ function createReadStore(options: {
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
       options.tasks === undefined ? [] : options.tasks,
     listTableForProject: async (): Promise<TaskTablePage | null> =>
-      options.tablePage === undefined ? { items: [], page: 1, pageSize: 50, total: 0 } : options.tablePage,
+      options.tablePage === undefined
+        ? { items: [], page: 1, pageSize: 50, total: 0 }
+        : options.tablePage,
     getForProject: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>

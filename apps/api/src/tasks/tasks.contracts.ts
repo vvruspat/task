@@ -64,7 +64,14 @@ export type UpdateTaskDueDateInput = {
   dueAt: string | null;
 };
 
-export const taskTableSortFields = ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"] as const;
+export const taskTableSortFields = [
+  "title",
+  "status",
+  "assignee",
+  "dueAt",
+  "createdAt",
+  "updatedAt",
+] as const;
 export type TaskTableSortField = (typeof taskTableSortFields)[number];
 export type TaskTableSortDirection = "asc" | "desc";
 

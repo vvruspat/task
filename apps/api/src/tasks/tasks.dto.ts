@@ -151,15 +151,23 @@ export class ListTaskTableQueryDto implements ListTaskTableInput {
   @ApiPropertyOptional({ enum: ["unassigned"] }) readonly assigneeFilter?: "unassigned";
   @ApiPropertyOptional({ format: "date-time" }) readonly dueFrom?: string;
   @ApiPropertyOptional({ format: "date-time" }) readonly dueTo?: string;
-  @ApiPropertyOptional({ enum: ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"], default: "updatedAt" }) readonly sortBy: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt" = "updatedAt";
-  @ApiPropertyOptional({ enum: ["asc", "desc"], default: "desc" }) readonly sortDirection: "asc" | "desc" = "desc";
+  @ApiPropertyOptional({
+    enum: ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"],
+    default: "updatedAt",
+  })
+  readonly sortBy: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt" =
+    "updatedAt";
+  @ApiPropertyOptional({ enum: ["asc", "desc"], default: "desc" }) readonly sortDirection:
+    | "asc"
+    | "desc" = "desc";
   @ApiPropertyOptional({ minimum: 1, default: 1 }) readonly page: number = 1;
   @ApiPropertyOptional({ minimum: 1, maximum: 100, default: 50 }) readonly pageSize: number = 50;
 }
 
 export class ParseListTaskTableQueryPipe implements PipeTransform<unknown, ListTaskTableInput> {
   transform(value: unknown): ListTaskTableInput {
-    if (!isUnknownRecord(value)) throw new BadRequestException("Task table query must be an object.");
+    if (!isUnknownRecord(value))
+      throw new BadRequestException("Task table query must be an object.");
     const optionalUuid = (key: string): string | undefined => {
       const raw = value[key];
       if (raw === undefined) return undefined;
@@ -184,11 +192,10 @@ export class ParseListTaskTableQueryPipe implements PipeTransform<unknown, ListT
         throw new BadRequestException(`${key} must be between 1 and ${maximum}.`);
       return parsed;
     };
-    const sortByRaw = value["sortBy"];
+    const sortByRaw = readUnknownProperty(value, "sortBy");
     const sortBy = sortByRaw === undefined ? "updatedAt" : sortByRaw;
-    if (!isTaskTableSortField(sortBy))
-      throw new BadRequestException("sortBy is invalid.");
-    const sortDirectionRaw = value["sortDirection"];
+    if (!isTaskTableSortField(sortBy)) throw new BadRequestException("sortBy is invalid.");
+    const sortDirectionRaw = readUnknownProperty(value, "sortDirection");
     const sortDirection = sortDirectionRaw === undefined ? "desc" : sortDirectionRaw;
     if (sortDirection !== "asc" && sortDirection !== "desc")
       throw new BadRequestException("sortDirection must be asc or desc.");
@@ -198,16 +205,18 @@ export class ParseListTaskTableQueryPipe implements PipeTransform<unknown, ListT
       page: positive("page", 1, Number.MAX_SAFE_INTEGER),
       pageSize: positive("pageSize", 50, 100),
     };
-    const search = value["search"];
+    const search = readUnknownProperty(value, "search");
     if (search !== undefined) {
       if (typeof search !== "string" || search.trim().length === 0 || search.trim().length > 200)
-        throw new BadRequestException("search must be a non-empty string no longer than 200 characters.");
+        throw new BadRequestException(
+          "search must be a non-empty string no longer than 200 characters.",
+        );
       input.search = search.trim();
     }
     const statusId = optionalUuid("statusId");
     const assigneeUserId = optionalUuid("assigneeUserId");
-    const statusFilter = value["statusFilter"];
-    const assigneeFilter = value["assigneeFilter"];
+    const statusFilter = readUnknownProperty(value, "statusFilter");
+    const assigneeFilter = readUnknownProperty(value, "assigneeFilter");
     if (statusFilter !== undefined && statusFilter !== "unassigned")
       throw new BadRequestException("statusFilter must be unassigned.");
     if (assigneeFilter !== undefined && assigneeFilter !== "unassigned")
@@ -231,16 +240,24 @@ export class ParseListTaskTableQueryPipe implements PipeTransform<unknown, ListT
 }
 
 export class BulkUpdateTasksDto implements BulkUpdateTasksInput {
-  @ApiProperty({ isArray: true, minItems: 1, maxItems: 100, format: "uuid", type: String }) readonly taskIds: string[] = [];
-  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly statusId?: string | null;
-  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly assigneeUserId?: string | null;
-  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String }) readonly dueAt?: string | null;
+  @ApiProperty({ isArray: true, minItems: 1, maxItems: 100, format: "uuid", type: String })
+  readonly taskIds: string[] = [];
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly statusId?:
+    | string
+    | null;
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly assigneeUserId?:
+    | string
+    | null;
+  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String }) readonly dueAt?:
+    | string
+    | null;
 }
 
 export class ParseBulkUpdateTasksBodyPipe implements PipeTransform<unknown, BulkUpdateTasksInput> {
   transform(value: unknown): BulkUpdateTasksInput {
-    if (!isUnknownRecord(value)) throw new BadRequestException("Task bulk update payload must be an object.");
-    const rawTaskIds = value["taskIds"];
+    if (!isUnknownRecord(value))
+      throw new BadRequestException("Task bulk update payload must be an object.");
+    const rawTaskIds = readUnknownProperty(value, "taskIds");
     if (!Array.isArray(rawTaskIds) || rawTaskIds.length === 0 || rawTaskIds.length > 100)
       throw new BadRequestException("taskIds must contain between 1 and 100 UUID v4 strings.");
     const taskIds = rawTaskIds.map((taskId) => {

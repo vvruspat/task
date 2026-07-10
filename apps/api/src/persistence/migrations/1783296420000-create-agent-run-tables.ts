@@ -7,7 +7,6 @@ export const createAgentRunTablesSql = [
     "workspace_id" uuid NOT NULL,
     "user_id" uuid NOT NULL,
     "source" text NOT NULL,
-    "source_thread_id" text,
     "source_message_id" text,
     "model" text,
     "input_text" text NOT NULL,
@@ -40,7 +39,6 @@ export const createAgentRunTablesSql = [
   `CREATE INDEX "idx_agent_runs_workspace_id_created_at" ON "agent_runs" ("workspace_id", "created_at")`,
   `CREATE INDEX "idx_agent_runs_workspace_id_user_id" ON "agent_runs" ("workspace_id", "user_id")`,
   `CREATE INDEX "idx_agent_runs_workspace_id_status" ON "agent_runs" ("workspace_id", "status")`,
-  `CREATE UNIQUE INDEX "uq_agent_runs_telegram_source_message" ON "agent_runs" ("workspace_id", "user_id", "source", "source_thread_id", "source_message_id") WHERE "source_thread_id" IS NOT NULL AND "source_message_id" IS NOT NULL`,
   `CREATE INDEX "idx_agent_tool_calls_agent_run_id_created_at" ON "agent_tool_calls" ("agent_run_id", "created_at")`,
   `CREATE INDEX "idx_agent_tool_calls_agent_run_id_status" ON "agent_tool_calls" ("agent_run_id", "status")`,
 ] as const;
@@ -48,7 +46,6 @@ export const createAgentRunTablesSql = [
 export const dropAgentRunTablesSql = [
   `DROP INDEX "idx_agent_tool_calls_agent_run_id_status"`,
   `DROP INDEX "idx_agent_tool_calls_agent_run_id_created_at"`,
-  `DROP INDEX "uq_agent_runs_telegram_source_message"`,
   `DROP INDEX "idx_agent_runs_workspace_id_status"`,
   `DROP INDEX "idx_agent_runs_workspace_id_user_id"`,
   `DROP INDEX "idx_agent_runs_workspace_id_created_at"`,

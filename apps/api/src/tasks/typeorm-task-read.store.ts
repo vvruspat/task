@@ -85,21 +85,31 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     const query = dataSource
       .getRepository(TaskEntity)
       .createQueryBuilder("task")
-      .leftJoin(StatusEntity, "status", "status.id = task.status_id AND status.workspace_id = task.workspace_id")
+      .leftJoin(
+        StatusEntity,
+        "status",
+        "status.id = task.status_id AND status.workspace_id = task.workspace_id",
+      )
       .where("task.workspace_id = :workspaceId", { workspaceId })
       .andWhere("task.project_id = :projectId", { projectId })
       .andWhere("task.archived_at IS NULL");
     if (input.search !== undefined)
-      query.andWhere("(LOWER(task.title) LIKE :search OR LOWER(COALESCE(task.description, '')) LIKE :search)", {
-        search: `%${input.search.toLowerCase()}%`,
-      });
+      query.andWhere(
+        "(LOWER(task.title) LIKE :search OR LOWER(COALESCE(task.description, '')) LIKE :search)",
+        {
+          search: `%${input.search.toLowerCase()}%`,
+        },
+      );
     if (input.statusFilter === "unassigned") query.andWhere("task.status_id IS NULL");
     if (input.statusId !== undefined)
       query.andWhere("task.status_id = :statusId", { statusId: input.statusId });
     if (input.assigneeFilter === "unassigned") query.andWhere("task.assignee_user_id IS NULL");
     if (input.assigneeUserId !== undefined)
-      query.andWhere("task.assignee_user_id = :assigneeUserId", { assigneeUserId: input.assigneeUserId });
-    if (input.dueFrom !== undefined) query.andWhere("task.due_at >= :dueFrom", { dueFrom: input.dueFrom });
+      query.andWhere("task.assignee_user_id = :assigneeUserId", {
+        assigneeUserId: input.assigneeUserId,
+      });
+    if (input.dueFrom !== undefined)
+      query.andWhere("task.due_at >= :dueFrom", { dueFrom: input.dueFrom });
     if (input.dueTo !== undefined) query.andWhere("task.due_at <= :dueTo", { dueTo: input.dueTo });
 
     const total = await query.getCount();
@@ -122,13 +132,19 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
   ): Promise<TaskBulkUpdateResult> {
     const dataSource = await this.getInitializedDataSource();
     return dataSource.transaction(async (manager): Promise<TaskBulkUpdateResult> => {
-      const membership = await manager.getRepository(WorkspaceMemberEntity).findOneBy({ workspaceId, userId });
+      const membership = await manager
+        .getRepository(WorkspaceMemberEntity)
+        .findOneBy({ workspaceId, userId });
       if (membership === null) return { status: "project_not_found" };
       if (!taskWriteRoles.has(membership.role)) return { status: "forbidden" };
-      const project = await manager.getRepository(ProjectEntity).findOneBy({ id: projectId, workspaceId });
+      const project = await manager
+        .getRepository(ProjectEntity)
+        .findOneBy({ id: projectId, workspaceId });
       if (project === null) return { status: "project_not_found" };
       if (input.statusId !== undefined && input.statusId !== null) {
-        const status = await manager.getRepository(StatusEntity).findOneBy({ id: input.statusId, workspaceId });
+        const status = await manager
+          .getRepository(StatusEntity)
+          .findOneBy({ id: input.statusId, workspaceId });
         if (status === null) return { status: "invalid_status" };
       }
       if (input.assigneeUserId !== undefined && input.assigneeUserId !== null) {
@@ -148,7 +164,8 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       for (const task of tasks) {
         if (input.statusId !== undefined) task.statusId = input.statusId;
         if (input.assigneeUserId !== undefined) task.assigneeUserId = input.assigneeUserId;
-        if (input.dueAt !== undefined) task.dueAt = input.dueAt === null ? null : new Date(input.dueAt);
+        if (input.dueAt !== undefined)
+          task.dueAt = input.dueAt === null ? null : new Date(input.dueAt);
       }
       const savedTasks = await manager.getRepository(TaskEntity).save(tasks);
       const events = savedTasks.map((task) =>

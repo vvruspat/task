@@ -1,7 +1,7 @@
 import type {
   AddTaskSubtasksInput,
-  CreateTaskInput,
   BulkUpdateTasksInput,
+  CreateTaskInput,
   ListTaskTableInput,
   MoveTaskInput,
   TaskDetail,

@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+} from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -41,8 +51,8 @@ import {
   ParseUpdateTaskDueDateBodyPipe,
   ParseUpdateTaskStatusBodyPipe,
   TaskDetailDto,
-  TaskTablePageDto,
   TaskSummaryDto,
+  TaskTablePageDto,
   UpdateTaskAssigneeDto,
   UpdateTaskDto,
   UpdateTaskDueDateDto,
@@ -79,12 +89,26 @@ export class TasksController {
   @ApiParam({ format: "uuid", name: "projectId" })
   @ApiQuery({ name: "search", required: false, type: String })
   @ApiQuery({ name: "statusId", required: false, format: "uuid", type: String })
-  @ApiQuery({ name: "statusFilter", required: false, enum: ["unassigned"], description: "Filter tasks without a status. Cannot be combined with statusId." })
+  @ApiQuery({
+    name: "statusFilter",
+    required: false,
+    enum: ["unassigned"],
+    description: "Filter tasks without a status. Cannot be combined with statusId.",
+  })
   @ApiQuery({ name: "assigneeUserId", required: false, format: "uuid", type: String })
-  @ApiQuery({ name: "assigneeFilter", required: false, enum: ["unassigned"], description: "Filter tasks without an assignee. Cannot be combined with assigneeUserId." })
+  @ApiQuery({
+    name: "assigneeFilter",
+    required: false,
+    enum: ["unassigned"],
+    description: "Filter tasks without an assignee. Cannot be combined with assigneeUserId.",
+  })
   @ApiQuery({ name: "dueFrom", required: false, format: "date-time", type: String })
   @ApiQuery({ name: "dueTo", required: false, format: "date-time", type: String })
-  @ApiQuery({ name: "sortBy", required: false, enum: ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"] })
+  @ApiQuery({
+    name: "sortBy",
+    required: false,
+    enum: ["title", "status", "assignee", "dueAt", "createdAt", "updatedAt"],
+  })
   @ApiQuery({ name: "sortDirection", required: false, enum: ["asc", "desc"] })
   @ApiQuery({ name: "page", required: false, type: Number, minimum: 1 })
   @ApiQuery({ name: "pageSize", required: false, type: Number, minimum: 1, maximum: 100 })
@@ -106,9 +130,13 @@ export class TasksController {
   @ApiParam({ format: "uuid", name: "projectId" })
   @ApiBody({ type: BulkUpdateTasksDto })
   @ApiOkResponse({ isArray: true, type: TaskDetailDto })
-  @ApiBadRequestResponse({ description: "Bulk update payload or referenced task fields are invalid." })
+  @ApiBadRequestResponse({
+    description: "Bulk update payload or referenced task fields are invalid.",
+  })
   @ApiForbiddenResponse({ description: "Current user cannot update tasks in this workspace." })
-  @ApiNotFoundResponse({ description: "Workspace, project, or one of the tasks is missing or not visible." })
+  @ApiNotFoundResponse({
+    description: "Workspace, project, or one of the tasks is missing or not visible.",
+  })
   bulkUpdateTasks(
     @Param("workspaceId", uuidV4Pipe) workspaceId: string,
     @Param("projectId", uuidV4Pipe) projectId: string,
