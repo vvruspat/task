@@ -1,4 +1,4 @@
-import { MBox, MFlex, MHeading, MText } from "@task/ui/app";
+import { Box, Flex, Heading, Text } from "@task/ui/app";
 import type { ReactElement, ReactNode } from "react";
 
 type DashboardPanelHeaderProps = {
@@ -15,16 +15,14 @@ export function DashboardPanelHeader({
   titleId,
 }: DashboardPanelHeaderProps): ReactElement {
   return (
-    <MFlex align="start" justify="space-between" wrap="nowrap">
-      <MBox>
-        <MText as="p" mode="secondary" size="s">
-          {eyebrow.toUpperCase()}
-        </MText>
-        <MHeading id={titleId} mode="h3">
+    <Flex align="start" justify="between">
+      <Box>
+        <Text tone="muted">{eyebrow.toUpperCase()}</Text>
+        <Heading id={titleId} level={3}>
           {title}
-        </MHeading>
-      </MBox>
+        </Heading>
+      </Box>
       {action}
-    </MFlex>
+    </Flex>
   );
 }

@@ -1,5 +1,5 @@
 import type { TaskApiClient } from "@task/api-client";
-import { MAlert, MButton, MText } from "@task/ui/app";
+import { Alert, Button, Text } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { AgentHistoryView } from "./workspace/AgentHistoryView.js";
 import { FallbackWorkspaceRouteView } from "./workspace/FallbackWorkspaceRouteView.js";
@@ -236,13 +236,13 @@ function renderTaskDrawer(input: {
   const task = input.tasks.find((candidate) => candidate.id === input.selectedTaskId);
   if (task === undefined) {
     return (
-      <MAlert mode="error">
-        <MText as="p">
+      <Alert tone="danger">
+        <Text>
           The linked task is not available in this project. Close this notice to clear the task
           link.
-        </MText>
-        <MButton onClick={input.onCloseTask}>Clear task link</MButton>
-      </MAlert>
+        </Text>
+        <Button onClick={input.onCloseTask}>Clear task link</Button>
+      </Alert>
     );
   }
   return (

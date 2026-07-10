@@ -1,14 +1,17 @@
 import type { AgentRunDetail, TaskApiClient } from "@task/api-client";
 import {
-  MAlert,
-  MBox,
-  MButton,
-  MFlex,
-  MHeading,
-  MInput,
-  MOperationalContentGrid,
-  MText,
-} from "@task/ui/app";
+  Alert,
+  Badge,
+  Button,
+  Card,
+  ContentGrid,
+  DescriptionList,
+  Flex,
+  Heading,
+  Input,
+  Stack,
+  Text,
+} from "@task/ui";
 import { ExternalLink } from "lucide-react";
 import type { ChangeEvent, ReactElement } from "react";
 import { useEffect, useRef, useState } from "react";
@@ -21,7 +24,6 @@ import type {
   WorkspaceStatus,
   WorkspaceSummary,
 } from "./types.js";
-import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 type AgentRunDetailClient = Pick<TaskApiClient, "getAgentRun">;
 
@@ -118,100 +120,96 @@ export function AgentHistoryView({
   }, [client, selectedRunId, selectedWorkspaceId]);
 
   return (
-    <MOperationalContentGrid>
-      <WorkspacePanel eyebrow="Agent" title="Agent run audit" titleId="agent-history-view-title">
-        <MFlex align="stretch" direction="column" gap="m">
-          <MInput
+    <ContentGrid columns={1}>
+      <Card aria-labelledby="agent-history-view-title">
+        <Stack gap="lg">
+          <Stack gap="xs">
+            <Text tone="muted">Agent</Text>
+            <Heading id="agent-history-view-title">Agent run audit</Heading>
+          </Stack>
+          <Input
             aria-label="Filter agent runs"
             onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
             placeholder="Filter by prompt, source, status, or response"
             value={query}
           />
           {rows.length === 0 ? (
-            <MFlex as="article" align="start" gap="m" justify="space-between" wrap="nowrap">
-              <MBox>
-                <MHeading mode="h4">No agent runs match this view</MHeading>
-                <MText as="p" mode="secondary">
-                  {summary.selectedWorkspaceLabel}
-                </MText>
-              </MBox>
-              <MText as="span">{summary.selectedProjectLabel}</MText>
-            </MFlex>
+            <article>
+              <Flex align="start" gap="lg" justify="between">
+                <Stack gap="xs">
+                  <Heading level={3}>No agent runs match this view</Heading>
+                  <Text tone="muted">{summary.selectedWorkspaceLabel}</Text>
+                </Stack>
+                <Badge>{summary.selectedProjectLabel}</Badge>
+              </Flex>
+            </article>
           ) : (
             rows.map((run) => (
-              <MFlex
-                as="article"
-                align="start"
-                gap="m"
-                key={run.id}
-                justify="space-between"
-                wrap="nowrap"
-              >
-                <MBox>
-                  <MButton
-                    aria-pressed={run.id === selectedRunId}
-                    mode="transparent"
-                    noPadding
-                    onClick={() => setSelectedRunId(run.id)}
-                  >
-                    {run.title}
-                  </MButton>
-                  <MText as="p" mode="secondary">
-                    {run.detail}
-                  </MText>
-                </MBox>
-                <MText as="span">
-                  {run.statusLabel} - {run.updatedAtLabel}
-                </MText>
-              </MFlex>
+              <article key={run.id}>
+                <Flex align="start" gap="lg" justify="between">
+                  <Stack gap="xs">
+                    <Button
+                      aria-pressed={run.id === selectedRunId}
+                      onClick={() => setSelectedRunId(run.id)}
+                      variant="ghost"
+                    >
+                      {run.title}
+                    </Button>
+                    <Text tone="muted">{run.detail}</Text>
+                  </Stack>
+                  <Badge>
+                    {run.statusLabel} - {run.updatedAtLabel}
+                  </Badge>
+                </Flex>
+              </article>
             ))
           )}
-        </MFlex>
-      </WorkspacePanel>
+        </Stack>
+      </Card>
 
-      <WorkspacePanel
-        eyebrow="Run detail"
-        title="Selected agent run"
-        titleId="agent-run-detail-title"
-      >
-        {detailState.status === "empty" ? (
-          <MText as="p" mode="secondary">
-            Select a run to inspect its safe audit record.
-          </MText>
-        ) : null}
-        {detailState.status === "loading" ? (
-          <MText as="p" mode="secondary">
-            Loading agent-run details…
-          </MText>
-        ) : null}
-        {detailState.status === "error" ? (
-          <MAlert mode="error">
-            <MText as="p">{detailState.message}</MText>
-          </MAlert>
-        ) : null}
-        {detailState.status === "loaded" ? (
-          <AgentRunDetailPanel
-            detail={detailState.detail}
-            onOpenConfirmations={onOpenConfirmations}
+      <Card aria-labelledby="agent-run-detail-title">
+        <Stack gap="lg">
+          <Stack gap="xs">
+            <Text tone="muted">Run detail</Text>
+            <Heading id="agent-run-detail-title">Selected agent run</Heading>
+          </Stack>
+          {detailState.status === "empty" ? (
+            <Text tone="muted">Select a run to inspect its safe audit record.</Text>
+          ) : null}
+          {detailState.status === "loading" ? (
+            <Text tone="muted">Loading agent-run details…</Text>
+          ) : null}
+          {detailState.status === "error" ? (
+            <Alert tone="danger">{detailState.message}</Alert>
+          ) : null}
+          {detailState.status === "loaded" ? (
+            <AgentRunDetailPanel
+              detail={detailState.detail}
+              onOpenConfirmations={onOpenConfirmations}
+            />
+          ) : null}
+        </Stack>
+      </Card>
+
+      <Card aria-labelledby="agent-history-summary-title">
+        <Stack gap="lg">
+          <Stack gap="xs">
+            <Text tone="muted">Summary</Text>
+            <Heading id="agent-history-summary-title">Audit load</Heading>
+          </Stack>
+          <Text tone="muted">{summary.selectedWorkspaceLabel}</Text>
+          <DescriptionList
+            items={[
+              { label: "Runs", value: summary.runCount },
+              { label: "Projects", value: summary.projectCount },
+              { label: "Tasks", value: summary.taskCount },
+              { label: "Skills", value: summary.skillCount },
+              { label: "Statuses", value: summary.statusCount },
+            ]}
           />
-        ) : null}
-      </WorkspacePanel>
-
-      <WorkspacePanel eyebrow="Summary" title="Audit load" titleId="agent-history-summary-title">
-        <MText as="p" mode="secondary">
-          {summary.selectedWorkspaceLabel}
-        </MText>
-        <WorkspaceMetrics
-          items={[
-            { label: "Runs", value: summary.runCount },
-            { label: "Projects", value: summary.projectCount },
-            { label: "Tasks", value: summary.taskCount },
-            { label: "Skills", value: summary.skillCount },
-            { label: "Statuses", value: summary.statusCount },
-          ]}
-        />
-      </WorkspacePanel>
-    </MOperationalContentGrid>
+        </Stack>
+      </Card>
+    </ContentGrid>
   );
 }
 
@@ -223,30 +221,28 @@ function AgentRunDetailPanel({
   onOpenConfirmations(): void;
 }): ReactElement {
   return (
-    <MFlex align="stretch" direction="column" gap="m">
-      <MFlex align="stretch" direction="column" gap="s">
-        <MText as="p">Status: {detail.status}</MText>
-        <MText as="p">Source: {detail.source}</MText>
-        <MText as="p">Model: {detail.model ?? "Not recorded"}</MText>
+    <Stack gap="lg">
+      <Stack gap="sm">
+        <Text>Status: {detail.status}</Text>
+        <Text>Source: {detail.source}</Text>
+        <Text>Model: {detail.model ?? "Not recorded"}</Text>
         <AuditValue label="Input" value={detail.inputText} />
         <AuditValue label="Response" value={detail.finalResponse ?? "Not recorded"} />
         {detail.error === null || detail.error === undefined ? null : (
           <AuditValue label="Error" value={detail.error} />
         )}
-      </MFlex>
+      </Stack>
 
-      <MBox>
-        <MHeading mode="h4">Tool-call audit</MHeading>
+      <Stack gap="sm">
+        <Heading level={3}>Tool-call audit</Heading>
         {detail.toolCalls.length === 0 ? (
-          <MText as="p" mode="secondary">
-            No tool calls were recorded for this run.
-          </MText>
+          <Text tone="muted">No tool calls were recorded for this run.</Text>
         ) : (
           detail.toolCalls.map((toolCall) => (
-            <MFlex align="stretch" direction="column" gap="xs" key={toolCall.id}>
-              <MText as="p">
+            <Stack gap="xs" key={toolCall.id}>
+              <Text>
                 {toolCall.toolName} · {toolCall.status}
-              </MText>
+              </Text>
               <AuditValue label="Arguments" value={formatAuditJson(toolCall.arguments)} />
               {toolCall.result === null || toolCall.result === undefined ? null : (
                 <AuditValue label="Result" value={formatAuditJson(toolCall.result)} />
@@ -254,53 +250,43 @@ function AgentRunDetailPanel({
               {toolCall.error === null || toolCall.error === undefined ? null : (
                 <AuditValue label="Error" value={toolCall.error} />
               )}
-            </MFlex>
+            </Stack>
           ))
         )}
-      </MBox>
+      </Stack>
 
-      <MBox>
-        <MHeading mode="h4">Confirmation requests</MHeading>
+      <Stack gap="sm">
+        <Heading level={3}>Confirmation requests</Heading>
         {detail.confirmationRequests.length === 0 ? (
-          <MText as="p" mode="secondary">
-            This run did not create confirmation requests.
-          </MText>
+          <Text tone="muted">This run did not create confirmation requests.</Text>
         ) : (
-          <MFlex align="stretch" direction="column" gap="s">
+          <Stack gap="sm">
             {detail.confirmationRequests.map((confirmation) => (
-              <MFlex
-                align="start"
-                gap="s"
-                justify="space-between"
-                key={confirmation.id}
-                wrap="nowrap"
-              >
-                <MBox>
-                  <MText as="p">
+              <Flex align="start" gap="sm" justify="between" key={confirmation.id}>
+                <Stack gap="xs">
+                  <Text>
                     {confirmation.kind} · {confirmation.status}
-                  </MText>
+                  </Text>
                   <AuditValue label="Preview" value={formatAuditJson(confirmation.preview)} />
-                </MBox>
-                <MButton onClick={onOpenConfirmations}>
+                </Stack>
+                <Button onClick={onOpenConfirmations} variant="secondary">
                   Open confirmations <ExternalLink aria-hidden="true" />
-                </MButton>
-              </MFlex>
+                </Button>
+              </Flex>
             ))}
-          </MFlex>
+          </Stack>
         )}
-      </MBox>
-    </MFlex>
+      </Stack>
+    </Stack>
   );
 }
 
 function AuditValue({ label, value }: { label: string; value: string }): ReactElement {
   return (
-    <MBox as="pre" padding="s">
-      <MText as="div" mode="secondary">
-        {label}
-      </MText>
-      <MText as="div">{value}</MText>
-    </MBox>
+    <Card>
+      <Text tone="muted">{label}</Text>
+      <pre>{value}</pre>
+    </Card>
   );
 }
 

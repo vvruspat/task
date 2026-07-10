@@ -5,16 +5,16 @@ import type {
   TaskSkillDetail,
 } from "@task/api-client";
 import {
-  MAlert,
-  MBox,
-  MButton,
-  MFlex,
-  MHeading,
-  MInput,
-  MOperationalContentGrid,
-  MSelect,
-  type MSelectOption,
-  MText,
+  Alert,
+  Box,
+  Button,
+  ContentGrid,
+  Flex,
+  Heading,
+  Input,
+  type RadixSelectOption,
+  Select,
+  Text,
 } from "@task/ui/app";
 import type { ChangeEvent, FormEvent, ReactElement } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -150,7 +150,7 @@ export function TemplatesView({
   }
 
   return (
-    <MOperationalContentGrid>
+    <ContentGrid columns={3}>
       <WorkspacePanel
         action={
           <CreateTaskSkillForm
@@ -172,44 +172,31 @@ export function TemplatesView({
         title="Task skills"
         titleId="templates-view-title"
       >
-        <MFlex align="stretch" direction="column" gap="m">
-          <MInput
+        <Flex align="stretch" direction="column" gap="md">
+          <Input
             aria-label="Filter task skills"
             onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
             placeholder="Filter by name, alias, or description"
             value={query}
           />
-          {rows.length === 0 ? (
-            <MText as="p" mode="secondary">
-              No task skills match this filter.
-            </MText>
-          ) : null}
+          {rows.length === 0 ? <Text tone="muted">No task skills match this filter.</Text> : null}
           {rows.map((skill) => (
-            <MFlex
-              as="article"
-              align="start"
-              gap="m"
-              key={skill.id}
-              justify="space-between"
-              wrap="nowrap"
-            >
-              <MBox>
-                <MButton
+            <Flex align="start" gap="md" key={skill.id} justify="between">
+              <Box>
+                <Button
                   aria-pressed={skill.id === selectedSkillId}
-                  mode="transparent"
-                  noPadding
                   onClick={() => selectSkill(skill.id)}
+                  size="sm"
+                  variant="ghost"
                 >
                   {skill.name}
-                </MButton>
-                <MText as="p" mode="secondary">
-                  {skill.description ?? "No description"}
-                </MText>
-              </MBox>
-              <MText as="span">{skill.aliasLabel}</MText>
-            </MFlex>
+                </Button>
+                <Text tone="muted">{skill.description ?? "No description"}</Text>
+              </Box>
+              <Text>{skill.aliasLabel}</Text>
+            </Flex>
           ))}
-        </MFlex>
+        </Flex>
       </WorkspacePanel>
 
       <WorkspacePanel
@@ -217,26 +204,22 @@ export function TemplatesView({
         title="Selected task skill"
         titleId="template-detail-title"
       >
-        {feedback === null ? null : <MAlert mode={feedback.mode}>{feedback.message}</MAlert>}
+        {feedback === null ? null : (
+          <Alert tone={feedback.mode === "error" ? "danger" : "info"}>{feedback.message}</Alert>
+        )}
         {selectedSkill === null ? (
-          <MText as="p" mode="secondary">
-            Select a task skill to manage it.
-          </MText>
+          <Text tone="muted">Select a task skill to manage it.</Text>
         ) : null}
         {selectedSkill !== null && !isCurrentDetail ? (
-          <MText as="p" mode="secondary">
-            Loading task skill detail…
-          </MText>
+          <Text tone="muted">Loading task skill detail…</Text>
         ) : null}
         {!isCurrentDetail || detail === null ? null : (
-          <MFlex align="stretch" direction="column" gap="m">
-            <MBox>
-              <MHeading mode="h4">{detail.name}</MHeading>
-              <MText as="p" mode="secondary">
-                {detail.description ?? "No description"}
-              </MText>
-              <MText as="p">Versions: {detail.versions.length}</MText>
-            </MBox>
+          <Flex align="stretch" direction="column" gap="md">
+            <Box>
+              <Heading level={4}>{detail.name}</Heading>
+              <Text tone="muted">{detail.description ?? "No description"}</Text>
+              <Text>Versions: {detail.versions.length}</Text>
+            </Box>
             <TaskSkillMetadataForm
               busy={busy}
               detail={detail}
@@ -361,9 +344,9 @@ export function TemplatesView({
               previewInput={previewInput}
               projects={projects}
             />
-            <MButton
+            <Button
               disabled={busy}
-              mode="secondary"
+              variant="secondary"
               onClick={() => {
                 if (!window.confirm(`Archive task skill “${detail.name}”?`)) return;
                 void runMutation(async (requestSelectionVersion) => {
@@ -375,8 +358,8 @@ export function TemplatesView({
               }}
             >
               Archive skill
-            </MButton>
-          </MFlex>
+            </Button>
+          </Flex>
         )}
       </WorkspacePanel>
 
@@ -389,7 +372,7 @@ export function TemplatesView({
           ]}
         />
       </WorkspacePanel>
-    </MOperationalContentGrid>
+    </ContentGrid>
   );
 }
 
@@ -413,20 +396,20 @@ function CreateTaskSkillForm({
         void onCreate(buildCreateTaskSkillInput({ aliases, description, name, subtasks }));
       }}
     >
-      <MFlex gap="s">
-        <MInput
+      <Flex gap="sm">
+        <Input
           aria-label="New skill name"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
           placeholder="New skill"
           value={name}
         />
-        <MInput
+        <Input
           aria-label="New skill subtasks"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setSubtasks(event.target.value)}
           placeholder="Subtasks, comma-separated"
           value={subtasks}
         />
-        <MButton
+        <Button
           disabled={
             !canMutate ||
             busy ||
@@ -436,15 +419,15 @@ function CreateTaskSkillForm({
           type="submit"
         >
           Create
-        </MButton>
-      </MFlex>
-      <MInput
+        </Button>
+      </Flex>
+      <Input
         aria-label="New skill description"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setDescription(event.target.value)}
         placeholder="Description"
         value={description}
       />
-      <MInput
+      <Input
         aria-label="New skill aliases"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setAliases(event.target.value)}
         placeholder="Aliases, comma-separated"
@@ -482,25 +465,25 @@ function TaskSkillMetadataForm({
         });
       }}
     >
-      <MHeading mode="h4">Metadata</MHeading>
-      <MInput
+      <Heading level={4}>Metadata</Heading>
+      <Input
         aria-label="Skill name"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
         value={name}
       />
-      <MInput
+      <Input
         aria-label="Skill description"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setDescription(event.target.value)}
         value={description}
       />
-      <MInput
+      <Input
         aria-label="Skill aliases"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setAliases(event.target.value)}
         value={aliases}
       />
-      <MButton disabled={busy || name.trim().length === 0} type="submit">
+      <Button disabled={busy || name.trim().length === 0} type="submit">
         Save metadata
-      </MButton>
+      </Button>
     </form>
   );
 }
@@ -527,16 +510,16 @@ function TaskSkillDefinitionForm({
         });
       }}
     >
-      <MHeading mode="h4">Definition</MHeading>
-      <MInput
+      <Heading level={4}>Definition</Heading>
+      <Input
         aria-label="Skill definition subtasks"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setSubtasks(event.target.value)}
         placeholder="Subtasks, comma-separated"
         value={subtasks}
       />
-      <MButton disabled={busy || splitTaskSkillList(subtasks).length === 0} type="submit">
+      <Button disabled={busy || splitTaskSkillList(subtasks).length === 0} type="submit">
         Save new version
-      </MButton>
+      </Button>
     </form>
   );
 }
@@ -562,17 +545,17 @@ function CloneTaskSkillForm({
         });
       }}
     >
-      <MHeading mode="h4">Clone</MHeading>
-      <MFlex gap="s">
-        <MInput
+      <Heading level={4}>Clone</Heading>
+      <Flex gap="sm">
+        <Input
           aria-label="Clone skill name"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
           value={name}
         />
-        <MButton disabled={busy || name.trim().length === 0} type="submit">
+        <Button disabled={busy || name.trim().length === 0} type="submit">
           Clone skill
-        </MButton>
-      </MFlex>
+        </Button>
+      </Flex>
     </form>
   );
 }
@@ -604,9 +587,9 @@ function TaskSkillApplyPanel({
     removedSubtasks,
     rootTaskTitle,
   });
-  const options: MSelectOption[] = projects.map((project) => ({
-    key: project.id,
-    value: project.title,
+  const options: RadixSelectOption[] = projects.map((project) => ({
+    label: project.title,
+    value: project.id,
   }));
   return (
     <form
@@ -615,44 +598,44 @@ function TaskSkillApplyPanel({
         void onPreview(body);
       }}
     >
-      <MHeading mode="h4">Preview and apply</MHeading>
-      <MSelect
+      <Heading level={4}>Preview and apply</Heading>
+      <Select
         aria-label="Project for task skill"
-        onValueChange={(value) => setProjectId(value ?? "")}
+        onValueChange={setProjectId}
         options={options}
         value={projectId}
       />
-      <MInput
+      <Input
         aria-label="Root task title"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setRootTaskTitle(event.target.value)}
         placeholder="Root task title"
         value={rootTaskTitle}
       />
-      <MInput
+      <Input
         aria-label="Added subtasks"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setAddedSubtasks(event.target.value)}
         placeholder="Additional subtasks, comma-separated"
         value={addedSubtasks}
       />
-      <MInput
+      <Input
         aria-label="Removed subtasks"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setRemovedSubtasks(event.target.value)}
         placeholder="Remove skill subtasks, comma-separated"
         value={removedSubtasks}
       />
-      <MButton
+      <Button
         disabled={busy || projectId.length === 0 || rootTaskTitle.trim().length === 0}
         type="submit"
       >
         Preview apply
-      </MButton>
+      </Button>
       {preview === null || previewInput === null || preview.taskSkillId !== detail.id ? null : (
-        <MBox>
-          <MText as="p">
+        <Box>
+          <Text>
             Version {preview.taskSkillVersion}:{" "}
             {preview.subtasks.map((subtask) => subtask.title).join(", ") || "No subtasks"}
-          </MText>
-          <MButton
+          </Text>
+          <Button
             disabled={busy}
             onClick={() => {
               if (window.confirm(`Create ${preview.subtasks.length + 1} tasks from this preview?`))
@@ -660,8 +643,8 @@ function TaskSkillApplyPanel({
             }}
           >
             Apply confirmed preview
-          </MButton>
-        </MBox>
+          </Button>
+        </Box>
       )}
     </form>
   );

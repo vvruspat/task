@@ -1,13 +1,11 @@
 import type { SearchPage, TaskApiClient } from "@task/api-client";
-import { MAlert, MButton, MDrawer, MFlex, MHeading, MInput, MText } from "@task/ui/app";
-import { Search } from "lucide-react";
+import { Box, Button, Drawer, DrawerContent, Heading, Input, Stack, Text } from "@task/ui/app";
 import type { KeyboardEvent, ReactElement } from "react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   buildPaletteItems,
   getNextPaletteIndex,
   getSearchResultNavigation,
-  isPaletteEscapeKey,
   type PaletteItem,
   shouldAcceptSearchSettlement,
 } from "./globalSearchPaletteModels.js";
@@ -123,88 +121,77 @@ export function GlobalSearchPalette({
   };
 
   return (
-    <MDrawer
-      aria-label="Workspace search and commands"
-      isOpen={isOpen}
-      onClose={onClose}
-      onKeyDown={(event) => {
-        if (isPaletteEscapeKey(event.key)) {
-          event.preventDefault();
-          event.stopPropagation();
-          onClose();
-        }
+    <Drawer
+      open={isOpen}
+      onOpenChange={(isDrawerOpen) => {
+        if (!isDrawerOpen) onClose();
       }}
     >
-      <MFlex direction="column" gap="l" align="stretch">
-        <MFlex direction="column" gap="xs" align="start">
-          <MHeading mode="h2">Search workspace</MHeading>
-          <MText as="p" mode="secondary">
-            Search tasks, projects, skills, and workspace actions.
-          </MText>
-        </MFlex>
-        <MInput
-          aria-activedescendant={activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined}
-          aria-autocomplete="list"
-          aria-controls={listboxId}
-          aria-expanded
-          aria-label="Search workspace"
-          before={<Search aria-hidden="true" />}
-          id={inputId}
-          onChange={(event) => {
-            setActiveIndex(0);
-            setQuery(event.target.value);
-          }}
-          onKeyDown={handleKeyDown}
-          placeholder="Search tasks, projects, skills"
-          role="combobox"
-          value={query}
-        />
-        {searchState.status === "error" ? (
-          <MAlert mode="error">{searchState.message}</MAlert>
-        ) : null}
-        <MFlex align="stretch" direction="column" gap="xs" id={listboxId} role="listbox">
-          {items.map((item, index) => {
-            const label = item.kind === "command" ? item.value.label : item.value.title;
-            const description =
-              item.kind === "command"
-                ? item.value.description
-                : `${item.value.type.replaceAll("_", " ")}${item.value.description === null ? "" : ` · ${item.value.description}`}`;
-            return (
-              <MButton
-                aria-selected={activeIndex === index}
-                id={`${listboxId}-${index}`}
-                justify="start"
-                key={
-                  item.kind === "command" ? item.value.id : `${item.value.type}-${item.value.id}`
-                }
-                mode={activeIndex === index ? "outlined" : "transparent"}
-                onClick={() => selectItem(item)}
-                role="option"
-                stretch
-              >
-                <MFlex align="start" direction="column" gap="xs">
-                  <MText as="span">{label}</MText>
-                  <MText as="span" mode="secondary" size="s">
-                    {description}
-                  </MText>
-                </MFlex>
-              </MButton>
-            );
-          })}
-          {searchState.status === "loading" ? (
-            <MText as="p" mode="secondary">
-              Searching workspace…
-            </MText>
+      <DrawerContent aria-label="Workspace search and commands">
+        <Stack align="start" gap="lg">
+          <Stack align="start" gap="xs">
+            <Heading level={2}>Search workspace</Heading>
+            <Text tone="muted">Search tasks, projects, skills, and workspace actions.</Text>
+          </Stack>
+          <Box>
+            <Input
+              aria-activedescendant={activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined}
+              aria-autocomplete="list"
+              aria-controls={listboxId}
+              aria-expanded
+              aria-label="Search workspace"
+              id={inputId}
+              onChange={(event) => {
+                setActiveIndex(0);
+                setQuery(event.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Search tasks, projects, skills"
+              role="combobox"
+              value={query}
+            />
+          </Box>
+          {searchState.status === "error" ? (
+            <Box role="alert">
+              <Text tone="danger">{searchState.message}</Text>
+            </Box>
           ) : null}
-          {query.trim().length > 0 &&
-          searchState.status === "loaded" &&
-          searchState.page.total === 0 ? (
-            <MText as="p" mode="secondary">
-              No workspace results found.
-            </MText>
-          ) : null}
-        </MFlex>
-      </MFlex>
-    </MDrawer>
+          <Stack align="stretch" gap="xs" id={listboxId} role="listbox">
+            {items.map((item, index) => {
+              const label = item.kind === "command" ? item.value.label : item.value.title;
+              const description =
+                item.kind === "command"
+                  ? item.value.description
+                  : `${item.value.type.replaceAll("_", " ")}${item.value.description === null ? "" : ` · ${item.value.description}`}`;
+              return (
+                <Button
+                  aria-selected={activeIndex === index}
+                  id={`${listboxId}-${index}`}
+                  key={
+                    item.kind === "command" ? item.value.id : `${item.value.type}-${item.value.id}`
+                  }
+                  onClick={() => selectItem(item)}
+                  role="option"
+                  variant={activeIndex === index ? "secondary" : "ghost"}
+                >
+                  <span>
+                    <span>{label}</span>
+                    <span>{description}</span>
+                  </span>
+                </Button>
+              );
+            })}
+            {searchState.status === "loading" ? (
+              <Text tone="muted">Searching workspace…</Text>
+            ) : null}
+            {query.trim().length > 0 &&
+            searchState.status === "loaded" &&
+            searchState.page.total === 0 ? (
+              <Text tone="muted">No workspace results found.</Text>
+            ) : null}
+          </Stack>
+        </Stack>
+      </DrawerContent>
+    </Drawer>
   );
 }

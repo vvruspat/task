@@ -1,19 +1,10 @@
 import type { ConfirmationRequestSummary } from "@task/api-client";
-import {
-  MAlert,
-  MBox,
-  MButton,
-  MFlex,
-  MHeading,
-  MOperationalContentGrid,
-  MText,
-} from "@task/ui/app";
+import { Alert, Button, Card, ContentGrid, Flex, Heading, Stack, Text } from "@task/ui";
 import type { ReactElement } from "react";
 import {
   formatConfirmationPreview,
   isConfirmationActionPending,
 } from "./confirmationViewModels.js";
-import { WorkspacePanel } from "./workspace/WorkspacePrimitives.js";
 
 type ConfirmationsViewProps = {
   actionState: ConfirmationActionState;
@@ -43,68 +34,64 @@ export default function ConfirmationsView({
   const controlsDisabled = isConfirmationActionPending(actionState.status);
 
   return (
-    <MOperationalContentGrid>
-      <WorkspacePanel
-        eyebrow="Agent actions"
-        title="Confirmations"
-        titleId="confirmations-view-title"
-      >
-        <MFlex align="stretch" direction="column" gap="m">
+    <ContentGrid columns={1}>
+      <Card aria-labelledby="confirmations-view-title">
+        <Stack gap="lg">
+          <Stack gap="xs">
+            <Text tone="muted">Agent actions</Text>
+            <Heading id="confirmations-view-title">Confirmations</Heading>
+          </Stack>
           {loadState.status === "loading" ? (
-            <MText as="p" mode="secondary">
-              Loading pending confirmations.
-            </MText>
+            <Text tone="muted">Loading pending confirmations.</Text>
           ) : null}
-          {loadState.status === "error" ? <MAlert mode="error">{loadState.message}</MAlert> : null}
+          {loadState.status === "error" ? <Alert tone="danger">{loadState.message}</Alert> : null}
           {actionState.status === "error" ? (
-            <MAlert mode="error">{actionState.message}</MAlert>
+            <Alert tone="danger">{actionState.message}</Alert>
           ) : null}
           {loadState.status === "loaded" && confirmationRequests.length === 0 ? (
-            <MBox>
-              <MHeading mode="h4">No pending confirmations</MHeading>
-              <MText as="p" mode="secondary">
+            <Stack gap="xs">
+              <Heading level={3}>No pending confirmations</Heading>
+              <Text tone="muted">
                 Actions that need approval will appear here before they are applied.
-              </MText>
-            </MBox>
+              </Text>
+            </Stack>
           ) : null}
           {loadState.status === "loaded"
             ? confirmationRequests.map((request) => (
-                <MFlex
-                  as="article"
-                  align="start"
-                  gap="m"
-                  justify="space-between"
-                  key={request.id}
-                  wrap="nowrap"
-                >
-                  <MBox>
-                    <MHeading mode="h4">{request.kind}</MHeading>
-                    <MText as="p" mode="secondary">
-                      Expires {new Date(request.expiresAt).toLocaleString()}
-                    </MText>
-                    {formatConfirmationPreview(request.preview).map((preview) => (
-                      <MText as="p" key={preview} mode="secondary">
-                        {preview}
-                      </MText>
-                    ))}
-                  </MBox>
-                  <MFlex gap="s" wrap="nowrap">
-                    <MButton
-                      disabled={controlsDisabled}
-                      onClick={() => void onCancel(request.id)}
-                      mode="outlined"
-                    >
-                      Cancel
-                    </MButton>
-                    <MButton disabled={controlsDisabled} onClick={() => void onConfirm(request.id)}>
-                      Confirm
-                    </MButton>
-                  </MFlex>
-                </MFlex>
+                <article key={request.id}>
+                  <Flex align="start" gap="lg" justify="between">
+                    <Stack gap="xs">
+                      <Heading level={3}>{request.kind}</Heading>
+                      <Text tone="muted">
+                        Expires {new Date(request.expiresAt).toLocaleString()}
+                      </Text>
+                      {formatConfirmationPreview(request.preview).map((preview) => (
+                        <Text key={preview} tone="muted">
+                          {preview}
+                        </Text>
+                      ))}
+                    </Stack>
+                    <Flex gap="sm">
+                      <Button
+                        disabled={controlsDisabled}
+                        onClick={() => void onCancel(request.id)}
+                        variant="secondary"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        disabled={controlsDisabled}
+                        onClick={() => void onConfirm(request.id)}
+                      >
+                        Confirm
+                      </Button>
+                    </Flex>
+                  </Flex>
+                </article>
               ))
             : null}
-        </MFlex>
-      </WorkspacePanel>
-    </MOperationalContentGrid>
+        </Stack>
+      </Card>
+    </ContentGrid>
   );
 }

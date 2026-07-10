@@ -8,16 +8,18 @@ import type {
   WorkspaceMember,
 } from "@task/api-client";
 import {
-  MAlert,
-  MBox,
-  MButton,
-  MCheckbox,
-  MFlex,
-  MHeading,
-  MInput,
-  MOperationalContentGrid,
-  MSelect,
-  MText,
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  ContentGrid,
+  DescriptionList,
+  Flex,
+  Heading,
+  Input,
+  Select,
+  Stack,
+  Text,
 } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -41,7 +43,6 @@ import type {
   WorkspaceStatus,
   WorkspaceSummary,
 } from "./types.js";
-import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 type LoadState<TValue> =
   | { status: "idle" | "loading" }
@@ -360,71 +361,46 @@ export function SettingsView({
   const initDataAvailable = getTelegramMiniAppInitData() !== null;
 
   return (
-    <MOperationalContentGrid>
-      <WorkspacePanel eyebrow="Settings" title="Workspace context" titleId="settings-view-title">
-        <MFlex align="stretch" direction="column" gap="m">
+    <ContentGrid>
+      <SettingsPanel eyebrow="Settings" title="Workspace context" titleId="settings-view-title">
+        <Stack gap="lg">
           {workspaceState.status === "loading" ? (
-            <MText as="p" mode="secondary">
-              Loading workspace details.
-            </MText>
+            <Text tone="muted">Loading workspace details.</Text>
           ) : null}
           {workspaceState.status === "error" ? (
-            <MAlert mode="error">{workspaceState.message}</MAlert>
+            <Alert tone="danger">{workspaceState.message}</Alert>
           ) : null}
           {workspaceState.status === "loaded" ? (
-            <MBox>
-              <MHeading mode="h4">{workspaceState.value.name}</MHeading>
-              <MText as="p" mode="secondary">
-                {workspaceState.value.slug}
-              </MText>
-              <MText as="p" mode="secondary">
-                Created {formatDate(workspaceState.value.createdAt)}
-              </MText>
-            </MBox>
+            <Stack gap="xs">
+              <Heading level={4}>{workspaceState.value.name}</Heading>
+              <Text tone="muted">{workspaceState.value.slug}</Text>
+              <Text tone="muted">Created {formatDate(workspaceState.value.createdAt)}</Text>
+            </Stack>
           ) : null}
           {rows.map((workspace) => (
-            <MFlex
-              as="article"
-              align="start"
-              gap="m"
-              key={workspace.id}
-              justify="space-between"
-              wrap="nowrap"
-            >
-              <MBox>
-                <MHeading mode="h4">{workspace.name}</MHeading>
-                <MText as="p" mode="secondary">
-                  {workspace.slug}
-                </MText>
-              </MBox>
+            <Flex align="start" gap="md" key={workspace.id} justify="between">
+              <Stack gap="xs">
+                <Heading level={4}>{workspace.name}</Heading>
+                <Text tone="muted">{workspace.slug}</Text>
+              </Stack>
               <time dateTime={workspace.updatedAtLabel}>{workspace.updatedAtLabel}</time>
-            </MFlex>
+            </Flex>
           ))}
-        </MFlex>
-      </WorkspacePanel>
+        </Stack>
+      </SettingsPanel>
 
-      <WorkspacePanel eyebrow="People" title="Members" titleId="settings-members-title">
-        <MFlex align="stretch" direction="column" gap="m">
-          {settingsActionError === null ? null : (
-            <MAlert mode="error">{settingsActionError}</MAlert>
-          )}
+      <SettingsPanel eyebrow="People" title="Members" titleId="settings-members-title">
+        <Stack gap="lg">
+          {settingsActionError === null ? null : <Alert tone="danger">{settingsActionError}</Alert>}
           {membersState.status === "idle" ? (
-            <MText as="p" mode="secondary">
-              Select a workspace to view its members.
-            </MText>
+            <Text tone="muted">Select a workspace to view its members.</Text>
           ) : null}
-          {membersState.status === "loading" ? (
-            <MText as="p" mode="secondary">
-              Loading members.
-            </MText>
-          ) : null}
+          {membersState.status === "loading" ? <Text tone="muted">Loading members.</Text> : null}
           {membersState.status === "error" ? (
-            <MAlert mode="error">{membersState.message}</MAlert>
+            <Alert tone="danger">{membersState.message}</Alert>
           ) : null}
           {membersState.status === "loaded" && membersState.value.length === 0 ? (
-            <MText as="p" mode="secondary">
-              No members found.
-            </MText>
+            <Text tone="muted">No members found.</Text>
           ) : null}
           {membersState.status === "loaded"
             ? membersState.value.map((member) => (
@@ -437,23 +413,17 @@ export function SettingsView({
                 />
               ))
             : null}
-        </MFlex>
-      </WorkspacePanel>
+        </Stack>
+      </SettingsPanel>
 
-      <WorkspacePanel eyebrow="Workflow" title="Statuses" titleId="settings-statuses-title">
-        <MFlex align="stretch" direction="column" gap="m">
-          {statusesState.status === "loading" ? (
-            <MText as="p" mode="secondary">
-              Loading statuses.
-            </MText>
-          ) : null}
+      <SettingsPanel eyebrow="Workflow" title="Statuses" titleId="settings-statuses-title">
+        <Stack gap="lg">
+          {statusesState.status === "loading" ? <Text tone="muted">Loading statuses.</Text> : null}
           {statusesState.status === "error" ? (
-            <MAlert mode="error">{statusesState.message}</MAlert>
+            <Alert tone="danger">{statusesState.message}</Alert>
           ) : null}
           {statusesState.status === "loaded" && statusesState.value.length === 0 ? (
-            <MText as="p" mode="secondary">
-              No statuses found.
-            </MText>
+            <Text tone="muted">No statuses found.</Text>
           ) : null}
           {statusesState.status === "loaded"
             ? statusesState.value.map((status) => (
@@ -474,35 +444,25 @@ export function SettingsView({
             />
           ) : null}
           {membersState.status === "loaded" && !canManageSettings ? (
-            <MText as="p" mode="secondary">
-              Only workspace owners and admins can manage statuses.
-            </MText>
+            <Text tone="muted">Only workspace owners and admins can manage statuses.</Text>
           ) : null}
-        </MFlex>
-      </WorkspacePanel>
+        </Stack>
+      </SettingsPanel>
 
-      <WorkspacePanel
-        eyebrow="Telegram"
-        title="Mini App identity"
-        titleId="settings-telegram-title"
-      >
-        <MFlex align="stretch" direction="column" gap="m">
+      <SettingsPanel eyebrow="Telegram" title="Mini App identity" titleId="settings-telegram-title">
+        <Stack gap="lg">
           <TelegramLinkContent
             initDataAvailable={initDataAvailable}
             onLink={() => void linkTelegramIdentity()}
             state={telegramState}
           />
-        </MFlex>
-      </WorkspacePanel>
+        </Stack>
+      </SettingsPanel>
 
-      <WorkspacePanel eyebrow="Summary" title="Loaded context" titleId="settings-summary-title">
-        <MText as="p" mode="secondary">
-          {summary.selectedWorkspaceLabel}
-        </MText>
-        <MText as="p" mode="secondary">
-          {summary.selectedProjectLabel}
-        </MText>
-        <WorkspaceMetrics
+      <SettingsPanel eyebrow="Summary" title="Loaded context" titleId="settings-summary-title">
+        <Text tone="muted">{summary.selectedWorkspaceLabel}</Text>
+        <Text tone="muted">{summary.selectedProjectLabel}</Text>
+        <DescriptionList
           items={[
             { label: "Workspaces", value: summary.workspaceCount },
             { label: "Projects", value: summary.projectCount },
@@ -511,12 +471,38 @@ export function SettingsView({
             { label: "Skills", value: summary.skillCount },
           ]}
         />
-      </WorkspacePanel>
-    </MOperationalContentGrid>
+      </SettingsPanel>
+    </ContentGrid>
   );
 }
 
 type EditableMemberRole = UpdateWorkspaceMemberRoleInput["role"];
+
+function SettingsPanel({
+  children,
+  eyebrow,
+  title,
+  titleId,
+}: {
+  children: ReactElement | ReactElement[];
+  eyebrow: string;
+  title: string;
+  titleId: string;
+}): ReactElement {
+  return (
+    <Card aria-labelledby={titleId}>
+      <Stack gap="lg">
+        <Stack gap="xs">
+          <Text tone="muted">{eyebrow}</Text>
+          <Heading id={titleId} level={3}>
+            {title}
+          </Heading>
+        </Stack>
+        {children}
+      </Stack>
+    </Card>
+  );
+}
 
 function MemberRow({
   canManage,
@@ -530,17 +516,13 @@ function MemberRow({
   onRoleChange(role: EditableMemberRole): void;
 }): ReactElement {
   return (
-    <MFlex as="article" align="start" gap="m" justify="space-between" wrap="nowrap">
-      <MBox>
-        <MHeading mode="h4">{member.displayName}</MHeading>
-        {member.email === null ? null : (
-          <MText as="p" mode="secondary">
-            {member.email}
-          </MText>
-        )}
-      </MBox>
+    <Flex align="start" gap="md" justify="between">
+      <Stack gap="xs">
+        <Heading level={4}>{member.displayName}</Heading>
+        {member.email === null ? null : <Text tone="muted">{member.email}</Text>}
+      </Stack>
       {canManage && member.role !== "owner" ? (
-        <MSelect
+        <Select
           aria-label={`Role for ${member.displayName}`}
           disabled={disabled}
           options={memberRoleOptions}
@@ -550,11 +532,9 @@ function MemberRow({
           value={member.role}
         />
       ) : (
-        <MText as="p" mode="secondary">
-          {member.role}
-        </MText>
+        <Text tone="muted">{member.role}</Text>
       )}
-    </MFlex>
+    </Flex>
   );
 }
 
@@ -581,39 +561,39 @@ function StatusRow({
   }, [status]);
   if (!canManage)
     return (
-      <MText as="p">
+      <Text>
         {status.name} · {status.isDone ? "Done" : "Open"}
-      </MText>
+      </Text>
     );
   return (
-    <MFlex as="article" align="start" direction="column" gap="s">
-      <MInput
+    <Stack gap="sm">
+      <Input
         aria-label={`Status name for ${status.name}`}
         disabled={disabled}
         onChange={(event) => setName(event.target.value)}
         value={name}
       />
-      <MInput
+      <Input
         aria-label={`Status color for ${status.name}`}
         disabled={disabled}
         onChange={(event) => setColor(event.target.value)}
         value={color}
       />
-      <MCheckbox
+      <Checkbox
         checked={isDone}
         disabled={disabled}
         label="Completed status"
-        onCheckedChange={setIsDone}
+        onCheckedChange={(checked) => setIsDone(checked === true)}
       />
-      <MFlex gap="s">
-        <MButton disabled={disabled} onClick={() => onUpdate({ color, isDone, name })}>
+      <Flex gap="sm">
+        <Button disabled={disabled} onClick={() => onUpdate({ color, isDone, name })}>
           Save status
-        </MButton>
-        <MButton disabled={disabled} mode="outlined" onClick={onDelete}>
+        </Button>
+        <Button disabled={disabled} onClick={onDelete} variant="danger">
           Delete status
-        </MButton>
-      </MFlex>
-    </MFlex>
+        </Button>
+      </Flex>
+    </Stack>
   );
 }
 
@@ -628,11 +608,7 @@ function CreateStatusForm({
   const [color, setColor] = useState("#64748b");
   const [isDone, setIsDone] = useState(false);
   return (
-    <MFlex
-      as="form"
-      align="start"
-      direction="column"
-      gap="s"
+    <form
       onSubmit={(event) => {
         event.preventDefault();
         const trimmedName = name.trim();
@@ -644,36 +620,38 @@ function CreateStatusForm({
         }
       }}
     >
-      <MHeading mode="h4">Add status</MHeading>
-      <MInput
-        aria-label="New status name"
-        disabled={disabled}
-        onChange={(event) => setName(event.target.value)}
-        value={name}
-      />
-      <MInput
-        aria-label="New status color"
-        disabled={disabled}
-        onChange={(event) => setColor(event.target.value)}
-        value={color}
-      />
-      <MCheckbox
-        checked={isDone}
-        disabled={disabled}
-        label="Completed status"
-        onCheckedChange={setIsDone}
-      />
-      <MButton disabled={disabled} type="submit">
-        Create status
-      </MButton>
-    </MFlex>
+      <Stack gap="sm">
+        <Heading level={4}>Add status</Heading>
+        <Input
+          aria-label="New status name"
+          disabled={disabled}
+          onChange={(event) => setName(event.target.value)}
+          value={name}
+        />
+        <Input
+          aria-label="New status color"
+          disabled={disabled}
+          onChange={(event) => setColor(event.target.value)}
+          value={color}
+        />
+        <Checkbox
+          checked={isDone}
+          disabled={disabled}
+          label="Completed status"
+          onCheckedChange={(checked) => setIsDone(checked === true)}
+        />
+        <Button disabled={disabled} type="submit">
+          Create status
+        </Button>
+      </Stack>
+    </form>
   );
 }
 
 const memberRoleOptions = [
-  { key: "admin", value: "Admin" },
-  { key: "member", value: "Member" },
-  { key: "guest", value: "Guest" },
+  { label: "Admin", value: "admin" },
+  { label: "Member", value: "member" },
+  { label: "Guest", value: "guest" },
 ];
 
 function isEditableMemberRole(value: string): value is EditableMemberRole {
@@ -689,27 +667,20 @@ function TelegramLinkContent({
   onLink(): void;
   state: TelegramLinkState;
 }): ReactElement {
-  if (state.status === "loading")
-    return (
-      <MText as="p" mode="secondary">
-        Checking link status.
-      </MText>
-    );
+  if (state.status === "loading") return <Text tone="muted">Checking link status.</Text>;
   if (state.status === "unavailable")
-    return (
-      <MAlert mode="error">Connect the workspace API to view Telegram identity status.</MAlert>
-    );
-  if (state.status === "error") return <MAlert mode="error">{state.message}</MAlert>;
+    return <Alert tone="danger">Connect the workspace API to view Telegram identity status.</Alert>;
+  if (state.status === "error") return <Alert tone="danger">{state.message}</Alert>;
   if (state.status === "linked") {
     return (
       <>
-        <MText as="p">Telegram account {state.value.telegramId} is linked.</MText>
-        <MText as="p" mode="secondary">
+        <Text>Telegram account {state.value.telegramId} is linked.</Text>
+        <Text tone="muted">
           Linked {formatDate(state.value.linkedAt)}
           {state.value.lastSeenAt === null || state.value.lastSeenAt === undefined
             ? ""
             : ` · Last seen ${formatDate(state.value.lastSeenAt)}`}
-        </MText>
+        </Text>
       </>
     );
   }
@@ -719,20 +690,18 @@ function TelegramLinkContent({
   });
   if (state.status === "unlinked" && !showLinkAction) {
     return (
-      <MText as="p" mode="secondary">
+      <Text tone="muted">
         Open this page from the Telegram Mini App to link your account. The browser cannot create or
         safely accept a Telegram identity on its own.
-      </MText>
+      </Text>
     );
   }
   return (
     <>
-      <MText as="p" mode="secondary">
-        Your verified Telegram Mini App session is ready to link.
-      </MText>
-      <MButton disabled={state.status === "linking"} onClick={onLink}>
+      <Text tone="muted">Your verified Telegram Mini App session is ready to link.</Text>
+      <Button disabled={state.status === "linking"} onClick={onLink}>
         {state.status === "linking" ? "Linking…" : "Link Telegram account"}
-      </MButton>
+      </Button>
     </>
   );
 }

@@ -12,14 +12,7 @@
     "outDir": "dist",
     "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
-    "baseUrl": "src",
-    "paths": {
-      "atoms/*": ["atoms/*"],
-      "icons/*": ["icons/*"],
-      "molecules/*": ["molecules/*"],
-      "styles/*": ["styles/*"],
-      "types/*": ["types/*"]
-    }
+    "baseUrl": "src"
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx"],
   "exclude": [

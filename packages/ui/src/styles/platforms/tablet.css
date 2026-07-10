@@ -1,4 +1,0 @@
-/* src/styles/platforms/tablet.css — Tablet layout override */
-:root[data-platform="tablet"] {
-  --layout-screen-padding-h: var(--space-12); /* 24px */
-}

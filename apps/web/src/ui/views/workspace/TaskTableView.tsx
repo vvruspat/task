@@ -1,27 +1,31 @@
 import type { TaskApiClient, TaskSummary, WorkspaceStatus } from "@task/api-client";
-import type { MDataGridHeaderType, MDataGridRowType, MSelectOption } from "@task/ui/app";
+import type { DataTableColumn, RadixSelectOption } from "@task/ui/app";
 import {
-  MAlert,
-  MButton,
-  MDataGrid,
-  MFlex,
-  MInput,
-  MOperationalContentGrid,
-  MSelect,
-  MText,
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  ContentGrid,
+  DataTable,
+  DescriptionList,
+  Flex,
+  Heading,
+  Input,
+  Select,
+  Stack,
+  Text,
+  Toolbar,
 } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   createTaskTableBulkBody,
-  createTaskTableGridKey,
   createTaskTableRequest,
   parseTaskTableQuery,
   type TaskTableQuery,
   taskTableClearDueDate,
   taskTableUnassigned,
 } from "./taskTableViewModels.js";
-import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type TaskTableViewProps = {
   client: TaskApiClient | null;
@@ -35,6 +39,15 @@ type LoadState =
   | { status: "loading" }
   | { items: TaskSummary[]; revision: number; total: number; status: "loaded" }
   | { message: string; status: "error" };
+
+type TaskTableRow = {
+  assigneeLabel: string;
+  dueDateLabel: string;
+  id: string;
+  status: string;
+  title: string;
+  updatedAtLabel: string;
+};
 
 const unassigned = taskTableUnassigned;
 const noBulkChange = "no-change";
@@ -51,7 +64,7 @@ export function TaskTableView({
     parseTaskTableQuery(window.location.search),
   );
   const [loadState, setLoadState] = useState<LoadState>({ status: "loading" });
-  const [selectedRows, setSelectedRows] = useState<MDataGridRowType[]>([]);
+  const [selectedTaskIds, setSelectedTaskIds] = useState<string[]>([]);
   const [bulkStatus, setBulkStatus] = useState("");
   const [bulkAssignee, setBulkAssignee] = useState("");
   const [bulkDueAt, setBulkDueAt] = useState("");
@@ -74,7 +87,7 @@ export function TaskTableView({
     const requestId = activeRequestRef.current + 1;
     activeRequestRef.current = requestId;
     setLoadState({ status: "loading" });
-    setSelectedRows([]);
+    setSelectedTaskIds([]);
     void client
       .listTaskTable(createTaskTableRequest(query, projectId, workspaceId))
       .then((page) => {
@@ -95,51 +108,40 @@ export function TaskTableView({
       });
   }, [client, projectId, query, workspaceId]);
 
-  const statusOptions: MSelectOption[] = useMemo(
+  const statusOptions: readonly RadixSelectOption[] = useMemo(
     () => [
-      { key: "all", value: "All statuses" },
-      { key: unassigned, value: "Unassigned status" },
-      ...statuses.map((status) => ({ key: status.id, value: status.name })),
+      { label: "All statuses", value: "all" },
+      { label: "Unassigned status", value: unassigned },
+      ...statuses.map((status) => ({ label: status.name, value: status.id })),
     ],
     [statuses],
   );
-  const bulkStatusOptions: MSelectOption[] = useMemo(
-    () => [{ key: noBulkChange, value: "No status change" }, ...statusOptions.slice(1)],
+  const bulkStatusOptions: readonly RadixSelectOption[] = useMemo(
+    () => [{ label: "No status change", value: noBulkChange }, ...statusOptions.slice(1)],
     [statusOptions],
   );
-  const rows = loadState.status === "loaded" ? toGridRows(loadState.items, statuses) : [];
-  const gridKey = createTaskTableGridKey(
-    query,
-    projectId,
-    loadState.status === "loaded" ? loadState.revision : loadRevisionRef.current,
-    workspaceId,
-  );
-  const selectedTaskIds = selectedRows.map((row) => String(row.id));
+  const rows = loadState.status === "loaded" ? toTableRows(loadState.items, statuses) : [];
+  const selectedIdSet = useMemo(() => new Set(selectedTaskIds), [selectedTaskIds]);
   const canApplyBulk =
     selectedTaskIds.length > 0 && hasBulkChange(bulkStatus, bulkAssignee, bulkDueAt);
-  const headers: MDataGridHeaderType[] = [
-    {
-      field: "title",
-      label: "Task",
-      renderCell: (value, row) =>
-        typeof value === "string" ? (
-          <MButton mode="transparent" noPadding onClick={() => onOpenTask(String(row.id))}>
-            {value}
-          </MButton>
-        ) : (
-          ""
-        ),
-      sortable: true,
-    },
-    { field: "status", label: "Status", sortable: true },
-    { field: "assigneeLabel", label: "Assignee", sortable: true },
-    { field: "dueDateLabel", label: "Due", sortable: true },
-    { field: "updatedAtLabel", label: "Updated", sortable: true },
-  ];
+  const pageCount =
+    loadState.status === "loaded" ? Math.max(1, Math.ceil(loadState.total / query.pageSize)) : 1;
   const changeQuery = (patch: Partial<TaskTableQuery>): void => {
     const nextQuery = { ...query, ...patch };
     writeTableQuery(nextQuery);
     setQuery(nextQuery);
+  };
+  const toggleTaskSelection = (taskId: string, checked: boolean): void => {
+    setSelectedTaskIds((currentIds) =>
+      checked
+        ? currentIds.includes(taskId)
+          ? currentIds
+          : [...currentIds, taskId]
+        : currentIds.filter((id) => id !== taskId),
+    );
+  };
+  const togglePageSelection = (checked: boolean): void => {
+    setSelectedTaskIds(checked ? rows.map((row) => row.id) : []);
   };
   const applyBulk = (): void => {
     if (!canApplyBulk || client === null || projectId === null || workspaceId === null) return;
@@ -149,7 +151,7 @@ export function TaskTableView({
     void client
       .bulkUpdateTasks({ body, projectId, workspaceId })
       .then(() => {
-        setSelectedRows([]);
+        setSelectedTaskIds([]);
         setBulkStatus("");
         setBulkAssignee("");
         setBulkDueAt("");
@@ -158,141 +160,242 @@ export function TaskTableView({
       .catch((error: unknown) => setBulkError(readError(error)))
       .finally(() => setIsBulkUpdating(false));
   };
+  const columns: readonly DataTableColumn<TaskTableRow>[] = [
+    {
+      cell: (row) => (
+        <Checkbox
+          aria-label={`Select ${row.title}`}
+          checked={selectedIdSet.has(row.id)}
+          onCheckedChange={(checked) => toggleTaskSelection(row.id, checked === true)}
+          onClick={(event) => event.stopPropagation()}
+        />
+      ),
+      header: (
+        <Checkbox
+          aria-label="Select all tasks on this page"
+          checked={rows.length > 0 && rows.every((row) => selectedIdSet.has(row.id))}
+          onCheckedChange={(checked) => togglePageSelection(checked === true)}
+        />
+      ),
+      id: "select",
+      width: "3rem",
+    },
+    {
+      cell: (row) => row.title,
+      header: sortButton("Task", "title", query, changeQuery),
+      id: "title",
+    },
+    {
+      cell: (row) => row.status,
+      header: sortButton("Status", "status", query, changeQuery),
+      id: "status",
+    },
+    {
+      cell: (row) => row.assigneeLabel,
+      header: sortButton("Assignee", "assignee", query, changeQuery),
+      id: "assignee",
+    },
+    {
+      cell: (row) => row.dueDateLabel,
+      header: sortButton("Due", "dueAt", query, changeQuery),
+      id: "dueAt",
+    },
+    {
+      cell: (row) => row.updatedAtLabel,
+      header: sortButton("Updated", "updatedAt", query, changeQuery),
+      id: "updatedAt",
+    },
+  ];
 
   if (projectId === null) return <TableNotice message="Choose a project to view its task table." />;
   if (workspaceId === null || client === null)
     return <TableNotice message="Loading the task table…" />;
 
   return (
-    <MOperationalContentGrid>
-      <WorkspacePanel eyebrow="Table" title="Task table" titleId="task-table-view-title">
-        <MFlex gap="s" wrap="wrap">
-          <MInput
-            aria-label="Search tasks"
-            placeholder="Search tasks"
-            value={query.search}
-            onChange={(event) => changeQuery({ page: 1, search: event.target.value })}
-          />
-          <MSelect
-            aria-label="Filter by status"
-            options={statusOptions}
-            value={query.status === "" ? "all" : query.status}
-            onValueChange={(value) =>
-              changeQuery({ page: 1, status: value === "all" ? "" : value })
-            }
-          />
-          <MInput
-            aria-label="Filter by assignee ID"
-            placeholder="Assignee ID or unassigned"
-            value={query.assignee}
-            onChange={(event) => changeQuery({ assignee: event.target.value, page: 1 })}
-          />
-          <MInput
-            aria-label="Due from"
-            type="date"
-            value={query.dueFrom}
-            onChange={(event) => changeQuery({ dueFrom: event.target.value, page: 1 })}
-          />
-          <MInput
-            aria-label="Due to"
-            type="date"
-            value={query.dueTo}
-            onChange={(event) => changeQuery({ dueTo: event.target.value, page: 1 })}
-          />
-        </MFlex>
-        {bulkError === null ? null : (
-          <MAlert mode="error">
-            <MFlex justify="space-between">
-              <MText as="p">{bulkError}</MText>
-              <MButton onClick={applyBulk} disabled={!canApplyBulk || isBulkUpdating}>
-                Retry bulk update
-              </MButton>
-            </MFlex>
-          </MAlert>
-        )}
-        {selectedTaskIds.length === 0 ? null : (
-          <MFlex gap="s" wrap="wrap">
-            <MText as="p">{selectedTaskIds.length} selected</MText>
-            <MSelect
-              aria-label="Bulk status"
-              options={bulkStatusOptions}
-              value={bulkStatus === "" ? noBulkChange : bulkStatus}
-              onValueChange={(value) => setBulkStatus(value === noBulkChange ? "" : value)}
+    <ContentGrid>
+      <Card aria-labelledby="task-table-view-title">
+        <Stack>
+          <Stack gap="xs">
+            <Text tone="muted">Table</Text>
+            <Heading id="task-table-view-title">Task table</Heading>
+          </Stack>
+          <Toolbar>
+            <Input
+              aria-label="Search tasks"
+              placeholder="Search tasks"
+              value={query.search}
+              onChange={(event) => changeQuery({ page: 1, search: event.target.value })}
             />
-            <MInput
-              aria-label="Bulk assignee ID"
-              placeholder="Assignee ID; use unassigned to clear"
-              value={bulkAssignee}
-              onChange={(event) => setBulkAssignee(event.target.value)}
+            <Select
+              aria-label="Filter by status"
+              options={statusOptions}
+              value={query.status === "" ? "all" : query.status}
+              onValueChange={(value) =>
+                changeQuery({ page: 1, status: value === "all" ? "" : value })
+              }
             />
-            <MInput
-              aria-label="Bulk due date"
+            <Input
+              aria-label="Filter by assignee ID"
+              placeholder="Assignee ID or unassigned"
+              value={query.assignee}
+              onChange={(event) => changeQuery({ assignee: event.target.value, page: 1 })}
+            />
+            <Input
+              aria-label="Due from"
               type="date"
-              value={bulkDueAt === clearDueDate ? "" : bulkDueAt}
-              onChange={(event) => setBulkDueAt(event.target.value)}
+              value={query.dueFrom}
+              onChange={(event) => changeQuery({ dueFrom: event.target.value, page: 1 })}
             />
-            <MButton mode="secondary" onClick={() => setBulkDueAt(clearDueDate)}>
-              Clear due date
-            </MButton>
-            <MButton disabled={!canApplyBulk || isBulkUpdating} onClick={applyBulk}>
-              {isBulkUpdating ? "Updating…" : "Apply updates"}
-            </MButton>
-          </MFlex>
-        )}
-        {loadState.status === "error" ? (
-          <MAlert mode="error">
-            <MFlex justify="space-between">
-              <MText as="p">{loadState.message}</MText>
-              <MButton onClick={() => changeQuery({ ...query })}>Retry</MButton>
-            </MFlex>
-          </MAlert>
-        ) : null}
-        <MDataGrid
-          key={gridKey}
-          aria-labelledby="task-table-view-title"
-          emptyMessage={
-            loadState.status === "loading" ? "Loading tasks…" : "No tasks match these filters"
-          }
-          headers={headers}
-          onSelect={(nextRows) => {
-            if (Array.isArray(nextRows)) setSelectedRows(nextRows);
-          }}
-          onSort={(field, direction) =>
-            changeQuery({ page: 1, sortBy: mapSortField(field), sortDirection: direction })
-          }
-          pagination={{
-            limit: query.pageSize,
-            offset: (query.page - 1) * query.pageSize,
-            total: loadState.status === "loaded" ? loadState.total : 0,
-            onNextPage: (offset) => changeQuery({ page: Math.floor(offset / query.pageSize) + 1 }),
-            onPreviousPage: (offset) =>
-              changeQuery({ page: Math.floor(offset / query.pageSize) + 1 }),
-            onRowsPerPageChange: (pageSize) => changeQuery({ page: 1, pageSize }),
-          }}
-          rows={rows}
-        />
-      </WorkspacePanel>
-      <WorkspacePanel eyebrow="Summary" title="Results" titleId="task-table-summary-title">
-        <MText as="p" mode="secondary">
-          Filters, sorting, and pagination are applied by the server.
-        </MText>
-        <WorkspaceMetrics
-          items={[
-            { label: "Total tasks", value: loadState.status === "loaded" ? loadState.total : "—" },
-            { label: "Page", value: query.page },
-            { label: "Page size", value: query.pageSize },
-          ]}
-        />
-      </WorkspacePanel>
-    </MOperationalContentGrid>
+            <Input
+              aria-label="Due to"
+              type="date"
+              value={query.dueTo}
+              onChange={(event) => changeQuery({ dueTo: event.target.value, page: 1 })}
+            />
+          </Toolbar>
+          {bulkError === null ? null : (
+            <Alert tone="danger">
+              <Flex align="center" justify="between">
+                <Text>{bulkError}</Text>
+                <Button disabled={!canApplyBulk || isBulkUpdating} onClick={applyBulk}>
+                  Retry bulk update
+                </Button>
+              </Flex>
+            </Alert>
+          )}
+          {selectedTaskIds.length === 0 ? null : (
+            <Toolbar>
+              <Text>{selectedTaskIds.length} selected</Text>
+              <Select
+                aria-label="Bulk status"
+                options={bulkStatusOptions}
+                value={bulkStatus === "" ? noBulkChange : bulkStatus}
+                onValueChange={(value) => setBulkStatus(value === noBulkChange ? "" : value)}
+              />
+              <Input
+                aria-label="Bulk assignee ID"
+                placeholder="Assignee ID; use unassigned to clear"
+                value={bulkAssignee}
+                onChange={(event) => setBulkAssignee(event.target.value)}
+              />
+              <Input
+                aria-label="Bulk due date"
+                type="date"
+                value={bulkDueAt === clearDueDate ? "" : bulkDueAt}
+                onChange={(event) => setBulkDueAt(event.target.value)}
+              />
+              <Button variant="secondary" onClick={() => setBulkDueAt(clearDueDate)}>
+                Clear due date
+              </Button>
+              <Button disabled={!canApplyBulk || isBulkUpdating} onClick={applyBulk}>
+                {isBulkUpdating ? "Updating…" : "Apply updates"}
+              </Button>
+            </Toolbar>
+          )}
+          {loadState.status === "error" ? (
+            <Alert tone="danger">
+              <Flex align="center" justify="between">
+                <Text>{loadState.message}</Text>
+                <Button onClick={() => changeQuery({ ...query })}>Retry</Button>
+              </Flex>
+            </Alert>
+          ) : null}
+          <DataTable
+            aria-labelledby="task-table-view-title"
+            columns={columns}
+            emptyState={
+              loadState.status === "loading" ? "Loading tasks…" : "No tasks match these filters"
+            }
+            getRowId={(row) => row.id}
+            onRowClick={(row) => onOpenTask(row.id)}
+            rows={rows}
+            selectedRowIds={selectedIdSet}
+          />
+          <Toolbar density="compact">
+            <Button
+              disabled={query.page <= 1}
+              variant="secondary"
+              onClick={() => changeQuery({ page: query.page - 1 })}
+            >
+              Previous
+            </Button>
+            <Text>
+              Page {query.page} of {pageCount}
+            </Text>
+            <Button
+              disabled={query.page >= pageCount}
+              variant="secondary"
+              onClick={() => changeQuery({ page: query.page + 1 })}
+            >
+              Next
+            </Button>
+            <Select
+              aria-label="Rows per page"
+              options={[
+                { label: "10 rows", value: "10" },
+                { label: "25 rows", value: "25" },
+                { label: "50 rows", value: "50" },
+              ]}
+              value={String(query.pageSize)}
+              onValueChange={(value) => changeQuery({ page: 1, pageSize: parsePageSize(value) })}
+            />
+          </Toolbar>
+        </Stack>
+      </Card>
+      <Card aria-labelledby="task-table-summary-title">
+        <Stack>
+          <Stack gap="xs">
+            <Text tone="muted">Summary</Text>
+            <Heading id="task-table-summary-title">Results</Heading>
+          </Stack>
+          <Text tone="muted">Filters, sorting, and pagination are applied by the server.</Text>
+          <DescriptionList
+            items={[
+              {
+                label: "Total tasks",
+                value: loadState.status === "loaded" ? loadState.total : "—",
+              },
+              { label: "Page", value: query.page },
+              { label: "Page size", value: query.pageSize },
+            ]}
+          />
+        </Stack>
+      </Card>
+    </ContentGrid>
   );
 }
 
 function TableNotice({ message }: { message: string }): ReactElement {
   return (
-    <WorkspacePanel eyebrow="Table" title="Task table" titleId="task-table-view-title">
-      <MText as="p">{message}</MText>
-    </WorkspacePanel>
+    <Card aria-labelledby="task-table-view-title">
+      <Stack>
+        <Text tone="muted">Table</Text>
+        <Heading id="task-table-view-title">Task table</Heading>
+        <Text>{message}</Text>
+      </Stack>
+    </Card>
+  );
+}
+
+function sortButton(
+  label: string,
+  sortBy: TaskTableQuery["sortBy"],
+  query: TaskTableQuery,
+  changeQuery: (patch: Partial<TaskTableQuery>) => void,
+): ReactElement {
+  const isCurrent = query.sortBy === sortBy;
+  const nextDirection = isCurrent && query.sortDirection === "asc" ? "desc" : "asc";
+  const directionLabel = isCurrent ? (query.sortDirection === "asc" ? " ↑" : " ↓") : "";
+  return (
+    <Button
+      aria-label={`Sort by ${label}${isCurrent ? `, currently ${query.sortDirection}` : ""}`}
+      size="sm"
+      variant="ghost"
+      onClick={() => changeQuery({ page: 1, sortBy, sortDirection: nextDirection })}
+    >
+      {label}
+      {directionLabel}
+    </Button>
   );
 }
 
@@ -318,17 +421,17 @@ function writeTableQuery(query: TaskTableQuery): void {
   );
 }
 
-function toGridRows(items: TaskSummary[], statuses: WorkspaceStatus[]): MDataGridRowType[] {
+function toTableRows(items: TaskSummary[], statuses: WorkspaceStatus[]): TaskTableRow[] {
   return items.map((task) => ({
-    id: task.id,
-    title: task.title,
-    status:
-      statuses.find((status) => status.id === task.statusId)?.name ?? task.statusId ?? "Unassigned",
     assigneeLabel: task.assigneeUserId ?? "Unassigned",
     dueDateLabel:
       task.dueAt === undefined || task.dueAt === null
         ? "—"
         : new Date(task.dueAt).toLocaleDateString(),
+    id: task.id,
+    status:
+      statuses.find((status) => status.id === task.statusId)?.name ?? task.statusId ?? "Unassigned",
+    title: task.title,
     updatedAtLabel:
       task.updatedAt === undefined ? "—" : new Date(task.updatedAt).toLocaleDateString(),
   }));
@@ -337,17 +440,11 @@ function toGridRows(items: TaskSummary[], statuses: WorkspaceStatus[]): MDataGri
 function hasBulkChange(status: string, assignee: string, dueAt: string): boolean {
   return status.length > 0 || assignee.trim().length > 0 || dueAt.length > 0;
 }
-function mapSortField(field: string): TaskTableQuery["sortBy"] {
-  return field === "status"
-    ? "status"
-    : field === "assigneeLabel"
-      ? "assignee"
-      : field === "dueDateLabel"
-        ? "dueAt"
-        : field === "updatedAtLabel"
-          ? "updatedAt"
-          : "title";
+
+function parsePageSize(value: string): 10 | 25 | 50 {
+  return value === "10" ? 10 : value === "50" ? 50 : 25;
 }
+
 function readError(error: unknown): string {
   return error instanceof Error ? error.message : "The task table request failed.";
 }

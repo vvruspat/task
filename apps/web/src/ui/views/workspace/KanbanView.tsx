@@ -1,16 +1,19 @@
 import type { TaskApiClient, TaskDetail } from "@task/api-client";
 import {
-  MAlert,
-  MButton,
-  MFlex,
-  MHeading,
-  MOperationalBoardCard,
-  MOperationalBoardColumn,
-  MOperationalContentGrid,
-  MOperationalLane,
-  MOperationalStatusDot,
-  MSelect,
-  MText,
+  Alert,
+  Board,
+  BoardCard,
+  BoardColumn,
+  Button,
+  Card,
+  ContentGrid,
+  DescriptionList,
+  Flex,
+  Heading,
+  Select,
+  Stack,
+  StatusDot,
+  Text,
 } from "@task/ui/app";
 import type { KeyboardEvent, ReactElement } from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -20,7 +23,6 @@ import {
   getAdjacentKanbanStatusId,
 } from "../workspaceViewModels.js";
 import type { ProjectSummary, TaskSummary, WorkspaceStatus } from "./types.js";
-import { WorkspaceMetrics, WorkspacePanel } from "./WorkspacePrimitives.js";
 
 export type KanbanViewProps = {
   client: TaskApiClient | null;
@@ -116,109 +118,140 @@ export function KanbanView({
   };
 
   return (
-    <MOperationalContentGrid>
-      <WorkspacePanel eyebrow="Kanban" title="Status board" titleId="kanban-view-title">
-        <MFlex align="end" justify="space-between" wrap="wrap">
-          <MText as="p" id="kanban-keyboard-help" mode="secondary">
+    <ContentGrid>
+      <Card aria-labelledby="kanban-view-title">
+        <Stack gap="lg">
+          <Flex align="end" justify="between">
+            <Stack gap="xs">
+              <Text tone="muted">Kanban</Text>
+              <Heading id="kanban-view-title" level={2}>
+                Status board
+              </Heading>
+            </Stack>
+            <Select
+              aria-label="Filter board by project"
+              options={[
+                { label: "All projects", value: ALL_PROJECTS_KEY },
+                ...projects.map((project) => ({ label: project.title, value: project.id })),
+              ]}
+              value={projectFilter}
+              onValueChange={setProjectFilter}
+            />
+          </Flex>
+          <Text id="kanban-keyboard-help" tone="muted">
             Select a project to focus the board. On a task card, use the left and right arrow keys
             to move it between statuses.
-          </MText>
-          <MSelect
-            aria-label="Filter board by project"
-            options={[
-              { key: ALL_PROJECTS_KEY, value: "All projects" },
-              ...projects.map((project) => ({ key: project.id, value: project.title })),
-            ]}
-            value={projectFilter}
-            onValueChange={setProjectFilter}
-          />
-        </MFlex>
-        {actionError === null ? null : (
-          <MAlert mode="error">
-            <MText as="p">
-              {actionError.message} The task was returned to its previous status. Change its status
-              again to retry.
-            </MText>
-          </MAlert>
-        )}
-        <MOperationalLane>
-          {columns.map((column) => (
-            <MOperationalBoardColumn key={column.id} aria-labelledby={`${column.id}-title`}>
-              <MFlex justify="space-between" wrap="nowrap">
-                <MOperationalStatusDot color={column.color} aria-hidden="true" />
-                <MHeading id={`${column.id}-title`} mode="h4">
-                  {column.name}
-                </MHeading>
-                <strong>{column.taskCount}</strong>
-              </MFlex>
-              <MFlex align="stretch" direction="column" gap="s">
-                {column.tasks.map((card) => {
-                  const task = visibleTasks.find((candidate) => candidate.id === card.id);
-                  if (task === undefined) return null;
-                  const isUpdating = updatingTaskIds.has(task.id);
-                  return (
-                    <MOperationalBoardCard aria-busy={isUpdating} key={task.id}>
-                      <MButton
-                        aria-describedby="kanban-keyboard-help"
-                        justify="start"
-                        mode="transparent"
-                        onClick={() => onOpenTask(task.id)}
-                        onKeyDown={(event) => {
-                          handleCardKeyDown(event, task);
-                          if (event.defaultPrevented) return;
-                        }}
-                      >
-                        {card.title}
-                      </MButton>
-                      <MText as="p" mode="secondary">
-                        {card.projectTitle}
-                      </MText>
-                      <MFlex gap="xs">
-                        <MText as="span">{card.assigneeLabel}</MText>
-                        <MText as="span">{card.dueDateLabel}</MText>
-                        <time dateTime={card.updatedAtLabel}>{card.updatedAtLabel}</time>
-                      </MFlex>
-                      <MFlex
-                        onClick={(event) => event.stopPropagation()}
-                        onKeyDown={(event) => event.stopPropagation()}
-                      >
-                        <MSelect
-                          aria-label={`Status for ${task.title}`}
-                          disabled={isUpdating || client === null || workspaceId === null}
-                          options={[
-                            { key: "unset-status", value: "Unset" },
-                            ...statuses.map((status) => ({ key: status.id, value: status.name })),
-                          ]}
-                          value={task.statusId ?? "unset-status"}
-                          onValueChange={(value) =>
-                            updateTaskStatus(task.id, value === "unset-status" ? null : value)
-                          }
-                        />
-                      </MFlex>
-                    </MOperationalBoardCard>
-                  );
-                })}
-              </MFlex>
-            </MOperationalBoardColumn>
-          ))}
-        </MOperationalLane>
-      </WorkspacePanel>
+          </Text>
+          {actionError === null ? null : (
+            <Alert tone="danger">
+              <Text>
+                {actionError.message} The task was returned to its previous status. Change its
+                status again to retry.
+              </Text>
+            </Alert>
+          )}
+          <Board>
+            {columns.map((column) => (
+              <BoardColumn
+                actions={<Text>{column.taskCount}</Text>}
+                aria-labelledby={`${column.id}-title`}
+                header={
+                  <Flex align="center" gap="sm">
+                    <StatusDot tone={statusToneFromColor(column.color)} />
+                    <Heading id={`${column.id}-title`} level={4}>
+                      {column.name}
+                    </Heading>
+                  </Flex>
+                }
+                key={column.id}
+              >
+                <Stack gap="sm">
+                  {column.tasks.map((card) => {
+                    const task = visibleTasks.find((candidate) => candidate.id === card.id);
+                    if (task === undefined) return null;
+                    const isUpdating = updatingTaskIds.has(task.id);
+                    return (
+                      <BoardCard aria-busy={isUpdating} key={task.id}>
+                        <Button
+                          aria-describedby="kanban-keyboard-help"
+                          onClick={() => onOpenTask(task.id)}
+                          onKeyDown={(event) => {
+                            handleCardKeyDown(event, task);
+                            if (event.defaultPrevented) return;
+                          }}
+                          variant="ghost"
+                        >
+                          {card.title}
+                        </Button>
+                        <Text tone="muted">{card.projectTitle}</Text>
+                        <Flex gap="xs">
+                          <Text>{card.assigneeLabel}</Text>
+                          <Text>{card.dueDateLabel}</Text>
+                          <time dateTime={card.updatedAtLabel}>{card.updatedAtLabel}</time>
+                        </Flex>
+                        <Flex
+                          onClick={(event) => event.stopPropagation()}
+                          onKeyDown={(event) => event.stopPropagation()}
+                        >
+                          <Select
+                            aria-label={`Status for ${task.title}`}
+                            disabled={isUpdating || client === null || workspaceId === null}
+                            options={[
+                              { label: "Unset", value: "unset-status" },
+                              ...statuses.map((status) => ({
+                                label: status.name,
+                                value: status.id,
+                              })),
+                            ]}
+                            value={task.statusId ?? "unset-status"}
+                            onValueChange={(value) =>
+                              updateTaskStatus(task.id, value === "unset-status" ? null : value)
+                            }
+                          />
+                        </Flex>
+                      </BoardCard>
+                    );
+                  })}
+                </Stack>
+              </BoardColumn>
+            ))}
+          </Board>
+        </Stack>
+      </Card>
 
-      <WorkspacePanel eyebrow="Summary" title="Board load" titleId="kanban-summary-title">
-        <MText as="p" mode="secondary">
-          Status changes update immediately and are restored if the server rejects them.
-        </MText>
-        <WorkspaceMetrics
-          items={[
-            { label: "Columns", value: summary.columnCount },
-            { label: "Tasks", value: summary.taskCount },
-            { label: "Done", value: summary.doneTaskCount },
-            { label: "Unset", value: summary.unsetTaskCount },
-          ]}
-        />
-      </WorkspacePanel>
-    </MOperationalContentGrid>
+      <Card aria-labelledby="kanban-summary-title">
+        <Stack gap="md">
+          <Stack gap="xs">
+            <Text tone="muted">Summary</Text>
+            <Heading id="kanban-summary-title" level={3}>
+              Board load
+            </Heading>
+          </Stack>
+          <Text tone="muted">
+            Status changes update immediately and are restored if the server rejects them.
+          </Text>
+          <DescriptionList
+            items={[
+              { label: "Columns", value: summary.columnCount },
+              { label: "Tasks", value: summary.taskCount },
+              { label: "Done", value: summary.doneTaskCount },
+              { label: "Unset", value: summary.unsetTaskCount },
+            ]}
+          />
+        </Stack>
+      </Card>
+    </ContentGrid>
   );
+}
+
+function statusToneFromColor(
+  color: string,
+): "accent" | "danger" | "neutral" | "success" | "warning" {
+  const normalizedColor = color.toLowerCase();
+  if (normalizedColor === "#22c55e" || normalizedColor === "#16a34a") return "success";
+  if (normalizedColor === "#ef4444" || normalizedColor === "#dc2626") return "danger";
+  if (normalizedColor === "#f59e0b" || normalizedColor === "#eab308") return "warning";
+  return normalizedColor === "#d8d1c4" ? "neutral" : "accent";
 }
 
 function replaceTask(tasks: TaskSummary[], updatedTask: TaskDetail): TaskSummary[] {

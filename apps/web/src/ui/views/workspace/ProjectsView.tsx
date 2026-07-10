@@ -1,14 +1,4 @@
-import {
-  MBadge,
-  MBox,
-  MButton,
-  MFlex,
-  MGrid,
-  MHeading,
-  MInput,
-  MOperationalContentGrid,
-  MText,
-} from "@task/ui/app";
+import { Badge, Box, Button, ContentGrid, Flex, Grid, Heading, Input, Text } from "@task/ui/app";
 import { Archive, Pencil, Plus } from "lucide-react";
 import type { FormEvent, ReactElement, ReactNode } from "react";
 import { useEffect, useState } from "react";
@@ -71,16 +61,14 @@ export function ProjectsView({
     selectedProject === null ? [] : tasks.filter((task) => task.projectId === selectedProject.id);
 
   return (
-    <MOperationalContentGrid>
+    <ContentGrid columns={3}>
       <WorkspacePanel
         action={<ProjectCreateForm onCreateProject={onCreateProject} />}
         eyebrow="Projects"
         title="Workspace projects"
         titleId="projects-view-title"
       >
-        <MText as="p" mode="secondary">
-          Albums, releases, and other delivery containers in this workspace.
-        </MText>
+        <Text tone="muted">Albums, releases, and other delivery containers in this workspace.</Text>
         <ProjectCatalogue
           emptyMessage="No active projects yet. Create the first one above."
           onSelectProject={onSelectProject}
@@ -113,9 +101,7 @@ export function ProjectsView({
           title="Select a project"
           titleId="project-detail-title"
         >
-          <MText as="p" mode="secondary">
-            Choose a project to view its delivery progress and parent tasks.
-          </MText>
+          <Text tone="muted">Choose a project to view its delivery progress and parent tasks.</Text>
         </WorkspacePanel>
       ) : (
         <ProjectDetail
@@ -129,7 +115,7 @@ export function ProjectsView({
           tasks={selectedProjectTasks}
         />
       )}
-    </MOperationalContentGrid>
+    </ContentGrid>
   );
 }
 
@@ -145,45 +131,29 @@ function ProjectCatalogue({
   title: string;
 }): ReactElement {
   return (
-    <MFlex align="stretch" direction="column" gap="s">
-      <MHeading mode="h4">{title}</MHeading>
+    <Flex align="stretch" direction="column" gap="sm">
+      <Heading level={4}>{title}</Heading>
       {projects.length === 0 ? (
-        <MText as="p" mode="secondary">
-          {emptyMessage}
-        </MText>
+        <Text tone="muted">{emptyMessage}</Text>
       ) : (
         projects.map((project) => (
-          <MFlex
-            as="article"
-            align="start"
-            gap="m"
-            justify="space-between"
-            key={project.id}
-            wrap="nowrap"
-          >
-            <MBox>
-              <MButton
-                justify="start"
-                mode="transparent"
-                noPadding
-                onClick={() => onSelectProject(project.id)}
-              >
+          <Flex align="start" gap="md" justify="between" key={project.id}>
+            <Box>
+              <Button size="sm" variant="ghost" onClick={() => onSelectProject(project.id)}>
                 {project.title}
-              </MButton>
-              <MText as="p" mode="secondary">
-                {project.description}
-              </MText>
-            </MBox>
-            <MFlex align="end" direction="column" gap="xs">
-              <MBadge mode="transparent">{project.statusLabel}</MBadge>
-              <MText as="span" mode="secondary" size="s">
+              </Button>
+              <Text tone="muted">{project.description}</Text>
+            </Box>
+            <Flex align="end" direction="column" gap="xs">
+              <Badge>{project.statusLabel}</Badge>
+              <Text tone="muted">
                 {project.taskCount} tasks · updated {project.latestActivityLabel}
-              </MText>
-            </MFlex>
-          </MFlex>
+              </Text>
+            </Flex>
+          </Flex>
         ))
       )}
-    </MFlex>
+    </Flex>
   );
 }
 
@@ -213,7 +183,7 @@ function ProjectDetail({
   return (
     <WorkspacePanel
       action={
-        <MFlex gap="s">
+        <Flex gap="sm">
           <ProjectEditForm
             onUpdateProject={onUpdateProject}
             onUpdateState={setMutationFeedback}
@@ -226,15 +196,13 @@ function ProjectDetail({
               projectId={project.id}
             />
           ) : null}
-        </MFlex>
+        </Flex>
       }
       eyebrow={isArchivedProject(project) ? "Archived project" : "Project overview"}
       title={project.title}
       titleId="project-detail-title"
     >
-      <MText as="p" mode="secondary">
-        {project.description ?? "No description"}
-      </MText>
+      <Text tone="muted">{project.description ?? "No description"}</Text>
       <WorkspaceMetrics
         items={[
           { label: "Completed", value: `${summary.completedTaskCount}/${summary.taskCount}` },
@@ -250,25 +218,23 @@ function ProjectDetail({
           <ActionFeedback action="Task" state={taskActionState} />
         </>
       ) : null}
-      <MFlex align="stretch" direction="column" gap="s">
-        <MHeading mode="h4">Parent task progress</MHeading>
+      <Flex align="stretch" direction="column" gap="sm">
+        <Heading level={4}>Parent task progress</Heading>
         {parentTasks.length === 0 ? (
-          <MText as="p" mode="secondary">
-            No parent tasks in this project.
-          </MText>
+          <Text tone="muted">No parent tasks in this project.</Text>
         ) : (
           parentTasks.map((task) => (
-            <MFlex as="article" justify="space-between" key={task.id} wrap="nowrap">
-              <MButton mode="transparent" noPadding onClick={() => onOpenTask(task.id)}>
+            <Flex justify="between" key={task.id}>
+              <Button size="sm" variant="ghost" onClick={() => onOpenTask(task.id)}>
                 {task.title}
-              </MButton>
-              <MText as="span" mode="secondary">
+              </Button>
+              <Text tone="muted">
                 {task.completedTaskCount}/{task.totalTaskCount} · {task.updatedAtLabel}
-              </MText>
-            </MFlex>
+              </Text>
+            </Flex>
           ))
         )}
-      </MFlex>
+      </Flex>
     </WorkspacePanel>
   );
 }
@@ -294,19 +260,16 @@ function ProjectCreateForm({
 
   return (
     <InlineForm onSubmit={submit}>
-      <MInput
+      <Input
         aria-label="New project title"
         onChange={(event) => setTitle(event.currentTarget.value)}
         placeholder="New project"
         value={title}
       />
-      <MButton
-        before={<Plus aria-hidden="true" />}
-        disabled={title.trim().length === 0 || isSubmitting}
-        type="submit"
-      >
+      <Button disabled={title.trim().length === 0 || isSubmitting} type="submit">
+        <Plus aria-hidden="true" />
         {isSubmitting ? "Creating" : "Project"}
-      </MButton>
+      </Button>
     </InlineForm>
   );
 }
@@ -332,19 +295,16 @@ function TaskCreateForm({
   };
   return (
     <InlineForm onSubmit={submit}>
-      <MInput
+      <Input
         aria-label="New task title"
         onChange={(event) => setTitle(event.currentTarget.value)}
         placeholder="Add a task"
         value={title}
       />
-      <MButton
-        before={<Plus aria-hidden="true" />}
-        disabled={title.trim().length === 0 || isSubmitting}
-        type="submit"
-      >
+      <Button disabled={title.trim().length === 0 || isSubmitting} type="submit">
+        <Plus aria-hidden="true" />
         {isSubmitting ? "Creating" : "Task"}
-      </MButton>
+      </Button>
     </InlineForm>
   );
 }
@@ -369,13 +329,10 @@ function ProjectEditForm({
   }, [project.description, project.title]);
   if (!isEditing)
     return (
-      <MButton
-        before={<Pencil aria-hidden="true" />}
-        mode="outlined"
-        onClick={() => setIsEditing(true)}
-      >
+      <Button variant="secondary" onClick={() => setIsEditing(true)}>
+        <Pencil aria-hidden="true" />
         Edit
-      </MButton>
+      </Button>
     );
   const submit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -397,20 +354,20 @@ function ProjectEditForm({
   };
   return (
     <InlineForm onSubmit={submit}>
-      <MInput
+      <Input
         aria-label="Project title"
         onChange={(event) => setTitle(event.currentTarget.value)}
         value={title}
       />
-      <MInput
+      <Input
         aria-label="Project description"
         onChange={(event) => setDescription(event.currentTarget.value)}
         placeholder="Description"
         value={description}
       />
-      <MButton disabled={title.trim().length === 0 || isSubmitting} type="submit">
+      <Button disabled={title.trim().length === 0 || isSubmitting} type="submit">
         {isSubmitting ? "Saving" : "Save"}
-      </MButton>
+      </Button>
     </InlineForm>
   );
 }
@@ -437,14 +394,10 @@ function ArchiveProjectButton({
       .finally(() => setIsSubmitting(false));
   };
   return (
-    <MButton
-      before={<Archive aria-hidden="true" />}
-      disabled={isSubmitting}
-      mode="outlined"
-      onClick={archive}
-    >
+    <Button disabled={isSubmitting} onClick={archive} variant="secondary">
+      <Archive aria-hidden="true" />
       {isSubmitting ? "Archiving" : "Archive"}
-    </MButton>
+    </Button>
   );
 }
 
@@ -456,16 +409,11 @@ function InlineForm({
   onSubmit(event: FormEvent<HTMLFormElement>): void;
 }): ReactElement {
   return (
-    <MGrid
-      alignItems="end"
-      columnGap="s"
-      columnTemplate="repeat(auto-fit, minmax(10rem, 1fr))"
-      onSubmit={onSubmit}
-      rowGap="s"
-      tag="form"
-    >
-      {children}
-    </MGrid>
+    <form onSubmit={onSubmit}>
+      <Grid columns={2} gap="sm">
+        {children}
+      </Grid>
+    </form>
   );
 }
 
@@ -478,7 +426,7 @@ function ActionFeedback({
 }): ReactElement | null {
   const message = formatProjectActionFeedback(action, state);
   if (message === null) return null;
-  return <MBadge mode={state.status === "success" ? "success" : "error"}>{message}</MBadge>;
+  return <Badge tone={state.status === "success" ? "success" : "danger"}>{message}</Badge>;
 }
 
 function readActionError(error: unknown): string {

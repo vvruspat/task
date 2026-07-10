@@ -1,0 +1,75 @@
+:root {
+	--ui-font-body: 400 0.9375rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif;
+	--ui-font-heading: 650 1.25rem/1.2 Inter, ui-sans-serif, system-ui, sans-serif;
+	--ui-space-xs: .25rem;
+	--ui-space-sm: .5rem;
+	--ui-space-md: .75rem;
+	--ui-space-lg: 1rem;
+	--ui-space-xl: 1.5rem;
+	--ui-radius-sm: .375rem;
+	--ui-radius-md: .5rem;
+	--ui-radius-lg: .75rem;
+	--ui-surface: #ffffff;
+	--ui-surface-muted: #f4f5f7;
+	--ui-surface-raised: #ffffff;
+	--ui-app-background: #f7f7f9;
+	--ui-sidebar-background: #17181c;
+	--ui-sidebar-text: #f4f4f7;
+	--ui-header-background: #ffffff;
+	--ui-sidebar-width: 16rem;
+	--ui-header-height: 4rem;
+	--ui-text: #17181c;
+	--ui-text-muted: #6a6d78;
+	--ui-border: #dedfe5;
+	--ui-border-strong: #aaaeb9;
+	--ui-accent: #4d46e5;
+	--ui-accent-hover: #4038cf;
+	--ui-accent-foreground: #ffffff;
+	--ui-danger: #c63142;
+	--ui-danger-foreground: #ffffff;
+	--ui-danger-subtle: #fce9ec;
+	--ui-success: #147a4c;
+	--ui-success-subtle: #ddf5e8;
+	--ui-success-border: #9ad5b6;
+	--ui-warning: #925a00;
+	--ui-warning-subtle: #fff1d6;
+	--ui-warning-border: #f0c677;
+	--ui-accent-subtle: #e9e8ff;
+	--ui-info: #1f5bb4;
+	--ui-info-subtle: #e5f0ff;
+	--ui-info-border: #a9c9ff;
+	--ui-danger-border: #efb0ba;
+	--ui-focus: #4d46e5;
+	--ui-overlay: #101115;
+	--ui-tooltip: #25272d;
+	--ui-tooltip-foreground: #ffffff;
+	--ui-shadow-lg: 0 18px 50px rgb(16 17 21 / 18%);
+	--ui-shadow-sm: 0 1px 2px rgb(16 17 21 / 8%);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--ui-surface: #1a1b20;
+		--ui-surface-muted: #25272e;
+		--ui-surface-raised: #22242b;
+		--ui-app-background: #15161a;
+		--ui-sidebar-background: #101115;
+		--ui-header-background: #1a1b20;
+		--ui-text: #f4f4f7;
+		--ui-text-muted: #b1b4be;
+		--ui-border: #393c46;
+		--ui-border-strong: #646977;
+		--ui-danger-subtle: #442329;
+		--ui-success: #63d59b;
+		--ui-success-subtle: #1a3b2a;
+		--ui-success-border: #276143;
+		--ui-warning: #ffc76b;
+		--ui-warning-subtle: #443716;
+		--ui-warning-border: #755a23;
+		--ui-accent-subtle: #312f63;
+		--ui-info: #8bb8ff;
+		--ui-info-subtle: #1d3150;
+		--ui-info-border: #365888;
+		--ui-danger-border: #783642;
+	}
+}

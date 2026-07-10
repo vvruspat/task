@@ -1,4 +1,4 @@
-import { MBadge, MBox, MButton, MCard, MFlex, MGrid, MHeading, MInput, MText } from "@task/ui/app";
+import { Badge, Button, Card, Grid, Heading, Input, Stack, Text } from "@task/ui/app";
 import { Plus } from "lucide-react";
 import type { FormEvent, ReactElement, ReactNode } from "react";
 import { useState } from "react";
@@ -35,65 +35,52 @@ export function ProjectsPanel({
   };
 
   return (
-    <MCard
-      aria-labelledby="project-title"
-      gap="m"
-      header={<DashboardPanelHeader eyebrow="Projects" title="Active" titleId="project-title" />}
-      shadow={false}
-    >
-      <PanelForm onSubmit={handleProjectSubmit}>
-        <MFlex
-          as="label"
-          align="stretch"
-          direction="column"
-          gap="xs"
-          htmlFor="dashboard-project-title"
-        >
-          <MText as="span" mode="secondary" size="s">
-            Project title
-          </MText>
-          <MInput
-            aria-describedby="project-create-state"
-            disabled={createProjectDisabled || isCreatingProject}
-            id="dashboard-project-title"
-            onChange={(event) => setProjectTitle(event.currentTarget.value)}
-            placeholder="Create project"
-            value={projectTitle}
-          />
-        </MFlex>
-        <MButton
-          before={<Plus aria-hidden="true" />}
-          disabled={projectSubmitDisabled}
-          type="submit"
-        >
-          {isCreatingProject ? "Creating" : "Create"}
-        </MButton>
-      </PanelForm>
-      {createProjectState.status === "error" || createProjectState.status === "success" ? (
-        <MBadge
-          id="project-create-state"
-          mode={createProjectState.status === "success" ? "success" : "error"}
-        >
-          {createProjectState.message}
-        </MBadge>
-      ) : (
-        <MText as="p" id="project-create-state" mode="secondary" size="s">
-          {createProjectDisabled
-            ? "Load a workspace before creating projects."
-            : "Creates a project in the selected workspace."}
-        </MText>
-      )}
-      <MFlex align="stretch" direction="column" gap="s">
-        {projects.map((project) => (
-          <MBox as="article" key={project.id} paddingY="xs">
-            <MHeading mode="h4">{project.title}</MHeading>
-            <MText as="p" mode="secondary">
-              {project.description ?? "No description"}
-            </MText>
-          </MBox>
-        ))}
-      </MFlex>
-    </MCard>
+    <Card aria-labelledby="project-title">
+      <Stack gap="md">
+        <DashboardPanelHeader eyebrow="Projects" title="Active" titleId="project-title" />
+        <PanelForm onSubmit={handleProjectSubmit}>
+          <label htmlFor="dashboard-project-title">
+            <Stack gap="xs">
+              <Text tone="muted">Project title</Text>
+              <Input
+                aria-describedby="project-create-state"
+                disabled={createProjectDisabled || isCreatingProject}
+                id="dashboard-project-title"
+                onChange={(event) => setProjectTitle(event.currentTarget.value)}
+                placeholder="Create project"
+                value={projectTitle}
+              />
+            </Stack>
+          </label>
+          <Button disabled={projectSubmitDisabled} type="submit">
+            <Plus aria-hidden="true" />
+            {isCreatingProject ? "Creating" : "Create"}
+          </Button>
+        </PanelForm>
+        {createProjectState.status === "error" || createProjectState.status === "success" ? (
+          <Badge
+            id="project-create-state"
+            tone={createProjectState.status === "success" ? "success" : "danger"}
+          >
+            {createProjectState.message}
+          </Badge>
+        ) : (
+          <Text id="project-create-state" tone="muted">
+            {createProjectDisabled
+              ? "Load a workspace before creating projects."
+              : "Creates a project in the selected workspace."}
+          </Text>
+        )}
+        <Stack gap="sm">
+          {projects.map((project) => (
+            <article key={project.id}>
+              <Heading level={4}>{project.title}</Heading>
+              <Text tone="muted">{project.description ?? "No description"}</Text>
+            </article>
+          ))}
+        </Stack>
+      </Stack>
+    </Card>
   );
 }
 
@@ -105,14 +92,10 @@ function PanelForm({
   onSubmit(event: FormEvent<HTMLFormElement>): void;
 }): ReactElement {
   return (
-    <MGrid
-      alignItems="end"
-      columnGap="s"
-      columnTemplate="minmax(0, 1fr) auto"
-      tag="form"
-      onSubmit={onSubmit}
-    >
-      {children}
-    </MGrid>
+    <form onSubmit={onSubmit}>
+      <Grid columns={2} gap="sm">
+        {children}
+      </Grid>
+    </form>
   );
 }

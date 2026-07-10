@@ -6,17 +6,21 @@ import type {
   TaskDetail,
 } from "@task/api-client";
 import {
-  MAlert,
-  MBox,
-  MButton,
-  MDrawer,
-  MFlex,
-  MHeading,
-  MInput,
-  MSelect,
-  type MSelectOption,
-  MText,
-  MTextarea,
+  Alert,
+  Button,
+  Card,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  Flex,
+  Heading,
+  Input,
+  type RadixSelectOption,
+  Select,
+  Stack,
+  Text,
+  Textarea,
 } from "@task/ui/app";
 import { X } from "lucide-react";
 import type { ChangeEvent, FormEvent, ReactElement, ReactNode } from "react";
@@ -92,64 +96,74 @@ export function TaskDetailDrawer({
   const scope = { projectId, taskId, workspaceId };
 
   return (
-    <MDrawer aria-label="Task details" isOpen onClose={onClose}>
-      <MFlex align="start" direction="column" gap="m">
-        <MFlex justify="space-between" wrap="nowrap">
-          <MText as="span" mode="secondary">
-            Task details
-          </MText>
-          <MButton
-            aria-label="Close task details"
-            mode="round"
-            noPadding
-            onClick={onClose}
-            autoFocus
-          >
-            <X aria-hidden="true" />
-          </MButton>
-        </MFlex>
-        {state.status === "loading" ? (
-          <MText as="p" mode="secondary">
-            Loading task details…
-          </MText>
-        ) : null}
-        {state.status === "error" ? (
-          <MAlert mode="error">
-            <MText as="p">{state.message}</MText>
-            <MButton onClick={load}>Retry</MButton>
-          </MAlert>
-        ) : null}
-        {feedback !== null ? (
-          <MAlert mode={feedback.status}>
-            <MText as="p">{feedback.message}</MText>
-          </MAlert>
-        ) : null}
-        {state.status === "loaded" ? (
-          <TaskContent
-            activity={state.activity}
-            attachments={state.attachments}
-            client={client}
-            comments={state.comments}
-            onCommentsChange={(comments) =>
-              setState((current) =>
-                current.status === "loaded" ? { ...current, comments } : current,
-              )
-            }
-            onAttachmentsChange={(attachments) =>
-              setState((current) =>
-                current.status === "loaded" ? { ...current, attachments } : current,
-              )
-            }
-            onFeedback={setFeedback}
-            onDirtyChange={onDirtyChange}
-            onTaskChange={replaceTask}
-            scope={scope}
-            statuses={statuses}
-            task={state.task}
-          />
-        ) : null}
-      </MFlex>
-    </MDrawer>
+    <Drawer
+      onOpenChange={(isOpen): void => {
+        if (!isOpen) onClose();
+      }}
+      open
+    >
+      <DrawerContent aria-describedby="task-details-description" aria-label="Task details">
+        <Stack align="start" gap="lg">
+          <Flex align="center" justify="between">
+            <div>
+              <DrawerTitle>Task details</DrawerTitle>
+              <DrawerDescription id="task-details-description">
+                Review and update this task.
+              </DrawerDescription>
+            </div>
+            <Button
+              aria-label="Close task details"
+              autoFocus
+              onClick={onClose}
+              size="sm"
+              variant="ghost"
+            >
+              <X aria-hidden="true" />
+            </Button>
+          </Flex>
+          {state.status === "loading" ? <Text tone="muted">Loading task details…</Text> : null}
+          {state.status === "error" ? (
+            <Alert tone="danger">
+              <Stack gap="sm">
+                <Text>{state.message}</Text>
+                <Button onClick={load} size="sm">
+                  Retry
+                </Button>
+              </Stack>
+            </Alert>
+          ) : null}
+          {feedback !== null ? (
+            <Alert tone={feedback.status === "error" ? "danger" : "success"}>
+              <Text>{feedback.message}</Text>
+            </Alert>
+          ) : null}
+          {state.status === "loaded" ? (
+            <TaskContent
+              activity={state.activity}
+              attachments={state.attachments}
+              client={client}
+              comments={state.comments}
+              onCommentsChange={(comments) =>
+                setState((current) =>
+                  current.status === "loaded" ? { ...current, comments } : current,
+                )
+              }
+              onAttachmentsChange={(attachments) =>
+                setState((current) =>
+                  current.status === "loaded" ? { ...current, attachments } : current,
+                )
+              }
+              onFeedback={setFeedback}
+              onDirtyChange={onDirtyChange}
+              onTaskChange={replaceTask}
+              scope={scope}
+              statuses={statuses}
+              task={state.task}
+            />
+          ) : null}
+        </Stack>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
@@ -228,9 +242,9 @@ function TaskContent({
       .catch((error: unknown) => onFeedback({ message: readError(error), status: "error" }))
       .finally(() => setBusy(false));
   };
-  const statusOptions: MSelectOption[] = [
-    { key: "none", value: "No status" },
-    ...statuses.map((status) => ({ key: status.id, value: status.name })),
+  const statusOptions: RadixSelectOption[] = [
+    { label: "No status", value: "none" },
+    ...statuses.map((status) => ({ label: status.name, value: status.id })),
   ];
   const updateStatus = (value: string): void => {
     if (busy) return;
@@ -305,117 +319,113 @@ function TaskContent({
   return (
     <>
       <form onSubmit={saveDetails}>
-        <MFlex align="stretch" direction="column" gap="s">
-          <MInput aria-label="Task title" onChange={updateText(setTitle)} value={title} />
-          <MTextarea
+        <Stack align="stretch" gap="sm">
+          <Input aria-label="Task title" onChange={updateText(setTitle)} value={title} />
+          <Textarea
             aria-label="Task description"
             maxLength={5000}
             onChange={updateText(setDescription)}
             value={description}
           />
-          <MFlex gap="s">
-            <MButton disabled={busy || title.trim().length === 0} type="submit">
+          <Flex align="center" gap="sm">
+            <Button disabled={busy || title.trim().length === 0} type="submit">
               {busy ? "Saving" : "Save"}
-            </MButton>
-            <MSelect
+            </Button>
+            <Select
               aria-label="Task status"
               disabled={busy}
               onValueChange={updateStatus}
               options={statusOptions}
               value={taskStatusSelectValue(task.statusId)}
             />
-            <MInput
+            <Input
               aria-label="Due date"
               disabled={busy}
               onChange={(event) => updateDueDate(event.currentTarget.value)}
               type="date"
               value={formatTaskDueDateInput(task.dueAt)}
             />
-          </MFlex>
-        </MFlex>
+          </Flex>
+        </Stack>
       </form>
-      <MAlert mode="info">
-        <MText as="p">
+      <Alert tone="info">
+        <Text>
           Assignee editing is unavailable because the workspace API does not expose member
           identities to this view.
-        </MText>
-      </MAlert>
+        </Text>
+      </Alert>
       <Section title="Subtasks">
         <form onSubmit={addSubtask}>
-          <MFlex gap="s">
-            <MInput
+          <Flex align="center" gap="sm">
+            <Input
               aria-label="New subtask title"
               onChange={updateText(setSubtaskTitle)}
               value={subtaskTitle}
             />
-            <MButton disabled={busy || subtaskTitle.trim().length === 0} type="submit">
+            <Button disabled={busy || subtaskTitle.trim().length === 0} type="submit">
               Add subtask
-            </MButton>
-          </MFlex>
+            </Button>
+          </Flex>
         </form>
       </Section>
       <Section title="Comments">
         <form onSubmit={addComment}>
-          <MFlex align="stretch" direction="column" gap="s">
-            <MTextarea aria-label="New comment" onChange={updateText(setComment)} value={comment} />
-            <MButton disabled={busy || comment.trim().length === 0} type="submit">
+          <Stack align="stretch" gap="sm">
+            <Textarea aria-label="New comment" onChange={updateText(setComment)} value={comment} />
+            <Button disabled={busy || comment.trim().length === 0} type="submit">
               Comment
-            </MButton>
-          </MFlex>
+            </Button>
+          </Stack>
         </form>
         {comments.map((item) => (
-          <MBox key={item.id}>
-            <MText as="p">{item.body}</MText>
-            <MText as="span" mode="secondary" size="s">
-              {item.createdAt.slice(0, 10)}
-            </MText>
-          </MBox>
+          <Card key={item.id}>
+            <Stack gap="xs">
+              <Text>{item.body}</Text>
+              <Text tone="muted">{item.createdAt.slice(0, 10)}</Text>
+            </Stack>
+          </Card>
         ))}
       </Section>
       <Section title="Attachments">
         <form onSubmit={addLink}>
-          <MFlex align="stretch" direction="column" gap="s">
-            <MInput
+          <Stack align="stretch" gap="sm">
+            <Input
               aria-label="Link URL"
               onChange={updateText(setLinkUrl)}
               placeholder="https://…"
               type="url"
               value={linkUrl}
             />
-            <MInput aria-label="Link title" onChange={updateText(setLinkTitle)} value={linkTitle} />
-            <MButton disabled={busy || linkUrl.trim().length === 0} type="submit">
+            <Input aria-label="Link title" onChange={updateText(setLinkTitle)} value={linkTitle} />
+            <Button disabled={busy || linkUrl.trim().length === 0} type="submit">
               Attach link
-            </MButton>
-          </MFlex>
+            </Button>
+          </Stack>
         </form>
         {attachments.map((item) =>
           item.url ? (
-            <MButton
+            <Button
               key={item.id}
-              mode="transparent"
-              noPadding
               onClick={() => window.open(item.url ?? "", "_blank", "noopener,noreferrer")}
+              size="sm"
+              variant="ghost"
             >
               {item.title ?? item.url}
-            </MButton>
+            </Button>
           ) : (
-            <MText as="p" key={item.id}>
-              {item.title ?? item.kind}
-            </MText>
+            <Text key={item.id}>{item.title ?? item.kind}</Text>
           ),
         )}
       </Section>
       <Section title="Activity">
         {activity.length === 0 ? (
-          <MText as="p" mode="secondary">
-            No activity recorded.
-          </MText>
+          <Text tone="muted">No activity recorded.</Text>
         ) : (
           activity.map((item) => (
-            <MFlex justify="space-between" key={item.id}>
-              <MText as="span">{item.eventType}</MText>
+            <Flex justify="between" key={item.id}>
+              <Text>{item.eventType}</Text>
               <time dateTime={item.createdAt}>{item.createdAt.slice(0, 10)}</time>
-            </MFlex>
+            </Flex>
           ))
         )}
       </Section>
@@ -425,10 +435,10 @@ function TaskContent({
 
 function Section({ children, title }: { children: ReactNode; title: string }): ReactElement {
   return (
-    <MFlex align="stretch" direction="column" gap="s">
-      <MHeading mode="h4">{title}</MHeading>
+    <Stack align="stretch" gap="sm">
+      <Heading level={3}>{title}</Heading>
       {children}
-    </MFlex>
+    </Stack>
   );
 }
 function readError(error: unknown): string {

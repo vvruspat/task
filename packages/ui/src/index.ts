@@ -1,4 +1,3 @@
-import "./styles/index.css";
+import "./styles/radix.css";
 
-export * from "./atoms";
-export * from "./molecules";
+export * from "./radix";

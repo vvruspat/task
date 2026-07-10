@@ -4,19 +4,17 @@ import {
   type TaskApiFetch,
 } from "@task/api-client";
 import {
-  MAlert,
-  MAvatar,
-  MBadge,
-  MButton,
-  MFlex,
-  MHeading,
-  MOperationalHeader,
-  MOperationalShell,
-  MOperationalSidebar,
-  MOperationalToolbar,
-  MOperationalWorkspace,
-  MText,
-  MTheme,
+  Alert,
+  AppHeader,
+  AppShell,
+  Badge,
+  Button,
+  Flex,
+  Heading,
+  Sidebar,
+  Stack,
+  Text,
+  Toolbar,
 } from "@task/ui/app";
 import {
   Bot,
@@ -657,98 +655,77 @@ export function App(): ReactElement {
   };
 
   return (
-    <MOperationalShell
+    <AppShell
       sidebar={
-        <MOperationalSidebar aria-label="Workspace navigation">
-          <MFlex gap="m" wrap="nowrap">
-            <MAvatar alt="tAsk" size="2xl" />
-            <MFlex direction="column" gap="xs" align="start">
-              <MText as="p" size="s" mode="inherit">
-                Workspace
-              </MText>
-              <MHeading mode="h1">tAsk</MHeading>
-            </MFlex>
-          </MFlex>
+        <Sidebar aria-label="Workspace navigation">
+          <Stack align="start" gap="xs">
+            <Badge aria-label="tAsk" tone="accent">
+              t
+            </Badge>
+            <Text tone="muted">Workspace</Text>
+            <Heading level={1}>tAsk</Heading>
+          </Stack>
 
-          <MFlex as="nav" direction="column" gap="xs" align="stretch" aria-label="Primary">
+          <Stack align="stretch" gap="xs" role="navigation" aria-label="Primary">
             {routes.map((route) => (
-              <MButton
+              <Button
                 key={route.id}
                 onClick={() =>
                   updateNavigation((currentState) => ({ ...currentState, routeId: route.id }))
                 }
-                before={<route.icon aria-hidden="true" />}
                 title={route.description}
-                mode={route.id === activeRoute.id ? "outlined" : "transparent"}
-                justify="start"
-                stretch
+                variant={route.id === activeRoute.id ? "secondary" : "ghost"}
               >
+                <route.icon aria-hidden="true" />
                 {route.label}
-              </MButton>
+              </Button>
             ))}
-          </MFlex>
-        </MOperationalSidebar>
+          </Stack>
+        </Sidebar>
+      }
+      header={
+        <AppHeader>
+          <Toolbar>
+            <Button aria-label="Toggle navigation" size="sm" variant="ghost">
+              <PanelLeft aria-hidden="true" />
+            </Button>
+            <Button
+              aria-haspopup="dialog"
+              aria-label="Search workspace. Press Command or Control K."
+              onClick={() => setSearchPaletteOpen(true)}
+              variant="secondary"
+            >
+              <Search aria-hidden="true" />
+              Search tasks, projects, skills
+            </Button>
+          </Toolbar>
+        </AppHeader>
       }
     >
-      <MTheme brand="default" platform="web" theme="light" />
-
-      <MOperationalWorkspace>
-        <MOperationalToolbar>
-          <MButton aria-label="Toggle navigation" mode="round" noPadding>
-            <PanelLeft aria-hidden="true" />
-          </MButton>
-          <MButton
-            aria-haspopup="dialog"
-            aria-label="Search workspace. Press Command or Control K."
-            before={<Search aria-hidden="true" />}
-            justify="start"
-            mode="outlined"
-            onClick={() => setSearchPaletteOpen(true)}
-            stretch
-          >
-            Search tasks, projects, skills
-          </MButton>
-        </MOperationalToolbar>
-
-        <MOperationalHeader aria-labelledby="route-title">
-          <MFlex direction="column" gap="s" align="start">
-            <MText as="p" size="s" mode="secondary">
-              Current view
-            </MText>
-            <MHeading mode="h2" id="route-title">
+      <Stack align="stretch" gap="xl">
+        <Flex align="start" gap="xl" justify="between" aria-labelledby="route-title">
+          <Stack align="start" gap="sm">
+            <Text tone="muted">Current view</Text>
+            <Heading id="route-title" level={2}>
               {activeRoute.label}
-            </MHeading>
-            <MText as="p" mode="secondary">
-              {activeRoute.description}
-            </MText>
-          </MFlex>
-          <MFlex gap="s" justify="end" aria-label="Workspace status summary">
-            <MBadge mode="transparent">
-              <MFlex gap="xs" wrap="nowrap">
-                <ListTodo aria-hidden="true" />
-                {data.tasks.length} tasks
-              </MFlex>
-            </MBadge>
-            <MBadge mode="transparent">
-              <MFlex gap="xs" wrap="nowrap">
-                <FolderKanban aria-hidden="true" />
-                {data.projects.length} projects
-              </MFlex>
-            </MBadge>
-            <MBadge mode="transparent">
-              <MFlex gap="xs" wrap="nowrap">
-                <Sparkles aria-hidden="true" />
-                {data.skills.length} skills
-              </MFlex>
-            </MBadge>
-            <MBadge mode="transparent">
-              <MFlex gap="xs" wrap="nowrap">
-                <CalendarClock aria-hidden="true" />
-                {dueSoonCount} due soon
-              </MFlex>
-            </MBadge>
-          </MFlex>
-        </MOperationalHeader>
+            </Heading>
+            <Text tone="muted">{activeRoute.description}</Text>
+          </Stack>
+          <Flex align="center" gap="sm" aria-label="Workspace status summary">
+            <Badge tone="neutral">
+              <ListTodo aria-hidden="true" /> {data.tasks.length} tasks
+            </Badge>
+            <Badge tone="neutral">
+              <FolderKanban aria-hidden="true" /> {data.projects.length} projects
+            </Badge>
+            <Badge tone="neutral">
+              <Sparkles aria-hidden="true" /> {data.skills.length} skills
+            </Badge>
+            <Badge tone="neutral">
+              <CalendarClock aria-hidden="true" /> {dueSoonCount} due soon
+            </Badge>
+          </Flex>
+        </Flex>
 
         {loadState.status !== "loaded" ? <ShellStatePanel state={loadState} /> : null}
         {loadState.status === "loaded" && data.workspaces.length === 0 ? (
@@ -760,13 +737,7 @@ export function App(): ReactElement {
           />
         ) : null}
 
-        <Suspense
-          fallback={
-            <MText as="p" mode="secondary">
-              Loading view
-            </MText>
-          }
-        >
+        <Suspense fallback={<Text tone="muted">Loading view</Text>}>
           {activeRoute.id === "dashboard" ? (
             <LazyDashboardView
               createProjectDisabled={!canCreateProject}
@@ -852,21 +823,22 @@ export function App(): ReactElement {
         </Suspense>
         {navigationState.taskId !== null &&
         (activeRoute.id === "dashboard" || activeRoute.id === "confirmations") ? (
-          <MAlert mode="error">
-            <MText as="p">
+          <Alert role="alert" tone="danger">
+            <Text>
               Task details can only be opened from a workspace task view. Clear this unavailable
               task link to continue.
-            </MText>
-            <MButton
+            </Text>
+            <Button
               onClick={() =>
                 updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId: null }))
               }
+              variant="danger"
             >
               Clear task link
-            </MButton>
-          </MAlert>
+            </Button>
+          </Alert>
         ) : null}
-      </MOperationalWorkspace>
+      </Stack>
       <GlobalSearchPalette
         isOpen={isSearchPaletteOpen}
         onClose={() => setSearchPaletteOpen(false)}
@@ -874,7 +846,7 @@ export function App(): ReactElement {
         searchClient={taskClient}
         workspaceId={data.selectedWorkspaceId}
       />
-    </MOperationalShell>
+    </AppShell>
   );
 }
 
@@ -895,19 +867,14 @@ function ShellStatePanel({
       : state.message;
 
   return (
-    <MAlert
-      mode={
-        state.status === "error" ? "error" : state.status === "missing_config" ? "warning" : "info"
+    <Alert
+      tone={
+        state.status === "error" ? "danger" : state.status === "missing_config" ? "warning" : "info"
       }
-      direction="column"
-      align="stretch"
-      gap="xs"
     >
-      <MHeading mode="h3">{title}</MHeading>
-      <MText as="p" mode="secondary">
-        {message}
-      </MText>
-    </MAlert>
+      <Heading level={3}>{title}</Heading>
+      <Text tone="muted">{message}</Text>
+    </Alert>
   );
 }
 

@@ -1,5 +1,0 @@
-@layer components {
-	.timepickerInput::-webkit-calendar-picker-indicator {
-		display: none;
-	}
-}
