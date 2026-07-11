@@ -1,5 +1,4 @@
-import type { DataTableColumn } from "@task/ui/app";
-import { Card, ContentGrid, DataTable, DescriptionList, Heading, Stack, Text } from "@task/ui/app";
+import { Card, Flex, Heading, Table, Text } from "@task/ui/app";
 import type { ReactElement } from "react";
 import type { ProjectSummary, TaskSkillSummary, TaskSummary, WorkspaceRoute } from "./types.js";
 
@@ -10,14 +9,6 @@ export type FallbackWorkspaceRouteViewProps = {
   tasks: TaskSummary[];
 };
 
-type FallbackRow = {
-  id: string;
-  ownerLabel: string;
-  projectTitle: string;
-  statusLabel: string;
-  title: string;
-};
-
 export function FallbackWorkspaceRouteView({
   projects,
   route,
@@ -25,55 +16,61 @@ export function FallbackWorkspaceRouteView({
   tasks,
 }: FallbackWorkspaceRouteViewProps): ReactElement {
   const visibleRows = route.id === "templates" ? skills.length : tasks.length;
-  const columns: readonly DataTableColumn<FallbackRow>[] = [
-    { cell: (row) => row.title, header: "Name", id: "title" },
-    { cell: (row) => row.projectTitle, header: "Project", id: "project" },
-    { cell: (row) => row.statusLabel, header: "Status", id: "status" },
-    { cell: (row) => row.ownerLabel, header: "Owner", id: "owner" },
-  ];
-  const rows: FallbackRow[] = tasks.map((task) => ({
-    id: task.id,
-    ownerLabel: task.assigneeUserId === null ? "Unassigned" : "Assigned",
-    projectTitle:
-      projects.find((project) => project.id === task.projectId)?.title ?? "Unknown project",
-    statusLabel: "Open",
-    title: task.title,
-  }));
 
   return (
-    <ContentGrid>
-      <Card aria-labelledby="workspace-view-title">
-        <Stack>
-          <Stack gap="xs">
-            <Text tone="muted">Lazy view</Text>
-            <Heading id="workspace-view-title">{route.label}</Heading>
-          </Stack>
-          <DataTable
-            aria-labelledby="workspace-view-title"
-            columns={columns}
-            emptyState="No rows loaded"
-            getRowId={(row) => row.id}
-            rows={rows}
-          />
-        </Stack>
+    <Flex direction="column" gap="4">
+      <Card>
+        <Flex direction="column" gap="4">
+          <Flex direction="column" gap="1">
+            <Text color="gray" size="2">
+              Lazy view
+            </Text>
+            <Heading size="6">{route.label}</Heading>
+          </Flex>
+          <Table.Root variant="surface">
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Project</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Owner</Table.ColumnHeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {tasks.length === 0 ? (
+                <Table.Row>
+                  <Table.Cell colSpan={4}>
+                    <Text color="gray">No rows loaded</Text>
+                  </Table.Cell>
+                </Table.Row>
+              ) : (
+                tasks.map((task) => (
+                  <Table.Row key={task.id}>
+                    <Table.Cell>{task.title}</Table.Cell>
+                    <Table.Cell>
+                      {projects.find((project) => project.id === task.projectId)?.title ??
+                        "Unknown project"}
+                    </Table.Cell>
+                    <Table.Cell>Open</Table.Cell>
+                    <Table.Cell>
+                      {task.assigneeUserId === null ? "Unassigned" : "Assigned"}
+                    </Table.Cell>
+                  </Table.Row>
+                ))
+              )}
+            </Table.Body>
+          </Table.Root>
+        </Flex>
       </Card>
-
-      <Card aria-labelledby="view-summary-title">
-        <Stack>
-          <Stack gap="xs">
-            <Text tone="muted">Summary</Text>
-            <Heading id="view-summary-title">Ready for data</Heading>
-          </Stack>
-          <Text tone="muted">{route.description}</Text>
-          <DescriptionList
-            items={[
-              { label: "Rows", value: visibleRows },
-              { label: "Projects", value: projects.length },
-              { label: "Skills", value: skills.length },
-            ]}
-          />
-        </Stack>
+      <Card>
+        <Flex direction="column" gap="2">
+          <Heading size="5">Ready for data</Heading>
+          <Text color="gray">{route.description}</Text>
+          <Text>
+            Rows: {visibleRows} · Projects: {projects.length} · Skills: {skills.length}
+          </Text>
+        </Flex>
       </Card>
-    </ContentGrid>
+    </Flex>
   );
 }

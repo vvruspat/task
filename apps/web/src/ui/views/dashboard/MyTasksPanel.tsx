@@ -2,13 +2,13 @@ import {
   Badge,
   Button,
   Card,
-  DescriptionList,
+  DataList,
+  Flex,
   Grid,
   Heading,
-  Input,
-  Stack,
   Text,
-} from "@task/ui/app";
+  TextField,
+} from "@radix-ui/themes";
 import { ArrowRight, Plus } from "lucide-react";
 import type { FormEvent, ReactElement, ReactNode } from "react";
 import { useState } from "react";
@@ -50,12 +50,12 @@ export function MyTasksPanel({
 
   return (
     <Card aria-labelledby="my-tasks-view-title">
-      <Stack gap="md">
+      <Flex gap="3">
         <DashboardPanelHeader
           action={
             <Button
               aria-label="Open task table"
-              size="sm"
+              size="1"
               title="Open task table"
               type="button"
               variant="ghost"
@@ -69,9 +69,9 @@ export function MyTasksPanel({
         />
         <TaskCreateForm onSubmit={handleTaskSubmit}>
           <label htmlFor="dashboard-task-title">
-            <Stack gap="xs">
-              <Text tone="muted">Task title</Text>
-              <Input
+            <Flex gap="1">
+              <Text color="gray">Task title</Text>
+              <TextField.Root
                 aria-describedby="task-create-state"
                 disabled={createTaskDisabled || isSubmitting}
                 id="dashboard-task-title"
@@ -79,7 +79,7 @@ export function MyTasksPanel({
                 placeholder="Add task to selected project"
                 value={taskTitle}
               />
-            </Stack>
+            </Flex>
           </label>
           <Button disabled={submitDisabled} type="submit">
             <Plus aria-hidden="true" />
@@ -89,33 +89,42 @@ export function MyTasksPanel({
         {createTaskState.status === "error" || createTaskState.status === "success" ? (
           <Badge
             id="task-create-state"
-            tone={createTaskState.status === "success" ? "success" : "danger"}
+            color={createTaskState.status === "success" ? "green" : "red"}
           >
             {createTaskState.message}
           </Badge>
         ) : (
-          <Text id="task-create-state" tone="muted">
+          <Text id="task-create-state" color="gray">
             {createTaskDisabled
               ? "Select a loaded workspace project to add tasks."
               : "Creates a task in the selected project."}
           </Text>
         )}
-        <DescriptionList
-          aria-label="My Tasks summary"
-          items={[
-            { label: "Tasks", value: myTaskSummary.taskCount },
-            { label: "Assigned", value: myTaskSummary.assignedTaskCount },
-            { label: "Due", value: myTaskSummary.dueTaskCount },
-            { label: "Recent", value: myTaskSummary.recentlyUpdatedTaskCount },
-          ]}
-        />
-        <Stack gap="sm">
+        <DataList.Root aria-label="My Tasks summary">
+          <DataList.Item>
+            <DataList.Label>Tasks</DataList.Label>
+            <DataList.Value>{myTaskSummary.taskCount}</DataList.Value>
+          </DataList.Item>
+          <DataList.Item>
+            <DataList.Label>Assigned</DataList.Label>
+            <DataList.Value>{myTaskSummary.assignedTaskCount}</DataList.Value>
+          </DataList.Item>
+          <DataList.Item>
+            <DataList.Label>Due</DataList.Label>
+            <DataList.Value>{myTaskSummary.dueTaskCount}</DataList.Value>
+          </DataList.Item>
+          <DataList.Item>
+            <DataList.Label>Recent</DataList.Label>
+            <DataList.Value>{myTaskSummary.recentlyUpdatedTaskCount}</DataList.Value>
+          </DataList.Item>
+        </DataList.Root>
+        <Flex gap="2">
           {myTaskRows.map((task) => (
             <article key={task.id}>
-              <Grid columns={4} gap="sm">
+              <Grid columns="4" gap="2">
                 <div>
-                  <Heading level={4}>{task.title}</Heading>
-                  <Text tone="muted">{task.projectTitle}</Text>
+                  <Heading as="h4">{task.title}</Heading>
+                  <Text color="gray">{task.projectTitle}</Text>
                 </div>
                 <Badge>{task.assigneeLabel}</Badge>
                 <Badge>{task.dueDateLabel}</Badge>
@@ -123,8 +132,8 @@ export function MyTasksPanel({
               </Grid>
             </article>
           ))}
-        </Stack>
-      </Stack>
+        </Flex>
+      </Flex>
     </Card>
   );
 }
@@ -138,7 +147,7 @@ function TaskCreateForm({
 }): ReactElement {
   return (
     <form onSubmit={onSubmit}>
-      <Grid columns={2} gap="sm">
+      <Grid columns="2" gap="2">
         {children}
       </Grid>
     </form>

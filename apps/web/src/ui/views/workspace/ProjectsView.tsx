@@ -1,4 +1,4 @@
-import { Badge, Box, Button, ContentGrid, Flex, Grid, Heading, Input, Text } from "@task/ui/app";
+import { Badge, Box, Button, Flex, Grid, Heading, Text, TextField } from "@radix-ui/themes";
 import { Archive, Pencil, Plus } from "lucide-react";
 import type { FormEvent, ReactElement, ReactNode } from "react";
 import { useEffect, useState } from "react";
@@ -61,14 +61,14 @@ export function ProjectsView({
     selectedProject === null ? [] : tasks.filter((task) => task.projectId === selectedProject.id);
 
   return (
-    <ContentGrid columns={3}>
+    <Grid columns="3">
       <WorkspacePanel
         action={<ProjectCreateForm onCreateProject={onCreateProject} />}
         eyebrow="Projects"
         title="Workspace projects"
         titleId="projects-view-title"
       >
-        <Text tone="muted">Albums, releases, and other delivery containers in this workspace.</Text>
+        <Text color="gray">Albums, releases, and other delivery containers in this workspace.</Text>
         <ProjectCatalogue
           emptyMessage="No active projects yet. Create the first one above."
           onSelectProject={onSelectProject}
@@ -101,7 +101,7 @@ export function ProjectsView({
           title="Select a project"
           titleId="project-detail-title"
         >
-          <Text tone="muted">Choose a project to view its delivery progress and parent tasks.</Text>
+          <Text color="gray">Choose a project to view its delivery progress and parent tasks.</Text>
         </WorkspacePanel>
       ) : (
         <ProjectDetail
@@ -115,7 +115,7 @@ export function ProjectsView({
           tasks={selectedProjectTasks}
         />
       )}
-    </ContentGrid>
+    </Grid>
   );
 }
 
@@ -131,22 +131,22 @@ function ProjectCatalogue({
   title: string;
 }): ReactElement {
   return (
-    <Flex align="stretch" direction="column" gap="sm">
-      <Heading level={4}>{title}</Heading>
+    <Flex align="stretch" direction="column" gap="2">
+      <Heading as="h4">{title}</Heading>
       {projects.length === 0 ? (
-        <Text tone="muted">{emptyMessage}</Text>
+        <Text color="gray">{emptyMessage}</Text>
       ) : (
         projects.map((project) => (
-          <Flex align="start" gap="md" justify="between" key={project.id}>
+          <Flex align="start" gap="3" justify="between" key={project.id}>
             <Box>
-              <Button size="sm" variant="ghost" onClick={() => onSelectProject(project.id)}>
+              <Button size="1" variant="ghost" onClick={() => onSelectProject(project.id)}>
                 {project.title}
               </Button>
-              <Text tone="muted">{project.description}</Text>
+              <Text color="gray">{project.description}</Text>
             </Box>
-            <Flex align="end" direction="column" gap="xs">
+            <Flex align="end" direction="column" gap="1">
               <Badge>{project.statusLabel}</Badge>
-              <Text tone="muted">
+              <Text color="gray">
                 {project.taskCount} tasks · updated {project.latestActivityLabel}
               </Text>
             </Flex>
@@ -183,7 +183,7 @@ function ProjectDetail({
   return (
     <WorkspacePanel
       action={
-        <Flex gap="sm">
+        <Flex gap="2">
           <ProjectEditForm
             onUpdateProject={onUpdateProject}
             onUpdateState={setMutationFeedback}
@@ -202,7 +202,7 @@ function ProjectDetail({
       title={project.title}
       titleId="project-detail-title"
     >
-      <Text tone="muted">{project.description ?? "No description"}</Text>
+      <Text color="gray">{project.description ?? "No description"}</Text>
       <WorkspaceMetrics
         items={[
           { label: "Completed", value: `${summary.completedTaskCount}/${summary.taskCount}` },
@@ -218,17 +218,17 @@ function ProjectDetail({
           <ActionFeedback action="Task" state={taskActionState} />
         </>
       ) : null}
-      <Flex align="stretch" direction="column" gap="sm">
-        <Heading level={4}>Parent task progress</Heading>
+      <Flex align="stretch" direction="column" gap="2">
+        <Heading as="h4">Parent task progress</Heading>
         {parentTasks.length === 0 ? (
-          <Text tone="muted">No parent tasks in this project.</Text>
+          <Text color="gray">No parent tasks in this project.</Text>
         ) : (
           parentTasks.map((task) => (
             <Flex justify="between" key={task.id}>
-              <Button size="sm" variant="ghost" onClick={() => onOpenTask(task.id)}>
+              <Button size="1" variant="ghost" onClick={() => onOpenTask(task.id)}>
                 {task.title}
               </Button>
-              <Text tone="muted">
+              <Text color="gray">
                 {task.completedTaskCount}/{task.totalTaskCount} · {task.updatedAtLabel}
               </Text>
             </Flex>
@@ -260,7 +260,7 @@ function ProjectCreateForm({
 
   return (
     <InlineForm onSubmit={submit}>
-      <Input
+      <TextField.Root
         aria-label="New project title"
         onChange={(event) => setTitle(event.currentTarget.value)}
         placeholder="New project"
@@ -295,7 +295,7 @@ function TaskCreateForm({
   };
   return (
     <InlineForm onSubmit={submit}>
-      <Input
+      <TextField.Root
         aria-label="New task title"
         onChange={(event) => setTitle(event.currentTarget.value)}
         placeholder="Add a task"
@@ -329,7 +329,7 @@ function ProjectEditForm({
   }, [project.description, project.title]);
   if (!isEditing)
     return (
-      <Button variant="secondary" onClick={() => setIsEditing(true)}>
+      <Button variant="soft" onClick={() => setIsEditing(true)}>
         <Pencil aria-hidden="true" />
         Edit
       </Button>
@@ -354,12 +354,12 @@ function ProjectEditForm({
   };
   return (
     <InlineForm onSubmit={submit}>
-      <Input
+      <TextField.Root
         aria-label="Project title"
         onChange={(event) => setTitle(event.currentTarget.value)}
         value={title}
       />
-      <Input
+      <TextField.Root
         aria-label="Project description"
         onChange={(event) => setDescription(event.currentTarget.value)}
         placeholder="Description"
@@ -394,7 +394,7 @@ function ArchiveProjectButton({
       .finally(() => setIsSubmitting(false));
   };
   return (
-    <Button disabled={isSubmitting} onClick={archive} variant="secondary">
+    <Button disabled={isSubmitting} onClick={archive} variant="soft">
       <Archive aria-hidden="true" />
       {isSubmitting ? "Archiving" : "Archive"}
     </Button>
@@ -410,7 +410,7 @@ function InlineForm({
 }): ReactElement {
   return (
     <form onSubmit={onSubmit}>
-      <Grid columns={2} gap="sm">
+      <Grid columns="2" gap="2">
         {children}
       </Grid>
     </form>
@@ -426,7 +426,7 @@ function ActionFeedback({
 }): ReactElement | null {
   const message = formatProjectActionFeedback(action, state);
   if (message === null) return null;
-  return <Badge tone={state.status === "success" ? "success" : "danger"}>{message}</Badge>;
+  return <Badge color={state.status === "success" ? "green" : "red"}>{message}</Badge>;
 }
 
 function readActionError(error: unknown): string {

@@ -1,5 +1,5 @@
 import type { SearchPage, TaskApiClient } from "@task/api-client";
-import { Box, Button, Drawer, DrawerContent, Heading, Input, Stack, Text } from "@task/ui/app";
+import { Box, Button, Callout, Dialog, Flex, Text, TextField } from "@task/ui/app";
 import type { KeyboardEvent, ReactElement } from "react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
@@ -121,42 +121,42 @@ export function GlobalSearchPalette({
   };
 
   return (
-    <Drawer
+    <Dialog.Root
       open={isOpen}
-      onOpenChange={(isDrawerOpen) => {
-        if (!isDrawerOpen) onClose();
+      onOpenChange={(isDialogOpen) => {
+        if (!isDialogOpen) onClose();
       }}
     >
-      <DrawerContent aria-label="Workspace search and commands">
-        <Stack align="start" gap="lg">
-          <Stack align="start" gap="xs">
-            <Heading level={2}>Search workspace</Heading>
-            <Text tone="muted">Search tasks, projects, skills, and workspace actions.</Text>
-          </Stack>
+      <Dialog.Content aria-describedby={undefined} aria-label="Workspace search and commands">
+        <Flex direction="column" gap="4">
           <Box>
-            <Input
-              aria-activedescendant={activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined}
-              aria-autocomplete="list"
-              aria-controls={listboxId}
-              aria-expanded
-              aria-label="Search workspace"
-              id={inputId}
-              onChange={(event) => {
-                setActiveIndex(0);
-                setQuery(event.target.value);
-              }}
-              onKeyDown={handleKeyDown}
-              placeholder="Search tasks, projects, skills"
-              role="combobox"
-              value={query}
-            />
+            <Dialog.Title>Search workspace</Dialog.Title>
+            <Dialog.Description>
+              Search tasks, projects, skills, and workspace actions.
+            </Dialog.Description>
           </Box>
+          <TextField.Root
+            aria-activedescendant={activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined}
+            aria-autocomplete="list"
+            aria-controls={listboxId}
+            aria-expanded
+            aria-label="Search workspace"
+            id={inputId}
+            onChange={(event) => {
+              setActiveIndex(0);
+              setQuery(event.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+            placeholder="Search tasks, projects, skills"
+            role="combobox"
+            value={query}
+          />
           {searchState.status === "error" ? (
-            <Box role="alert">
-              <Text tone="danger">{searchState.message}</Text>
-            </Box>
+            <Callout.Root color="red" role="alert">
+              <Callout.Text>{searchState.message}</Callout.Text>
+            </Callout.Root>
           ) : null}
-          <Stack align="stretch" gap="xs" id={listboxId} role="listbox">
+          <Flex direction="column" gap="1" id={listboxId} role="listbox">
             {items.map((item, index) => {
               const label = item.kind === "command" ? item.value.label : item.value.title;
               const description =
@@ -172,26 +172,28 @@ export function GlobalSearchPalette({
                   }
                   onClick={() => selectItem(item)}
                   role="option"
-                  variant={activeIndex === index ? "secondary" : "ghost"}
+                  variant={activeIndex === index ? "surface" : "ghost"}
                 >
-                  <span>
-                    <span>{label}</span>
-                    <span>{description}</span>
-                  </span>
+                  <Flex align="start" direction="column" gap="1">
+                    <Text>{label}</Text>
+                    <Text color="gray" size="1">
+                      {description}
+                    </Text>
+                  </Flex>
                 </Button>
               );
             })}
             {searchState.status === "loading" ? (
-              <Text tone="muted">Searching workspace…</Text>
+              <Text color="gray">Searching workspace…</Text>
             ) : null}
             {query.trim().length > 0 &&
             searchState.status === "loaded" &&
             searchState.page.total === 0 ? (
-              <Text tone="muted">No workspace results found.</Text>
+              <Text color="gray">No workspace results found.</Text>
             ) : null}
-          </Stack>
-        </Stack>
-      </DrawerContent>
-    </Drawer>
+          </Flex>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
   );
 }

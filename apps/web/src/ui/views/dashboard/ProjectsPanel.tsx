@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Grid, Heading, Input, Stack, Text } from "@task/ui/app";
+import { Badge, Button, Card, Flex, Grid, Heading, Text, TextField } from "@radix-ui/themes";
 import { Plus } from "lucide-react";
 import type { FormEvent, ReactElement, ReactNode } from "react";
 import { useState } from "react";
@@ -36,13 +36,13 @@ export function ProjectsPanel({
 
   return (
     <Card aria-labelledby="project-title">
-      <Stack gap="md">
+      <Flex gap="3">
         <DashboardPanelHeader eyebrow="Projects" title="Active" titleId="project-title" />
         <PanelForm onSubmit={handleProjectSubmit}>
           <label htmlFor="dashboard-project-title">
-            <Stack gap="xs">
-              <Text tone="muted">Project title</Text>
-              <Input
+            <Flex gap="1">
+              <Text color="gray">Project title</Text>
+              <TextField.Root
                 aria-describedby="project-create-state"
                 disabled={createProjectDisabled || isCreatingProject}
                 id="dashboard-project-title"
@@ -50,7 +50,7 @@ export function ProjectsPanel({
                 placeholder="Create project"
                 value={projectTitle}
               />
-            </Stack>
+            </Flex>
           </label>
           <Button disabled={projectSubmitDisabled} type="submit">
             <Plus aria-hidden="true" />
@@ -60,26 +60,26 @@ export function ProjectsPanel({
         {createProjectState.status === "error" || createProjectState.status === "success" ? (
           <Badge
             id="project-create-state"
-            tone={createProjectState.status === "success" ? "success" : "danger"}
+            color={createProjectState.status === "success" ? "green" : "red"}
           >
             {createProjectState.message}
           </Badge>
         ) : (
-          <Text id="project-create-state" tone="muted">
+          <Text id="project-create-state" color="gray">
             {createProjectDisabled
               ? "Load a workspace before creating projects."
               : "Creates a project in the selected workspace."}
           </Text>
         )}
-        <Stack gap="sm">
+        <Flex gap="2">
           {projects.map((project) => (
             <article key={project.id}>
-              <Heading level={4}>{project.title}</Heading>
-              <Text tone="muted">{project.description ?? "No description"}</Text>
+              <Heading as="h4">{project.title}</Heading>
+              <Text color="gray">{project.description ?? "No description"}</Text>
             </article>
           ))}
-        </Stack>
-      </Stack>
+        </Flex>
+      </Flex>
     </Card>
   );
 }
@@ -93,7 +93,7 @@ function PanelForm({
 }): ReactElement {
   return (
     <form onSubmit={onSubmit}>
-      <Grid columns={2} gap="sm">
+      <Grid columns="2" gap="2">
         {children}
       </Grid>
     </form>

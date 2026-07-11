@@ -1,5 +1,5 @@
+import { Button, Callout, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import type { ConfirmationRequestSummary } from "@task/api-client";
-import { Alert, Button, Card, ContentGrid, Flex, Heading, Stack, Text } from "@task/ui";
 import type { ReactElement } from "react";
 import {
   formatConfirmationPreview,
@@ -34,48 +34,50 @@ export default function ConfirmationsView({
   const controlsDisabled = isConfirmationActionPending(actionState.status);
 
   return (
-    <ContentGrid columns={1}>
+    <Grid columns="1">
       <Card aria-labelledby="confirmations-view-title">
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <Text tone="muted">Agent actions</Text>
+        <Flex gap="4">
+          <Flex gap="1">
+            <Text color="gray">Agent actions</Text>
             <Heading id="confirmations-view-title">Confirmations</Heading>
-          </Stack>
+          </Flex>
           {loadState.status === "loading" ? (
-            <Text tone="muted">Loading pending confirmations.</Text>
+            <Text color="gray">Loading pending confirmations.</Text>
           ) : null}
-          {loadState.status === "error" ? <Alert tone="danger">{loadState.message}</Alert> : null}
+          {loadState.status === "error" ? (
+            <Callout.Root color="red">{loadState.message}</Callout.Root>
+          ) : null}
           {actionState.status === "error" ? (
-            <Alert tone="danger">{actionState.message}</Alert>
+            <Callout.Root color="red">{actionState.message}</Callout.Root>
           ) : null}
           {loadState.status === "loaded" && confirmationRequests.length === 0 ? (
-            <Stack gap="xs">
-              <Heading level={3}>No pending confirmations</Heading>
-              <Text tone="muted">
+            <Flex gap="1">
+              <Heading as="h3">No pending confirmations</Heading>
+              <Text color="gray">
                 Actions that need approval will appear here before they are applied.
               </Text>
-            </Stack>
+            </Flex>
           ) : null}
           {loadState.status === "loaded"
             ? confirmationRequests.map((request) => (
                 <article key={request.id}>
-                  <Flex align="start" gap="lg" justify="between">
-                    <Stack gap="xs">
-                      <Heading level={3}>{request.kind}</Heading>
-                      <Text tone="muted">
+                  <Flex align="start" gap="4" justify="between">
+                    <Flex gap="1">
+                      <Heading as="h3">{request.kind}</Heading>
+                      <Text color="gray">
                         Expires {new Date(request.expiresAt).toLocaleString()}
                       </Text>
                       {formatConfirmationPreview(request.preview).map((preview) => (
-                        <Text key={preview} tone="muted">
+                        <Text key={preview} color="gray">
                           {preview}
                         </Text>
                       ))}
-                    </Stack>
-                    <Flex gap="sm">
+                    </Flex>
+                    <Flex gap="2">
                       <Button
                         disabled={controlsDisabled}
                         onClick={() => void onCancel(request.id)}
-                        variant="secondary"
+                        variant="soft"
                       >
                         Cancel
                       </Button>
@@ -90,8 +92,8 @@ export default function ConfirmationsView({
                 </article>
               ))
             : null}
-        </Stack>
+        </Flex>
       </Card>
-    </ContentGrid>
+    </Grid>
   );
 }

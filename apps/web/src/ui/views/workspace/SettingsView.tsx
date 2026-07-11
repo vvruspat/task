@@ -8,18 +8,17 @@ import type {
   WorkspaceMember,
 } from "@task/api-client";
 import {
-  Alert,
   Button,
+  Callout,
   Card,
   Checkbox,
-  ContentGrid,
-  DescriptionList,
+  DataList,
   Flex,
+  Grid,
   Heading,
-  Input,
   Select,
-  Stack,
   Text,
+  TextField,
 } from "@task/ui/app";
 import type { ReactElement } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -361,46 +360,74 @@ export function SettingsView({
   const initDataAvailable = getTelegramMiniAppInitData() !== null;
 
   return (
-    <ContentGrid>
+    <Grid columns={{ initial: "1", md: "2" }} gap="4">
       <SettingsPanel eyebrow="Settings" title="Workspace context" titleId="settings-view-title">
-        <Stack gap="lg">
+        <Flex direction="column" gap="4">
           {workspaceState.status === "loading" ? (
-            <Text tone="muted">Loading workspace details.</Text>
+            <Text as="p" color="gray">
+              Loading workspace details.
+            </Text>
           ) : null}
           {workspaceState.status === "error" ? (
-            <Alert tone="danger">{workspaceState.message}</Alert>
+            <Callout.Root color="red">
+              <Callout.Text>{workspaceState.message}</Callout.Text>
+            </Callout.Root>
           ) : null}
           {workspaceState.status === "loaded" ? (
-            <Stack gap="xs">
-              <Heading level={4}>{workspaceState.value.name}</Heading>
-              <Text tone="muted">{workspaceState.value.slug}</Text>
-              <Text tone="muted">Created {formatDate(workspaceState.value.createdAt)}</Text>
-            </Stack>
+            <Flex direction="column" gap="1">
+              <Heading as="h4" size="4">
+                {workspaceState.value.name}
+              </Heading>
+              <Text as="p" color="gray">
+                {workspaceState.value.slug}
+              </Text>
+              <Text as="p" color="gray">
+                Created {formatDate(workspaceState.value.createdAt)}
+              </Text>
+            </Flex>
           ) : null}
           {rows.map((workspace) => (
-            <Flex align="start" gap="md" key={workspace.id} justify="between">
-              <Stack gap="xs">
-                <Heading level={4}>{workspace.name}</Heading>
-                <Text tone="muted">{workspace.slug}</Text>
-              </Stack>
+            <Flex align="start" gap="3" key={workspace.id} justify="between">
+              <Flex direction="column" gap="1">
+                <Heading as="h4" size="4">
+                  {workspace.name}
+                </Heading>
+                <Text as="p" color="gray">
+                  {workspace.slug}
+                </Text>
+              </Flex>
               <time dateTime={workspace.updatedAtLabel}>{workspace.updatedAtLabel}</time>
             </Flex>
           ))}
-        </Stack>
+        </Flex>
       </SettingsPanel>
 
       <SettingsPanel eyebrow="People" title="Members" titleId="settings-members-title">
-        <Stack gap="lg">
-          {settingsActionError === null ? null : <Alert tone="danger">{settingsActionError}</Alert>}
+        <Flex direction="column" gap="4">
+          {settingsActionError === null ? null : (
+            <Callout.Root color="red">
+              <Callout.Text>{settingsActionError}</Callout.Text>
+            </Callout.Root>
+          )}
           {membersState.status === "idle" ? (
-            <Text tone="muted">Select a workspace to view its members.</Text>
+            <Text as="p" color="gray">
+              Select a workspace to view its members.
+            </Text>
           ) : null}
-          {membersState.status === "loading" ? <Text tone="muted">Loading members.</Text> : null}
+          {membersState.status === "loading" ? (
+            <Text as="p" color="gray">
+              Loading members.
+            </Text>
+          ) : null}
           {membersState.status === "error" ? (
-            <Alert tone="danger">{membersState.message}</Alert>
+            <Callout.Root color="red">
+              <Callout.Text>{membersState.message}</Callout.Text>
+            </Callout.Root>
           ) : null}
           {membersState.status === "loaded" && membersState.value.length === 0 ? (
-            <Text tone="muted">No members found.</Text>
+            <Text as="p" color="gray">
+              No members found.
+            </Text>
           ) : null}
           {membersState.status === "loaded"
             ? membersState.value.map((member) => (
@@ -413,17 +440,25 @@ export function SettingsView({
                 />
               ))
             : null}
-        </Stack>
+        </Flex>
       </SettingsPanel>
 
       <SettingsPanel eyebrow="Workflow" title="Statuses" titleId="settings-statuses-title">
-        <Stack gap="lg">
-          {statusesState.status === "loading" ? <Text tone="muted">Loading statuses.</Text> : null}
+        <Flex direction="column" gap="4">
+          {statusesState.status === "loading" ? (
+            <Text as="p" color="gray">
+              Loading statuses.
+            </Text>
+          ) : null}
           {statusesState.status === "error" ? (
-            <Alert tone="danger">{statusesState.message}</Alert>
+            <Callout.Root color="red">
+              <Callout.Text>{statusesState.message}</Callout.Text>
+            </Callout.Root>
           ) : null}
           {statusesState.status === "loaded" && statusesState.value.length === 0 ? (
-            <Text tone="muted">No statuses found.</Text>
+            <Text as="p" color="gray">
+              No statuses found.
+            </Text>
           ) : null}
           {statusesState.status === "loaded"
             ? statusesState.value.map((status) => (
@@ -444,35 +479,54 @@ export function SettingsView({
             />
           ) : null}
           {membersState.status === "loaded" && !canManageSettings ? (
-            <Text tone="muted">Only workspace owners and admins can manage statuses.</Text>
+            <Text as="p" color="gray">
+              Only workspace owners and admins can manage statuses.
+            </Text>
           ) : null}
-        </Stack>
+        </Flex>
       </SettingsPanel>
 
       <SettingsPanel eyebrow="Telegram" title="Mini App identity" titleId="settings-telegram-title">
-        <Stack gap="lg">
+        <Flex direction="column" gap="4">
           <TelegramLinkContent
             initDataAvailable={initDataAvailable}
             onLink={() => void linkTelegramIdentity()}
             state={telegramState}
           />
-        </Stack>
+        </Flex>
       </SettingsPanel>
 
       <SettingsPanel eyebrow="Summary" title="Loaded context" titleId="settings-summary-title">
-        <Text tone="muted">{summary.selectedWorkspaceLabel}</Text>
-        <Text tone="muted">{summary.selectedProjectLabel}</Text>
-        <DescriptionList
-          items={[
-            { label: "Workspaces", value: summary.workspaceCount },
-            { label: "Projects", value: summary.projectCount },
-            { label: "Tasks", value: summary.taskCount },
-            { label: "Statuses", value: summary.statusCount },
-            { label: "Skills", value: summary.skillCount },
-          ]}
-        />
+        <Text as="p" color="gray">
+          {summary.selectedWorkspaceLabel}
+        </Text>
+        <Text as="p" color="gray">
+          {summary.selectedProjectLabel}
+        </Text>
+        <DataList.Root>
+          <DataList.Item>
+            <DataList.Label>Workspaces</DataList.Label>
+            <DataList.Value>{summary.workspaceCount}</DataList.Value>
+          </DataList.Item>
+          <DataList.Item>
+            <DataList.Label>Projects</DataList.Label>
+            <DataList.Value>{summary.projectCount}</DataList.Value>
+          </DataList.Item>
+          <DataList.Item>
+            <DataList.Label>Tasks</DataList.Label>
+            <DataList.Value>{summary.taskCount}</DataList.Value>
+          </DataList.Item>
+          <DataList.Item>
+            <DataList.Label>Statuses</DataList.Label>
+            <DataList.Value>{summary.statusCount}</DataList.Value>
+          </DataList.Item>
+          <DataList.Item>
+            <DataList.Label>Skills</DataList.Label>
+            <DataList.Value>{summary.skillCount}</DataList.Value>
+          </DataList.Item>
+        </DataList.Root>
       </SettingsPanel>
-    </ContentGrid>
+    </Grid>
   );
 }
 
@@ -491,15 +545,17 @@ function SettingsPanel({
 }): ReactElement {
   return (
     <Card aria-labelledby={titleId}>
-      <Stack gap="lg">
-        <Stack gap="xs">
-          <Text tone="muted">{eyebrow}</Text>
-          <Heading id={titleId} level={3}>
+      <Flex direction="column" gap="4">
+        <Flex direction="column" gap="1">
+          <Text as="p" color="gray">
+            {eyebrow}
+          </Text>
+          <Heading as="h3" id={titleId} size="5">
             {title}
           </Heading>
-        </Stack>
+        </Flex>
         {children}
-      </Stack>
+      </Flex>
     </Card>
   );
 }
@@ -516,23 +572,38 @@ function MemberRow({
   onRoleChange(role: EditableMemberRole): void;
 }): ReactElement {
   return (
-    <Flex align="start" gap="md" justify="between">
-      <Stack gap="xs">
-        <Heading level={4}>{member.displayName}</Heading>
-        {member.email === null ? null : <Text tone="muted">{member.email}</Text>}
-      </Stack>
+    <Flex align="start" gap="3" justify="between">
+      <Flex direction="column" gap="1">
+        <Heading as="h4" size="4">
+          {member.displayName}
+        </Heading>
+        {member.email === null ? null : (
+          <Text as="p" color="gray">
+            {member.email}
+          </Text>
+        )}
+      </Flex>
       {canManage && member.role !== "owner" ? (
-        <Select
-          aria-label={`Role for ${member.displayName}`}
+        <Select.Root
           disabled={disabled}
-          options={memberRoleOptions}
           onValueChange={(value) => {
             if (isEditableMemberRole(value)) onRoleChange(value);
           }}
           value={member.role}
-        />
+        >
+          <Select.Trigger aria-label={`Role for ${member.displayName}`} />
+          <Select.Content>
+            {memberRoleOptions.map((option) => (
+              <Select.Item key={option.value} value={option.value}>
+                {option.label}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select.Root>
       ) : (
-        <Text tone="muted">{member.role}</Text>
+        <Text as="p" color="gray">
+          {member.role}
+        </Text>
       )}
     </Flex>
   );
@@ -561,39 +632,44 @@ function StatusRow({
   }, [status]);
   if (!canManage)
     return (
-      <Text>
+      <Text as="p">
         {status.name} · {status.isDone ? "Done" : "Open"}
       </Text>
     );
   return (
-    <Stack gap="sm">
-      <Input
+    <Flex direction="column" gap="2">
+      <TextField.Root
         aria-label={`Status name for ${status.name}`}
         disabled={disabled}
         onChange={(event) => setName(event.target.value)}
         value={name}
       />
-      <Input
+      <TextField.Root
         aria-label={`Status color for ${status.name}`}
         disabled={disabled}
         onChange={(event) => setColor(event.target.value)}
         value={color}
       />
-      <Checkbox
-        checked={isDone}
-        disabled={disabled}
-        label="Completed status"
-        onCheckedChange={(checked) => setIsDone(checked === true)}
-      />
-      <Flex gap="sm">
+      <Flex align="center" gap="2">
+        <Checkbox
+          checked={isDone}
+          disabled={disabled}
+          id={`status-${status.id}-done`}
+          onCheckedChange={(checked) => setIsDone(checked === true)}
+        />
+        <Text as="label" htmlFor={`status-${status.id}-done`}>
+          Completed status
+        </Text>
+      </Flex>
+      <Flex gap="2">
         <Button disabled={disabled} onClick={() => onUpdate({ color, isDone, name })}>
           Save status
         </Button>
-        <Button disabled={disabled} onClick={onDelete} variant="danger">
+        <Button color="red" disabled={disabled} onClick={onDelete}>
           Delete status
         </Button>
       </Flex>
-    </Stack>
+    </Flex>
   );
 }
 
@@ -620,30 +696,37 @@ function CreateStatusForm({
         }
       }}
     >
-      <Stack gap="sm">
-        <Heading level={4}>Add status</Heading>
-        <Input
+      <Flex direction="column" gap="2">
+        <Heading as="h4" size="4">
+          Add status
+        </Heading>
+        <TextField.Root
           aria-label="New status name"
           disabled={disabled}
           onChange={(event) => setName(event.target.value)}
           value={name}
         />
-        <Input
+        <TextField.Root
           aria-label="New status color"
           disabled={disabled}
           onChange={(event) => setColor(event.target.value)}
           value={color}
         />
-        <Checkbox
-          checked={isDone}
-          disabled={disabled}
-          label="Completed status"
-          onCheckedChange={(checked) => setIsDone(checked === true)}
-        />
+        <Flex align="center" gap="2">
+          <Checkbox
+            checked={isDone}
+            disabled={disabled}
+            id="new-status-done"
+            onCheckedChange={(checked) => setIsDone(checked === true)}
+          />
+          <Text as="label" htmlFor="new-status-done">
+            Completed status
+          </Text>
+        </Flex>
         <Button disabled={disabled} type="submit">
           Create status
         </Button>
-      </Stack>
+      </Flex>
     </form>
   );
 }
@@ -667,15 +750,29 @@ function TelegramLinkContent({
   onLink(): void;
   state: TelegramLinkState;
 }): ReactElement {
-  if (state.status === "loading") return <Text tone="muted">Checking link status.</Text>;
+  if (state.status === "loading")
+    return (
+      <Text as="p" color="gray">
+        Checking link status.
+      </Text>
+    );
   if (state.status === "unavailable")
-    return <Alert tone="danger">Connect the workspace API to view Telegram identity status.</Alert>;
-  if (state.status === "error") return <Alert tone="danger">{state.message}</Alert>;
+    return (
+      <Callout.Root color="red">
+        <Callout.Text>Connect the workspace API to view Telegram identity status.</Callout.Text>
+      </Callout.Root>
+    );
+  if (state.status === "error")
+    return (
+      <Callout.Root color="red">
+        <Callout.Text>{state.message}</Callout.Text>
+      </Callout.Root>
+    );
   if (state.status === "linked") {
     return (
       <>
         <Text>Telegram account {state.value.telegramId} is linked.</Text>
-        <Text tone="muted">
+        <Text as="p" color="gray">
           Linked {formatDate(state.value.linkedAt)}
           {state.value.lastSeenAt === null || state.value.lastSeenAt === undefined
             ? ""
@@ -690,7 +787,7 @@ function TelegramLinkContent({
   });
   if (state.status === "unlinked" && !showLinkAction) {
     return (
-      <Text tone="muted">
+      <Text as="p" color="gray">
         Open this page from the Telegram Mini App to link your account. The browser cannot create or
         safely accept a Telegram identity on its own.
       </Text>
@@ -698,7 +795,9 @@ function TelegramLinkContent({
   }
   return (
     <>
-      <Text tone="muted">Your verified Telegram Mini App session is ready to link.</Text>
+      <Text as="p" color="gray">
+        Your verified Telegram Mini App session is ready to link.
+      </Text>
       <Button disabled={state.status === "linking"} onClick={onLink}>
         {state.status === "linking" ? "Linking…" : "Link Telegram account"}
       </Button>

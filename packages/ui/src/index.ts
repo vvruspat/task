@@ -1,3 +1,1 @@
-import "./styles/radix.css";
-
-export * from "./radix";
+export * from "@radix-ui/themes";

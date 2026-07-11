@@ -1,4 +1,4 @@
-import { Box, Card, DescriptionList, Flex, Heading, Text } from "@task/ui/app";
+import { Box, Card, DataList, Flex, Heading, Text } from "@radix-ui/themes";
 import type { ReactElement, ReactNode } from "react";
 
 type WorkspacePanelHeaderProps = {
@@ -26,8 +26,8 @@ function WorkspacePanelHeader({
   return (
     <Flex align="start" justify="between">
       <Box>
-        <Text tone="muted">{eyebrow}</Text>
-        <Heading id={titleId} level={3}>
+        <Text color="gray">{eyebrow}</Text>
+        <Heading id={titleId} as="h3">
           {title}
         </Heading>
       </Box>
@@ -53,11 +53,13 @@ export function WorkspacePanel({
 
 export function WorkspaceMetrics({ items }: { items: WorkspaceMetricItem[] }): ReactElement {
   return (
-    <DescriptionList
-      items={items.map((item) => ({
-        label: item.label,
-        value: item.value,
-      }))}
-    />
+    <DataList.Root>
+      {items.map((item) => (
+        <DataList.Item key={item.label}>
+          <DataList.Label>{item.label}</DataList.Label>
+          <DataList.Value>{item.value}</DataList.Value>
+        </DataList.Item>
+      ))}
+    </DataList.Root>
   );
 }

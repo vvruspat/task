@@ -1,20 +1,5 @@
 import type { TaskApiClient, TaskDetail } from "@task/api-client";
-import {
-  Alert,
-  Board,
-  BoardCard,
-  BoardColumn,
-  Button,
-  Card,
-  ContentGrid,
-  DescriptionList,
-  Flex,
-  Heading,
-  Select,
-  Stack,
-  StatusDot,
-  Text,
-} from "@task/ui/app";
+import { Button, Callout, Card, Flex, Grid, Heading, Select, Text } from "@task/ui/app";
 import type { KeyboardEvent, ReactElement } from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -23,7 +8,6 @@ import {
   getAdjacentKanbanStatusId,
 } from "../workspaceViewModels.js";
 import type { ProjectSummary, TaskSummary, WorkspaceStatus } from "./types.js";
-
 export type KanbanViewProps = {
   client: TaskApiClient | null;
   onOpenTask(taskId: string): void;
@@ -33,15 +17,8 @@ export type KanbanViewProps = {
   tasks: TaskSummary[];
   workspaceId: string | null;
 };
-
-type StatusActionError = {
-  message: string;
-  statusId: string | null;
-  taskId: string;
-};
-
+type StatusActionError = { message: string; statusId: string | null; taskId: string };
 const ALL_PROJECTS_KEY = "all-projects";
-
 export function KanbanView({
   client,
   onOpenTask,
@@ -55,11 +32,9 @@ export function KanbanView({
   const [visibleTasks, setVisibleTasks] = useState(tasks);
   const [updatingTaskIds, setUpdatingTaskIds] = useState<ReadonlySet<string>>(new Set());
   const [actionError, setActionError] = useState<StatusActionError | null>(null);
-
   useEffect(() => {
     setVisibleTasks(tasks);
   }, [tasks]);
-
   const filteredTasks = useMemo(
     () =>
       projectFilter === ALL_PROJECTS_KEY
@@ -69,25 +44,16 @@ export function KanbanView({
   );
   const columns = buildKanbanColumns(projects, statuses, filteredTasks);
   const summary = buildKanbanSummary(statuses, filteredTasks);
-
   const updateTaskStatus = (taskId: string, statusId: string | null): void => {
     if (client === null || workspaceId === null || updatingTaskIds.has(taskId)) return;
-
     const task = visibleTasks.find((candidate) => candidate.id === taskId);
-    if (task === undefined || task.statusId === statusId) return;
-
+    if (task === undefined) return;
     const previousTask = task;
     setActionError(null);
     setUpdatingTaskIds((current) => new Set(current).add(taskId));
     setVisibleTasks((current) => replaceTaskStatus(current, taskId, statusId));
-
     void client
-      .updateTaskStatus({
-        body: { statusId },
-        projectId: task.projectId,
-        taskId,
-        workspaceId,
-      })
+      .updateTaskStatus({ body: { statusId }, projectId: task.projectId, taskId, workspaceId })
       .then((updatedTask) => {
         setVisibleTasks((current) => replaceTask(current, updatedTask));
         onTaskUpdated(updatedTask);
@@ -96,15 +62,14 @@ export function KanbanView({
         setVisibleTasks((current) => replaceTask(current, previousTask));
         setActionError({ message: readError(error), statusId, taskId });
       })
-      .finally(() => {
+      .finally(() =>
         setUpdatingTaskIds((current) => {
           const next = new Set(current);
           next.delete(taskId);
           return next;
-        });
-      });
+        }),
+      );
   };
-
   const handleCardKeyDown = (event: KeyboardEvent<HTMLElement>, task: TaskSummary): void => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     const nextStatusId = getAdjacentKanbanStatusId(
@@ -116,148 +81,115 @@ export function KanbanView({
     event.preventDefault();
     updateTaskStatus(task.id, nextStatusId);
   };
-
   return (
-    <ContentGrid>
-      <Card aria-labelledby="kanban-view-title">
-        <Stack gap="lg">
+    <Flex direction="column" gap="4">
+      <Card>
+        <Flex direction="column" gap="4">
           <Flex align="end" justify="between">
-            <Stack gap="xs">
-              <Text tone="muted">Kanban</Text>
-              <Heading id="kanban-view-title" level={2}>
-                Status board
-              </Heading>
-            </Stack>
-            <Select
-              aria-label="Filter board by project"
-              options={[
-                { label: "All projects", value: ALL_PROJECTS_KEY },
-                ...projects.map((project) => ({ label: project.title, value: project.id })),
-              ]}
-              value={projectFilter}
-              onValueChange={setProjectFilter}
-            />
+            <Flex direction="column" gap="1">
+              <Text color="gray" size="2">
+                Kanban
+              </Text>
+              <Heading size="6">Status board</Heading>
+            </Flex>
+            <Select.Root value={projectFilter} onValueChange={setProjectFilter}>
+              <Select.Trigger aria-label="Filter board by project" />
+              <Select.Content>
+                <Select.Item value={ALL_PROJECTS_KEY}>All projects</Select.Item>
+                {projects.map((project) => (
+                  <Select.Item key={project.id} value={project.id}>
+                    {project.title}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select.Root>
           </Flex>
-          <Text id="kanban-keyboard-help" tone="muted">
+          <Text color="gray" id="kanban-keyboard-help">
             Select a project to focus the board. On a task card, use the left and right arrow keys
             to move it between statuses.
           </Text>
           {actionError === null ? null : (
-            <Alert tone="danger">
-              <Text>
+            <Callout.Root color="red">
+              <Callout.Text>
                 {actionError.message} The task was returned to its previous status. Change its
                 status again to retry.
-              </Text>
-            </Alert>
+              </Callout.Text>
+            </Callout.Root>
           )}
-          <Board>
+          <Grid columns={{ initial: "1", md: "3" }} gap="3">
             {columns.map((column) => (
-              <BoardColumn
-                actions={<Text>{column.taskCount}</Text>}
-                aria-labelledby={`${column.id}-title`}
-                header={
-                  <Flex align="center" gap="sm">
-                    <StatusDot tone={statusToneFromColor(column.color)} />
-                    <Heading id={`${column.id}-title`} level={4}>
-                      {column.name}
-                    </Heading>
+              <Card key={column.id} variant="surface">
+                <Flex direction="column" gap="3">
+                  <Flex align="center" justify="between">
+                    <Heading size="4">{column.name}</Heading>
+                    <Text color="gray">{column.taskCount}</Text>
                   </Flex>
-                }
-                key={column.id}
-              >
-                <Stack gap="sm">
                   {column.tasks.map((card) => {
                     const task = visibleTasks.find((candidate) => candidate.id === card.id);
                     if (task === undefined) return null;
                     const isUpdating = updatingTaskIds.has(task.id);
                     return (
-                      <BoardCard aria-busy={isUpdating} key={task.id}>
-                        <Button
-                          aria-describedby="kanban-keyboard-help"
-                          onClick={() => onOpenTask(task.id)}
-                          onKeyDown={(event) => {
-                            handleCardKeyDown(event, task);
-                            if (event.defaultPrevented) return;
-                          }}
-                          variant="ghost"
-                        >
-                          {card.title}
-                        </Button>
-                        <Text tone="muted">{card.projectTitle}</Text>
-                        <Flex gap="xs">
-                          <Text>{card.assigneeLabel}</Text>
-                          <Text>{card.dueDateLabel}</Text>
-                          <time dateTime={card.updatedAtLabel}>{card.updatedAtLabel}</time>
-                        </Flex>
-                        <Flex
-                          onClick={(event) => event.stopPropagation()}
-                          onKeyDown={(event) => event.stopPropagation()}
-                        >
-                          <Select
-                            aria-label={`Status for ${task.title}`}
+                      <Card aria-busy={isUpdating} key={task.id} variant="classic">
+                        <Flex direction="column" gap="2">
+                          <Button
+                            aria-describedby="kanban-keyboard-help"
+                            onClick={() => onOpenTask(task.id)}
+                            onKeyDown={(event) => handleCardKeyDown(event, task)}
+                            variant="ghost"
+                          >
+                            {card.title}
+                          </Button>
+                          <Text color="gray" size="2">
+                            {card.projectTitle}
+                          </Text>
+                          <Text size="2">
+                            {card.assigneeLabel} · {card.dueDateLabel}
+                          </Text>
+                          <Select.Root
                             disabled={isUpdating || client === null || workspaceId === null}
-                            options={[
-                              { label: "Unset", value: "unset-status" },
-                              ...statuses.map((status) => ({
-                                label: status.name,
-                                value: status.id,
-                              })),
-                            ]}
                             value={task.statusId ?? "unset-status"}
                             onValueChange={(value) =>
                               updateTaskStatus(task.id, value === "unset-status" ? null : value)
                             }
-                          />
+                          >
+                            <Select.Trigger aria-label={`Status for ${task.title}`} />
+                            <Select.Content>
+                              <Select.Item value="unset-status">Unset</Select.Item>
+                              {statuses.map((status) => (
+                                <Select.Item key={status.id} value={status.id}>
+                                  {status.name}
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select.Root>
                         </Flex>
-                      </BoardCard>
+                      </Card>
                     );
                   })}
-                </Stack>
-              </BoardColumn>
+                </Flex>
+              </Card>
             ))}
-          </Board>
-        </Stack>
+          </Grid>
+        </Flex>
       </Card>
-
-      <Card aria-labelledby="kanban-summary-title">
-        <Stack gap="md">
-          <Stack gap="xs">
-            <Text tone="muted">Summary</Text>
-            <Heading id="kanban-summary-title" level={3}>
-              Board load
-            </Heading>
-          </Stack>
-          <Text tone="muted">
+      <Card>
+        <Flex direction="column" gap="2">
+          <Heading size="5">Board load</Heading>
+          <Text color="gray">
             Status changes update immediately and are restored if the server rejects them.
           </Text>
-          <DescriptionList
-            items={[
-              { label: "Columns", value: summary.columnCount },
-              { label: "Tasks", value: summary.taskCount },
-              { label: "Done", value: summary.doneTaskCount },
-              { label: "Unset", value: summary.unsetTaskCount },
-            ]}
-          />
-        </Stack>
+          <Text>
+            Columns: {summary.columnCount} · Tasks: {summary.taskCount} · Done:{" "}
+            {summary.doneTaskCount} · Unset: {summary.unsetTaskCount}
+          </Text>
+        </Flex>
       </Card>
-    </ContentGrid>
+    </Flex>
   );
 }
-
-function statusToneFromColor(
-  color: string,
-): "accent" | "danger" | "neutral" | "success" | "warning" {
-  const normalizedColor = color.toLowerCase();
-  if (normalizedColor === "#22c55e" || normalizedColor === "#16a34a") return "success";
-  if (normalizedColor === "#ef4444" || normalizedColor === "#dc2626") return "danger";
-  if (normalizedColor === "#f59e0b" || normalizedColor === "#eab308") return "warning";
-  return normalizedColor === "#d8d1c4" ? "neutral" : "accent";
-}
-
 function replaceTask(tasks: TaskSummary[], updatedTask: TaskDetail): TaskSummary[] {
   return tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task));
 }
-
 function replaceTaskStatus(
   tasks: TaskSummary[],
   taskId: string,
@@ -265,7 +197,6 @@ function replaceTaskStatus(
 ): TaskSummary[] {
   return tasks.map((task) => (task.id === taskId ? { ...task, statusId } : task));
 }
-
 function readError(error: unknown): string {
   return error instanceof Error ? error.message : "The task status could not be updated.";
 }

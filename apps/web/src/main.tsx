@@ -1,8 +1,8 @@
+import { Theme } from "@task/ui/app";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@task/ui/styles.css";
 import { App } from "./ui/App.js";
-import "./styles.css";
 
 const rootElement = document.getElementById("root");
 
@@ -12,6 +12,8 @@ if (rootElement === null) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App />
+    <Theme accentColor="indigo" grayColor="slate" radius="medium" scaling="100%">
+      <App />
+    </Theme>
   </StrictMode>,
 );

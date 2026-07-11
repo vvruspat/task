@@ -1,4 +1,4 @@
-import { ContentGrid } from "@task/ui/app";
+import { Grid } from "@radix-ui/themes";
 import type { ReactElement } from "react";
 import { AgentCommandPanel } from "./dashboard/AgentCommandPanel.js";
 import type {
@@ -35,7 +35,7 @@ export default function DashboardView({
   tasks,
 }: DashboardViewProps): ReactElement {
   return (
-    <ContentGrid>
+    <Grid>
       <MyTasksPanel
         createTaskDisabled={createTaskDisabled}
         createTaskState={createTaskState}
@@ -51,6 +51,6 @@ export default function DashboardView({
       />
       <TemplatesPanel skills={skills} />
       <AgentCommandPanel />
-    </ContentGrid>
+    </Grid>
   );
 }

@@ -1,21 +1,20 @@
+import {
+  Box,
+  Button,
+  Callout,
+  Flex,
+  Grid,
+  Heading,
+  Select,
+  Text,
+  TextField,
+} from "@radix-ui/themes";
 import type {
   PreviewTaskSkillApplyInput,
   TaskApiClient,
   TaskSkillApplyPreview,
   TaskSkillDetail,
 } from "@task/api-client";
-import {
-  Alert,
-  Box,
-  Button,
-  ContentGrid,
-  Flex,
-  Heading,
-  Input,
-  type RadixSelectOption,
-  Select,
-  Text,
-} from "@task/ui/app";
 import type { ChangeEvent, FormEvent, ReactElement } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { buildTemplateSkillSummary, filterTemplateSkillRows } from "../workspaceViewModels.js";
@@ -150,7 +149,7 @@ export function TemplatesView({
   }
 
   return (
-    <ContentGrid columns={3}>
+    <Grid columns="3">
       <WorkspacePanel
         action={
           <CreateTaskSkillForm
@@ -172,26 +171,26 @@ export function TemplatesView({
         title="Task skills"
         titleId="templates-view-title"
       >
-        <Flex align="stretch" direction="column" gap="md">
-          <Input
+        <Flex align="stretch" direction="column" gap="3">
+          <TextField.Root
             aria-label="Filter task skills"
             onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
             placeholder="Filter by name, alias, or description"
             value={query}
           />
-          {rows.length === 0 ? <Text tone="muted">No task skills match this filter.</Text> : null}
+          {rows.length === 0 ? <Text color="gray">No task skills match this filter.</Text> : null}
           {rows.map((skill) => (
-            <Flex align="start" gap="md" key={skill.id} justify="between">
+            <Flex align="start" gap="3" key={skill.id} justify="between">
               <Box>
                 <Button
                   aria-pressed={skill.id === selectedSkillId}
                   onClick={() => selectSkill(skill.id)}
-                  size="sm"
+                  size="1"
                   variant="ghost"
                 >
                   {skill.name}
                 </Button>
-                <Text tone="muted">{skill.description ?? "No description"}</Text>
+                <Text color="gray">{skill.description ?? "No description"}</Text>
               </Box>
               <Text>{skill.aliasLabel}</Text>
             </Flex>
@@ -205,19 +204,21 @@ export function TemplatesView({
         titleId="template-detail-title"
       >
         {feedback === null ? null : (
-          <Alert tone={feedback.mode === "error" ? "danger" : "info"}>{feedback.message}</Alert>
+          <Callout.Root color={feedback.mode === "error" ? "red" : "blue"}>
+            {feedback.message}
+          </Callout.Root>
         )}
         {selectedSkill === null ? (
-          <Text tone="muted">Select a task skill to manage it.</Text>
+          <Text color="gray">Select a task skill to manage it.</Text>
         ) : null}
         {selectedSkill !== null && !isCurrentDetail ? (
-          <Text tone="muted">Loading task skill detail…</Text>
+          <Text color="gray">Loading task skill detail…</Text>
         ) : null}
         {!isCurrentDetail || detail === null ? null : (
-          <Flex align="stretch" direction="column" gap="md">
+          <Flex align="stretch" direction="column" gap="3">
             <Box>
-              <Heading level={4}>{detail.name}</Heading>
-              <Text tone="muted">{detail.description ?? "No description"}</Text>
+              <Heading as="h4">{detail.name}</Heading>
+              <Text color="gray">{detail.description ?? "No description"}</Text>
               <Text>Versions: {detail.versions.length}</Text>
             </Box>
             <TaskSkillMetadataForm
@@ -346,7 +347,7 @@ export function TemplatesView({
             />
             <Button
               disabled={busy}
-              variant="secondary"
+              variant="soft"
               onClick={() => {
                 if (!window.confirm(`Archive task skill “${detail.name}”?`)) return;
                 void runMutation(async (requestSelectionVersion) => {
@@ -372,7 +373,7 @@ export function TemplatesView({
           ]}
         />
       </WorkspacePanel>
-    </ContentGrid>
+    </Grid>
   );
 }
 
@@ -396,14 +397,14 @@ function CreateTaskSkillForm({
         void onCreate(buildCreateTaskSkillInput({ aliases, description, name, subtasks }));
       }}
     >
-      <Flex gap="sm">
-        <Input
+      <Flex gap="2">
+        <TextField.Root
           aria-label="New skill name"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
           placeholder="New skill"
           value={name}
         />
-        <Input
+        <TextField.Root
           aria-label="New skill subtasks"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setSubtasks(event.target.value)}
           placeholder="Subtasks, comma-separated"
@@ -421,13 +422,13 @@ function CreateTaskSkillForm({
           Create
         </Button>
       </Flex>
-      <Input
+      <TextField.Root
         aria-label="New skill description"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setDescription(event.target.value)}
         placeholder="Description"
         value={description}
       />
-      <Input
+      <TextField.Root
         aria-label="New skill aliases"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setAliases(event.target.value)}
         placeholder="Aliases, comma-separated"
@@ -465,18 +466,18 @@ function TaskSkillMetadataForm({
         });
       }}
     >
-      <Heading level={4}>Metadata</Heading>
-      <Input
+      <Heading as="h4">Metadata</Heading>
+      <TextField.Root
         aria-label="Skill name"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
         value={name}
       />
-      <Input
+      <TextField.Root
         aria-label="Skill description"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setDescription(event.target.value)}
         value={description}
       />
-      <Input
+      <TextField.Root
         aria-label="Skill aliases"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setAliases(event.target.value)}
         value={aliases}
@@ -510,8 +511,8 @@ function TaskSkillDefinitionForm({
         });
       }}
     >
-      <Heading level={4}>Definition</Heading>
-      <Input
+      <Heading as="h4">Definition</Heading>
+      <TextField.Root
         aria-label="Skill definition subtasks"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setSubtasks(event.target.value)}
         placeholder="Subtasks, comma-separated"
@@ -545,9 +546,9 @@ function CloneTaskSkillForm({
         });
       }}
     >
-      <Heading level={4}>Clone</Heading>
-      <Flex gap="sm">
-        <Input
+      <Heading as="h4">Clone</Heading>
+      <Flex gap="2">
+        <TextField.Root
           aria-label="Clone skill name"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
           value={name}
@@ -587,7 +588,7 @@ function TaskSkillApplyPanel({
     removedSubtasks,
     rootTaskTitle,
   });
-  const options: RadixSelectOption[] = projects.map((project) => ({
+  const options: { label: string; value: string }[] = projects.map((project) => ({
     label: project.title,
     value: project.id,
   }));
@@ -598,26 +599,30 @@ function TaskSkillApplyPanel({
         void onPreview(body);
       }}
     >
-      <Heading level={4}>Preview and apply</Heading>
-      <Select
-        aria-label="Project for task skill"
-        onValueChange={setProjectId}
-        options={options}
-        value={projectId}
-      />
-      <Input
+      <Heading as="h4">Preview and apply</Heading>
+      <Select.Root onValueChange={setProjectId} value={projectId}>
+        <Select.Trigger aria-label="Project for task skill" />
+        <Select.Content>
+          {options.map((option) => (
+            <Select.Item key={option.value} value={option.value}>
+              {option.label}
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select.Root>
+      <TextField.Root
         aria-label="Root task title"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setRootTaskTitle(event.target.value)}
         placeholder="Root task title"
         value={rootTaskTitle}
       />
-      <Input
+      <TextField.Root
         aria-label="Added subtasks"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setAddedSubtasks(event.target.value)}
         placeholder="Additional subtasks, comma-separated"
         value={addedSubtasks}
       />
-      <Input
+      <TextField.Root
         aria-label="Removed subtasks"
         onChange={(event: ChangeEvent<HTMLInputElement>) => setRemovedSubtasks(event.target.value)}
         placeholder="Remove skill subtasks, comma-separated"

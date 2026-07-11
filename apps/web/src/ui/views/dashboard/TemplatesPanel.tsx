@@ -1,4 +1,4 @@
-import { Card, Heading, Stack, Text } from "@task/ui/app";
+import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import type { ReactElement } from "react";
 import { DashboardPanelHeader } from "./DashboardPanelHeader.js";
 import type { TaskSkillSummary } from "./dashboardTypes.js";
@@ -10,17 +10,17 @@ type TemplatesPanelProps = {
 export function TemplatesPanel({ skills }: TemplatesPanelProps): ReactElement {
   return (
     <Card aria-labelledby="skills-title">
-      <Stack gap="md">
+      <Flex gap="3">
         <DashboardPanelHeader eyebrow="Templates" title="Task skills" titleId="skills-title" />
-        <Stack gap="sm">
+        <Flex gap="2">
           {skills.map((skill) => (
             <article key={skill.id}>
-              <Heading level={4}>{skill.name}</Heading>
-              <Text tone="muted">{skill.aliases.join(", ")}</Text>
+              <Heading as="h4">{skill.name}</Heading>
+              <Text color="gray">{skill.aliases.join(", ")}</Text>
             </article>
           ))}
-        </Stack>
-      </Stack>
+        </Flex>
+      </Flex>
     </Card>
   );
 }

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@task/ui/app";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import type { ReactElement, ReactNode } from "react";
 
 type DashboardPanelHeaderProps = {
@@ -17,8 +17,8 @@ export function DashboardPanelHeader({
   return (
     <Flex align="start" justify="between">
       <Box>
-        <Text tone="muted">{eyebrow.toUpperCase()}</Text>
-        <Heading id={titleId} level={3}>
+        <Text color="gray">{eyebrow.toUpperCase()}</Text>
+        <Heading id={titleId} as="h3">
           {title}
         </Heading>
       </Box>

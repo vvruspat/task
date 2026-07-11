@@ -3,19 +3,7 @@ import {
   createTaskApiClient,
   type TaskApiFetch,
 } from "@task/api-client";
-import {
-  Alert,
-  AppHeader,
-  AppShell,
-  Badge,
-  Button,
-  Flex,
-  Heading,
-  Sidebar,
-  Stack,
-  Text,
-  Toolbar,
-} from "@task/ui/app";
+import { Badge, Box, Button, Callout, Flex, Heading, Text } from "@task/ui/app";
 import {
   Bot,
   CalendarClock,
@@ -655,190 +643,205 @@ export function App(): ReactElement {
   };
 
   return (
-    <AppShell
-      sidebar={
-        <Sidebar aria-label="Workspace navigation">
-          <Stack align="start" gap="xs">
-            <Badge aria-label="tAsk" tone="accent">
-              t
-            </Badge>
-            <Text tone="muted">Workspace</Text>
-            <Heading level={1}>tAsk</Heading>
-          </Stack>
+    <Flex minHeight="100vh">
+      <Box asChild display={{ initial: "none", md: "block" }} p="4" width="240px">
+        <aside aria-label="Workspace navigation">
+          <Flex direction="column" gap="5">
+            <Flex align="start" direction="column" gap="1">
+              <Badge aria-label="tAsk" color="indigo" variant="solid">
+                t
+              </Badge>
+              <Text color="gray" size="2">
+                Workspace
+              </Text>
+              <Heading size="6">tAsk</Heading>
+            </Flex>
 
-          <Stack align="stretch" gap="xs" role="navigation" aria-label="Primary">
-            {routes.map((route) => (
-              <Button
-                key={route.id}
-                onClick={() =>
-                  updateNavigation((currentState) => ({ ...currentState, routeId: route.id }))
-                }
-                title={route.description}
-                variant={route.id === activeRoute.id ? "secondary" : "ghost"}
-              >
-                <route.icon aria-hidden="true" />
-                {route.label}
-              </Button>
-            ))}
-          </Stack>
-        </Sidebar>
-      }
-      header={
-        <AppHeader>
-          <Toolbar>
-            <Button aria-label="Toggle navigation" size="sm" variant="ghost">
-              <PanelLeft aria-hidden="true" />
-            </Button>
-            <Button
-              aria-haspopup="dialog"
-              aria-label="Search workspace. Press Command or Control K."
-              onClick={() => setSearchPaletteOpen(true)}
-              variant="secondary"
-            >
-              <Search aria-hidden="true" />
-              Search tasks, projects, skills
-            </Button>
-          </Toolbar>
-        </AppHeader>
-      }
-    >
-      <Stack align="stretch" gap="xl">
-        <Flex align="start" gap="xl" justify="between" aria-labelledby="route-title">
-          <Stack align="start" gap="sm">
-            <Text tone="muted">Current view</Text>
-            <Heading id="route-title" level={2}>
-              {activeRoute.label}
-            </Heading>
-            <Text tone="muted">{activeRoute.description}</Text>
-          </Stack>
-          <Flex align="center" gap="sm" aria-label="Workspace status summary">
-            <Badge tone="neutral">
-              <ListTodo aria-hidden="true" /> {data.tasks.length} tasks
-            </Badge>
-            <Badge tone="neutral">
-              <FolderKanban aria-hidden="true" /> {data.projects.length} projects
-            </Badge>
-            <Badge tone="neutral">
-              <Sparkles aria-hidden="true" /> {data.skills.length} skills
-            </Badge>
-            <Badge tone="neutral">
-              <CalendarClock aria-hidden="true" /> {dueSoonCount} due soon
-            </Badge>
+            <Flex asChild direction="column" gap="1">
+              <nav aria-label="Primary">
+                {routes.map((route) => (
+                  <Button
+                    key={route.id}
+                    onClick={() =>
+                      updateNavigation((currentState) => ({ ...currentState, routeId: route.id }))
+                    }
+                    title={route.description}
+                    variant={route.id === activeRoute.id ? "surface" : "ghost"}
+                  >
+                    <route.icon aria-hidden="true" />
+                    {route.label}
+                  </Button>
+                ))}
+              </nav>
+            </Flex>
           </Flex>
+        </aside>
+      </Box>
+
+      <Flex direction="column" flexGrow="1" minWidth="0">
+        <Flex align="center" gap="2" justify="between" p="4">
+          <Button aria-label="Toggle navigation" size="1" variant="ghost">
+            <PanelLeft aria-hidden="true" />
+          </Button>
+          <Button
+            aria-haspopup="dialog"
+            aria-label="Search workspace. Press Command or Control K."
+            onClick={() => setSearchPaletteOpen(true)}
+            variant="surface"
+          >
+            <Search aria-hidden="true" />
+            Search tasks, projects, skills
+          </Button>
         </Flex>
 
-        {loadState.status !== "loaded" ? <ShellStatePanel state={loadState} /> : null}
-        {loadState.status === "loaded" && data.workspaces.length === 0 ? (
-          <ShellStatePanel
-            state={{
-              message: "No visible workspaces were returned for this user.",
-              status: "missing_config",
-            }}
-          />
-        ) : null}
+        <Box p="5">
+          <Flex direction="column" gap="6">
+            <Flex align="start" gap="6" justify="between" aria-labelledby="route-title">
+              <Flex align="start" direction="column" gap="2">
+                <Text color="gray" size="2">
+                  Current view
+                </Text>
+                <Heading id="route-title" size="7">
+                  {activeRoute.label}
+                </Heading>
+                <Text color="gray">{activeRoute.description}</Text>
+              </Flex>
+              <Flex align="center" gap="2" wrap="wrap" aria-label="Workspace status summary">
+                <Badge color="gray" variant="soft">
+                  <ListTodo aria-hidden="true" /> {data.tasks.length} tasks
+                </Badge>
+                <Badge color="gray" variant="soft">
+                  <FolderKanban aria-hidden="true" /> {data.projects.length} projects
+                </Badge>
+                <Badge color="gray" variant="soft">
+                  <Sparkles aria-hidden="true" /> {data.skills.length} skills
+                </Badge>
+                <Badge color="gray" variant="soft">
+                  <CalendarClock aria-hidden="true" /> {dueSoonCount} due soon
+                </Badge>
+              </Flex>
+            </Flex>
 
-        <Suspense fallback={<Text tone="muted">Loading view</Text>}>
-          {activeRoute.id === "dashboard" ? (
-            <LazyDashboardView
-              createProjectDisabled={!canCreateProject}
-              createProjectState={projectCreateState}
-              createTaskDisabled={!canCreateTask}
-              createTaskState={taskCreateState}
-              onCreateProject={handleCreateProject}
-              onCreateTask={handleCreateTask}
-              projects={data.projects}
-              skills={data.skills}
-              tasks={data.tasks}
-            />
-          ) : activeRoute.id === "confirmations" ? (
-            <LazyConfirmationsView
-              actionState={confirmationActionState}
-              confirmationRequests={confirmationRequests}
-              loadState={confirmationLoadState}
-              onCancel={(confirmationRequestId) =>
-                resolveConfirmation(confirmationRequestId, "cancel")
-              }
-              onConfirm={(confirmationRequestId) =>
-                resolveConfirmation(confirmationRequestId, "confirm")
-              }
-            />
-          ) : (
-            <LazyWorkspaceView
-              agentRuns={data.agentRuns}
-              onArchiveProject={handleArchiveProject}
-              onCreateProject={handleCreateProject}
-              onCreateTask={(projectId, title) => handleCreateTask(title, projectId)}
-              onCloseTask={() =>
-                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId: null }))
-              }
-              onOpenTask={(taskId) =>
-                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId }))
-              }
-              onOpenConfirmations={() =>
-                updateNavigation((currentNavigation) => ({
-                  ...currentNavigation,
-                  routeId: "confirmations",
-                  taskId: null,
-                }))
-              }
-              onSelectProject={(projectId) =>
-                updateNavigation((currentNavigation) => ({
-                  ...currentNavigation,
-                  projectId,
-                  routeId: "projects",
-                }))
-              }
-              onUpdateProject={handleUpdateProject}
-              onTaskUpdated={(updatedTask) =>
-                setLoadState((currentState) =>
-                  currentState.status === "loaded"
-                    ? {
-                        data: {
-                          ...currentState.data,
-                          tasks: currentState.data.tasks.map((task) =>
-                            task.id === updatedTask.id ? updatedTask : task,
-                          ),
-                        },
-                        status: "loaded",
-                      }
-                    : currentState,
-                )
-              }
-              onTaskDirtyChange={setTaskDrawerDirty}
-              projectActionState={projectCreateState}
-              route={activeRoute}
-              projects={data.projects}
-              selectedProjectId={selectedProjectId}
-              selectedTaskId={navigationState.taskId}
-              selectedWorkspaceId={data.selectedWorkspaceId}
-              skills={data.skills}
-              statuses={data.statuses}
-              taskActionState={taskCreateState}
-              tasks={data.tasks}
-              taskClient={taskClient}
-              currentUserId={trustedUserId}
-              workspaces={data.workspaces}
-            />
-          )}
-        </Suspense>
-        {navigationState.taskId !== null &&
-        (activeRoute.id === "dashboard" || activeRoute.id === "confirmations") ? (
-          <Alert role="alert" tone="danger">
-            <Text>
-              Task details can only be opened from a workspace task view. Clear this unavailable
-              task link to continue.
-            </Text>
-            <Button
-              onClick={() =>
-                updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId: null }))
-              }
-              variant="danger"
-            >
-              Clear task link
-            </Button>
-          </Alert>
-        ) : null}
-      </Stack>
+            {loadState.status !== "loaded" ? <ShellStatePanel state={loadState} /> : null}
+            {loadState.status === "loaded" && data.workspaces.length === 0 ? (
+              <ShellStatePanel
+                state={{
+                  message: "No visible workspaces were returned for this user.",
+                  status: "missing_config",
+                }}
+              />
+            ) : null}
+
+            <Suspense fallback={<Text color="gray">Loading view</Text>}>
+              {activeRoute.id === "dashboard" ? (
+                <LazyDashboardView
+                  createProjectDisabled={!canCreateProject}
+                  createProjectState={projectCreateState}
+                  createTaskDisabled={!canCreateTask}
+                  createTaskState={taskCreateState}
+                  onCreateProject={handleCreateProject}
+                  onCreateTask={handleCreateTask}
+                  projects={data.projects}
+                  skills={data.skills}
+                  tasks={data.tasks}
+                />
+              ) : activeRoute.id === "confirmations" ? (
+                <LazyConfirmationsView
+                  actionState={confirmationActionState}
+                  confirmationRequests={confirmationRequests}
+                  loadState={confirmationLoadState}
+                  onCancel={(confirmationRequestId) =>
+                    resolveConfirmation(confirmationRequestId, "cancel")
+                  }
+                  onConfirm={(confirmationRequestId) =>
+                    resolveConfirmation(confirmationRequestId, "confirm")
+                  }
+                />
+              ) : (
+                <LazyWorkspaceView
+                  agentRuns={data.agentRuns}
+                  onArchiveProject={handleArchiveProject}
+                  onCreateProject={handleCreateProject}
+                  onCreateTask={(projectId, title) => handleCreateTask(title, projectId)}
+                  onCloseTask={() =>
+                    updateNavigation((currentNavigation) => ({
+                      ...currentNavigation,
+                      taskId: null,
+                    }))
+                  }
+                  onOpenTask={(taskId) =>
+                    updateNavigation((currentNavigation) => ({ ...currentNavigation, taskId }))
+                  }
+                  onOpenConfirmations={() =>
+                    updateNavigation((currentNavigation) => ({
+                      ...currentNavigation,
+                      routeId: "confirmations",
+                      taskId: null,
+                    }))
+                  }
+                  onSelectProject={(projectId) =>
+                    updateNavigation((currentNavigation) => ({
+                      ...currentNavigation,
+                      projectId,
+                      routeId: "projects",
+                    }))
+                  }
+                  onUpdateProject={handleUpdateProject}
+                  onTaskUpdated={(updatedTask) =>
+                    setLoadState((currentState) =>
+                      currentState.status === "loaded"
+                        ? {
+                            data: {
+                              ...currentState.data,
+                              tasks: currentState.data.tasks.map((task) =>
+                                task.id === updatedTask.id ? updatedTask : task,
+                              ),
+                            },
+                            status: "loaded",
+                          }
+                        : currentState,
+                    )
+                  }
+                  onTaskDirtyChange={setTaskDrawerDirty}
+                  projectActionState={projectCreateState}
+                  route={activeRoute}
+                  projects={data.projects}
+                  selectedProjectId={selectedProjectId}
+                  selectedTaskId={navigationState.taskId}
+                  selectedWorkspaceId={data.selectedWorkspaceId}
+                  skills={data.skills}
+                  statuses={data.statuses}
+                  taskActionState={taskCreateState}
+                  tasks={data.tasks}
+                  taskClient={taskClient}
+                  currentUserId={trustedUserId}
+                  workspaces={data.workspaces}
+                />
+              )}
+            </Suspense>
+            {navigationState.taskId !== null &&
+            (activeRoute.id === "dashboard" || activeRoute.id === "confirmations") ? (
+              <Callout.Root color="red" role="alert">
+                <Callout.Text>
+                  Task details can only be opened from a workspace task view. Clear this unavailable
+                  task link to continue.
+                </Callout.Text>
+                <Button
+                  onClick={() =>
+                    updateNavigation((currentNavigation) => ({
+                      ...currentNavigation,
+                      taskId: null,
+                    }))
+                  }
+                  color="red"
+                >
+                  Clear task link
+                </Button>
+              </Callout.Root>
+            ) : null}
+          </Flex>
+        </Box>
+      </Flex>
       <GlobalSearchPalette
         isOpen={isSearchPaletteOpen}
         onClose={() => setSearchPaletteOpen(false)}
@@ -846,7 +849,7 @@ export function App(): ReactElement {
         searchClient={taskClient}
         workspaceId={data.selectedWorkspaceId}
       />
-    </AppShell>
+    </Flex>
   );
 }
 
@@ -867,14 +870,15 @@ function ShellStatePanel({
       : state.message;
 
   return (
-    <Alert
-      tone={
-        state.status === "error" ? "danger" : state.status === "missing_config" ? "warning" : "info"
+    <Callout.Root
+      color={
+        state.status === "error" ? "red" : state.status === "missing_config" ? "amber" : "blue"
       }
     >
-      <Heading level={3}>{title}</Heading>
-      <Text tone="muted">{message}</Text>
-    </Alert>
+      <Callout.Text>
+        <strong>{title}</strong> {message}
+      </Callout.Text>
+    </Callout.Root>
   );
 }
 

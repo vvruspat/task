@@ -6,21 +6,16 @@ import type {
   TaskDetail,
 } from "@task/api-client";
 import {
-  Alert,
   Button,
+  Callout,
   Card,
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
+  Dialog,
   Flex,
   Heading,
-  Input,
-  type RadixSelectOption,
   Select,
-  Stack,
   Text,
-  Textarea,
+  TextArea,
+  TextField,
 } from "@task/ui/app";
 import { X } from "lucide-react";
 import type { ChangeEvent, FormEvent, ReactElement, ReactNode } from "react";
@@ -96,46 +91,44 @@ export function TaskDetailDrawer({
   const scope = { projectId, taskId, workspaceId };
 
   return (
-    <Drawer
+    <Dialog.Root
       onOpenChange={(isOpen): void => {
         if (!isOpen) onClose();
       }}
       open
     >
-      <DrawerContent aria-describedby="task-details-description" aria-label="Task details">
-        <Stack align="start" gap="lg">
+      <Dialog.Content aria-describedby="task-details-description" aria-label="Task details">
+        <Flex align="start" direction="column" gap="4">
           <Flex align="center" justify="between">
             <div>
-              <DrawerTitle>Task details</DrawerTitle>
-              <DrawerDescription id="task-details-description">
+              <Dialog.Title>Task details</Dialog.Title>
+              <Dialog.Description id="task-details-description">
                 Review and update this task.
-              </DrawerDescription>
+              </Dialog.Description>
             </div>
-            <Button
-              aria-label="Close task details"
-              autoFocus
-              onClick={onClose}
-              size="sm"
-              variant="ghost"
-            >
+            <Button aria-label="Close task details" autoFocus onClick={onClose} variant="ghost">
               <X aria-hidden="true" />
             </Button>
           </Flex>
-          {state.status === "loading" ? <Text tone="muted">Loading task details…</Text> : null}
+          {state.status === "loading" ? (
+            <Text as="p" color="gray">
+              Loading task details…
+            </Text>
+          ) : null}
           {state.status === "error" ? (
-            <Alert tone="danger">
-              <Stack gap="sm">
-                <Text>{state.message}</Text>
-                <Button onClick={load} size="sm">
+            <Callout.Root color="red">
+              <Flex direction="column" gap="2">
+                <Callout.Text>{state.message}</Callout.Text>
+                <Button onClick={load} size="1">
                   Retry
                 </Button>
-              </Stack>
-            </Alert>
+              </Flex>
+            </Callout.Root>
           ) : null}
           {feedback !== null ? (
-            <Alert tone={feedback.status === "error" ? "danger" : "success"}>
-              <Text>{feedback.message}</Text>
-            </Alert>
+            <Callout.Root color={feedback.status === "error" ? "red" : "green"}>
+              <Callout.Text>{feedback.message}</Callout.Text>
+            </Callout.Root>
           ) : null}
           {state.status === "loaded" ? (
             <TaskContent
@@ -161,9 +154,9 @@ export function TaskDetailDrawer({
               task={state.task}
             />
           ) : null}
-        </Stack>
-      </DrawerContent>
-    </Drawer>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
   );
 }
 
@@ -242,7 +235,7 @@ function TaskContent({
       .catch((error: unknown) => onFeedback({ message: readError(error), status: "error" }))
       .finally(() => setBusy(false));
   };
-  const statusOptions: RadixSelectOption[] = [
+  const statusOptions = [
     { label: "No status", value: "none" },
     ...statuses.map((status) => ({ label: status.name, value: status.id })),
   ];
@@ -319,26 +312,33 @@ function TaskContent({
   return (
     <>
       <form onSubmit={saveDetails}>
-        <Stack align="stretch" gap="sm">
-          <Input aria-label="Task title" onChange={updateText(setTitle)} value={title} />
-          <Textarea
+        <Flex direction="column" gap="2">
+          <TextField.Root aria-label="Task title" onChange={updateText(setTitle)} value={title} />
+          <TextArea
             aria-label="Task description"
             maxLength={5000}
             onChange={updateText(setDescription)}
             value={description}
           />
-          <Flex align="center" gap="sm">
+          <Flex align="center" gap="2">
             <Button disabled={busy || title.trim().length === 0} type="submit">
               {busy ? "Saving" : "Save"}
             </Button>
-            <Select
-              aria-label="Task status"
+            <Select.Root
               disabled={busy}
               onValueChange={updateStatus}
-              options={statusOptions}
               value={taskStatusSelectValue(task.statusId)}
-            />
-            <Input
+            >
+              <Select.Trigger aria-label="Task status" />
+              <Select.Content>
+                {statusOptions.map((option) => (
+                  <Select.Item key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select.Root>
+            <TextField.Root
               aria-label="Due date"
               disabled={busy}
               onChange={(event) => updateDueDate(event.currentTarget.value)}
@@ -346,18 +346,18 @@ function TaskContent({
               value={formatTaskDueDateInput(task.dueAt)}
             />
           </Flex>
-        </Stack>
+        </Flex>
       </form>
-      <Alert tone="info">
-        <Text>
+      <Callout.Root color="blue">
+        <Callout.Text>
           Assignee editing is unavailable because the workspace API does not expose member
           identities to this view.
-        </Text>
-      </Alert>
+        </Callout.Text>
+      </Callout.Root>
       <Section title="Subtasks">
         <form onSubmit={addSubtask}>
-          <Flex align="center" gap="sm">
-            <Input
+          <Flex align="center" gap="2">
+            <TextField.Root
               aria-label="New subtask title"
               onChange={updateText(setSubtaskTitle)}
               value={subtaskTitle}
@@ -370,60 +370,69 @@ function TaskContent({
       </Section>
       <Section title="Comments">
         <form onSubmit={addComment}>
-          <Stack align="stretch" gap="sm">
-            <Textarea aria-label="New comment" onChange={updateText(setComment)} value={comment} />
+          <Flex direction="column" gap="2">
+            <TextArea aria-label="New comment" onChange={updateText(setComment)} value={comment} />
             <Button disabled={busy || comment.trim().length === 0} type="submit">
               Comment
             </Button>
-          </Stack>
+          </Flex>
         </form>
         {comments.map((item) => (
           <Card key={item.id}>
-            <Stack gap="xs">
-              <Text>{item.body}</Text>
-              <Text tone="muted">{item.createdAt.slice(0, 10)}</Text>
-            </Stack>
+            <Flex direction="column" gap="1">
+              <Text as="p">{item.body}</Text>
+              <Text as="p" color="gray">
+                {item.createdAt.slice(0, 10)}
+              </Text>
+            </Flex>
           </Card>
         ))}
       </Section>
       <Section title="Attachments">
         <form onSubmit={addLink}>
-          <Stack align="stretch" gap="sm">
-            <Input
+          <Flex direction="column" gap="2">
+            <TextField.Root
               aria-label="Link URL"
               onChange={updateText(setLinkUrl)}
               placeholder="https://…"
               type="url"
               value={linkUrl}
             />
-            <Input aria-label="Link title" onChange={updateText(setLinkTitle)} value={linkTitle} />
+            <TextField.Root
+              aria-label="Link title"
+              onChange={updateText(setLinkTitle)}
+              value={linkTitle}
+            />
             <Button disabled={busy || linkUrl.trim().length === 0} type="submit">
               Attach link
             </Button>
-          </Stack>
+          </Flex>
         </form>
         {attachments.map((item) =>
           item.url ? (
             <Button
               key={item.id}
               onClick={() => window.open(item.url ?? "", "_blank", "noopener,noreferrer")}
-              size="sm"
               variant="ghost"
             >
               {item.title ?? item.url}
             </Button>
           ) : (
-            <Text key={item.id}>{item.title ?? item.kind}</Text>
+            <Text as="p" key={item.id}>
+              {item.title ?? item.kind}
+            </Text>
           ),
         )}
       </Section>
       <Section title="Activity">
         {activity.length === 0 ? (
-          <Text tone="muted">No activity recorded.</Text>
+          <Text as="p" color="gray">
+            No activity recorded.
+          </Text>
         ) : (
           activity.map((item) => (
             <Flex justify="between" key={item.id}>
-              <Text>{item.eventType}</Text>
+              <Text as="p">{item.eventType}</Text>
               <time dateTime={item.createdAt}>{item.createdAt.slice(0, 10)}</time>
             </Flex>
           ))
@@ -435,10 +444,12 @@ function TaskContent({
 
 function Section({ children, title }: { children: ReactNode; title: string }): ReactElement {
   return (
-    <Stack align="stretch" gap="sm">
-      <Heading level={3}>{title}</Heading>
+    <Flex direction="column" gap="2">
+      <Heading as="h3" size="5">
+        {title}
+      </Heading>
       {children}
-    </Stack>
+    </Flex>
   );
 }
 function readError(error: unknown): string {
