@@ -1,7 +1,11 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import type { ConfirmationRequestSummaryDto } from "../confirmations/confirmations.dto.js";
 import type { ConfirmationsService } from "../confirmations/confirmations.service.js";
-import type { AgentRunDetail, CreateTelegramAgentRunInput } from "./agent.contracts.js";
+import type {
+  AgentRunDetail,
+  CreateTelegramAgentRunInput,
+  CreateWebAgentChatInput,
+} from "./agent.contracts.js";
 import { AgentRunDetailDto, AgentRunIntakeResponseDto, AgentRunSummaryDto } from "./agent.dto.js";
 import type { AgentRuntime } from "./agent.runtime.js";
 import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
@@ -59,6 +63,47 @@ export class AgentService {
       sourceMessageId: input.sourceMessageId ?? null,
       inputText: input.inputText,
       runtimeResult,
+    });
+
+    return this.mapAgentRunToIntakeResponse(run);
+  }
+
+  async createWebRun(
+    workspaceId: string,
+    userId: string,
+    input: CreateWebAgentChatInput,
+  ): Promise<AgentRunIntakeResponseDto> {
+    if (!(await this.agentRunStore.isWorkspaceMember(workspaceId, userId))) {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    const lastUserMessage = input.messages.at(-1);
+    if (lastUserMessage === undefined) {
+      throw new NotFoundException("Agent message was not found.");
+    }
+
+    const runtimeInput = formatWebConversation(input);
+    const runtimeResult = await this.agentRuntime.handleTelegramRequest({
+      input: {
+        telegramId: "web",
+        telegramChatId: "web",
+        inputText: runtimeInput,
+        attachments: [],
+      },
+      context: { workspaceId, userId },
+    });
+    const webRuntimeResult = {
+      ...runtimeResult,
+      normalizedIntent: {
+        ...(runtimeResult.normalizedIntent ?? {}),
+        source: "web",
+      },
+    };
+    const run = await this.agentRunStore.createWebRun({
+      workspaceId,
+      userId,
+      inputText: lastUserMessage.content,
+      runtimeResult: webRuntimeResult,
     });
 
     return this.mapAgentRunToIntakeResponse(run);
@@ -148,6 +193,17 @@ export class AgentService {
       .filter((request) => request.agentRunId === run.id)
       .slice(0, maxPendingConfirmationRequestsInIntakeResponse);
   }
+}
+
+function formatWebConversation(input: CreateWebAgentChatInput): string {
+  const projectContext =
+    input.projectId === null || input.projectId === undefined
+      ? "No project is selected."
+      : `Selected project id: ${input.projectId}.`;
+  const conversation = input.messages
+    .map((message) => `${message.role === "user" ? "User" : "Assistant"}: ${message.content}`)
+    .join("\n");
+  return `${projectContext}\n\n${conversation}`;
 }
 
 type AgentRunForIntakeResponse = {

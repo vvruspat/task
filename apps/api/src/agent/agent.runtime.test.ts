@@ -73,24 +73,45 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.equal(call.init.headers["Content-Type"], "application/json");
   assert.equal(call.init.headers["X-Title"], "tAsk");
   assert.equal(call.init.headers["HTTP-Referer"], undefined);
-  assert.deepEqual(parseRequestBody(call.init.body), {
-    model: "openai/gpt-4.1-mini",
-    messages: [
-      {
-        role: "system",
-        content: "You are tAsk's backend task agent. Reply with a short, actionable response.",
-      },
-      {
-        role: "user",
-        content: "@task summarize today",
-      },
-    ],
-    stream: false,
+  const requestBody = parseRequestBody(call.init.body);
+  assert.ok(isOpenRouterRequestBody(requestBody));
+  assert.equal(requestBody.model, "openai/gpt-4.1-mini");
+  assert.equal(requestBody.stream, false);
+  assert.equal(requestBody.tool_choice, "auto");
+  assert.match(JSON.stringify(requestBody.messages), /Use the provided tools/);
+  assert.match(JSON.stringify(requestBody.messages), /@task summarize today/);
+  assert.match(JSON.stringify(requestBody.tools), /project_create/);
+  assert.match(JSON.stringify(requestBody.tools), /task_create/);
+});
+
+test("OpenRouterAgentRuntime rejects mutation success text without a tool call", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, {
+      choices: [{ message: { content: "Project created." } }],
+      usage: { total_tokens: 10 },
+    }),
+  );
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: {
+      ...request.input,
+      inputText: 'создай проект "Новый альбом"',
+    },
   });
+
+  assert.equal(result.status, "failed");
+  assert.equal(result.error, "Agent did not call the required mutation tool.");
+  assert.equal(
+    result.finalResponse,
+    "No project or task was created because the agent did not call a tool.",
+  );
+  assert.deepEqual(result.toolCalls, []);
 });
 
 test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed operations", async () => {
-  const fetcher = new RecordingOpenRouterFetch(
+  const fetcher = new RecordingOpenRouterFetch([
     jsonResponse(200, {
       choices: [
         {
@@ -98,6 +119,7 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
             content: "Task created.",
             tool_calls: [
               {
+                id: "call-create-task",
                 type: "function",
                 function: {
                   name: "tasks.create",
@@ -116,7 +138,11 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
         total_tokens: 24,
       },
     }),
-  );
+    jsonResponse(200, {
+      choices: [{ message: { content: "Task created." } }],
+      usage: { total_tokens: 24 },
+    }),
+  ]);
   const dispatcher = new RecordingAgentToolOperationDispatcher([
     {
       toolName: "tasks.create",
@@ -141,7 +167,7 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
       kind: "openrouter_chat_completion",
       source: "telegram",
     },
-    finalResponse: "Task created.",
+    finalResponse: "Task created (ID: 55555555-5555-4555-8555-555555555555).",
     status: "completed",
     tokenUsage: {
       total_tokens: 24,
@@ -167,6 +193,7 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
   });
   assert.deepEqual(dispatcher.calls, [
     {
+      callId: "call-create-task",
       toolName: "tasks.create",
       arguments: {
         workspaceId: "22222222-2222-4222-8222-222222222222",
@@ -175,6 +202,69 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
       },
     },
   ]);
+});
+
+test("OpenRouterAgentRuntime continues through project, task, and subtask tool rounds", async () => {
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const taskId = "55555555-5555-4555-8555-555555555555";
+  const toolResponse = (
+    id: string,
+    name: string,
+    argumentsValue: Record<string, unknown>,
+  ): OpenRouterFetchResponse =>
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id,
+                type: "function",
+                function: { name, arguments: JSON.stringify(argumentsValue) },
+              },
+            ],
+          },
+        },
+      ],
+    });
+  const fetcher = new RecordingOpenRouterFetch([
+    toolResponse("call-project", "project_create", { title: "Isekai" }),
+    toolResponse("call-task", "task_create", { projectId, title: "Song 1" }),
+    toolResponse("call-subtasks", "task_add_subtasks", {
+      projectId,
+      taskId,
+      subtasks: [{ title: "Vocals" }, { title: "Mix" }],
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "Everything is ready." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("project_create", { id: projectId, title: "Isekai" }),
+    successfulToolCall("task_create", { id: taskId, title: "Song 1" }),
+    successfulToolCall("task_add_subtasks", { createdCount: 2, taskId }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: { ...request.input, inputText: "Создай проект, задачу и две сабтаски" },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.equal(result.toolCalls.length, 3);
+  assert.equal(fetcher.calls.length, 4);
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["project_create", "task_create", "task_add_subtasks"],
+  );
+  assert.equal(
+    result.finalResponse,
+    `Project "Isekai" created (ID: ${projectId}). Task "Song 1" created (ID: ${taskId}). 2 subtasks created across 1 parent tasks.`,
+  );
+  const finalRequestBody = parseRequestBody(fetcher.calls[3]?.init.body ?? "{}");
+  assert.match(JSON.stringify(finalRequestBody), /call-project/);
+  assert.match(JSON.stringify(finalRequestBody), /call-task/);
+  assert.match(JSON.stringify(finalRequestBody), /call-subtasks/);
 });
 
 test("OpenRouterAgentRuntime logs dispatcher errors as failed tool calls", async () => {
@@ -186,6 +276,7 @@ test("OpenRouterAgentRuntime logs dispatcher errors as failed tool calls", async
             content: "Could not create task.",
             tool_calls: [
               {
+                id: "call-create-task",
                 type: "function",
                 function: {
                   name: "tasks.create",
@@ -225,6 +316,7 @@ test("OpenRouterAgentRuntime rejects malformed assistant tool call arguments", a
             content: "Task created.",
             tool_calls: [
               {
+                id: "call-create-task",
                 type: "function",
                 function: {
                   name: "tasks.create",
@@ -484,6 +576,20 @@ function jsonResponse(status: number, body: unknown): OpenRouterFetchResponse {
   };
 }
 
+function successfulToolCall(
+  toolName: string,
+  result: Record<string, unknown>,
+): AgentRuntimeToolCall {
+  return {
+    toolName,
+    arguments: {},
+    result,
+    status: "success",
+    error: null,
+    completedAt: new Date("2026-07-18T09:00:00.000Z"),
+  };
+}
+
 function getOnlyCall(fetcher: RecordingOpenRouterFetch): OpenRouterFetchCall {
   assert.equal(fetcher.calls.length, 1);
   const [call] = fetcher.calls;
@@ -511,6 +617,10 @@ function readRequestModel(value: string): unknown {
 
 type OpenRouterRequestBody = {
   model?: unknown;
+  messages?: unknown;
+  stream?: unknown;
+  tool_choice?: unknown;
+  tools?: unknown;
 };
 
 function isOpenRouterRequestBody(value: unknown): value is OpenRouterRequestBody {

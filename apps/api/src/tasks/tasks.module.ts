@@ -15,5 +15,6 @@ const tasksServiceProvider: Provider<TasksService> = {
   imports: [DatabaseModule],
   controllers: [TasksController],
   providers: [TypeOrmTaskReadStore, tasksServiceProvider],
+  exports: [TasksService],
 })
 export class TasksModule {}

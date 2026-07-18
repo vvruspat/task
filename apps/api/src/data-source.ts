@@ -9,6 +9,7 @@ import {
   ConfirmationRequestEntity,
   InviteEntity,
   ProjectEntity,
+  SavedViewEntity,
   StatusEntity,
   TaskEntity,
   TaskSkillEntity,
@@ -31,12 +32,14 @@ import { CreateConfirmationRequestsTable1783296480000 } from "./persistence/migr
 import { CreateTelegramTables1783296540000 } from "./persistence/migrations/1783296540000-create-telegram-tables.js";
 import { CreateInvitesTable1783296600000 } from "./persistence/migrations/1783296600000-create-invites-table.js";
 import { AddAgentRunSourceThreadId1783296660000 } from "./persistence/migrations/1783296660000-add-agent-run-source-thread-id.js";
+import { CreateSavedViewsTable1783296720000 } from "./persistence/migrations/1783296720000-create-saved-views-table.js";
 
 const apiEntities = [
   WorkspaceEntity,
   UserEntity,
   WorkspaceMemberEntity,
   ProjectEntity,
+  SavedViewEntity,
   StatusEntity,
   TaskEntity,
   TaskSkillEntity,
@@ -64,6 +67,7 @@ const apiMigrations = [
   CreateTelegramTables1783296540000,
   CreateInvitesTable1783296600000,
   AddAgentRunSourceThreadId1783296660000,
+  CreateSavedViewsTable1783296720000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

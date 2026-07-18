@@ -816,6 +816,59 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/agent/chat/stream": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Stream a trusted web user's agent response */
+    post: operations["WebAgentController_streamWebChat"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/views": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List the current user's saved workspace views */
+    get: operations["ViewsController_list"];
+    put?: never;
+    /** Create a personal saved workspace view */
+    post: operations["ViewsController_create"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/views/{viewId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete a personal saved workspace view */
+    delete: operations["ViewsController_delete"];
+    options?: never;
+    head?: never;
+    /** Update a personal saved workspace view */
+    patch: operations["ViewsController_update"];
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1207,6 +1260,8 @@ export interface components {
     UpdateTaskStatusDto: {
       /** Format: uuid */
       statusId: string | null;
+      /** @example 1000 */
+      position?: string;
     };
     UpdateTaskAssigneeDto: {
       /** Format: uuid */
@@ -1706,6 +1761,90 @@ export interface components {
       updatedAt: string;
       toolCalls: components["schemas"]["AgentRunToolCallAuditDto"][];
       confirmationRequests: components["schemas"]["AgentRunConfirmationLinkDto"][];
+    };
+    WebAgentChatMessageDto: {
+      /** @enum {string} */
+      role: "user" | "assistant";
+      content: Record<string, never>;
+    };
+    CreateWebAgentChatDto: {
+      messages: components["schemas"]["WebAgentChatMessageDto"][];
+      /** Format: uuid */
+      projectId?: Record<string, never> | null;
+    };
+    SavedViewFilterDto: {
+      /** @enum {string} */
+      field: "status" | "assignee" | "creator" | "project" | "due_date" | "content";
+      /** @enum {string} */
+      operator:
+        | "is"
+        | "is_not"
+        | "before"
+        | "after"
+        | "contains"
+        | "not_contains"
+        | "is_empty"
+        | "is_not_empty";
+      value: string | null;
+    };
+    SavedViewSettingsDto: {
+      /** @enum {string} */
+      grouping: "none" | "status" | "project" | "parent_task";
+      /** @enum {string} */
+      subGrouping: "none" | "status" | "project" | "parent_task";
+      /** @enum {string} */
+      ordering: "manual" | "title" | "status" | "created_at" | "updated_at" | "due_at";
+      /** @enum {string} */
+      orderDirection: "asc" | "desc";
+      showSubtasks: boolean;
+      showEmptyGroups: boolean;
+      displayProperties: (
+        | "status"
+        | "project"
+        | "assignee"
+        | "due_at"
+        | "created_at"
+        | "updated_at"
+      )[];
+      filters: components["schemas"]["SavedViewFilterDto"][];
+    };
+    SavedViewDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** Format: uuid */
+      projectId?: string | null;
+      name: string;
+      description?: string | null;
+      /** @enum {string} */
+      layout: "list" | "board";
+      settings: components["schemas"]["SavedViewSettingsDto"];
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    CreateSavedViewDto: {
+      /** @example Текущий спринт */
+      name: string;
+      description?: string | null;
+      /** Format: uuid */
+      projectId?: string | null;
+      /** @enum {string} */
+      layout: "list" | "board";
+      settings: components["schemas"]["SavedViewSettingsDto"];
+    };
+    UpdateSavedViewDto: {
+      name?: string;
+      description?: string | null;
+      /** Format: uuid */
+      projectId?: string | null;
+      /** @enum {string} */
+      layout?: "list" | "board";
+      settings?: components["schemas"]["SavedViewSettingsDto"];
     };
     ListTaskTableQueryDto: {
       search?: string;
@@ -4224,6 +4363,188 @@ export interface operations {
         };
       };
       /** @description Workspace or agent run is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WebAgentController_streamWebChat: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWebAgentChatDto"];
+      };
+    };
+    responses: {
+      /** @description Chat messages are invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ViewsController_list: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SavedViewDto"][];
+        };
+      };
+      /** @description Workspace is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ViewsController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateSavedViewDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SavedViewDto"];
+        };
+      };
+      /** @description View payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or project is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ViewsController_delete: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        viewId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SavedViewDto"];
+        };
+      };
+      /** @description Workspace or view is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ViewsController_update: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        viewId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateSavedViewDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SavedViewDto"];
+        };
+      };
+      /** @description View payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace, project, or view is missing or not visible. */
       404: {
         headers: {
           [name: string]: unknown;

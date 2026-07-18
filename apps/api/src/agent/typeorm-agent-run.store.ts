@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
 import type { DataSource } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
@@ -16,6 +17,7 @@ import type {
   AgentRunStore,
   FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
+  PersistWebAgentRunInput,
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
 
@@ -86,6 +88,15 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
     });
   }
 
+  async isWorkspaceMember(workspaceId: string, userId: string): Promise<boolean> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      userId,
+      workspaceId,
+    });
+    return membership !== null;
+  }
+
   async getDetailForWorkspace(
     workspaceId: string,
     agentRunId: string,
@@ -138,15 +149,32 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
   }
 
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunEntity> {
+    return this.createRun("telegram", input);
+  }
+
+  async createWebRun(input: PersistWebAgentRunInput): Promise<AgentRunEntity> {
+    return this.createRun("web", {
+      ...input,
+      sourceThreadId: null,
+      sourceMessageId: null,
+    });
+  }
+
+  private async createRun(
+    source: "telegram" | "web",
+    input: PersistTelegramAgentRunInput,
+  ): Promise<AgentRunEntity> {
     const dataSource = await this.getInitializedDataSource();
 
     return dataSource.transaction(async (entityManager) => {
+      const now = new Date();
       const runRepository = entityManager.getRepository(AgentRunEntity);
       const run = await runRepository.save(
         runRepository.create({
+          id: randomUUID(),
           workspaceId: input.workspaceId,
           userId: input.userId,
-          source: "telegram",
+          source,
           sourceThreadId: input.sourceThreadId,
           sourceMessageId: input.sourceMessageId,
           model: input.runtimeResult.model,
@@ -157,6 +185,8 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
           tokenUsage: input.runtimeResult.tokenUsage,
           cost: input.runtimeResult.cost,
           error: input.runtimeResult.error,
+          createdAt: now,
+          updatedAt: now,
         }),
       );
 
@@ -164,6 +194,7 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
         const toolCallRepository = entityManager.getRepository(AgentToolCallEntity);
         const toolCalls = input.runtimeResult.toolCalls.map((toolCall) =>
           toolCallRepository.create({
+            id: randomUUID(),
             agentRunId: run.id,
             toolName: toolCall.toolName,
             arguments: toolCall.arguments,
@@ -171,6 +202,7 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
             status: toolCall.status,
             error: toolCall.error,
             completedAt: toolCall.completedAt,
+            createdAt: now,
           }),
         );
 

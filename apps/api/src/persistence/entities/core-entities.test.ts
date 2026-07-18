@@ -10,6 +10,7 @@ import {
   ConfirmationRequestEntity,
   InviteEntity,
   ProjectEntity,
+  SavedViewEntity,
   StatusEntity,
   TaskEntity,
   TaskSkillEntity,
@@ -30,6 +31,7 @@ test("core persistence entities map to the expected table names", () => {
         table.target === UserEntity ||
         table.target === WorkspaceMemberEntity ||
         table.target === ProjectEntity ||
+        table.target === SavedViewEntity ||
         table.target === StatusEntity ||
         table.target === TaskEntity ||
         table.target === TaskSkillEntity ||
@@ -56,6 +58,7 @@ test("core persistence entities map to the expected table names", () => {
     "confirmation_requests",
     "invites",
     "projects",
+    "saved_views",
     "statuses",
     "task_skill_versions",
     "task_skills",

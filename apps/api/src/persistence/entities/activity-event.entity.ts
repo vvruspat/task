@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 import type { ActivityEventRecord } from "../types/core-persistence.types.js";
 
@@ -7,7 +8,7 @@ import type { ActivityEventRecord } from "../types/core-persistence.types.js";
 @Index("idx_activity_events_workspace_id_actor_user_id", ["workspaceId", "actorUserId"])
 export class ActivityEventEntity implements ActivityEventRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";
@@ -28,5 +29,5 @@ export class ActivityEventEntity implements ActivityEventRecord {
   payload: Record<string, unknown> = {};
 
   @CreateDateColumn({ name: "created_at", type: "timestamptz" })
-  createdAt = new Date(0);
+  createdAt = new Date();
 }

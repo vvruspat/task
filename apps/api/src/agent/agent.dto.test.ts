@@ -5,6 +5,7 @@ import {
   AgentRunIntakeResponseDto,
   AgentRunSummaryDto,
   parseCreateTelegramAgentRunInput,
+  parseCreateWebAgentChatInput,
 } from "./agent.dto.js";
 
 const validInput = {
@@ -120,6 +121,38 @@ test("parseCreateTelegramAgentRunInput rejects malformed Telegram agent requests
 
   for (const payload of invalidPayloads) {
     assert.throws(() => parseCreateTelegramAgentRunInput(payload), BadRequestException);
+  }
+});
+
+test("parseCreateWebAgentChatInput validates conversation and project context", () => {
+  assert.deepEqual(
+    parseCreateWebAgentChatInput({
+      messages: [
+        { role: "assistant", content: " Чем помочь? " },
+        { role: "user", content: " Покажи статус проекта " },
+      ],
+      projectId: "b0000000-0000-4000-8000-000000000001",
+    }),
+    {
+      messages: [
+        { role: "assistant", content: "Чем помочь?" },
+        { role: "user", content: "Покажи статус проекта" },
+      ],
+      projectId: "b0000000-0000-4000-8000-000000000001",
+    },
+  );
+});
+
+test("parseCreateWebAgentChatInput rejects empty and assistant-ended conversations", () => {
+  const invalidPayloads: unknown[] = [
+    null,
+    { messages: [] },
+    { messages: [{ role: "assistant", content: "Готово" }] },
+    { messages: [{ role: "user", content: "" }] },
+    { messages: [{ role: "user", content: "Привет" }], projectId: "not-a-uuid" },
+  ];
+  for (const payload of invalidPayloads) {
+    assert.throws(() => parseCreateWebAgentChatInput(payload), BadRequestException);
   }
 });
 

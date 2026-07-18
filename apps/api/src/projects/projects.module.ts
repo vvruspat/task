@@ -15,5 +15,6 @@ const projectsServiceProvider: Provider<ProjectsService> = {
   imports: [DatabaseModule],
   controllers: [ProjectsController],
   providers: [TypeOrmProjectReadStore, projectsServiceProvider],
+  exports: [ProjectsService],
 })
 export class ProjectsModule {}

@@ -54,6 +54,7 @@ export type MoveTaskInput = {
 
 export type UpdateTaskStatusInput = {
   statusId: string | null;
+  position?: string;
 };
 
 export type UpdateTaskAssigneeInput = {

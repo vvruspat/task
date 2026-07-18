@@ -31,6 +31,11 @@ export type PersistTelegramAgentRunInput = {
   runtimeResult: AgentRuntimeResult;
 };
 
+export type PersistWebAgentRunInput = Omit<
+  PersistTelegramAgentRunInput,
+  "sourceMessageId" | "sourceThreadId"
+>;
+
 export type PersistAgentToolCallInput = AgentRuntimeToolCall;
 
 export type FindTelegramAgentRunInput = {
@@ -56,6 +61,8 @@ export type AgentRunStore = {
     agentRunId: string,
     userId: string,
   ): Promise<AgentRunDetailRecord | null>;
+  isWorkspaceMember(workspaceId: string, userId: string): Promise<boolean>;
   findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunRecord | null>;
   createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunRecord>;
+  createWebRun(input: PersistWebAgentRunInput): Promise<AgentRunRecord>;
 };

@@ -9,9 +9,11 @@ import type {
   AgentRunSummary,
   AgentRunToolCallAudit,
   CreateTelegramAgentRunInput,
+  CreateWebAgentChatInput,
   TelegramAgentRunAttachmentInput,
   TelegramAgentRunDocumentAttachmentInput,
   TelegramAgentRunPhotoAttachmentInput,
+  WebAgentChatMessage,
 } from "./agent.contracts.js";
 
 const telegramUserIdPattern = /^\d+$/u;
@@ -109,6 +111,30 @@ export class CreateTelegramAgentRunDto implements CreateTelegramAgentRunInput {
     ],
   })
   readonly attachments: TelegramAgentRunAttachmentInput[] = [];
+}
+
+export class WebAgentChatMessageDto implements WebAgentChatMessage {
+  @ApiProperty({ enum: ["user", "assistant"] })
+  readonly role: "assistant" | "user" = "user";
+
+  @ApiProperty()
+  readonly content = "";
+}
+
+export class CreateWebAgentChatDto implements CreateWebAgentChatInput {
+  @ApiProperty({ isArray: true, type: WebAgentChatMessageDto })
+  readonly messages: WebAgentChatMessage[] = [];
+
+  @ApiPropertyOptional({ format: "uuid", nullable: true })
+  readonly projectId?: string | null;
+}
+
+export class ParseCreateWebAgentChatBodyPipe
+  implements PipeTransform<unknown, CreateWebAgentChatInput>
+{
+  transform(value: unknown): CreateWebAgentChatInput {
+    return parseCreateWebAgentChatInput(value);
+  }
 }
 
 export class ParseCreateTelegramAgentRunBodyPipe
@@ -318,6 +344,52 @@ export function parseCreateTelegramAgentRunInput(value: unknown): CreateTelegram
     attachments: readAttachments(value),
   };
 }
+
+export function parseCreateWebAgentChatInput(value: unknown): CreateWebAgentChatInput {
+  if (
+    !isUnknownRecord(value) ||
+    !Array.isArray(value["messages"]) ||
+    value["messages"].length === 0
+  ) {
+    throw new BadRequestException("messages must be a non-empty array.");
+  }
+
+  const messages = value["messages"].map(parseWebAgentChatMessage);
+  const lastMessage = messages.at(-1);
+
+  if (lastMessage?.role !== "user") {
+    throw new BadRequestException("The last message must be from the user.");
+  }
+
+  return {
+    messages,
+    ...(value["projectId"] === undefined
+      ? {}
+      : { projectId: readNullableUuid(value["projectId"], "projectId") }),
+  };
+}
+
+function parseWebAgentChatMessage(value: unknown): WebAgentChatMessage {
+  if (!isUnknownRecord(value) || (value["role"] !== "user" && value["role"] !== "assistant")) {
+    throw new BadRequestException("Each message must have a valid role.");
+  }
+
+  if (typeof value["content"] !== "string" || value["content"].trim().length === 0) {
+    throw new BadRequestException("Each message must have non-empty content.");
+  }
+
+  return { role: value["role"], content: value["content"].trim() };
+}
+
+function readNullableUuid(value: unknown, field: string): string | null {
+  if (value === null) return null;
+  if (typeof value !== "string" || !webUuidV4Pattern.test(value)) {
+    throw new BadRequestException(`${field} must be a UUID v4 or null.`);
+  }
+  return value;
+}
+
+const webUuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);

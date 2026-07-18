@@ -14,6 +14,7 @@ import { StatusesModule } from "./statuses/statuses.module.js";
 import { TaskSkillsModule } from "./task-skills/task-skills.module.js";
 import { TasksModule } from "./tasks/tasks.module.js";
 import { TelegramModule } from "./telegram/telegram.module.js";
+import { ViewsModule } from "./views/views.module.js";
 import { WorkspacesModule } from "./workspaces/workspaces.module.js";
 
 @Module({
@@ -32,6 +33,7 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
     ConfirmationsModule,
     TelegramModule,
     AgentModule,
+    ViewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

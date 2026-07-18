@@ -75,16 +75,27 @@ test("TasksController uses trusted current user context for task list reads", as
     new TasksService(createReadStore({ tasks: [taskSummary] })),
   );
 
-  const response = await controller.listActiveTasks(workspaceId, projectId, userId);
+  const response = await controller.listActiveTasks(
+    workspaceId,
+    projectId,
+    userId,
+  );
 
   assert.equal(response.length, 1);
   assert.equal(response[0]?.id, taskId);
 });
 
 test("TasksController uses trusted current user context for task detail reads", async () => {
-  const controller = new TasksController(new TasksService(createReadStore({ task: taskSummary })));
+  const controller = new TasksController(
+    new TasksService(createReadStore({ task: taskSummary })),
+  );
 
-  const response = await controller.getTask(workspaceId, projectId, taskId, userId);
+  const response = await controller.getTask(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+  );
 
   assert.equal(response.id, taskId);
   assert.equal(response.projectId, projectId);
@@ -103,7 +114,12 @@ test("TasksController uses trusted current user context for task creates", async
     ),
   );
 
-  const response = await controller.createTask(workspaceId, projectId, userId, input);
+  const response = await controller.createTask(
+    workspaceId,
+    projectId,
+    userId,
+    input,
+  );
 
   assert.equal(response.title, input.title);
   assert.equal(response.createdByUserId, userId);
@@ -129,7 +145,13 @@ test("TasksController uses trusted current user context for subtask creates", as
     ),
   );
 
-  const response = await controller.addTaskSubtasks(workspaceId, projectId, taskId, userId, input);
+  const response = await controller.addTaskSubtasks(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
 
   assert.equal(response.length, 1);
   assert.equal(response[0]?.id, subtaskId);
@@ -149,14 +171,23 @@ test("TasksController uses trusted current user context for task status updates"
     ),
   );
 
-  const response = await controller.updateTaskStatus(workspaceId, projectId, taskId, userId, input);
+  const response = await controller.updateTaskStatus(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
 
   assert.equal(response.id, taskId);
   assert.equal(response.statusId, statusId);
 });
 
 test("TasksController uses trusted current user context for task updates", async () => {
-  const input: UpdateTaskInput = { description: "Second take", metadata: { take: 2 } };
+  const input: UpdateTaskInput = {
+    description: "Second take",
+    metadata: { take: 2 },
+  };
   const controller = new TasksController(
     new TasksService(
       createReadStore({
@@ -172,7 +203,13 @@ test("TasksController uses trusted current user context for task updates", async
     ),
   );
 
-  const response = await controller.updateTask(workspaceId, projectId, taskId, userId, input);
+  const response = await controller.updateTask(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
 
   assert.equal(response.id, taskId);
   assert.equal(response.description, input.description);
@@ -186,13 +223,23 @@ test("TasksController uses trusted current user context for task moves", async (
       createReadStore({
         moveResult: {
           status: "updated",
-          task: { ...taskSummary, parentTaskId: input.parentTaskId, position: input.position },
+          task: {
+            ...taskSummary,
+            parentTaskId: input.parentTaskId,
+            position: input.position,
+          },
         },
       }),
     ),
   );
 
-  const response = await controller.moveTask(workspaceId, projectId, taskId, userId, input);
+  const response = await controller.moveTask(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+    input,
+  );
 
   assert.equal(response.id, taskId);
   assert.equal(response.parentTaskId, input.parentTaskId);
@@ -261,7 +308,12 @@ test("TasksController uses trusted current user context for task archives", asyn
     ),
   );
 
-  const response = await controller.archiveTask(workspaceId, projectId, taskId, userId);
+  const response = await controller.archiveTask(
+    workspaceId,
+    projectId,
+    taskId,
+    userId,
+  );
 
   assert.equal(response.id, taskId);
   assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
@@ -290,10 +342,22 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
   );
 
   assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
-  assert.throws(() => pipe.transform({ title: "Task", parentTaskId: "bad" }), BadRequestException);
-  assert.throws(() => pipe.transform({ title: "Task", position: "first" }), BadRequestException);
-  assert.throws(() => pipe.transform({ title: "Task", dueAt: "tomorrow" }), BadRequestException);
-  assert.throws(() => pipe.transform({ title: "Task", metadata: [] }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ title: "Task", parentTaskId: "bad" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ title: "Task", position: "first" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ title: "Task", dueAt: "tomorrow" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ title: "Task", metadata: [] }),
+    BadRequestException,
+  );
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
@@ -326,7 +390,10 @@ test("ParseAddTaskSubtasksBodyPipe validates and normalizes subtask payloads", (
   );
 
   assert.throws(() => pipe.transform({ subtasks: [] }), BadRequestException);
-  assert.throws(() => pipe.transform({ subtasks: [{ title: "" }] }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ subtasks: [{ title: "" }] }),
+    BadRequestException,
+  );
   assert.throws(
     () => pipe.transform({ subtasks: [{ title: "Task", position: "first" }] }),
     BadRequestException,
@@ -357,7 +424,9 @@ test("ParseUpdateTaskBodyPipe validates and normalizes task update payloads", ()
       metadata: { instrument: "bass" },
     },
   );
-  assert.deepEqual(pipe.transform({ description: null }), { description: null });
+  assert.deepEqual(pipe.transform({ description: null }), {
+    description: null,
+  });
 
   assert.throws(() => pipe.transform({}), BadRequestException);
   assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
@@ -369,10 +438,13 @@ test("ParseUpdateTaskBodyPipe validates and normalizes task update payloads", ()
 test("ParseMoveTaskBodyPipe validates task move payloads", () => {
   const pipe = new ParseMoveTaskBodyPipe();
 
-  assert.deepEqual(pipe.transform({ parentTaskId: taskId, position: " 2000 " }), {
-    parentTaskId: taskId,
-    position: "2000",
-  });
+  assert.deepEqual(
+    pipe.transform({ parentTaskId: taskId, position: " 2000 " }),
+    {
+      parentTaskId: taskId,
+      position: "2000",
+    },
+  );
   assert.deepEqual(pipe.transform({ parentTaskId: null, position: "-100.5" }), {
     parentTaskId: null,
     position: "-100.5",
@@ -383,7 +455,10 @@ test("ParseMoveTaskBodyPipe validates task move payloads", () => {
     () => pipe.transform({ parentTaskId: "bad", position: "1000" }),
     BadRequestException,
   );
-  assert.throws(() => pipe.transform({ parentTaskId: taskId, position: "" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ parentTaskId: taskId, position: "" }),
+    BadRequestException,
+  );
   assert.throws(
     () => pipe.transform({ parentTaskId: taskId, position: "first" }),
     BadRequestException,
@@ -396,11 +471,19 @@ test("ParseUpdateTaskStatusBodyPipe validates task status payloads", () => {
 
   assert.deepEqual(pipe.transform({ statusId }), { statusId });
   assert.deepEqual(pipe.transform({ statusId: null }), { statusId: null });
+  assert.deepEqual(pipe.transform({ statusId, position: "2000" }), {
+    statusId,
+    position: "2000",
+  });
 
   assert.throws(() => pipe.transform({}), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: "" }), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: "bad" }), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: 1 }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ statusId, position: "last" }),
+    BadRequestException,
+  );
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
@@ -408,12 +491,23 @@ test("ParseUpdateTaskAssigneeBodyPipe validates task assignee payloads", () => {
   const pipe = new ParseUpdateTaskAssigneeBodyPipe();
 
   assert.deepEqual(pipe.transform({ assigneeUserId }), { assigneeUserId });
-  assert.deepEqual(pipe.transform({ assigneeUserId: null }), { assigneeUserId: null });
+  assert.deepEqual(pipe.transform({ assigneeUserId: null }), {
+    assigneeUserId: null,
+  });
 
   assert.throws(() => pipe.transform({}), BadRequestException);
-  assert.throws(() => pipe.transform({ assigneeUserId: "" }), BadRequestException);
-  assert.throws(() => pipe.transform({ assigneeUserId: "bad" }), BadRequestException);
-  assert.throws(() => pipe.transform({ assigneeUserId: 1 }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ assigneeUserId: "" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ assigneeUserId: "bad" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ assigneeUserId: 1 }),
+    BadRequestException,
+  );
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
@@ -428,7 +522,10 @@ test("ParseUpdateTaskDueDateBodyPipe validates task due date payloads", () => {
 
   assert.throws(() => pipe.transform({}), BadRequestException);
   assert.throws(() => pipe.transform({ dueAt: "" }), BadRequestException);
-  assert.throws(() => pipe.transform({ dueAt: "tomorrow" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ dueAt: "tomorrow" }),
+    BadRequestException,
+  );
   assert.throws(() => pipe.transform({ dueAt: 1 }), BadRequestException);
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
@@ -450,17 +547,33 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
       sortBy: "title",
       sortDirection: "asc",
     }),
-    { search: "bass", statusId, page: 2, pageSize: 25, sortBy: "title", sortDirection: "asc" },
+    {
+      search: "bass",
+      statusId,
+      page: 2,
+      pageSize: 25,
+      sortBy: "title",
+      sortDirection: "asc",
+    },
   );
-  assert.deepEqual(pipe.transform({ statusFilter: "unassigned", assigneeFilter: "unassigned" }), {
-    statusFilter: "unassigned",
-    assigneeFilter: "unassigned",
-    sortBy: "updatedAt",
-    sortDirection: "desc",
-    page: 1,
-    pageSize: 50,
-  });
-  assert.throws(() => pipe.transform({ sortBy: "unsafe" }), BadRequestException);
+  assert.deepEqual(
+    pipe.transform({
+      statusFilter: "unassigned",
+      assigneeFilter: "unassigned",
+    }),
+    {
+      statusFilter: "unassigned",
+      assigneeFilter: "unassigned",
+      sortBy: "updatedAt",
+      sortDirection: "desc",
+      page: 1,
+      pageSize: 50,
+    },
+  );
+  assert.throws(
+    () => pipe.transform({ sortBy: "unsafe" }),
+    BadRequestException,
+  );
   assert.throws(
     () => pipe.transform({ statusId, statusFilter: "unassigned" }),
     BadRequestException,
@@ -471,21 +584,37 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
   );
   assert.throws(() => pipe.transform({ pageSize: "101" }), BadRequestException);
   assert.throws(
-    () => pipe.transform({ dueFrom: "2026-02-01T00:00:00Z", dueTo: "2026-01-01T00:00:00Z" }),
+    () =>
+      pipe.transform({
+        dueFrom: "2026-02-01T00:00:00Z",
+        dueTo: "2026-01-01T00:00:00Z",
+      }),
     BadRequestException,
   );
 });
 
 test("ParseBulkUpdateTasksBodyPipe validates every selected task id and update", () => {
   const pipe = new ParseBulkUpdateTasksBodyPipe();
-  assert.deepEqual(pipe.transform({ taskIds: [taskId], statusId, dueAt: null }), {
-    taskIds: [taskId],
-    statusId,
-    dueAt: null,
-  });
-  assert.throws(() => pipe.transform({ taskIds: [taskId] }), BadRequestException);
-  assert.throws(() => pipe.transform({ taskIds: [taskId, taskId], statusId }), BadRequestException);
-  assert.throws(() => pipe.transform({ taskIds: ["invalid"], statusId }), BadRequestException);
+  assert.deepEqual(
+    pipe.transform({ taskIds: [taskId], statusId, dueAt: null }),
+    {
+      taskIds: [taskId],
+      statusId,
+      dueAt: null,
+    },
+  );
+  assert.throws(
+    () => pipe.transform({ taskIds: [taskId] }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ taskIds: [taskId, taskId], statusId }),
+    BadRequestException,
+  );
+  assert.throws(
+    () => pipe.transform({ taskIds: ["invalid"], statusId }),
+    BadRequestException,
+  );
 });
 
 function createReadStore(options: {

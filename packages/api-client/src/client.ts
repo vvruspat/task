@@ -15,6 +15,7 @@ export type HealthResponse = components["schemas"]["HealthResponseDto"];
 export type ProjectDetail = components["schemas"]["ProjectDetailDto"];
 export type ProjectMatrix = components["schemas"]["ProjectMatrixDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
+export type SavedView = components["schemas"]["SavedViewDto"];
 export type TaskAttachment = components["schemas"]["TaskAttachmentDto"];
 export type TaskActivityEvent = components["schemas"]["TaskActivityEventDto"];
 export type TaskComment = components["schemas"]["TaskCommentDto"];
@@ -65,6 +66,8 @@ type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"]
 type CreateWorkspaceStatusOperation = operations["StatusesController_createStatus"];
 type UpdateWorkspaceStatusOperation = operations["StatusesController_updateStatus"];
 type UpdateWorkspaceMemberRoleOperation = operations["WorkspacesController_updateMemberRole"];
+type CreateSavedViewOperation = operations["ViewsController_create"];
+type UpdateSavedViewOperation = operations["ViewsController_update"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -123,6 +126,10 @@ export type UpdateWorkspaceStatusResponse =
   UpdateWorkspaceStatusOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateWorkspaceMemberRoleResponse =
   UpdateWorkspaceMemberRoleOperation["responses"]["200"]["content"]["application/json"];
+export type CreateSavedViewInput =
+  CreateSavedViewOperation["requestBody"]["content"]["application/json"];
+export type UpdateSavedViewInput =
+  UpdateSavedViewOperation["requestBody"]["content"]["application/json"];
 
 export type LinkTelegramMiniAppIdentityRequestInput = {
   body: VerifyTelegramMiniAppInitDataInput;
@@ -272,6 +279,9 @@ export type UpdateWorkspaceMemberRoleRequestInput = WorkspaceScopedInput & {
   memberId: string;
   body: UpdateWorkspaceMemberRoleInput;
 };
+export type SavedViewScopedInput = WorkspaceScopedInput & { viewId: string };
+export type CreateSavedViewRequestInput = WorkspaceScopedInput & { body: CreateSavedViewInput };
+export type UpdateSavedViewRequestInput = SavedViewScopedInput & { body: UpdateSavedViewInput };
 
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
@@ -289,6 +299,7 @@ export type TaskApiClient = {
   createWorkspaceStatus(
     input: CreateWorkspaceStatusRequestInput,
   ): Promise<CreateWorkspaceStatusResponse>;
+  createSavedView(input: CreateSavedViewRequestInput): Promise<SavedView>;
   cloneTaskSkill(input: CloneTaskSkillRequestInput): Promise<CloneTaskSkillResponse>;
   getHealth(): Promise<HealthResponse>;
   getTask(input: TaskScopedInput): Promise<TaskDetail>;
@@ -315,6 +326,7 @@ export type TaskApiClient = {
   listTaskActivity(input: TaskScopedInput): Promise<TaskActivityEvent[]>;
   listTaskComments(input: TaskScopedInput): Promise<TaskComment[]>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
+  listSavedViews(input: WorkspaceScopedInput): Promise<SavedView[]>;
   listStatuses(input: WorkspaceScopedInput): Promise<WorkspaceStatus[]>;
   listWorkspaceMembers(input: WorkspaceScopedInput): Promise<WorkspaceMember[]>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
@@ -346,6 +358,8 @@ export type TaskApiClient = {
   updateWorkspaceStatus(
     input: UpdateWorkspaceStatusRequestInput,
   ): Promise<UpdateWorkspaceStatusResponse>;
+  updateSavedView(input: UpdateSavedViewRequestInput): Promise<SavedView>;
+  deleteSavedView(input: SavedViewScopedInput): Promise<SavedView>;
   moveTask(input: MoveTaskRequestInput): Promise<TaskDetail>;
   bulkUpdateTasks(input: BulkUpdateTasksRequestInput): Promise<TaskDetail[]>;
 };
@@ -420,6 +434,26 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    createSavedView: (input) =>
+      request(options.fetch, baseUrl, savedViewsPath(input), savedViewParser, {
+        body: input.body,
+        method: "POST",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    updateSavedView: (input) =>
+      request(options.fetch, baseUrl, savedViewPath(input), savedViewParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    deleteSavedView: (input) =>
+      request(options.fetch, baseUrl, savedViewPath(input), savedViewParser, {
+        method: "DELETE",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     updateProject: (input) =>
       request(
         options.fetch,
@@ -617,7 +651,7 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
       request(
         options.fetch,
         baseUrl,
-        `/workspaces/${encodePathSegment(input.workspaceId)}/confirmation-requests`,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/confirmations`,
         confirmationRequestSummaryArrayParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
@@ -667,6 +701,12 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    listSavedViews: (input) =>
+      request(options.fetch, baseUrl, savedViewsPath(input), savedViewArrayParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     getProjectMatrix: (input) =>
       request(
         options.fetch,
@@ -947,6 +987,12 @@ function taskPath(input: TaskScopedInput): string {
 function taskSkillsPath(input: WorkspaceScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/task-skills`;
 }
+function savedViewsPath(input: WorkspaceScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/views`;
+}
+function savedViewPath(input: SavedViewScopedInput): string {
+  return `${savedViewsPath(input)}/${encodePathSegment(input.viewId)}`;
+}
 function taskSkillPath(input: TaskSkillScopedInput): string {
   return `${taskSkillsPath(input)}/${encodePathSegment(input.taskSkillId)}`;
 }
@@ -984,7 +1030,7 @@ function toTaskTableQuery(input: ListTaskTableRequestInput): string {
   return text.length === 0 ? "" : `?${text}`;
 }
 function confirmationRequestPath(input: ConfirmationRequestScopedInput): string {
-  return `/workspaces/${encodePathSegment(input.workspaceId)}/confirmation-requests/${encodePathSegment(input.confirmationRequestId)}`;
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/confirmations/${encodePathSegment(input.confirmationRequestId)}`;
 }
 
 function workspaceStatusPath(input: WorkspaceStatusScopedInput): string {
@@ -1066,6 +1112,14 @@ const projectSummaryArrayParser: ResponseParser<ProjectSummary[]> = {
 const projectDetailParser: ResponseParser<ProjectDetail> = {
   isValid: isProjectDetail,
   label: "project detail",
+};
+const savedViewParser: ResponseParser<SavedView> = {
+  isValid: isSavedView,
+  label: "saved view",
+};
+const savedViewArrayParser: ResponseParser<SavedView[]> = {
+  isValid: (value): value is SavedView[] => isArrayOf(value, isSavedView),
+  label: "saved view list",
 };
 const projectMatrixParser: ResponseParser<ProjectMatrix> = {
   isValid: isProjectMatrix,
@@ -1221,6 +1275,56 @@ function isAgentRunConfirmationLink(
 
 function isProjectSummary(value: unknown): value is ProjectSummary {
   return isProjectDetail(value);
+}
+function isSavedView(value: unknown): value is SavedView {
+  const settings = isJsonObject(value) ? readProperty(value, "settings") : null;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "userId") &&
+    hasNullableString(value, "projectId") &&
+    hasString(value, "name") &&
+    hasNullableString(value, "description") &&
+    (readProperty(value, "layout") === "list" || readProperty(value, "layout") === "board") &&
+    isJsonObject(settings) &&
+    isSavedViewGrouping(readProperty(settings, "grouping")) &&
+    isSavedViewGrouping(readProperty(settings, "subGrouping")) &&
+    isSavedViewOrdering(readProperty(settings, "ordering")) &&
+    (readProperty(settings, "orderDirection") === "asc" ||
+      readProperty(settings, "orderDirection") === "desc") &&
+    typeof readProperty(settings, "showSubtasks") === "boolean" &&
+    typeof readProperty(settings, "showEmptyGroups") === "boolean" &&
+    isArrayOf(readProperty(settings, "displayProperties"), isSavedViewDisplayProperty) &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
+}
+
+function isSavedViewGrouping(value: unknown): boolean {
+  return value === "none" || value === "status" || value === "project" || value === "parent_task";
+}
+function isSavedViewOrdering(value: unknown): boolean {
+  return (
+    value === "manual" ||
+    value === "title" ||
+    value === "status" ||
+    value === "created_at" ||
+    value === "updated_at" ||
+    value === "due_at"
+  );
+}
+function isSavedViewDisplayProperty(
+  value: unknown,
+): value is SavedView["settings"]["displayProperties"][number] {
+  return (
+    value === "status" ||
+    value === "project" ||
+    value === "assignee" ||
+    value === "due_at" ||
+    value === "created_at" ||
+    value === "updated_at"
+  );
 }
 function isDashboardOverview(value: unknown): value is DashboardOverview {
   return (

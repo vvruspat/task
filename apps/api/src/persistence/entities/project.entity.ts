@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   Column,
   CreateDateColumn,
@@ -14,7 +15,7 @@ import type { ProjectRecord } from "../types/core-persistence.types.js";
 @Index("idx_projects_workspace_id_archived_at", ["workspaceId", "archivedAt"])
 export class ProjectEntity implements ProjectRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";
@@ -38,8 +39,8 @@ export class ProjectEntity implements ProjectRecord {
   archivedAt: Date | null = null;
 
   @CreateDateColumn({ name: "created_at", type: "timestamptz" })
-  createdAt = new Date(0);
+  createdAt = new Date();
 
   @UpdateDateColumn({ name: "updated_at", type: "timestamptz" })
-  updatedAt = new Date(0);
+  updatedAt = new Date();
 }

@@ -6,6 +6,7 @@ export { CommentEntity } from "./comment.entity.js";
 export { ConfirmationRequestEntity } from "./confirmation-request.entity.js";
 export { InviteEntity } from "./invite.entity.js";
 export { ProjectEntity } from "./project.entity.js";
+export { SavedViewEntity } from "./saved-view.entity.js";
 export { StatusEntity } from "./status.entity.js";
 export { TaskEntity } from "./task.entity.js";
 export { TaskSkillEntity } from "./task-skill.entity.js";
