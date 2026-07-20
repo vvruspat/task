@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../lib/auth";
 
 const apiBaseUrl = process.env["TASK_API_BASE_URL"] ?? "http://localhost:3000";
-const trustedUserId = process.env["TASK_USER_ID"];
 
 type AgentStreamRequest = {
   chatId: string | null;
@@ -11,8 +11,9 @@ type AgentStreamRequest = {
 };
 
 export async function POST(request: Request): Promise<Response> {
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   }
 
   const body: unknown = await request.json();

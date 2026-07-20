@@ -8,6 +8,13 @@ import {
   CreateTaskTelegramFileAttachmentDto,
   TaskAttachmentDto,
 } from "./attachments/attachments.dto.js";
+import {
+  AuthSessionDto,
+  AuthSessionInfoDto,
+  AuthUserDto,
+  LoginDto,
+  RegisterDto,
+} from "./auth/auth.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
 import {
   ProjectMatrixCellDto,
@@ -65,11 +72,17 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
     .setTitle("tAsk API")
     .setDescription("Backend API contract for tAsk.")
     .setVersion("0.0.0")
+    .addBearerAuth()
     .build();
 
   return SwaggerModule.createDocument(app, config, {
     extraModels: [
       HealthResponseDto,
+      RegisterDto,
+      LoginDto,
+      AuthUserDto,
+      AuthSessionDto,
+      AuthSessionInfoDto,
       WorkspaceSummaryDto,
       WorkspaceMemberDto,
       WorkspaceDetailDto,

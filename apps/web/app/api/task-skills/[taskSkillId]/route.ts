@@ -7,6 +7,7 @@ import {
   type UpdateTaskSkillMetadataInput,
 } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../lib/auth";
 
 type RouteContext = { params: Promise<{ taskSkillId: string }> };
 type MetadataBody = {
@@ -34,90 +35,107 @@ export async function GET(request: Request, context: RouteContext): Promise<Next
   const workspaceId = new URL(request.url).searchParams.get("workspaceId");
   if (workspaceId === null)
     return NextResponse.json({ error: "workspaceId is required." }, { status: 400 });
-  return withClient(async (api) => {
-    const { taskSkillId } = await context.params;
-    return NextResponse.json(await api.getTaskSkill({ taskSkillId, workspaceId }));
-  }, "Unable to load task skill.");
+  return withClient(
+    async (api) => {
+      const { taskSkillId } = await context.params;
+      return NextResponse.json(await api.getTaskSkill({ taskSkillId, workspaceId }));
+    },
+    "Unable to load task skill.",
+    request,
+  );
 }
 
 export async function PATCH(request: Request, context: RouteContext): Promise<NextResponse> {
   const body: unknown = await request.json();
   if (!isMetadataBody(body) && !isDefinitionBody(body))
     return NextResponse.json({ error: "Invalid task skill update." }, { status: 400 });
-  return withClient(async (api) => {
-    const { taskSkillId } = await context.params;
-    const result =
-      body.action === "metadata"
-        ? await api.updateTaskSkillMetadata({
-            body: body.input,
-            taskSkillId,
-            workspaceId: body.workspaceId,
-          })
-        : await api.updateTaskSkillDefinition({
-            body: body.input,
-            taskSkillId,
-            workspaceId: body.workspaceId,
-          });
-    return NextResponse.json(result);
-  }, "Unable to update task skill.");
+  return withClient(
+    async (api) => {
+      const { taskSkillId } = await context.params;
+      const result =
+        body.action === "metadata"
+          ? await api.updateTaskSkillMetadata({
+              body: body.input,
+              taskSkillId,
+              workspaceId: body.workspaceId,
+            })
+          : await api.updateTaskSkillDefinition({
+              body: body.input,
+              taskSkillId,
+              workspaceId: body.workspaceId,
+            });
+      return NextResponse.json(result);
+    },
+    "Unable to update task skill.",
+    request,
+  );
 }
 
 export async function POST(request: Request, context: RouteContext): Promise<NextResponse> {
   const body: unknown = await request.json();
   if (!isCloneBody(body) && !isApplyBody(body))
     return NextResponse.json({ error: "Invalid task skill action." }, { status: 400 });
-  return withClient(async (api) => {
-    const { taskSkillId } = await context.params;
-    if (body.action === "clone")
+  return withClient(
+    async (api) => {
+      const { taskSkillId } = await context.params;
+      if (body.action === "clone")
+        return NextResponse.json(
+          await api.cloneTaskSkill({
+            body: body.input,
+            taskSkillId,
+            workspaceId: body.workspaceId,
+          }),
+          { status: 201 },
+        );
+      if (body.action === "preview")
+        return NextResponse.json(
+          await api.previewTaskSkillApply({
+            body: body.input,
+            taskSkillId,
+            workspaceId: body.workspaceId,
+          }),
+        );
+      const result = await api.applyTaskSkill({
+        body: body.input,
+        taskSkillId,
+        workspaceId: body.workspaceId,
+      });
       return NextResponse.json(
-        await api.cloneTaskSkill({
-          body: body.input,
-          taskSkillId,
-          workspaceId: body.workspaceId,
-        }),
+        {
+          createdCount: result.subtasks.length + 1,
+          projectId: result.projectId,
+          rootTaskId: result.rootTask.id,
+        },
         { status: 201 },
       );
-    if (body.action === "preview")
-      return NextResponse.json(
-        await api.previewTaskSkillApply({
-          body: body.input,
-          taskSkillId,
-          workspaceId: body.workspaceId,
-        }),
-      );
-    const result = await api.applyTaskSkill({
-      body: body.input,
-      taskSkillId,
-      workspaceId: body.workspaceId,
-    });
-    return NextResponse.json(
-      {
-        createdCount: result.subtasks.length + 1,
-        projectId: result.projectId,
-        rootTaskId: result.rootTask.id,
-      },
-      { status: 201 },
-    );
-  }, "Unable to run task skill action.");
+    },
+    "Unable to run task skill action.",
+    request,
+  );
 }
 
 export async function DELETE(request: Request, context: RouteContext): Promise<NextResponse> {
   const workspaceId = new URL(request.url).searchParams.get("workspaceId");
   if (workspaceId === null)
     return NextResponse.json({ error: "workspaceId is required." }, { status: 400 });
-  return withClient(async (api) => {
-    const { taskSkillId } = await context.params;
-    return NextResponse.json(await api.archiveTaskSkill({ taskSkillId, workspaceId }));
-  }, "Unable to archive task skill.");
+  return withClient(
+    async (api) => {
+      const { taskSkillId } = await context.params;
+      return NextResponse.json(await api.archiveTaskSkill({ taskSkillId, workspaceId }));
+    },
+    "Unable to archive task skill.",
+    request,
+  );
 }
 
 async function withClient(
   action: (api: ReturnType<typeof createTaskApiClient>) => Promise<NextResponse>,
   fallback: string,
+  request: Request,
 ): Promise<NextResponse> {
-  const trustedUserId = process.env["TASK_USER_ID"];
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   try {
     return await action(
       createTaskApiClient({

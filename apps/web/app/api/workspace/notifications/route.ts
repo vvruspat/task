@@ -14,7 +14,7 @@ async function handle(request: Request, action: "list" | "read"): Promise<NextRe
   if (workspaceId === undefined || workspaceId.length === 0) {
     return NextResponse.json({ error: "workspaceId is required." }, { status: 400 });
   }
-  const client = createServerTaskApi();
+  const client = createServerTaskApi(request);
   if (client.response !== undefined) return client.response;
   try {
     const feed =

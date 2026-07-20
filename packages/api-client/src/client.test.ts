@@ -75,7 +75,11 @@ test("createTaskApiClient exposes Settings and Telegram link endpoints with trus
 });
 
 test("createTaskApiClient patches workspace Markdown descriptions", async () => {
-  const updated = { ...workspaceDetailRecord(), description: "## Studio notes" };
+  const updated = {
+    ...workspaceDetailRecord(),
+    description: "## Studio notes",
+    name: "Production Studio",
+  };
   const fetcher = new RecordingFetch(single(updated));
   const client = createTaskApiClient({
     baseUrl: "https://task.example",
@@ -84,12 +88,49 @@ test("createTaskApiClient patches workspace Markdown descriptions", async () => 
   });
 
   assert.deepEqual(
-    await client.updateWorkspace({ body: { description: "## Studio notes" }, workspaceId }),
+    await client.updateWorkspace({
+      body: { description: "## Studio notes", name: "Production Studio" },
+      workspaceId,
+    }),
     updated,
   );
   assert.equal(fetcher.calls[0]?.url, `https://task.example/workspaces/${workspaceId}`);
   assert.equal(fetcher.calls[0]?.init.method, "PATCH");
-  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify({ description: "## Studio notes" }));
+  assert.equal(
+    fetcher.calls[0]?.init.body,
+    JSON.stringify({ description: "## Studio notes", name: "Production Studio" }),
+  );
+});
+
+test("createTaskApiClient creates a workspace with trusted user context", async () => {
+  const created = { ...workspaceDetailRecord(), name: "New Studio" };
+  const fetcher = new RecordingFetch(single(created));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.createWorkspace({ body: { name: "New Studio" } }), created);
+  assert.equal(fetcher.calls[0]?.url, "https://task.example/workspaces");
+  assert.equal(fetcher.calls[0]?.init.method, "POST");
+  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify({ name: "New Studio" }));
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+});
+
+test("createTaskApiClient permanently deletes a workspace", async () => {
+  const deleted = workspaceSummary();
+  const fetcher = new RecordingFetch(single(deleted));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.deleteWorkspace({ workspaceId }), deleted);
+  assert.equal(fetcher.calls[0]?.url, `https://task.example/workspaces/${workspaceId}`);
+  assert.equal(fetcher.calls[0]?.init.method, "DELETE");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
 });
 
 test("createTaskApiClient posts project creation payloads with trusted user context", async () => {

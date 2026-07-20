@@ -1,4 +1,5 @@
 import type {
+  CreateWorkspaceInput,
   UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
   WorkspaceDetail,
@@ -29,7 +30,13 @@ export type WorkspaceUpdateResult =
   | { status: "forbidden" | "workspace_not_found" }
   | { status: "updated"; workspace: WorkspaceDetail };
 
+export type WorkspaceDeleteResult =
+  | { status: "forbidden" | "workspace_not_found" }
+  | { status: "deleted"; workspace: WorkspaceSummary };
+
 export type WorkspaceManagementStore = {
+  createWorkspace(userId: string, input: CreateWorkspaceInput): Promise<WorkspaceDetail | null>;
+  deleteWorkspace(workspaceId: string, userId: string): Promise<WorkspaceDeleteResult>;
   updateWorkspace(
     workspaceId: string,
     userId: string,

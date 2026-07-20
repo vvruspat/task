@@ -4,18 +4,7 @@ import { produce } from "immer";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type WorkspaceRoute =
-  | "dashboard"
-  | "projects"
-  | "views"
-  | "templates"
-  | "confirmations"
-  | "notifications"
-  | "agent-history"
-  | "settings";
-
 type WorkspaceState = {
-  route: WorkspaceRoute;
   createOpen: boolean;
   createViewOpen: boolean;
   agentOpen: boolean;
@@ -23,7 +12,6 @@ type WorkspaceState = {
   selectedProjectId: string | null;
   completedTaskIds: string[];
   notificationUnreadCount: number;
-  setRoute: (route: WorkspaceRoute) => void;
   setCreateOpen: (open: boolean) => void;
   setCreateViewOpen: (open: boolean) => void;
   setAgentOpen: (open: boolean) => void;
@@ -41,7 +29,6 @@ type PersistedWorkspaceSelection = Pick<
 export const useWorkspaceStore = create<WorkspaceState>()(
   persist<WorkspaceState, [], [], PersistedWorkspaceSelection>(
     (set) => ({
-      route: "dashboard",
       createOpen: false,
       createViewOpen: false,
       agentOpen: false,
@@ -49,13 +36,6 @@ export const useWorkspaceStore = create<WorkspaceState>()(
       selectedProjectId: null,
       completedTaskIds: [],
       notificationUnreadCount: 0,
-      setRoute: (route: WorkspaceRoute): void => {
-        set(
-          produce((state: WorkspaceState) => {
-            state.route = route;
-          }),
-        );
-      },
       setCreateOpen: (createOpen: boolean): void => {
         set(
           produce((state: WorkspaceState) => {

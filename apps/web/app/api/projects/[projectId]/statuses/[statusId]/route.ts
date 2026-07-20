@@ -1,5 +1,6 @@
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../../../lib/auth";
 import { isUpdateProjectStatusInput } from "../../../../../../lib/project-status-input";
 
 type RouteContext = { params: Promise<{ projectId: string; statusId: string }> };
@@ -23,9 +24,9 @@ async function mutateProjectStatus(
     | Parameters<ReturnType<typeof createTaskApiClient>["updateWorkspaceStatus"]>[0]["body"]
     | null,
 ): Promise<NextResponse> {
-  const trustedUserId = process.env["TASK_USER_ID"];
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   const workspaceId = new URL(request.url).searchParams.get("workspaceId");
   if (workspaceId === null)
     return NextResponse.json({ error: "workspaceId is required." }, { status: 400 });

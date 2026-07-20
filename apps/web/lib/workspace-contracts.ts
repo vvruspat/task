@@ -1,7 +1,6 @@
 import type {
   AgentRunSummary,
   ConfirmationRequestSummary,
-  DashboardOverview,
   MyTasksPage,
   ProjectMatrix,
   ProjectSummary,
@@ -16,7 +15,6 @@ import type {
 
 export type WorkspaceBootstrap = {
   availableWorkspaces: WorkspaceSummary[];
-  dashboard: DashboardOverview;
   myTasks: MyTasksPage;
   projects: ProjectSummary[];
   statuses: WorkspaceStatus[];
@@ -39,6 +37,7 @@ export type ProjectData = {
 };
 
 export type ApiFailure = { error: string };
+export type WorkspaceRequired = { requiresWorkspace: true };
 
 export function isApiFailure(value: unknown): value is ApiFailure {
   return (
@@ -46,5 +45,14 @@ export function isApiFailure(value: unknown): value is ApiFailure {
     value !== null &&
     "error" in value &&
     typeof value.error === "string"
+  );
+}
+
+export function isWorkspaceRequired(value: unknown): value is WorkspaceRequired {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "requiresWorkspace" in value &&
+    value.requiresWorkspace === true
   );
 }

@@ -1,14 +1,14 @@
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../lib/auth";
 
 export async function GET(
   request: Request,
   context: { params: Promise<{ identifier: string }> },
 ): Promise<NextResponse> {
-  // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket access.
-  const trustedUserId = process.env["TASK_USER_ID"];
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   }
 
   const { identifier } = await context.params;

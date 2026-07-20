@@ -1,5 +1,6 @@
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../../lib/auth";
 
 type TaskMutationContext = {
   projectId: string;
@@ -39,10 +40,9 @@ export async function GET(
   request: Request,
   context: { params: Promise<{ taskId: string }> },
 ): Promise<NextResponse> {
-  // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket access.
-  const trustedUserId = process.env["TASK_USER_ID"];
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   }
   const url = new URL(request.url);
   const workspaceId = url.searchParams.get("workspaceId");
@@ -122,10 +122,9 @@ export async function PATCH(
   request: Request,
   context: { params: Promise<{ taskId: string }> },
 ): Promise<NextResponse> {
-  // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket access.
-  const trustedUserId = process.env["TASK_USER_ID"];
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
 
   const payload = parseTaskMutationBody(await request.json());
   if (payload === null)

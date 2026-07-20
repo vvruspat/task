@@ -73,7 +73,11 @@ test("WorkspacesService returns workspace detail with member DTOs", async () => 
 });
 
 test("WorkspacesService updates a workspace description and preserves permissions", async () => {
-  const updatedWorkspace = { ...workspaceDetail, description: "## Studio notes" };
+  const updatedWorkspace = {
+    ...workspaceDetail,
+    description: "## Studio notes",
+    name: "Production Studio",
+  };
   const service = new WorkspacesService(
     createReadStore({}),
     undefined,
@@ -82,8 +86,10 @@ test("WorkspacesService updates a workspace description and preserves permission
 
   const response = await service.updateWorkspace(workspaceId, userId, {
     description: "## Studio notes",
+    name: "Production Studio",
   });
   assert.equal(response.description, "## Studio notes");
+  assert.equal(response.name, "Production Studio");
 
   const forbiddenService = new WorkspacesService(
     createReadStore({}),
@@ -92,6 +98,38 @@ test("WorkspacesService updates a workspace description and preserves permission
   );
   await assert.rejects(
     () => forbiddenService.updateWorkspace(workspaceId, userId, { description: null }),
+    ForbiddenException,
+  );
+});
+
+test("WorkspacesService creates an owned workspace", async () => {
+  const service = new WorkspacesService(
+    createReadStore({}),
+    undefined,
+    createWorkspaceManagementStore({ workspace: workspaceDetail }),
+  );
+
+  const response = await service.createWorkspace(userId, { name: "Studio" });
+
+  assert.equal(response.name, "Studio");
+  assert.equal(response.members[0]?.role, "owner");
+});
+
+test("WorkspacesService deletes a workspace only for its owner", async () => {
+  const service = new WorkspacesService(
+    createReadStore({}),
+    undefined,
+    createWorkspaceManagementStore({ workspace: workspaceDetail }),
+  );
+  assert.equal((await service.deleteWorkspace(workspaceId, userId)).id, workspaceId);
+
+  const forbiddenService = new WorkspacesService(
+    createReadStore({}),
+    undefined,
+    createWorkspaceManagementStore({ result: "forbidden" }),
+  );
+  await assert.rejects(
+    () => forbiddenService.deleteWorkspace(workspaceId, userId),
     ForbiddenException,
   );
 });
@@ -173,6 +211,12 @@ function createWorkspaceManagementStore(options: {
   workspace?: WorkspaceDetail;
 }): WorkspaceManagementStore {
   return {
+    createWorkspace: async () => options.workspace ?? null,
+    deleteWorkspace: async () => {
+      if (options.result !== undefined) return { status: options.result };
+      if (options.workspace === undefined) return { status: "workspace_not_found" };
+      return { status: "deleted", workspace: options.workspace };
+    },
     updateWorkspace: async (
       _workspaceId: string,
       _userId: string,

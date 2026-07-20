@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -14,10 +15,13 @@ import {
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
 import type {
+  CreateWorkspaceInput,
   UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
 } from "./workspaces.contracts.js";
 import {
+  CreateWorkspaceDto,
+  ParseCreateWorkspaceBodyPipe,
   ParseUpdateWorkspaceBodyPipe,
   ParseUpdateWorkspaceMemberRoleBodyPipe,
   UpdateWorkspaceDto,
@@ -42,6 +46,18 @@ export class WorkspacesController {
   @ApiOkResponse({ isArray: true, type: WorkspaceSummaryDto })
   listWorkspaces(@TrustedCurrentUserId() userId: string): Promise<WorkspaceSummaryDto[]> {
     return this.workspacesService.listWorkspaces(userId);
+  }
+
+  @Post()
+  @ApiOperation({ summary: "Create a workspace owned by the current user" })
+  @ApiBody({ type: CreateWorkspaceDto })
+  @ApiCreatedResponse({ type: WorkspaceDetailDto })
+  @ApiBadRequestResponse({ description: "Workspace payload is invalid." })
+  createWorkspace(
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseCreateWorkspaceBodyPipe()) input: CreateWorkspaceInput,
+  ): Promise<WorkspaceDetailDto> {
+    return this.workspacesService.createWorkspace(userId, input);
   }
 
   @Get(":workspaceId")
@@ -70,6 +86,19 @@ export class WorkspacesController {
     @Body(new ParseUpdateWorkspaceBodyPipe()) input: UpdateWorkspaceInput,
   ): Promise<WorkspaceDetailDto> {
     return this.workspacesService.updateWorkspace(workspaceId, userId, input);
+  }
+
+  @Delete(":workspaceId")
+  @ApiOperation({ summary: "Permanently delete a workspace and its data" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiOkResponse({ type: WorkspaceSummaryDto })
+  @ApiForbiddenResponse({ description: "Only the workspace owner can delete it." })
+  @ApiNotFoundResponse({ description: "Workspace was not found." })
+  deleteWorkspace(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<WorkspaceSummaryDto> {
+    return this.workspacesService.deleteWorkspace(workspaceId, userId);
   }
 
   @Get(":workspaceId/members")

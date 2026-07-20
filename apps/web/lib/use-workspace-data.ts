@@ -5,8 +5,8 @@ import { produce } from "immer";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { create } from "zustand";
-import type { ApiFailure, WorkspaceBootstrap } from "./workspace-contracts";
-import { isApiFailure } from "./workspace-contracts";
+import type { ApiFailure, WorkspaceBootstrap, WorkspaceRequired } from "./workspace-contracts";
+import { isApiFailure, isWorkspaceRequired } from "./workspace-contracts";
 import { parseWorkspaceRealtimeChange, type WorkspaceRealtimeChange } from "./workspace-realtime";
 import { useWorkspaceStore } from "./workspace-store";
 
@@ -14,6 +14,7 @@ type WorkspaceDataState = {
   data: WorkspaceBootstrap | null;
   error: string | null;
   loading: boolean;
+  requiresWorkspace: boolean;
 };
 
 type WorkspaceDataStore = WorkspaceDataState & {
@@ -23,7 +24,10 @@ type WorkspaceDataStore = WorkspaceDataState & {
 
 const workspaceRefreshEvent = "task:workspace-data-refresh";
 export const workspaceRealtimeEvent = "task:workspace-realtime-event";
-let pendingRequest: { selector: string | null; promise: Promise<WorkspaceBootstrap> } | null = null;
+let pendingRequest: {
+  selector: string | null;
+  promise: Promise<WorkspaceBootstrap | WorkspaceRequired>;
+} | null = null;
 const realtimeConnections = new Map<string, { references: number; source: EventSource }>();
 let realtimeRefreshTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -31,6 +35,7 @@ const useWorkspaceDataStore = create<WorkspaceDataStore>()((set) => ({
   data: null,
   error: null,
   loading: true,
+  requiresWorkspace: false,
   replace: (state): void => set(state),
   update: (updater): void =>
     set((state) => (state.data === null ? state : { ...state, data: updater(state.data) })),
@@ -97,7 +102,6 @@ function isWorkspaceBootstrap(value: unknown): value is WorkspaceBootstrap {
   return (
     "workspace" in value &&
     "availableWorkspaces" in value &&
-    "dashboard" in value &&
     "myTasks" in value &&
     "projects" in value &&
     "statuses" in value &&
@@ -117,17 +121,21 @@ function isWorkspaceBootstrap(value: unknown): value is WorkspaceBootstrap {
   );
 }
 
-async function readJson(response: Response): Promise<WorkspaceBootstrap | ApiFailure> {
+async function readJson(
+  response: Response,
+): Promise<WorkspaceBootstrap | WorkspaceRequired | ApiFailure> {
   const body: unknown = await response.json();
-  if (isWorkspaceBootstrap(body) || isApiFailure(body)) return body;
+  if (isWorkspaceBootstrap(body) || isWorkspaceRequired(body) || isApiFailure(body)) return body;
   return { error: "The web API returned an invalid response." };
 }
 
-async function requestWorkspace(selector: string | null): Promise<WorkspaceBootstrap> {
+async function requestWorkspace(
+  selector: string | null,
+): Promise<WorkspaceBootstrap | WorkspaceRequired> {
   if (pendingRequest !== null && pendingRequest.selector === selector)
     return pendingRequest.promise;
   const query = selector === null ? "" : `?workspace=${encodeURIComponent(selector)}`;
-  const promise = (async (): Promise<WorkspaceBootstrap> => {
+  const promise = (async (): Promise<WorkspaceBootstrap | WorkspaceRequired> => {
     const result = await readJson(await fetch(`/api/workspace${query}`, { cache: "no-store" }));
     if (isApiFailure(result)) throw new Error(result.error);
     return result;
@@ -163,13 +171,25 @@ export function useWorkspaceData(): WorkspaceDataState & {
       if (!force && matchesCurrentWorkspace) return;
 
       // Existing content remains mounted during background synchronization.
-      if (current.data === null) current.replace({ data: null, error: null, loading: true });
+      if (current.data === null) {
+        current.replace({ data: null, error: null, loading: true, requiresWorkspace: false });
+      }
       try {
         const result = await requestWorkspace(workspaceSelector);
+        if (isWorkspaceRequired(result)) {
+          setSelectedWorkspaceId(null);
+          useWorkspaceDataStore.getState().replace({
+            data: null,
+            error: null,
+            loading: false,
+            requiresWorkspace: true,
+          });
+          return;
+        }
         setSelectedWorkspaceId(result.workspace.id);
         const latest = useWorkspaceDataStore.getState();
         if (latest.data !== result || latest.error !== null || latest.loading) {
-          latest.replace({ data: result, error: null, loading: false });
+          latest.replace({ data: result, error: null, loading: false, requiresWorkspace: false });
         }
       } catch (error: unknown) {
         const latest = useWorkspaceDataStore.getState();
@@ -182,6 +202,7 @@ export function useWorkspaceData(): WorkspaceDataState & {
                 : "Unable to reach the local web API."
               : null,
           loading: false,
+          requiresWorkspace: false,
         });
       }
     },
@@ -202,7 +223,8 @@ export function useWorkspaceData(): WorkspaceDataState & {
     return retainRealtimeConnection(workspaceId);
   }, [data?.workspace.id]);
 
-  return { data, error, loading, refresh };
+  const requiresWorkspace = useWorkspaceDataStore((store) => store.requiresWorkspace);
+  return { data, error, loading, refresh, requiresWorkspace };
 }
 
 function retainRealtimeConnection(workspaceId: string): () => void {

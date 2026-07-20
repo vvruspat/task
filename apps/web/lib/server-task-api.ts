@@ -1,5 +1,6 @@
 import { createTaskApiClient, type TaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "./auth";
 
 type ServerTaskApiResult =
   | { api: TaskApiClient; response?: never }
@@ -10,12 +11,11 @@ export type TaskRequestScope = {
   workspaceId: string;
 };
 
-export function createServerTaskApi(): ServerTaskApiResult {
-  // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket access.
-  const trustedUserId = process.env["TASK_USER_ID"];
-  if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
+export function createServerTaskApi(request: Request): ServerTaskApiResult {
+  const trustedUserId = readAuthenticatedUserId(request);
+  if (trustedUserId === undefined) {
     return {
-      response: NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 }),
+      response: NextResponse.json({ error: "Authentication is required." }, { status: 401 }),
     };
   }
 

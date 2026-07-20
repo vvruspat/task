@@ -1,16 +1,17 @@
 import { createTaskApiClient, type ProjectDetail, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../../lib/auth";
 import type { ApiFailure } from "../../../../../lib/workspace-contracts";
 
 const apiBaseUrl = readEnvironment("TASK_API_BASE_URL") ?? "http://localhost:3000";
-const trustedUserId = readEnvironment("TASK_USER_ID");
 
 export async function PATCH(
   request: Request,
   context: { params: Promise<{ projectId: string }> },
 ): Promise<NextResponse<ProjectDetail | ApiFailure>> {
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   }
 
   const input = await request.json().catch((): null => null);
@@ -51,6 +52,6 @@ function isProjectDescriptionUpdate(
   );
 }
 
-function readEnvironment(name: "TASK_API_BASE_URL" | "TASK_USER_ID"): string | undefined {
+function readEnvironment(name: "TASK_API_BASE_URL"): string | undefined {
   return process.env[name];
 }

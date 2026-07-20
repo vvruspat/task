@@ -15,6 +15,11 @@ export type CreateTaskLinkAttachmentInput = components["schemas"]["CreateTaskLin
 export type CreateTaskTelegramFileAttachmentInput =
   components["schemas"]["CreateTaskTelegramFileAttachmentDto"];
 export type HealthResponse = components["schemas"]["HealthResponseDto"];
+export type AuthUser = components["schemas"]["AuthUserDto"];
+export type AuthSession = components["schemas"]["AuthSessionDto"];
+export type AuthSessionInfo = components["schemas"]["AuthSessionInfoDto"];
+export type RegisterInput = components["schemas"]["RegisterDto"];
+export type LoginInput = components["schemas"]["LoginDto"];
 export type ProjectDetail = components["schemas"]["ProjectDetailDto"];
 export type ProjectMatrix = components["schemas"]["ProjectMatrixDto"];
 export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
@@ -39,6 +44,7 @@ export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
 export type WorkspaceSummary = components["schemas"]["WorkspaceSummaryDto"];
 export type WorkspaceDetail = components["schemas"]["WorkspaceDetailDto"];
 export type WorkspaceMember = components["schemas"]["WorkspaceMemberDto"];
+export type CreateWorkspaceInput = components["schemas"]["CreateWorkspaceDto"];
 export type CreateWorkspaceStatusInput = components["schemas"]["CreateWorkspaceStatusDto"];
 export type UpdateWorkspaceStatusInput = components["schemas"]["UpdateWorkspaceStatusDto"];
 export type ReorderWorkspaceStatusesInput = components["schemas"]["ReorderWorkspaceStatusesDto"];
@@ -78,6 +84,8 @@ type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"]
 type CreateWorkspaceStatusOperation = operations["StatusesController_createStatus"];
 type UpdateWorkspaceStatusOperation = operations["StatusesController_updateStatus"];
 type ReorderWorkspaceStatusesOperation = operations["StatusesController_reorderStatuses"];
+type CreateWorkspaceOperation = operations["WorkspacesController_createWorkspace"];
+type DeleteWorkspaceOperation = operations["WorkspacesController_deleteWorkspace"];
 type UpdateWorkspaceMemberRoleOperation = operations["WorkspacesController_updateMemberRole"];
 type UpdateWorkspaceOperation = operations["WorkspacesController_updateWorkspace"];
 type CreateSavedViewOperation = operations["ViewsController_create"];
@@ -143,6 +151,10 @@ export type UpdateWorkspaceStatusResponse =
   UpdateWorkspaceStatusOperation["responses"]["200"]["content"]["application/json"];
 export type ReorderWorkspaceStatusesResponse =
   ReorderWorkspaceStatusesOperation["responses"]["200"]["content"]["application/json"];
+export type CreateWorkspaceResponse =
+  CreateWorkspaceOperation["responses"]["201"]["content"]["application/json"];
+export type DeleteWorkspaceResponse =
+  DeleteWorkspaceOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateWorkspaceMemberRoleResponse =
   UpdateWorkspaceMemberRoleOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateWorkspaceResponse =
@@ -309,6 +321,7 @@ export type UpdateWorkspaceMemberRoleRequestInput = WorkspaceScopedInput & {
   memberId: string;
   body: UpdateWorkspaceMemberRoleInput;
 };
+export type CreateWorkspaceRequestInput = { body: CreateWorkspaceInput };
 export type UpdateWorkspaceRequestInput = WorkspaceScopedInput & { body: UpdateWorkspaceInput };
 export type SavedViewScopedInput = WorkspaceScopedInput & { viewId: string };
 export type CreateSavedViewRequestInput = WorkspaceScopedInput & { body: CreateSavedViewInput };
@@ -374,6 +387,8 @@ export type TaskApiClient = {
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
   listWorkspaces(): Promise<WorkspaceSummary[]>;
+  createWorkspace(input: CreateWorkspaceRequestInput): Promise<CreateWorkspaceResponse>;
+  deleteWorkspace(input: WorkspaceScopedInput): Promise<DeleteWorkspaceResponse>;
   deleteWorkspaceStatus(input: WorkspaceStatusScopedInput): Promise<WorkspaceStatus>;
   reorderWorkspaceStatuses(
     input: ReorderWorkspaceStatusesRequestInput,
@@ -714,6 +729,25 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         `/workspaces/${encodePathSegment(input.workspaceId)}`,
         workspaceDetailParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    createWorkspace: (input) =>
+      request(options.fetch, baseUrl, "/workspaces", workspaceDetailParser, {
+        body: input.body,
+        method: "POST",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    deleteWorkspace: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}`,
+        workspaceSummaryParser,
+        {
+          method: "DELETE",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
       ),
     updateWorkspace: (input) =>
       request(
@@ -1378,6 +1412,10 @@ const workspaceStatusArrayParser: ResponseParser<WorkspaceStatus[]> = {
 const workspaceSummaryArrayParser: ResponseParser<WorkspaceSummary[]> = {
   isValid: (value): value is WorkspaceSummary[] => isArrayOf(value, isWorkspaceSummary),
   label: "workspace summary list",
+};
+const workspaceSummaryParser: ResponseParser<WorkspaceSummary> = {
+  isValid: isWorkspaceSummary,
+  label: "workspace summary",
 };
 
 function isNotificationFeed(value: unknown): value is NotificationFeed {

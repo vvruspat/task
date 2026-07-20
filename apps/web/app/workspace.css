@@ -111,7 +111,7 @@ body {
 .profile small,
 .task-row small,
 .project-row small,
-.person + small,
+.person small,
 .kanban-card small,
 .timeline small,
 .integration small,
@@ -313,34 +313,9 @@ nav {
   color: #60646c;
   font-size: 12px;
 }
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.metric {
-  min-height: 134px;
-  padding: 12px;
-}
-.metric strong {
-  display: block;
-  font-size: 36px;
-  line-height: 40px;
-  margin: 4px 0;
-}
-.metric .rt-ProgressRoot {
-  margin-top: 10px;
-}
-.two-columns {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 16px;
-}
 .panel {
   padding: 16px;
 }
-.panel-title,
 .section-label,
 .board-heading {
   display: flex;
@@ -348,9 +323,9 @@ nav {
   justify-content: space-between;
   margin-bottom: 12px;
 }
-.panel-title h2 {
+.panel-title {
   font-size: 16px;
-  margin: 0;
+  margin: 0 0 12px;
 }
 .task-row {
   min-height: 54px;
@@ -390,22 +365,6 @@ nav {
 .project-row strong {
   font-size: 14px;
   display: block;
-}
-.agent-callout {
-  margin-top: 16px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #eef1ff;
-}
-.agent-callout > div {
-  flex: 1;
-}
-.agent-callout p {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: #60646c;
 }
 .stacked {
   display: grid;
@@ -604,7 +563,6 @@ nav {
   font-size: 12px;
   margin: 12px 0;
 }
-.settings input,
 .settings select {
   height: 32px;
   border: 1px solid #d9d9e0;
@@ -1613,6 +1571,7 @@ nav {
   padding: 28px 24px;
   display: grid;
   gap: 14px;
+  align-content: start;
   align-self: stretch;
   border-left: 1px solid var(--gray-a5);
   background: var(--gray-a2);
@@ -2106,4 +2065,7 @@ nav {
 .settings-description-field {
   display: grid;
   gap: var(--space-3);
+}
+.settings-description-field {
+  margin-top: var(--space-4);
 }

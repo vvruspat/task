@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import type {
+  CreateWorkspaceInput,
   UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
 } from "./workspaces.contracts.js";
@@ -24,6 +25,15 @@ export class WorkspacesService {
     return workspaces.map((workspace) => new WorkspaceSummaryDto(workspace));
   }
 
+  async createWorkspace(userId: string, input: CreateWorkspaceInput): Promise<WorkspaceDetailDto> {
+    if (this.workspaceManagementStore === undefined) {
+      throw new NotFoundException("Current user was not found.");
+    }
+    const workspace = await this.workspaceManagementStore.createWorkspace(userId, input);
+    if (workspace === null) throw new NotFoundException("Current user was not found.");
+    return new WorkspaceDetailDto(workspace);
+  }
+
   async updateWorkspace(
     workspaceId: string,
     userId: string,
@@ -46,6 +56,25 @@ export class WorkspacesService {
     }
 
     return new WorkspaceDetailDto(result.workspace);
+  }
+
+  async deleteWorkspace(workspaceId: string, userId: string): Promise<WorkspaceSummaryDto> {
+    if (this.workspaceManagementStore === undefined) {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    const result = await this.workspaceManagementStore.deleteWorkspace(workspaceId, userId);
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Only the workspace owner can delete this workspace.");
+    }
+    if (result.status !== "deleted") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    return new WorkspaceSummaryDto(result.workspace);
   }
 
   async getWorkspace(workspaceId: string, userId: string): Promise<WorkspaceDetailDto> {
