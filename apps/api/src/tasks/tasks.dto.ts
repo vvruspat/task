@@ -1,5 +1,6 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { type ParsedIssueIdentifier, parseIssueIdentifier } from "./issue-identifier.js";
 import type {
   AddTaskSubtaskInput,
   AddTaskSubtasksInput,
@@ -17,6 +18,16 @@ import type {
 } from "./tasks.contracts.js";
 
 const numericStringPattern = /^-?\d+(\.\d+)?$/;
+
+export class ParseIssueIdentifierParamPipe implements PipeTransform<string, ParsedIssueIdentifier> {
+  transform(value: string): ParsedIssueIdentifier {
+    const parsed = parseIssueIdentifier(value);
+    if (parsed === null) {
+      throw new BadRequestException("Issue identifier must look like PROJ-123.");
+    }
+    return parsed;
+  }
+}
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export class CreateTaskDto implements CreateTaskInput {
@@ -24,12 +35,22 @@ export class CreateTaskDto implements CreateTaskInput {
   readonly title: string = "";
 
   @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
+  readonly assigneeUserId?: string | null;
+
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
+  readonly statusId?: string | null;
+
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
   readonly parentTaskId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String })
   readonly description?: string | null;
 
-  @ApiPropertyOptional({ nullable: true, pattern: numericStringPattern.source, type: String })
+  @ApiPropertyOptional({
+    nullable: true,
+    pattern: numericStringPattern.source,
+    type: String,
+  })
   readonly position?: string | null;
 
   @ApiPropertyOptional({ format: "date-time", nullable: true, type: String })
@@ -52,7 +73,11 @@ export class AddTaskSubtaskDto implements AddTaskSubtaskInput {
   @ApiPropertyOptional({ nullable: true, type: String })
   readonly description?: string | null;
 
-  @ApiPropertyOptional({ nullable: true, pattern: numericStringPattern.source, type: String })
+  @ApiPropertyOptional({
+    nullable: true,
+    pattern: numericStringPattern.source,
+    type: String,
+  })
   readonly position?: string | null;
 
   @ApiPropertyOptional({ format: "date-time", nullable: true, type: String })
@@ -107,6 +132,13 @@ export class ParseMoveTaskBodyPipe implements PipeTransform<unknown, MoveTaskInp
 export class UpdateTaskStatusDto implements UpdateTaskStatusInput {
   @ApiProperty({ format: "uuid", nullable: true, type: String })
   readonly statusId: string | null = null;
+
+  @ApiPropertyOptional({
+    example: "1000",
+    pattern: numericStringPattern.source,
+    type: String,
+  })
+  readonly position?: string;
 }
 
 export class ParseUpdateTaskStatusBodyPipe
@@ -144,11 +176,16 @@ export class ParseUpdateTaskDueDateBodyPipe
 }
 
 export class ListTaskTableQueryDto implements ListTaskTableInput {
-  @ApiPropertyOptional({ minLength: 1, maxLength: 200 }) readonly search?: string;
-  @ApiPropertyOptional({ format: "uuid", type: String }) readonly statusId?: string;
-  @ApiPropertyOptional({ enum: ["unassigned"] }) readonly statusFilter?: "unassigned";
-  @ApiPropertyOptional({ format: "uuid", type: String }) readonly assigneeUserId?: string;
-  @ApiPropertyOptional({ enum: ["unassigned"] }) readonly assigneeFilter?: "unassigned";
+  @ApiPropertyOptional({ minLength: 1, maxLength: 200 })
+  readonly search?: string;
+  @ApiPropertyOptional({ format: "uuid", type: String })
+  readonly statusId?: string;
+  @ApiPropertyOptional({ enum: ["unassigned"] })
+  readonly statusFilter?: "unassigned";
+  @ApiPropertyOptional({ format: "uuid", type: String })
+  readonly assigneeUserId?: string;
+  @ApiPropertyOptional({ enum: ["unassigned"] })
+  readonly assigneeFilter?: "unassigned";
   @ApiPropertyOptional({ format: "date-time" }) readonly dueFrom?: string;
   @ApiPropertyOptional({ format: "date-time" }) readonly dueTo?: string;
   @ApiPropertyOptional({
@@ -157,11 +194,11 @@ export class ListTaskTableQueryDto implements ListTaskTableInput {
   })
   readonly sortBy: "title" | "status" | "assignee" | "dueAt" | "createdAt" | "updatedAt" =
     "updatedAt";
-  @ApiPropertyOptional({ enum: ["asc", "desc"], default: "desc" }) readonly sortDirection:
-    | "asc"
-    | "desc" = "desc";
+  @ApiPropertyOptional({ enum: ["asc", "desc"], default: "desc" })
+  readonly sortDirection: "asc" | "desc" = "desc";
   @ApiPropertyOptional({ minimum: 1, default: 1 }) readonly page: number = 1;
-  @ApiPropertyOptional({ minimum: 1, maximum: 100, default: 50 }) readonly pageSize: number = 50;
+  @ApiPropertyOptional({ minimum: 1, maximum: 100, default: 50 })
+  readonly pageSize: number = 50;
 }
 
 export class ParseListTaskTableQueryPipe implements PipeTransform<unknown, ListTaskTableInput> {
@@ -240,17 +277,20 @@ export class ParseListTaskTableQueryPipe implements PipeTransform<unknown, ListT
 }
 
 export class BulkUpdateTasksDto implements BulkUpdateTasksInput {
-  @ApiProperty({ isArray: true, minItems: 1, maxItems: 100, format: "uuid", type: String })
+  @ApiProperty({
+    isArray: true,
+    minItems: 1,
+    maxItems: 100,
+    format: "uuid",
+    type: String,
+  })
   readonly taskIds: string[] = [];
-  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly statusId?:
-    | string
-    | null;
-  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String }) readonly assigneeUserId?:
-    | string
-    | null;
-  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String }) readonly dueAt?:
-    | string
-    | null;
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
+  readonly statusId?: string | null;
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
+  readonly assigneeUserId?: string | null;
+  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String })
+  readonly dueAt?: string | null;
 }
 
 export class ParseBulkUpdateTasksBodyPipe implements PipeTransform<unknown, BulkUpdateTasksInput> {
@@ -289,6 +329,9 @@ export class TaskSummaryDto implements TaskSummary {
 
   @ApiProperty({ format: "uuid" })
   readonly projectId: string;
+
+  @ApiProperty({ example: 42, minimum: 1 })
+  readonly number: number;
 
   @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
   readonly parentTaskId: string | null;
@@ -336,6 +379,7 @@ export class TaskSummaryDto implements TaskSummary {
     this.id = task.id;
     this.workspaceId = task.workspaceId;
     this.projectId = task.projectId;
+    this.number = task.number;
     this.parentTaskId = task.parentTaskId;
     this.title = task.title;
     this.description = task.description;
@@ -356,7 +400,8 @@ export class TaskSummaryDto implements TaskSummary {
 export class TaskDetailDto extends TaskSummaryDto implements TaskDetail {}
 
 export class TaskTablePageDto implements TaskTablePage {
-  @ApiProperty({ type: TaskSummaryDto, isArray: true }) readonly items: TaskSummaryDto[];
+  @ApiProperty({ type: TaskSummaryDto, isArray: true })
+  readonly items: TaskSummaryDto[];
   @ApiProperty({ minimum: 1 }) readonly page: number;
   @ApiProperty({ minimum: 1, maximum: 100 }) readonly pageSize: number;
   @ApiProperty({ minimum: 0 }) readonly total: number;
@@ -374,6 +419,8 @@ function parseCreateTaskInput(value: unknown): CreateTaskInput {
   }
 
   const title = readRequiredNonEmptyString(value, "title");
+  const assigneeUserId = readOptionalNullableUuid(value, "assigneeUserId");
+  const statusId = readOptionalNullableUuid(value, "statusId");
   const parentTaskId = readOptionalNullableUuid(value, "parentTaskId");
   const description = readOptionalNullableString(value, "description");
   const position = readOptionalNullableString(value, "position");
@@ -385,6 +432,14 @@ function parseCreateTaskInput(value: unknown): CreateTaskInput {
   }
 
   const input: CreateTaskInput = { title };
+
+  if (assigneeUserId !== undefined) {
+    input.assigneeUserId = assigneeUserId;
+  }
+
+  if (statusId !== undefined) {
+    input.statusId = statusId;
+  }
 
   if (parentTaskId !== undefined) {
     input.parentTaskId = parentTaskId;
@@ -506,9 +561,14 @@ function parseUpdateTaskStatusInput(value: unknown): UpdateTaskStatusInput {
     throw new BadRequestException("Task status payload must be an object.");
   }
 
-  return {
-    statusId: readRequiredNullableUuid(value, "statusId"),
-  };
+  const statusId = readRequiredNullableUuid(value, "statusId");
+  const position = readOptionalNullableString(value, "position");
+
+  if (position === null || (position !== undefined && !numericStringPattern.test(position))) {
+    throw new BadRequestException("Task position must be a numeric string when provided.");
+  }
+
+  return position === undefined ? { statusId } : { statusId, position };
 }
 
 function parseUpdateTaskAssigneeInput(value: unknown): UpdateTaskAssigneeInput {

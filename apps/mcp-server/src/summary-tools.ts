@@ -249,7 +249,7 @@ export function createSummaryToolHandlers(client: TaskBackendClient): SummaryToo
     },
     user: async (input) => {
       const parsedInput = parseUserSummaryToolInput(input);
-      const [members, projects, statuses] = await Promise.all([
+      const [members, projects] = await Promise.all([
         client.listWorkspaceMembers({
           workspaceId: parsedInput.workspaceId,
           userId: parsedInput.userId,
@@ -258,11 +258,18 @@ export function createSummaryToolHandlers(client: TaskBackendClient): SummaryToo
           workspaceId: parsedInput.workspaceId,
           userId: parsedInput.userId,
         }),
-        client.listWorkspaceStatuses({
-          workspaceId: parsedInput.workspaceId,
-          userId: parsedInput.userId,
-        }),
       ]);
+      const statuses = (
+        await Promise.all(
+          projects.map((project) =>
+            client.listWorkspaceStatuses({
+              workspaceId: parsedInput.workspaceId,
+              projectId: project.id,
+              userId: parsedInput.userId,
+            }),
+          ),
+        )
+      ).flat();
       const projectTaskSummaries = await Promise.all(
         projects.map(async (project) => ({
           project,
@@ -279,7 +286,7 @@ export function createSummaryToolHandlers(client: TaskBackendClient): SummaryToo
     workspace: async (input) => {
       const parsedInput = parseWorkspaceSummaryToolInput(input);
       const workspaceId = await resolveWorkspaceId(client, parsedInput);
-      const [workspace, members, projects, statuses, taskSkills] = await Promise.all([
+      const [workspace, members, projects, taskSkills] = await Promise.all([
         client.getWorkspace({
           workspaceId,
           userId: parsedInput.userId,
@@ -292,15 +299,22 @@ export function createSummaryToolHandlers(client: TaskBackendClient): SummaryToo
           workspaceId,
           userId: parsedInput.userId,
         }),
-        client.listWorkspaceStatuses({
-          workspaceId,
-          userId: parsedInput.userId,
-        }),
         client.listTaskSkills({
           workspaceId,
           userId: parsedInput.userId,
         }),
       ]);
+      const statuses = (
+        await Promise.all(
+          projects.map((project) =>
+            client.listWorkspaceStatuses({
+              workspaceId,
+              projectId: project.id,
+              userId: parsedInput.userId,
+            }),
+          ),
+        )
+      ).flat();
 
       return buildWorkspaceSummary(workspace, members, projects, statuses, taskSkills);
     },

@@ -1,19 +1,51 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
-import type { UpdateWorkspaceMemberRoleInput } from "./workspaces.contracts.js";
+import type {
+  UpdateWorkspaceInput,
+  UpdateWorkspaceMemberRoleInput,
+} from "./workspaces.contracts.js";
 import { WorkspaceDetailDto, WorkspaceMemberDto, WorkspaceSummaryDto } from "./workspaces.dto.js";
-import type { WorkspaceMemberManagementStore, WorkspaceReadStore } from "./workspaces.store.js";
+import type {
+  WorkspaceManagementStore,
+  WorkspaceMemberManagementStore,
+  WorkspaceReadStore,
+} from "./workspaces.store.js";
 
 @Injectable()
 export class WorkspacesService {
   constructor(
     private readonly readStore: WorkspaceReadStore,
     private readonly managementStore?: WorkspaceMemberManagementStore,
+    private readonly workspaceManagementStore?: WorkspaceManagementStore,
   ) {}
 
   async listWorkspaces(userId: string): Promise<WorkspaceSummaryDto[]> {
     const workspaces = await this.readStore.listForUser(userId);
 
     return workspaces.map((workspace) => new WorkspaceSummaryDto(workspace));
+  }
+
+  async updateWorkspace(
+    workspaceId: string,
+    userId: string,
+    input: UpdateWorkspaceInput,
+  ): Promise<WorkspaceDetailDto> {
+    if (this.workspaceManagementStore === undefined) {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    const result = await this.workspaceManagementStore.updateWorkspace(workspaceId, userId, input);
+    if (result.status === "workspace_not_found") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot update this workspace.");
+    }
+
+    if (result.status !== "updated") {
+      throw new NotFoundException("Workspace was not found.");
+    }
+
+    return new WorkspaceDetailDto(result.workspace);
   }
 
   async getWorkspace(workspaceId: string, userId: string): Promise<WorkspaceDetailDto> {

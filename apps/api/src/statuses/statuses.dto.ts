@@ -2,17 +2,47 @@ import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
   CreateWorkspaceStatusInput,
+  ReorderWorkspaceStatusesInput,
   UpdateWorkspaceStatusInput,
   WorkspaceStatus,
 } from "./statuses.contracts.js";
 
 const numericStringPattern = /^-?\d+(\.\d+)?$/;
+const hexColorPattern = /^#[0-9a-f]{6}$/i;
+const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export class ReorderWorkspaceStatusesDto implements ReorderWorkspaceStatusesInput {
+  @ApiProperty({ format: "uuid", isArray: true, minItems: 1, type: String, uniqueItems: true })
+  readonly statusIds: string[] = [];
+}
+
+export class ParseReorderWorkspaceStatusesBodyPipe
+  implements PipeTransform<unknown, ReorderWorkspaceStatusesInput>
+{
+  transform(value: unknown): ReorderWorkspaceStatusesInput {
+    if (!isUnknownRecord(value) || !Array.isArray(value["statusIds"])) {
+      throw new BadRequestException("Status order must include statusIds.");
+    }
+    const statusIds = value["statusIds"];
+    if (
+      statusIds.length === 0 ||
+      !statusIds.every(
+        (statusId): statusId is string =>
+          typeof statusId === "string" && uuidV4Pattern.test(statusId),
+      ) ||
+      new Set(statusIds).size !== statusIds.length
+    ) {
+      throw new BadRequestException("Status order must contain unique UUIDs.");
+    }
+    return { statusIds };
+  }
+}
 
 export class CreateWorkspaceStatusDto implements CreateWorkspaceStatusInput {
   @ApiProperty({ example: "In progress", minLength: 1 })
   readonly name: string = "";
 
-  @ApiProperty({ example: "#3b82f6", minLength: 1 })
+  @ApiProperty({ example: "#3b82f6", pattern: hexColorPattern.source })
   readonly color: string = "";
 
   @ApiProperty({ example: "1000", pattern: numericStringPattern.source })
@@ -26,7 +56,7 @@ export class UpdateWorkspaceStatusDto implements UpdateWorkspaceStatusInput {
   @ApiPropertyOptional({ example: "In progress", minLength: 1 })
   readonly name?: string;
 
-  @ApiPropertyOptional({ example: "#3b82f6", minLength: 1 })
+  @ApiPropertyOptional({ example: "#3b82f6", pattern: hexColorPattern.source })
   readonly color?: string;
 
   @ApiPropertyOptional({ example: "1000", pattern: numericStringPattern.source })
@@ -69,6 +99,9 @@ export class WorkspaceStatusDto implements WorkspaceStatus {
   @ApiProperty({ format: "uuid" })
   readonly workspaceId: string;
 
+  @ApiProperty({ format: "uuid" })
+  readonly projectId: string;
+
   @ApiProperty({ example: "In progress" })
   readonly name: string;
 
@@ -90,6 +123,7 @@ export class WorkspaceStatusDto implements WorkspaceStatus {
   constructor(status: WorkspaceStatus) {
     this.id = status.id;
     this.workspaceId = status.workspaceId;
+    this.projectId = status.projectId;
     this.name = status.name;
     this.color = status.color;
     this.position = status.position;
@@ -115,6 +149,9 @@ function parseStatusInput(
 
   if (position !== undefined && !numericStringPattern.test(position)) {
     throw new BadRequestException("Status position must be a numeric string.");
+  }
+  if (color !== undefined && !hexColorPattern.test(color)) {
+    throw new BadRequestException("Status color must be a six-digit hex color.");
   }
 
   if (name !== undefined) input.name = name;

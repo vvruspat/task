@@ -132,7 +132,15 @@ const applyPreview: TaskSkillApplyPreview = {
   taskSkillVersionId: versionId,
   taskSkillVersion: 1,
   rootTaskTitle: "Intro",
-  subtasks: [{ title: "Strings", source: "added" }],
+  subtasks: [
+    {
+      title: "Strings",
+      description: null,
+      assigneeUserId: null,
+      labels: [],
+      source: "added",
+    },
+  ],
 };
 
 const applyResult: TaskSkillApplyResult = {
@@ -145,6 +153,7 @@ const applyResult: TaskSkillApplyResult = {
     id: rootTaskId,
     workspaceId,
     projectId,
+    number: 1,
     parentTaskId: null,
     title: "Intro",
     description: null,
@@ -165,6 +174,7 @@ const applyResult: TaskSkillApplyResult = {
       id: subtaskId,
       workspaceId,
       projectId,
+      number: 2,
       parentTaskId: rootTaskId,
       title: "Strings",
       description: null,
@@ -422,6 +432,17 @@ test("TaskSkillsService rejects invalid task skill definitions during apply prev
 test("TaskSkillsService rejects invalid task skill definitions during apply", async () => {
   const service = new TaskSkillsService(
     createReadStore({ applyResult: { status: "invalid_definition" } }),
+  );
+
+  await assert.rejects(
+    () => service.applyTaskSkill(workspaceId, skillId, userId, previewInput),
+    BadRequestException,
+  );
+});
+
+test("TaskSkillsService rejects template assignees outside the workspace", async () => {
+  const service = new TaskSkillsService(
+    createReadStore({ applyResult: { status: "invalid_assignee" } }),
   );
 
   await assert.rejects(

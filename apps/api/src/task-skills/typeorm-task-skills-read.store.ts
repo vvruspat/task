@@ -1,17 +1,20 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
 import type { DataSource } from "typeorm";
-import { IsNull } from "typeorm";
+import { In, IsNull } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   ActivityEventEntity,
   ProjectEntity,
+  StatusEntity,
   TaskEntity,
   TaskSkillEntity,
   TaskSkillVersionEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
+import { selectDefaultTaskStatusId } from "../tasks/default-task-status.js";
+import { reserveProjectTaskNumbers } from "../tasks/project-task-number.js";
 import type { TaskDetail } from "../tasks/tasks.contracts.js";
 import type {
   CloneTaskSkillInput,
@@ -20,7 +23,9 @@ import type {
   TaskSkillApplyPreview,
   TaskSkillApplyPreviewSubtask,
   TaskSkillApplyResult,
+  TaskSkillDefinition,
   TaskSkillDetail,
+  TaskSkillSubtaskDefinition,
   TaskSkillSummary,
   TaskSkillVersionSummary,
   UpdateTaskSkillDefinitionInput,
@@ -560,9 +565,9 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
       return { status: "invalid_definition" };
     }
 
-    const skillSubtaskTitles = readDefinitionSubtaskTitles(latestVersion.definition);
+    const skillSubtasks = readDefinitionSubtasks(latestVersion.definition);
 
-    if (skillSubtaskTitles === null) {
+    if (skillSubtasks === null) {
       return { status: "invalid_definition" };
     }
 
@@ -573,7 +578,7 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
       taskSkillVersionId: latestVersion.id,
       taskSkillVersion: latestVersion.version,
       rootTaskTitle: input.rootTaskTitle,
-      subtasks: buildApplySubtasks(skillSubtaskTitles, input),
+      subtasks: buildApplySubtasks(skillSubtasks, input),
     };
 
     return { status: "previewed", preview };
@@ -628,75 +633,120 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
       return { status: "invalid_definition" };
     }
 
-    const skillSubtaskTitles = readDefinitionSubtaskTitles(latestVersion.definition);
+    const skillSubtasks = readDefinitionSubtasks(latestVersion.definition);
 
-    if (skillSubtaskTitles === null) {
+    if (skillSubtasks === null) {
       return { status: "invalid_definition" };
     }
 
-    const plannedSubtasks = buildApplySubtasks(skillSubtaskTitles, input);
-    const applied = await dataSource.transaction(async (manager): Promise<TaskSkillApplyResult> => {
-      const taskRepository = manager.getRepository(TaskEntity);
-      const rootTask = taskRepository.create({
-        workspaceId,
-        projectId: input.projectId,
-        parentTaskId: null,
-        title: input.rootTaskTitle,
-        description: null,
-        createdByUserId: userId,
-        position: "0",
-        dueAt: null,
-        sourceSkillId: skill.id,
-        sourceSkillVersionId: latestVersion.id,
-        metadata: {},
-      });
-      const savedRootTask = await taskRepository.save(rootTask);
-      const subtaskEntities = plannedSubtasks.map((subtask, index) =>
-        taskRepository.create({
+    const plannedSubtasks = buildApplySubtasks(skillSubtasks, input);
+    const assigneeUserIds = [
+      ...new Set(
+        plannedSubtasks.flatMap((subtask) =>
+          subtask.assigneeUserId === null ? [] : [subtask.assigneeUserId],
+        ),
+      ),
+    ];
+
+    if (assigneeUserIds.length > 0) {
+      const assigneeMemberships = await dataSource
+        .getRepository(WorkspaceMemberEntity)
+        .findBy({ workspaceId, userId: In(assigneeUserIds) });
+
+      if (assigneeMemberships.length !== assigneeUserIds.length) {
+        return { status: "invalid_assignee" };
+      }
+    }
+    const applied = await dataSource.transaction(
+      async (manager): Promise<TaskSkillApplyResult | null> => {
+        const taskRepository = manager.getRepository(TaskEntity);
+        const numbers = await reserveProjectTaskNumbers(
+          manager,
+          workspaceId,
+          input.projectId,
+          plannedSubtasks.length + 1,
+        );
+        const rootTaskNumber = numbers?.[0];
+        if (numbers === null || rootTaskNumber === undefined) return null;
+        const statuses = await manager.getRepository(StatusEntity).find({
+          order: { position: "ASC" },
+          where: { projectId: input.projectId, workspaceId },
+        });
+        const defaultStatusId = selectDefaultTaskStatusId(statuses);
+        const rootTask = taskRepository.create({
           workspaceId,
           projectId: input.projectId,
-          parentTaskId: savedRootTask.id,
-          title: subtask.title,
+          number: rootTaskNumber,
+          parentTaskId: null,
+          title: input.rootTaskTitle,
           description: null,
+          assigneeUserId: null,
+          statusId: defaultStatusId,
           createdByUserId: userId,
-          position: String(index + 1),
+          position: "0",
           dueAt: null,
           sourceSkillId: skill.id,
           sourceSkillVersionId: latestVersion.id,
-          metadata: {
-            taskSkillSubtaskSource: subtask.source,
+          metadata: {},
+        });
+        const savedRootTask = await taskRepository.save(rootTask);
+        const subtaskEntities = plannedSubtasks.map((subtask, index) => {
+          const number = numbers[index + 1];
+          if (number === undefined) {
+            throw new Error("Reserved task number is missing.");
+          }
+          return taskRepository.create({
+            workspaceId,
+            projectId: input.projectId,
+            number,
+            parentTaskId: savedRootTask.id,
+            title: subtask.title,
+            description: subtask.description,
+            assigneeUserId: subtask.assigneeUserId,
+            statusId: defaultStatusId,
+            createdByUserId: userId,
+            position: String(index + 1),
+            dueAt: null,
+            sourceSkillId: skill.id,
+            sourceSkillVersionId: latestVersion.id,
+            metadata: {
+              labels: subtask.labels,
+              taskSkillSubtaskSource: subtask.source,
+            },
+          });
+        });
+        const savedSubtasks = await taskRepository.save(subtaskEntities);
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "task_skill.applied",
+          entityType: "task",
+          entityId: savedRootTask.id,
+          payload: {
+            projectId: input.projectId,
+            rootTaskTitle: savedRootTask.title,
+            subtaskCount: savedSubtasks.length,
+            taskSkillId: skill.id,
+            taskSkillVersion: latestVersion.version,
+            taskSkillVersionId: latestVersion.id,
           },
-        }),
-      );
-      const savedSubtasks = await taskRepository.save(subtaskEntities);
-      const activityEvent = manager.getRepository(ActivityEventEntity).create({
-        workspaceId,
-        actorUserId: userId,
-        eventType: "task_skill.applied",
-        entityType: "task",
-        entityId: savedRootTask.id,
-        payload: {
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        return {
+          workspaceId,
           projectId: input.projectId,
-          rootTaskTitle: savedRootTask.title,
-          subtaskCount: savedSubtasks.length,
           taskSkillId: skill.id,
-          taskSkillVersion: latestVersion.version,
           taskSkillVersionId: latestVersion.id,
-        },
-      });
+          taskSkillVersion: latestVersion.version,
+          rootTask: toTaskDetail(savedRootTask),
+          subtasks: savedSubtasks.map((subtask) => toTaskDetail(subtask)),
+        };
+      },
+    );
 
-      await manager.getRepository(ActivityEventEntity).save(activityEvent);
-
-      return {
-        workspaceId,
-        projectId: input.projectId,
-        taskSkillId: skill.id,
-        taskSkillVersionId: latestVersion.id,
-        taskSkillVersion: latestVersion.version,
-        rootTask: toTaskDetail(savedRootTask),
-        subtasks: savedSubtasks.map((subtask) => toTaskDetail(subtask)),
-      };
-    });
+    if (applied === null) return { status: "not_found" };
 
     return { status: "applied", result: applied };
   }
@@ -738,25 +788,38 @@ function toTaskSkillSummary(skill: TaskSkillEntity): TaskSkillSummary {
 }
 
 function toTaskSkillVersionSummary(version: TaskSkillVersionEntity): TaskSkillVersionSummary {
+  const definition = readTaskSkillDefinition(version.definition);
+
+  if (definition === null) {
+    throw new ServiceUnavailableException("Stored task skill definition is invalid.");
+  }
+
   return {
     id: version.id,
     workspaceId: version.workspaceId,
     taskSkillId: version.taskSkillId,
     version: version.version,
-    definition: version.definition,
+    definition,
     createdByUserId: version.createdByUserId,
     createdAt: version.createdAt,
   };
 }
 
-function readDefinitionSubtaskTitles(definition: Record<string, unknown>): string[] | null {
+function readTaskSkillDefinition(definition: Record<string, unknown>): TaskSkillDefinition | null {
+  const subtasks = readDefinitionSubtasks(definition);
+  return subtasks === null ? null : { subtasks };
+}
+
+function readDefinitionSubtasks(
+  definition: Record<string, unknown>,
+): TaskSkillSubtaskDefinition[] | null {
   const subtasks = readUnknownProperty(definition, "subtasks");
 
   if (!Array.isArray(subtasks) || subtasks.length === 0) {
     return null;
   }
 
-  const titles: string[] = [];
+  const parsedSubtasks: TaskSkillSubtaskDefinition[] = [];
 
   for (const subtask of subtasks) {
     if (!isUnknownRecord(subtask)) {
@@ -775,10 +838,43 @@ function readDefinitionSubtaskTitles(definition: Record<string, unknown>): strin
       return null;
     }
 
-    titles.push(trimmedTitle);
+    const descriptionValue = readUnknownProperty(subtask, "description");
+    const assigneeValue = readUnknownProperty(subtask, "assigneeUserId");
+    const labelsValue = readUnknownProperty(subtask, "labels");
+
+    if (
+      descriptionValue !== undefined &&
+      descriptionValue !== null &&
+      typeof descriptionValue !== "string"
+    ) {
+      return null;
+    }
+    if (
+      assigneeValue !== undefined &&
+      assigneeValue !== null &&
+      typeof assigneeValue !== "string"
+    ) {
+      return null;
+    }
+    if (
+      labelsValue !== undefined &&
+      (!Array.isArray(labelsValue) || !labelsValue.every((label) => typeof label === "string"))
+    ) {
+      return null;
+    }
+
+    parsedSubtasks.push({
+      title: trimmedTitle,
+      description: typeof descriptionValue === "string" ? descriptionValue : null,
+      assigneeUserId: typeof assigneeValue === "string" ? assigneeValue : null,
+      labels:
+        labelsValue === undefined
+          ? []
+          : [...new Set(labelsValue.map((label) => label.trim()).filter(Boolean))],
+    });
   }
 
-  return titles;
+  return parsedSubtasks;
 }
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
@@ -790,21 +886,30 @@ function readUnknownProperty(value: Record<string, unknown>, propertyName: strin
 }
 
 function buildApplySubtasks(
-  skillSubtaskTitles: string[],
+  skillSubtasks: TaskSkillSubtaskDefinition[],
   input: PreviewTaskSkillApplyInput,
 ): TaskSkillApplyPreviewSubtask[] {
   const removeSubtasks = new Set(input.overrides?.removeSubtasks ?? []);
-  const subtasks: TaskSkillApplyPreviewSubtask[] = skillSubtaskTitles
-    .filter((title) => !removeSubtasks.has(title))
-    .map((title) => ({
+  const subtasks: TaskSkillApplyPreviewSubtask[] = skillSubtasks
+    .filter((subtask) => !removeSubtasks.has(subtask.title))
+    .map((subtask) => ({
+      assigneeUserId: subtask.assigneeUserId ?? null,
+      description: subtask.description ?? null,
+      labels: subtask.labels ?? [],
       source: "skill",
-      title,
+      title: subtask.title,
     }));
   const titles = new Set(subtasks.map((subtask) => subtask.title));
 
   for (const title of input.overrides?.addSubtasks ?? []) {
     if (!titles.has(title)) {
-      subtasks.push({ source: "added", title });
+      subtasks.push({
+        assigneeUserId: null,
+        description: null,
+        labels: [],
+        source: "added",
+        title,
+      });
       titles.add(title);
     }
   }
@@ -817,6 +922,7 @@ function toTaskDetail(task: TaskEntity): TaskDetail {
     id: task.id,
     workspaceId: task.workspaceId,
     projectId: task.projectId,
+    number: task.number,
     parentTaskId: task.parentTaskId,
     title: task.title,
     description: task.description,

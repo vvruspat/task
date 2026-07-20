@@ -2,10 +2,20 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.react.json",
   "compilerOptions": {
+    "jsx": "preserve",
+    "plugins": [{ "name": "next" }],
     "incremental": true,
-    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
-    "rootDir": "src"
+    "tsBuildInfoFile": ".next/tsconfig.tsbuildinfo",
+    "rootDir": "."
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "lib/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }

@@ -13,6 +13,7 @@ import { ProjectsService } from "./projects.service.js";
 import type {
   ProjectArchiveResult,
   ProjectCreateResult,
+  ProjectDeleteResult,
   ProjectReadStore,
   ProjectUpdateResult,
 } from "./projects.store.js";
@@ -26,6 +27,8 @@ const archivedAt = new Date("2026-01-04T00:00:00.000Z");
 const projectSummary: ProjectSummary = {
   id: projectId,
   workspaceId,
+  key: "AR",
+  slug: "album-release",
   title: "Album release",
   description: null,
   status: "active",
@@ -175,6 +178,7 @@ function createReadStore(options: {
   createResult?: ProjectCreateResult;
   archiveResult?: ProjectArchiveResult;
   updateResult?: ProjectUpdateResult;
+  deleteResult?: ProjectDeleteResult;
 }): ProjectReadStore {
   return {
     listActiveForWorkspace: async (): Promise<ProjectSummary[] | null> => options.projects ?? [],
@@ -185,5 +189,7 @@ function createReadStore(options: {
       options.updateResult ?? { status: "project_not_found" },
     archiveForWorkspace: async (): Promise<ProjectArchiveResult> =>
       options.archiveResult ?? { status: "project_not_found" },
+    deleteForWorkspace: async (): Promise<ProjectDeleteResult> =>
+      options.deleteResult ?? { status: "project_not_found" },
   };
 }

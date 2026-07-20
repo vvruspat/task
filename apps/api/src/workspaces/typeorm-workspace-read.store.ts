@@ -8,12 +8,14 @@ import {
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type {
+  UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
   WorkspaceDetail,
   WorkspaceMember,
   WorkspaceSummary,
 } from "./workspaces.contracts.js";
 import type {
+  WorkspaceManagementStore,
   WorkspaceMemberManagementStore,
   WorkspaceMemberRoleUpdateResult,
   WorkspaceReadStore,
@@ -23,7 +25,7 @@ const memberRoleManagers = new Set(["owner", "admin"]);
 
 @Injectable()
 export class TypeOrmWorkspaceReadStore
-  implements WorkspaceReadStore, WorkspaceMemberManagementStore
+  implements WorkspaceReadStore, WorkspaceMemberManagementStore, WorkspaceManagementStore
 {
   private initialization: Promise<DataSource> | null = null;
 
@@ -68,7 +70,40 @@ export class TypeOrmWorkspaceReadStore
 
     return {
       ...toWorkspaceSummary(workspace),
+      description: workspace.description,
       members,
+    };
+  }
+
+  async updateWorkspace(
+    workspaceId: string,
+    userId: string,
+    input: UpdateWorkspaceInput,
+  ): Promise<import("./workspaces.store.js").WorkspaceUpdateResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+
+    if (membership === null || !memberRoleManagers.has(membership.role)) {
+      return { status: "forbidden" };
+    }
+
+    const repository = dataSource.getRepository(WorkspaceEntity);
+    const workspace = await repository.findOneBy({ id: workspaceId });
+    if (workspace === null) return { status: "workspace_not_found" };
+
+    workspace.description = input.description;
+    await repository.save(workspace);
+
+    return {
+      status: "updated",
+      workspace: {
+        ...toWorkspaceSummary(workspace),
+        description: workspace.description,
+        members: await this.listMembersForWorkspace(workspaceId),
+      },
     };
   }
 

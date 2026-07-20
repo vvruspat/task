@@ -163,7 +163,7 @@ const previewResponse: PreviewTaskSkillApplyResponse = {
   taskSkillVersionId,
   taskSkillVersion: 1,
   rootTaskTitle: "Intro",
-  subtasks: [{ title: "Lyrics", source: "skill" }],
+  subtasks: [{ title: "Lyrics", labels: [], source: "skill" }],
 };
 
 const applyResponse: ApplyTaskSkillResponse = {
@@ -176,6 +176,7 @@ const applyResponse: ApplyTaskSkillResponse = {
     id: rootTaskId,
     workspaceId,
     projectId,
+    number: 1,
     parentTaskId: null,
     title: "Intro",
     description: null,

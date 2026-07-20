@@ -1,4 +1,5 @@
 import type {
+  UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
   WorkspaceDetail,
   WorkspaceMember,
@@ -22,4 +23,16 @@ export type WorkspaceMemberManagementStore = {
     userId: string,
     input: UpdateWorkspaceMemberRoleInput,
   ): Promise<WorkspaceMemberRoleUpdateResult>;
+};
+
+export type WorkspaceUpdateResult =
+  | { status: "forbidden" | "workspace_not_found" }
+  | { status: "updated"; workspace: WorkspaceDetail };
+
+export type WorkspaceManagementStore = {
+  updateWorkspace(
+    workspaceId: string,
+    userId: string,
+    input: UpdateWorkspaceInput,
+  ): Promise<WorkspaceUpdateResult>;
 };

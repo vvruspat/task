@@ -17,6 +17,8 @@ import type {
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const maxSearchResultLimit = 20;
+type TaskSkillDefinition = CreateTaskSkillInput["definition"];
+type TaskSkillSubtaskDefinition = TaskSkillDefinition["subtasks"][number];
 
 export type TaskSkillApplyToolInput = {
   workspaceId: string;
@@ -60,7 +62,7 @@ export type TaskSkillCreateToolInput = {
   name: string;
   description?: string | null;
   aliases?: string[];
-  definition: Record<string, unknown>;
+  definition: TaskSkillDefinition;
 };
 
 export type TaskSkillUpdateMetadataToolInput = {
@@ -76,7 +78,7 @@ export type TaskSkillUpdateDefinitionToolInput = {
   workspaceId: string;
   taskSkillId: string;
   userId: string;
-  definition: Record<string, unknown>;
+  definition: TaskSkillDefinition;
 };
 
 export type TaskSkillToolHandlers = {
@@ -222,7 +224,7 @@ export function parseTaskSkillCreateToolInput(input: unknown): TaskSkillCreateTo
     workspaceId: readRequiredUuid(record, "workspaceId"),
     userId: readRequiredUuid(record, "userId"),
     name: readRequiredNonEmptyString(record, "name"),
-    definition: readRequiredRecord(record, "definition"),
+    definition: readTaskSkillDefinition(record, "definition"),
   };
   const description = readOptionalNullableString(record, "description");
   const aliases = readOptionalStringArray(record, "aliases");
@@ -322,7 +324,7 @@ export function parseTaskSkillUpdateDefinitionToolInput(
     workspaceId: readRequiredUuid(record, "workspaceId"),
     taskSkillId: readRequiredUuid(record, "taskSkillId"),
     userId: readRequiredUuid(record, "userId"),
-    definition: readRequiredRecord(record, "definition"),
+    definition: readTaskSkillDefinition(record, "definition"),
   };
 }
 
@@ -623,6 +625,46 @@ function readRequiredRecord(
   const value = record[propertyName];
 
   return readRecord(value, propertyName);
+}
+
+function readTaskSkillDefinition(
+  record: Record<string, unknown>,
+  propertyName: string,
+): TaskSkillDefinition {
+  const definition = readRequiredRecord(record, propertyName);
+  const subtasksValue = definition["subtasks"];
+
+  if (!Array.isArray(subtasksValue) || subtasksValue.length === 0) {
+    throw new TaskSkillToolInputError("definition.subtasks must be a non-empty array.");
+  }
+
+  return {
+    subtasks: subtasksValue.map(readTaskSkillSubtaskDefinition),
+  };
+}
+
+function readTaskSkillSubtaskDefinition(value: unknown): TaskSkillSubtaskDefinition {
+  const subtask = readRecord(value, "definition subtask");
+  const parsed: TaskSkillSubtaskDefinition = {
+    title: readRequiredNonEmptyString(subtask, "title"),
+  };
+  const description = readOptionalNullableString(subtask, "description");
+  const assigneeUserId = readOptionalNullableUuid(subtask, "assigneeUserId");
+  const labels = readOptionalStringArray(subtask, "labels");
+
+  if (description !== undefined) parsed.description = description;
+  if (assigneeUserId !== undefined) parsed.assigneeUserId = assigneeUserId;
+  if (labels !== undefined) parsed.labels = labels;
+  return parsed;
+}
+
+function readOptionalNullableUuid(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const value = record[propertyName];
+  if (value === undefined || value === null) return value;
+  return readRequiredUuid(record, propertyName);
 }
 
 function readOptionalOverrides(

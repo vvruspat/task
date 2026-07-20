@@ -1,9 +1,0 @@
-@layer components {
-	.fallback {
-		width: 100%;
-		height: 100%;
-		background-color: var(--color-surface-raised);
-		color: var(--color-text-primary);
-		font-size: var(--font-size-xl);
-	}
-}

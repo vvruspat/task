@@ -1,7 +1,0 @@
-.required {
-	color: var(--color-status-error);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: start;
-}

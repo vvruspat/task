@@ -19,6 +19,7 @@ import {
 } from "./status-tools.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
+const projectId = "22222222-2222-4222-8222-222222222222";
 const userId = "55555555-5555-4555-8555-555555555555";
 const statusId = "88888888-8888-4888-8888-888888888888";
 const timestamp = "2026-01-01T00:00:00.000Z";
@@ -26,6 +27,7 @@ const timestamp = "2026-01-01T00:00:00.000Z";
 const workspaceStatus: WorkspaceStatusResponse = {
   id: statusId,
   workspaceId,
+  projectId,
   name: "In progress",
   color: "#3b82f6",
   position: "1000",
@@ -38,32 +40,34 @@ test("parseStatusListToolInput validates and normalizes status list payloads", (
   assert.deepEqual(
     parseStatusListToolInput({
       workspaceId: ` ${workspaceId} `,
+      projectId: ` ${projectId} `,
       userId,
     }),
     {
       workspaceId,
+      projectId,
       userId,
     },
   );
 
   assert.throws(
-    () => parseStatusListToolInput({ workspaceId: "bad", userId }),
+    () => parseStatusListToolInput({ workspaceId: "bad", projectId, userId }),
     StatusToolInputError,
   );
-  assert.throws(() => parseStatusListToolInput({ workspaceId }), StatusToolInputError);
+  assert.throws(() => parseStatusListToolInput({ workspaceId, projectId }), StatusToolInputError);
 });
 
 test("status list handler forwards workspace identifiers to the backend client", async () => {
-  const calls: Array<{ workspaceId: string; userId: string }> = [];
+  const calls: Array<{ workspaceId: string; projectId: string; userId: string }> = [];
   const handlers = createStatusToolHandlers(createBackendClientStub([workspaceStatus], calls));
 
-  assert.deepEqual(await handlers.list({ workspaceId, userId }), [workspaceStatus]);
-  assert.deepEqual(calls, [{ workspaceId, userId }]);
+  assert.deepEqual(await handlers.list({ workspaceId, projectId, userId }), [workspaceStatus]);
+  assert.deepEqual(calls, [{ workspaceId, projectId, userId }]);
 });
 
 function createBackendClientStub(
   statuses: WorkspaceStatusResponse[],
-  listWorkspaceStatusesCalls: Array<{ workspaceId: string; userId: string }>,
+  listWorkspaceStatusesCalls: Array<{ workspaceId: string; projectId: string; userId: string }>,
 ): TaskBackendClient {
   return {
     listWorkspaces: async (): Promise<never> => {

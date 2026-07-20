@@ -64,7 +64,7 @@ export class TypeOrmProjectMatrixReadStore implements ProjectMatrixReadStore {
         order: projectMatrixTaskOrder,
       }),
       dataSource.getRepository(StatusEntity).find({
-        where: { workspaceId },
+        where: { projectId, workspaceId },
         order: { position: "ASC", name: "ASC" },
       }),
     ]);
@@ -133,6 +133,7 @@ function toTaskSummary(task: TaskEntity): TaskSummary {
     id: task.id,
     workspaceId: task.workspaceId,
     projectId: task.projectId,
+    number: task.number,
     parentTaskId: task.parentTaskId,
     title: task.title,
     description: task.description,

@@ -63,6 +63,7 @@ const substringWorkspaceMember: WorkspaceMemberResponse = {
 
 const workspaceDetail: WorkspaceDetailResponse = {
   ...workspaceSummary,
+  description: null,
   members: [workspaceMember],
 };
 

@@ -1,6 +1,7 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
+  UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
   WorkspaceDetail,
   WorkspaceMember,
@@ -8,6 +9,26 @@ import type {
 } from "./workspaces.contracts.js";
 
 const assignableWorkspaceMemberRoles = ["admin", "member", "guest"] as const;
+
+export class UpdateWorkspaceDto implements UpdateWorkspaceInput {
+  @ApiProperty({ nullable: true, type: String })
+  readonly description: string | null = null;
+}
+
+export class ParseUpdateWorkspaceBodyPipe implements PipeTransform<unknown, UpdateWorkspaceInput> {
+  transform(value: unknown): UpdateWorkspaceInput {
+    if (!isUnknownRecord(value) || !("description" in value)) {
+      throw new BadRequestException("Workspace payload must include a description.");
+    }
+
+    const description = readProperty(value, "description");
+    if (description !== null && typeof description !== "string") {
+      throw new BadRequestException("Workspace description must be a string or null.");
+    }
+
+    return { description };
+  }
+}
 
 export class UpdateWorkspaceMemberRoleDto implements UpdateWorkspaceMemberRoleInput {
   @ApiProperty({ enum: assignableWorkspaceMemberRoles })
@@ -99,11 +120,15 @@ export class WorkspaceMemberDto implements WorkspaceMember {
 }
 
 export class WorkspaceDetailDto extends WorkspaceSummaryDto implements WorkspaceDetail {
+  @ApiProperty({ nullable: true, type: String })
+  readonly description: string | null;
+
   @ApiProperty({ isArray: true, type: WorkspaceMemberDto })
   readonly members: WorkspaceMemberDto[];
 
   constructor(workspace: WorkspaceDetail) {
     super(workspace);
+    this.description = workspace.description;
     this.members = workspace.members.map((member) => new WorkspaceMemberDto(member));
   }
 }

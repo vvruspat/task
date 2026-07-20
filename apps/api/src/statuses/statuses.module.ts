@@ -16,5 +16,6 @@ const statusesServiceProvider: Provider<StatusesService> = {
   imports: [DatabaseModule],
   controllers: [StatusesController],
   providers: [TypeOrmStatusesReadStore, statusesServiceProvider],
+  exports: [StatusesService],
 })
 export class StatusesModule {}

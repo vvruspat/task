@@ -213,6 +213,8 @@ id uuid pk
 workspace_id uuid fk workspaces.id
 task_id uuid fk tasks.id
 author_user_id uuid fk users.id
+parent_comment_id uuid nullable fk comments.id
+mentioned_user_ids uuid[] not null default '{}'
 body text not null
 created_at timestamptz not null
 updated_at timestamptz not null
@@ -312,4 +314,3 @@ updated_at timestamptz not null
 - Whether Matrix view needs a first-class `matrix_view_settings` table or can derive rows dynamically from tasks.
 - Whether files should be copied from Telegram to object storage immediately or lazily on first access.
 - Whether task skill definitions should stay JSONB-only or get normalized child tables after the editor becomes complex.
-

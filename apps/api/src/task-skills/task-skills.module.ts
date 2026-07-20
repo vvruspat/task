@@ -16,5 +16,6 @@ const taskSkillsServiceProvider: Provider<TaskSkillsService> = {
   imports: [DatabaseModule],
   controllers: [TaskSkillsController],
   providers: [TypeOrmTaskSkillsReadStore, taskSkillsServiceProvider],
+  exports: [TaskSkillsService],
 })
 export class TaskSkillsModule {}

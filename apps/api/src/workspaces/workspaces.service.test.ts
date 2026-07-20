@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import type {
+  UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
   WorkspaceDetail,
   WorkspaceMember,
@@ -9,7 +10,11 @@ import type {
 } from "./workspaces.contracts.js";
 import { WorkspaceMemberDto, WorkspaceSummaryDto } from "./workspaces.dto.js";
 import { WorkspacesService } from "./workspaces.service.js";
-import type { WorkspaceMemberManagementStore, WorkspaceReadStore } from "./workspaces.store.js";
+import type {
+  WorkspaceManagementStore,
+  WorkspaceMemberManagementStore,
+  WorkspaceReadStore,
+} from "./workspaces.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
@@ -37,6 +42,7 @@ const workspaceMember: WorkspaceMember = {
 };
 
 const workspaceDetail: WorkspaceDetail = {
+  description: null,
   ...workspaceSummary,
   members: [workspaceMember],
 };
@@ -59,10 +65,35 @@ test("WorkspacesService returns workspace detail with member DTOs", async () => 
   const response = await service.getWorkspace(workspaceId, userId);
 
   assert.equal(response.id, workspaceId);
+  assert.equal(response.description, null);
   assert.equal(response.members.length, 1);
   assert.ok(response.members[0] instanceof WorkspaceMemberDto);
   assert.equal(response.members[0]?.userId, workspaceMember.userId);
   assert.equal(response.members[0]?.role, workspaceMember.role);
+});
+
+test("WorkspacesService updates a workspace description and preserves permissions", async () => {
+  const updatedWorkspace = { ...workspaceDetail, description: "## Studio notes" };
+  const service = new WorkspacesService(
+    createReadStore({}),
+    undefined,
+    createWorkspaceManagementStore({ workspace: updatedWorkspace }),
+  );
+
+  const response = await service.updateWorkspace(workspaceId, userId, {
+    description: "## Studio notes",
+  });
+  assert.equal(response.description, "## Studio notes");
+
+  const forbiddenService = new WorkspacesService(
+    createReadStore({}),
+    undefined,
+    createWorkspaceManagementStore({ result: "forbidden" }),
+  );
+  await assert.rejects(
+    () => forbiddenService.updateWorkspace(workspaceId, userId, { description: null }),
+    ForbiddenException,
+  );
 });
 
 test("WorkspacesService returns workspace members for visible workspaces", async () => {
@@ -133,6 +164,23 @@ function createManagementStore(options: {
       if (options.result !== undefined) return { status: options.result };
       if (options.member === undefined) return { status: "member_not_found" };
       return { member: options.member, status: "updated" };
+    },
+  };
+}
+
+function createWorkspaceManagementStore(options: {
+  result?: "forbidden" | "workspace_not_found";
+  workspace?: WorkspaceDetail;
+}): WorkspaceManagementStore {
+  return {
+    updateWorkspace: async (
+      _workspaceId: string,
+      _userId: string,
+      _input: UpdateWorkspaceInput,
+    ) => {
+      if (options.result !== undefined) return { status: options.result };
+      if (options.workspace === undefined) return { status: "workspace_not_found" };
+      return { status: "updated", workspace: options.workspace };
     },
   };
 }

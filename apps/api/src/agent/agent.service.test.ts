@@ -26,6 +26,7 @@ import type {
   AgentRunStore,
   FindTelegramAgentRunInput,
   PersistTelegramAgentRunInput,
+  PersistWebAgentRunInput,
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
 
@@ -536,6 +537,10 @@ class RecordingAgentRunStore implements AgentRunStore {
     return this.detailResult;
   }
 
+  async isWorkspaceMember(_workspaceId: string, _userId: string): Promise<boolean> {
+    return true;
+  }
+
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<PersistedAgentRun> {
     this.lastPersistInput = input;
 
@@ -556,6 +561,13 @@ class RecordingAgentRunStore implements AgentRunStore {
       error: input.runtimeResult.error,
       createdAt: new Date("2026-07-08T00:00:00.000Z"),
       updatedAt: new Date("2026-07-08T00:00:00.000Z"),
+    };
+  }
+
+  async createWebRun(input: PersistWebAgentRunInput): Promise<PersistedAgentRun> {
+    return {
+      ...(await this.createTelegramRun({ ...input, sourceThreadId: null, sourceMessageId: null })),
+      source: "web",
     };
   }
 }

@@ -1,6 +1,7 @@
-import type { AgentRuntimeToolCall } from "./agent.runtime.js";
+import type { AgentRuntimeToolCall, TelegramAgentRuntimeContext } from "./agent.runtime.js";
 
 export type AgentToolOperationCall = {
+  callId: string;
   toolName: string;
   arguments: Record<string, unknown>;
 };
@@ -21,13 +22,19 @@ export type AgentToolOperationDispatchResult =
     };
 
 export type AgentToolOperationDispatcher = {
-  dispatchToolCall(call: AgentToolOperationCall): Promise<AgentRuntimeToolCall>;
+  dispatchToolCall(
+    call: AgentToolOperationCall,
+    context: TelegramAgentRuntimeContext,
+  ): Promise<AgentRuntimeToolCall>;
 };
 
 export class StaticAgentToolOperationDispatcher implements AgentToolOperationDispatcher {
   constructor(private readonly result: AgentToolOperationDispatchResult = defaultPendingResult) {}
 
-  async dispatchToolCall(call: AgentToolOperationCall): Promise<AgentRuntimeToolCall> {
+  async dispatchToolCall(
+    call: AgentToolOperationCall,
+    _context: TelegramAgentRuntimeContext,
+  ): Promise<AgentRuntimeToolCall> {
     if (this.result.status === "success") {
       return {
         toolName: call.toolName,

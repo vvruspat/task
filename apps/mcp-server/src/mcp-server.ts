@@ -125,6 +125,7 @@ const projectSearchInputSchema = {
 
 const statusListInputSchema = {
   workspaceId: z.string().uuid(),
+  projectId: z.string().uuid(),
   userId: z.string().uuid(),
 };
 
@@ -141,6 +142,8 @@ const commentCreateInputSchema = {
   taskId: z.string().uuid(),
   userId: z.string().uuid(),
   body: z.string().min(1),
+  parentCommentId: z.string().uuid().nullable().optional(),
+  mentionedUserIds: z.array(z.string().uuid()).optional(),
 };
 
 const attachmentListInputSchema = {

@@ -13,7 +13,7 @@ import type {
   UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
-import { TasksController } from "./tasks.controller.js";
+import { IssuesController, TasksController } from "./tasks.controller.js";
 import {
   ParseAddTaskSubtasksBodyPipe,
   ParseBulkUpdateTasksBodyPipe,
@@ -54,6 +54,7 @@ const taskSummary: TaskSummary = {
   id: taskId,
   workspaceId,
   projectId,
+  number: 1,
   parentTaskId: null,
   title: "Record bass",
   description: null,
@@ -88,6 +89,19 @@ test("TasksController uses trusted current user context for task detail reads", 
 
   assert.equal(response.id, taskId);
   assert.equal(response.projectId, projectId);
+});
+
+test("IssuesController resolves a human-readable issue identifier", async () => {
+  const controller = new IssuesController(new TasksService(createReadStore({ task: taskSummary })));
+
+  const response = await controller.getIssue(
+    workspaceId,
+    { projectKey: "AR", taskNumber: 1 },
+    userId,
+  );
+
+  assert.equal(response.id, taskId);
+  assert.equal(response.number, 1);
 });
 
 test("TasksController uses trusted current user context for task creates", async () => {
@@ -156,7 +170,10 @@ test("TasksController uses trusted current user context for task status updates"
 });
 
 test("TasksController uses trusted current user context for task updates", async () => {
-  const input: UpdateTaskInput = { description: "Second take", metadata: { take: 2 } };
+  const input: UpdateTaskInput = {
+    description: "Second take",
+    metadata: { take: 2 },
+  };
   const controller = new TasksController(
     new TasksService(
       createReadStore({
@@ -186,7 +203,11 @@ test("TasksController uses trusted current user context for task moves", async (
       createReadStore({
         moveResult: {
           status: "updated",
-          task: { ...taskSummary, parentTaskId: input.parentTaskId, position: input.position },
+          task: {
+            ...taskSummary,
+            parentTaskId: input.parentTaskId,
+            position: input.position,
+          },
         },
       }),
     ),
@@ -273,6 +294,8 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
   assert.deepEqual(
     pipe.transform({
       title: "  Record drums  ",
+      assigneeUserId,
+      statusId,
       description: "",
       parentTaskId: taskId,
       position: "2000",
@@ -281,6 +304,8 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
     }),
     {
       title: "Record drums",
+      assigneeUserId,
+      statusId,
       description: null,
       parentTaskId: taskId,
       position: "2000",
@@ -291,6 +316,11 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
 
   assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
   assert.throws(() => pipe.transform({ title: "Task", parentTaskId: "bad" }), BadRequestException);
+  assert.throws(
+    () => pipe.transform({ title: "Task", assigneeUserId: "bad" }),
+    BadRequestException,
+  );
+  assert.throws(() => pipe.transform({ title: "Task", statusId: "bad" }), BadRequestException);
   assert.throws(() => pipe.transform({ title: "Task", position: "first" }), BadRequestException);
   assert.throws(() => pipe.transform({ title: "Task", dueAt: "tomorrow" }), BadRequestException);
   assert.throws(() => pipe.transform({ title: "Task", metadata: [] }), BadRequestException);
@@ -357,7 +387,9 @@ test("ParseUpdateTaskBodyPipe validates and normalizes task update payloads", ()
       metadata: { instrument: "bass" },
     },
   );
-  assert.deepEqual(pipe.transform({ description: null }), { description: null });
+  assert.deepEqual(pipe.transform({ description: null }), {
+    description: null,
+  });
 
   assert.throws(() => pipe.transform({}), BadRequestException);
   assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
@@ -396,11 +428,16 @@ test("ParseUpdateTaskStatusBodyPipe validates task status payloads", () => {
 
   assert.deepEqual(pipe.transform({ statusId }), { statusId });
   assert.deepEqual(pipe.transform({ statusId: null }), { statusId: null });
+  assert.deepEqual(pipe.transform({ statusId, position: "2000" }), {
+    statusId,
+    position: "2000",
+  });
 
   assert.throws(() => pipe.transform({}), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: "" }), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: "bad" }), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: 1 }), BadRequestException);
+  assert.throws(() => pipe.transform({ statusId, position: "last" }), BadRequestException);
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
@@ -408,7 +445,9 @@ test("ParseUpdateTaskAssigneeBodyPipe validates task assignee payloads", () => {
   const pipe = new ParseUpdateTaskAssigneeBodyPipe();
 
   assert.deepEqual(pipe.transform({ assigneeUserId }), { assigneeUserId });
-  assert.deepEqual(pipe.transform({ assigneeUserId: null }), { assigneeUserId: null });
+  assert.deepEqual(pipe.transform({ assigneeUserId: null }), {
+    assigneeUserId: null,
+  });
 
   assert.throws(() => pipe.transform({}), BadRequestException);
   assert.throws(() => pipe.transform({ assigneeUserId: "" }), BadRequestException);
@@ -450,16 +489,29 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
       sortBy: "title",
       sortDirection: "asc",
     }),
-    { search: "bass", statusId, page: 2, pageSize: 25, sortBy: "title", sortDirection: "asc" },
+    {
+      search: "bass",
+      statusId,
+      page: 2,
+      pageSize: 25,
+      sortBy: "title",
+      sortDirection: "asc",
+    },
   );
-  assert.deepEqual(pipe.transform({ statusFilter: "unassigned", assigneeFilter: "unassigned" }), {
-    statusFilter: "unassigned",
-    assigneeFilter: "unassigned",
-    sortBy: "updatedAt",
-    sortDirection: "desc",
-    page: 1,
-    pageSize: 50,
-  });
+  assert.deepEqual(
+    pipe.transform({
+      statusFilter: "unassigned",
+      assigneeFilter: "unassigned",
+    }),
+    {
+      statusFilter: "unassigned",
+      assigneeFilter: "unassigned",
+      sortBy: "updatedAt",
+      sortDirection: "desc",
+      page: 1,
+      pageSize: 50,
+    },
+  );
   assert.throws(() => pipe.transform({ sortBy: "unsafe" }), BadRequestException);
   assert.throws(
     () => pipe.transform({ statusId, statusFilter: "unassigned" }),
@@ -471,7 +523,11 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
   );
   assert.throws(() => pipe.transform({ pageSize: "101" }), BadRequestException);
   assert.throws(
-    () => pipe.transform({ dueFrom: "2026-02-01T00:00:00Z", dueTo: "2026-01-01T00:00:00Z" }),
+    () =>
+      pipe.transform({
+        dueFrom: "2026-02-01T00:00:00Z",
+        dueTo: "2026-01-01T00:00:00Z",
+      }),
     BadRequestException,
   );
 });
@@ -510,6 +566,8 @@ function createReadStore(options: {
         ? { items: [], page: 1, pageSize: 50, total: 0 }
         : options.tablePage,
     getForProject: async (): Promise<TaskDetail | null> =>
+      options.task === undefined ? null : options.task,
+    getByIdentifierForWorkspace: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },

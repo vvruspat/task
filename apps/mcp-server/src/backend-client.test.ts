@@ -55,12 +55,14 @@ const workspaceMember: WorkspaceMemberResponse = {
 
 const workspaceDetail: WorkspaceDetailResponse = {
   ...workspaceSummary,
+  description: null,
   members: [workspaceMember],
 };
 
 const workspaceStatus: WorkspaceStatusResponse = {
   id: "99999999-9999-4999-8999-999999999999",
   workspaceId,
+  projectId,
   name: "In progress",
   color: "#3b82f6",
   position: "1000",
@@ -140,10 +142,13 @@ const createConfirmationRequestInput: CreateConfirmationRequestInput = {
 };
 
 const taskComment: TaskCommentResponse = {
+  agentRunId: null,
   id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
   workspaceId,
   taskId: rootTaskId,
   authorUserId: userId,
+  parentCommentId: null,
+  mentionedUserIds: [],
   body: "Bass take is ready for review.",
   createdAt: timestamp,
   updatedAt: timestamp,
@@ -168,6 +173,8 @@ const taskAttachment: TaskAttachmentResponse = {
 const projectSummary: ProjectSummaryResponse = {
   id: projectId,
   workspaceId,
+  key: "AR",
+  slug: "album-release",
   title: "Album Release",
   description: null,
   status: "active",
@@ -195,6 +202,7 @@ const taskDetail = {
   id: rootTaskId,
   workspaceId,
   projectId,
+  number: 1,
   parentTaskId: null,
   title: "Intro",
   description: null,
@@ -228,7 +236,7 @@ test("previewTaskSkillApply posts typed payloads with trusted user context", asy
     taskSkillVersionId,
     taskSkillVersion: 1,
     rootTaskTitle: "Intro",
-    subtasks: [{ title: "Strings", source: "added" }],
+    subtasks: [{ title: "Strings", labels: [], source: "added" }],
   });
   const client = createTaskBackendClient({
     baseUrl: "https://api.task.local/",
@@ -671,10 +679,13 @@ test("listWorkspaceStatuses gets typed workspace statuses with trusted user cont
     fetch: fetchImplementation,
   });
 
-  const response = await client.listWorkspaceStatuses({ workspaceId, userId });
+  const response = await client.listWorkspaceStatuses({ workspaceId, projectId, userId });
 
   assert.equal(fetchCalls.length, 1);
-  assert.equal(fetchCalls[0]?.input, `https://api.task.local/workspaces/${workspaceId}/statuses`);
+  assert.equal(
+    fetchCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/projects/${projectId}/statuses`,
+  );
   assert.equal(fetchCalls[0]?.init.method, "GET");
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.equal(fetchCalls[0]?.init.headers.accept, "application/json");
@@ -1385,7 +1396,7 @@ test("backend client rejects malformed success responses", async () => {
       taskSkillVersionId,
       taskSkillVersion: 1,
       rootTaskTitle: "Intro",
-      subtasks: [{ title: "Strings", source: "unexpected" }],
+      subtasks: [{ title: "Strings", labels: [], source: "unexpected" }],
     }),
   });
 
@@ -1420,7 +1431,7 @@ test("backend client rejects malformed status list responses", async () => {
   });
 
   await assert.rejects(
-    () => client.listWorkspaceStatuses({ workspaceId, userId }),
+    () => client.listWorkspaceStatuses({ workspaceId, projectId, userId }),
     /isDone must be a boolean/,
   );
 });

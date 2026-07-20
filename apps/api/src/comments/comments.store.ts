@@ -10,6 +10,9 @@ export type TaskCommentCreateResult =
     }
   | {
       status: "forbidden";
+    }
+  | {
+      status: "invalid_reference";
     };
 
 export type TaskCommentsStore = {
@@ -26,4 +29,17 @@ export type TaskCommentsStore = {
     userId: string,
     input: CreateTaskCommentInput,
   ): Promise<TaskCommentCreateResult>;
+  createAgentReply(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    invokingUserId: string,
+    input: CreateAgentTaskCommentInput,
+  ): Promise<TaskComment | null>;
+};
+
+export type CreateAgentTaskCommentInput = {
+  agentRunId: string;
+  body: string;
+  parentCommentId: string;
 };

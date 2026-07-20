@@ -15,10 +15,13 @@ const userId = "22222222-2222-4222-8222-222222222222";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 
 const taskComment: TaskComment = {
+  agentRunId: null,
   id: commentId,
   workspaceId,
   taskId,
   authorUserId: userId,
+  parentCommentId: null,
+  mentionedUserIds: [],
   body: "Bass take is ready.",
   createdAt,
   updatedAt: createdAt,
@@ -36,7 +39,11 @@ test("CommentsController uses trusted current user context for comment list read
 });
 
 test("CommentsController uses trusted current user context for comment creates", async () => {
-  const input: CreateTaskCommentInput = { body: "Ready for review." };
+  const input: CreateTaskCommentInput = {
+    body: "Ready for review.",
+    mentionedUserIds: [],
+    parentCommentId: null,
+  };
   const controller = new CommentsController(
     new CommentsService(
       createCommentsStore({
@@ -65,7 +72,22 @@ test("ParseCreateTaskCommentBodyPipe validates and normalizes comment payloads",
 
   assert.deepEqual(pipe.transform({ body: "  Ready for review.  " }), {
     body: "Ready for review.",
+    mentionedUserIds: [],
+    parentCommentId: null,
   });
+
+  assert.deepEqual(
+    pipe.transform({
+      body: "@Alex please review",
+      mentionedUserIds: [userId, userId],
+      parentCommentId: commentId,
+    }),
+    {
+      body: "@Alex please review",
+      mentionedUserIds: [userId],
+      parentCommentId: commentId,
+    },
+  );
 
   assert.throws(() => pipe.transform({ body: "" }), BadRequestException);
   assert.throws(() => pipe.transform({ body: 1 }), BadRequestException);
@@ -81,5 +103,6 @@ function createCommentsStore(options: {
       options.comments === undefined ? [] : options.comments,
     createForTask: async (): Promise<TaskCommentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
+    createAgentReply: async (): Promise<TaskComment | null> => null,
   };
 }

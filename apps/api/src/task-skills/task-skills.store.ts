@@ -116,6 +116,9 @@ export type TaskSkillApplyForWorkspaceResult =
     }
   | {
       status: "invalid_definition";
+    }
+  | {
+      status: "invalid_assignee";
     };
 
 export type TaskSkillsReadStore = {

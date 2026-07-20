@@ -49,6 +49,7 @@ const arrangeTask: TaskSummaryResponse = {
   id: firstTaskId,
   workspaceId,
   projectId,
+  number: 1,
   parentTaskId: null,
   title: "Arrange intro",
   description: null,

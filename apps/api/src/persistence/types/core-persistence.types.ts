@@ -2,6 +2,7 @@ export type WorkspaceRecord = {
   id: string;
   name: string;
   slug: string;
+  description: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -29,6 +30,7 @@ export type WorkspaceMemberRecord = {
 export type StatusRecord = {
   id: string;
   workspaceId: string;
+  projectId: string;
   name: string;
   color: string;
   position: string;
@@ -40,6 +42,9 @@ export type StatusRecord = {
 export type ProjectRecord = {
   id: string;
   workspaceId: string;
+  key: string;
+  slug: string;
+  nextTaskNumber: number;
   title: string;
   description: string | null;
   status: string | null;
@@ -54,6 +59,7 @@ export type TaskRecord = {
   id: string;
   workspaceId: string;
   projectId: string;
+  number: number;
   parentTaskId: string | null;
   title: string;
   description: string | null;
@@ -97,6 +103,9 @@ export type CommentRecord = {
   workspaceId: string;
   taskId: string;
   authorUserId: string;
+  agentRunId: string | null;
+  parentCommentId: string | null;
+  mentionedUserIds: string[];
   body: string;
   createdAt: Date;
   updatedAt: Date;

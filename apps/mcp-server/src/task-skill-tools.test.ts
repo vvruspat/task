@@ -57,7 +57,14 @@ const createInput = {
   description: " Song production template ",
   aliases: [" track ", "track"],
   definition: {
-    subtasks: [{ title: "Lyrics" }],
+    subtasks: [
+      {
+        title: "Lyrics",
+        description: "Write lyrics",
+        assigneeUserId: userId,
+        labels: ["writing", "writing"],
+      },
+    ],
   },
 };
 
@@ -77,7 +84,7 @@ const previewResponse: PreviewTaskSkillApplyResponse = {
   taskSkillVersionId,
   taskSkillVersion: 1,
   rootTaskTitle: "Intro",
-  subtasks: [{ title: "Strings", source: "added" }],
+  subtasks: [{ title: "Strings", labels: [], source: "added" }],
 };
 
 const taskSkillSummary: TaskSkillSummaryResponse = {
@@ -119,6 +126,7 @@ const applyResponse: ApplyTaskSkillResponse = {
     id: rootTaskId,
     workspaceId,
     projectId,
+    number: 1,
     parentTaskId: null,
     title: "Intro",
     description: null,
@@ -210,7 +218,14 @@ test("parseTaskSkillCreateToolInput validates and normalizes create payloads", (
     description: "Song production template",
     aliases: ["track"],
     definition: {
-      subtasks: [{ title: "Lyrics" }],
+      subtasks: [
+        {
+          title: "Lyrics",
+          description: "Write lyrics",
+          assigneeUserId: userId,
+          labels: ["writing"],
+        },
+      ],
     },
   });
   assert.deepEqual(parseTaskSkillCreateToolInput({ ...createInput, description: null }), {
@@ -220,7 +235,14 @@ test("parseTaskSkillCreateToolInput validates and normalizes create payloads", (
     description: null,
     aliases: ["track"],
     definition: {
-      subtasks: [{ title: "Lyrics" }],
+      subtasks: [
+        {
+          title: "Lyrics",
+          description: "Write lyrics",
+          assigneeUserId: userId,
+          labels: ["writing"],
+        },
+      ],
     },
   });
   assert.throws(() => parseTaskSkillCreateToolInput(null), TaskSkillToolInputError);
@@ -486,7 +508,14 @@ test("task skill create handler forwards payloads to the backend client", async 
         description: "Song production template",
         aliases: ["track"],
         definition: {
-          subtasks: [{ title: "Lyrics" }],
+          subtasks: [
+            {
+              title: "Lyrics",
+              description: "Write lyrics",
+              assigneeUserId: userId,
+              labels: ["writing"],
+            },
+          ],
         },
       },
     },

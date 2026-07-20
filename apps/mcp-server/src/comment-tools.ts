@@ -19,6 +19,8 @@ export type CommentCreateToolInput = {
   taskId: string;
   userId: string;
   body: string;
+  parentCommentId: string | null;
+  mentionedUserIds: string[];
 };
 
 export type CommentToolHandlers = {
@@ -68,6 +70,8 @@ export function parseCommentCreateToolInput(input: unknown): CommentCreateToolIn
     taskId: readRequiredUuid(record, "taskId"),
     userId: readRequiredUuid(record, "userId"),
     body: readRequiredNonEmptyString(record, "body"),
+    parentCommentId: readOptionalNullableUuid(record, "parentCommentId"),
+    mentionedUserIds: readOptionalUuidArray(record, "mentionedUserIds"),
   };
 }
 
@@ -85,7 +89,33 @@ export function parseCommentListToolInput(input: unknown): CommentListToolInput 
 function toCreateTaskCommentInput(input: CommentCreateToolInput): CreateTaskCommentInput {
   return {
     body: input.body,
+    parentCommentId: input.parentCommentId,
+    mentionedUserIds: input.mentionedUserIds,
   };
+}
+
+function readOptionalNullableUuid(
+  record: Record<string, unknown>,
+  propertyName: string,
+): string | null {
+  const value = record[propertyName];
+  if (value === undefined || value === null) return null;
+  if (typeof value !== "string" || !uuidV4Pattern.test(value)) {
+    throw new CommentToolInputError(`${propertyName} must be a UUID v4 string or null.`);
+  }
+  return value;
+}
+
+function readOptionalUuidArray(record: Record<string, unknown>, propertyName: string): string[] {
+  const value = record[propertyName];
+  if (value === undefined) return [];
+  if (
+    !Array.isArray(value) ||
+    value.some((item) => typeof item !== "string" || !uuidV4Pattern.test(item))
+  ) {
+    throw new CommentToolInputError(`${propertyName} must be an array of UUID v4 strings.`);
+  }
+  return [...new Set(value)];
 }
 
 function readRecord(value: unknown, label: string): Record<string, unknown> {

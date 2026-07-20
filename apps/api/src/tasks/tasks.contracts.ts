@@ -2,6 +2,7 @@ export type TaskSummary = {
   id: string;
   workspaceId: string;
   projectId: string;
+  number: number;
   parentTaskId: string | null;
   title: string;
   description: string | null;
@@ -22,6 +23,8 @@ export type TaskDetail = TaskSummary;
 
 export type CreateTaskInput = {
   title: string;
+  assigneeUserId?: string | null;
+  statusId?: string | null;
   parentTaskId?: string | null;
   description?: string | null;
   position?: string | null;
@@ -54,6 +57,7 @@ export type MoveTaskInput = {
 
 export type UpdateTaskStatusInput = {
   statusId: string | null;
+  position?: string;
 };
 
 export type UpdateTaskAssigneeInput = {

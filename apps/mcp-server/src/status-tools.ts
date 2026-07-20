@@ -4,6 +4,7 @@ const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[
 
 export type StatusListToolInput = {
   workspaceId: string;
+  projectId: string;
   userId: string;
 };
 
@@ -25,6 +26,7 @@ export function createStatusToolHandlers(client: TaskBackendClient): StatusToolH
 
       return client.listWorkspaceStatuses({
         workspaceId: parsedInput.workspaceId,
+        projectId: parsedInput.projectId,
         userId: parsedInput.userId,
       });
     },
@@ -36,6 +38,7 @@ export function parseStatusListToolInput(input: unknown): StatusListToolInput {
 
   return {
     workspaceId: readRequiredUuid(record, "workspaceId"),
+    projectId: readRequiredUuid(record, "projectId"),
     userId: readRequiredUuid(record, "userId"),
   };
 }

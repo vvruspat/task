@@ -1,3 +1,4 @@
+import type { ParsedIssueIdentifier } from "./issue-identifier.js";
 import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
@@ -26,6 +27,12 @@ export type TaskCreateResult =
     }
   | {
       status: "invalid_parent_task";
+    }
+  | {
+      status: "invalid_assignee";
+    }
+  | {
+      status: "invalid_status";
     };
 
 export type TaskAddSubtasksResult =
@@ -130,6 +137,11 @@ export type TaskBulkUpdateResult =
   | { status: "invalid_assignee" };
 
 export type TaskReadStore = {
+  getByIdentifierForWorkspace(
+    workspaceId: string,
+    identifier: ParsedIssueIdentifier,
+    userId: string,
+  ): Promise<TaskDetail | null>;
   listActiveForProject(
     workspaceId: string,
     projectId: string,

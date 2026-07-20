@@ -1,6 +1,8 @@
 export type ProjectSummary = {
   id: string;
   workspaceId: string;
+  key: string;
+  slug: string;
   title: string;
   description: string | null;
   status: string | null;

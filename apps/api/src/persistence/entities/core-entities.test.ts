@@ -10,6 +10,7 @@ import {
   ConfirmationRequestEntity,
   InviteEntity,
   ProjectEntity,
+  SavedViewEntity,
   StatusEntity,
   TaskEntity,
   TaskSkillEntity,
@@ -30,6 +31,7 @@ test("core persistence entities map to the expected table names", () => {
         table.target === UserEntity ||
         table.target === WorkspaceMemberEntity ||
         table.target === ProjectEntity ||
+        table.target === SavedViewEntity ||
         table.target === StatusEntity ||
         table.target === TaskEntity ||
         table.target === TaskSkillEntity ||
@@ -56,6 +58,7 @@ test("core persistence entities map to the expected table names", () => {
     "confirmation_requests",
     "invites",
     "projects",
+    "saved_views",
     "statuses",
     "task_skill_versions",
     "task_skills",
@@ -66,6 +69,15 @@ test("core persistence entities map to the expected table names", () => {
     "workspace_members",
     "workspaces",
   ]);
+});
+
+test("transactionally created entities receive UUIDs before saves", () => {
+  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  assert.match(new TaskSkillEntity().id, uuidPattern);
+  assert.match(new TaskSkillVersionEntity().id, uuidPattern);
+  assert.match(new StatusEntity().id, uuidPattern);
+  assert.match(new CommentEntity().id, uuidPattern);
 });
 
 test("invite columns, role check, uniqueness, and indexes metadata are registered", () => {
@@ -290,7 +302,7 @@ test("attachment columns, checks, and lookup indexes metadata are registered", (
   ]);
 });
 
-test("workspace and status uniqueness metadata is registered", () => {
+test("workspace and project status uniqueness metadata is registered", () => {
   const storage = getMetadataArgsStorage();
   const workspaceSlugColumn = storage.columns.find(
     (column) => column.target === WorkspaceEntity && column.propertyName === "slug",
@@ -302,7 +314,7 @@ test("workspace and status uniqueness metadata is registered", () => {
 
   assert.equal(workspaceSlugColumn?.options.unique, true);
   assert.deepEqual(workspaceMemberUnique?.columns, ["workspaceId", "userId"]);
-  assert.deepEqual(statusUnique?.columns, ["workspaceId", "name"]);
+  assert.deepEqual(statusUnique?.columns, ["projectId", "name"]);
 });
 
 test("workspace member role check metadata is registered", () => {
@@ -340,6 +352,12 @@ test("project nullable columns and indexes metadata are registered", () => {
   const archivedAtColumn = storage.columns.find(
     (column) => column.target === ProjectEntity && column.propertyName === "archivedAt",
   );
+  const keyColumn = storage.columns.find(
+    (column) => column.target === ProjectEntity && column.propertyName === "key",
+  );
+  const nextTaskNumberColumn = storage.columns.find(
+    (column) => column.target === ProjectEntity && column.propertyName === "nextTaskNumber",
+  );
   const projectIndexes = storage.indices
     .filter((index) => index.target === ProjectEntity)
     .map((index) => index.name)
@@ -349,10 +367,15 @@ test("project nullable columns and indexes metadata are registered", () => {
   assert.equal(positionColumn?.options.nullable, true);
   assert.equal(archivedAtColumn?.options.type, "timestamptz");
   assert.equal(archivedAtColumn?.options.nullable, true);
+  assert.equal(keyColumn?.options.type, "text");
+  assert.equal(nextTaskNumberColumn?.options.type, "integer");
+  assert.equal(nextTaskNumberColumn?.options.default, 1);
   assert.deepEqual(projectIndexes, [
     "idx_projects_created_by_user_id",
     "idx_projects_workspace_id",
     "idx_projects_workspace_id_archived_at",
+    "uq_projects_workspace_id_key",
+    "uq_projects_workspace_id_slug",
   ]);
 });
 
@@ -363,6 +386,9 @@ test("task tree columns, metadata, and indexes metadata are registered", () => {
   );
   const metadataColumn = storage.columns.find(
     (column) => column.target === TaskEntity && column.propertyName === "metadata",
+  );
+  const numberColumn = storage.columns.find(
+    (column) => column.target === TaskEntity && column.propertyName === "number",
   );
   const sourceSkillColumn = storage.columns.find(
     (column) => column.target === TaskEntity && column.propertyName === "sourceSkillId",
@@ -376,6 +402,7 @@ test("task tree columns, metadata, and indexes metadata are registered", () => {
     .sort();
 
   assert.equal(positionColumn?.options.type, "numeric");
+  assert.equal(numberColumn?.options.type, "integer");
   assert.equal(metadataColumn?.options.type, "jsonb");
   assert.equal(typeof metadataColumn?.options.default, "function");
   if (typeof metadataColumn?.options.default !== "function") {
@@ -392,6 +419,7 @@ test("task tree columns, metadata, and indexes metadata are registered", () => {
     "idx_tasks_workspace_id_parent_task_id",
     "idx_tasks_workspace_id_project_id",
     "idx_tasks_workspace_id_status_id",
+    "uq_tasks_project_id_number",
   ]);
 });
 
@@ -477,6 +505,8 @@ test("comment columns and lookup indexes metadata are registered", () => {
   assert.equal(createdAtColumn?.options.type, "timestamptz");
   assert.equal(updatedAtColumn?.options.type, "timestamptz");
   assert.deepEqual(commentIndexes, [
+    "idx_comments_agent_run_id",
+    "idx_comments_parent_comment_id",
     "idx_comments_workspace_id_author_user_id",
     "idx_comments_workspace_id_task_id",
   ]);

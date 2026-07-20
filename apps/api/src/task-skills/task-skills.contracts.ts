@@ -17,9 +17,20 @@ export type TaskSkillVersionSummary = {
   workspaceId: string;
   taskSkillId: string;
   version: number;
-  definition: Record<string, unknown>;
+  definition: TaskSkillDefinition;
   createdByUserId: string;
   createdAt: Date;
+};
+
+export type TaskSkillSubtaskDefinition = {
+  title: string;
+  description?: string | null;
+  assigneeUserId?: string | null;
+  labels?: string[];
+};
+
+export type TaskSkillDefinition = {
+  subtasks: TaskSkillSubtaskDefinition[];
 };
 
 export type TaskSkillDetail = TaskSkillSummary & {
@@ -30,7 +41,7 @@ export type CreateTaskSkillInput = {
   name: string;
   description?: string | null;
   aliases?: string[];
-  definition: Record<string, unknown>;
+  definition: TaskSkillDefinition;
 };
 
 export type CloneTaskSkillInput = {
@@ -46,13 +57,16 @@ export type UpdateTaskSkillMetadataInput = {
 };
 
 export type UpdateTaskSkillDefinitionInput = {
-  definition: Record<string, unknown>;
+  definition: TaskSkillDefinition;
 };
 
 export type TaskSkillApplyPreviewSubtaskSource = "skill" | "added";
 
 export type TaskSkillApplyPreviewSubtask = {
   title: string;
+  description: string | null;
+  assigneeUserId: string | null;
+  labels: string[];
   source: TaskSkillApplyPreviewSubtaskSource;
 };
 

@@ -1,17 +1,27 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ConflictException, ForbiddenException, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  NotFoundException,
+} from "@nestjs/common";
 import type {
   CreateWorkspaceStatusInput,
   UpdateWorkspaceStatusInput,
   WorkspaceStatus,
 } from "./statuses.contracts.js";
-import { ParseUpdateWorkspaceStatusBodyPipe, WorkspaceStatusDto } from "./statuses.dto.js";
+import {
+  ParseReorderWorkspaceStatusesBodyPipe,
+  ParseUpdateWorkspaceStatusBodyPipe,
+  WorkspaceStatusDto,
+} from "./statuses.dto.js";
 import { StatusesService } from "./statuses.service.js";
 import type { StatusesReadStore, StatusesWriteStore } from "./statuses.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
+const projectId = "44444444-4444-4444-8444-444444444444";
 const statusId = "33333333-3333-4333-8333-333333333333";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 const updatedAt = new Date("2026-01-02T00:00:00.000Z");
@@ -19,6 +29,7 @@ const updatedAt = new Date("2026-01-02T00:00:00.000Z");
 const workspaceStatus: WorkspaceStatus = {
   id: statusId,
   workspaceId,
+  projectId,
   name: "In progress",
   color: "#3b82f6",
   position: "1000",
@@ -30,7 +41,7 @@ const workspaceStatus: WorkspaceStatus = {
 test("StatusesService maps visible workspace statuses to DTOs", async () => {
   const service = new StatusesService(createReadStore({ statuses: [workspaceStatus] }));
 
-  const response = await service.listStatuses(workspaceId, userId);
+  const response = await service.listStatuses(workspaceId, projectId, userId);
 
   assert.equal(response.length, 1);
   assert.ok(response[0] instanceof WorkspaceStatusDto);
@@ -45,18 +56,23 @@ test("StatusesService maps visible workspace statuses to DTOs", async () => {
 test("StatusesService hides missing or inaccessible workspaces", async () => {
   const service = new StatusesService(createReadStore({ statuses: null }));
 
-  await assert.rejects(() => service.listStatuses(workspaceId, userId), NotFoundException);
+  await assert.rejects(
+    () => service.listStatuses(workspaceId, projectId, userId),
+    NotFoundException,
+  );
 });
 
 test("StatusesService permits typed status mutations and surfaces permission errors", async () => {
   const service = new StatusesService(createReadStore({}), createWriteStore({ workspaceStatus }));
-  const created = await service.createStatus(workspaceId, userId, {
+  const created = await service.createStatus(workspaceId, projectId, userId, {
     color: "#3b82f6",
     name: "In progress",
     position: "1000",
   });
   assert.equal(created.id, statusId);
-  const updated = await service.updateStatus(workspaceId, statusId, userId, { isDone: true });
+  const updated = await service.updateStatus(workspaceId, projectId, statusId, userId, {
+    isDone: true,
+  });
   assert.equal(updated.id, statusId);
 
   const forbiddenService = new StatusesService(
@@ -65,7 +81,7 @@ test("StatusesService permits typed status mutations and surfaces permission err
   );
   await assert.rejects(
     () =>
-      forbiddenService.createStatus(workspaceId, userId, {
+      forbiddenService.createStatus(workspaceId, projectId, userId, {
         color: "#3b82f6",
         name: "Done",
         position: "2000",
@@ -79,7 +95,7 @@ test("StatusesService permits typed status mutations and surfaces permission err
   );
   await assert.rejects(
     () =>
-      duplicateService.createStatus(workspaceId, userId, {
+      duplicateService.createStatus(workspaceId, projectId, userId, {
         color: "#3b82f6",
         name: "Done",
         position: "2000",
@@ -92,14 +108,45 @@ test("ParseUpdateWorkspaceStatusBodyPipe rejects an empty status update", () => 
   assert.throws(() => new ParseUpdateWorkspaceStatusBodyPipe().transform({}), /at least one field/);
 });
 
+test("ParseUpdateWorkspaceStatusBodyPipe accepts only six-digit hex colors", () => {
+  const pipe = new ParseUpdateWorkspaceStatusBodyPipe();
+
+  assert.deepEqual(pipe.transform({ color: "#3b82f6" }), { color: "#3b82f6" });
+  assert.throws(() => pipe.transform({ color: "blue" }), /six-digit hex color/);
+});
+
+test("StatusesService atomically reorders all project statuses", async () => {
+  const service = new StatusesService(createReadStore({}), createWriteStore({ workspaceStatus }));
+  const statuses = await service.reorderStatuses(workspaceId, projectId, userId, {
+    statusIds: [statusId],
+  });
+  assert.equal(statuses[0]?.id, statusId);
+
+  const invalidService = new StatusesService(
+    createReadStore({}),
+    createWriteStore({ reorderResult: "invalid_order" }),
+  );
+  await assert.rejects(
+    () => invalidService.reorderStatuses(workspaceId, projectId, userId, { statusIds: [statusId] }),
+    BadRequestException,
+  );
+});
+
+test("ParseReorderWorkspaceStatusesBodyPipe requires unique UUIDs", () => {
+  const pipe = new ParseReorderWorkspaceStatusesBodyPipe();
+  assert.deepEqual(pipe.transform({ statusIds: [statusId] }), { statusIds: [statusId] });
+  assert.throws(() => pipe.transform({ statusIds: [statusId, statusId] }), BadRequestException);
+});
+
 function createReadStore(options: { statuses?: WorkspaceStatus[] | null }): StatusesReadStore {
   return {
-    listForWorkspace: async (): Promise<WorkspaceStatus[] | null> => options.statuses ?? null,
+    listForProject: async (): Promise<WorkspaceStatus[] | null> => options.statuses ?? null,
   };
 }
 
 function createWriteStore(options: {
   result?: "duplicate_name" | "forbidden" | "status_not_found";
+  reorderResult?: "forbidden" | "invalid_order";
   workspaceStatus?: WorkspaceStatus;
 }): StatusesWriteStore {
   const result = ():
@@ -113,17 +160,23 @@ function createWriteStore(options: {
     return { status: "updated", workspaceStatus: options.workspaceStatus };
   };
   return {
-    createForWorkspace: async (
+    createForProject: async (
       _workspaceId: string,
+      _projectId: string,
       _userId: string,
       _input: CreateWorkspaceStatusInput,
     ) => result(),
-    updateForWorkspace: async (
+    updateForProject: async (
       _workspaceId: string,
+      _projectId: string,
       _statusId: string,
       _userId: string,
       _input: UpdateWorkspaceStatusInput,
     ) => result(),
-    deleteForWorkspace: async () => result(),
+    deleteForProject: async () => result(),
+    reorderForProject: async () =>
+      options.reorderResult === undefined && options.workspaceStatus !== undefined
+        ? { status: "reordered", workspaceStatuses: [options.workspaceStatus] }
+        : { status: options.reorderResult ?? "invalid_order" },
   };
 }

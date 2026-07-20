@@ -25,6 +25,7 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
+import type { ParsedIssueIdentifier } from "./issue-identifier.js";
 import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
@@ -44,6 +45,7 @@ import {
   ParseAddTaskSubtasksBodyPipe,
   ParseBulkUpdateTasksBodyPipe,
   ParseCreateTaskBodyPipe,
+  ParseIssueIdentifierParamPipe,
   ParseListTaskTableQueryPipe,
   ParseMoveTaskBodyPipe,
   ParseUpdateTaskAssigneeBodyPipe,
@@ -319,5 +321,28 @@ export class TasksController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<TaskDetailDto> {
     return this.tasksService.getTask(workspaceId, projectId, taskId, userId);
+  }
+}
+
+@ApiTags("issues")
+@ApiTrustedCurrentUser()
+@Controller("workspaces/:workspaceId/issues")
+export class IssuesController {
+  constructor(private readonly tasksService: TasksService) {}
+
+  @Get(":identifier")
+  @ApiOperation({ summary: "Get one issue by its human-readable identifier" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ example: "ALB-42", name: "identifier", type: String })
+  @ApiOkResponse({ type: TaskDetailDto })
+  @ApiBadRequestResponse({ description: "Issue identifier is invalid." })
+  @ApiNotFoundResponse({ description: "Workspace or issue is missing or not visible." })
+  getIssue(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("identifier", new ParseIssueIdentifierParamPipe())
+    identifier: ParsedIssueIdentifier,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<TaskDetailDto> {
+    return this.tasksService.getTaskByIdentifier(workspaceId, identifier, userId);
   }
 }

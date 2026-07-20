@@ -13,6 +13,29 @@ export type CreateTelegramAgentRunInput = {
   attachments: TelegramAgentRunAttachmentInput[];
 };
 
+export type WebAgentChatMessage = {
+  role: "assistant" | "user";
+  content: string;
+};
+
+export type CreateWebAgentChatInput = {
+  messages: WebAgentChatMessage[];
+  projectId?: string | null;
+};
+
+export type WebAgentStreamDeltaEvent = {
+  type: "text-delta";
+  delta: string;
+};
+
+export type WebAgentStreamDoneEvent = {
+  type: "done";
+  agentRunId: string;
+  status: AgentRunStatus;
+};
+
+export type WebAgentStreamEvent = WebAgentStreamDeltaEvent | WebAgentStreamDoneEvent;
+
 export type TelegramAgentRunDocumentAttachmentInput = {
   kind: "document";
   fileId: string;
