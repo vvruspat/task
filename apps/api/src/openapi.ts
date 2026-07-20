@@ -54,6 +54,7 @@ import {
   VerifyTelegramMiniAppInitDataDto,
 } from "./telegram/telegram.dto.js";
 import {
+  UpdateWorkspaceDto,
   WorkspaceDetailDto,
   WorkspaceMemberDto,
   WorkspaceSummaryDto,
@@ -72,6 +73,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       WorkspaceSummaryDto,
       WorkspaceMemberDto,
       WorkspaceDetailDto,
+      UpdateWorkspaceDto,
       CreateProjectDto,
       UpdateProjectDto,
       ProjectSummaryDto,

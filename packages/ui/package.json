@@ -34,7 +34,9 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@radix-ui/themes": "^3.3.0"
+    "@radix-ui/themes": "^3.3.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.17"

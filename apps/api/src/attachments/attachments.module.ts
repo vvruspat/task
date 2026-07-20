@@ -16,5 +16,6 @@ const attachmentsServiceProvider: Provider<AttachmentsService> = {
   imports: [DatabaseModule],
   controllers: [AttachmentsController],
   providers: [TypeOrmTaskAttachmentsStore, attachmentsServiceProvider],
+  exports: [AttachmentsService],
 })
 export class AttachmentsModule {}

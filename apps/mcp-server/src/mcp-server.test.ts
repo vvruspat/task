@@ -88,6 +88,7 @@ const workspaceMemberResponse: WorkspaceMemberResponse = {
 
 const workspaceDetailResponse: WorkspaceDetailResponse = {
   ...workspaceResponse,
+  description: null,
   members: [workspaceMemberResponse],
 };
 
@@ -106,7 +107,7 @@ const previewResponse: PreviewTaskSkillApplyResponse = {
   taskSkillVersionId,
   taskSkillVersion: 1,
   rootTaskTitle: "Intro",
-  subtasks: [{ title: "Lyrics", source: "skill" }],
+  subtasks: [{ title: "Lyrics", labels: [], source: "skill" }],
 };
 
 const applyResponse: ApplyTaskSkillResponse = {
@@ -119,6 +120,7 @@ const applyResponse: ApplyTaskSkillResponse = {
     id: rootTaskId,
     workspaceId,
     projectId,
+    number: 1,
     parentTaskId: null,
     title: "Intro",
     description: null,
@@ -140,6 +142,8 @@ const applyResponse: ApplyTaskSkillResponse = {
 const projectResponse: ProjectSummaryResponse = {
   id: projectId,
   workspaceId,
+  key: "AR",
+  slug: "album-release",
   title: "Album Release",
   createdByUserId: userId,
   createdAt: timestamp,
@@ -153,6 +157,7 @@ const projectDetailResponse: ProjectDetailResponse = {
 const statusResponse: WorkspaceStatusResponse = {
   id: statusId,
   workspaceId,
+  projectId,
   name: "In progress",
   color: "#3b82f6",
   position: "1000",
@@ -206,10 +211,13 @@ const confirmationRequestResponse: ConfirmationRequestDetailResponse = {
 };
 
 const commentResponse: TaskCommentResponse = {
+  agentRunId: null,
   id: commentId,
   workspaceId,
   taskId: rootTaskId,
   authorUserId: userId,
+  parentCommentId: null,
+  mentionedUserIds: [],
   body: "Bass take is ready for review.",
   createdAt: timestamp,
   updatedAt: timestamp,
@@ -235,6 +243,7 @@ const taskResponse: TaskSummaryResponse = {
   id: rootTaskId,
   workspaceId,
   projectId,
+  number: 1,
   parentTaskId: null,
   title: "Intro",
   description: null,

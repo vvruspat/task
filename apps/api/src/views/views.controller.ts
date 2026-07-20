@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  Patch,
-  Post,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -22,10 +13,7 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import type {
-  CreateSavedViewInput,
-  UpdateSavedViewInput,
-} from "./views.contracts.js";
+import type { CreateSavedViewInput, UpdateSavedViewInput } from "./views.contracts.js";
 import {
   CreateSavedViewDto,
   ParseCreateSavedViewBodyPipe,

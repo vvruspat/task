@@ -84,6 +84,7 @@ const workspaceAdminMember: WorkspaceMemberResponse = {
 
 const workspaceDetail: WorkspaceDetailResponse = {
   ...workspaceSummary,
+  description: null,
   members: [workspaceAdminMember],
 };
 
@@ -106,6 +107,7 @@ const workspaceStatuses: WorkspaceStatusResponse[] = [
   {
     id: "88888888-8888-4888-8888-888888888888",
     workspaceId,
+    projectId,
     name: "In progress",
     color: "#3b82f6",
     position: "1000",
@@ -116,6 +118,7 @@ const workspaceStatuses: WorkspaceStatusResponse[] = [
   {
     id: "99999999-9999-4999-8999-999999999999",
     workspaceId,
+    projectId,
     name: "Done",
     color: "#22c55e",
     position: "2000",
@@ -129,6 +132,7 @@ const taskDetail: TaskDetailResponse = {
   id: taskId,
   workspaceId,
   projectId,
+  number: 1,
   parentTaskId: null,
   title: "Record bass",
   description: "Track final bass take.",
@@ -148,6 +152,8 @@ const taskDetail: TaskDetailResponse = {
 const projectDetail: ProjectDetailResponse = {
   id: projectId,
   workspaceId,
+  key: "AR",
+  slug: "album-release",
   title: "Album Release",
   description: "Release plan.",
   status: "active",
@@ -235,19 +241,25 @@ const videoProjectTasks: TaskSummaryResponse[] = [
 
 const comments: TaskCommentResponse[] = [
   {
+    agentRunId: null,
     id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
     workspaceId,
     taskId,
     authorUserId: userId,
+    parentCommentId: null,
+    mentionedUserIds: [],
     body: "First take uploaded.",
     createdAt: "2026-01-01T10:00:00.000Z",
     updatedAt: "2026-01-01T10:00:00.000Z",
   },
   {
+    agentRunId: null,
     id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
     workspaceId,
     taskId,
     authorUserId: userId,
+    parentCommentId: null,
+    mentionedUserIds: [],
     body: "Second take is cleaner.",
     createdAt: "2026-01-02T10:00:00.000Z",
     updatedAt: "2026-01-02T10:00:00.000Z",
@@ -416,7 +428,10 @@ test("summary workspace handler aggregates workspace context with explicit works
   assert.deepEqual(getWorkspaceCalls, [{ workspaceId, userId }]);
   assert.deepEqual(listWorkspaceMembersCalls, [{ workspaceId, userId }]);
   assert.deepEqual(listActiveProjectsCalls, [{ workspaceId, userId }]);
-  assert.deepEqual(listWorkspaceStatusesCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listWorkspaceStatusesCalls, [
+    { workspaceId, projectId, userId },
+    { workspaceId, projectId: videoProjectId, userId },
+  ]);
   assert.deepEqual(listTaskSkillsCalls, [{ workspaceId, userId }]);
   assert.deepEqual(summary, {
     workspace: {
@@ -528,7 +543,10 @@ test("summary user handler aggregates visible member assigned task context", asy
 
   assert.deepEqual(listWorkspaceMembersCalls, [{ workspaceId, userId }]);
   assert.deepEqual(listActiveProjectsCalls, [{ workspaceId, userId }]);
-  assert.deepEqual(listWorkspaceStatusesCalls, [{ workspaceId, userId }]);
+  assert.deepEqual(listWorkspaceStatusesCalls, [
+    { workspaceId, projectId, userId },
+    { workspaceId, projectId: videoProjectId, userId },
+  ]);
   assert.deepEqual(listActiveTasksCalls, [
     { workspaceId, projectId, userId },
     { workspaceId, projectId: videoProjectId, userId },
@@ -806,7 +824,7 @@ function createBackendClientStub(calls: BackendClientStubCalls): TaskBackendClie
     listWorkspaceStatuses: async (request): Promise<WorkspaceStatusResponse[]> => {
       listWorkspaceStatusesCalls.push(request);
 
-      return workspaceStatuses;
+      return workspaceStatuses.filter((status) => status.projectId === request.projectId);
     },
     listPendingConfirmationRequests: async (): Promise<ConfirmationRequestSummaryResponse[]> => {
       throw new Error("Not implemented.");

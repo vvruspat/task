@@ -1,4 +1,5 @@
-import { WorkspaceView } from "../../../components/workspace-view";
+import { TemplatesPage } from "../../../components/templates-page";
+
 export default function Page() {
-  return <WorkspaceView kind="templates" />;
+  return <TemplatesPage />;
 }

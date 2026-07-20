@@ -18,6 +18,9 @@ export type ProjectSummary = components["schemas"]["ProjectSummaryDto"];
 export type SavedView = components["schemas"]["SavedViewDto"];
 export type TaskAttachment = components["schemas"]["TaskAttachmentDto"];
 export type TaskActivityEvent = components["schemas"]["TaskActivityEventDto"];
+export type NotificationFeed = components["schemas"]["NotificationFeedDto"];
+export type NotificationItem = components["schemas"]["NotificationItemDto"];
+export type TaskSubscription = components["schemas"]["TaskSubscriptionDto"];
 export type TaskComment = components["schemas"]["TaskCommentDto"];
 export type TaskDetail = components["schemas"]["TaskDetailDto"];
 export type TaskSummary = components["schemas"]["TaskSummaryDto"];
@@ -25,6 +28,8 @@ export type TaskTablePage = components["schemas"]["TaskTablePageDto"];
 export type TaskSkillSummary = components["schemas"]["TaskSkillSummaryDto"];
 export type TaskSkillDetail = components["schemas"]["TaskSkillDetailDto"];
 export type TaskSkillVersionSummary = components["schemas"]["TaskSkillVersionSummaryDto"];
+export type TaskSkillDefinition = components["schemas"]["TaskSkillDefinitionDto"];
+export type TaskSkillSubtaskDefinition = components["schemas"]["TaskSkillSubtaskDefinitionDto"];
 export type TaskSkillApplyPreview = components["schemas"]["TaskSkillApplyPreviewDto"];
 export type TaskSkillApplyResult = components["schemas"]["TaskSkillApplyResultDto"];
 export type WorkspaceStatus = components["schemas"]["WorkspaceStatusDto"];
@@ -33,7 +38,9 @@ export type WorkspaceDetail = components["schemas"]["WorkspaceDetailDto"];
 export type WorkspaceMember = components["schemas"]["WorkspaceMemberDto"];
 export type CreateWorkspaceStatusInput = components["schemas"]["CreateWorkspaceStatusDto"];
 export type UpdateWorkspaceStatusInput = components["schemas"]["UpdateWorkspaceStatusDto"];
+export type ReorderWorkspaceStatusesInput = components["schemas"]["ReorderWorkspaceStatusesDto"];
 export type UpdateWorkspaceMemberRoleInput = components["schemas"]["UpdateWorkspaceMemberRoleDto"];
+export type UpdateWorkspaceInput = components["schemas"]["UpdateWorkspaceDto"];
 export type VerifyTelegramMiniAppInitDataInput =
   components["schemas"]["VerifyTelegramMiniAppInitDataDto"];
 export type LinkedTelegramIdentity = components["schemas"]["LinkedTelegramIdentityDto"];
@@ -41,8 +48,10 @@ export type TelegramIdentityLinkStatus = components["schemas"]["TelegramIdentity
 
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
+type DeleteProjectOperation = operations["ProjectsController_deleteProject"];
 type UpdateProjectOperation = operations["ProjectsController_updateProject"];
 type GetProjectMatrixOperation = operations["ProjectMatrixController_getProjectMatrix"];
+type GetIssueOperation = operations["IssuesController_getIssue"];
 type CreateTaskOperation = operations["TasksController_createTask"];
 type UpdateTaskOperation = operations["TasksController_updateTask"];
 type AddTaskSubtasksOperation = operations["TasksController_addTaskSubtasks"];
@@ -65,7 +74,9 @@ type PreviewTaskSkillApplyOperation = operations["TaskSkillsController_previewTa
 type ApplyTaskSkillOperation = operations["TaskSkillsController_applyTaskSkill"];
 type CreateWorkspaceStatusOperation = operations["StatusesController_createStatus"];
 type UpdateWorkspaceStatusOperation = operations["StatusesController_updateStatus"];
+type ReorderWorkspaceStatusesOperation = operations["StatusesController_reorderStatuses"];
 type UpdateWorkspaceMemberRoleOperation = operations["WorkspacesController_updateMemberRole"];
+type UpdateWorkspaceOperation = operations["WorkspacesController_updateWorkspace"];
 type CreateSavedViewOperation = operations["ViewsController_create"];
 type UpdateSavedViewOperation = operations["ViewsController_update"];
 
@@ -73,6 +84,8 @@ export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
 export type ArchiveProjectResponse =
   ArchiveProjectOperation["responses"]["200"]["content"]["application/json"];
+export type DeleteProjectResponse =
+  DeleteProjectOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateProjectInput =
   UpdateProjectOperation["requestBody"]["content"]["application/json"];
 export type UpdateProjectResponse =
@@ -124,8 +137,12 @@ export type CreateWorkspaceStatusResponse =
   CreateWorkspaceStatusOperation["responses"]["201"]["content"]["application/json"];
 export type UpdateWorkspaceStatusResponse =
   UpdateWorkspaceStatusOperation["responses"]["200"]["content"]["application/json"];
+export type ReorderWorkspaceStatusesResponse =
+  ReorderWorkspaceStatusesOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateWorkspaceMemberRoleResponse =
   UpdateWorkspaceMemberRoleOperation["responses"]["200"]["content"]["application/json"];
+export type UpdateWorkspaceResponse =
+  UpdateWorkspaceOperation["responses"]["200"]["content"]["application/json"];
 export type CreateSavedViewInput =
   CreateSavedViewOperation["requestBody"]["content"]["application/json"];
 export type UpdateSavedViewInput =
@@ -144,7 +161,7 @@ export type TaskApiRequestHeaders = {
 export type TaskApiRequestInit = {
   body?: string;
   headers: TaskApiRequestHeaders;
-  method: "DELETE" | "GET" | "PATCH" | "POST";
+  method: "DELETE" | "GET" | "PATCH" | "POST" | "PUT";
 };
 
 export type TaskApiResponse = {
@@ -166,6 +183,7 @@ export type TaskApiClientOptions = {
 export type WorkspaceScopedInput = {
   workspaceId: string;
 };
+export type GetIssueRequestInput = WorkspaceScopedInput & GetIssueOperation["parameters"]["path"];
 export type ListMyTasksRequestInput = WorkspaceScopedInput &
   NonNullable<ListMyTasksOperation["parameters"]["query"]>;
 export type SearchRequestInput = WorkspaceScopedInput &
@@ -195,6 +213,7 @@ export type CreateProjectRequestInput = WorkspaceScopedInput & {
 export type ArchiveProjectRequestInput = WorkspaceScopedInput & {
   projectId: string;
 };
+export type DeleteProjectRequestInput = ProjectScopedInput;
 
 export type UpdateProjectRequestInput = ProjectScopedInput & {
   body: UpdateProjectInput;
@@ -268,23 +287,28 @@ export type CreateTaskFileAttachmentRequestInput = TaskScopedInput & {
 export type CreateTaskTelegramFileAttachmentRequestInput = TaskScopedInput & {
   body: CreateTaskTelegramFileAttachmentInput;
 };
-export type WorkspaceStatusScopedInput = WorkspaceScopedInput & { statusId: string };
-export type CreateWorkspaceStatusRequestInput = WorkspaceScopedInput & {
+export type WorkspaceStatusScopedInput = ProjectScopedInput & { statusId: string };
+export type CreateWorkspaceStatusRequestInput = ProjectScopedInput & {
   body: CreateWorkspaceStatusInput;
 };
 export type UpdateWorkspaceStatusRequestInput = WorkspaceStatusScopedInput & {
   body: UpdateWorkspaceStatusInput;
 };
+export type ReorderWorkspaceStatusesRequestInput = ProjectScopedInput & {
+  body: ReorderWorkspaceStatusesInput;
+};
 export type UpdateWorkspaceMemberRoleRequestInput = WorkspaceScopedInput & {
   memberId: string;
   body: UpdateWorkspaceMemberRoleInput;
 };
+export type UpdateWorkspaceRequestInput = WorkspaceScopedInput & { body: UpdateWorkspaceInput };
 export type SavedViewScopedInput = WorkspaceScopedInput & { viewId: string };
 export type CreateSavedViewRequestInput = WorkspaceScopedInput & { body: CreateSavedViewInput };
 export type UpdateSavedViewRequestInput = SavedViewScopedInput & { body: UpdateSavedViewInput };
 
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
+  deleteProject(input: DeleteProjectRequestInput): Promise<DeleteProjectResponse>;
   archiveTask(input: ArchiveTaskRequestInput): Promise<TaskDetail>;
   addTaskSubtasks(input: AddTaskSubtasksRequestInput): Promise<TaskDetail[]>;
   createTaskComment(input: CreateTaskCommentRequestInput): Promise<TaskComment>;
@@ -302,6 +326,7 @@ export type TaskApiClient = {
   createSavedView(input: CreateSavedViewRequestInput): Promise<SavedView>;
   cloneTaskSkill(input: CloneTaskSkillRequestInput): Promise<CloneTaskSkillResponse>;
   getHealth(): Promise<HealthResponse>;
+  getIssue(input: GetIssueRequestInput): Promise<TaskDetail>;
   getTask(input: TaskScopedInput): Promise<TaskDetail>;
   getTaskSkill(input: TaskSkillScopedInput): Promise<GetTaskSkillResponse>;
   getDashboardOverview(input: WorkspaceScopedInput): Promise<DashboardOverview>;
@@ -324,15 +349,23 @@ export type TaskApiClient = {
   getAgentRun(input: AgentRunScopedInput): Promise<AgentRunDetail>;
   listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
   listTaskActivity(input: TaskScopedInput): Promise<TaskActivityEvent[]>;
+  listNotifications(input: WorkspaceScopedInput): Promise<NotificationFeed>;
+  markAllNotificationsRead(input: WorkspaceScopedInput): Promise<NotificationFeed>;
+  getTaskSubscription(input: TaskScopedInput): Promise<TaskSubscription>;
+  subscribeToTask(input: TaskScopedInput): Promise<TaskSubscription>;
+  unsubscribeFromTask(input: TaskScopedInput): Promise<TaskSubscription>;
   listTaskComments(input: TaskScopedInput): Promise<TaskComment[]>;
   listProjects(input: WorkspaceScopedInput): Promise<ProjectSummary[]>;
   listSavedViews(input: WorkspaceScopedInput): Promise<SavedView[]>;
-  listStatuses(input: WorkspaceScopedInput): Promise<WorkspaceStatus[]>;
+  listStatuses(input: ProjectScopedInput): Promise<WorkspaceStatus[]>;
   listWorkspaceMembers(input: WorkspaceScopedInput): Promise<WorkspaceMember[]>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
   listWorkspaces(): Promise<WorkspaceSummary[]>;
   deleteWorkspaceStatus(input: WorkspaceStatusScopedInput): Promise<WorkspaceStatus>;
+  reorderWorkspaceStatuses(
+    input: ReorderWorkspaceStatusesRequestInput,
+  ): Promise<ReorderWorkspaceStatusesResponse>;
   linkTelegramMiniAppIdentity(
     input: LinkTelegramMiniAppIdentityRequestInput,
   ): Promise<LinkedTelegramIdentity>;
@@ -355,6 +388,7 @@ export type TaskApiClient = {
   updateWorkspaceMemberRole(
     input: UpdateWorkspaceMemberRoleRequestInput,
   ): Promise<UpdateWorkspaceMemberRoleResponse>;
+  updateWorkspace(input: UpdateWorkspaceRequestInput): Promise<UpdateWorkspaceResponse>;
   updateWorkspaceStatus(
     input: UpdateWorkspaceStatusRequestInput,
   ): Promise<UpdateWorkspaceStatusResponse>;
@@ -395,6 +429,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         options.fetch,
         baseUrl,
         `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}`,
+        projectDetailParser,
+        {
+          method: "DELETE",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    deleteProject: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/permanent`,
         projectDetailParser,
         {
           method: "DELETE",
@@ -607,6 +653,40 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         dashboardOverviewParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
+    listNotifications: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/notifications`,
+        notificationFeedParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    markAllNotificationsRead: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/notifications/read`,
+        notificationFeedParser,
+        { method: "POST", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    getTaskSubscription: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/subscription`, taskSubscriptionParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    subscribeToTask: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/subscription`, taskSubscriptionParser, {
+        method: "PUT",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    unsubscribeFromTask: (input) =>
+      request(options.fetch, baseUrl, `${taskPath(input)}/subscription`, taskSubscriptionParser, {
+        method: "DELETE",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     getTelegramIdentityLinkStatus: () =>
       request(
         options.fetch,
@@ -622,6 +702,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         `/workspaces/${encodePathSegment(input.workspaceId)}`,
         workspaceDetailParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    updateWorkspace: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}`,
+        workspaceDetailParser,
+        {
+          body: input.body,
+          method: "PATCH",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
       ),
     listMyTasks: (input) =>
       request(
@@ -723,7 +816,7 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
       request(
         options.fetch,
         baseUrl,
-        `/workspaces/${encodePathSegment(input.workspaceId)}/statuses`,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/statuses`,
         workspaceStatusArrayParser,
         {
           method: "GET",
@@ -735,7 +828,7 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
       request(
         options.fetch,
         baseUrl,
-        `/workspaces/${encodePathSegment(input.workspaceId)}/statuses`,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/statuses`,
         workspaceStatusParser,
         {
           body: input.body,
@@ -757,6 +850,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: true,
         trustedUserId: options.trustedUserId,
       }),
+    reorderWorkspaceStatuses: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/statuses/reorder`,
+        workspaceStatusArrayParser,
+        {
+          body: input.body,
+          method: "PATCH",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     listWorkspaceMembers: (input) =>
       request(
         options.fetch,
@@ -886,6 +992,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: true,
         trustedUserId: options.trustedUserId,
       }),
+    getIssue: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodeURIComponent(input.workspaceId)}/issues/${encodeURIComponent(input.identifier)}`,
+        taskDetailParser,
+        {
+          method: "GET",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     listWorkspaces: () =>
       request(options.fetch, baseUrl, "/workspaces", workspaceSummaryArrayParser, {
         method: "GET",
@@ -1034,7 +1152,7 @@ function confirmationRequestPath(input: ConfirmationRequestScopedInput): string 
 }
 
 function workspaceStatusPath(input: WorkspaceStatusScopedInput): string {
-  return `/workspaces/${encodePathSegment(input.workspaceId)}/statuses/${encodePathSegment(input.statusId)}`;
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/statuses/${encodePathSegment(input.statusId)}`;
 }
 
 function agentRunPath(input: AgentRunScopedInput): string {
@@ -1151,6 +1269,16 @@ const taskActivityEventArrayParser: ResponseParser<TaskActivityEvent[]> = {
   label: "task activity event array",
 };
 
+const notificationFeedParser: ResponseParser<NotificationFeed> = {
+  isValid: isNotificationFeed,
+  label: "notification feed",
+};
+
+const taskSubscriptionParser: ResponseParser<TaskSubscription> = {
+  isValid: isTaskSubscription,
+  label: "task subscription",
+};
+
 const taskAttachmentParser: ResponseParser<TaskAttachment> = {
   isValid: isTaskAttachment,
   label: "task attachment",
@@ -1192,6 +1320,40 @@ const workspaceSummaryArrayParser: ResponseParser<WorkspaceSummary[]> = {
   isValid: (value): value is WorkspaceSummary[] => isArrayOf(value, isWorkspaceSummary),
   label: "workspace summary list",
 };
+
+function isNotificationFeed(value: unknown): value is NotificationFeed {
+  return (
+    isJsonObject(value) &&
+    isArrayOf(readProperty(value, "items"), isNotificationItem) &&
+    isNumber(readProperty(value, "unreadCount")) &&
+    hasNullableString(value, "lastReadAt")
+  );
+}
+
+function isNotificationItem(value: unknown): value is NotificationFeed["items"][number] {
+  const kind = isJsonObject(value) ? readProperty(value, "kind") : undefined;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    (kind === "mention" || kind === "task_changed") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "taskId") &&
+    hasString(value, "projectId") &&
+    hasString(value, "projectKey") &&
+    isNumber(readProperty(value, "taskNumber")) &&
+    hasString(value, "taskTitle") &&
+    hasNullableString(value, "actorUserId") &&
+    hasNullableString(value, "actorDisplayName") &&
+    hasString(value, "eventType") &&
+    isJsonObject(readProperty(value, "payload")) &&
+    hasString(value, "createdAt") &&
+    typeof readProperty(value, "read") === "boolean"
+  );
+}
+
+function isTaskSubscription(value: unknown): value is TaskSubscription {
+  return isJsonObject(value) && typeof readProperty(value, "subscribed") === "boolean";
+}
 
 function isHealthResponse(value: unknown): value is HealthResponse {
   return (
@@ -1283,10 +1445,13 @@ function isSavedView(value: unknown): value is SavedView {
     hasString(value, "id") &&
     hasString(value, "workspaceId") &&
     hasString(value, "userId") &&
+    hasString(value, "slug") &&
     hasNullableString(value, "projectId") &&
     hasString(value, "name") &&
     hasNullableString(value, "description") &&
-    (readProperty(value, "layout") === "list" || readProperty(value, "layout") === "board") &&
+    (readProperty(value, "layout") === "list" ||
+      readProperty(value, "layout") === "board" ||
+      readProperty(value, "layout") === "matrix") &&
     isJsonObject(settings) &&
     isSavedViewGrouping(readProperty(settings, "grouping")) &&
     isSavedViewGrouping(readProperty(settings, "subGrouping")) &&
@@ -1460,6 +1625,8 @@ function isProjectDetail(value: unknown): value is ProjectDetail {
     isJsonObject(value) &&
     hasString(value, "id") &&
     hasString(value, "workspaceId") &&
+    hasString(value, "key") &&
+    hasString(value, "slug") &&
     hasString(value, "title") &&
     hasOptionalNullableString(value, "description") &&
     hasOptionalNullableString(value, "status") &&
@@ -1556,6 +1723,7 @@ function isTaskDetail(value: unknown): value is TaskDetail {
     hasString(value, "id") &&
     hasString(value, "workspaceId") &&
     hasString(value, "projectId") &&
+    isPositiveInteger(readProperty(value, "number")) &&
     hasOptionalNullableString(value, "parentTaskId") &&
     hasString(value, "title") &&
     hasOptionalNullableString(value, "description") &&
@@ -1612,6 +1780,9 @@ function isTaskComment(value: unknown): value is TaskComment {
     hasString(value, "workspaceId") &&
     hasString(value, "taskId") &&
     hasString(value, "authorUserId") &&
+    hasNullableString(value, "agentRunId") &&
+    hasNullableString(value, "parentCommentId") &&
+    isArrayOf(readProperty(value, "mentionedUserIds"), isString) &&
     hasString(value, "body") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")
@@ -1711,6 +1882,7 @@ function isWorkspaceDetail(value: unknown): value is WorkspaceDetail {
     hasString(value, "slug") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt") &&
+    hasNullableString(value, "description") &&
     isArrayOf(readProperty(value, "members"), isWorkspaceMember)
   );
 }

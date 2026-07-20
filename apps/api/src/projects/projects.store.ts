@@ -29,6 +29,10 @@ export type ProjectArchiveResult =
       status: "forbidden";
     };
 
+export type ProjectDeleteResult =
+  | { project: ProjectDetail; status: "deleted" }
+  | { status: "project_not_found" | "forbidden" };
+
 export type ProjectUpdateResult =
   | {
       project: ProjectDetail;
@@ -64,4 +68,9 @@ export type ProjectReadStore = {
     projectId: string,
     userId: string,
   ): Promise<ProjectArchiveResult>;
+  deleteForWorkspace(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+  ): Promise<ProjectDeleteResult>;
 };

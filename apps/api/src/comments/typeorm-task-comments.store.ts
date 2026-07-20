@@ -1,5 +1,5 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
-import { type DataSource, IsNull } from "typeorm";
+import { type DataSource, In, IsNull } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
@@ -11,7 +11,11 @@ import {
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import type { CreateTaskCommentInput, TaskComment } from "./comments.contracts.js";
-import type { TaskCommentCreateResult, TaskCommentsStore } from "./comments.store.js";
+import type {
+  CreateAgentTaskCommentInput,
+  TaskCommentCreateResult,
+  TaskCommentsStore,
+} from "./comments.store.js";
 
 const commentWriteRoles: ReadonlySet<WorkspaceMemberRole> = new Set(["owner", "admin", "member"]);
 
@@ -66,6 +70,10 @@ export class TypeOrmTaskCommentsStore implements TaskCommentsStore {
       return { status: "task_not_found" };
     }
 
+    if (!(await this.hasValidReferences(dataSource, workspaceId, taskId, input))) {
+      return { status: "invalid_reference" };
+    }
+
     const savedComment = await dataSource.transaction(async (manager): Promise<CommentEntity> => {
       const commentRepository = manager.getRepository(CommentEntity);
       const comment = commentRepository.create({
@@ -73,6 +81,8 @@ export class TypeOrmTaskCommentsStore implements TaskCommentsStore {
         taskId,
         authorUserId: userId,
         body: input.body,
+        mentionedUserIds: input.mentionedUserIds ?? [],
+        parentCommentId: input.parentCommentId ?? null,
       });
       const createdComment = await commentRepository.save(comment);
       const activityEvent = manager.getRepository(ActivityEventEntity).create({
@@ -95,6 +105,51 @@ export class TypeOrmTaskCommentsStore implements TaskCommentsStore {
     return { comment: toTaskComment(savedComment), status: "created" };
   }
 
+  async createAgentReply(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    invokingUserId: string,
+    input: CreateAgentTaskCommentInput,
+  ): Promise<TaskComment | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+    if (task === null) return null;
+
+    const rootComment = await dataSource.getRepository(CommentEntity).findOneBy({
+      id: input.parentCommentId,
+      parentCommentId: IsNull(),
+      taskId,
+      workspaceId,
+    });
+    if (rootComment === null) return null;
+
+    const savedComment = await dataSource.transaction(async (manager): Promise<CommentEntity> => {
+      const comment = manager.getRepository(CommentEntity).create({
+        agentRunId: input.agentRunId,
+        authorUserId: invokingUserId,
+        body: input.body,
+        mentionedUserIds: [],
+        parentCommentId: input.parentCommentId,
+        taskId,
+        workspaceId,
+      });
+      const createdComment = await manager.getRepository(CommentEntity).save(comment);
+      const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        actorUserId: null,
+        entityId: createdComment.id,
+        entityType: "comment",
+        eventType: "comment.created",
+        payload: { agentRunId: input.agentRunId, projectId, taskId },
+        workspaceId,
+      });
+      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+      return createdComment;
+    });
+
+    return toTaskComment(savedComment);
+  }
+
   private async canReadTask(
     dataSource: DataSource,
     workspaceId: string,
@@ -111,6 +166,32 @@ export class TypeOrmTaskCommentsStore implements TaskCommentsStore {
     const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
 
     return task !== null;
+  }
+
+  private async hasValidReferences(
+    dataSource: DataSource,
+    workspaceId: string,
+    taskId: string,
+    input: CreateTaskCommentInput,
+  ): Promise<boolean> {
+    const parentCommentId = input.parentCommentId ?? null;
+    const mentionedUserIds = input.mentionedUserIds ?? [];
+    if (parentCommentId !== null) {
+      const parent = await dataSource.getRepository(CommentEntity).findOneBy({
+        id: parentCommentId,
+        parentCommentId: IsNull(),
+        taskId,
+        workspaceId,
+      });
+      if (parent === null) return false;
+    }
+
+    if (mentionedUserIds.length === 0) return true;
+    const members = await dataSource.getRepository(WorkspaceMemberEntity).findBy({
+      userId: In(mentionedUserIds),
+      workspaceId,
+    });
+    return new Set(members.map((member) => member.userId)).size === mentionedUserIds.length;
   }
 
   private async getVisibleTask(
@@ -175,6 +256,9 @@ function toTaskComment(comment: CommentEntity): TaskComment {
     workspaceId: comment.workspaceId,
     taskId: comment.taskId,
     authorUserId: comment.authorUserId,
+    agentRunId: comment.agentRunId,
+    parentCommentId: comment.parentCommentId,
+    mentionedUserIds: comment.mentionedUserIds,
     body: comment.body,
     createdAt: comment.createdAt,
     updatedAt: comment.updatedAt,

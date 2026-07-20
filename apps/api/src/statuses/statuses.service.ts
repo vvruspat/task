@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -6,6 +7,7 @@ import {
 } from "@nestjs/common";
 import type {
   CreateWorkspaceStatusInput,
+  ReorderWorkspaceStatusesInput,
   UpdateWorkspaceStatusInput,
 } from "./statuses.contracts.js";
 import { WorkspaceStatusDto } from "./statuses.dto.js";
@@ -18,8 +20,12 @@ export class StatusesService {
     private readonly writeStore?: StatusesWriteStore,
   ) {}
 
-  async listStatuses(workspaceId: string, userId: string): Promise<WorkspaceStatusDto[]> {
-    const statuses = await this.readStore.listForWorkspace(workspaceId, userId);
+  async listStatuses(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+  ): Promise<WorkspaceStatusDto[]> {
+    const statuses = await this.readStore.listForProject(workspaceId, projectId, userId);
 
     if (statuses === null) {
       throw new NotFoundException("Workspace was not found.");
@@ -30,33 +36,60 @@ export class StatusesService {
 
   async createStatus(
     workspaceId: string,
+    projectId: string,
     userId: string,
     input: CreateWorkspaceStatusInput,
   ): Promise<WorkspaceStatusDto> {
     return this.resolveMutation(
-      this.getWriteStore().createForWorkspace(workspaceId, userId, input),
+      this.getWriteStore().createForProject(workspaceId, projectId, userId, input),
     );
   }
 
   async updateStatus(
     workspaceId: string,
+    projectId: string,
     statusId: string,
     userId: string,
     input: UpdateWorkspaceStatusInput,
   ): Promise<WorkspaceStatusDto> {
     return this.resolveMutation(
-      this.getWriteStore().updateForWorkspace(workspaceId, statusId, userId, input),
+      this.getWriteStore().updateForProject(workspaceId, projectId, statusId, userId, input),
     );
   }
 
   async deleteStatus(
     workspaceId: string,
+    projectId: string,
     statusId: string,
     userId: string,
   ): Promise<WorkspaceStatusDto> {
     return this.resolveMutation(
-      this.getWriteStore().deleteForWorkspace(workspaceId, statusId, userId),
+      this.getWriteStore().deleteForProject(workspaceId, projectId, statusId, userId),
     );
+  }
+
+  async reorderStatuses(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: ReorderWorkspaceStatusesInput,
+  ): Promise<WorkspaceStatusDto[]> {
+    const result = await this.getWriteStore().reorderForProject(
+      workspaceId,
+      projectId,
+      userId,
+      input,
+    );
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot manage statuses in this workspace.");
+    }
+    if (result.status === "invalid_order") {
+      throw new BadRequestException("Status order must include every project status exactly once.");
+    }
+    if (!("workspaceStatuses" in result)) {
+      throw new BadRequestException("Status order is invalid.");
+    }
+    return result.workspaceStatuses.map((status) => new WorkspaceStatusDto(status));
   }
 
   private getWriteStore(): StatusesWriteStore {
@@ -67,7 +100,7 @@ export class StatusesService {
   }
 
   private async resolveMutation(
-    promise: ReturnType<StatusesWriteStore["createForWorkspace"]>,
+    promise: ReturnType<StatusesWriteStore["createForProject"]>,
   ): Promise<WorkspaceStatusDto> {
     const result = await promise;
     if (result.status === "forbidden") {

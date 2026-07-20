@@ -15,6 +15,7 @@ import type { TaskRecord } from "../types/core-persistence.types.js";
 @Index("idx_tasks_workspace_id_status_id", ["workspaceId", "statusId"])
 @Index("idx_tasks_workspace_id_assignee_user_id", ["workspaceId", "assigneeUserId"])
 @Index("idx_tasks_metadata_gin", ["metadata"])
+@Index("uq_tasks_project_id_number", ["projectId", "number"], { unique: true })
 export class TaskEntity implements TaskRecord {
   @PrimaryGeneratedColumn("uuid")
   id: string = randomUUID();
@@ -24,6 +25,9 @@ export class TaskEntity implements TaskRecord {
 
   @Column({ name: "project_id", type: "uuid" })
   projectId = "";
+
+  @Column({ type: "integer" })
+  number = 0;
 
   @Column({ name: "parent_task_id", nullable: true, type: "uuid" })
   parentTaskId: string | null = null;

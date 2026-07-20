@@ -1,4 +1,6 @@
 import { Module, type Provider } from "@nestjs/common";
+import { AttachmentsModule } from "../attachments/attachments.module.js";
+import { AttachmentsService } from "../attachments/attachments.service.js";
 import { BotSharedSecretGuard } from "../auth/bot-shared-secret.guard.js";
 import { loadApiConfig } from "../config.js";
 import { ConfirmationsModule } from "../confirmations/confirmations.module.js";
@@ -6,8 +8,14 @@ import { ConfirmationsService } from "../confirmations/confirmations.service.js"
 import { DatabaseModule } from "../database/database.module.js";
 import { ProjectsModule } from "../projects/projects.module.js";
 import { ProjectsService } from "../projects/projects.service.js";
+import { StatusesModule } from "../statuses/statuses.module.js";
+import { StatusesService } from "../statuses/statuses.service.js";
+import { TaskSkillsModule } from "../task-skills/task-skills.module.js";
+import { TaskSkillsService } from "../task-skills/task-skills.service.js";
 import { TasksModule } from "../tasks/tasks.module.js";
 import { TasksService } from "../tasks/tasks.service.js";
+import { WorkspacesModule } from "../workspaces/workspaces.module.js";
+import { WorkspacesService } from "../workspaces/workspaces.service.js";
 import { AgentController } from "./agent.controller.js";
 import {
   type AgentRuntime,
@@ -39,9 +47,27 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
   useFactory: (
     projectsService: ProjectsService,
     tasksService: TasksService,
+    taskSkillsService: TaskSkillsService,
+    workspacesService: WorkspacesService,
+    statusesService: StatusesService,
+    attachmentsService: AttachmentsService,
   ): BackendAgentToolOperationDispatcher =>
-    new BackendAgentToolOperationDispatcher(projectsService, tasksService),
-  inject: [ProjectsService, TasksService],
+    new BackendAgentToolOperationDispatcher(
+      projectsService,
+      tasksService,
+      taskSkillsService,
+      workspacesService,
+      statusesService,
+      attachmentsService,
+    ),
+  inject: [
+    ProjectsService,
+    TasksService,
+    TaskSkillsService,
+    WorkspacesService,
+    StatusesService,
+    AttachmentsService,
+  ],
 };
 
 const agentServiceProvider: Provider<AgentService> = {
@@ -55,7 +81,16 @@ const agentServiceProvider: Provider<AgentService> = {
 };
 
 @Module({
-  imports: [DatabaseModule, ConfirmationsModule, ProjectsModule, TasksModule],
+  imports: [
+    AttachmentsModule,
+    DatabaseModule,
+    ConfirmationsModule,
+    ProjectsModule,
+    StatusesModule,
+    TasksModule,
+    TaskSkillsModule,
+    WorkspacesModule,
+  ],
   controllers: [AgentController, AgentRunsController, WebAgentController],
   providers: [
     BotSharedSecretGuard,
@@ -64,5 +99,6 @@ const agentServiceProvider: Provider<AgentService> = {
     TypeOrmAgentRunStore,
     agentServiceProvider,
   ],
+  exports: [AgentService],
 })
 export class AgentModule {}

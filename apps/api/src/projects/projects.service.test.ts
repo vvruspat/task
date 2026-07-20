@@ -12,6 +12,7 @@ import { ProjectsService } from "./projects.service.js";
 import type {
   ProjectArchiveResult,
   ProjectCreateResult,
+  ProjectDeleteResult,
   ProjectReadStore,
   ProjectUpdateResult,
 } from "./projects.store.js";
@@ -25,6 +26,8 @@ const archivedAt = new Date("2026-01-04T00:00:00.000Z");
 const projectSummary: ProjectSummary = {
   id: projectId,
   workspaceId,
+  key: "AR",
+  slug: "album-release",
   title: "Album release",
   description: null,
   status: "active",
@@ -102,6 +105,14 @@ test("ProjectsService archives projects for writable workspace members", async (
   assert.ok(response instanceof ProjectDetailDto);
   assert.equal(response.id, projectId);
   assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
+});
+
+test("ProjectsService permanently deletes projects", async () => {
+  const service = new ProjectsService(
+    createReadStore({ deleteResult: { project: projectSummary, status: "deleted" } }),
+  );
+  const response = await service.deleteProject(workspaceId, projectId, userId);
+  assert.equal(response.id, projectId);
 });
 
 test("ProjectsService updates projects for writable workspace members", async () => {
@@ -188,6 +199,7 @@ function createReadStore(options: {
   createResult?: ProjectCreateResult;
   archiveResult?: ProjectArchiveResult;
   updateResult?: ProjectUpdateResult;
+  deleteResult?: ProjectDeleteResult;
 }): ProjectReadStore {
   return {
     listActiveForWorkspace: async (): Promise<ProjectSummary[] | null> =>
@@ -200,5 +212,7 @@ function createReadStore(options: {
       options.updateResult ?? { status: "project_not_found" },
     archiveForWorkspace: async (): Promise<ProjectArchiveResult> =>
       options.archiveResult ?? { status: "project_not_found" },
+    deleteForWorkspace: async (): Promise<ProjectDeleteResult> =>
+      options.deleteResult ?? { status: "project_not_found" },
   };
 }

@@ -10,16 +10,17 @@ export async function PATCH(request: Request, context: RouteContext): Promise<Ne
   const body: unknown = await request.json();
   if (!isUpdateSavedViewInput(body))
     return NextResponse.json({ error: "Invalid saved view payload." }, { status: 400 });
-  return mutate("PATCH", body, context);
+  return mutate("PATCH", body, request, context);
 }
 
-export async function DELETE(_request: Request, context: RouteContext): Promise<NextResponse> {
-  return mutate("DELETE", null, context);
+export async function DELETE(request: Request, context: RouteContext): Promise<NextResponse> {
+  return mutate("DELETE", null, request, context);
 }
 
 async function mutate(
   method: "PATCH" | "DELETE",
   body: Parameters<ReturnType<typeof createTaskApiClient>["updateSavedView"]>[0]["body"] | null,
+  request: Request,
   context: RouteContext,
 ): Promise<NextResponse> {
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
@@ -27,7 +28,10 @@ async function mutate(
   const { viewId } = await context.params;
   try {
     const api = createTaskApiClient({ baseUrl: apiBaseUrl, fetch, trustedUserId });
-    const workspace = (await api.listWorkspaces()).at(0);
+    const workspaceId = new URL(request.url).searchParams.get("workspaceId");
+    const workspaces = await api.listWorkspaces();
+    const workspace =
+      workspaceId === null ? workspaces.at(0) : workspaces.find((item) => item.id === workspaceId);
     if (workspace === undefined)
       return NextResponse.json({ error: "No workspace is visible." }, { status: 404 });
     const view =

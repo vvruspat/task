@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   Column,
   CreateDateColumn,
@@ -16,7 +17,7 @@ import type { TaskSkillRecord } from "../types/core-persistence.types.js";
 @Index("idx_task_skills_workspace_id_archived_at", ["workspaceId", "archivedAt"])
 export class TaskSkillEntity implements TaskSkillRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";

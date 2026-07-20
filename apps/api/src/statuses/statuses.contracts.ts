@@ -1,6 +1,7 @@
 export type WorkspaceStatus = {
   id: string;
   workspaceId: string;
+  projectId: string;
   name: string;
   color: string;
   position: string;
@@ -21,4 +22,8 @@ export type UpdateWorkspaceStatusInput = {
   color?: string;
   position?: string;
   isDone?: boolean;
+};
+
+export type ReorderWorkspaceStatusesInput = {
+  statusIds: string[];
 };

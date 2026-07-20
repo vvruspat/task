@@ -35,8 +35,8 @@ export class TypeOrmTaskActivityStore implements TaskActivityStore {
       .createQueryBuilder("activity")
       .where("activity.workspace_id = :workspaceId", { workspaceId })
       .andWhere(
-        "(activity.entity_type = :taskEntityType AND activity.entity_id = :taskId OR activity.payload ->> 'taskId' = :taskId)",
-        { taskEntityType: "task", taskId },
+        "(activity.entity_type = :taskEntityType AND activity.entity_id = :entityTaskId OR activity.payload ->> 'taskId' = :payloadTaskId)",
+        { entityTaskId: taskId, payloadTaskId: taskId, taskEntityType: "task" },
       )
       .orderBy("activity.created_at", "DESC")
       .getMany();

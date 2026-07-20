@@ -11,9 +11,11 @@ import type {
   TaskTablePage,
   WorkspaceDetail,
   WorkspaceStatus,
+  WorkspaceSummary,
 } from "@task/api-client";
 
 export type WorkspaceBootstrap = {
+  availableWorkspaces: WorkspaceSummary[];
   dashboard: DashboardOverview;
   myTasks: MyTasksPage;
   projects: ProjectSummary[];
@@ -29,6 +31,9 @@ export type WorkspaceBootstrap = {
 export type ProjectData = {
   matrix: ProjectMatrix;
   projectId: string;
+  projectKey: string;
+  projectTitle: string;
+  projectless: boolean;
   table: TaskTablePage;
   tasks: TaskSummary[];
 };

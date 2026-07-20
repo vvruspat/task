@@ -18,15 +18,39 @@ const openRouterAgentTools = [
     type: "function",
     function: {
       name: "project_create",
-      description: "Create a real project in the current workspace.",
+      description:
+        "Create a real project in the current workspace. When the user asks for a project with a named list of peer tasks (for example 8 songs), include every item in tasks so each becomes an independent root task. Never create a container task named after the project.",
       parameters: {
         type: "object",
         additionalProperties: false,
         properties: {
           title: { type: "string", minLength: 1 },
           description: { type: ["string", "null"] },
+          taskTypeHint: {
+            type: "string",
+            minLength: 1,
+            description:
+              "The shared type of every listed task, for example 'песня'. Used to resolve a task template independently for each task.",
+          },
+          taskSkillId: { type: "string", format: "uuid" },
+          tasks: {
+            type: "array",
+            minItems: 0,
+            maxItems: 100,
+            description:
+              "Every independent root task requested inside the new project. Use an empty array only when the user requested no tasks.",
+            items: {
+              type: "object",
+              additionalProperties: false,
+              properties: {
+                title: { type: "string", minLength: 1 },
+                description: { type: ["string", "null"] },
+              },
+              required: ["title"],
+            },
+          },
         },
-        required: ["title"],
+        required: ["title", "tasks"],
       },
     },
   },
@@ -34,7 +58,8 @@ const openRouterAgentTools = [
     type: "function",
     function: {
       name: "task_create",
-      description: "Create a real task in a project. Use the selected project id when provided.",
+      description:
+        "Create a real task in a project. The backend automatically resolves and applies a matching task template. If the user is choosing from candidates previously offered by the agent, pass the chosen taskSkillId.",
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -42,6 +67,7 @@ const openRouterAgentTools = [
           projectId: { type: "string", format: "uuid" },
           title: { type: "string", minLength: 1 },
           description: { type: ["string", "null"] },
+          taskSkillId: { type: "string", format: "uuid" },
         },
         required: ["projectId", "title"],
       },
@@ -51,7 +77,8 @@ const openRouterAgentTools = [
     type: "function",
     function: {
       name: "task_add_subtasks",
-      description: "Create multiple real subtasks under an existing parent task.",
+      description:
+        "Create component steps under one existing parent task. Use only when the user explicitly describes subtasks or steps of that one task. Never use this for peer items in a project, such as a list of songs, issues, or deliverables.",
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -76,6 +103,98 @@ const openRouterAgentTools = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "task_update",
+      description:
+        "Update the title and/or Markdown description of an existing task. Pass only fields the user explicitly asked to change.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+          taskId: { type: "string", format: "uuid" },
+          title: { type: "string", minLength: 1 },
+          description: { type: ["string", "null"] },
+        },
+        required: ["projectId", "taskId"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "task_set_status",
+      description:
+        "Set a task status by its human-readable project status name. Pass null to remove the status. The backend resolves the name only among statuses of the selected project.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+          taskId: { type: "string", format: "uuid" },
+          statusName: { type: ["string", "null"] },
+        },
+        required: ["projectId", "taskId", "statusName"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "task_set_assignee",
+      description:
+        "Assign a task to a workspace member by human-readable name or email. Pass null to unassign. The backend resolves the member inside the current workspace and refuses ambiguous matches.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+          taskId: { type: "string", format: "uuid" },
+          assignee: { type: ["string", "null"] },
+        },
+        required: ["projectId", "taskId", "assignee"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "task_set_due_date",
+      description:
+        "Set a task due date as an ISO 8601 timestamp. Pass null to remove the due date.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+          taskId: { type: "string", format: "uuid" },
+          dueAt: { type: ["string", "null"], format: "date-time" },
+        },
+        required: ["projectId", "taskId", "dueAt"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "task_add_link_attachment",
+      description:
+        "Attach an HTTP or HTTPS link to an existing task. This tool attaches links; binary files must already be uploaded through the product UI or another upload-capable integration.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+          taskId: { type: "string", format: "uuid" },
+          url: { type: "string", format: "uri" },
+          title: { type: ["string", "null"] },
+        },
+        required: ["projectId", "taskId", "url"],
+      },
+    },
+  },
 ] as const;
 
 const agentSystemPrompt = [
@@ -84,12 +203,25 @@ const agentSystemPrompt = [
   "Never claim that a project or task was created unless the corresponding tool succeeded in this response.",
   "The workspace and current user are supplied by the server and must not be invented.",
   "When the user message includes a selected project id, pass that exact id to task_create.",
+  "When the user asks to create a project with a named list or count of peer items (for example, a project with 8 songs), call project_create once with those items in its tasks array and set taskTypeHint to the singular item type. Every listed item is an independent root task, not a subtask.",
+  "A successful project_create call with tasks already created the complete list, including any template-generated subtasks. Do not call task_create or task_add_subtasks for those items afterward.",
+  "Never create a task whose title duplicates the new project title unless the user explicitly requests that separate task.",
+  "Never pass peer project items such as songs, issues, tracks, or deliverables to task_add_subtasks. task_add_subtasks is only for explicitly requested component steps under one parent task.",
+  "For every root task request call task_create exactly once; the backend checks matching task templates before creating anything.",
+  "If task_create reports task_skill_selection_required, ask the user to choose one candidate and do not claim that a task was created.",
+  "When the conversation contains a user choice from task skill candidates, call task_create with the chosen candidate taskSkillId.",
   "Continue calling tools until every requested project, task, and subtask has been created.",
   "After task_create returns an id, use that id with task_add_subtasks when subtasks were requested.",
+  "For changes to an existing task, use task_update, task_set_status, task_set_assignee, task_set_due_date, or task_add_link_attachment as appropriate. Never claim that a task property changed unless the corresponding tool succeeded.",
+  "Resolve assignees by passing the user's human-readable name or email to task_set_assignee; never invent a user id.",
+  "Resolve statuses by passing the user's human-readable status name to task_set_status; never invent a status id.",
   "Reply briefly and accurately.",
 ].join(" ");
 
-const maxOpenRouterToolRounds = 8;
+// One model round can contain only one tool call for some providers. Keep enough
+// room for operational batches (for example, one project plus many tasks) and
+// the final assistant response while retaining a hard runaway guard.
+const maxOpenRouterToolRounds = 32;
 
 export type AgentRuntimeResult = {
   model: string | null;
@@ -114,6 +246,7 @@ export type AgentRuntimeToolCall = {
 export type TelegramAgentRuntimeContext = {
   workspaceId: string;
   userId: string;
+  inputText?: string;
 };
 
 export type TelegramAgentRuntimeRequest = {
@@ -266,7 +399,10 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           if (allToolCalls.length === 0 && looksLikeMutationRequest(request.input.inputText)) {
             return {
               model,
-              normalizedIntent: { kind: "openrouter_chat_completion", source: "telegram" },
+              normalizedIntent: {
+                kind: "openrouter_chat_completion",
+                source: "telegram",
+              },
               finalResponse:
                 "No project or task was created because the agent did not call a tool.",
               status: "failed",
@@ -287,7 +423,10 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
 
           return {
             model,
-            normalizedIntent: { kind: "openrouter_chat_completion", source: "telegram" },
+            normalizedIntent: {
+              kind: "openrouter_chat_completion",
+              source: "telegram",
+            },
             finalResponse:
               formatSuccessfulToolResponse(allToolCalls) ??
               content ??
@@ -300,10 +439,10 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           };
         }
 
-        const dispatchedToolCalls = await this.dispatchToolCalls(
-          parsedToolCalls.toolCalls,
-          request.context,
-        );
+        const dispatchedToolCalls = await this.dispatchToolCalls(parsedToolCalls.toolCalls, {
+          ...request.context,
+          inputText: request.input.inputText,
+        });
         allToolCalls.push(...dispatchedToolCalls);
         const failedToolCall =
           dispatchedToolCalls.find((toolCall) => toolCall.status === "error") ?? null;
@@ -311,12 +450,32 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         if (failedToolCall !== null) {
           return {
             model,
-            normalizedIntent: { kind: "openrouter_chat_completion", source: "telegram" },
+            normalizedIntent: {
+              kind: "openrouter_chat_completion",
+              source: "telegram",
+            },
             finalResponse: `Operation failed: ${failedToolCall.error ?? "unknown tool error"}`,
             status: "failed",
             tokenUsage,
             cost: null,
             error: failedToolCall.error,
+            toolCalls: allToolCalls,
+          };
+        }
+
+        const selectionResponse = formatSelectionResponse(dispatchedToolCalls);
+        if (selectionResponse !== null) {
+          return {
+            model,
+            normalizedIntent: {
+              kind: "task_skill_selection",
+              source: "telegram",
+            },
+            finalResponse: selectionResponse,
+            status: "completed",
+            tokenUsage,
+            cost: null,
+            error: null,
             toolCalls: allToolCalls,
           };
         }
@@ -394,11 +553,15 @@ function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string
     return null;
   }
 
-  const projectCalls = successful.filter((toolCall) => toolCall.toolName.includes("project"));
-  const taskCreateCalls = successful.filter(
-    (toolCall) => toolCall.toolName.includes("task") && !toolCall.toolName.includes("subtask"),
+  const projectCalls = successful.filter((toolCall) =>
+    ["project_create", "project.create"].includes(toolCall.toolName),
   );
-  const subtaskCalls = successful.filter((toolCall) => toolCall.toolName.includes("subtask"));
+  const taskCreateCalls = successful.filter((toolCall) =>
+    ["task_create", "task.create", "tasks.create"].includes(toolCall.toolName),
+  );
+  const subtaskCalls = successful.filter((toolCall) =>
+    ["task_add_subtasks", "task.add_subtasks"].includes(toolCall.toolName),
+  );
   const parts = projectCalls.map((toolCall) => {
     const id =
       readResultString(toolCall.result, "id") ??
@@ -407,7 +570,13 @@ function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string
     const title = readResultString(toolCall.result, "title");
     const titlePart = title === null ? "" : ` "${title}"`;
     const idPart = id === null ? "" : ` (ID: ${id})`;
-    return `Project${titlePart} created${idPart}.`;
+    const createdTaskCount = readResultNumber(toolCall.result, "createdTaskCount");
+    const createdSubtaskCount = readResultNumber(toolCall.result, "createdSubtaskCount");
+    const taskPart =
+      createdTaskCount === null
+        ? ""
+        : ` with ${createdTaskCount} root tasks${createdSubtaskCount === null || createdSubtaskCount === 0 ? "" : ` and ${createdSubtaskCount} template subtasks`}`;
+    return `Project${titlePart} created${idPart}${taskPart}.`;
   });
 
   if (taskCreateCalls.length === 1) {
@@ -416,8 +585,12 @@ function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string
       const id =
         readResultString(taskCall.result, "id") ?? readResultString(taskCall.result, "taskId");
       const title = readResultString(taskCall.result, "title");
+      const usedTaskSkill = readResultString(taskCall.result, "kind") === "task_skill_applied";
+      const createdSubtaskCount = readResultNumber(taskCall.result, "createdSubtaskCount") ?? 0;
       parts.push(
-        `Task${title === null ? "" : ` "${title}"`} created${id === null ? "" : ` (ID: ${id})`}.`,
+        usedTaskSkill
+          ? `Task${title === null ? "" : ` "${title}"`} created from a template with ${createdSubtaskCount} subtasks${id === null ? "" : ` (ID: ${id})`}.`
+          : `Task${title === null ? "" : ` "${title}"`} created${id === null ? "" : ` (ID: ${id})`}.`,
       );
     }
   } else if (taskCreateCalls.length > 1) {
@@ -440,7 +613,93 @@ function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string
     );
   }
 
-  return parts.join(" ");
+  for (const toolCall of successful) {
+    const kind = readResultString(toolCall.result, "kind");
+    if (kind === "task_updated") parts.push("Task title or description updated.");
+    if (kind === "task_status_updated") {
+      const statusName = readResultString(toolCall.result, "statusName");
+      parts.push(
+        statusName === null ? "Task status removed." : `Task status set to "${statusName}".`,
+      );
+    }
+    if (kind === "task_assignee_updated") {
+      const assigneeName = readResultString(toolCall.result, "assigneeName");
+      parts.push(
+        assigneeName === null ? "Task assignee removed." : `Task assigned to ${assigneeName}.`,
+      );
+    }
+    if (kind === "task_due_date_updated") parts.push("Task due date updated.");
+    if (kind === "task_link_attachment_added") parts.push("Link attached to the task.");
+  }
+
+  return parts.length === 0 ? null : parts.join(" ");
+}
+
+function formatSelectionResponse(toolCalls: AgentRuntimeToolCall[]): string | null {
+  const selectionCall = toolCalls.find(
+    (toolCall) =>
+      toolCall.status === "success" &&
+      readResultString(toolCall.result, "kind") === "task_skill_selection_required",
+  );
+  if (selectionCall?.result !== null && selectionCall?.result !== undefined) {
+    const candidates = selectionCall.result["candidates"];
+    if (Array.isArray(candidates) && candidates.length >= 2) {
+      const choices = candidates.flatMap((candidate, index) => {
+        if (!isRecord(candidate)) return [];
+        const id = readRecordString(candidate, "id");
+        const name = readRecordString(candidate, "name");
+        if (id === null || name === null) return [];
+        return [`${index + 1}. ${name} (ID: ${id})`];
+      });
+      if (choices.length >= 2) {
+        const title = readResultString(selectionCall.result, "title");
+        return `Для задачи${title === null ? "" : ` "${title}"`} подходят несколько шаблонов:\n${choices.join("\n")}\nКакой использовать?`;
+      }
+    }
+  }
+
+  const assigneeSelection = toolCalls.find(
+    (toolCall) =>
+      toolCall.status === "success" &&
+      readResultString(toolCall.result, "kind") === "assignee_selection_required",
+  );
+  const assigneeChoices = formatNamedSelectionChoices(
+    assigneeSelection?.result,
+    "displayName",
+    "email",
+  );
+  if (assigneeChoices.length >= 2) {
+    return `Нашлось несколько подходящих исполнителей:\n${assigneeChoices.join("\n")}\nКого назначить?`;
+  }
+
+  const statusSelection = toolCalls.find(
+    (toolCall) =>
+      toolCall.status === "success" &&
+      readResultString(toolCall.result, "kind") === "status_selection_required",
+  );
+  const statusChoices = formatNamedSelectionChoices(statusSelection?.result, "name", "color");
+  if (statusChoices.length >= 2) {
+    return `Нашлось несколько подходящих статусов:\n${statusChoices.join("\n")}\nКакой выбрать?`;
+  }
+
+  return null;
+}
+
+function formatNamedSelectionChoices(
+  result: Record<string, unknown> | null | undefined,
+  labelKey: string,
+  detailKey: string,
+): string[] {
+  if (result === null || result === undefined) return [];
+  const candidates = result["candidates"];
+  if (!Array.isArray(candidates)) return [];
+  return candidates.flatMap((candidate, index) => {
+    if (!isRecord(candidate)) return [];
+    const label = readRecordString(candidate, labelKey);
+    const detail = readRecordString(candidate, detailKey);
+    if (label === null) return [];
+    return [`${index + 1}. ${label}${detail === null ? "" : ` — ${detail}`}`];
+  });
 }
 
 function readResultString(result: Record<string, unknown> | null, key: string): string | null {
@@ -461,6 +720,11 @@ function readResultNumber(result: Record<string, unknown> | null, key: string): 
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+function readRecordString(result: Record<string, unknown>, key: string): string | null {
+  const value = result[key];
+  return typeof value === "string" && value.length > 0 ? value : null;
+}
+
 function toOpenRouterConversationToolCall(
   toolCall: AgentToolOperationCall,
 ): OpenRouterConversationToolCall {
@@ -475,7 +739,7 @@ function toOpenRouterConversationToolCall(
 }
 
 function looksLikeMutationRequest(inputText: string): boolean {
-  return /(создай|создать|создайте|добавь|добавить|добавьте|create|add|archive|delete|update)/iu.test(
+  return /(создай|создать|создайте|добавь|добавить|добавьте|назначь|назначить|измени|изменить|переименуй|переименовать|поставь|установи|прикрепи|удали|сними|create|add|assign|set|attach|archive|delete|update)/iu.test(
     inputText,
   );
 }

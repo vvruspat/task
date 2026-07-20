@@ -138,7 +138,15 @@ const applyPreview: TaskSkillApplyPreview = {
   taskSkillVersionId: versionId,
   taskSkillVersion: 1,
   rootTaskTitle: "Intro",
-  subtasks: [{ title: "Strings", source: "added" }],
+  subtasks: [
+    {
+      title: "Strings",
+      description: null,
+      assigneeUserId: null,
+      labels: [],
+      source: "added",
+    },
+  ],
 };
 
 const applyResult: TaskSkillApplyResult = {
@@ -151,6 +159,7 @@ const applyResult: TaskSkillApplyResult = {
     id: rootTaskId,
     workspaceId,
     projectId,
+    number: 1,
     parentTaskId: null,
     title: "Intro",
     description: null,
@@ -171,6 +180,7 @@ const applyResult: TaskSkillApplyResult = {
       id: subtaskId,
       workspaceId,
       projectId,
+      number: 2,
       parentTaskId: rootTaskId,
       title: "Strings",
       description: null,
@@ -361,7 +371,14 @@ test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads"
       description: "",
       aliases: [" track ", "track"],
       definition: {
-        subtasks: [{ title: " Lyrics " }],
+        subtasks: [
+          {
+            title: " Lyrics ",
+            description: " Write the words ",
+            assigneeUserId: userId,
+            labels: [" lyrics ", "lyrics"],
+          },
+        ],
       },
     }),
     {
@@ -369,7 +386,14 @@ test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads"
       description: null,
       aliases: ["track"],
       definition: {
-        subtasks: [{ title: " Lyrics " }],
+        subtasks: [
+          {
+            title: "Lyrics",
+            description: "Write the words",
+            assigneeUserId: userId,
+            labels: ["lyrics"],
+          },
+        ],
       },
     },
   );
@@ -385,6 +409,22 @@ test("ParseCreateTaskSkillBodyPipe validates and normalizes task skill payloads"
   );
   assert.throws(
     () => pipe.transform({ name: "Song", definition: { subtasks: [{ title: "" }] } }),
+    BadRequestException,
+  );
+  assert.throws(
+    () =>
+      pipe.transform({
+        name: "Song",
+        definition: { subtasks: [{ title: "Lyrics", assigneeUserId: "not-a-uuid" }] },
+      }),
+    BadRequestException,
+  );
+  assert.throws(
+    () =>
+      pipe.transform({
+        name: "Song",
+        definition: { subtasks: [{ title: "Lyrics", labels: [1] }] },
+      }),
     BadRequestException,
   );
   assert.throws(
@@ -426,12 +466,12 @@ test("ParseUpdateTaskSkillDefinitionBodyPipe validates task skill definition pay
   assert.deepEqual(
     pipe.transform({
       definition: {
-        subtasks: [{ title: " Record vocals " }],
+        subtasks: [{ title: "Record vocals" }],
       },
     }),
     {
       definition: {
-        subtasks: [{ title: " Record vocals " }],
+        subtasks: [{ title: "Record vocals" }],
       },
     },
   );

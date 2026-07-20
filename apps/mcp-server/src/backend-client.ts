@@ -232,6 +232,7 @@ export type ListActiveProjectsRequest = {
 
 export type ListWorkspaceStatusesRequest = {
   workspaceId: string;
+  projectId: string;
   userId: string;
 };
 
@@ -542,7 +543,7 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
       getJson(
         fetchImplementation,
         baseUrl,
-        buildWorkspaceStatusesPath(request.workspaceId),
+        buildWorkspaceStatusesPath(request.workspaceId, request.projectId),
         request.userId,
         readWorkspaceStatusList,
       ),
@@ -1065,8 +1066,8 @@ function buildWorkspaceProjectsPath(workspaceId: string): string {
   return `${buildWorkspacePath(workspaceId)}/projects`;
 }
 
-function buildWorkspaceStatusesPath(workspaceId: string): string {
-  return `${buildWorkspacePath(workspaceId)}/statuses`;
+function buildWorkspaceStatusesPath(workspaceId: string, projectId: string): string {
+  return `${buildWorkspaceProjectsPath(workspaceId)}/${encodeURIComponent(projectId)}/statuses`;
 }
 
 function buildWorkspaceConfirmationsPath(workspaceId: string): string {
@@ -1264,9 +1265,14 @@ function readWorkspaceSummary(value: unknown): WorkspaceSummaryResponse {
 
 function readWorkspaceDetail(value: unknown): WorkspaceDetailResponse {
   const record = readRecord(value, "workspace detail");
+  const description = readOptionalNullableString(record, "description");
+  if (description === undefined) {
+    throw new Error("workspace detail description must be a string or null.");
+  }
 
   return {
     ...readWorkspaceSummary(record),
+    description,
     members: readArray(record, "members").map(readWorkspaceMember),
   };
 }
@@ -1298,6 +1304,7 @@ function readWorkspaceStatus(value: unknown): WorkspaceStatusResponse {
   return {
     id: readString(record, "id"),
     workspaceId: readString(record, "workspaceId"),
+    projectId: readString(record, "projectId"),
     name: readString(record, "name"),
     color: readString(record, "color"),
     position: readString(record, "position"),
@@ -1340,7 +1347,7 @@ function readTaskSkillVersionSummary(value: unknown): TaskSkillDetailResponse["v
     workspaceId: readString(record, "workspaceId"),
     taskSkillId: readString(record, "taskSkillId"),
     version: readNumber(record, "version"),
-    definition: readRecord(readProperty(record, "definition"), "task skill definition"),
+    definition: readTaskSkillDefinition(readProperty(record, "definition")),
     createdByUserId: readString(record, "createdByUserId"),
     createdAt: readString(record, "createdAt"),
   };
@@ -1379,12 +1386,23 @@ function readConfirmationRequestDetail(value: unknown): ConfirmationRequestDetai
 
 function readTaskComment(value: unknown): TaskCommentResponse {
   const record = readRecord(value, "task comment");
+  const parentCommentId = readOptionalNullableString(record, "parentCommentId");
+  const agentRunId = readOptionalNullableString(record, "agentRunId");
+  if (parentCommentId === undefined) {
+    throw new Error("Task comment parentCommentId is missing.");
+  }
+  if (agentRunId === undefined) {
+    throw new Error("Task comment agentRunId is missing.");
+  }
 
   return {
     id: readString(record, "id"),
     workspaceId: readString(record, "workspaceId"),
     taskId: readString(record, "taskId"),
     authorUserId: readString(record, "authorUserId"),
+    agentRunId,
+    parentCommentId,
+    mentionedUserIds: readArray(record, "mentionedUserIds").map(readStringValue),
     body: readString(record, "body"),
     createdAt: readString(record, "createdAt"),
     updatedAt: readString(record, "updatedAt"),
@@ -1459,6 +1477,8 @@ function readProjectDetail(value: unknown): ProjectDetailResponse {
   const project: ProjectDetailResponse = {
     id: readString(record, "id"),
     workspaceId: readString(record, "workspaceId"),
+    key: readString(record, "key"),
+    slug: readString(record, "slug"),
     title: readString(record, "title"),
     createdByUserId: readString(record, "createdByUserId"),
     createdAt: readString(record, "createdAt"),
@@ -1493,6 +1513,8 @@ function readProjectSummary(value: unknown): ProjectSummaryResponse {
   const project: ProjectSummaryResponse = {
     id: readString(record, "id"),
     workspaceId: readString(record, "workspaceId"),
+    key: readString(record, "key"),
+    slug: readString(record, "slug"),
     title: readString(record, "title"),
     createdByUserId: readString(record, "createdByUserId"),
     createdAt: readString(record, "createdAt"),
@@ -1562,9 +1584,42 @@ function readTaskSkillApplyPreviewSubtask(value: unknown): TaskSkillApplyPreview
     throw new Error("Task skill apply preview subtask source is invalid.");
   }
 
-  return {
+  const parsed: TaskSkillApplyPreviewSubtaskResponse = {
     title: readString(record, "title"),
+    labels: readArray(record, "labels").map(readStringValue),
     source,
+  };
+  const description = readOptionalNullableString(record, "description");
+  const assigneeUserId = readOptionalNullableString(record, "assigneeUserId");
+
+  if (description !== undefined) parsed.description = description;
+  if (assigneeUserId !== undefined) parsed.assigneeUserId = assigneeUserId;
+  return parsed;
+}
+
+function readTaskSkillDefinition(
+  value: unknown,
+): TaskSkillDetailResponse["versions"][number]["definition"] {
+  const record = readRecord(value, "task skill definition");
+
+  return {
+    subtasks: readArray(record, "subtasks").map((subtaskValue) => {
+      const subtask = readRecord(subtaskValue, "task skill definition subtask");
+      const parsed: TaskSkillDetailResponse["versions"][number]["definition"]["subtasks"][number] =
+        {
+          title: readString(subtask, "title"),
+        };
+      const description = readOptionalNullableString(subtask, "description");
+      const assigneeUserId = readOptionalNullableString(subtask, "assigneeUserId");
+      const labelsValue = readProperty(subtask, "labels");
+
+      if (description !== undefined) parsed.description = description;
+      if (assigneeUserId !== undefined) parsed.assigneeUserId = assigneeUserId;
+      if (labelsValue !== undefined) {
+        parsed.labels = readArray(subtask, "labels").map(readStringValue);
+      }
+      return parsed;
+    }),
   };
 }
 
@@ -1574,6 +1629,7 @@ function readTaskDetail(value: unknown): TaskDetailResponse {
     id: readString(record, "id"),
     workspaceId: readString(record, "workspaceId"),
     projectId: readString(record, "projectId"),
+    number: readNumber(record, "number"),
     title: readString(record, "title"),
     createdByUserId: readString(record, "createdByUserId"),
     position: readString(record, "position"),

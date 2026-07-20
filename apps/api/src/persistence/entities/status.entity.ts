@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   Column,
   CreateDateColumn,
@@ -10,14 +11,17 @@ import {
 import type { StatusRecord } from "../types/core-persistence.types.js";
 
 @Entity({ name: "statuses" })
-@Unique("uq_statuses_workspace_id_name", ["workspaceId", "name"])
-@Index("idx_statuses_workspace_id", ["workspaceId"])
+@Unique("uq_statuses_project_id_name", ["projectId", "name"])
+@Index("idx_statuses_workspace_id_project_id", ["workspaceId", "projectId"])
 export class StatusEntity implements StatusRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";
+
+  @Column({ name: "project_id", type: "uuid" })
+  projectId = "";
 
   @Column({ type: "text" })
   name = "";
@@ -32,8 +36,8 @@ export class StatusEntity implements StatusRecord {
   isDone = false;
 
   @CreateDateColumn({ name: "created_at", type: "timestamptz" })
-  createdAt = new Date(0);
+  createdAt = new Date();
 
   @UpdateDateColumn({ name: "updated_at", type: "timestamptz" })
-  updatedAt = new Date(0);
+  updatedAt = new Date();
 }

@@ -67,6 +67,7 @@ function task(input: Pick<TaskSummary, "id" | "parentTaskId" | "statusId">): Tas
     id: input.id,
     workspaceId,
     projectId,
+    number: 1,
     parentTaskId: input.parentTaskId,
     title: "Task",
     description: null,

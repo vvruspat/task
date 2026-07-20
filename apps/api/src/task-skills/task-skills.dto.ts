@@ -10,7 +10,9 @@ import type {
   TaskSkillApplyPreviewSubtask,
   TaskSkillApplyPreviewSubtaskSource,
   TaskSkillApplyResult,
+  TaskSkillDefinition,
   TaskSkillDetail,
+  TaskSkillSubtaskDefinition,
   TaskSkillSummary,
   TaskSkillVersionSummary,
   UpdateTaskSkillDefinitionInput,
@@ -18,6 +20,25 @@ import type {
 } from "./task-skills.contracts.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export class TaskSkillSubtaskDefinitionDto implements TaskSkillSubtaskDefinition {
+  @ApiProperty({ example: "Record vocals", minLength: 1 })
+  readonly title: string = "";
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
+
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
+  readonly assigneeUserId?: string | null;
+
+  @ApiPropertyOptional({ isArray: true, type: String })
+  readonly labels?: string[];
+}
+
+export class TaskSkillDefinitionDto implements TaskSkillDefinition {
+  @ApiProperty({ isArray: true, type: TaskSkillSubtaskDefinitionDto })
+  readonly subtasks: TaskSkillSubtaskDefinitionDto[] = [];
+}
 
 export class CreateTaskSkillDto implements CreateTaskSkillInput {
   @ApiProperty({ example: "Song", minLength: 1 })
@@ -29,8 +50,8 @@ export class CreateTaskSkillDto implements CreateTaskSkillInput {
   @ApiPropertyOptional({ isArray: true, type: String })
   readonly aliases?: string[];
 
-  @ApiProperty({ additionalProperties: true, type: "object" })
-  readonly definition: Record<string, unknown> = {};
+  @ApiProperty({ type: TaskSkillDefinitionDto })
+  readonly definition: TaskSkillDefinitionDto = new TaskSkillDefinitionDto();
 }
 
 export class ParseCreateTaskSkillBodyPipe implements PipeTransform<unknown, CreateTaskSkillInput> {
@@ -76,8 +97,8 @@ export class ParseUpdateTaskSkillMetadataBodyPipe
 }
 
 export class UpdateTaskSkillDefinitionDto implements UpdateTaskSkillDefinitionInput {
-  @ApiProperty({ additionalProperties: true, type: "object" })
-  readonly definition: Record<string, unknown> = {};
+  @ApiProperty({ type: TaskSkillDefinitionDto })
+  readonly definition: TaskSkillDefinitionDto = new TaskSkillDefinitionDto();
 }
 
 export class ParseUpdateTaskSkillDefinitionBodyPipe
@@ -119,11 +140,23 @@ export class TaskSkillApplyPreviewSubtaskDto implements TaskSkillApplyPreviewSub
   @ApiProperty({ example: "Record vocals" })
   readonly title: string;
 
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description: string | null;
+
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
+  readonly assigneeUserId: string | null;
+
+  @ApiProperty({ isArray: true, type: String })
+  readonly labels: string[];
+
   @ApiProperty({ enum: ["skill", "added"] })
   readonly source: TaskSkillApplyPreviewSubtaskSource;
 
   constructor(subtask: TaskSkillApplyPreviewSubtask) {
     this.title = subtask.title;
+    this.description = subtask.description;
+    this.assigneeUserId = subtask.assigneeUserId;
+    this.labels = subtask.labels;
     this.source = subtask.source;
   }
 }
@@ -459,7 +492,7 @@ function readOptionalPreviewOverrides(
 function readRequiredDefinition(
   value: Record<string, unknown>,
   propertyName: string,
-): Record<string, unknown> {
+): TaskSkillDefinition {
   const propertyValue = value[propertyName];
 
   if (!isUnknownRecord(propertyValue)) {
@@ -472,18 +505,38 @@ function readRequiredDefinition(
     throw new BadRequestException("Task skill definition.subtasks must be a non-empty array.");
   }
 
+  const parsedSubtasks: TaskSkillSubtaskDefinition[] = [];
+
   for (const subtask of subtasks) {
     if (!isUnknownRecord(subtask)) {
       throw new BadRequestException("Task skill definition.subtasks must contain objects.");
     }
 
-    const title = readUnknownProperty(subtask, "title");
+    const title = readRequiredNonEmptyString(subtask, "title");
+    const description = readOptionalNullableString(subtask, "description");
+    const assigneeUserId = readOptionalNullableUuid(subtask, "assigneeUserId");
+    const labels = readOptionalStringArray(subtask, "labels");
+    const parsedSubtask: TaskSkillSubtaskDefinition = { title };
 
-    if (typeof title !== "string" || title.trim().length === 0) {
-      throw new BadRequestException("Task skill definition.subtasks titles must not be empty.");
-    }
+    if (description !== undefined) parsedSubtask.description = description;
+    if (assigneeUserId !== undefined) parsedSubtask.assigneeUserId = assigneeUserId;
+    if (labels !== undefined) parsedSubtask.labels = labels;
+    parsedSubtasks.push(parsedSubtask);
   }
 
+  return { subtasks: parsedSubtasks };
+}
+
+function readOptionalNullableUuid(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const propertyValue = value[propertyName];
+
+  if (propertyValue === undefined || propertyValue === null) return propertyValue;
+  if (typeof propertyValue !== "string" || !uuidV4Pattern.test(propertyValue)) {
+    throw new BadRequestException(`Task skill ${propertyName} must be a UUID v4 string or null.`);
+  }
   return propertyValue;
 }
 
@@ -504,8 +557,8 @@ export class TaskSkillVersionSummaryDto implements TaskSkillVersionSummary {
   @ApiProperty({ example: 1 })
   readonly version: number;
 
-  @ApiProperty({ additionalProperties: true, type: "object" })
-  readonly definition: Record<string, unknown>;
+  @ApiProperty({ type: TaskSkillDefinitionDto })
+  readonly definition: TaskSkillDefinition;
 
   @ApiProperty({ format: "uuid" })
   readonly createdByUserId: string;

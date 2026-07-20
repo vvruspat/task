@@ -28,10 +28,13 @@ const commentId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const timestamp = "2026-01-01T00:00:00.000Z";
 
 const taskComment: TaskCommentResponse = {
+  agentRunId: null,
   id: commentId,
   workspaceId,
   taskId,
   authorUserId: userId,
+  parentCommentId: null,
+  mentionedUserIds: [],
   body: "Bass take is ready for review.",
   createdAt: timestamp,
   updatedAt: timestamp,
@@ -52,6 +55,8 @@ test("parseCommentCreateToolInput validates and normalizes comment create payloa
       taskId,
       userId,
       body: "Bass take is ready for review.",
+      parentCommentId: null,
+      mentionedUserIds: [],
     },
   );
 
@@ -122,6 +127,8 @@ test("comment create handler forwards comment payloads to the backend client", a
       userId,
       body: {
         body: "Bass take is ready for review.",
+        parentCommentId: null,
+        mentionedUserIds: [],
       },
     },
   ]);

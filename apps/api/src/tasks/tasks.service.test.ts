@@ -43,6 +43,7 @@ const taskSummary: TaskSummary = {
   id: taskId,
   workspaceId,
   projectId,
+  number: 1,
   parentTaskId: null,
   title: "Record bass",
   description: null,
@@ -78,6 +79,19 @@ test("TasksService returns one visible task DTO", async () => {
   assert.ok(response instanceof TaskDetailDto);
   assert.equal(response.id, taskId);
   assert.equal(response.projectId, projectId);
+});
+
+test("TasksService returns one issue by project key and task number", async () => {
+  const service = new TasksService(createReadStore({ task: taskSummary }));
+
+  const response = await service.getTaskByIdentifier(
+    workspaceId,
+    { projectKey: "AR", taskNumber: 1 },
+    userId,
+  );
+
+  assert.ok(response instanceof TaskDetailDto);
+  assert.equal(response.number, 1);
 });
 
 test("TasksService maps a paginated task table", async () => {
@@ -467,6 +481,34 @@ test("TasksService rejects parent tasks outside the project", async () => {
   );
 });
 
+test("TasksService rejects invalid assignees during task creation", async () => {
+  const service = new TasksService(
+    createReadStore({ createResult: { status: "invalid_assignee" } }),
+  );
+
+  await assert.rejects(
+    () =>
+      service.createTask(workspaceId, projectId, userId, {
+        assigneeUserId,
+        title: "Assigned task",
+      }),
+    BadRequestException,
+  );
+});
+
+test("TasksService rejects invalid statuses during task creation", async () => {
+  const service = new TasksService(createReadStore({ createResult: { status: "invalid_status" } }));
+
+  await assert.rejects(
+    () =>
+      service.createTask(workspaceId, projectId, userId, {
+        statusId,
+        title: "Task with invalid status",
+      }),
+    BadRequestException,
+  );
+});
+
 test("TasksService rejects invalid parent tasks during moves", async () => {
   const service = new TasksService(
     createReadStore({ moveResult: { status: "invalid_parent_task" } }),
@@ -504,6 +546,8 @@ function createReadStore(options: {
         ? { items: [], page: 1, pageSize: 50, total: 0 }
         : options.tablePage,
     getForProject: async (): Promise<TaskDetail | null> =>
+      options.task === undefined ? null : options.task,
+    getByIdentifierForWorkspace: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },

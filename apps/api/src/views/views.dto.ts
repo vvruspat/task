@@ -22,8 +22,7 @@ import {
   savedViewOrderings,
 } from "./views.contracts.js";
 
-const uuidV4Pattern =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 export class SavedViewFilterDto implements SavedViewFilter {
@@ -76,9 +75,7 @@ export class SavedViewSettingsDto implements SavedViewSettings {
     this.showSubtasks = settings.showSubtasks;
     this.showEmptyGroups = settings.showEmptyGroups;
     this.displayProperties = settings.displayProperties;
-    this.filters = settings.filters.map(
-      (filter) => new SavedViewFilterDto(filter),
-    );
+    this.filters = settings.filters.map((filter) => new SavedViewFilterDto(filter));
   }
 }
 
@@ -96,9 +93,7 @@ export class CreateSavedViewDto implements CreateSavedViewInput {
   readonly layout: SavedViewLayout = "list";
 
   @ApiProperty({ type: SavedViewSettingsDto })
-  readonly settings: SavedViewSettings = new SavedViewSettingsDto(
-    defaultSavedViewSettings,
-  );
+  readonly settings: SavedViewSettings = new SavedViewSettingsDto(defaultSavedViewSettings);
 }
 
 export class UpdateSavedViewDto implements UpdateSavedViewInput {
@@ -125,6 +120,8 @@ export class SavedViewDto implements SavedView {
   readonly workspaceId: string;
   @ApiProperty({ format: "uuid" })
   readonly userId: string;
+  @ApiProperty({ example: "current-sprint" })
+  readonly slug: string;
   @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
   readonly projectId: string | null;
   @ApiProperty()
@@ -144,6 +141,7 @@ export class SavedViewDto implements SavedView {
     this.id = view.id;
     this.workspaceId = view.workspaceId;
     this.userId = view.userId;
+    this.slug = view.slug;
     this.projectId = view.projectId;
     this.name = view.name;
     this.description = view.description;
@@ -154,10 +152,7 @@ export class SavedViewDto implements SavedView {
   }
 }
 
-export class ParseCreateSavedViewBodyPipe implements PipeTransform<
-  unknown,
-  CreateSavedViewInput
-> {
+export class ParseCreateSavedViewBodyPipe implements PipeTransform<unknown, CreateSavedViewInput> {
   transform(value: unknown): CreateSavedViewInput {
     const record = readRecord(value, "View payload must be an object.");
     return {
@@ -170,26 +165,19 @@ export class ParseCreateSavedViewBodyPipe implements PipeTransform<
   }
 }
 
-export class ParseUpdateSavedViewBodyPipe implements PipeTransform<
-  unknown,
-  UpdateSavedViewInput
-> {
+export class ParseUpdateSavedViewBodyPipe implements PipeTransform<unknown, UpdateSavedViewInput> {
   transform(value: unknown): UpdateSavedViewInput {
     const record = readRecord(value, "View payload must be an object.");
     const input: UpdateSavedViewInput = {};
     if (record["name"] !== undefined) input.name = readName(record["name"]);
     if (record["description"] !== undefined)
       input.description = readNullableText(record["description"]);
-    if (record["projectId"] !== undefined)
-      input.projectId = readNullableUuid(record["projectId"]);
+    if (record["projectId"] !== undefined) input.projectId = readNullableUuid(record["projectId"]);
     if (record["layout"] !== undefined)
       input.layout = readEnum(record["layout"], savedViewLayouts, "layout");
-    if (record["settings"] !== undefined)
-      input.settings = parseSettings(record["settings"]);
+    if (record["settings"] !== undefined) input.settings = parseSettings(record["settings"]);
     if (Object.keys(input).length === 0) {
-      throw new BadRequestException(
-        "View update payload must include at least one field.",
-      );
+      throw new BadRequestException("View update payload must include at least one field.");
     }
     return input;
   }
@@ -219,21 +207,12 @@ function parseSettings(value: unknown): SavedViewSettings {
     throw new BadRequestException("View filters must be an array.");
   }
   const filters = (filtersValue ?? []).map(parseFilter);
-  if (filters.length > 20)
-    throw new BadRequestException("View filters cannot exceed 20 items.");
+  if (filters.length > 20) throw new BadRequestException("View filters cannot exceed 20 items.");
   return {
     grouping: readEnum(record["grouping"], savedViewGroupings, "grouping"),
-    subGrouping: readEnum(
-      record["subGrouping"],
-      savedViewGroupings,
-      "subGrouping",
-    ),
+    subGrouping: readEnum(record["subGrouping"], savedViewGroupings, "subGrouping"),
     ordering: readEnum(record["ordering"], savedViewOrderings, "ordering"),
-    orderDirection: readEnum(
-      record["orderDirection"],
-      ["asc", "desc"] as const,
-      "orderDirection",
-    ),
+    orderDirection: readEnum(record["orderDirection"], ["asc", "desc"] as const, "orderDirection"),
     showSubtasks: readBoolean(record["showSubtasks"], "showSubtasks"),
     showEmptyGroups: readBoolean(record["showEmptyGroups"], "showEmptyGroups"),
     displayProperties: [...new Set(displayProperties)],
@@ -243,31 +222,16 @@ function parseSettings(value: unknown): SavedViewSettings {
 
 function parseFilter(value: unknown): SavedViewFilter {
   const record = readRecord(value, "View filter must be an object.");
-  const field = readEnum(
-    record["field"],
-    savedViewFilterFields,
-    "filter field",
-  );
-  const operator = readEnum(
-    record["operator"],
-    savedViewFilterOperators,
-    "filter operator",
-  );
+  const field = readEnum(record["field"], savedViewFilterFields, "filter field");
+  const operator = readEnum(record["operator"], savedViewFilterOperators, "filter operator");
   const rawValue = record["value"];
 
-  if (["status", "assignee", "creator", "project"].includes(field)) {
+  if (["status", "assignee", "creator", "project", "template"].includes(field)) {
     if (operator !== "is" && operator !== "is_not") {
-      throw new BadRequestException(
-        `View ${field} filter has an unsupported operator.`,
-      );
+      throw new BadRequestException(`View ${field} filter has an unsupported operator.`);
     }
-    if (
-      rawValue !== "none" &&
-      (typeof rawValue !== "string" || !uuidV4Pattern.test(rawValue))
-    ) {
-      throw new BadRequestException(
-        `View ${field} filter value must be a UUID v4 or none.`,
-      );
+    if (rawValue !== "none" && (typeof rawValue !== "string" || !uuidV4Pattern.test(rawValue))) {
+      throw new BadRequestException(`View ${field} filter value must be a UUID v4 or none.`);
     }
     return { field, operator, value: rawValue };
   }
@@ -281,9 +245,7 @@ function parseFilter(value: unknown): SavedViewFilter {
       typeof rawValue !== "string" ||
       !datePattern.test(rawValue)
     ) {
-      throw new BadRequestException(
-        "View due date filter must use before/after with a date.",
-      );
+      throw new BadRequestException("View due date filter must use before/after with a date.");
     }
     return { field, operator, value: rawValue };
   }
@@ -294,9 +256,7 @@ function parseFilter(value: unknown): SavedViewFilter {
     rawValue.trim().length === 0 ||
     rawValue.trim().length > 200
   ) {
-    throw new BadRequestException(
-      "View content filter must contain 1 to 200 characters.",
-    );
+    throw new BadRequestException("View content filter must contain 1 to 200 characters.");
   }
   return { field, operator, value: rawValue.trim() };
 }
@@ -336,8 +296,7 @@ function readNullableUuid(value: unknown): string | null {
 }
 
 function readBoolean(value: unknown, field: string): boolean {
-  if (typeof value !== "boolean")
-    throw new BadRequestException(`View ${field} must be a boolean.`);
+  if (typeof value !== "boolean") throw new BadRequestException(`View ${field} must be a boolean.`);
   return value;
 }
 
@@ -347,9 +306,7 @@ function readEnum<TValue extends string>(
   field: string,
 ): TValue {
   const matchingValue =
-    typeof value === "string"
-      ? allowed.find((item) => item === value)
-      : undefined;
+    typeof value === "string" ? allowed.find((item) => item === value) : undefined;
   if (matchingValue === undefined) {
     throw new BadRequestException(`View ${field} has an unsupported value.`);
   }

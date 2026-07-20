@@ -79,6 +79,21 @@ export class ProjectsController {
     return this.projectsService.archiveProject(workspaceId, projectId, userId);
   }
 
+  @Delete(":projectId/permanent")
+  @ApiOperation({ summary: "Permanently delete a project and all related operational data" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "projectId" })
+  @ApiOkResponse({ type: ProjectDetailDto })
+  @ApiForbiddenResponse({ description: "Only workspace owners and admins can delete projects." })
+  @ApiNotFoundResponse({ description: "Workspace or project was not found." })
+  deleteProject(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("projectId", uuidV4Pipe) projectId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<ProjectDetailDto> {
+    return this.projectsService.deleteProject(workspaceId, projectId, userId);
+  }
+
   @Patch(":projectId")
   @ApiOperation({ summary: "Update one active project in a visible workspace" })
   @ApiParam({ format: "uuid", name: "workspaceId" })

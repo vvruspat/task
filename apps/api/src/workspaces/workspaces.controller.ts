@@ -13,9 +13,14 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import type { UpdateWorkspaceMemberRoleInput } from "./workspaces.contracts.js";
+import type {
+  UpdateWorkspaceInput,
+  UpdateWorkspaceMemberRoleInput,
+} from "./workspaces.contracts.js";
 import {
+  ParseUpdateWorkspaceBodyPipe,
   ParseUpdateWorkspaceMemberRoleBodyPipe,
+  UpdateWorkspaceDto,
   UpdateWorkspaceMemberRoleDto,
   WorkspaceDetailDto,
   WorkspaceMemberDto,
@@ -49,6 +54,22 @@ export class WorkspacesController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<WorkspaceDetailDto> {
     return this.workspacesService.getWorkspace(workspaceId, userId);
+  }
+
+  @Patch(":workspaceId")
+  @ApiOperation({ summary: "Update one workspace" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiBody({ type: UpdateWorkspaceDto })
+  @ApiOkResponse({ type: WorkspaceDetailDto })
+  @ApiBadRequestResponse({ description: "Workspace payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot update this workspace." })
+  @ApiNotFoundResponse({ description: "Workspace was not found." })
+  updateWorkspace(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateWorkspaceBodyPipe()) input: UpdateWorkspaceInput,
+  ): Promise<WorkspaceDetailDto> {
+    return this.workspacesService.updateWorkspace(workspaceId, userId, input);
   }
 
   @Get(":workspaceId/members")

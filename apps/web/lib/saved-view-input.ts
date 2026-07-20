@@ -46,7 +46,7 @@ function isName(value: unknown): boolean {
   return typeof value === "string" && value.trim().length > 0;
 }
 function isLayout(value: unknown): boolean {
-  return value === "list" || value === "board";
+  return value === "list" || value === "board" || value === "matrix";
 }
 function isGrouping(value: unknown): boolean {
   return value === "none" || value === "status" || value === "project" || value === "parent_task";

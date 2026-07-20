@@ -74,6 +74,24 @@ test("createTaskApiClient exposes Settings and Telegram link endpoints with trus
   assert.equal(fetcher.calls[3]?.init.body, JSON.stringify({ initData: "query=value" }));
 });
 
+test("createTaskApiClient patches workspace Markdown descriptions", async () => {
+  const updated = { ...workspaceDetailRecord(), description: "## Studio notes" };
+  const fetcher = new RecordingFetch(single(updated));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(
+    await client.updateWorkspace({ body: { description: "## Studio notes" }, workspaceId }),
+    updated,
+  );
+  assert.equal(fetcher.calls[0]?.url, `https://task.example/workspaces/${workspaceId}`);
+  assert.equal(fetcher.calls[0]?.init.method, "PATCH");
+  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify({ description: "## Studio notes" }));
+});
+
 test("createTaskApiClient posts project creation payloads with trusted user context", async () => {
   const fetcher = new RecordingFetch(single(projectSummary()));
   const client = createTaskApiClient({
@@ -118,6 +136,21 @@ test("createTaskApiClient deletes projects with trusted user context", async () 
   assert.equal(fetcher.calls[0]?.init.headers["content-type"], undefined);
   assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
   assert.equal(fetcher.calls[0]?.init.body, undefined);
+});
+
+test("createTaskApiClient permanently deletes a project", async () => {
+  const fetcher = new RecordingFetch(single(projectSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  assert.deepEqual(await client.deleteProject({ projectId, workspaceId }), projectSummary());
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/permanent`,
+  );
+  assert.equal(fetcher.calls[0]?.init.method, "DELETE");
 });
 
 test("createTaskApiClient patches project updates with trusted user context", async () => {
@@ -338,6 +371,20 @@ test("createTaskApiClient reads task detail and activity with trusted user conte
   assert.equal(fetcher.calls[1]?.init.method, "GET");
 });
 
+test("createTaskApiClient resolves issues by human-readable identifier", async () => {
+  const fetcher = new RecordingFetch(single(taskSummary()));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.getIssue({ identifier: "AR-1", workspaceId }), taskSummary());
+  assert.equal(fetcher.calls[0]?.url, `https://task.example/workspaces/${workspaceId}/issues/AR-1`);
+  assert.equal(fetcher.calls[0]?.init.method, "GET");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+});
+
 test("createTaskApiClient provides all task detail mutations", async () => {
   const fetcher = new RecordingFetch(
     sequence([[taskSummary()], taskSummary(), taskSummary(), taskSummary(), taskSummary()]),
@@ -534,12 +581,18 @@ test("createTaskApiClient validates supported list responses", async () => {
 
   assert.deepEqual(await client.listProjects({ workspaceId }), [projectSummary()]);
   assert.deepEqual(await client.listTaskSkills({ workspaceId }), [taskSkillSummary()]);
-  assert.deepEqual(await client.listStatuses({ workspaceId }), [workspaceStatus()]);
+  assert.deepEqual(await client.listStatuses({ workspaceId, projectId }), [workspaceStatus()]);
 });
 
 test("createTaskApiClient manages workspace statuses and member roles", async () => {
   const fetcher = new RecordingFetch(
-    sequence([workspaceStatus(), workspaceStatus(), workspaceStatus(), workspaceMember()]),
+    sequence([
+      workspaceStatus(),
+      workspaceStatus(),
+      workspaceStatus(),
+      [workspaceStatus()],
+      workspaceMember(),
+    ]),
   );
   const client = createTaskApiClient({
     baseUrl: "https://task.example",
@@ -551,26 +604,41 @@ test("createTaskApiClient manages workspace statuses and member roles", async ()
 
   await client.createWorkspaceStatus({
     body: { color: "#3b82f6", name: "In progress", position: "1000" },
+    projectId,
     workspaceId,
   });
-  await client.updateWorkspaceStatus({ body: { isDone: true }, statusId, workspaceId });
-  await client.deleteWorkspaceStatus({ statusId, workspaceId });
+  await client.updateWorkspaceStatus({ body: { isDone: true }, projectId, statusId, workspaceId });
+  await client.deleteWorkspaceStatus({ projectId, statusId, workspaceId });
+  await client.reorderWorkspaceStatuses({
+    body: { statusIds: [statusId] },
+    projectId,
+    workspaceId,
+  });
   await client.updateWorkspaceMemberRole({ body: { role: "guest" }, memberId, workspaceId });
 
   assert.deepEqual(
     fetcher.calls.map((call) => [call.url, call.init.method, call.init.body]),
     [
       [
-        `https://task.example/workspaces/${workspaceId}/statuses`,
+        `https://task.example/workspaces/${workspaceId}/projects/${projectId}/statuses`,
         "POST",
         JSON.stringify({ color: "#3b82f6", name: "In progress", position: "1000" }),
       ],
       [
-        `https://task.example/workspaces/${workspaceId}/statuses/${statusId}`,
+        `https://task.example/workspaces/${workspaceId}/projects/${projectId}/statuses/${statusId}`,
         "PATCH",
         JSON.stringify({ isDone: true }),
       ],
-      [`https://task.example/workspaces/${workspaceId}/statuses/${statusId}`, "DELETE", undefined],
+      [
+        `https://task.example/workspaces/${workspaceId}/projects/${projectId}/statuses/${statusId}`,
+        "DELETE",
+        undefined,
+      ],
+      [
+        `https://task.example/workspaces/${workspaceId}/projects/${projectId}/statuses/reorder`,
+        "PATCH",
+        JSON.stringify({ statusIds: [statusId] }),
+      ],
       [
         `https://task.example/workspaces/${workspaceId}/members/${memberId}/role`,
         "PATCH",
@@ -599,10 +667,13 @@ test("createTaskApiClient exposes task skill operations with typed request paths
     trustedUserId,
   });
   const taskSkillId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
-  const createBody = { definition: { subtasks: ["Record vocals"] }, name: "Song" };
+  const createBody = {
+    definition: { subtasks: [{ title: "Record vocals" }] },
+    name: "Song",
+  };
   const cloneBody = { name: "Song copy" };
   const metadataBody = { aliases: ["track"], description: "Song workflow", name: "Song" };
-  const definitionBody = { definition: { subtasks: ["Mix vocals"] } };
+  const definitionBody = { definition: { subtasks: [{ title: "Mix vocals" }] } };
   const applyBody = {
     projectId,
     rootTaskTitle: "Intro",
@@ -1163,10 +1234,23 @@ function workspaceMember(): unknown {
 }
 
 function workspaceDetail(): unknown {
+  return workspaceDetailRecord();
+}
+
+function workspaceDetailRecord(): {
+  createdAt: string;
+  description: string | null;
+  id: string;
+  members: unknown[];
+  name: string;
+  slug: string;
+  updatedAt: string;
+} {
   return {
     id: workspaceId,
     name: "Studio",
     slug: "studio",
+    description: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
     members: [workspaceMember()],
@@ -1185,6 +1269,8 @@ function projectSummary(): unknown {
   return {
     id: projectId,
     workspaceId,
+    key: "AR",
+    slug: "album-release",
     title: "Album release",
     description: null,
     status: "active",
@@ -1200,6 +1286,8 @@ function archivedProjectSummary(): unknown {
   return {
     id: projectId,
     workspaceId,
+    key: "AR",
+    slug: "album-release",
     title: "Album release",
     description: null,
     status: "active",
@@ -1340,6 +1428,7 @@ function taskSummary(): Record<string, unknown> {
     id: taskId,
     workspaceId,
     projectId,
+    number: 1,
     parentTaskId: null,
     title: "Intro",
     description: null,
@@ -1424,6 +1513,7 @@ function workspaceStatus(): unknown {
   return {
     id: "ffffffff-ffff-4fff-8fff-ffffffffffff",
     workspaceId,
+    projectId,
     name: "In progress",
     color: "#3b82f6",
     position: "1000",
@@ -1435,10 +1525,13 @@ function workspaceStatus(): unknown {
 
 function taskComment(): unknown {
   return {
+    agentRunId: null,
     id: "11111111-1111-4111-8111-111111111111",
     workspaceId,
     taskId,
     authorUserId: trustedUserId,
+    parentCommentId: null,
+    mentionedUserIds: [],
     body: "Bass take is ready.",
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",

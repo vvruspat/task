@@ -1,11 +1,23 @@
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import {
+  mentionsTaskAgent,
+  type TaskCommentAgentMentionHandler,
+} from "./comment-agent-mention.service.js";
 import type { CreateTaskCommentInput } from "./comments.contracts.js";
 import { TaskCommentDto } from "./comments.dto.js";
 import type { TaskCommentsStore } from "./comments.store.js";
 
 @Injectable()
 export class CommentsService {
-  constructor(private readonly commentsStore: TaskCommentsStore) {}
+  constructor(
+    private readonly commentsStore: TaskCommentsStore,
+    private readonly agentMentionHandler?: TaskCommentAgentMentionHandler,
+  ) {}
 
   async listTaskComments(
     workspaceId: string,
@@ -43,6 +55,22 @@ export class CommentsService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot comment on tasks in this workspace.");
+    }
+
+    if (result.status === "invalid_reference") {
+      throw new BadRequestException(
+        "Reply target and mentioned users must belong to this task workspace.",
+      );
+    }
+
+    if (this.agentMentionHandler !== undefined && mentionsTaskAgent(result.comment.body)) {
+      await this.agentMentionHandler.handleMention({
+        comment: result.comment,
+        projectId,
+        taskId,
+        userId,
+        workspaceId,
+      });
     }
 
     return new TaskCommentDto(result.comment);

@@ -2,9 +2,15 @@ import { Injectable, ServiceUnavailableException } from "@nestjs/common";
 import { type DataSource, QueryFailedError } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
-import { StatusEntity, TaskEntity, WorkspaceMemberEntity } from "../persistence/entities/index.js";
+import {
+  ProjectEntity,
+  StatusEntity,
+  TaskEntity,
+  WorkspaceMemberEntity,
+} from "../persistence/entities/index.js";
 import type {
   CreateWorkspaceStatusInput,
+  ReorderWorkspaceStatusesInput,
   UpdateWorkspaceStatusInput,
   WorkspaceStatus,
 } from "./statuses.contracts.js";
@@ -12,9 +18,10 @@ import type {
   StatusesReadStore,
   StatusesWriteStore,
   StatusMutationResult,
+  StatusReorderResult,
 } from "./statuses.store.js";
 
-const statusManagementRoles = new Set(["owner", "admin"]);
+const statusManagementRoles = new Set(["owner", "admin", "member"]);
 
 @Injectable()
 export class TypeOrmStatusesReadStore implements StatusesReadStore, StatusesWriteStore {
@@ -22,37 +29,48 @@ export class TypeOrmStatusesReadStore implements StatusesReadStore, StatusesWrit
 
   constructor(private readonly dataSourceProvider: ApiDataSourceProvider) {}
 
-  async listForWorkspace(workspaceId: string, userId: string): Promise<WorkspaceStatus[] | null> {
+  async listForProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+  ): Promise<WorkspaceStatus[] | null> {
     const dataSource = await this.getInitializedDataSource();
     const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
       workspaceId,
       userId,
     });
 
-    if (membership === null) {
+    const project = await dataSource.getRepository(ProjectEntity).findOneBy({
+      id: projectId,
+      workspaceId,
+    });
+
+    if (membership === null || project === null) {
       return null;
     }
 
     const statuses = await dataSource.getRepository(StatusEntity).find({
-      where: { workspaceId },
+      where: { projectId, workspaceId },
       order: { position: "ASC", name: "ASC" },
     });
 
     return statuses.map((status) => toWorkspaceStatus(status));
   }
 
-  async createForWorkspace(
+  async createForProject(
     workspaceId: string,
+    projectId: string,
     userId: string,
     input: CreateWorkspaceStatusInput,
   ): Promise<StatusMutationResult> {
     const dataSource = await this.getInitializedDataSource();
-    if (!(await this.canManageStatuses(dataSource, workspaceId, userId))) {
+    if (!(await this.canManageStatuses(dataSource, workspaceId, projectId, userId))) {
       return { status: "forbidden" };
     }
 
     const workspaceStatus = dataSource.getRepository(StatusEntity).create({
       workspaceId,
+      projectId,
       name: input.name,
       color: input.color,
       position: input.position,
@@ -71,19 +89,24 @@ export class TypeOrmStatusesReadStore implements StatusesReadStore, StatusesWrit
     return { status: "created", workspaceStatus: toWorkspaceStatus(savedStatus) };
   }
 
-  async updateForWorkspace(
+  async updateForProject(
     workspaceId: string,
+    projectId: string,
     statusId: string,
     userId: string,
     input: UpdateWorkspaceStatusInput,
   ): Promise<StatusMutationResult> {
     const dataSource = await this.getInitializedDataSource();
-    if (!(await this.canManageStatuses(dataSource, workspaceId, userId))) {
+    if (!(await this.canManageStatuses(dataSource, workspaceId, projectId, userId))) {
       return { status: "forbidden" };
     }
 
     const statusRepository = dataSource.getRepository(StatusEntity);
-    const workspaceStatus = await statusRepository.findOneBy({ id: statusId, workspaceId });
+    const workspaceStatus = await statusRepository.findOneBy({
+      id: statusId,
+      projectId,
+      workspaceId,
+    });
     if (workspaceStatus === null) {
       return { status: "status_not_found" };
     }
@@ -105,39 +128,95 @@ export class TypeOrmStatusesReadStore implements StatusesReadStore, StatusesWrit
     return { status: "updated", workspaceStatus: toWorkspaceStatus(savedStatus) };
   }
 
-  async deleteForWorkspace(
+  async deleteForProject(
     workspaceId: string,
+    projectId: string,
     statusId: string,
     userId: string,
   ): Promise<StatusMutationResult> {
     const dataSource = await this.getInitializedDataSource();
-    if (!(await this.canManageStatuses(dataSource, workspaceId, userId))) {
+    if (!(await this.canManageStatuses(dataSource, workspaceId, projectId, userId))) {
       return { status: "forbidden" };
     }
 
     const statusRepository = dataSource.getRepository(StatusEntity);
-    const workspaceStatus = await statusRepository.findOneBy({ id: statusId, workspaceId });
+    const workspaceStatus = await statusRepository.findOneBy({
+      id: statusId,
+      projectId,
+      workspaceId,
+    });
     if (workspaceStatus === null) {
       return { status: "status_not_found" };
     }
 
     await dataSource.transaction(async (manager): Promise<void> => {
-      await manager.getRepository(TaskEntity).update({ statusId, workspaceId }, { statusId: null });
+      await manager
+        .getRepository(TaskEntity)
+        .update({ projectId, statusId, workspaceId }, { statusId: null });
       await manager.getRepository(StatusEntity).remove(workspaceStatus);
     });
     return { status: "updated", workspaceStatus: toWorkspaceStatus(workspaceStatus) };
   }
 
+  async reorderForProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+    input: ReorderWorkspaceStatusesInput,
+  ): Promise<StatusReorderResult> {
+    const dataSource = await this.getInitializedDataSource();
+    if (!(await this.canManageStatuses(dataSource, workspaceId, projectId, userId))) {
+      return { status: "forbidden" };
+    }
+    return dataSource.transaction(async (manager): Promise<StatusReorderResult> => {
+      const repository = manager.getRepository(StatusEntity);
+      const statuses = await repository.find({
+        where: { projectId, workspaceId },
+        order: { position: "ASC", name: "ASC" },
+        lock: { mode: "pessimistic_write" },
+      });
+      const existingIds = new Set(statuses.map((status) => status.id));
+      if (
+        statuses.length !== input.statusIds.length ||
+        input.statusIds.some((statusId) => !existingIds.has(statusId))
+      ) {
+        return { status: "invalid_order" };
+      }
+      const byId = new Map(statuses.map((status) => [status.id, status]));
+      const ordered: StatusEntity[] = [];
+      for (const [index, statusId] of input.statusIds.entries()) {
+        const workspaceStatus = byId.get(statusId);
+        if (workspaceStatus === undefined) return { status: "invalid_order" };
+        workspaceStatus.position = String((index + 1) * 1000);
+        ordered.push(workspaceStatus);
+      }
+      const saved = await repository.save(ordered);
+      const savedById = new Map(saved.map((status) => [status.id, status]));
+      return {
+        status: "reordered",
+        workspaceStatuses: input.statusIds.flatMap((statusId) => {
+          const status = savedById.get(statusId);
+          return status === undefined ? [] : [toWorkspaceStatus(status)];
+        }),
+      };
+    });
+  }
+
   private async canManageStatuses(
     dataSource: DataSource,
     workspaceId: string,
+    projectId: string,
     userId: string,
   ): Promise<boolean> {
     const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
       workspaceId,
       userId,
     });
-    return membership !== null && statusManagementRoles.has(membership.role);
+    if (membership === null || !statusManagementRoles.has(membership.role)) return false;
+    return (
+      (await dataSource.getRepository(ProjectEntity).findOneBy({ id: projectId, workspaceId })) !==
+      null
+    );
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {
@@ -166,6 +245,7 @@ function toWorkspaceStatus(status: StatusEntity): WorkspaceStatus {
   return {
     id: status.id,
     workspaceId: status.workspaceId,
+    projectId: status.projectId,
     name: status.name,
     color: status.color,
     position: status.position,

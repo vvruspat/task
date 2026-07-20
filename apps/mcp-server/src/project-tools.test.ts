@@ -34,6 +34,8 @@ const timestamp = "2026-01-01T00:00:00.000Z";
 const albumProject: ProjectSummaryResponse = {
   id: projectId,
   workspaceId,
+  key: "AR",
+  slug: "album-release",
   title: "Album Release",
   description: null,
   status: "active",
@@ -49,6 +51,8 @@ const projects: ProjectSummaryResponse[] = [
   {
     id: secondProjectId,
     workspaceId,
+    key: "TP",
+    slug: "tour-prep",
     title: "Tour Prep",
     createdByUserId: userId,
     createdAt: timestamp,

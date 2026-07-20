@@ -1,4 +1,5 @@
-import { WorkspaceView } from "../../../components/workspace-view";
-export default function Page() {
-  return <WorkspaceView kind="confirmations" />;
+import { redirect } from "next/navigation";
+
+export default function Page(): never {
+  redirect("/notifications");
 }

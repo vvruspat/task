@@ -67,6 +67,21 @@ export class ProjectsService {
     return new ProjectDetailDto(result.project);
   }
 
+  async deleteProject(
+    workspaceId: string,
+    projectId: string,
+    userId: string,
+  ): Promise<ProjectDetailDto> {
+    const result = await this.readStore.deleteForWorkspace(workspaceId, projectId, userId);
+    if (result.status === "project_not_found")
+      throw new NotFoundException("Project was not found.");
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Only workspace owners and admins can delete projects.");
+    }
+    if (!("project" in result)) throw new NotFoundException("Project was not found.");
+    return new ProjectDetailDto(result.project);
+  }
+
   async updateProject(
     workspaceId: string,
     projectId: string,

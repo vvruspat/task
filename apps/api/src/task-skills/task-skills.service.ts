@@ -222,6 +222,12 @@ export class TaskSkillsService {
       throw new BadRequestException("Task skill definition cannot be applied.");
     }
 
+    if (result.status === "invalid_assignee") {
+      throw new BadRequestException(
+        "Task skill contains an assignee who is not a workspace member.",
+      );
+    }
+
     return new TaskSkillApplyResultDto(result.result);
   }
 }

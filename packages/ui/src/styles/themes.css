@@ -1,1 +1,132 @@
 @import "@radix-ui/themes/styles.css";
+
+.rt-MarkdownContent {
+  color: var(--gray-12);
+  font-size: var(--font-size-2);
+  line-height: var(--line-height-2);
+  overflow-wrap: anywhere;
+}
+
+.rt-MarkdownContent > :first-child {
+  margin-top: 0;
+}
+
+.rt-MarkdownContent > :last-child {
+  margin-bottom: 0;
+}
+
+.rt-MarkdownContent h1,
+.rt-MarkdownContent h2,
+.rt-MarkdownContent h3,
+.rt-MarkdownContent h4 {
+  line-height: 1.25;
+  margin-block: var(--space-4) var(--space-2);
+}
+
+.rt-MarkdownContent p,
+.rt-MarkdownContent ul,
+.rt-MarkdownContent ol,
+.rt-MarkdownContent blockquote,
+.rt-MarkdownContent pre,
+.rt-MarkdownContent table {
+  margin-block: var(--space-2);
+}
+
+.rt-MarkdownContent ul,
+.rt-MarkdownContent ol {
+  padding-left: var(--space-5);
+}
+
+.rt-MarkdownContent blockquote {
+  border-left: 3px solid var(--accent-7);
+  color: var(--gray-11);
+  margin-left: 0;
+  padding-left: var(--space-3);
+}
+
+.rt-MarkdownContent code {
+  background: var(--gray-a3);
+  border-radius: var(--radius-2);
+  font-family: var(--code-font-family);
+  padding: 0.1em 0.3em;
+}
+
+.rt-MarkdownContent pre {
+  background: var(--gray-a3);
+  border-radius: var(--radius-3);
+  overflow: auto;
+  padding: var(--space-3);
+}
+
+.rt-MarkdownContent pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.rt-MarkdownContent table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.rt-MarkdownContent th,
+.rt-MarkdownContent td {
+  border: 1px solid var(--gray-a6);
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.rt-MarkdownContent a {
+  color: var(--accent-11);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.rt-MarkdownEditor {
+  border: 1px solid var(--gray-a7);
+  border-radius: var(--radius-3);
+  overflow: hidden;
+}
+
+.rt-MarkdownEditor:focus-within {
+  box-shadow: 0 0 0 2px var(--accent-a7);
+}
+
+.rt-MarkdownEditorToolbar {
+  align-items: center;
+  background: var(--gray-a2);
+  border-bottom: 1px solid var(--gray-a6);
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2);
+}
+
+.rt-MarkdownEditorToolbar button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-2);
+  color: var(--gray-11);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--font-size-1);
+  font-weight: 600;
+  height: var(--space-5);
+  justify-content: center;
+  min-width: var(--space-5);
+  padding-inline: var(--space-1);
+}
+
+.rt-MarkdownEditorToolbar button:hover {
+  background: var(--gray-a4);
+  color: var(--gray-12);
+}
+
+.rt-MarkdownEditor .rt-TextAreaRoot {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.rt-MarkdownEditor textarea {
+  min-height: 9rem;
+}

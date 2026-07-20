@@ -18,6 +18,9 @@ export class WorkspaceEntity implements WorkspaceRecord {
   @Column({ type: "text", unique: true })
   slug = "";
 
+  @Column({ nullable: true, type: "text" })
+  description: string | null = null;
+
   @CreateDateColumn({ name: "created_at", type: "timestamptz" })
   createdAt = new Date(0);
 

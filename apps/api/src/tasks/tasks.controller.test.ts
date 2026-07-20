@@ -13,7 +13,7 @@ import type {
   UpdateTaskInput,
   UpdateTaskStatusInput,
 } from "./tasks.contracts.js";
-import { TasksController } from "./tasks.controller.js";
+import { IssuesController, TasksController } from "./tasks.controller.js";
 import {
   ParseAddTaskSubtasksBodyPipe,
   ParseBulkUpdateTasksBodyPipe,
@@ -54,6 +54,7 @@ const taskSummary: TaskSummary = {
   id: taskId,
   workspaceId,
   projectId,
+  number: 1,
   parentTaskId: null,
   title: "Record bass",
   description: null,
@@ -75,30 +76,32 @@ test("TasksController uses trusted current user context for task list reads", as
     new TasksService(createReadStore({ tasks: [taskSummary] })),
   );
 
-  const response = await controller.listActiveTasks(
-    workspaceId,
-    projectId,
-    userId,
-  );
+  const response = await controller.listActiveTasks(workspaceId, projectId, userId);
 
   assert.equal(response.length, 1);
   assert.equal(response[0]?.id, taskId);
 });
 
 test("TasksController uses trusted current user context for task detail reads", async () => {
-  const controller = new TasksController(
-    new TasksService(createReadStore({ task: taskSummary })),
-  );
+  const controller = new TasksController(new TasksService(createReadStore({ task: taskSummary })));
 
-  const response = await controller.getTask(
+  const response = await controller.getTask(workspaceId, projectId, taskId, userId);
+
+  assert.equal(response.id, taskId);
+  assert.equal(response.projectId, projectId);
+});
+
+test("IssuesController resolves a human-readable issue identifier", async () => {
+  const controller = new IssuesController(new TasksService(createReadStore({ task: taskSummary })));
+
+  const response = await controller.getIssue(
     workspaceId,
-    projectId,
-    taskId,
+    { projectKey: "AR", taskNumber: 1 },
     userId,
   );
 
   assert.equal(response.id, taskId);
-  assert.equal(response.projectId, projectId);
+  assert.equal(response.number, 1);
 });
 
 test("TasksController uses trusted current user context for task creates", async () => {
@@ -114,12 +117,7 @@ test("TasksController uses trusted current user context for task creates", async
     ),
   );
 
-  const response = await controller.createTask(
-    workspaceId,
-    projectId,
-    userId,
-    input,
-  );
+  const response = await controller.createTask(workspaceId, projectId, userId, input);
 
   assert.equal(response.title, input.title);
   assert.equal(response.createdByUserId, userId);
@@ -145,13 +143,7 @@ test("TasksController uses trusted current user context for subtask creates", as
     ),
   );
 
-  const response = await controller.addTaskSubtasks(
-    workspaceId,
-    projectId,
-    taskId,
-    userId,
-    input,
-  );
+  const response = await controller.addTaskSubtasks(workspaceId, projectId, taskId, userId, input);
 
   assert.equal(response.length, 1);
   assert.equal(response[0]?.id, subtaskId);
@@ -171,13 +163,7 @@ test("TasksController uses trusted current user context for task status updates"
     ),
   );
 
-  const response = await controller.updateTaskStatus(
-    workspaceId,
-    projectId,
-    taskId,
-    userId,
-    input,
-  );
+  const response = await controller.updateTaskStatus(workspaceId, projectId, taskId, userId, input);
 
   assert.equal(response.id, taskId);
   assert.equal(response.statusId, statusId);
@@ -203,13 +189,7 @@ test("TasksController uses trusted current user context for task updates", async
     ),
   );
 
-  const response = await controller.updateTask(
-    workspaceId,
-    projectId,
-    taskId,
-    userId,
-    input,
-  );
+  const response = await controller.updateTask(workspaceId, projectId, taskId, userId, input);
 
   assert.equal(response.id, taskId);
   assert.equal(response.description, input.description);
@@ -233,13 +213,7 @@ test("TasksController uses trusted current user context for task moves", async (
     ),
   );
 
-  const response = await controller.moveTask(
-    workspaceId,
-    projectId,
-    taskId,
-    userId,
-    input,
-  );
+  const response = await controller.moveTask(workspaceId, projectId, taskId, userId, input);
 
   assert.equal(response.id, taskId);
   assert.equal(response.parentTaskId, input.parentTaskId);
@@ -308,12 +282,7 @@ test("TasksController uses trusted current user context for task archives", asyn
     ),
   );
 
-  const response = await controller.archiveTask(
-    workspaceId,
-    projectId,
-    taskId,
-    userId,
-  );
+  const response = await controller.archiveTask(workspaceId, projectId, taskId, userId);
 
   assert.equal(response.id, taskId);
   assert.equal(response.archivedAt?.toISOString(), archivedAt.toISOString());
@@ -325,6 +294,8 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
   assert.deepEqual(
     pipe.transform({
       title: "  Record drums  ",
+      assigneeUserId,
+      statusId,
       description: "",
       parentTaskId: taskId,
       position: "2000",
@@ -333,6 +304,8 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
     }),
     {
       title: "Record drums",
+      assigneeUserId,
+      statusId,
       description: null,
       parentTaskId: taskId,
       position: "2000",
@@ -342,22 +315,15 @@ test("ParseCreateTaskBodyPipe validates and normalizes task create payloads", ()
   );
 
   assert.throws(() => pipe.transform({ title: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", parentTaskId: "bad" }), BadRequestException);
   assert.throws(
-    () => pipe.transform({ title: "Task", parentTaskId: "bad" }),
+    () => pipe.transform({ title: "Task", assigneeUserId: "bad" }),
     BadRequestException,
   );
-  assert.throws(
-    () => pipe.transform({ title: "Task", position: "first" }),
-    BadRequestException,
-  );
-  assert.throws(
-    () => pipe.transform({ title: "Task", dueAt: "tomorrow" }),
-    BadRequestException,
-  );
-  assert.throws(
-    () => pipe.transform({ title: "Task", metadata: [] }),
-    BadRequestException,
-  );
+  assert.throws(() => pipe.transform({ title: "Task", statusId: "bad" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", position: "first" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", dueAt: "tomorrow" }), BadRequestException);
+  assert.throws(() => pipe.transform({ title: "Task", metadata: [] }), BadRequestException);
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
@@ -390,10 +356,7 @@ test("ParseAddTaskSubtasksBodyPipe validates and normalizes subtask payloads", (
   );
 
   assert.throws(() => pipe.transform({ subtasks: [] }), BadRequestException);
-  assert.throws(
-    () => pipe.transform({ subtasks: [{ title: "" }] }),
-    BadRequestException,
-  );
+  assert.throws(() => pipe.transform({ subtasks: [{ title: "" }] }), BadRequestException);
   assert.throws(
     () => pipe.transform({ subtasks: [{ title: "Task", position: "first" }] }),
     BadRequestException,
@@ -438,13 +401,10 @@ test("ParseUpdateTaskBodyPipe validates and normalizes task update payloads", ()
 test("ParseMoveTaskBodyPipe validates task move payloads", () => {
   const pipe = new ParseMoveTaskBodyPipe();
 
-  assert.deepEqual(
-    pipe.transform({ parentTaskId: taskId, position: " 2000 " }),
-    {
-      parentTaskId: taskId,
-      position: "2000",
-    },
-  );
+  assert.deepEqual(pipe.transform({ parentTaskId: taskId, position: " 2000 " }), {
+    parentTaskId: taskId,
+    position: "2000",
+  });
   assert.deepEqual(pipe.transform({ parentTaskId: null, position: "-100.5" }), {
     parentTaskId: null,
     position: "-100.5",
@@ -455,10 +415,7 @@ test("ParseMoveTaskBodyPipe validates task move payloads", () => {
     () => pipe.transform({ parentTaskId: "bad", position: "1000" }),
     BadRequestException,
   );
-  assert.throws(
-    () => pipe.transform({ parentTaskId: taskId, position: "" }),
-    BadRequestException,
-  );
+  assert.throws(() => pipe.transform({ parentTaskId: taskId, position: "" }), BadRequestException);
   assert.throws(
     () => pipe.transform({ parentTaskId: taskId, position: "first" }),
     BadRequestException,
@@ -480,10 +437,7 @@ test("ParseUpdateTaskStatusBodyPipe validates task status payloads", () => {
   assert.throws(() => pipe.transform({ statusId: "" }), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: "bad" }), BadRequestException);
   assert.throws(() => pipe.transform({ statusId: 1 }), BadRequestException);
-  assert.throws(
-    () => pipe.transform({ statusId, position: "last" }),
-    BadRequestException,
-  );
+  assert.throws(() => pipe.transform({ statusId, position: "last" }), BadRequestException);
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
@@ -496,18 +450,9 @@ test("ParseUpdateTaskAssigneeBodyPipe validates task assignee payloads", () => {
   });
 
   assert.throws(() => pipe.transform({}), BadRequestException);
-  assert.throws(
-    () => pipe.transform({ assigneeUserId: "" }),
-    BadRequestException,
-  );
-  assert.throws(
-    () => pipe.transform({ assigneeUserId: "bad" }),
-    BadRequestException,
-  );
-  assert.throws(
-    () => pipe.transform({ assigneeUserId: 1 }),
-    BadRequestException,
-  );
+  assert.throws(() => pipe.transform({ assigneeUserId: "" }), BadRequestException);
+  assert.throws(() => pipe.transform({ assigneeUserId: "bad" }), BadRequestException);
+  assert.throws(() => pipe.transform({ assigneeUserId: 1 }), BadRequestException);
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
@@ -522,10 +467,7 @@ test("ParseUpdateTaskDueDateBodyPipe validates task due date payloads", () => {
 
   assert.throws(() => pipe.transform({}), BadRequestException);
   assert.throws(() => pipe.transform({ dueAt: "" }), BadRequestException);
-  assert.throws(
-    () => pipe.transform({ dueAt: "tomorrow" }),
-    BadRequestException,
-  );
+  assert.throws(() => pipe.transform({ dueAt: "tomorrow" }), BadRequestException);
   assert.throws(() => pipe.transform({ dueAt: 1 }), BadRequestException);
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
@@ -570,10 +512,7 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
       pageSize: 50,
     },
   );
-  assert.throws(
-    () => pipe.transform({ sortBy: "unsafe" }),
-    BadRequestException,
-  );
+  assert.throws(() => pipe.transform({ sortBy: "unsafe" }), BadRequestException);
   assert.throws(
     () => pipe.transform({ statusId, statusFilter: "unassigned" }),
     BadRequestException,
@@ -595,26 +534,14 @@ test("ParseListTaskTableQueryPipe applies table defaults and validates filters",
 
 test("ParseBulkUpdateTasksBodyPipe validates every selected task id and update", () => {
   const pipe = new ParseBulkUpdateTasksBodyPipe();
-  assert.deepEqual(
-    pipe.transform({ taskIds: [taskId], statusId, dueAt: null }),
-    {
-      taskIds: [taskId],
-      statusId,
-      dueAt: null,
-    },
-  );
-  assert.throws(
-    () => pipe.transform({ taskIds: [taskId] }),
-    BadRequestException,
-  );
-  assert.throws(
-    () => pipe.transform({ taskIds: [taskId, taskId], statusId }),
-    BadRequestException,
-  );
-  assert.throws(
-    () => pipe.transform({ taskIds: ["invalid"], statusId }),
-    BadRequestException,
-  );
+  assert.deepEqual(pipe.transform({ taskIds: [taskId], statusId, dueAt: null }), {
+    taskIds: [taskId],
+    statusId,
+    dueAt: null,
+  });
+  assert.throws(() => pipe.transform({ taskIds: [taskId] }), BadRequestException);
+  assert.throws(() => pipe.transform({ taskIds: [taskId, taskId], statusId }), BadRequestException);
+  assert.throws(() => pipe.transform({ taskIds: ["invalid"], statusId }), BadRequestException);
 });
 
 function createReadStore(options: {
@@ -639,6 +566,8 @@ function createReadStore(options: {
         ? { items: [], page: 1, pageSize: 50, total: 0 }
         : options.tablePage,
     getForProject: async (): Promise<TaskDetail | null> =>
+      options.task === undefined ? null : options.task,
+    getByIdentifierForWorkspace: async (): Promise<TaskDetail | null> =>
       options.task === undefined ? null : options.task,
     createForProject: async (): Promise<TaskCreateResult> =>
       options.createResult ?? { status: "project_not_found" },

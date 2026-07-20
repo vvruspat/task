@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, Unique } from "typeorm";
 import type { TaskSkillVersionRecord } from "../types/core-persistence.types.js";
 
@@ -8,7 +9,7 @@ import type { TaskSkillVersionRecord } from "../types/core-persistence.types.js"
 @Index("idx_task_skill_versions_created_by_user_id", ["createdByUserId"])
 export class TaskSkillVersionEntity implements TaskSkillVersionRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";

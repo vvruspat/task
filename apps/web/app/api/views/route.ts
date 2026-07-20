@@ -14,7 +14,9 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     const api = createTaskApiClient({ baseUrl: apiBaseUrl, fetch, trustedUserId });
     const workspaces = await api.listWorkspaces();
-    const workspace = workspaces.at(0);
+    const workspaceId = new URL(request.url).searchParams.get("workspaceId");
+    const workspace =
+      workspaceId === null ? workspaces.at(0) : workspaces.find((item) => item.id === workspaceId);
     if (workspace === undefined)
       return NextResponse.json({ error: "No workspace is visible." }, { status: 404 });
     return NextResponse.json(await api.createSavedView({ workspaceId: workspace.id, body }), {

@@ -21,7 +21,12 @@ export type WorkspaceMember = {
 };
 
 export type WorkspaceDetail = WorkspaceSummary & {
+  description: string | null;
   members: WorkspaceMember[];
+};
+
+export type UpdateWorkspaceInput = {
+  description: string | null;
 };
 
 export type UpdateWorkspaceMemberRoleInput = {

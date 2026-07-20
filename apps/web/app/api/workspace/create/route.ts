@@ -1,5 +1,9 @@
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import {
+  isUnprojectedIssueProject,
+  unprojectedIssueProjectStatus,
+} from "../../../../lib/system-project";
 
 type CreateProjectPayload = {
   description: string;
@@ -8,9 +12,12 @@ type CreateProjectPayload = {
   workspaceId: string;
 };
 type CreateTaskPayload = {
+  assigneeUserId: string | null;
   description: string;
   kind: "task";
-  projectId: string;
+  labels: string[];
+  projectId: string | null;
+  statusId: string | null;
   title: string;
   workspaceId: string;
 };
@@ -40,7 +47,18 @@ function isBasePayload(
 function isCreatePayload(value: unknown): value is CreatePayload {
   if (!isBasePayload(value)) return false;
   if (value.kind === "project" || value.kind === "skill") return true;
-  return value.kind === "task" && "projectId" in value && typeof value.projectId === "string";
+  return (
+    value.kind === "task" &&
+    "assigneeUserId" in value &&
+    (typeof value.assigneeUserId === "string" || value.assigneeUserId === null) &&
+    "labels" in value &&
+    Array.isArray(value.labels) &&
+    value.labels.every((label) => typeof label === "string") &&
+    "projectId" in value &&
+    (typeof value.projectId === "string" || value.projectId === null) &&
+    "statusId" in value &&
+    (typeof value.statusId === "string" || value.statusId === null)
+  );
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -64,22 +82,31 @@ export async function POST(request: Request): Promise<NextResponse> {
         }),
         { status: 201 },
       );
-    if (payload.kind === "task")
+    if (payload.kind === "task") {
+      const projectId =
+        payload.projectId ?? (await getOrCreateUnprojectedIssueProjectId(api, payload.workspaceId));
       return NextResponse.json(
         await api.createTask({
           workspaceId: payload.workspaceId,
-          projectId: payload.projectId,
-          body: { title: payload.title.trim(), description: nullableText(payload.description) },
+          projectId,
+          body: {
+            title: payload.title.trim(),
+            assigneeUserId: payload.assigneeUserId,
+            description: nullableText(payload.description),
+            metadata: { labels: normalizeLabels(payload.labels) },
+            ...(payload.statusId === null ? {} : { statusId: payload.statusId }),
+          },
         }),
         { status: 201 },
       );
+    }
     return NextResponse.json(
       await api.createTaskSkill({
         workspaceId: payload.workspaceId,
         body: {
           name: payload.title.trim(),
           description: nullableText(payload.description),
-          definition: { version: 1, subtasks: [] },
+          definition: { subtasks: [{ title: "Новая подзадача" }] },
         },
       }),
       { status: 201 },
@@ -91,7 +118,35 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 }
+
+async function getOrCreateUnprojectedIssueProjectId(
+  api: ReturnType<typeof createTaskApiClient>,
+  workspaceId: string,
+): Promise<string> {
+  const projects = await api.listProjects({ workspaceId });
+  const existing = projects.find(isUnprojectedIssueProject);
+  if (existing !== undefined) return existing.id;
+  const created = await api.createProject({
+    workspaceId,
+    body: {
+      title: "Без проекта",
+      description: "Системный контейнер для issues без проекта.",
+      status: unprojectedIssueProjectStatus,
+    },
+  });
+  return created.id;
+}
 function nullableText(value: string): string | null {
   const trimmed = value.trim();
   return trimmed.length === 0 ? null : trimmed;
+}
+
+function normalizeLabels(labels: string[]): string[] {
+  const normalized = new Map<string, string>();
+  for (const label of labels) {
+    const trimmed = label.trim();
+    const key = trimmed.toLocaleLowerCase("ru");
+    if (trimmed.length > 0 && !normalized.has(key)) normalized.set(key, trimmed);
+  }
+  return [...normalized.values()];
 }

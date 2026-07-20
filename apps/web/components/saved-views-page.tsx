@@ -1,5 +1,6 @@
 "use client";
 
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
   Badge,
   Button,
@@ -21,27 +22,44 @@ import {
   CalendarDays,
   ChevronRight,
   Columns3,
+  ExternalLink,
   Funnel,
+  Grid3X3,
   Layers3,
   List,
   MoreHorizontal,
-  Plus,
   Search,
   Settings2,
   SlidersHorizontal,
   Trash2,
   UserRound,
+  Workflow,
   X,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { DragEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { issueIdentifier } from "../lib/issue-url";
 import {
-  notifyWorkspaceDataChanged,
+  logicalStatusKeyForTask,
+  mergeLogicalStatuses,
+  normalizeStatusFilterValue,
+  noStatusKey,
+  resolveProjectStatusId,
+} from "../lib/logical-statuses";
+import { changeSavedViewLayout, type SavedViewDraft as ViewDraft } from "../lib/saved-view-draft";
+import { isTaskSummary } from "../lib/task-summary";
+import { buildTemplateMatrix } from "../lib/template-matrix";
+import {
+  updateWorkspaceData,
+  updateWorkspaceTask,
   useWorkspaceData,
 } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
 import { useWorkspaceStore } from "../lib/workspace-store";
+import { workspaceIssueHref, workspaceViewHref } from "../lib/workspace-url";
+import { TaskDetailsContent } from "./task-details-content";
 
 type ViewSettings = SavedView["settings"];
 type ViewGrouping = ViewSettings["grouping"];
@@ -49,18 +67,18 @@ type DisplayProperty = ViewSettings["displayProperties"][number];
 type ViewFilter = ViewSettings["filters"][number];
 type FilterField = ViewFilter["field"];
 type FilterOperator = ViewFilter["operator"];
-type ViewDraft = Pick<
-  SavedView,
-  "name" | "description" | "projectId" | "layout" | "settings"
->;
-type TaskWithProject = TaskSummary & { projectTitle: string };
+type TaskWithProject = TaskSummary & {
+  projectKey: string;
+  projectTitle: string;
+};
 type TaskGroup = { id: string; title: string; tasks: TaskWithProject[] };
 type TaskBoardOverride = { statusId: string | null; position: string };
 type MoveBoardTask = (
   task: TaskWithProject,
-  targetStatusId: string | null,
+  targetStatusKey: string,
   targetTasks: TaskWithProject[],
 ) => Promise<void>;
+type OpenTaskPreview = (task: TaskWithProject) => void;
 
 const defaultSettings: ViewSettings = {
   grouping: "status",
@@ -114,6 +132,7 @@ const filterFields: ReadonlyArray<{
   { field: "assignee", icon: UserRound, label: "Исполнитель" },
   { field: "creator", icon: UserRound, label: "Создатель" },
   { field: "project", icon: Box, label: "Проект" },
+  { field: "template", icon: Workflow, label: "Шаблон" },
   { field: "due_date", icon: CalendarDays, label: "Даты" },
   { field: "content", icon: Search, label: "Содержимое" },
 ];
@@ -128,7 +147,7 @@ const filterOperators: readonly FilterOperator[] = [
   "is_not_empty",
 ];
 
-export function SavedViewsPage(): ReactNode {
+export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): ReactNode {
   const { data, error, loading, refresh } = useWorkspaceData();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -140,20 +159,24 @@ export function SavedViewsPage(): ReactNode {
   const setCreateOpen = useWorkspaceStore((state) => state.setCreateViewOpen);
   const [saving, setSaving] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
-  const [taskOverrides, setTaskOverrides] = useState<
-    Record<string, TaskBoardOverride>
-  >({});
+  const [taskOverrides, setTaskOverrides] = useState<Record<string, TaskBoardOverride>>({});
   const [movingTaskId, setMovingTaskId] = useState<string | null>(null);
+  const [previewTaskId, setPreviewTaskId] = useState<string | null>(null);
   const selected =
+    data?.views.find((view) => view.slug === viewSlug) ??
     data?.views.find((view) => view.id === queryViewId) ??
     data?.views.find((view) => view.id === selectedId) ??
     data?.views.at(0);
+  const previewTask = useMemo(() => {
+    if (data === null || previewTaskId === null) return null;
+    return (
+      collectWorkspaceTasks(data, null, taskOverrides).find((task) => task.id === previewTaskId) ??
+      null
+    );
+  }, [data, previewTaskId, taskOverrides]);
 
   useEffect(() => {
-    if (
-      selected !== undefined &&
-      (draft === null || selected.id !== selectedId)
-    ) {
+    if (selected !== undefined && (draft === null || selected.id !== selectedId)) {
       setSelectedId(selected.id);
       setDraft(toDraft(selected));
     }
@@ -177,22 +200,24 @@ export function SavedViewsPage(): ReactNode {
   const createView = async (input: ViewDraft): Promise<void> => {
     setSaving(true);
     setMutationError(null);
-    const response = await fetch("/api/views", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(input),
-    });
+    const response = await fetch(
+      `/api/views?workspaceId=${encodeURIComponent(data.workspace.id)}`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(input),
+      },
+    );
     const result: unknown = await response.json();
     if (!response.ok || !isSavedView(result)) {
       setMutationError(readError(result, "Не удалось создать view."));
       setSaving(false);
       return;
     }
-    await refresh();
-    notifyWorkspaceDataChanged();
+    updateWorkspaceData((current) => ({ ...current, views: [...current.views, result] }));
     setSelectedId(result.id);
     setDraft(toDraft(result));
-    router.replace(savedViewUrl(result.id, queryProjectId));
+    router.replace(workspaceViewHref(data.workspace.slug, result.slug));
     setCreateOpen(false);
     setSaving(false);
   };
@@ -200,19 +225,24 @@ export function SavedViewsPage(): ReactNode {
     if (selected === undefined || draft === null) return;
     setSaving(true);
     setMutationError(null);
-    const response = await fetch(`/api/views/${selected.id}`, {
-      method: "PATCH",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(draft),
-    });
+    const response = await fetch(
+      `/api/views/${selected.id}?workspaceId=${encodeURIComponent(data.workspace.id)}`,
+      {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(draft),
+      },
+    );
     const result: unknown = await response.json();
     if (!response.ok || !isSavedView(result)) {
       setMutationError(readError(result, "Не удалось сохранить view."));
       setSaving(false);
       return;
     }
-    await refresh();
-    notifyWorkspaceDataChanged();
+    updateWorkspaceData((current) => ({
+      ...current,
+      views: current.views.map((view) => (view.id === result.id ? result : view)),
+    }));
     setDraft(toDraft(result));
     setSaving(false);
   };
@@ -220,9 +250,12 @@ export function SavedViewsPage(): ReactNode {
     if (selected === undefined) return;
     setSaving(true);
     setMutationError(null);
-    const response = await fetch(`/api/views/${selected.id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `/api/views/${selected.id}?workspaceId=${encodeURIComponent(data.workspace.id)}`,
+      {
+        method: "DELETE",
+      },
+    );
     if (!response.ok) {
       const result: unknown = await response.json();
       setMutationError(readError(result, "Не удалось удалить view."));
@@ -231,31 +264,30 @@ export function SavedViewsPage(): ReactNode {
     }
     setSelectedId(null);
     setDraft(null);
-    await refresh();
-    notifyWorkspaceDataChanged();
+    updateWorkspaceData((current) => ({
+      ...current,
+      views: current.views.filter((view) => view.id !== selected.id),
+    }));
     const nextView = data.views.find((view) => view.id !== selected.id);
     router.replace(
       nextView === undefined
         ? viewsUrl(queryProjectId)
-        : savedViewUrl(nextView.id, queryProjectId),
+        : workspaceViewHref(data.workspace.slug, nextView.slug),
     );
     setSaving(false);
   };
-  const moveBoardTask: MoveBoardTask = async (
-    task,
-    targetStatusId,
-    targetTasks,
-  ) => {
+  const moveBoardTask: MoveBoardTask = async (task, targetStatusKey, targetTasks) => {
+    const targetStatusId = resolveProjectStatusId(task.projectId, targetStatusKey, data.statuses);
+    if (targetStatusId === undefined) {
+      setMutationError(`В проекте «${task.projectTitle}» нет статуса этой колонки.`);
+      return;
+    }
     const nextPosition = String(
       targetTasks
         .filter((targetTask) => targetTask.id !== task.id)
         .reduce((maximum, targetTask) => {
-          const position = Number(
-            taskOverrides[targetTask.id]?.position ?? targetTask.position,
-          );
-          return Number.isFinite(position)
-            ? Math.max(maximum, position)
-            : maximum;
+          const position = Number(taskOverrides[targetTask.id]?.position ?? targetTask.position);
+          return Number.isFinite(position) ? Math.max(maximum, position) : maximum;
         }, 0) + 1000,
     );
 
@@ -278,18 +310,16 @@ export function SavedViewsPage(): ReactNode {
         }),
       });
       const result: unknown = await response.json();
-      if (!response.ok) {
+      if (!response.ok || !isTaskSummary(result)) {
         setMutationError(readError(result, "Не удалось переместить задачу."));
         setTaskOverrides((current) => withoutTaskOverride(current, task.id));
         return;
       }
-      await refresh();
+      updateWorkspaceTask(result);
       setTaskOverrides((current) => withoutTaskOverride(current, task.id));
     } catch (moveError: unknown) {
       setMutationError(
-        moveError instanceof Error
-          ? moveError.message
-          : "Не удалось переместить задачу.",
+        moveError instanceof Error ? moveError.message : "Не удалось переместить задачу.",
       );
       setTaskOverrides((current) => withoutTaskOverride(current, task.id));
     } finally {
@@ -297,10 +327,7 @@ export function SavedViewsPage(): ReactNode {
     }
   };
 
-  const hasChanges =
-    selected !== undefined &&
-    draft !== null &&
-    !viewDraftEquals(draft, selected);
+  const hasChanges = selected !== undefined && draft !== null && !viewDraftEquals(draft, selected);
 
   return (
     <div className="views-page">
@@ -309,11 +336,7 @@ export function SavedViewsPage(): ReactNode {
       ) : (
         <section className="view-editor">
           <div className="view-editor-head">
-            <ViewIdentityEditor
-              key={selected.id}
-              draft={draft}
-              setDraft={setDraft}
-            />
+            <ViewIdentityEditor key={selected.id} draft={draft} setDraft={setDraft} />
             <div className="view-actions">
               {hasChanges && (
                 <Button
@@ -325,19 +348,12 @@ export function SavedViewsPage(): ReactNode {
               )}
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
-                  <IconButton
-                    variant="ghost"
-                    color="gray"
-                    aria-label="Действия view"
-                  >
+                  <IconButton variant="ghost" color="gray" aria-label="Действия view">
                     <MoreHorizontal size={17} />
                   </IconButton>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content align="end">
-                  <DropdownMenu.Item
-                    color="red"
-                    onSelect={() => void deleteView()}
-                  >
+                  <DropdownMenu.Item color="red" onSelect={() => void deleteView()}>
                     <Trash2 size={14} /> Удалить view
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
@@ -356,6 +372,7 @@ export function SavedViewsPage(): ReactNode {
             taskOverrides={taskOverrides}
             movingTaskId={movingTaskId}
             onMoveTask={moveBoardTask}
+            onOpenTask={(task) => setPreviewTaskId(task.id)}
           />
         </section>
       )}
@@ -365,6 +382,7 @@ export function SavedViewsPage(): ReactNode {
         saving={saving}
         onCreate={createView}
       />
+      <TaskDetailsDrawer data={data} task={previewTask} onClose={() => setPreviewTaskId(null)} />
     </div>
   );
 }
@@ -406,17 +424,11 @@ function ViewIdentityEditor({
           aria-label="Описание view"
           resize="vertical"
           onBlur={() => setEditingDescription(false)}
-          onChange={(event) =>
-            setDraft({ ...draft, description: event.target.value || null })
-          }
+          onChange={(event) => setDraft({ ...draft, description: event.target.value || null })}
         />
       ) : (
         <button
-          className={
-            draft.description === null
-              ? "view-description empty"
-              : "view-description"
-          }
+          className={draft.description === null ? "view-description empty" : "view-description"}
           type="button"
           onClick={() => setEditingDescription(true)}
         >
@@ -427,19 +439,14 @@ function ViewIdentityEditor({
   );
 }
 
-function ViewsEmpty({
-  onCreate,
-}: Readonly<{ onCreate: () => void }>): ReactNode {
+function ViewsEmpty({ onCreate }: Readonly<{ onCreate: () => void }>): ReactNode {
   return (
     <Card className="views-empty">
       <span>
         <Layers3 size={30} />
       </span>
       <h2>Создайте первый view</h2>
-      <p>
-        Выберите список или доску, группировку и поля. Настройки сохранятся для
-        быстрого доступа.
-      </p>
+      <p>Выберите список, доску или матрицу. Настройки сохранятся для быстрого доступа.</p>
       <Button onClick={onCreate}>Создать view</Button>
     </Card>
   );
@@ -476,7 +483,7 @@ function ViewToolbar({
             size="1"
             variant={draft.layout === "list" ? "solid" : "soft"}
             color={draft.layout === "list" ? "indigo" : "gray"}
-            onClick={() => setDraft({ ...draft, layout: "list" })}
+            onClick={() => setDraft(changeSavedViewLayout(draft, "list"))}
           >
             <List size={14} /> Список
           </Button>
@@ -484,9 +491,17 @@ function ViewToolbar({
             size="1"
             variant={draft.layout === "board" ? "solid" : "soft"}
             color={draft.layout === "board" ? "indigo" : "gray"}
-            onClick={() => setDraft({ ...draft, layout: "board" })}
+            onClick={() => setDraft(changeSavedViewLayout(draft, "board"))}
           >
             <Columns3 size={14} /> Доска
+          </Button>
+          <Button
+            size="1"
+            variant={draft.layout === "matrix" ? "solid" : "soft"}
+            color={draft.layout === "matrix" ? "indigo" : "gray"}
+            onClick={() => setDraft(changeSavedViewLayout(draft, "matrix"))}
+          >
+            <Grid3X3 size={14} /> Матрица
           </Button>
         </div>
         <div className="view-toolbar-actions">
@@ -497,9 +512,7 @@ function ViewToolbar({
       {filters.length > 0 && (
         <div className="view-filter-chips">
           {filters.map((filter, index) => (
-            <span
-              key={`${filter.field}-${filter.operator}-${filter.value ?? "none"}-${index}`}
-            >
+            <span key={`${filter.field}-${filter.operator}-${filter.value ?? "none"}`}>
               {filterLabel(filter, data)}
               <button
                 type="button"
@@ -540,9 +553,7 @@ function ViewFiltersPopover({
   };
   const canAdd =
     field !== null &&
-    (operator === "is_empty" ||
-      operator === "is_not_empty" ||
-      value.trim().length > 0);
+    (operator === "is_empty" || operator === "is_not_empty" || value.trim().length > 0);
   const visibleFields = filterFields.filter((item) =>
     item.label.toLocaleLowerCase("ru").includes(search.toLocaleLowerCase("ru")),
   );
@@ -570,19 +581,13 @@ function ViewFiltersPopover({
               onChange={(event) => setSearch(event.target.value)}
             />
             <div className="filter-field-list">
-              {visibleFields.map(
-                ({ field: optionField, icon: Icon, label }) => (
-                  <button
-                    type="button"
-                    key={optionField}
-                    onClick={() => beginFilter(optionField)}
-                  >
-                    <Icon size={17} />
-                    <span>{label}</span>
-                    <ChevronRight size={14} />
-                  </button>
-                ),
-              )}
+              {visibleFields.map(({ field: optionField, icon: Icon, label }) => (
+                <button type="button" key={optionField} onClick={() => beginFilter(optionField)}>
+                  <Icon size={17} />
+                  <span>{label}</span>
+                  <ChevronRight size={14} />
+                </button>
+              ))}
             </div>
           </>
         ) : (
@@ -599,10 +604,7 @@ function ViewFiltersPopover({
               onAdd({
                 field,
                 operator,
-                value:
-                  operator === "is_empty" || operator === "is_not_empty"
-                    ? null
-                    : value.trim(),
+                value: operator === "is_empty" || operator === "is_not_empty" ? null : value.trim(),
               });
               setOpen(false);
               reset();
@@ -642,13 +644,7 @@ function FilterEditor({
   return (
     <div className="filter-editor">
       <div className="filter-editor-head">
-        <IconButton
-          size="1"
-          variant="ghost"
-          color="gray"
-          aria-label="Назад"
-          onClick={onBack}
-        >
+        <IconButton size="1" variant="ghost" color="gray" aria-label="Назад" onClick={onBack}>
           <ArrowLeft size={15} />
         </IconButton>
         <Text weight="medium">{fieldDefinition?.label ?? "Фильтр"}</Text>
@@ -660,9 +656,7 @@ function FilterEditor({
         <Select.Root
           value={operator}
           onValueChange={(nextValue) => {
-            const nextOperator = filterOperators.find(
-              (item) => item === nextValue,
-            );
+            const nextOperator = filterOperators.find((item) => item === nextValue);
             if (nextOperator !== undefined) setOperator(nextOperator);
           }}
         >
@@ -740,7 +734,7 @@ function ViewSettingsPopover({
             size="1"
             variant={draft.layout === "list" ? "solid" : "soft"}
             color="gray"
-            onClick={() => setDraft({ ...draft, layout: "list" })}
+            onClick={() => setDraft(changeSavedViewLayout(draft, "list"))}
           >
             <List size={14} /> List
           </Button>
@@ -748,23 +742,35 @@ function ViewSettingsPopover({
             size="1"
             variant={draft.layout === "board" ? "solid" : "soft"}
             color="gray"
-            onClick={() => setDraft({ ...draft, layout: "board" })}
+            onClick={() => setDraft(changeSavedViewLayout(draft, "board"))}
           >
             <Columns3 size={14} /> Board
           </Button>
+          <Button
+            size="1"
+            variant={draft.layout === "matrix" ? "solid" : "soft"}
+            color="gray"
+            onClick={() => setDraft(changeSavedViewLayout(draft, "matrix"))}
+          >
+            <Grid3X3 size={14} /> Matrix
+          </Button>
         </div>
-        <SettingSelect
-          label={draft.layout === "board" ? "Колонки" : "Группировка"}
-          value={settings.grouping}
-          options={groupingOptions}
-          onChange={(value) => update({ grouping: value })}
-        />
-        <SettingSelect
-          label={draft.layout === "board" ? "Строки" : "Подгруппировка"}
-          value={settings.subGrouping}
-          options={groupingOptions}
-          onChange={(value) => update({ subGrouping: value })}
-        />
+        {draft.layout !== "matrix" && (
+          <>
+            <SettingSelect
+              label={draft.layout === "board" ? "Колонки" : "Группировка"}
+              value={settings.grouping}
+              options={groupingOptions}
+              onChange={(value) => update({ grouping: value })}
+            />
+            <SettingSelect
+              label={draft.layout === "board" ? "Строки" : "Подгруппировка"}
+              value={settings.subGrouping}
+              options={groupingOptions}
+              onChange={(value) => update({ subGrouping: value })}
+            />
+          </>
+        )}
         <SettingSelect
           label="Сортировка"
           value={settings.ordering}
@@ -779,54 +785,53 @@ function ViewSettingsPopover({
             color="gray"
             onClick={() =>
               update({
-                orderDirection:
-                  settings.orderDirection === "asc" ? "desc" : "asc",
+                orderDirection: settings.orderDirection === "asc" ? "desc" : "asc",
               })
             }
           >
-            {settings.orderDirection === "asc"
-              ? "По возрастанию"
-              : "По убыванию"}
+            {settings.orderDirection === "asc" ? "По возрастанию" : "По убыванию"}
           </Button>
         </div>
-        <div className="settings-divider" />
-        <SettingSwitch
-          label="Показывать подзадачи"
-          checked={settings.showSubtasks}
-          onChange={(checked) => update({ showSubtasks: checked })}
-        />
-        <SettingSwitch
-          label="Пустые группы"
-          checked={settings.showEmptyGroups}
-          onChange={(checked) => update({ showEmptyGroups: checked })}
-        />
-        <div className="settings-divider" />
-        <Text size="2" weight="medium">
-          Показывать поля
-        </Text>
-        <div className="display-properties">
-          {allProperties.map((property) => {
-            const active = settings.displayProperties.includes(property);
-            return (
-              <button
-                type="button"
-                className={active ? "active" : ""}
-                key={property}
-                onClick={() =>
-                  update({
-                    displayProperties: active
-                      ? settings.displayProperties.filter(
-                          (item) => item !== property,
-                        )
-                      : [...settings.displayProperties, property],
-                  })
-                }
-              >
-                {propertyLabels[property]}
-              </button>
-            );
-          })}
-        </div>
+        {draft.layout !== "matrix" && (
+          <>
+            <div className="settings-divider" />
+            <SettingSwitch
+              label="Показывать подзадачи"
+              checked={settings.showSubtasks}
+              onChange={(checked) => update({ showSubtasks: checked })}
+            />
+            <SettingSwitch
+              label="Пустые группы"
+              checked={settings.showEmptyGroups}
+              onChange={(checked) => update({ showEmptyGroups: checked })}
+            />
+            <div className="settings-divider" />
+            <Text size="2" weight="medium">
+              Показывать поля
+            </Text>
+            <div className="display-properties">
+              {allProperties.map((property) => {
+                const active = settings.displayProperties.includes(property);
+                return (
+                  <button
+                    type="button"
+                    className={active ? "active" : ""}
+                    key={property}
+                    onClick={() =>
+                      update({
+                        displayProperties: active
+                          ? settings.displayProperties.filter((item) => item !== property)
+                          : [...settings.displayProperties, property],
+                      })
+                    }
+                  >
+                    {propertyLabels[property]}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
       </Popover.Content>
     </Popover.Root>
   );
@@ -882,27 +887,28 @@ function ViewContent({
   taskOverrides,
   movingTaskId,
   onMoveTask,
+  onOpenTask,
 }: Readonly<{
   data: WorkspaceBootstrap;
   draft: ViewDraft;
   taskOverrides: Record<string, TaskBoardOverride>;
   movingTaskId: string | null;
   onMoveTask: MoveBoardTask;
+  onOpenTask: OpenTaskPreview;
 }>): ReactNode {
   const tasks = useMemo(
     () => collectTasks(data, draft, taskOverrides),
     [data, draft, taskOverrides],
   );
   const groups = useMemo(
-    () =>
-      groupTasks(
-        tasks,
-        draft.settings.grouping,
-        data,
-        draft.settings.showEmptyGroups,
-      ),
+    () => groupTasks(tasks, draft.settings.grouping, data, draft.settings.showEmptyGroups),
     [tasks, draft.settings.grouping, draft.settings.showEmptyGroups, data],
   );
+  if (draft.layout === "matrix") {
+    return (
+      <MatrixView data={data} draft={draft} taskOverrides={taskOverrides} onOpenTask={onOpenTask} />
+    );
+  }
   if (tasks.length === 0)
     return (
       <div className="view-no-tasks">
@@ -920,9 +926,158 @@ function ViewContent({
       draft={draft}
       movingTaskId={movingTaskId}
       onMoveTask={onMoveTask}
+      onOpenTask={onOpenTask}
     />
   ) : (
-    <ListView groups={groups} data={data} draft={draft} />
+    <ListView groups={groups} data={data} draft={draft} onOpenTask={onOpenTask} />
+  );
+}
+
+function MatrixView({
+  data,
+  draft,
+  taskOverrides,
+  onOpenTask,
+}: Readonly<{
+  data: WorkspaceBootstrap;
+  draft: ViewDraft;
+  taskOverrides: Record<string, TaskBoardOverride>;
+  onOpenTask: OpenTaskPreview;
+}>): ReactNode {
+  const matrix = useMemo(() => {
+    const allTasks = collectWorkspaceTasks(data, draft.projectId ?? null, taskOverrides);
+    const filters = draft.settings.filters ?? [];
+    const templateFilter = filters.find(
+      (filter) => filter.field === "template" && filter.operator === "is",
+    );
+    const rootCandidates = allTasks.filter(
+      (task) =>
+        (task.parentTaskId === null || task.parentTaskId === undefined) &&
+        matchesFilters(
+          task,
+          filters.filter((filter) => filter.field !== "template"),
+          data,
+        ),
+    );
+    const inferredTemplateIds = [
+      ...new Set(
+        rootCandidates.flatMap((task) =>
+          task.sourceSkillId === null || task.sourceSkillId === undefined
+            ? []
+            : [task.sourceSkillId],
+        ),
+      ),
+    ];
+    const templateId =
+      templateFilter?.value === "none" || templateFilter?.value === null
+        ? null
+        : (templateFilter?.value ??
+          (inferredTemplateIds.length === 1 ? inferredTemplateIds[0] : null));
+    if (templateId === null || templateId === undefined) return null;
+
+    const roots = sortTasks(
+      rootCandidates.filter(
+        (task) => task.sourceSkillId === templateId && matchesFilters(task, filters, data),
+      ),
+      draft.settings,
+      data,
+    );
+    const rootIds = new Set(roots.map((task) => task.id));
+    const subtasks = allTasks.filter(
+      (task) =>
+        task.parentTaskId !== null &&
+        task.parentTaskId !== undefined &&
+        rootIds.has(task.parentTaskId) &&
+        task.sourceSkillId === templateId,
+    );
+    return buildTemplateMatrix([...roots, ...subtasks], templateId);
+  }, [data, draft, taskOverrides]);
+
+  if (matrix === null) {
+    return (
+      <div className="view-no-tasks">
+        <Workflow size={24} />
+        <strong>Выберите один шаблон</strong>
+        <Text size="2" color="gray">
+          Добавьте фильтр «Шаблон», чтобы определить набор родительских задач для матрицы.
+        </Text>
+      </div>
+    );
+  }
+  if (matrix.columns.length === 0) {
+    return (
+      <div className="view-no-tasks">
+        <Grid3X3 size={24} />
+        <strong>Задач по этому шаблону нет</strong>
+        <Text size="2" color="gray">
+          Измените фильтры или создайте родительские задачи из выбранного шаблона.
+        </Text>
+      </div>
+    );
+  }
+
+  return (
+    <div className="template-matrix-scroll">
+      <table className="template-matrix">
+        <thead>
+          <tr>
+            <th scope="col">Подзадача</th>
+            {matrix.columns.map((task) => (
+              <th scope="col" key={task.id} title={task.title}>
+                {task.title}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {matrix.rows.map((row) => (
+            <tr key={row.key}>
+              <th scope="row">{row.title}</th>
+              {row.cells.map((task, index) => {
+                const column = matrix.columns[index];
+                if (task === null) {
+                  return (
+                    <td key={column?.id ?? `${row.key}-${index}`}>
+                      <button
+                        type="button"
+                        className="template-matrix-cell missing"
+                        disabled
+                        aria-label={`${column?.title ?? "Задача"}: подзадача «${row.title}» отсутствует`}
+                      >
+                        —
+                      </button>
+                    </td>
+                  );
+                }
+                const status = data.statuses.find((item) => item.id === task.statusId);
+                const assignee =
+                  task.assigneeUserId === null || task.assigneeUserId === undefined
+                    ? "Не назначен"
+                    : (data.workspace.members.find(
+                        (member) => member.userId === task.assigneeUserId,
+                      )?.displayName ?? "Исполнитель");
+                return (
+                  <td key={task.id}>
+                    <button
+                      type="button"
+                      className="template-matrix-cell"
+                      style={{
+                        backgroundColor: status?.color ?? "#e8e8ec",
+                        color: readableColor(status?.color),
+                      }}
+                      title={`${status?.name ?? "Без статуса"} · ${assignee}`}
+                      onClick={() => onOpenTask(task)}
+                    >
+                      {assignee}
+                    </button>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -932,12 +1087,14 @@ function BoardView({
   draft,
   movingTaskId,
   onMoveTask,
+  onOpenTask,
 }: Readonly<{
   groups: TaskGroup[];
   data: WorkspaceBootstrap;
   draft: ViewDraft;
   movingTaskId: string | null;
   onMoveTask: MoveBoardTask;
+  onOpenTask: OpenTaskPreview;
 }>): ReactNode {
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
   const [dropGroupId, setDropGroupId] = useState<string | null>(null);
@@ -946,30 +1103,20 @@ function BoardView({
     setDraggedTaskId(null);
     setDropGroupId(null);
   };
-  const handleDragStart = (
-    event: DragEvent<HTMLDivElement>,
-    taskId: string,
-  ): void => {
+  const handleDragStart = (event: DragEvent<HTMLDivElement>, taskId: string): void => {
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.setData("text/plain", taskId);
     setDraggedTaskId(taskId);
   };
-  const handleDragOver = (
-    event: DragEvent<HTMLElement>,
-    groupId: string,
-  ): void => {
+  const handleDragOver = (event: DragEvent<HTMLElement>, groupId: string): void => {
     if (!canDrag || movingTaskId !== null) return;
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
     setDropGroupId(groupId);
   };
-  const handleDrop = (
-    event: DragEvent<HTMLElement>,
-    group: TaskGroup,
-  ): void => {
+  const handleDrop = (event: DragEvent<HTMLElement>, group: TaskGroup): void => {
     event.preventDefault();
-    const droppedTaskId =
-      event.dataTransfer.getData("text/plain") || draggedTaskId;
+    const droppedTaskId = event.dataTransfer.getData("text/plain") || draggedTaskId;
     const droppedTask = groups
       .flatMap((candidateGroup) => candidateGroup.tasks)
       .find((task) => task.id === droppedTaskId);
@@ -977,9 +1124,8 @@ function BoardView({
       resetDrag();
       return;
     }
-    const targetStatusId = group.id === "none" ? null : group.id;
     resetDrag();
-    void onMoveTask(droppedTask, targetStatusId, group.tasks);
+    void onMoveTask(droppedTask, group.id, group.tasks);
   };
 
   return (
@@ -987,9 +1133,8 @@ function BoardView({
       {groups.map((group) => (
         <section
           key={group.id}
-          className={
-            dropGroupId === group.id ? "kanban-drop-target" : undefined
-          }
+          className={dropGroupId === group.id ? "kanban-drop-target" : undefined}
+          aria-label={group.title}
           onDragOver={(event) => handleDragOver(event, group.id)}
           onDrop={(event) => handleDrop(event, group)}
         >
@@ -997,40 +1142,35 @@ function BoardView({
             <strong>{group.title}</strong>
             <Badge color="gray">{group.tasks.length}</Badge>
           </div>
-          {renderSubgroups(group.tasks, draft.settings.subGrouping, data).map(
-            (subgroup) => (
-              <div key={subgroup.id} className="saved-subgroup">
-                {draft.settings.subGrouping !== "none" && (
-                  <Text size="1" color="gray">
-                    {subgroup.title}
-                  </Text>
-                )}
-                {subgroup.tasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className={
-                      draggedTaskId === task.id
-                        ? "saved-task-drag dragging"
-                        : "saved-task-drag"
-                    }
-                    draggable={canDrag && movingTaskId === null}
-                    aria-label={
-                      canDrag ? `Переместить задачу ${task.title}` : undefined
-                    }
-                    onDragStart={(event) => handleDragStart(event, task.id)}
-                    onDragEnd={resetDrag}
-                  >
-                    <TaskCard
-                      task={task}
-                      data={data}
-                      properties={draft.settings.displayProperties}
-                      moving={movingTaskId === task.id}
-                    />
-                  </div>
-                ))}
-              </div>
-            ),
-          )}
+          {renderSubgroups(group.tasks, draft.settings.subGrouping, data).map((subgroup) => (
+            <div key={subgroup.id} className="saved-subgroup">
+              {draft.settings.subGrouping !== "none" && (
+                <Text size="1" color="gray">
+                  {subgroup.title}
+                </Text>
+              )}
+              {subgroup.tasks.map((task) => (
+                // biome-ignore lint/a11y/noStaticElementInteractions: This wrapper owns native drag events; the card contains a keyboard-accessible preview button.
+                <div
+                  key={task.id}
+                  className={
+                    draggedTaskId === task.id ? "saved-task-drag dragging" : "saved-task-drag"
+                  }
+                  draggable={canDrag && movingTaskId === null}
+                  onDragStart={(event) => handleDragStart(event, task.id)}
+                  onDragEnd={resetDrag}
+                >
+                  <TaskCard
+                    task={task}
+                    data={data}
+                    properties={draft.settings.displayProperties}
+                    moving={movingTaskId === task.id}
+                    onOpenTask={onOpenTask}
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
         </section>
       ))}
     </div>
@@ -1040,10 +1180,12 @@ function ListView({
   groups,
   data,
   draft,
+  onOpenTask,
 }: Readonly<{
   groups: TaskGroup[];
   data: WorkspaceBootstrap;
   draft: ViewDraft;
+  onOpenTask: OpenTaskPreview;
 }>): ReactNode {
   return (
     <Card className="saved-list">
@@ -1053,23 +1195,22 @@ function ListView({
             <strong>{group.title}</strong>
             <Badge color="gray">{group.tasks.length}</Badge>
           </div>
-          {renderSubgroups(group.tasks, draft.settings.subGrouping, data).map(
-            (subgroup) => (
-              <div key={subgroup.id}>
-                {draft.settings.subGrouping !== "none" && (
-                  <div className="saved-list-subgroup">{subgroup.title}</div>
-                )}
-                {subgroup.tasks.map((task) => (
-                  <TaskLine
-                    key={task.id}
-                    task={task}
-                    data={data}
-                    properties={draft.settings.displayProperties}
-                  />
-                ))}
-              </div>
-            ),
-          )}
+          {renderSubgroups(group.tasks, draft.settings.subGrouping, data).map((subgroup) => (
+            <div key={subgroup.id}>
+              {draft.settings.subGrouping !== "none" && (
+                <div className="saved-list-subgroup">{subgroup.title}</div>
+              )}
+              {subgroup.tasks.map((task) => (
+                <TaskLine
+                  key={task.id}
+                  task={task}
+                  data={data}
+                  properties={draft.settings.displayProperties}
+                  onOpenTask={onOpenTask}
+                />
+              ))}
+            </div>
+          ))}
         </section>
       ))}
     </Card>
@@ -1081,18 +1222,33 @@ function TaskCard({
   data,
   properties,
   moving = false,
+  onOpenTask,
 }: Readonly<{
   task: TaskWithProject;
   data: WorkspaceBootstrap;
   properties: DisplayProperty[];
   moving?: boolean;
+  onOpenTask: OpenTaskPreview;
 }>): ReactNode {
   return (
     <Card className={moving ? "saved-task-card moving" : "saved-task-card"}>
+      <button
+        className="task-preview-button"
+        type="button"
+        aria-label={`Открыть задачу ${task.title}`}
+        onClick={() => onOpenTask(task)}
+      />
+      <Link
+        className="issue-identifier-link"
+        href={workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title)}
+        aria-label={`Открыть задачу ${issueIdentifier(task.projectKey, task.number)} на отдельной странице`}
+        onClick={(event) => event.stopPropagation()}
+      >
+        {issueIdentifier(task.projectKey, task.number)}
+        <ExternalLink size={11} />
+      </Link>
       <strong>{task.title}</strong>
-      {task.parentTaskId !== null && task.parentTaskId !== undefined && (
-        <small>Подзадача</small>
-      )}
+      {task.parentTaskId !== null && task.parentTaskId !== undefined && <small>Подзадача</small>}
       <TaskProperties task={task} data={data} properties={properties} />
     </Card>
   );
@@ -1101,15 +1257,32 @@ function TaskLine({
   task,
   data,
   properties,
+  onOpenTask,
 }: Readonly<{
   task: TaskWithProject;
   data: WorkspaceBootstrap;
   properties: DisplayProperty[];
+  onOpenTask: OpenTaskPreview;
 }>): ReactNode {
   return (
     <div className="saved-task-line">
+      <button
+        className="task-preview-button"
+        type="button"
+        aria-label={`Открыть задачу ${task.title}`}
+        onClick={() => onOpenTask(task)}
+      />
       <span className="task-status-dot" />
-      <strong>{task.title}</strong>
+      <Link
+        className="issue-identifier-link"
+        href={workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title)}
+        aria-label={`Открыть задачу ${issueIdentifier(task.projectKey, task.number)} на отдельной странице`}
+        onClick={(event) => event.stopPropagation()}
+      >
+        {issueIdentifier(task.projectKey, task.number)}
+        <ExternalLink size={11} />
+      </Link>
+      <strong className="saved-task-line-title">{task.title}</strong>
       <TaskProperties task={task} data={data} properties={properties} />
     </div>
   );
@@ -1129,6 +1302,69 @@ function TaskProperties({
         <span key={property}>{propertyValue(property, task, data)}</span>
       ))}
     </div>
+  );
+}
+
+function TaskDetailsDrawer({
+  data,
+  task,
+  onClose,
+}: Readonly<{
+  data: WorkspaceBootstrap;
+  task: TaskWithProject | null;
+  onClose: () => void;
+}>): ReactNode {
+  const [portalContainer, setPortalContainer] = useState<HTMLDivElement | null>(null);
+  const identifier = task === null ? "Задача" : issueIdentifier(task.projectKey, task.number);
+  const href =
+    task === null
+      ? null
+      : workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title);
+
+  return (
+    <DialogPrimitive.Root
+      open={task !== null}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="task-drawer-overlay" />
+        <DialogPrimitive.Content className="task-drawer">
+          <header className="task-drawer-header">
+            <div>
+              <DialogPrimitive.Title>{identifier}</DialogPrimitive.Title>
+              <DialogPrimitive.Description>Просмотр задачи</DialogPrimitive.Description>
+            </div>
+            <div className="task-drawer-actions">
+              {href !== null && (
+                <IconButton asChild variant="ghost" color="gray">
+                  <Link href={href} aria-label="Открыть задачу на отдельной странице">
+                    <ExternalLink size={17} />
+                  </Link>
+                </IconButton>
+              )}
+              <DialogPrimitive.Close asChild>
+                <IconButton variant="ghost" color="gray" aria-label="Закрыть задачу">
+                  <X size={18} />
+                </IconButton>
+              </DialogPrimitive.Close>
+            </div>
+          </header>
+          {task !== null && (
+            <div className="task-drawer-body">
+              <TaskDetailsContent
+                data={data}
+                identifier={identifier}
+                portalContainer={portalContainer}
+                task={task}
+              />
+            </div>
+          )}
+          <div className="task-drawer-portals" ref={setPortalContainer} />
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }
 
@@ -1167,13 +1403,16 @@ function CreateViewDialog({
             <Select.Root
               value={layout}
               onValueChange={(value) => {
-                if (value === "list" || value === "board") setLayout(value);
+                if (value === "list" || value === "board" || value === "matrix") {
+                  setLayout(value);
+                }
               }}
             >
               <Select.Trigger aria-label="Вид отображения" />
               <Select.Content>
                 <Select.Item value="list">Список</Select.Item>
                 <Select.Item value="board">Доска</Select.Item>
+                <Select.Item value="matrix">Матрица</Select.Item>
               </Select.Content>
             </Select.Root>
           </div>
@@ -1230,10 +1469,10 @@ function entityFilterOptions(
 ): Array<{ label: string; value: string }> {
   if (field === "status")
     return [
-      { label: "Без статуса", value: "none" },
-      ...data.statuses.map((status) => ({
+      { label: "Без статуса", value: noStatusKey },
+      ...mergeLogicalStatuses(data.statuses).map((status) => ({
         label: status.name,
-        value: status.id,
+        value: status.key,
       })),
     ];
   if (field === "project")
@@ -1241,11 +1480,18 @@ function entityFilterOptions(
       label: project.title,
       value: project.id,
     }));
+  if (field === "template")
+    return [
+      ...data.taskSkills.map((taskSkill) => ({
+        label: taskSkill.name,
+        value: taskSkill.id,
+      })),
+      { label: "Без шаблона", value: "none" },
+    ];
   if (field === "assignee" || field === "creator")
     return [
       {
-        label:
-          field === "assignee" ? "Не назначено" : "Неизвестный пользователь",
+        label: field === "assignee" ? "Не назначено" : "Неизвестный пользователь",
         value: "none",
       },
       ...data.workspace.members.map((member) => ({
@@ -1255,10 +1501,7 @@ function entityFilterOptions(
     ];
   return [];
 }
-function initialFilter(
-  field: FilterField,
-  data: WorkspaceBootstrap,
-): ViewFilter {
+function initialFilter(field: FilterField, data: WorkspaceBootstrap): ViewFilter {
   if (field === "due_date") return { field, operator: "is_empty", value: null };
   if (field === "content") return { field, operator: "contains", value: "" };
   return {
@@ -1268,15 +1511,18 @@ function initialFilter(
   };
 }
 function filterLabel(filter: ViewFilter, data: WorkspaceBootstrap): string {
-  const fieldLabel =
-    filterFields.find((item) => item.field === filter.field)?.label ?? "Фильтр";
+  const fieldLabel = filterFields.find((item) => item.field === filter.field)?.label ?? "Фильтр";
   const operatorLabel = operatorsForField(filter.field).find(
     (item) => item.value === filter.operator,
   )?.label;
   if (filter.operator === "is_empty" || filter.operator === "is_not_empty")
     return `${fieldLabel}: ${operatorLabel ?? filter.operator}`;
+  const normalizedValue =
+    filter.field === "status"
+      ? normalizeStatusFilterValue(filter.value, data.statuses)
+      : filter.value;
   const optionLabel = entityFilterOptions(filter.field, data).find(
-    (item) => item.value === filter.value,
+    (item) => item.value === normalizedValue,
   )?.label;
   return `${fieldLabel} ${operatorLabel?.toLocaleLowerCase("ru") ?? filter.operator} ${optionLabel ?? filter.value ?? "—"}`;
 }
@@ -1286,92 +1532,108 @@ function collectTasks(
   draft: ViewDraft,
   taskOverrides: Record<string, TaskBoardOverride>,
 ): TaskWithProject[] {
-  const tasks = data.projectData
-    .filter(
-      (project) =>
-        draft.projectId === null || project.projectId === draft.projectId,
-    )
-    .flatMap((project) => {
-      const title =
-        data.projects.find((item) => item.id === project.projectId)?.title ??
-        "Проект";
-      return project.tasks.map((task) => {
-        const override = taskOverrides[task.id];
-        return override === undefined
-          ? { ...task, projectTitle: title }
-          : {
-              ...task,
-              statusId: override.statusId,
-              position: override.position,
-              projectTitle: title,
-            };
-      });
-    })
+  const tasks = collectWorkspaceTasks(data, draft.projectId ?? null, taskOverrides)
     .filter(
       (task) =>
         draft.settings.showSubtasks ||
         task.parentTaskId === null ||
         task.parentTaskId === undefined,
     )
-    .filter((task) => matchesFilters(task, draft.settings.filters ?? []));
-  return sortTasks(tasks, draft.settings);
+    .filter((task) => matchesFilters(task, draft.settings.filters ?? [], data));
+  return sortTasks(tasks, draft.settings, data);
 }
-function matchesFilters(task: TaskWithProject, filters: ViewFilter[]): boolean {
-  return filters.every((filter) => matchesFilter(task, filter));
+function collectWorkspaceTasks(
+  data: WorkspaceBootstrap,
+  projectId: string | null,
+  taskOverrides: Record<string, TaskBoardOverride>,
+): TaskWithProject[] {
+  return data.projectData
+    .filter((project) => projectId === null || project.projectId === projectId)
+    .flatMap((project) => {
+      const title = project.projectTitle;
+      const key = project.projectKey;
+      return project.tasks.map((task) => {
+        const override = taskOverrides[task.id];
+        return override === undefined
+          ? { ...task, projectKey: key, projectTitle: title }
+          : {
+              ...task,
+              statusId: override.statusId,
+              position: override.position,
+              projectKey: key,
+              projectTitle: title,
+            };
+      });
+    });
 }
-function matchesFilter(task: TaskWithProject, filter: ViewFilter): boolean {
+function matchesFilters(
+  task: TaskWithProject,
+  filters: ViewFilter[],
+  data: WorkspaceBootstrap,
+): boolean {
+  return filters.every((filter) => matchesFilter(task, filter, data));
+}
+function matchesFilter(
+  task: TaskWithProject,
+  filter: ViewFilter,
+  data: WorkspaceBootstrap,
+): boolean {
   if (filter.field === "due_date") {
-    if (filter.operator === "is_empty")
-      return task.dueAt === null || task.dueAt === undefined;
-    if (filter.operator === "is_not_empty")
-      return task.dueAt !== null && task.dueAt !== undefined;
-    if (
-      task.dueAt === null ||
-      task.dueAt === undefined ||
-      filter.value === null
-    )
-      return false;
+    if (filter.operator === "is_empty") return task.dueAt === null || task.dueAt === undefined;
+    if (filter.operator === "is_not_empty") return task.dueAt !== null && task.dueAt !== undefined;
+    if (task.dueAt === null || task.dueAt === undefined || filter.value === null) return false;
     const taskDate = task.dueAt.slice(0, 10);
-    return filter.operator === "before"
-      ? taskDate < filter.value
-      : taskDate > filter.value;
+    return filter.operator === "before" ? taskDate < filter.value : taskDate > filter.value;
   }
   if (filter.field === "content") {
     const query = (filter.value ?? "").toLocaleLowerCase("ru");
-    const content =
-      `${task.title}\n${task.description ?? ""}`.toLocaleLowerCase("ru");
+    const content = `${task.title}\n${task.description ?? ""}`.toLocaleLowerCase("ru");
     const contains = content.includes(query);
     return filter.operator === "not_contains" ? !contains : contains;
   }
   const actualValue =
     filter.field === "status"
-      ? (task.statusId ?? "none")
+      ? logicalStatusKeyForTask(task.statusId, data.statuses)
       : filter.field === "project"
         ? task.projectId
-        : filter.field === "assignee"
-          ? (task.assigneeUserId ?? "none")
-          : (task.createdByUserId ?? "none");
-  const matches = actualValue === filter.value;
+        : filter.field === "template"
+          ? (task.sourceSkillId ?? "none")
+          : filter.field === "assignee"
+            ? (task.assigneeUserId ?? "none")
+            : (task.createdByUserId ?? "none");
+  const expectedValue =
+    filter.field === "status"
+      ? normalizeStatusFilterValue(filter.value, data.statuses)
+      : filter.value;
+  const matches = actualValue === expectedValue;
   return filter.operator === "is_not" ? !matches : matches;
+}
+function readableColor(color: string | undefined): "#111113" | "#ffffff" {
+  if (color === undefined || !/^#[0-9a-f]{6}$/i.test(color)) return "#111113";
+  const red = Number.parseInt(color.slice(1, 3), 16);
+  const green = Number.parseInt(color.slice(3, 5), 16);
+  const blue = Number.parseInt(color.slice(5, 7), 16);
+  return red * 0.299 + green * 0.587 + blue * 0.114 > 160 ? "#111113" : "#ffffff";
 }
 function withoutTaskOverride(
   overrides: Record<string, TaskBoardOverride>,
   taskId: string,
 ): Record<string, TaskBoardOverride> {
-  return Object.fromEntries(
-    Object.entries(overrides).filter(([id]) => id !== taskId),
-  );
+  return Object.fromEntries(Object.entries(overrides).filter(([id]) => id !== taskId));
 }
 function sortTasks(
   tasks: TaskWithProject[],
   settings: ViewSettings,
+  data: WorkspaceBootstrap,
 ): TaskWithProject[] {
   return [...tasks].sort((left, right) => {
     let result = 0;
-    if (settings.ordering === "title")
-      result = left.title.localeCompare(right.title, "ru");
+    if (settings.ordering === "title") result = left.title.localeCompare(right.title, "ru");
     else if (settings.ordering === "status")
-      result = (left.statusId ?? "").localeCompare(right.statusId ?? "");
+      result = logicalStatusKeyForTask(left.statusId, data.statuses).localeCompare(
+        logicalStatusKeyForTask(right.statusId, data.statuses),
+        "ru",
+      );
     else if (settings.ordering === "created_at")
       result = left.createdAt.localeCompare(right.createdAt);
     else if (settings.ordering === "updated_at")
@@ -1390,11 +1652,25 @@ function groupTasks(
 ): TaskGroup[] {
   if (grouping === "none") return [{ id: "all", title: "Все задачи", tasks }];
   const definitions = groupingDefinitions(grouping, tasks, data);
+  const parentTaskIds = new Set(
+    tasks.flatMap((task) =>
+      task.parentTaskId === null || task.parentTaskId === undefined ? [] : [task.parentTaskId],
+    ),
+  );
   return definitions
-    .map((definition) => ({
-      ...definition,
-      tasks: tasks.filter((task) => groupId(task, grouping) === definition.id),
-    }))
+    .map((definition) => {
+      const groupedTasks = tasks.filter(
+        (task) => groupId(task, grouping, parentTaskIds, data) === definition.id,
+      );
+      if (grouping === "parent_task" && definition.id !== "none") {
+        groupedTasks.sort((left, right) => {
+          if (left.id === definition.id) return -1;
+          if (right.id === definition.id) return 1;
+          return 0;
+        });
+      }
+      return { ...definition, tasks: groupedTasks };
+    })
     .filter((group) => showEmpty || group.tasks.length > 0);
 }
 function renderSubgroups(
@@ -1411,8 +1687,11 @@ function groupingDefinitions(
 ): Array<{ id: string; title: string }> {
   if (grouping === "status")
     return [
-      ...data.statuses.map((status) => ({ id: status.id, title: status.name })),
-      { id: "none", title: "Без статуса" },
+      ...mergeLogicalStatuses(data.statuses).map((status) => ({
+        id: status.key,
+        title: status.name,
+      })),
+      { id: noStatusKey, title: "Без статуса" },
     ];
   if (grouping === "project")
     return data.projects.map((project) => ({
@@ -1420,9 +1699,7 @@ function groupingDefinitions(
       title: project.title,
     }));
   if (grouping === "parent_task") {
-    const allWorkspaceTasks = data.projectData.flatMap(
-      (project) => project.tasks,
-    );
+    const allWorkspaceTasks = data.projectData.flatMap((project) => project.tasks);
     const parentTaskIds = new Set(
       tasks
         .map((task) => task.parentTaskId)
@@ -1450,10 +1727,18 @@ function groupingDefinitions(
   }
   return [{ id: "all", title: "Все задачи" }];
 }
-function groupId(task: TaskWithProject, grouping: ViewGrouping): string {
-  if (grouping === "status") return task.statusId ?? "none";
+function groupId(
+  task: TaskWithProject,
+  grouping: ViewGrouping,
+  parentTaskIds: ReadonlySet<string>,
+  data: WorkspaceBootstrap,
+): string {
+  if (grouping === "status") return logicalStatusKeyForTask(task.statusId, data.statuses);
   if (grouping === "project") return task.projectId;
-  if (grouping === "parent_task") return task.parentTaskId ?? "none";
+  if (grouping === "parent_task") {
+    if (task.parentTaskId !== null && task.parentTaskId !== undefined) return task.parentTaskId;
+    return parentTaskIds.has(task.id) ? task.id : "none";
+  }
   return "all";
 }
 function propertyValue(
@@ -1462,17 +1747,13 @@ function propertyValue(
   data: WorkspaceBootstrap,
 ): string {
   if (property === "status")
-    return (
-      data.statuses.find((status) => status.id === task.statusId)?.name ??
-      "Без статуса"
-    );
+    return data.statuses.find((status) => status.id === task.statusId)?.name ?? "Без статуса";
   if (property === "project") return task.projectTitle;
   if (property === "assignee")
     return task.assigneeUserId === null || task.assigneeUserId === undefined
       ? "Не назначено"
-      : (data.workspace.members.find(
-          (member) => member.userId === task.assigneeUserId,
-        )?.displayName ?? "Исполнитель");
+      : (data.workspace.members.find((member) => member.userId === task.assigneeUserId)
+          ?.displayName ?? "Исполнитель");
   if (property === "due_at") return formatDate(task.dueAt);
   if (property === "created_at") return `Создано ${formatDate(task.createdAt)}`;
   return `Обновлено ${formatDate(task.updatedAt)}`;
@@ -1511,8 +1792,7 @@ function viewDraftEquals(draft: ViewDraft, view: SavedView): boolean {
     draft.settings.orderDirection === settings.orderDirection &&
     draft.settings.showSubtasks === settings.showSubtasks &&
     draft.settings.showEmptyGroups === settings.showEmptyGroups &&
-    draft.settings.displayProperties.length ===
-      settings.displayProperties.length &&
+    draft.settings.displayProperties.length === settings.displayProperties.length &&
     draft.settings.displayProperties.every(
       (property, index) => property === settings.displayProperties[index],
     ) &&
@@ -1528,15 +1808,8 @@ function viewDraftEquals(draft: ViewDraft, view: SavedView): boolean {
     })
   );
 }
-function savedViewUrl(viewId: string, projectId: string | null): string {
-  const parameters = new URLSearchParams({ view: viewId });
-  if (projectId !== null) parameters.set("project", projectId);
-  return `/views?${parameters.toString()}`;
-}
 function viewsUrl(projectId: string | null): string {
-  return projectId === null
-    ? "/views"
-    : `/views?project=${encodeURIComponent(projectId)}`;
+  return projectId === null ? "/views" : `/views?project=${encodeURIComponent(projectId)}`;
 }
 function isSavedView(value: unknown): value is SavedView {
   return (
@@ -1544,6 +1817,8 @@ function isSavedView(value: unknown): value is SavedView {
     value !== null &&
     "id" in value &&
     typeof value.id === "string" &&
+    "slug" in value &&
+    typeof value.slug === "string" &&
     "name" in value &&
     typeof value.name === "string" &&
     "settings" in value &&

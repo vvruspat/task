@@ -86,7 +86,8 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
-    patch?: never;
+    /** Update one workspace */
+    patch: operations["WorkspacesController_updateWorkspace"];
     trace?: never;
   };
   "/workspaces/{workspaceId}/members": {
@@ -194,6 +195,23 @@ export interface paths {
     patch: operations["ProjectsController_updateProject"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/projects/{projectId}/permanent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Permanently delete a project and all related operational data */
+    delete: operations["ProjectsController_deleteProject"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/search": {
     parameters: {
       query?: never;
@@ -220,6 +238,73 @@ export interface paths {
     };
     /** Get the task matrix for a visible project */
     get: operations["ProjectMatrixController_getProjectMatrix"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/notifications": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List notifications for the current workspace member */
+    get: operations["NotificationsController_list"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/notifications/read": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Mark all workspace notifications as read */
+    post: operations["NotificationsController_markAllRead"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/subscription": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["TaskSubscriptionsController_get"];
+    put: operations["TaskSubscriptionsController_subscribe"];
+    post?: never;
+    delete: operations["TaskSubscriptionsController_unsubscribe"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/events": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Stream workspace change notifications */
+    get: operations["WorkspaceRealtimeController_stream"];
     put?: never;
     post?: never;
     delete?: never;
@@ -384,6 +469,23 @@ export interface paths {
     patch: operations["TasksController_updateTaskDueDate"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/issues/{identifier}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get one issue by its human-readable identifier */
+    get: operations["IssuesController_getIssue"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/task-skills": {
     parameters: {
       query?: never;
@@ -489,17 +591,17 @@ export interface paths {
     patch: operations["TaskSkillsController_updateTaskSkillDefinition"];
     trace?: never;
   };
-  "/workspaces/{workspaceId}/statuses": {
+  "/workspaces/{workspaceId}/projects/{projectId}/statuses": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** List statuses for one visible workspace */
+    /** List statuses for one visible project */
     get: operations["StatusesController_listStatuses"];
     put?: never;
-    /** Create a status in one workspace */
+    /** Create a status in one project */
     post: operations["StatusesController_createStatus"];
     delete?: never;
     options?: never;
@@ -507,7 +609,24 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/workspaces/{workspaceId}/statuses/{statusId}": {
+  "/workspaces/{workspaceId}/projects/{projectId}/statuses/reorder": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Reorder every status in one project */
+    patch: operations["StatusesController_reorderStatuses"];
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/projects/{projectId}/statuses/{statusId}": {
     parameters: {
       query?: never;
       header?: never;
@@ -537,6 +656,74 @@ export interface paths {
     put?: never;
     /** Create a comment on a visible task */
     post: operations["CommentsController_createTaskComment"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/internal/agent/telegram/runs": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Record a Telegram-originated agent request */
+    post: operations["AgentController_createTelegramRun"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/agent/runs": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List current user agent run history in a visible workspace */
+    get: operations["AgentRunsController_listWorkspaceRuns"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get one current user agent run with safe audit records */
+    get: operations["AgentRunsController_getWorkspaceRun"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/agent/chat/stream": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Stream a trusted web user's agent response */
+    post: operations["WebAgentController_streamWebChat"];
     delete?: never;
     options?: never;
     head?: never;
@@ -765,74 +952,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/internal/agent/telegram/runs": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Record a Telegram-originated agent request */
-    post: operations["AgentController_createTelegramRun"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/workspaces/{workspaceId}/agent/runs": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** List current user agent run history in a visible workspace */
-    get: operations["AgentRunsController_listWorkspaceRuns"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get one current user agent run with safe audit records */
-    get: operations["AgentRunsController_getWorkspaceRun"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/workspaces/{workspaceId}/agent/chat/stream": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Stream a trusted web user's agent response */
-    post: operations["WebAgentController_streamWebChat"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/workspaces/{workspaceId}/views": {
     parameters: {
       query?: never;
@@ -949,7 +1068,11 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+      description: string | null;
       members: components["schemas"]["WorkspaceMemberDto"][];
+    };
+    UpdateWorkspaceDto: {
+      description: string | null;
     };
     UpdateWorkspaceMemberRoleDto: {
       /** @enum {string} */
@@ -1037,6 +1160,10 @@ export interface components {
       id: string;
       /** Format: uuid */
       workspaceId: string;
+      /** @example ALB */
+      key: string;
+      /** @example album-release */
+      slug: string;
       /** @example Album release */
       title: string;
       description?: string | null;
@@ -1066,6 +1193,10 @@ export interface components {
       id: string;
       /** Format: uuid */
       workspaceId: string;
+      /** @example ALB */
+      key: string;
+      /** @example album-release */
+      slug: string;
       /** @example Album release */
       title: string;
       description?: string | null;
@@ -1113,6 +1244,8 @@ export interface components {
       workspaceId: string;
       /** Format: uuid */
       projectId: string;
+      /** @example 42 */
+      number: number;
       /** Format: uuid */
       parentTaskId?: string | null;
       /** @example Record bass */
@@ -1165,6 +1298,53 @@ export interface components {
       stages: components["schemas"]["ProjectMatrixStageDto"][];
       cells: components["schemas"]["ProjectMatrixCellDto"][];
     };
+    NotificationItemDto: {
+      /** Format: uuid */
+      id: string;
+      /** @enum {string} */
+      kind: "mention" | "task_changed";
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      taskId: string;
+      /** Format: uuid */
+      projectId: string;
+      projectKey: string;
+      taskNumber: number;
+      taskTitle: string;
+      /** Format: uuid */
+      actorUserId: string | null;
+      actorDisplayName: string | null;
+      eventType: string;
+      payload: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      createdAt: string;
+      read: boolean;
+    };
+    NotificationFeedDto: {
+      items: components["schemas"]["NotificationItemDto"][];
+      unreadCount: number;
+      /** Format: date-time */
+      lastReadAt: string | null;
+    };
+    TaskSubscriptionDto: {
+      subscribed: boolean;
+    };
+    WorkspaceRealtimeEventDto: {
+      id: string;
+      /** @enum {string} */
+      kind: "connected" | "changed" | "heartbeat";
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      projectId: string | null;
+      /** Format: uuid */
+      taskId: string | null;
+      /** Format: date-time */
+      occurredAt: string;
+    };
     TaskTablePageDto: {
       items: components["schemas"]["TaskSummaryDto"][];
       page: number;
@@ -1187,6 +1367,8 @@ export interface components {
       workspaceId: string;
       /** Format: uuid */
       projectId: string;
+      /** @example 42 */
+      number: number;
       /** Format: uuid */
       parentTaskId?: string | null;
       /** @example Record bass */
@@ -1219,6 +1401,10 @@ export interface components {
     CreateTaskDto: {
       /** @example Record bass */
       title: string;
+      /** Format: uuid */
+      assigneeUserId?: string | null;
+      /** Format: uuid */
+      statusId?: string | null;
       /** Format: uuid */
       parentTaskId?: string | null;
       description?: string | null;
@@ -1289,14 +1475,23 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
+    TaskSkillSubtaskDefinitionDto: {
+      /** @example Record vocals */
+      title: string;
+      description?: string | null;
+      /** Format: uuid */
+      assigneeUserId?: string | null;
+      labels?: string[];
+    };
+    TaskSkillDefinitionDto: {
+      subtasks: components["schemas"]["TaskSkillSubtaskDefinitionDto"][];
+    };
     CreateTaskSkillDto: {
       /** @example Song */
       name: string;
       description?: string | null;
       aliases?: string[];
-      definition: {
-        [key: string]: unknown;
-      };
+      definition: components["schemas"]["TaskSkillDefinitionDto"];
     };
     TaskSkillVersionSummaryDto: {
       /** Format: uuid */
@@ -1307,9 +1502,7 @@ export interface components {
       taskSkillId: string;
       /** @example 1 */
       version: number;
-      definition: {
-        [key: string]: unknown;
-      };
+      definition: components["schemas"]["TaskSkillDefinitionDto"];
       /** Format: uuid */
       createdByUserId: string;
       /** Format: date-time */
@@ -1354,6 +1547,10 @@ export interface components {
     TaskSkillApplyPreviewSubtaskDto: {
       /** @example Record vocals */
       title: string;
+      description?: string | null;
+      /** Format: uuid */
+      assigneeUserId?: string | null;
+      labels: string[];
       /** @enum {string} */
       source: "skill" | "added";
     };
@@ -1387,9 +1584,7 @@ export interface components {
       subtasks: components["schemas"]["TaskDetailDto"][];
     };
     UpdateTaskSkillDefinitionDto: {
-      definition: {
-        [key: string]: unknown;
-      };
+      definition: components["schemas"]["TaskSkillDefinitionDto"];
     };
     UpdateTaskSkillMetadataDto: {
       /** @example Song */
@@ -1402,6 +1597,8 @@ export interface components {
       id: string;
       /** Format: uuid */
       workspaceId: string;
+      /** Format: uuid */
+      projectId: string;
       /** @example In progress */
       name: string;
       /** @example #3b82f6 */
@@ -1425,6 +1622,9 @@ export interface components {
       /** @example false */
       isDone?: boolean;
     };
+    ReorderWorkspaceStatusesDto: {
+      statusIds: string[];
+    };
     UpdateWorkspaceStatusDto: {
       /** @example In progress */
       name?: string;
@@ -1444,6 +1644,11 @@ export interface components {
       taskId: string;
       /** Format: uuid */
       authorUserId: string;
+      /** Format: uuid */
+      agentRunId: string | null;
+      /** Format: uuid */
+      parentCommentId: string | null;
+      mentionedUserIds: string[];
       /** @example Bass take is ready for review. */
       body: string;
       /** Format: date-time */
@@ -1454,6 +1659,159 @@ export interface components {
     CreateTaskCommentDto: {
       /** @example Bass take is ready for review. */
       body: string;
+      /** Format: uuid */
+      parentCommentId?: string | null;
+      mentionedUserIds?: string[];
+    };
+    TelegramAgentRunDocumentAttachmentDto: {
+      /** @enum {string} */
+      kind: "document";
+      fileId: string;
+      fileUniqueId: string | null;
+      fileName: string | null;
+      mimeType: string | null;
+      sizeBytes: string | null;
+    };
+    TelegramAgentRunPhotoAttachmentDto: {
+      /** @enum {string} */
+      kind: "photo";
+      fileId: string;
+      fileUniqueId: string | null;
+      width: number;
+      height: number;
+      sizeBytes: string | null;
+    };
+    CreateTelegramAgentRunDto: {
+      /** @example 123456789 */
+      telegramId: string;
+      /** @example -100987654321 */
+      telegramChatId: string;
+      sourceMessageId?: string | null;
+      /** @example @task what is next for the album? */
+      inputText: string;
+      attachments: (
+        | components["schemas"]["TelegramAgentRunDocumentAttachmentDto"]
+        | components["schemas"]["TelegramAgentRunPhotoAttachmentDto"]
+      )[];
+    };
+    AgentRunPendingConfirmationRequestDto: {
+      /** Format: uuid */
+      id: string;
+      /** @example task_skill.apply */
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      expiresAt: string;
+    };
+    AgentRunIntakeResponseDto: {
+      /** Format: uuid */
+      agentRunId: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      sourceMessageId?: string | null;
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      /** @example Request recorded. Agent execution is not connected yet. */
+      responseText: string;
+      pendingConfirmationRequests: components["schemas"]["AgentRunPendingConfirmationRequestDto"][];
+      /** Format: date-time */
+      createdAt: string;
+    };
+    AgentRunSummaryDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      sourceMessageId?: string | null;
+      model?: string | null;
+      /** @example @task what is next for the album? */
+      inputText: string;
+      finalResponse?: string | null;
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    AgentRunToolCallAuditDto: {
+      /** Format: uuid */
+      id: string;
+      toolName: string;
+      arguments: {
+        [key: string]: unknown;
+      };
+      result?: {
+        [key: string]: unknown;
+      } | null;
+      /** @enum {string} */
+      status: "pending" | "success" | "error";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      completedAt?: string | null;
+    };
+    AgentRunConfirmationLinkDto: {
+      /** Format: uuid */
+      id: string;
+      kind: string;
+      preview: {
+        [key: string]: unknown;
+      };
+      /** @enum {string} */
+      status: "pending" | "confirmed" | "cancelled" | "expired";
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    AgentRunDetailDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: uuid */
+      userId: string;
+      /** @enum {string} */
+      source: "telegram" | "web" | "mini_app";
+      sourceMessageId?: string | null;
+      model?: string | null;
+      /** @example @task what is next for the album? */
+      inputText: string;
+      finalResponse?: string | null;
+      /** @enum {string} */
+      status: "running" | "waiting_confirmation" | "completed" | "failed";
+      error?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      toolCalls: components["schemas"]["AgentRunToolCallAuditDto"][];
+      confirmationRequests: components["schemas"]["AgentRunConfirmationLinkDto"][];
+    };
+    WebAgentChatMessageDto: {
+      /** @enum {string} */
+      role: "user" | "assistant";
+      content: Record<string, never>;
+    };
+    CreateWebAgentChatDto: {
+      messages: components["schemas"]["WebAgentChatMessageDto"][];
+      /** Format: uuid */
+      projectId?: Record<string, never> | null;
     };
     TaskAttachmentDto: {
       /** Format: uuid */
@@ -1622,159 +1980,9 @@ export interface components {
       /** Format: uuid */
       userId: string;
     };
-    TelegramAgentRunDocumentAttachmentDto: {
-      /** @enum {string} */
-      kind: "document";
-      fileId: string;
-      fileUniqueId: string | null;
-      fileName: string | null;
-      mimeType: string | null;
-      sizeBytes: string | null;
-    };
-    TelegramAgentRunPhotoAttachmentDto: {
-      /** @enum {string} */
-      kind: "photo";
-      fileId: string;
-      fileUniqueId: string | null;
-      width: number;
-      height: number;
-      sizeBytes: string | null;
-    };
-    CreateTelegramAgentRunDto: {
-      /** @example 123456789 */
-      telegramId: string;
-      /** @example -100987654321 */
-      telegramChatId: string;
-      sourceMessageId?: string | null;
-      /** @example @task what is next for the album? */
-      inputText: string;
-      attachments: (
-        | components["schemas"]["TelegramAgentRunDocumentAttachmentDto"]
-        | components["schemas"]["TelegramAgentRunPhotoAttachmentDto"]
-      )[];
-    };
-    AgentRunPendingConfirmationRequestDto: {
-      /** Format: uuid */
-      id: string;
-      /** @example task_skill.apply */
-      kind: string;
-      preview: {
-        [key: string]: unknown;
-      };
-      /** Format: date-time */
-      expiresAt: string;
-    };
-    AgentRunIntakeResponseDto: {
-      /** Format: uuid */
-      agentRunId: string;
-      /** Format: uuid */
-      workspaceId: string;
-      /** Format: uuid */
-      userId: string;
-      /** @enum {string} */
-      source: "telegram" | "web" | "mini_app";
-      sourceMessageId?: string | null;
-      /** @enum {string} */
-      status: "running" | "waiting_confirmation" | "completed" | "failed";
-      /** @example Request recorded. Agent execution is not connected yet. */
-      responseText: string;
-      pendingConfirmationRequests: components["schemas"]["AgentRunPendingConfirmationRequestDto"][];
-      /** Format: date-time */
-      createdAt: string;
-    };
-    AgentRunSummaryDto: {
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      workspaceId: string;
-      /** Format: uuid */
-      userId: string;
-      /** @enum {string} */
-      source: "telegram" | "web" | "mini_app";
-      sourceMessageId?: string | null;
-      model?: string | null;
-      /** @example @task what is next for the album? */
-      inputText: string;
-      finalResponse?: string | null;
-      /** @enum {string} */
-      status: "running" | "waiting_confirmation" | "completed" | "failed";
-      error?: string | null;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
-    };
-    AgentRunToolCallAuditDto: {
-      /** Format: uuid */
-      id: string;
-      toolName: string;
-      arguments: {
-        [key: string]: unknown;
-      };
-      result?: {
-        [key: string]: unknown;
-      } | null;
-      /** @enum {string} */
-      status: "pending" | "success" | "error";
-      error?: string | null;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      completedAt?: string | null;
-    };
-    AgentRunConfirmationLinkDto: {
-      /** Format: uuid */
-      id: string;
-      kind: string;
-      preview: {
-        [key: string]: unknown;
-      };
-      /** @enum {string} */
-      status: "pending" | "confirmed" | "cancelled" | "expired";
-      /** Format: date-time */
-      expiresAt: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
-    };
-    AgentRunDetailDto: {
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      workspaceId: string;
-      /** Format: uuid */
-      userId: string;
-      /** @enum {string} */
-      source: "telegram" | "web" | "mini_app";
-      sourceMessageId?: string | null;
-      model?: string | null;
-      /** @example @task what is next for the album? */
-      inputText: string;
-      finalResponse?: string | null;
-      /** @enum {string} */
-      status: "running" | "waiting_confirmation" | "completed" | "failed";
-      error?: string | null;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
-      toolCalls: components["schemas"]["AgentRunToolCallAuditDto"][];
-      confirmationRequests: components["schemas"]["AgentRunConfirmationLinkDto"][];
-    };
-    WebAgentChatMessageDto: {
-      /** @enum {string} */
-      role: "user" | "assistant";
-      content: Record<string, never>;
-    };
-    CreateWebAgentChatDto: {
-      messages: components["schemas"]["WebAgentChatMessageDto"][];
-      /** Format: uuid */
-      projectId?: Record<string, never> | null;
-    };
     SavedViewFilterDto: {
       /** @enum {string} */
-      field: "status" | "assignee" | "creator" | "project" | "due_date" | "content";
+      field: "status" | "assignee" | "creator" | "project" | "template" | "due_date" | "content";
       /** @enum {string} */
       operator:
         | "is"
@@ -1815,12 +2023,14 @@ export interface components {
       workspaceId: string;
       /** Format: uuid */
       userId: string;
+      /** @example current-sprint */
+      slug: string;
       /** Format: uuid */
       projectId?: string | null;
       name: string;
       description?: string | null;
       /** @enum {string} */
-      layout: "list" | "board";
+      layout: "list" | "board" | "matrix";
       settings: components["schemas"]["SavedViewSettingsDto"];
       /** Format: date-time */
       createdAt: string;
@@ -1834,7 +2044,7 @@ export interface components {
       /** Format: uuid */
       projectId?: string | null;
       /** @enum {string} */
-      layout: "list" | "board";
+      layout: "list" | "board" | "matrix";
       settings: components["schemas"]["SavedViewSettingsDto"];
     };
     UpdateSavedViewDto: {
@@ -1843,7 +2053,7 @@ export interface components {
       /** Format: uuid */
       projectId?: string | null;
       /** @enum {string} */
-      layout?: "list" | "board";
+      layout?: "list" | "board" | "matrix";
       settings?: components["schemas"]["SavedViewSettingsDto"];
     };
     ListTaskTableQueryDto: {
@@ -2000,6 +2210,55 @@ export interface operations {
         };
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WorkspacesController_updateWorkspace: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateWorkspaceDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceDetailDto"];
+        };
+      };
+      /** @description Workspace payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot update this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace was not found. */
       404: {
         headers: {
           [name: string]: unknown;
@@ -2365,6 +2624,45 @@ export interface operations {
       };
     };
   };
+  ProjectsController_deleteProject: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProjectDetailDto"];
+        };
+      };
+      /** @description Only workspace owners and admins can delete projects. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or project was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   SearchController_search: {
     parameters: {
       query: {
@@ -2436,6 +2734,163 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  NotificationsController_list: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NotificationFeedDto"];
+        };
+      };
+    };
+  };
+  NotificationsController_markAllRead: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NotificationFeedDto"];
+        };
+      };
+    };
+  };
+  TaskSubscriptionsController_get: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSubscriptionDto"];
+        };
+      };
+      /** @description Task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TaskSubscriptionsController_subscribe: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSubscriptionDto"];
+        };
+      };
+    };
+  };
+  TaskSubscriptionsController_unsubscribe: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+        taskId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskSubscriptionDto"];
+        };
+      };
+    };
+  };
+  WorkspaceRealtimeController_stream: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "text/event-stream": components["schemas"]["WorkspaceRealtimeEventDto"];
+        };
       };
     };
   };
@@ -3003,6 +3458,45 @@ export interface operations {
       };
     };
   };
+  IssuesController_getIssue: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        identifier: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TaskDetailDto"];
+        };
+      };
+      /** @description Issue identifier is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace or issue is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   TaskSkillsController_listActiveTaskSkills: {
     parameters: {
       query?: never;
@@ -3406,6 +3900,7 @@ export interface operations {
       };
       path: {
         workspaceId: string;
+        projectId: string;
       };
       cookie?: never;
     };
@@ -3437,6 +3932,7 @@ export interface operations {
       };
       path: {
         workspaceId: string;
+        projectId: string;
       };
       cookie?: never;
     };
@@ -3484,6 +3980,49 @@ export interface operations {
       };
     };
   };
+  StatusesController_reorderStatuses: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        projectId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReorderWorkspaceStatusesDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceStatusDto"][];
+        };
+      };
+      /** @description Status order is incomplete or invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot manage statuses in this workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   StatusesController_deleteStatus: {
     parameters: {
       query?: never;
@@ -3493,6 +4032,7 @@ export interface operations {
       };
       path: {
         workspaceId: string;
+        projectId: string;
         statusId: string;
       };
       cookie?: never;
@@ -3532,6 +4072,7 @@ export interface operations {
       };
       path: {
         workspaceId: string;
+        projectId: string;
         statusId: string;
       };
       cookie?: never;
@@ -3656,6 +4197,157 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace, project, or task is missing or not visible. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentController_createTelegramRun: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
+        "x-task-bot-secret": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTelegramAgentRunDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentRunIntakeResponseDto"];
+        };
+      };
+      /** @description Agent request payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram bot shared secret is missing or invalid. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description User is not a member of the workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram user or chat is not linked. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentRunsController_listWorkspaceRuns: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentRunSummaryDto"][];
+        };
+      };
+      /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentRunsController_getWorkspaceRun: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        agentRunId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentRunDetailDto"];
+        };
+      };
+      /** @description Workspace or agent run is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WebAgentController_streamWebChat: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWebAgentChatDto"];
+      };
+    };
+    responses: {
+      /** @description Chat messages are invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace is missing or not visible to the current user. */
       404: {
         headers: {
           [name: string]: unknown;
@@ -4247,157 +4939,6 @@ export interface operations {
       };
       /** @description Telegram identity is already linked to another user. */
       409: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  AgentController_createTelegramRun: {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
-        "x-task-bot-secret": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateTelegramAgentRunDto"];
-      };
-    };
-    responses: {
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AgentRunIntakeResponseDto"];
-        };
-      };
-      /** @description Agent request payload is invalid. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Telegram bot shared secret is missing or invalid. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description User is not a member of the workspace. */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Telegram user or chat is not linked. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  AgentRunsController_listWorkspaceRuns: {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
-        "x-task-user-id": string;
-      };
-      path: {
-        workspaceId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AgentRunSummaryDto"][];
-        };
-      };
-      /** @description Workspace is missing or not visible to the current user. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  AgentRunsController_getWorkspaceRun: {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
-        "x-task-user-id": string;
-      };
-      path: {
-        workspaceId: string;
-        agentRunId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AgentRunDetailDto"];
-        };
-      };
-      /** @description Workspace or agent run is missing or not visible to the current user. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  WebAgentController_streamWebChat: {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
-        "x-task-user-id": string;
-      };
-      path: {
-        workspaceId: string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateWebAgentChatDto"];
-      };
-    };
-    responses: {
-      /** @description Chat messages are invalid. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Workspace is missing or not visible to the current user. */
-      404: {
         headers: {
           [name: string]: unknown;
         };

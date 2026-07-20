@@ -1,12 +1,7 @@
-export const savedViewLayouts = ["list", "board"] as const;
+export const savedViewLayouts = ["list", "board", "matrix"] as const;
 export type SavedViewLayout = (typeof savedViewLayouts)[number];
 
-export const savedViewGroupings = [
-  "none",
-  "status",
-  "project",
-  "parent_task",
-] as const;
+export const savedViewGroupings = ["none", "status", "project", "parent_task"] as const;
 export type SavedViewGrouping = (typeof savedViewGroupings)[number];
 
 export const savedViewOrderings = [
@@ -27,14 +22,14 @@ export const savedViewDisplayProperties = [
   "created_at",
   "updated_at",
 ] as const;
-export type SavedViewDisplayProperty =
-  (typeof savedViewDisplayProperties)[number];
+export type SavedViewDisplayProperty = (typeof savedViewDisplayProperties)[number];
 
 export const savedViewFilterFields = [
   "status",
   "assignee",
   "creator",
   "project",
+  "template",
   "due_date",
   "content",
 ] as const;
@@ -73,6 +68,7 @@ export type SavedView = {
   id: string;
   workspaceId: string;
   userId: string;
+  slug: string;
   projectId: string | null;
   name: string;
   description: string | null;

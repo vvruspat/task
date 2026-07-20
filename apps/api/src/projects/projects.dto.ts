@@ -56,6 +56,12 @@ export class ProjectSummaryDto implements ProjectSummary {
   @ApiProperty({ format: "uuid" })
   readonly workspaceId: string;
 
+  @ApiProperty({ example: "ALB", pattern: "^[A-Z][A-Z0-9]{1,7}$" })
+  readonly key: string;
+
+  @ApiProperty({ example: "album-release" })
+  readonly slug: string;
+
   @ApiProperty({ example: "Album release" })
   readonly title: string;
 
@@ -83,6 +89,8 @@ export class ProjectSummaryDto implements ProjectSummary {
   constructor(project: ProjectSummary) {
     this.id = project.id;
     this.workspaceId = project.workspaceId;
+    this.key = project.key;
+    this.slug = project.slug;
     this.title = project.title;
     this.description = project.description;
     this.status = project.status;

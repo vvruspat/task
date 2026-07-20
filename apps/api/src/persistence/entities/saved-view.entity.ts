@@ -7,14 +7,17 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type {
-  SavedViewLayout,
-  SavedViewSettings,
-} from "../../views/views.contracts.js";
+import type { SavedViewLayout, SavedViewSettings } from "../../views/views.contracts.js";
 
 @Entity({ name: "saved_views" })
 @Index("idx_saved_views_workspace_id_user_id", ["workspaceId", "userId"])
 @Index("idx_saved_views_project_id", ["projectId"])
+@Index("uq_saved_views_workspace_user_system_key", ["workspaceId", "userId", "systemKey"], {
+  unique: true,
+})
+@Index("uq_saved_views_workspace_id_slug", ["workspaceId", "slug"], {
+  unique: true,
+})
 export class SavedViewEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string = randomUUID();
@@ -25,8 +28,14 @@ export class SavedViewEntity {
   @Column({ name: "user_id", type: "uuid" })
   userId = "";
 
+  @Column({ type: "text" })
+  slug = "";
+
   @Column({ name: "project_id", nullable: true, type: "uuid" })
   projectId: string | null = null;
+
+  @Column({ name: "system_key", nullable: true, type: "text" })
+  systemKey: string | null = null;
 
   @Column({ type: "text" })
   name = "";

@@ -1,16 +1,19 @@
 "use client";
 
-import { Avatar, Badge, Button, IconButton, Select } from "@radix-ui/themes";
+import { Avatar, Badge, Button, DropdownMenu, IconButton } from "@radix-ui/themes";
 import {
   Bell,
   Bot,
-  CheckSquare,
+  Check,
+  ChevronRight,
   Columns3,
   FolderKanban,
+  Grid3X3,
   History,
   Layers3,
   LayoutDashboard,
   List,
+  MoreHorizontal,
   Plus,
   Settings,
   Workflow,
@@ -19,8 +22,11 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
-import { useWorkspaceData } from "../lib/use-workspace-data";
+import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
+import { useWorkspaceData, workspaceRealtimeEvent } from "../lib/use-workspace-data";
+import { buildWorkspaceBreadcrumbs } from "../lib/workspace-breadcrumbs";
 import { useWorkspaceStore } from "../lib/workspace-store";
+import { workspaceViewHref } from "../lib/workspace-url";
 import { AgentDrawer } from "./agent-chat";
 import { CreateDialog } from "./create-dialog";
 
@@ -28,34 +34,27 @@ type NavItem = {
   href: string;
   label: string;
   icon: typeof LayoutDashboard;
-  badge?: string;
 };
 const navigation: NavItem[] = [
   { href: "/agent", label: "Agent", icon: Bot },
   { href: "/dashboard", label: "Дашборд", icon: LayoutDashboard },
-  { href: "/my-tasks", label: "Мои задачи", icon: CheckSquare },
   { href: "/projects", label: "Проекты", icon: FolderKanban },
   { href: "/views", label: "Views", icon: Layers3 },
   { href: "/templates", label: "Шаблоны", icon: Workflow },
-  { href: "/confirmations", label: "Подтверждения", icon: Bell, badge: "3" },
+  { href: "/notifications", label: "Уведомления", icon: Bell },
   { href: "/agent-history", label: "История агента", icon: History },
   { href: "/settings", label: "Настройки", icon: Settings },
 ];
 
-export function WorkspaceShell({
-  children,
-}: Readonly<{ children: ReactNode }>): ReactNode {
+export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const workspaceData = useWorkspaceData().data;
   const workspace = workspaceData?.workspace;
-  const selectedProjectId = useWorkspaceStore(
-    (state) => state.selectedProjectId,
-  );
-  const setSelectedProjectId = useWorkspaceStore(
-    (state) => state.setSelectedProjectId,
-  );
+  const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
+  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
+  const setSelectedWorkspaceId = useWorkspaceStore((state) => state.setSelectedWorkspaceId);
   const selectedProject = getSelectedProject(
     pathname,
     searchParams.get("project"),
@@ -64,17 +63,15 @@ export function WorkspaceShell({
   );
   const setAgentOpen = useWorkspaceStore((state) => state.setAgentOpen);
   const setCreateOpen = useWorkspaceStore((state) => state.setCreateOpen);
-  const setCreateViewOpen = useWorkspaceStore(
-    (state) => state.setCreateViewOpen,
-  );
+  const setCreateViewOpen = useWorkspaceStore((state) => state.setCreateViewOpen);
+  const notificationUnreadCount = useWorkspaceStore((state) => state.notificationUnreadCount);
+  const setNotificationUnreadCount = useWorkspaceStore((state) => state.setNotificationUnreadCount);
+  const routeViewSlug = pathname.match(/^\/w\/[^/]+\/view\/([^/]+)$/)?.[1];
   const selectedViewId =
-    searchParams.get("view") ??
-    (pathname === "/views" ? workspaceData?.views.at(0)?.id : null);
+    searchParams.get("view") ?? (pathname === "/views" ? workspaceData?.views.at(0)?.id : null);
+  const breadcrumbs = buildWorkspaceBreadcrumbs(pathname, workspaceData);
   useEffect(() => {
-    if (
-      selectedProject !== undefined &&
-      selectedProject.id !== selectedProjectId
-    )
+    if (selectedProject !== undefined && selectedProject.id !== selectedProjectId)
       setSelectedProjectId(selectedProject.id);
   }, [selectedProject, selectedProjectId, setSelectedProjectId]);
   useEffect(() => {
@@ -87,29 +84,83 @@ export function WorkspaceShell({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [setAgentOpen]);
+  useEffect(() => {
+    if (workspace === undefined) return;
+    const load = (): void => {
+      void fetch(`/api/workspace/notifications?workspaceId=${encodeURIComponent(workspace.id)}`, {
+        cache: "no-store",
+      })
+        .then(async (response): Promise<unknown> => response.json())
+        .then((value) => {
+          if (isNotificationFeed(value)) setNotificationUnreadCount(value.unreadCount);
+        })
+        .catch(() => undefined);
+    };
+    const markRead = (): void => setNotificationUnreadCount(0);
+    load();
+    window.addEventListener(workspaceRealtimeEvent, load);
+    window.addEventListener(notificationsReadEvent, markRead);
+    return () => {
+      window.removeEventListener(workspaceRealtimeEvent, load);
+      window.removeEventListener(notificationsReadEvent, markRead);
+    };
+  }, [setNotificationUnreadCount, workspace]);
   return (
     <main className="workspace">
       <aside className="sidebar">
-        <Link
-          className="brand"
-          href={projectHref("/dashboard", selectedProject?.id)}
-        >
-          <span className="brand-mark">
-            {workspace?.name.slice(0, 2).toUpperCase() ?? "TA"}
-          </span>
-          <span>
-            <strong>{workspace?.name ?? "tAsk"}</strong>
-            <small>Workspace</small>
-          </span>
-        </Link>
+        <div className="brand">
+          <Link className="brand-home" href={projectHref("/dashboard", selectedProject?.id)}>
+            <span className="brand-mark">{workspace?.name.slice(0, 2).toUpperCase() ?? "TA"}</span>
+            <span>
+              <strong>{workspace?.name ?? "tAsk"}</strong>
+              <small>Workspace</small>
+            </span>
+          </Link>
+          {workspace !== undefined && (
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <IconButton size="1" variant="ghost" color="gray" aria-label="Меню workspace">
+                  <MoreHorizontal size={16} />
+                </IconButton>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content align="start">
+                <DropdownMenu.Sub>
+                  <DropdownMenu.SubTrigger>Change workspace</DropdownMenu.SubTrigger>
+                  <DropdownMenu.SubContent>
+                    {workspaceData?.availableWorkspaces.map((item) => (
+                      <DropdownMenu.Item
+                        key={item.id}
+                        onSelect={() =>
+                          changeWorkspace(
+                            item.id,
+                            router,
+                            setSelectedWorkspaceId,
+                            setSelectedProjectId,
+                          )
+                        }
+                      >
+                        {item.name}
+                        {item.id === workspace.id && <Check size={14} />}
+                      </DropdownMenu.Item>
+                    ))}
+                  </DropdownMenu.SubContent>
+                </DropdownMenu.Sub>
+                <DropdownMenu.Separator />
+                <DropdownMenu.Item onSelect={() => router.push("/settings")}>
+                  Settings
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          )}
+        </div>
         <nav>
-          {navigation.map(({ href, label, icon: Icon, badge }) => {
+          {navigation.map(({ href, label, icon: Icon }) => {
             if (href === "/views")
               return (
                 <div className="nav-section" key={href}>
                   <div
                     className={
-                      pathname === href
+                      pathname === href || routeViewSlug !== undefined
                         ? "nav-item nav-parent active"
                         : "nav-item nav-parent"
                     }
@@ -134,15 +185,22 @@ export function WorkspaceShell({
                   {workspaceData?.views.map((view) => (
                     <Link
                       key={view.id}
-                      href={savedViewHref(view.id, selectedProject?.id)}
+                      href={
+                        workspace === undefined
+                          ? savedViewHref(view.id, selectedProject?.id)
+                          : workspaceViewHref(workspace.slug, view.slug)
+                      }
                       className={
-                        pathname === "/views" && selectedViewId === view.id
+                        (pathname === "/views" && selectedViewId === view.id) ||
+                        routeViewSlug === view.slug
                           ? "nav-subitem active"
                           : "nav-subitem"
                       }
                     >
                       {view.layout === "board" ? (
                         <Columns3 size={13} />
+                      ) : view.layout === "matrix" ? (
+                        <Grid3X3 size={13} />
                       ) : (
                         <List size={13} />
                       )}
@@ -157,16 +215,17 @@ export function WorkspaceShell({
                 href={projectHref(href, selectedProject?.id)}
                 className={
                   pathname === href ||
-                  (href === "/projects" && pathname.startsWith("/projects/"))
+                  (href === "/projects" &&
+                    (pathname.startsWith("/projects/") || /^\/w\/[^/]+\/project\//.test(pathname)))
                     ? "nav-item active"
                     : "nav-item"
                 }
               >
                 <Icon size={16} />
                 <span>{label}</span>
-                {badge && (
+                {href === "/notifications" && notificationUnreadCount > 0 && (
                   <Badge color="red" size="1">
-                    {badge}
+                    {notificationUnreadCount > 99 ? "99+" : notificationUnreadCount}
                   </Badge>
                 )}
               </Link>
@@ -180,32 +239,25 @@ export function WorkspaceShell({
             color="indigo"
           />
           <span>
-            <strong>
-              {workspace?.members.at(0)?.displayName ?? "Пользователь"}
-            </strong>
+            <strong>{workspace?.members.at(0)?.displayName ?? "Пользователь"}</strong>
             <small>{workspace?.members.at(0)?.role ?? "Нет подключения"}</small>
           </span>
         </div>
       </aside>
       <section className="main">
         <header className="topbar">
-          {selectedProject !== undefined && (
-            <Select.Root
-              value={selectedProject.id}
-              onValueChange={(projectId) =>
-                changeProject(pathname, projectId, router, setSelectedProjectId)
-              }
-            >
-              <Select.Trigger aria-label="Выбранный проект" />
-              <Select.Content>
-                {workspaceData?.projects.map((project) => (
-                  <Select.Item key={project.id} value={project.id}>
-                    {project.title}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Root>
-          )}
+          <nav aria-label="Breadcrumbs" className="topbar-breadcrumbs">
+            {breadcrumbs.map((breadcrumb, index) => (
+              <span key={`${breadcrumb.href ?? "current"}:${breadcrumb.label}`}>
+                {index > 0 && <ChevronRight aria-hidden="true" size={14} />}
+                {breadcrumb.href === undefined ? (
+                  <strong aria-current="page">{breadcrumb.label}</strong>
+                ) : (
+                  <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
+                )}
+              </span>
+            ))}
+          </nav>
           <div>
             <Button size="1" onClick={() => setCreateOpen(true)}>
               <Plus size={14} /> Создать
@@ -220,7 +272,7 @@ export function WorkspaceShell({
   );
 }
 
-type ProjectOption = { id: string; title: string };
+type ProjectOption = { id: string; key: string; slug: string; title: string };
 function getSelectedProject(
   pathname: string,
   queryProjectId: string | null,
@@ -229,8 +281,19 @@ function getSelectedProject(
 ): ProjectOption | undefined {
   if (projects === undefined) return undefined;
   const detailProjectId = pathname.match(/^\/projects\/([^/]+)$/)?.[1];
+  const detailProjectSlug = pathname.match(/^\/w\/[^/]+\/project\/([^/]+)$/)?.[1];
+  const detailProjectBySlug = projects.find((project) => project.slug === detailProjectSlug)?.id;
+  const issueProjectKey = pathname
+    .match(/^(?:\/w\/[^/]+)?\/issue\/([a-z][a-z0-9]{1,7})-\d+/i)?.[1]
+    ?.toUpperCase();
+  const issueProjectId = projects.find((project) => project.key === issueProjectKey)?.id;
   const selectedProjectId =
-    detailProjectId ?? queryProjectId ?? storedProjectId ?? projects[0]?.id;
+    detailProjectId ??
+    detailProjectBySlug ??
+    queryProjectId ??
+    issueProjectId ??
+    storedProjectId ??
+    projects[0]?.id;
   return projects.find((project) => project.id === selectedProjectId);
 }
 function projectHref(pathname: string, projectId: string | undefined): string {
@@ -243,16 +306,13 @@ function savedViewHref(viewId: string, projectId: string | undefined): string {
   if (projectId !== undefined) parameters.set("project", projectId);
   return `/views?${parameters.toString()}`;
 }
-function changeProject(
-  pathname: string,
-  projectId: string,
+function changeWorkspace(
+  workspaceId: string,
   router: ReturnType<typeof useRouter>,
+  setSelectedWorkspaceId: (workspaceId: string | null) => void,
   setSelectedProjectId: (projectId: string | null) => void,
 ): void {
-  setSelectedProjectId(projectId);
-  if (/^\/projects\/[^/]+$/.test(pathname)) {
-    router.push(`/projects/${projectId}`);
-    return;
-  }
-  router.push(`${pathname}?project=${encodeURIComponent(projectId)}`);
+  setSelectedWorkspaceId(workspaceId);
+  setSelectedProjectId(null);
+  router.push("/dashboard");
 }

@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
+import type { ParsedIssueIdentifier } from "./issue-identifier.js";
 import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
@@ -21,6 +22,16 @@ import type { TaskReadStore } from "./tasks.store.js";
 @Injectable()
 export class TasksService {
   constructor(private readonly readStore: TaskReadStore) {}
+
+  async getTaskByIdentifier(
+    workspaceId: string,
+    identifier: ParsedIssueIdentifier,
+    userId: string,
+  ): Promise<TaskDetailDto> {
+    const task = await this.readStore.getByIdentifierForWorkspace(workspaceId, identifier, userId);
+    if (task === null) throw new NotFoundException("Issue was not found.");
+    return new TaskDetailDto(task);
+  }
 
   async listActiveTasks(
     workspaceId: string,
@@ -102,6 +113,14 @@ export class TasksService {
 
     if (result.status === "invalid_parent_task") {
       throw new BadRequestException("Parent task must belong to the same project.");
+    }
+
+    if (result.status === "invalid_assignee") {
+      throw new BadRequestException("Task assignee must belong to the same workspace.");
+    }
+
+    if (result.status === "invalid_status") {
+      throw new BadRequestException("Task status must belong to the same project.");
     }
 
     return new TaskDetailDto(result.task);

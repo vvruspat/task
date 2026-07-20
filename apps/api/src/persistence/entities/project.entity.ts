@@ -13,12 +13,25 @@ import type { ProjectRecord } from "../types/core-persistence.types.js";
 @Index("idx_projects_workspace_id", ["workspaceId"])
 @Index("idx_projects_created_by_user_id", ["createdByUserId"])
 @Index("idx_projects_workspace_id_archived_at", ["workspaceId", "archivedAt"])
+@Index("uq_projects_workspace_id_key", ["workspaceId", "key"], { unique: true })
+@Index("uq_projects_workspace_id_slug", ["workspaceId", "slug"], {
+  unique: true,
+})
 export class ProjectEntity implements ProjectRecord {
   @PrimaryGeneratedColumn("uuid")
   id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";
+
+  @Column({ type: "text" })
+  key = "";
+
+  @Column({ type: "text" })
+  slug = "";
+
+  @Column({ default: 1, name: "next_task_number", type: "integer" })
+  nextTaskNumber = 1;
 
   @Column({ type: "text" })
   title = "";

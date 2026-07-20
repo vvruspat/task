@@ -7,12 +7,14 @@ import type { StatusesReadStore } from "./statuses.store.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";
+const projectId = "44444444-4444-4444-8444-444444444444";
 const statusId = "33333333-3333-4333-8333-333333333333";
 const createdAt = new Date("2026-01-01T00:00:00.000Z");
 
 const workspaceStatus: WorkspaceStatus = {
   id: statusId,
   workspaceId,
+  projectId,
   name: "In progress",
   color: "#3b82f6",
   position: "1000",
@@ -26,7 +28,7 @@ test("StatusesController uses trusted current user context for status list reads
     new StatusesService(createReadStore({ statuses: [workspaceStatus] })),
   );
 
-  const response = await controller.listStatuses(workspaceId, userId);
+  const response = await controller.listStatuses(workspaceId, projectId, userId);
 
   assert.equal(response.length, 1);
   assert.equal(response[0]?.id, statusId);
@@ -34,6 +36,6 @@ test("StatusesController uses trusted current user context for status list reads
 
 function createReadStore(options: { statuses?: WorkspaceStatus[] | null }): StatusesReadStore {
   return {
-    listForWorkspace: async (): Promise<WorkspaceStatus[] | null> => options.statuses ?? null,
+    listForProject: async (): Promise<WorkspaceStatus[] | null> => options.statuses ?? null,
   };
 }

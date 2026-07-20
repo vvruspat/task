@@ -1,10 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
-import {
-  ParseCreateSavedViewBodyPipe,
-  ParseUpdateSavedViewBodyPipe,
-} from "./views.dto.js";
+import { ParseCreateSavedViewBodyPipe, ParseUpdateSavedViewBodyPipe } from "./views.dto.js";
 
 const projectId = "33333333-3333-4333-8333-333333333333";
 const settings = {
@@ -41,12 +38,26 @@ test("saved view create payload is normalized and de-duplicates display fields",
     settings: {
       ...settings,
       displayProperties: ["status", "project"],
-      filters: [
-        settings.filters[0],
-        { field: "content", operator: "contains", value: "release" },
-      ],
+      filters: [settings.filters[0], { field: "content", operator: "contains", value: "release" }],
     },
   });
+});
+
+test("saved view create payload accepts a template matrix", () => {
+  const templateId = "55555555-5555-4555-8555-555555555555";
+  const result = new ParseCreateSavedViewBodyPipe().transform({
+    name: "  Songs matrix ",
+    layout: "matrix",
+    settings: {
+      ...settings,
+      filters: [{ field: "template", operator: "is", value: templateId }],
+    },
+  });
+
+  assert.equal(result.layout, "matrix");
+  assert.deepEqual(result.settings.filters, [
+    { field: "template", operator: "is", value: templateId },
+  ]);
 });
 
 test("saved view pipes reject malformed settings and empty updates", () => {
@@ -63,9 +74,7 @@ test("saved view pipes reject malformed settings and empty updates", () => {
         layout: "board",
         settings: {
           ...settings,
-          filters: [
-            { field: "status", operator: "contains", value: projectId },
-          ],
+          filters: [{ field: "status", operator: "contains", value: projectId }],
         },
       }),
     BadRequestException,

@@ -180,6 +180,63 @@
         },
         "summary": "Get one workspace with members",
         "tags": ["workspaces"]
+      },
+      "patch": {
+        "operationId": "WorkspacesController_updateWorkspace",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkspaceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Workspace payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot update this workspace."
+          },
+          "404": {
+            "description": "Workspace was not found."
+          }
+        },
+        "summary": "Update one workspace",
+        "tags": ["workspaces"]
       }
     },
     "/workspaces/{workspaceId}/members": {
@@ -705,6 +762,61 @@
         "tags": ["projects"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/permanent": {
+      "delete": {
+        "operationId": "ProjectsController_deleteProject",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only workspace owners and admins can delete projects."
+          },
+          "404": {
+            "description": "Workspace or project was not found."
+          }
+        },
+        "summary": "Permanently delete a project and all related operational data",
+        "tags": ["projects"]
+      }
+    },
     "/workspaces/{workspaceId}/search": {
       "get": {
         "operationId": "SearchController_search",
@@ -831,6 +943,286 @@
         },
         "summary": "Get the task matrix for a visible project",
         "tags": ["projects"]
+      }
+    },
+    "/workspaces/{workspaceId}/notifications": {
+      "get": {
+        "operationId": "NotificationsController_list",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationFeedDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List notifications for the current workspace member",
+        "tags": ["notifications"]
+      }
+    },
+    "/workspaces/{workspaceId}/notifications/read": {
+      "post": {
+        "operationId": "NotificationsController_markAllRead",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationFeedDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Mark all workspace notifications as read",
+        "tags": ["notifications"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/subscription": {
+      "get": {
+        "operationId": "TaskSubscriptionsController_get",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSubscriptionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task is missing or not visible."
+          }
+        },
+        "tags": ["notifications"]
+      },
+      "put": {
+        "operationId": "TaskSubscriptionsController_subscribe",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSubscriptionDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["notifications"]
+      },
+      "delete": {
+        "operationId": "TaskSubscriptionsController_unsubscribe",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskSubscriptionDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["notifications"]
+      }
+    },
+    "/workspaces/{workspaceId}/events": {
+      "get": {
+        "operationId": "WorkspaceRealtimeController_stream",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceRealtimeEventDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Stream workspace change notifications",
+        "tags": ["realtime"]
       }
     },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks": {
@@ -1767,6 +2159,61 @@
         "tags": ["tasks"]
       }
     },
+    "/workspaces/{workspaceId}/issues/{identifier}": {
+      "get": {
+        "operationId": "IssuesController_getIssue",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "identifier",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "ALB-42",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Issue identifier is invalid."
+          },
+          "404": {
+            "description": "Workspace or issue is missing or not visible."
+          }
+        },
+        "summary": "Get one issue by its human-readable identifier",
+        "tags": ["issues"]
+      }
+    },
     "/workspaces/{workspaceId}/task-skills": {
       "get": {
         "operationId": "TaskSkillsController_listActiveTaskSkills",
@@ -2310,7 +2757,7 @@
         "tags": ["task-skills"]
       }
     },
-    "/workspaces/{workspaceId}/statuses": {
+    "/workspaces/{workspaceId}/projects/{projectId}/statuses": {
       "get": {
         "operationId": "StatusesController_listStatuses",
         "parameters": [
@@ -2326,6 +2773,15 @@
           },
           {
             "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
             "required": true,
             "in": "path",
             "schema": {
@@ -2352,7 +2808,7 @@
             "description": "Workspace is missing or not visible to the current user."
           }
         },
-        "summary": "List statuses for one visible workspace",
+        "summary": "List statuses for one visible project",
         "tags": ["statuses"]
       },
       "post": {
@@ -2370,6 +2826,15 @@
           },
           {
             "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
             "required": true,
             "in": "path",
             "schema": {
@@ -2412,11 +2877,79 @@
             "description": "A workspace status with this name already exists."
           }
         },
-        "summary": "Create a status in one workspace",
+        "summary": "Create a status in one project",
         "tags": ["statuses"]
       }
     },
-    "/workspaces/{workspaceId}/statuses/{statusId}": {
+    "/workspaces/{workspaceId}/projects/{projectId}/statuses/reorder": {
+      "patch": {
+        "operationId": "StatusesController_reorderStatuses",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderWorkspaceStatusesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceStatusDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status order is incomplete or invalid."
+          },
+          "403": {
+            "description": "Current user cannot manage statuses in this workspace."
+          }
+        },
+        "summary": "Reorder every status in one project",
+        "tags": ["statuses"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/statuses/{statusId}": {
       "patch": {
         "operationId": "StatusesController_updateStatus",
         "parameters": [
@@ -2432,6 +2965,15 @@
           },
           {
             "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
             "required": true,
             "in": "path",
             "schema": {
@@ -2501,6 +3043,15 @@
           },
           {
             "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
             "required": true,
             "in": "path",
             "schema": {
@@ -2677,6 +3228,202 @@
         },
         "summary": "Create a comment on a visible task",
         "tags": ["comments"]
+      }
+    },
+    "/internal/agent/telegram/runs": {
+      "post": {
+        "operationId": "AgentController_createTelegramRun",
+        "parameters": [
+          {
+            "name": "x-task-bot-secret",
+            "in": "header",
+            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTelegramAgentRunDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunIntakeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Agent request payload is invalid."
+          },
+          "401": {
+            "description": "Telegram bot shared secret is missing or invalid."
+          },
+          "403": {
+            "description": "User is not a member of the workspace."
+          },
+          "404": {
+            "description": "Telegram user or chat is not linked."
+          }
+        },
+        "summary": "Record a Telegram-originated agent request",
+        "tags": ["agent"]
+      }
+    },
+    "/workspaces/{workspaceId}/agent/runs": {
+      "get": {
+        "operationId": "AgentRunsController_listWorkspaceRuns",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgentRunSummaryDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          }
+        },
+        "summary": "List current user agent run history in a visible workspace",
+        "tags": ["agent"]
+      }
+    },
+    "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
+      "get": {
+        "operationId": "AgentRunsController_getWorkspaceRun",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentRunId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace or agent run is missing or not visible to the current user."
+          }
+        },
+        "summary": "Get one current user agent run with safe audit records",
+        "tags": ["agent"]
+      }
+    },
+    "/workspaces/{workspaceId}/agent/chat/stream": {
+      "post": {
+        "operationId": "WebAgentController_streamWebChat",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWebAgentChatDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Chat messages are invalid."
+          },
+          "404": {
+            "description": "Workspace is missing or not visible to the current user."
+          }
+        },
+        "summary": "Stream a trusted web user's agent response",
+        "tags": ["agent"]
       }
     },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments": {
@@ -3460,202 +4207,6 @@
         "tags": ["telegram"]
       }
     },
-    "/internal/agent/telegram/runs": {
-      "post": {
-        "operationId": "AgentController_createTelegramRun",
-        "parameters": [
-          {
-            "name": "x-task-bot-secret",
-            "in": "header",
-            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTelegramAgentRunDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AgentRunIntakeResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Agent request payload is invalid."
-          },
-          "401": {
-            "description": "Telegram bot shared secret is missing or invalid."
-          },
-          "403": {
-            "description": "User is not a member of the workspace."
-          },
-          "404": {
-            "description": "Telegram user or chat is not linked."
-          }
-        },
-        "summary": "Record a Telegram-originated agent request",
-        "tags": ["agent"]
-      }
-    },
-    "/workspaces/{workspaceId}/agent/runs": {
-      "get": {
-        "operationId": "AgentRunsController_listWorkspaceRuns",
-        "parameters": [
-          {
-            "name": "x-task-user-id",
-            "in": "header",
-            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "workspaceId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AgentRunSummaryDto"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Workspace is missing or not visible to the current user."
-          }
-        },
-        "summary": "List current user agent run history in a visible workspace",
-        "tags": ["agent"]
-      }
-    },
-    "/workspaces/{workspaceId}/agent/runs/{agentRunId}": {
-      "get": {
-        "operationId": "AgentRunsController_getWorkspaceRun",
-        "parameters": [
-          {
-            "name": "x-task-user-id",
-            "in": "header",
-            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "workspaceId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          },
-          {
-            "name": "agentRunId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AgentRunDetailDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Workspace or agent run is missing or not visible to the current user."
-          }
-        },
-        "summary": "Get one current user agent run with safe audit records",
-        "tags": ["agent"]
-      }
-    },
-    "/workspaces/{workspaceId}/agent/chat/stream": {
-      "post": {
-        "operationId": "WebAgentController_streamWebChat",
-        "parameters": [
-          {
-            "name": "x-task-user-id",
-            "in": "header",
-            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "workspaceId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateWebAgentChatDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "400": {
-            "description": "Chat messages are invalid."
-          },
-          "404": {
-            "description": "Workspace is missing or not visible to the current user."
-          }
-        },
-        "summary": "Stream a trusted web user's agent response",
-        "tags": ["agent"]
-      }
-    },
     "/workspaces/{workspaceId}/views": {
       "get": {
         "operationId": "ViewsController_list",
@@ -4038,6 +4589,10 @@
             "format": "date-time",
             "type": "string"
           },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
           "members": {
             "type": "array",
             "items": {
@@ -4045,7 +4600,17 @@
             }
           }
         },
-        "required": ["id", "name", "slug", "createdAt", "updatedAt", "members"]
+        "required": ["id", "name", "slug", "createdAt", "updatedAt", "description", "members"]
+      },
+      "UpdateWorkspaceDto": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["description"]
       },
       "UpdateWorkspaceMemberRoleDto": {
         "type": "object",
@@ -4303,6 +4868,15 @@
             "type": "string",
             "format": "uuid"
           },
+          "key": {
+            "type": "string",
+            "example": "ALB",
+            "pattern": "^[A-Z][A-Z0-9]{1,7}$"
+          },
+          "slug": {
+            "type": "string",
+            "example": "album-release"
+          },
           "title": {
             "type": "string",
             "example": "Album release"
@@ -4339,7 +4913,16 @@
             "type": "string"
           }
         },
-        "required": ["id", "workspaceId", "title", "createdByUserId", "createdAt", "updatedAt"]
+        "required": [
+          "id",
+          "workspaceId",
+          "key",
+          "slug",
+          "title",
+          "createdByUserId",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "CreateProjectDto": {
         "type": "object",
@@ -4377,6 +4960,15 @@
             "type": "string",
             "format": "uuid"
           },
+          "key": {
+            "type": "string",
+            "example": "ALB",
+            "pattern": "^[A-Z][A-Z0-9]{1,7}$"
+          },
+          "slug": {
+            "type": "string",
+            "example": "album-release"
+          },
           "title": {
             "type": "string",
             "example": "Album release"
@@ -4413,7 +5005,16 @@
             "type": "string"
           }
         },
-        "required": ["id", "workspaceId", "title", "createdByUserId", "createdAt", "updatedAt"]
+        "required": [
+          "id",
+          "workspaceId",
+          "key",
+          "slug",
+          "title",
+          "createdByUserId",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "UpdateProjectDto": {
         "type": "object",
@@ -4505,6 +5106,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "number": {
+            "type": "number",
+            "example": 42,
+            "minimum": 1
+          },
           "parentTaskId": {
             "type": "string",
             "format": "uuid",
@@ -4573,6 +5179,7 @@
           "id",
           "workspaceId",
           "projectId",
+          "number",
           "title",
           "createdByUserId",
           "position",
@@ -4653,6 +5260,139 @@
         },
         "required": ["columns", "stages", "cells"]
       },
+      "NotificationItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["mention", "task_changed"]
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "taskId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectKey": {
+            "type": "string"
+          },
+          "taskNumber": {
+            "type": "number"
+          },
+          "taskTitle": {
+            "type": "string"
+          },
+          "actorUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "actorDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "read": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "workspaceId",
+          "taskId",
+          "projectId",
+          "projectKey",
+          "taskNumber",
+          "taskTitle",
+          "actorUserId",
+          "actorDisplayName",
+          "eventType",
+          "payload",
+          "createdAt",
+          "read"
+        ]
+      },
+      "NotificationFeedDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationItemDto"
+            }
+          },
+          "unreadCount": {
+            "type": "number"
+          },
+          "lastReadAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["items", "unreadCount", "lastReadAt"]
+      },
+      "TaskSubscriptionDto": {
+        "type": "object",
+        "properties": {
+          "subscribed": {
+            "type": "boolean"
+          }
+        },
+        "required": ["subscribed"]
+      },
+      "WorkspaceRealtimeEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["connected", "changed", "heartbeat"]
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "occurredAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "kind", "workspaceId", "projectId", "taskId", "occurredAt"]
+      },
       "TaskTablePageDto": {
         "type": "object",
         "properties": {
@@ -4723,6 +5463,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "number": {
+            "type": "number",
+            "example": 42,
+            "minimum": 1
+          },
           "parentTaskId": {
             "type": "string",
             "format": "uuid",
@@ -4791,6 +5536,7 @@
           "id",
           "workspaceId",
           "projectId",
+          "number",
           "title",
           "createdByUserId",
           "position",
@@ -4806,6 +5552,16 @@
             "type": "string",
             "example": "Record bass",
             "minLength": 1
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           },
           "parentTaskId": {
             "type": "string",
@@ -5000,6 +5756,44 @@
           "updatedAt"
         ]
       },
+      "TaskSkillSubtaskDefinitionDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Record vocals",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["title"]
+      },
+      "TaskSkillDefinitionDto": {
+        "type": "object",
+        "properties": {
+          "subtasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskSkillSubtaskDefinitionDto"
+            }
+          }
+        },
+        "required": ["subtasks"]
+      },
       "CreateTaskSkillDto": {
         "type": "object",
         "properties": {
@@ -5019,8 +5813,7 @@
             }
           },
           "definition": {
-            "type": "object",
-            "additionalProperties": true
+            "$ref": "#/components/schemas/TaskSkillDefinitionDto"
           }
         },
         "required": ["name", "definition"]
@@ -5045,8 +5838,7 @@
             "example": 1
           },
           "definition": {
-            "type": "object",
-            "additionalProperties": true
+            "$ref": "#/components/schemas/TaskSkillDefinitionDto"
           },
           "createdByUserId": {
             "type": "string",
@@ -5190,12 +5982,27 @@
             "type": "string",
             "example": "Record vocals"
           },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "source": {
             "type": "string",
             "enum": ["skill", "added"]
           }
         },
-        "required": ["title", "source"]
+        "required": ["title", "labels", "source"]
       },
       "TaskSkillApplyPreviewDto": {
         "type": "object",
@@ -5288,8 +6095,7 @@
         "type": "object",
         "properties": {
           "definition": {
-            "type": "object",
-            "additionalProperties": true
+            "$ref": "#/components/schemas/TaskSkillDefinitionDto"
           }
         },
         "required": ["definition"]
@@ -5325,6 +6131,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
           "name": {
             "type": "string",
             "example": "In progress"
@@ -5353,6 +6163,7 @@
         "required": [
           "id",
           "workspaceId",
+          "projectId",
           "name",
           "color",
           "position",
@@ -5372,7 +6183,7 @@
           "color": {
             "type": "string",
             "example": "#3b82f6",
-            "minLength": 1
+            "pattern": "^#[0-9a-f]{6}$"
           },
           "position": {
             "type": "string",
@@ -5386,6 +6197,21 @@
         },
         "required": ["name", "color", "position"]
       },
+      "ReorderWorkspaceStatusesDto": {
+        "type": "object",
+        "properties": {
+          "statusIds": {
+            "minItems": 1,
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": ["statusIds"]
+      },
       "UpdateWorkspaceStatusDto": {
         "type": "object",
         "properties": {
@@ -5397,7 +6223,7 @@
           "color": {
             "type": "string",
             "example": "#3b82f6",
-            "minLength": 1
+            "pattern": "^#[0-9a-f]{6}$"
           },
           "position": {
             "type": "string",
@@ -5429,6 +6255,23 @@
             "type": "string",
             "format": "uuid"
           },
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "parentCommentId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "mentionedUserIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           "body": {
             "type": "string",
             "example": "Bass take is ready for review."
@@ -5447,6 +6290,9 @@
           "workspaceId",
           "taskId",
           "authorUserId",
+          "agentRunId",
+          "parentCommentId",
+          "mentionedUserIds",
           "body",
           "createdAt",
           "updatedAt"
@@ -5459,417 +6305,21 @@
             "type": "string",
             "example": "Bass take is ready for review.",
             "minLength": 1
-          }
-        },
-        "required": ["body"]
-      },
-      "TaskAttachmentDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
           },
-          "workspaceId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "targetType": {
-            "type": "string",
-            "enum": ["task", "project", "comment"]
-          },
-          "targetId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "kind": {
-            "type": "string",
-            "enum": ["file", "link", "telegram_file"]
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "url": {
-            "type": "string",
-            "nullable": true
-          },
-          "storageKey": {
-            "type": "string",
-            "nullable": true
-          },
-          "telegramFileId": {
-            "type": "string",
-            "nullable": true
-          },
-          "mimeType": {
-            "type": "string",
-            "nullable": true
-          },
-          "sizeBytes": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdByUserId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "workspaceId",
-          "targetType",
-          "targetId",
-          "kind",
-          "createdByUserId",
-          "createdAt"
-        ]
-      },
-      "CreateTaskLinkAttachmentDto": {
-        "type": "object",
-        "properties": {
-          "url": {
-            "type": "string",
-            "example": "https://example.com/bass-take"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true,
-            "example": "Bass take reference"
-          }
-        },
-        "required": ["url"]
-      },
-      "CreateTaskFileAttachmentDto": {
-        "type": "object",
-        "properties": {
-          "storageKey": {
-            "type": "string",
-            "example": "workspaces/acme/tasks/bass-take.wav"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true,
-            "example": "Bass take.wav"
-          },
-          "mimeType": {
-            "type": "string",
-            "nullable": true,
-            "example": "audio/wav"
-          },
-          "sizeBytes": {
-            "type": "string",
-            "nullable": true,
-            "example": "18432000"
-          }
-        },
-        "required": ["storageKey"]
-      },
-      "CreateTaskTelegramFileAttachmentDto": {
-        "type": "object",
-        "properties": {
-          "telegramFileId": {
-            "type": "string",
-            "example": "BQACAgIAAxkBAAIBR2Z..."
-          },
-          "title": {
-            "type": "string",
-            "nullable": true,
-            "example": "Bass take.wav"
-          },
-          "mimeType": {
-            "type": "string",
-            "nullable": true,
-            "example": "audio/wav"
-          },
-          "sizeBytes": {
-            "type": "string",
-            "nullable": true,
-            "example": "18432000"
-          }
-        },
-        "required": ["telegramFileId"]
-      },
-      "ConfirmationRequestSummaryDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "workspaceId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "agentRunId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "kind": {
-            "type": "string",
-            "example": "task_skill.apply"
-          },
-          "preview": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "status": {
-            "type": "string",
-            "enum": ["pending", "confirmed", "cancelled", "expired"]
-          },
-          "expiresAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "workspaceId",
-          "agentRunId",
-          "userId",
-          "kind",
-          "preview",
-          "status",
-          "expiresAt",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "CreateConfirmationRequestDto": {
-        "type": "object",
-        "properties": {
-          "agentRunId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "kind": {
-            "type": "string",
-            "example": "task_skill.apply",
-            "minLength": 1
-          },
-          "preview": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "required": ["agentRunId", "kind", "preview", "expiresAt"]
-      },
-      "ConfirmationRequestDetailDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "workspaceId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "agentRunId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "kind": {
-            "type": "string",
-            "example": "task_skill.apply"
-          },
-          "preview": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "status": {
-            "type": "string",
-            "enum": ["pending", "confirmed", "cancelled", "expired"]
-          },
-          "expiresAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "workspaceId",
-          "agentRunId",
-          "userId",
-          "kind",
-          "preview",
-          "status",
-          "expiresAt",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "ResolveTelegramContextDto": {
-        "type": "object",
-        "properties": {
-          "telegramId": {
-            "type": "string",
-            "example": "123456789"
-          },
-          "telegramChatId": {
-            "type": "string",
-            "example": "-100987654321"
-          }
-        },
-        "required": ["telegramId", "telegramChatId"]
-      },
-      "TelegramContextResolutionDto": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "resolved",
-              "telegram_user_unlinked",
-              "telegram_chat_unlinked",
-              "user_not_in_chat_workspace"
-            ]
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "workspaceId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "defaultProjectId": {
+          "parentCommentId": {
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "mentionedUserIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         },
-        "required": ["status"]
-      },
-      "TelegramConfirmationCallbackDto": {
-        "type": "object",
-        "properties": {
-          "telegramId": {
-            "type": "string",
-            "example": "123456789"
-          },
-          "telegramChatId": {
-            "type": "string",
-            "example": "-100987654321"
-          },
-          "confirmationRequestId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "action": {
-            "type": "string",
-            "enum": ["confirm", "cancel"]
-          }
-        },
-        "required": ["telegramId", "telegramChatId", "confirmationRequestId", "action"]
-      },
-      "TelegramConfirmationCallbackResultDto": {
-        "type": "object",
-        "properties": {
-          "confirmationRequestId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "action": {
-            "type": "string",
-            "enum": ["confirm", "cancel"]
-          },
-          "status": {
-            "type": "string",
-            "enum": ["confirmed", "cancelled"]
-          }
-        },
-        "required": ["confirmationRequestId", "action", "status"]
-      },
-      "TelegramIdentityLinkStatusDto": {
-        "type": "object",
-        "properties": {
-          "telegramId": {
-            "type": "string",
-            "example": "123456789"
-          },
-          "linkedAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "lastSeenAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "required": ["telegramId", "linkedAt"]
-      },
-      "VerifyTelegramMiniAppInitDataDto": {
-        "type": "object",
-        "properties": {
-          "initData": {
-            "type": "string",
-            "description": "Raw Telegram.WebApp.initData query string.",
-            "maxLength": 8192
-          }
-        },
-        "required": ["initData"]
-      },
-      "VerifiedTelegramMiniAppInitDataDto": {
-        "type": "object",
-        "properties": {
-          "telegramId": {
-            "type": "string",
-            "example": "123456789"
-          },
-          "authDate": {
-            "type": "string",
-            "example": "1720468800"
-          }
-        },
-        "required": ["telegramId", "authDate"]
-      },
-      "LinkedTelegramIdentityDto": {
-        "type": "object",
-        "properties": {
-          "telegramId": {
-            "type": "string",
-            "example": "123456789"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
-        "required": ["telegramId", "userId"]
+        "required": ["body"]
       },
       "TelegramAgentRunDocumentAttachmentDto": {
         "type": "object",
@@ -6293,12 +6743,420 @@
         },
         "required": ["messages"]
       },
+      "TaskAttachmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "targetType": {
+            "type": "string",
+            "enum": ["task", "project", "comment"]
+          },
+          "targetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["file", "link", "telegram_file"]
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "storageKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "telegramFileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "mimeType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sizeBytes": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "targetType",
+          "targetId",
+          "kind",
+          "createdByUserId",
+          "createdAt"
+        ]
+      },
+      "CreateTaskLinkAttachmentDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "https://example.com/bass-take"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "example": "Bass take reference"
+          }
+        },
+        "required": ["url"]
+      },
+      "CreateTaskFileAttachmentDto": {
+        "type": "object",
+        "properties": {
+          "storageKey": {
+            "type": "string",
+            "example": "workspaces/acme/tasks/bass-take.wav"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "example": "Bass take.wav"
+          },
+          "mimeType": {
+            "type": "string",
+            "nullable": true,
+            "example": "audio/wav"
+          },
+          "sizeBytes": {
+            "type": "string",
+            "nullable": true,
+            "example": "18432000"
+          }
+        },
+        "required": ["storageKey"]
+      },
+      "CreateTaskTelegramFileAttachmentDto": {
+        "type": "object",
+        "properties": {
+          "telegramFileId": {
+            "type": "string",
+            "example": "BQACAgIAAxkBAAIBR2Z..."
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "example": "Bass take.wav"
+          },
+          "mimeType": {
+            "type": "string",
+            "nullable": true,
+            "example": "audio/wav"
+          },
+          "sizeBytes": {
+            "type": "string",
+            "nullable": true,
+            "example": "18432000"
+          }
+        },
+        "required": ["telegramFileId"]
+      },
+      "ConfirmationRequestSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "example": "task_skill.apply"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "confirmed", "cancelled", "expired"]
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "agentRunId",
+          "userId",
+          "kind",
+          "preview",
+          "status",
+          "expiresAt",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateConfirmationRequestDto": {
+        "type": "object",
+        "properties": {
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "example": "task_skill.apply",
+            "minLength": 1
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["agentRunId", "kind", "preview", "expiresAt"]
+      },
+      "ConfirmationRequestDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentRunId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "example": "task_skill.apply"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "confirmed", "cancelled", "expired"]
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "agentRunId",
+          "userId",
+          "kind",
+          "preview",
+          "status",
+          "expiresAt",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ResolveTelegramContextDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "telegramChatId": {
+            "type": "string",
+            "example": "-100987654321"
+          }
+        },
+        "required": ["telegramId", "telegramChatId"]
+      },
+      "TelegramContextResolutionDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "telegram_user_unlinked",
+              "telegram_chat_unlinked",
+              "user_not_in_chat_workspace"
+            ]
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "defaultProjectId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "required": ["status"]
+      },
+      "TelegramConfirmationCallbackDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "telegramChatId": {
+            "type": "string",
+            "example": "-100987654321"
+          },
+          "confirmationRequestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["confirm", "cancel"]
+          }
+        },
+        "required": ["telegramId", "telegramChatId", "confirmationRequestId", "action"]
+      },
+      "TelegramConfirmationCallbackResultDto": {
+        "type": "object",
+        "properties": {
+          "confirmationRequestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["confirm", "cancel"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["confirmed", "cancelled"]
+          }
+        },
+        "required": ["confirmationRequestId", "action", "status"]
+      },
+      "TelegramIdentityLinkStatusDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "linkedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["telegramId", "linkedAt"]
+      },
+      "VerifyTelegramMiniAppInitDataDto": {
+        "type": "object",
+        "properties": {
+          "initData": {
+            "type": "string",
+            "description": "Raw Telegram.WebApp.initData query string.",
+            "maxLength": 8192
+          }
+        },
+        "required": ["initData"]
+      },
+      "VerifiedTelegramMiniAppInitDataDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "authDate": {
+            "type": "string",
+            "example": "1720468800"
+          }
+        },
+        "required": ["telegramId", "authDate"]
+      },
+      "LinkedTelegramIdentityDto": {
+        "type": "object",
+        "properties": {
+          "telegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": ["telegramId", "userId"]
+      },
       "SavedViewFilterDto": {
         "type": "object",
         "properties": {
           "field": {
             "type": "string",
-            "enum": ["status", "assignee", "creator", "project", "due_date", "content"]
+            "enum": ["status", "assignee", "creator", "project", "template", "due_date", "content"]
           },
           "operator": {
             "type": "string",
@@ -6385,6 +7243,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "slug": {
+            "type": "string",
+            "example": "current-sprint"
+          },
           "projectId": {
             "type": "string",
             "format": "uuid",
@@ -6399,7 +7261,7 @@
           },
           "layout": {
             "type": "string",
-            "enum": ["list", "board"]
+            "enum": ["list", "board", "matrix"]
           },
           "settings": {
             "$ref": "#/components/schemas/SavedViewSettingsDto"
@@ -6417,6 +7279,7 @@
           "id",
           "workspaceId",
           "userId",
+          "slug",
           "name",
           "layout",
           "settings",
@@ -6443,7 +7306,7 @@
           },
           "layout": {
             "type": "string",
-            "enum": ["list", "board"]
+            "enum": ["list", "board", "matrix"]
           },
           "settings": {
             "$ref": "#/components/schemas/SavedViewSettingsDto"
@@ -6469,7 +7332,7 @@
           },
           "layout": {
             "type": "string",
-            "enum": ["list", "board"]
+            "enum": ["list", "board", "matrix"]
           },
           "settings": {
             "$ref": "#/components/schemas/SavedViewSettingsDto"
