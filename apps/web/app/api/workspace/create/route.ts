@@ -83,22 +83,19 @@ export async function POST(request: Request): Promise<NextResponse> {
         { status: 201 },
       );
     if (payload.kind === "task") {
-      const projectId =
-        payload.projectId ?? (await getOrCreateUnprojectedIssueProjectId(api, payload.workspaceId));
-      return NextResponse.json(
-        await api.createTask({
-          workspaceId: payload.workspaceId,
-          projectId,
-          body: {
-            title: payload.title.trim(),
-            assigneeUserId: payload.assigneeUserId,
-            description: nullableText(payload.description),
-            metadata: { labels: normalizeLabels(payload.labels) },
-            ...(payload.statusId === null ? {} : { statusId: payload.statusId }),
-          },
-        }),
-        { status: 201 },
-      );
+      const project = await resolveTaskProject(api, payload.workspaceId, payload.projectId);
+      const task = await api.createTask({
+        workspaceId: payload.workspaceId,
+        projectId: project.id,
+        body: {
+          title: payload.title.trim(),
+          assigneeUserId: payload.assigneeUserId,
+          description: nullableText(payload.description),
+          metadata: { labels: normalizeLabels(payload.labels) },
+          ...(payload.statusId === null ? {} : { statusId: payload.statusId }),
+        },
+      });
+      return NextResponse.json({ ...task, projectKey: project.key }, { status: 201 });
     }
     return NextResponse.json(
       await api.createTaskSkill({
@@ -119,14 +116,20 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 }
 
-async function getOrCreateUnprojectedIssueProjectId(
+async function resolveTaskProject(
   api: ReturnType<typeof createTaskApiClient>,
   workspaceId: string,
-): Promise<string> {
+  projectId: string | null,
+): Promise<{ id: string; key: string }> {
   const projects = await api.listProjects({ workspaceId });
+  if (projectId !== null) {
+    const project = projects.find((item) => item.id === projectId);
+    if (project === undefined) throw new Error("Project is unavailable.");
+    return project;
+  }
   const existing = projects.find(isUnprojectedIssueProject);
-  if (existing !== undefined) return existing.id;
-  const created = await api.createProject({
+  if (existing !== undefined) return existing;
+  return api.createProject({
     workspaceId,
     body: {
       title: "Без проекта",
@@ -134,7 +137,6 @@ async function getOrCreateUnprojectedIssueProjectId(
       status: unprojectedIssueProjectStatus,
     },
   });
-  return created.id;
 }
 function nullableText(value: string): string | null {
   const trimmed = value.trim();

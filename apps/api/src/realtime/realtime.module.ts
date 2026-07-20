@@ -12,5 +12,6 @@ import { WorkspaceRealtimeService } from "./workspace-realtime.service.js";
     WorkspaceRealtimeService,
     { provide: APP_INTERCEPTOR, useClass: WorkspaceChangeInterceptor },
   ],
+  exports: [WorkspaceRealtimeService],
 })
 export class RealtimeModule {}

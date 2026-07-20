@@ -14,7 +14,15 @@ export type StatusesReadStore = {
 };
 
 export type StatusMutationResult =
-  | { status: "duplicate_name" | "forbidden" | "invalid_order" | "status_not_found" }
+  | {
+      status:
+        | "duplicate_name"
+        | "forbidden"
+        | "invalid_order"
+        | "last_status"
+        | "required_status"
+        | "status_not_found";
+    }
   | { status: "created" | "updated"; workspaceStatus: WorkspaceStatus };
 
 export type StatusReorderResult =

@@ -22,12 +22,19 @@ const draft: SavedViewDraft = {
   },
 };
 
-test("changing saved view layout preserves filters and settings", () => {
+test("changing to board defaults empty row grouping to parent task", () => {
   const board = changeSavedViewLayout(draft, "board");
   const list = changeSavedViewLayout(board, "list");
   const matrix = changeSavedViewLayout(list, "matrix");
 
+  assert.equal(board.settings.subGrouping, "parent_task");
   assert.equal(matrix.layout, "matrix");
-  assert.deepEqual(matrix.settings, draft.settings);
+  assert.deepEqual(matrix.settings, { ...draft.settings, subGrouping: "parent_task" });
   assert.notEqual(matrix.settings.filters, draft.settings.filters);
+});
+
+test("reselecting board preserves an explicit empty row grouping", () => {
+  const board = changeSavedViewLayout({ ...draft, layout: "board" }, "board");
+
+  assert.equal(board.settings.subGrouping, "none");
 });

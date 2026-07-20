@@ -165,6 +165,26 @@ export type AgentRunRecord = {
   updatedAt: Date;
 };
 
+export type AgentChatRecord = {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type AgentChatMessageRole = "assistant" | "user";
+
+export type AgentChatMessageRecord = {
+  id: string;
+  chatId: string;
+  agentRunId: string | null;
+  role: AgentChatMessageRole;
+  content: string;
+  createdAt: Date;
+};
+
 export type AgentToolCallStatus = "pending" | "success" | "error";
 
 export type AgentToolCallRecord = {

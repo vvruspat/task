@@ -1,5 +1,5 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
-import { type DataSource, In, IsNull } from "typeorm";
+import { type DataSource, type EntityManager, In, IsNull } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
@@ -10,6 +10,10 @@ import {
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
+import {
+  isBacklogStatusName,
+  isInProgressStatusName,
+} from "../statuses/required-project-statuses.js";
 import { selectDefaultTaskStatusId } from "./default-task-status.js";
 import type { ParsedIssueIdentifier } from "./issue-identifier.js";
 import { reserveProjectTaskNumbers } from "./project-task-number.js";
@@ -55,6 +59,32 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
   private initialization: Promise<DataSource> | null = null;
 
   constructor(private readonly dataSourceProvider: ApiDataSourceProvider) {}
+
+  async getByIdForWorkspace(
+    workspaceId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<TaskDetail | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+    if (membership === null) return null;
+
+    const task = await dataSource
+      .getRepository(TaskEntity)
+      .createQueryBuilder("task")
+      .innerJoin(
+        ProjectEntity,
+        "project",
+        "project.id = task.project_id AND project.workspace_id = task.workspace_id",
+      )
+      .where("task.workspace_id = :workspaceId", { workspaceId })
+      .andWhere("task.id = :taskId", { taskId })
+      .andWhere("task.archived_at IS NULL")
+      .andWhere("project.archived_at IS NULL")
+      .getOne();
+
+    return task === null ? null : toTaskSummary(task);
+  }
 
   async getByIdentifierForWorkspace(
     workspaceId: string,
@@ -182,11 +212,23 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
         .getRepository(ProjectEntity)
         .findOneBy({ id: projectId, workspaceId });
       if (project === null) return { status: "project_not_found" };
-      if (input.statusId !== undefined && input.statusId !== null) {
+      let normalizedStatusId = input.statusId;
+      let normalizedStatus: StatusEntity | undefined;
+      if (input.statusId !== undefined) {
+        if (input.statusId === null) {
+          const statuses = await manager.getRepository(StatusEntity).find({
+            order: { position: "ASC" },
+            where: { projectId, workspaceId },
+          });
+          normalizedStatusId = selectDefaultTaskStatusId(statuses);
+        }
+        if (normalizedStatusId === null || normalizedStatusId === undefined)
+          return { status: "invalid_status" };
         const status = await manager
           .getRepository(StatusEntity)
-          .findOneBy({ id: input.statusId, projectId, workspaceId });
+          .findOneBy({ id: normalizedStatusId, projectId, workspaceId });
         if (status === null) return { status: "invalid_status" };
+        normalizedStatus = status;
       }
       if (input.assigneeUserId !== undefined && input.assigneeUserId !== null) {
         const assignee = await manager.getRepository(WorkspaceMemberEntity).findOneBy({
@@ -203,12 +245,17 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       });
       if (tasks.length !== input.taskIds.length) return { status: "invalid_task" };
       for (const task of tasks) {
-        if (input.statusId !== undefined) task.statusId = input.statusId;
+        if (normalizedStatusId !== undefined) task.statusId = normalizedStatusId;
         if (input.assigneeUserId !== undefined) task.assigneeUserId = input.assigneeUserId;
         if (input.dueAt !== undefined)
           task.dueAt = input.dueAt === null ? null : new Date(input.dueAt);
       }
       const savedTasks = await manager.getRepository(TaskEntity).save(tasks);
+      if (normalizedStatus !== undefined) {
+        for (const task of savedTasks) {
+          await promoteParentForAdvancedSubtask(manager, task, normalizedStatus, userId);
+        }
+      }
       const events = savedTasks.map((task) =>
         manager.getRepository(ActivityEventEntity).create({
           workspaceId,
@@ -321,7 +368,9 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
           return "invalid_status";
         }
         const statusId =
-          input.statusId === undefined ? selectDefaultTaskStatusId(statuses) : input.statusId;
+          input.statusId === undefined || input.statusId === null
+            ? selectDefaultTaskStatusId(statuses)
+            : input.statusId;
         const task = taskRepository.create({
           workspaceId,
           projectId,
@@ -337,6 +386,10 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
           metadata: input.metadata ?? {},
         });
         const createdTask = await taskRepository.save(task);
+        const createdStatus = statuses.find((status) => status.id === createdTask.statusId);
+        if (createdStatus !== undefined) {
+          await promoteParentForAdvancedSubtask(manager, createdTask, createdStatus, userId);
+        }
         const activityEvent = manager.getRepository(ActivityEventEntity).create({
           workspaceId,
           actorUserId: userId,
@@ -472,20 +525,24 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       return { status: "task_not_found" };
     }
 
-    if (input.statusId !== null) {
-      const status = await dataSource.getRepository(StatusEntity).findOneBy({
-        id: input.statusId,
-        projectId,
-        workspaceId,
+    let normalizedStatusId = input.statusId;
+    if (normalizedStatusId === null) {
+      const statuses = await dataSource.getRepository(StatusEntity).find({
+        order: { position: "ASC" },
+        where: { projectId, workspaceId },
       });
-
-      if (status === null) {
-        return { status: "invalid_status" };
-      }
+      normalizedStatusId = selectDefaultTaskStatusId(statuses);
     }
+    if (normalizedStatusId === null) return { status: "invalid_status" };
+    const status = await dataSource.getRepository(StatusEntity).findOneBy({
+      id: normalizedStatusId,
+      projectId,
+      workspaceId,
+    });
+    if (status === null) return { status: "invalid_status" };
 
     const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
-      task.statusId = input.statusId;
+      task.statusId = normalizedStatusId;
       if (input.position !== undefined) task.position = input.position;
 
       const updatedTask = await manager.getRepository(TaskEntity).save(task);
@@ -497,12 +554,13 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
         entityId: updatedTask.id,
         payload: {
           projectId,
-          statusId: input.statusId,
+          statusId: normalizedStatusId,
           position: input.position ?? task.position,
         },
       });
 
       await manager.getRepository(ActivityEventEntity).save(activityEvent);
+      await promoteParentForAdvancedSubtask(manager, updatedTask, status, userId);
 
       return updatedTask;
     });
@@ -549,6 +607,17 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       }
 
       const updatedTask = await manager.getRepository(TaskEntity).save(task);
+      const status =
+        updatedTask.statusId === null
+          ? null
+          : await manager.getRepository(StatusEntity).findOneBy({
+              id: updatedTask.statusId,
+              projectId,
+              workspaceId,
+            });
+      if (status !== null) {
+        await promoteParentForAdvancedSubtask(manager, updatedTask, status, userId);
+      }
       const activityEvent = manager.getRepository(ActivityEventEntity).create({
         workspaceId,
         actorUserId: userId,
@@ -616,6 +685,17 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       task.position = input.position;
 
       const updatedTask = await manager.getRepository(TaskEntity).save(task);
+      const status =
+        updatedTask.statusId === null
+          ? null
+          : await manager.getRepository(StatusEntity).findOneBy({
+              id: updatedTask.statusId,
+              projectId,
+              workspaceId,
+            });
+      if (status !== null) {
+        await promoteParentForAdvancedSubtask(manager, updatedTask, status, userId);
+      }
       const activityEvent = manager.getRepository(ActivityEventEntity).create({
         workspaceId,
         actorUserId: userId,
@@ -897,6 +977,51 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       throw error;
     }
   }
+}
+
+async function promoteParentForAdvancedSubtask(
+  manager: EntityManager,
+  task: TaskEntity,
+  taskStatus: StatusEntity,
+  actorUserId: string,
+): Promise<void> {
+  if (task.parentTaskId === null || isBacklogStatusName(taskStatus.name)) return;
+
+  const statuses = await manager.getRepository(StatusEntity).find({
+    order: { position: "ASC" },
+    where: { projectId: task.projectId, workspaceId: task.workspaceId },
+  });
+  const inProgressStatus = statuses.find((status) => isInProgressStatusName(status.name));
+  if (inProgressStatus === undefined) {
+    throw new Error("Project is missing its required In progress status.");
+  }
+
+  const parentTask = await manager.getRepository(TaskEntity).findOneBy({
+    archivedAt: IsNull(),
+    id: task.parentTaskId,
+    projectId: task.projectId,
+    workspaceId: task.workspaceId,
+  });
+  if (parentTask === null || parentTask.statusId === inProgressStatus.id) return;
+
+  parentTask.statusId = inProgressStatus.id;
+  const savedParent = await manager.getRepository(TaskEntity).save(parentTask);
+  await manager.getRepository(ActivityEventEntity).save(
+    manager.getRepository(ActivityEventEntity).create({
+      workspaceId: task.workspaceId,
+      actorUserId,
+      eventType: "task.status_updated",
+      entityType: "task",
+      entityId: savedParent.id,
+      payload: {
+        automatic: true,
+        projectId: task.projectId,
+        sourceTaskId: task.id,
+        statusId: inProgressStatus.id,
+      },
+    }),
+  );
+  await promoteParentForAdvancedSubtask(manager, savedParent, inProgressStatus, actorUserId);
 }
 
 function getUpdatedTaskFields(input: UpdateTaskInput): string[] {

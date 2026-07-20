@@ -9,11 +9,12 @@ import {
   Columns3,
   FolderKanban,
   Grid3X3,
-  History,
   Layers3,
   LayoutDashboard,
   List,
   MoreHorizontal,
+  PanelLeftClose,
+  PanelLeftOpen,
   Plus,
   Settings,
   Workflow,
@@ -21,7 +22,7 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
 import { useWorkspaceData, workspaceRealtimeEvent } from "../lib/use-workspace-data";
 import { buildWorkspaceBreadcrumbs } from "../lib/workspace-breadcrumbs";
@@ -36,17 +37,18 @@ type NavItem = {
   icon: typeof LayoutDashboard;
 };
 const navigation: NavItem[] = [
-  { href: "/agent", label: "Agent", icon: Bot },
+  { href: "/agent", label: "Агент", icon: Bot },
   { href: "/dashboard", label: "Дашборд", icon: LayoutDashboard },
   { href: "/projects", label: "Проекты", icon: FolderKanban },
   { href: "/views", label: "Views", icon: Layers3 },
   { href: "/templates", label: "Шаблоны", icon: Workflow },
   { href: "/notifications", label: "Уведомления", icon: Bell },
-  { href: "/agent-history", label: "История агента", icon: History },
   { href: "/settings", label: "Настройки", icon: Settings },
 ];
+const sidebarCompactStorageKey = "task:sidebar-compact";
 
 export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
+  const [sidebarCompact, setSidebarCompact] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -70,6 +72,9 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   const selectedViewId =
     searchParams.get("view") ?? (pathname === "/views" ? workspaceData?.views.at(0)?.id : null);
   const breadcrumbs = buildWorkspaceBreadcrumbs(pathname, workspaceData);
+  useEffect(() => {
+    setSidebarCompact(window.localStorage.getItem(sidebarCompactStorageKey) === "true");
+  }, []);
   useEffect(() => {
     if (selectedProject !== undefined && selectedProject.id !== selectedProjectId)
       setSelectedProjectId(selectedProject.id);
@@ -105,11 +110,33 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
       window.removeEventListener(notificationsReadEvent, markRead);
     };
   }, [setNotificationUnreadCount, workspace]);
+  const toggleSidebar = (): void => {
+    setSidebarCompact((current) => {
+      const next = !current;
+      window.localStorage.setItem(sidebarCompactStorageKey, String(next));
+      return next;
+    });
+  };
   return (
-    <main className="workspace">
+    <main className={sidebarCompact ? "workspace sidebar-compact" : "workspace"}>
       <aside className="sidebar">
+        <IconButton
+          className="sidebar-collapse-button"
+          size="1"
+          variant="soft"
+          color="gray"
+          aria-label={sidebarCompact ? "Развернуть сайдбар" : "Свернуть сайдбар"}
+          title={sidebarCompact ? "Развернуть сайдбар" : "Свернуть сайдбар"}
+          onClick={toggleSidebar}
+        >
+          {sidebarCompact ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
+        </IconButton>
         <div className="brand">
-          <Link className="brand-home" href={projectHref("/dashboard", selectedProject?.id)}>
+          <Link
+            className="brand-home"
+            href={projectHref("/dashboard", selectedProject?.id)}
+            title={sidebarCompact ? (workspace?.name ?? "tAsk") : undefined}
+          >
             <span className="brand-mark">{workspace?.name.slice(0, 2).toUpperCase() ?? "TA"}</span>
             <span>
               <strong>{workspace?.name ?? "tAsk"}</strong>
@@ -165,7 +192,10 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                         : "nav-item nav-parent"
                     }
                   >
-                    <Link href={projectHref(href, selectedProject?.id)}>
+                    <Link
+                      href={projectHref(href, selectedProject?.id)}
+                      title={sidebarCompact ? label : undefined}
+                    >
                       <Icon size={16} />
                       <span>{label}</span>
                     </Link>
@@ -213,6 +243,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
               <Link
                 key={href}
                 href={projectHref(href, selectedProject?.id)}
+                title={sidebarCompact ? label : undefined}
                 className={
                   pathname === href ||
                   (href === "/projects" &&
@@ -232,7 +263,12 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             );
           })}
         </nav>
-        <div className="profile">
+        <div
+          className="profile"
+          title={
+            sidebarCompact ? (workspace?.members.at(0)?.displayName ?? "Пользователь") : undefined
+          }
+        >
           <Avatar
             fallback={workspace?.members.at(0)?.displayName.slice(0, 1) ?? "?"}
             size="2"

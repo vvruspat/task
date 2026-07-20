@@ -2,6 +2,9 @@ import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiExtraModels, ApiProperty, ApiPropertyOptional, getSchemaPath } from "@nestjs/swagger";
 import type { AgentRunStatus } from "../persistence/types/core-persistence.types.js";
 import type {
+  AgentChatDetail,
+  AgentChatMessage,
+  AgentChatSummary,
   AgentRunConfirmationLink,
   AgentRunDetail,
   AgentRunIntakeResponse,
@@ -9,10 +12,11 @@ import type {
   AgentRunSummary,
   AgentRunToolCallAudit,
   CreateTelegramAgentRunInput,
-  CreateWebAgentChatInput,
+  CreateWebAgentChatTurnInput,
   TelegramAgentRunAttachmentInput,
   TelegramAgentRunDocumentAttachmentInput,
   TelegramAgentRunPhotoAttachmentInput,
+  UpdateAgentChatInput,
   WebAgentChatMessage,
 } from "./agent.contracts.js";
 
@@ -121,18 +125,73 @@ export class WebAgentChatMessageDto implements WebAgentChatMessage {
   readonly content = "";
 }
 
-export class CreateWebAgentChatDto implements CreateWebAgentChatInput {
-  @ApiProperty({ isArray: true, type: WebAgentChatMessageDto })
-  readonly messages: WebAgentChatMessage[] = [];
+export class CreateWebAgentChatDto implements CreateWebAgentChatTurnInput {
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
+  readonly chatId?: string | null;
 
-  @ApiPropertyOptional({ format: "uuid", nullable: true })
+  @ApiProperty({ minLength: 1, maxLength: maxInputTextLength, type: String })
+  readonly message = "";
+
+  @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
   readonly projectId?: string | null;
 }
 
+export class UpdateAgentChatDto implements UpdateAgentChatInput {
+  @ApiProperty({ minLength: 1, maxLength: 120, type: String })
+  readonly title = "";
+}
+
+export class ParseUpdateAgentChatBodyPipe implements PipeTransform<unknown, UpdateAgentChatInput> {
+  transform(value: unknown): UpdateAgentChatInput {
+    if (!isUnknownRecord(value)) throw new BadRequestException("Chat update must be an object.");
+    return { title: readRequiredTrimmedString(value, "title", 120) };
+  }
+}
+
+export class AgentChatMessageDto implements AgentChatMessage {
+  @ApiProperty({ format: "uuid" }) readonly id: string;
+  @ApiProperty({ enum: ["user", "assistant"] }) readonly role: AgentChatMessage["role"];
+  @ApiProperty() readonly content: string;
+  @ApiProperty({ format: "date-time" }) readonly createdAt: string;
+
+  constructor(value: AgentChatMessage) {
+    this.id = value.id;
+    this.role = value.role;
+    this.content = value.content;
+    this.createdAt = value.createdAt;
+  }
+}
+
+export class AgentChatSummaryDto implements AgentChatSummary {
+  @ApiProperty({ format: "uuid" }) readonly id: string;
+  @ApiProperty({ format: "uuid" }) readonly workspaceId: string;
+  @ApiProperty() readonly title: string;
+  @ApiProperty({ format: "date-time" }) readonly createdAt: string;
+  @ApiProperty({ format: "date-time" }) readonly updatedAt: string;
+
+  constructor(value: AgentChatSummary) {
+    this.id = value.id;
+    this.workspaceId = value.workspaceId;
+    this.title = value.title;
+    this.createdAt = value.createdAt;
+    this.updatedAt = value.updatedAt;
+  }
+}
+
+export class AgentChatDetailDto extends AgentChatSummaryDto implements AgentChatDetail {
+  @ApiProperty({ isArray: true, type: AgentChatMessageDto })
+  readonly messages: AgentChatMessageDto[];
+
+  constructor(value: AgentChatDetail) {
+    super(value);
+    this.messages = value.messages.map((message) => new AgentChatMessageDto(message));
+  }
+}
+
 export class ParseCreateWebAgentChatBodyPipe
-  implements PipeTransform<unknown, CreateWebAgentChatInput>
+  implements PipeTransform<unknown, CreateWebAgentChatTurnInput>
 {
-  transform(value: unknown): CreateWebAgentChatInput {
+  transform(value: unknown): CreateWebAgentChatTurnInput {
     return parseCreateWebAgentChatInput(value);
   }
 }
@@ -345,40 +404,20 @@ export function parseCreateTelegramAgentRunInput(value: unknown): CreateTelegram
   };
 }
 
-export function parseCreateWebAgentChatInput(value: unknown): CreateWebAgentChatInput {
-  if (
-    !isUnknownRecord(value) ||
-    !Array.isArray(value["messages"]) ||
-    value["messages"].length === 0
-  ) {
-    throw new BadRequestException("messages must be a non-empty array.");
-  }
-
-  const messages = value["messages"].map(parseWebAgentChatMessage);
-  const lastMessage = messages.at(-1);
-
-  if (lastMessage?.role !== "user") {
-    throw new BadRequestException("The last message must be from the user.");
-  }
+export function parseCreateWebAgentChatInput(value: unknown): CreateWebAgentChatTurnInput {
+  if (!isUnknownRecord(value)) throw new BadRequestException("Chat request must be an object.");
 
   return {
-    messages,
+    message: readRequiredTrimmedString(value, "message", maxInputTextLength),
+    // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket access.
+    ...(value["chatId"] === undefined
+      ? {}
+      : { chatId: readNullableUuid(value["chatId"], "chatId") }),
+    // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket access.
     ...(value["projectId"] === undefined
       ? {}
       : { projectId: readNullableUuid(value["projectId"], "projectId") }),
   };
-}
-
-function parseWebAgentChatMessage(value: unknown): WebAgentChatMessage {
-  if (!isUnknownRecord(value) || (value["role"] !== "user" && value["role"] !== "assistant")) {
-    throw new BadRequestException("Each message must have a valid role.");
-  }
-
-  if (typeof value["content"] !== "string" || value["content"].trim().length === 0) {
-    throw new BadRequestException("Each message must have non-empty content.");
-  }
-
-  return { role: value["role"], content: value["content"].trim() };
 }
 
 function readNullableUuid(value: unknown, field: string): string | null {

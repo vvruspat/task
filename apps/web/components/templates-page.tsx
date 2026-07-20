@@ -41,6 +41,7 @@ import {
   Workflow,
   X,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import type { FormEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -61,6 +62,8 @@ import { useWorkspaceStore } from "../lib/workspace-store";
 type Feedback = { color: "green" | "red"; message: string } | null;
 
 export function TemplatesPage(): ReactNode {
+  const searchParams = useSearchParams();
+  const requestedSkillId = searchParams.get("skill");
   const { data, error, loading, refresh } = useWorkspaceData();
   const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
   const [query, setQuery] = useState("");
@@ -85,9 +88,17 @@ export function TemplatesPage(): ReactNode {
 
   useEffect(() => {
     const skills = data?.taskSkills ?? [];
+    if (
+      selectedSkillId === null &&
+      requestedSkillId !== null &&
+      skills.some((skill) => skill.id === requestedSkillId)
+    ) {
+      setSelectedSkillId(requestedSkillId);
+      return;
+    }
     if (selectedSkillId !== null && skills.some((skill) => skill.id === selectedSkillId)) return;
     setSelectedSkillId(skills.at(0)?.id ?? null);
-  }, [data?.taskSkills, selectedSkillId]);
+  }, [data?.taskSkills, requestedSkillId, selectedSkillId]);
 
   useEffect(() => {
     if (data === null || selectedSkillId === null) {

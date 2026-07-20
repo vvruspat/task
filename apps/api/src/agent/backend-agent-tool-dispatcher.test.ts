@@ -2,9 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { ProjectDetailDto } from "../projects/projects.dto.js";
 import type { TaskSkillSummary } from "../task-skills/task-skills.contracts.js";
-import { TaskSkillApplyResultDto, TaskSkillSummaryDto } from "../task-skills/task-skills.dto.js";
+import {
+  TaskSkillApplyResultDto,
+  TaskSkillDetailDto,
+  TaskSkillSummaryDto,
+} from "../task-skills/task-skills.dto.js";
 import type { TaskSkillsService } from "../task-skills/task-skills.service.js";
 import { TaskDetailDto } from "../tasks/tasks.dto.js";
+import { WorkspaceDetailDto } from "../workspaces/workspaces.dto.js";
 import {
   BackendAgentToolOperationDispatcher,
   findMatchingTaskSkills,
@@ -18,6 +23,72 @@ const taskId = "55555555-5555-4555-8555-555555555555";
 const taskSkillId = "77777777-7777-4777-8777-777777777777";
 const marinaUserId = "88888888-8888-4888-8888-888888888888";
 const now = new Date("2026-07-18T09:00:00.000Z");
+
+test("BackendAgentToolOperationDispatcher creates a reusable task template", async () => {
+  const calls: unknown[] = [];
+  const dispatcher = new BackendAgentToolOperationDispatcher(
+    {
+      async createProject() {
+        throw new Error("Unexpected project call.");
+      },
+    },
+    {
+      async addTaskSubtasks() {
+        throw new Error("Unexpected subtask call.");
+      },
+      async createTask() {
+        throw new Error("Unexpected task call.");
+      },
+    },
+    taskSkillsService({
+      skills: [],
+      onCreate(actualWorkspaceId, actualUserId, input) {
+        calls.push({ actualWorkspaceId, actualUserId, input });
+      },
+    }),
+  );
+
+  const result = await dispatcher.dispatchToolCall(
+    {
+      callId: "call-task-skill-create",
+      toolName: "task_skill_create",
+      arguments: {
+        name: "Песня",
+        aliases: ["трек"],
+        subtasks: [
+          { title: "Написать аранжировку", labels: ["production"] },
+          { title: "Записать вокал" },
+        ],
+      },
+    },
+    { workspaceId, userId },
+  );
+
+  assert.deepEqual(result.result, {
+    kind: "task_skill_created",
+    id: taskSkillId,
+    name: "Песня",
+    workspaceId,
+    subtaskCount: 2,
+    subtasks: [{ title: "Написать аранжировку" }, { title: "Записать вокал" }],
+  });
+  assert.deepEqual(calls, [
+    {
+      actualWorkspaceId: workspaceId,
+      actualUserId: userId,
+      input: {
+        name: "Песня",
+        aliases: ["трек"],
+        definition: {
+          subtasks: [
+            { title: "Написать аранжировку", labels: ["production"] },
+            { title: "Записать вокал" },
+          ],
+        },
+      },
+    },
+  ]);
+});
 
 test("BackendAgentToolOperationDispatcher creates a project through the service layer", async () => {
   const calls: unknown[] = [];
@@ -50,6 +121,22 @@ test("BackendAgentToolOperationDispatcher creates a project through the service 
       },
     },
     emptyTaskSkillsService(),
+    {
+      async getWorkspace() {
+        return new WorkspaceDetailDto({
+          id: workspaceId,
+          name: "tAsk Local",
+          slug: "task-local",
+          description: null,
+          members: [],
+          createdAt: now,
+          updatedAt: now,
+        });
+      },
+      async listMembers() {
+        return [];
+      },
+    },
   );
 
   const result = await dispatcher.dispatchToolCall(
@@ -64,6 +151,9 @@ test("BackendAgentToolOperationDispatcher creates a project through the service 
   assert.equal(result.status, "success");
   assert.deepEqual(result.result, {
     id: projectId,
+    key: "AR",
+    slug: "album-release",
+    workspaceSlug: "task-local",
     title: "Album recording",
     workspaceId,
   });
@@ -127,6 +217,7 @@ test("BackendAgentToolOperationDispatcher creates a task in the selected project
   assert.equal(result.status, "success");
   assert.deepEqual(result.result, {
     id: taskId,
+    number: 1,
     projectId,
     title: "Record vocals",
     workspaceId,
@@ -183,12 +274,17 @@ test("BackendAgentToolOperationDispatcher applies one matching task template", a
   assert.deepEqual(result.result, {
     kind: "task_skill_applied",
     id: taskId,
+    number: 1,
     projectId,
     title: "хуе морхэ",
     workspaceId,
     taskSkillId,
     taskSkillVersion: 1,
     createdSubtaskCount: 2,
+    subtasks: [
+      { id: "66666666-6666-4666-8666-666666666666", number: 2, title: "Step one" },
+      { id: "66666666-6666-4666-8666-666666666666", number: 2, title: "Step two" },
+    ],
   });
   assert.deepEqual(calls, [
     {
@@ -376,7 +472,10 @@ test("findMatchingTaskSkills handles Russian inflection and ignores generic task
   );
 });
 
-type TaskSkillsServiceDouble = Pick<TaskSkillsService, "applyTaskSkill" | "listActiveTaskSkills">;
+type TaskSkillsServiceDouble = Pick<
+  TaskSkillsService,
+  "applyTaskSkill" | "createTaskSkill" | "listActiveTaskSkills"
+>;
 
 function emptyTaskSkillsService(): TaskSkillsServiceDouble {
   return taskSkillsService({ skills: [] });
@@ -390,8 +489,40 @@ function taskSkillsService(options: {
     userId: string,
     input: { projectId: string; rootTaskTitle: string },
   ) => void;
+  onCreate?: Parameters<TaskSkillsServiceDouble["createTaskSkill"]> extends [
+    infer _WorkspaceId,
+    infer _UserId,
+    infer TInput,
+  ]
+    ? (workspaceId: string, userId: string, input: TInput) => void
+    : never;
 }): TaskSkillsServiceDouble {
   return {
+    async createTaskSkill(actualWorkspaceId, actualUserId, input) {
+      options.onCreate?.(actualWorkspaceId, actualUserId, input);
+      return new TaskSkillDetailDto({
+        id: taskSkillId,
+        workspaceId: actualWorkspaceId,
+        name: input.name,
+        description: input.description ?? null,
+        aliases: input.aliases ?? [],
+        createdByUserId: actualUserId,
+        archivedAt: null,
+        createdAt: now,
+        updatedAt: now,
+        versions: [
+          {
+            id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            workspaceId: actualWorkspaceId,
+            taskSkillId,
+            version: 1,
+            definition: input.definition,
+            createdByUserId: actualUserId,
+            createdAt: now,
+          },
+        ],
+      });
+    },
     async listActiveTaskSkills(): Promise<TaskSkillSummaryDto[]> {
       return options.skills;
     },
@@ -636,6 +767,11 @@ test("BackendAgentToolOperationDispatcher updates task fields, status, due date,
   const statusId = "aaaaaaaa-0000-4000-8000-000000000001";
   const attachmentId = "aaaaaaaa-0000-4000-8000-000000000002";
   const mutationCalls: string[] = [];
+  const realtimeChanges: Array<{
+    workspaceId: string;
+    projectId?: string | null;
+    taskId?: string | null;
+  }> = [];
   const dispatcher = new BackendAgentToolOperationDispatcher(
     {
       async createProject() {
@@ -643,6 +779,14 @@ test("BackendAgentToolOperationDispatcher updates task fields, status, due date,
       },
     },
     {
+      async getTaskById(_workspaceId, actualTaskId) {
+        assert.equal(actualTaskId, taskId);
+        return new TaskDetailDto(taskDetail("Task", null));
+      },
+      async getTaskByIdentifier(_workspaceId, identifier) {
+        assert.deepEqual(identifier, { projectKey: "ZNA", taskNumber: 26 });
+        return new TaskDetailDto(taskDetail("Task", null));
+      },
       async addTaskSubtasks() {
         throw new Error("Unexpected subtask call.");
       },
@@ -707,9 +851,57 @@ test("BackendAgentToolOperationDispatcher updates task fields, status, due date,
         };
       },
     },
+    {
+      async search(_workspaceId, _userId, input) {
+        assert.equal(input.query, "Task");
+        return {
+          items: [
+            {
+              id: taskId,
+              type: "task",
+              title: "Task",
+              description: null,
+              projectId,
+            },
+          ],
+          page: 1,
+          pageSize: 50,
+          total: 1,
+        };
+      },
+    },
+    {
+      publishChange(change) {
+        realtimeChanges.push(change);
+      },
+    },
   );
 
   const context = { workspaceId, userId };
+  const lookup = await dispatcher.dispatchToolCall(
+    {
+      callId: "call-lookup",
+      toolName: "task_lookup",
+      arguments: { reference: "http://localhost:3100/issue/ZNA-26" },
+    },
+    context,
+  );
+  const lookupById = await dispatcher.dispatchToolCall(
+    {
+      callId: "call-lookup-id",
+      toolName: "task_lookup",
+      arguments: { reference: taskId },
+    },
+    context,
+  );
+  const lookupByTitle = await dispatcher.dispatchToolCall(
+    {
+      callId: "call-lookup-title",
+      toolName: "task_lookup",
+      arguments: { reference: "Task" },
+    },
+    context,
+  );
   const updated = await dispatcher.dispatchToolCall(
     {
       callId: "call-update",
@@ -744,8 +936,91 @@ test("BackendAgentToolOperationDispatcher updates task fields, status, due date,
   );
 
   assert.equal(updated.result?.["kind"], "task_updated");
+  assert.equal(lookup.result?.["kind"], "task_found");
+  assert.equal(lookup.result?.["taskId"], taskId);
+  assert.equal(lookupById.result?.["taskId"], taskId);
+  assert.equal(lookupByTitle.result?.["taskId"], taskId);
   assert.equal(status.result?.["kind"], "task_status_updated");
   assert.equal(due.result?.["kind"], "task_due_date_updated");
   assert.equal(attachment.result?.["kind"], "task_link_attachment_added");
   assert.deepEqual(mutationCalls, ["update", "status", "due", "attachment"]);
+  assert.deepEqual(realtimeChanges, [
+    { workspaceId, projectId, taskId },
+    { workspaceId, projectId, taskId },
+    { workspaceId, projectId, taskId },
+    { workspaceId, projectId, taskId },
+  ]);
+});
+
+test("BackendAgentToolOperationDispatcher returns candidates for an ambiguous task title", async () => {
+  const otherTaskId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+  const dispatcher = new BackendAgentToolOperationDispatcher(
+    {
+      async createProject() {
+        throw new Error("Unexpected project call.");
+      },
+    },
+    {
+      async addTaskSubtasks() {
+        throw new Error("Unexpected subtask call.");
+      },
+      async createTask() {
+        throw new Error("Unexpected task create call.");
+      },
+    },
+    emptyTaskSkillsService(),
+    undefined,
+    undefined,
+    undefined,
+    {
+      async search() {
+        return {
+          items: [
+            {
+              id: taskId,
+              type: "task",
+              title: "Записать гитары",
+              description: "Песня 1",
+              projectId,
+            },
+            {
+              id: otherTaskId,
+              type: "task",
+              title: "Записать гитары",
+              description: "Песня 2",
+              projectId,
+            },
+          ],
+          page: 1,
+          pageSize: 50,
+          total: 2,
+        };
+      },
+    },
+  );
+
+  const result = await dispatcher.dispatchToolCall(
+    {
+      callId: "call-ambiguous-lookup",
+      toolName: "task_lookup",
+      arguments: { reference: "Записать гитары" },
+    },
+    { workspaceId, userId },
+  );
+
+  assert.equal(result.result?.["kind"], "task_candidates");
+  assert.deepEqual(result.result?.["candidates"], [
+    {
+      taskId,
+      projectId,
+      title: "Записать гитары",
+      description: "Песня 1",
+    },
+    {
+      taskId: otherTaskId,
+      projectId,
+      title: "Записать гитары",
+      description: "Песня 2",
+    },
+  ]);
 });

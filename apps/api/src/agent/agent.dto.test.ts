@@ -124,32 +124,28 @@ test("parseCreateTelegramAgentRunInput rejects malformed Telegram agent requests
   }
 });
 
-test("parseCreateWebAgentChatInput validates conversation and project context", () => {
+test("parseCreateWebAgentChatInput validates a persisted chat turn", () => {
   assert.deepEqual(
     parseCreateWebAgentChatInput({
-      messages: [
-        { role: "assistant", content: " Чем помочь? " },
-        { role: "user", content: " Покажи статус проекта " },
-      ],
+      chatId: "a0000000-0000-4000-8000-000000000001",
+      message: " Покажи статус проекта ",
       projectId: "b0000000-0000-4000-8000-000000000001",
     }),
     {
-      messages: [
-        { role: "assistant", content: "Чем помочь?" },
-        { role: "user", content: "Покажи статус проекта" },
-      ],
+      chatId: "a0000000-0000-4000-8000-000000000001",
+      message: "Покажи статус проекта",
       projectId: "b0000000-0000-4000-8000-000000000001",
     },
   );
 });
 
-test("parseCreateWebAgentChatInput rejects empty and assistant-ended conversations", () => {
+test("parseCreateWebAgentChatInput rejects empty messages and invalid chat context", () => {
   const invalidPayloads: unknown[] = [
     null,
-    { messages: [] },
-    { messages: [{ role: "assistant", content: "Готово" }] },
-    { messages: [{ role: "user", content: "" }] },
-    { messages: [{ role: "user", content: "Привет" }], projectId: "not-a-uuid" },
+    {},
+    { message: "" },
+    { message: "Привет", chatId: "not-a-uuid" },
+    { message: "Привет", projectId: "not-a-uuid" },
   ];
   for (const payload of invalidPayloads) {
     assert.throws(() => parseCreateWebAgentChatInput(payload), BadRequestException);

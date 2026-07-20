@@ -11,6 +11,7 @@ test("new projects receive a project-scoped board view", () => {
   assert.equal(view.projectId, projectId);
   assert.equal(view.layout, "board");
   assert.equal(view.settings.grouping, "status");
+  assert.equal(view.settings.subGrouping, "parent_task");
   assert.equal(view.settings.showEmptyGroups, true);
   assert.deepEqual(view.settings.filters, [{ field: "project", operator: "is", value: projectId }]);
 });

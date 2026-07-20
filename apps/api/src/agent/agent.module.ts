@@ -8,6 +8,10 @@ import { ConfirmationsService } from "../confirmations/confirmations.service.js"
 import { DatabaseModule } from "../database/database.module.js";
 import { ProjectsModule } from "../projects/projects.module.js";
 import { ProjectsService } from "../projects/projects.service.js";
+import { RealtimeModule } from "../realtime/realtime.module.js";
+import { WorkspaceRealtimeService } from "../realtime/workspace-realtime.service.js";
+import { SearchModule } from "../search/search.module.js";
+import { SearchService } from "../search/search.service.js";
 import { StatusesModule } from "../statuses/statuses.module.js";
 import { StatusesService } from "../statuses/statuses.service.js";
 import { TaskSkillsModule } from "../task-skills/task-skills.module.js";
@@ -25,6 +29,7 @@ import {
 } from "./agent.runtime.js";
 import { AgentService } from "./agent.service.js";
 import type { AgentRunStore } from "./agent.store.js";
+import { AgentChatsController } from "./agent-chats.controller.js";
 import { AgentRunsController } from "./agent-runs.controller.js";
 import { BackendAgentToolOperationDispatcher } from "./backend-agent-tool-dispatcher.js";
 import { TypeOrmAgentRunStore } from "./typeorm-agent-run.store.js";
@@ -51,6 +56,8 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
     workspacesService: WorkspacesService,
     statusesService: StatusesService,
     attachmentsService: AttachmentsService,
+    searchService: SearchService,
+    realtimeService: WorkspaceRealtimeService,
   ): BackendAgentToolOperationDispatcher =>
     new BackendAgentToolOperationDispatcher(
       projectsService,
@@ -59,6 +66,8 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
       workspacesService,
       statusesService,
       attachmentsService,
+      searchService,
+      realtimeService,
     ),
   inject: [
     ProjectsService,
@@ -67,6 +76,8 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
     WorkspacesService,
     StatusesService,
     AttachmentsService,
+    SearchService,
+    WorkspaceRealtimeService,
   ],
 };
 
@@ -86,12 +97,14 @@ const agentServiceProvider: Provider<AgentService> = {
     DatabaseModule,
     ConfirmationsModule,
     ProjectsModule,
+    RealtimeModule,
+    SearchModule,
     StatusesModule,
     TasksModule,
     TaskSkillsModule,
     WorkspacesModule,
   ],
-  controllers: [AgentController, AgentRunsController, WebAgentController],
+  controllers: [AgentController, AgentChatsController, AgentRunsController, WebAgentController],
   providers: [
     BotSharedSecretGuard,
     backendAgentToolOperationDispatcherProvider,

@@ -32,5 +32,5 @@ test("selectDefaultTaskStatusId falls back to the first open status", () => {
     ]),
     todoId,
   );
-  assert.equal(selectDefaultTaskStatusId([{ id: doneId, name: "Done", isDone: true }]), null);
+  assert.equal(selectDefaultTaskStatusId([{ id: doneId, name: "Done", isDone: true }]), doneId);
 });

@@ -14,5 +14,6 @@ const searchServiceProvider: Provider<SearchService> = {
   imports: [DatabaseModule],
   controllers: [SearchController],
   providers: [TypeOrmSearchReadStore, searchServiceProvider],
+  exports: [SearchService],
 })
 export class SearchModule {}

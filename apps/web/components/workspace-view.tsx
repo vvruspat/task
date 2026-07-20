@@ -22,6 +22,7 @@ import { workspaceProjectHref } from "../lib/workspace-url";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { ProjectDangerZone } from "./project-danger-zone";
 import { ProjectStatusesManager } from "./project-statuses-manager";
+import { TaskStatusIndicator } from "./task-status-indicator";
 
 export type ViewKind =
   | "dashboard"
@@ -209,6 +210,7 @@ function TaskRows({
         const done = data.statuses.find(
           (status) => status.projectId === task.projectId && status.isDone,
         );
+        const status = data.statuses.find((item) => item.id === task.statusId);
         return (
           <div className="task-row" key={task.id}>
             <Checkbox
@@ -222,7 +224,12 @@ function TaskRows({
               <strong>{task.title}</strong>
               <small>{task.projectTitle}</small>
             </div>
-            <Badge color="gray">{task.statusName ?? "Без статуса"}</Badge>
+            <Badge color="gray">
+              <span className="task-status-label">
+                <TaskStatusIndicator color={status?.color} size="xs" />
+                {task.statusName ?? "Без статуса"}
+              </span>
+            </Badge>
             <span>{formatDate(task.dueAt)}</span>
           </div>
         );
@@ -317,7 +324,6 @@ function Kanban({
   project,
 }: Readonly<{ data: WorkspaceBootstrap; project: ProjectData | undefined }>): ReactNode {
   if (project === undefined) return <Empty text="Выберите проект, чтобы увидеть канбан." />;
-  const tasksWithoutStatus = project.tasks.filter((task) => task.statusId === null);
   return (
     <div className="board">
       {data.statuses
@@ -328,9 +334,6 @@ function Kanban({
             <KanbanColumn key={status.id} title={status.name} color={status.color} tasks={tasks} />
           );
         })}
-      {tasksWithoutStatus.length > 0 && (
-        <KanbanColumn title="Без статуса" tasks={tasksWithoutStatus} />
-      )}
     </div>
   );
 }
@@ -343,16 +346,17 @@ function KanbanColumn({
     <section>
       <div className="board-heading">
         <strong className="board-heading-title">
-          {color !== undefined && (
-            <span className="status-dot" style={{ backgroundColor: color }} />
-          )}
+          <TaskStatusIndicator color={color} size="xs" />
           {title}
         </strong>
         <Badge>{tasks.length}</Badge>
       </div>
       {tasks.map((task) => (
         <Card key={task.id} className="kanban-card">
-          <strong>{task.title}</strong>
+          <span className="task-status-label">
+            <TaskStatusIndicator color={color} size="sm" />
+            <strong>{task.title}</strong>
+          </span>
           <small>{task.description ?? "Без описания"}</small>
         </Card>
       ))}

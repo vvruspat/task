@@ -11,7 +11,7 @@ export type WorkspaceBreadcrumbData = {
 
 const routeLabels: Readonly<Record<string, string>> = {
   "/agent": "Agent",
-  "/agent-history": "История агента",
+  "/agent-history": "Агент",
   "/confirmations": "Подтверждения",
   "/notifications": "Уведомления",
   "/dashboard": "Дашборд",

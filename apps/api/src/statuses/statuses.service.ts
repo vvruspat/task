@@ -112,6 +112,12 @@ export class StatusesService {
     if (result.status === "duplicate_name") {
       throw new ConflictException("A workspace status with this name already exists.");
     }
+    if (result.status === "last_status") {
+      throw new BadRequestException("A project must keep at least one status.");
+    }
+    if (result.status === "required_status") {
+      throw new BadRequestException("Backlog and In progress are required project statuses.");
+    }
     if (!("workspaceStatus" in result)) {
       throw new NotFoundException("Workspace status was not found.");
     }

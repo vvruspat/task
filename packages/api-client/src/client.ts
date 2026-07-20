@@ -2,6 +2,9 @@ import type { components, operations } from "./generated/openapi.js";
 
 export type AgentRunSummary = components["schemas"]["AgentRunSummaryDto"];
 export type AgentRunDetail = components["schemas"]["AgentRunDetailDto"];
+export type AgentChatSummary = components["schemas"]["AgentChatSummaryDto"];
+export type AgentChatDetail = components["schemas"]["AgentChatDetailDto"];
+export type UpdateAgentChatInput = components["schemas"]["UpdateAgentChatDto"];
 export type DashboardOverview = components["schemas"]["DashboardOverviewDto"];
 export type SearchPage = components["schemas"]["SearchPageDto"];
 export type ConfirmationRequestSummary = components["schemas"]["ConfirmationRequestSummaryDto"];
@@ -79,6 +82,7 @@ type UpdateWorkspaceMemberRoleOperation = operations["WorkspacesController_updat
 type UpdateWorkspaceOperation = operations["WorkspacesController_updateWorkspace"];
 type CreateSavedViewOperation = operations["ViewsController_create"];
 type UpdateSavedViewOperation = operations["ViewsController_update"];
+type ListAgentChatsOperation = operations["AgentChatsController_list"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -198,6 +202,10 @@ export type ConfirmationRequestScopedInput = WorkspaceScopedInput & {
 export type AgentRunScopedInput = WorkspaceScopedInput & {
   agentRunId: string;
 };
+export type AgentChatScopedInput = WorkspaceScopedInput & { chatId: string };
+export type ListAgentChatsRequestInput = WorkspaceScopedInput &
+  NonNullable<ListAgentChatsOperation["parameters"]["query"]>;
+export type UpdateAgentChatRequestInput = AgentChatScopedInput & { body: UpdateAgentChatInput };
 
 export type ProjectScopedInput = WorkspaceScopedInput & {
   projectId: string;
@@ -347,6 +355,10 @@ export type TaskApiClient = {
   listTaskTable(input: ListTaskTableRequestInput): Promise<TaskTablePage>;
   listAgentRuns(input: WorkspaceScopedInput): Promise<AgentRunSummary[]>;
   getAgentRun(input: AgentRunScopedInput): Promise<AgentRunDetail>;
+  listAgentChats(input: ListAgentChatsRequestInput): Promise<AgentChatSummary[]>;
+  getAgentChat(input: AgentChatScopedInput): Promise<AgentChatDetail>;
+  updateAgentChat(input: UpdateAgentChatRequestInput): Promise<AgentChatSummary>;
+  deleteAgentChat(input: AgentChatScopedInput): Promise<AgentChatSummary>;
   listTaskAttachments(input: TaskScopedInput): Promise<TaskAttachment[]>;
   listTaskActivity(input: TaskScopedInput): Promise<TaskActivityEvent[]>;
   listNotifications(input: WorkspaceScopedInput): Promise<NotificationFeed>;
@@ -782,6 +794,33 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: true,
         trustedUserId: options.trustedUserId,
       }),
+    listAgentChats: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `${agentChatsPath(input)}${input.query === undefined ? "" : `?query=${encodeURIComponent(input.query)}`}`,
+        agentChatSummaryArrayParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    getAgentChat: (input) =>
+      request(options.fetch, baseUrl, agentChatPath(input), agentChatDetailParser, {
+        method: "GET",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    updateAgentChat: (input) =>
+      request(options.fetch, baseUrl, agentChatPath(input), agentChatSummaryParser, {
+        body: input.body,
+        method: "PATCH",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
+    deleteAgentChat: (input) =>
+      request(options.fetch, baseUrl, agentChatPath(input), agentChatSummaryParser, {
+        method: "DELETE",
+        requiresTrustedUserId: true,
+        trustedUserId: options.trustedUserId,
+      }),
     listProjects: (input) =>
       request(
         options.fetch,
@@ -1159,6 +1198,14 @@ function agentRunPath(input: AgentRunScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/agent/runs/${encodePathSegment(input.agentRunId)}`;
 }
 
+function agentChatsPath(input: WorkspaceScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/agent/chats`;
+}
+
+function agentChatPath(input: AgentChatScopedInput): string {
+  return `${agentChatsPath(input)}/${encodePathSegment(input.chatId)}`;
+}
+
 const healthResponseParser: ResponseParser<HealthResponse> = {
   isValid: isHealthResponse,
   label: "health response",
@@ -1220,6 +1267,18 @@ const agentRunSummaryArrayParser: ResponseParser<AgentRunSummary[]> = {
 const agentRunDetailParser: ResponseParser<AgentRunDetail> = {
   isValid: isAgentRunDetail,
   label: "agent run detail",
+};
+const agentChatSummaryParser: ResponseParser<AgentChatSummary> = {
+  isValid: isAgentChatSummary,
+  label: "agent chat summary",
+};
+const agentChatSummaryArrayParser: ResponseParser<AgentChatSummary[]> = {
+  isValid: (value): value is AgentChatSummary[] => isArrayOf(value, isAgentChatSummary),
+  label: "agent chat list",
+};
+const agentChatDetailParser: ResponseParser<AgentChatDetail> = {
+  isValid: isAgentChatDetail,
+  label: "agent chat detail",
 };
 
 const projectSummaryArrayParser: ResponseParser<ProjectSummary[]> = {
@@ -1390,6 +1449,33 @@ function isAgentRunSummary(value: unknown): value is AgentRunSummary {
     hasOptionalNullableString(value, "error") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")
+  );
+}
+
+function isAgentChatSummary(value: unknown): value is AgentChatSummary {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "title") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
+}
+
+function isAgentChatDetail(value: unknown): value is AgentChatDetail {
+  return (
+    isAgentChatSummary(value) &&
+    isArrayOf(
+      readProperty(value, "messages"),
+      (message): message is AgentChatDetail["messages"][number] =>
+        isJsonObject(message) &&
+        hasString(message, "id") &&
+        (readProperty(message, "role") === "user" ||
+          readProperty(message, "role") === "assistant") &&
+        hasString(message, "content") &&
+        hasString(message, "createdAt"),
+    )
   );
 }
 

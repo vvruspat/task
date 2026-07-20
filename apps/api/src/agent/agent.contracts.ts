@@ -23,18 +23,65 @@ export type CreateWebAgentChatInput = {
   projectId?: string | null;
 };
 
+export type CreateWebAgentChatTurnInput = {
+  chatId?: string | null;
+  message: string;
+  projectId?: string | null;
+};
+
+export type AgentChatSummary = {
+  id: string;
+  workspaceId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AgentChatMessage = {
+  id: string;
+  role: "assistant" | "user";
+  content: string;
+  createdAt: string;
+};
+
+export type AgentChatDetail = AgentChatSummary & {
+  messages: AgentChatMessage[];
+};
+
+export type UpdateAgentChatInput = {
+  title: string;
+};
+
 export type WebAgentStreamDeltaEvent = {
   type: "text-delta";
   delta: string;
 };
 
+export type WebAgentStreamStatusEvent = {
+  type: "status";
+  id: string;
+  label: string;
+  state: "running" | "complete" | "error";
+};
+
+export type WebAgentStreamErrorEvent = {
+  type: "error";
+  message: string;
+};
+
 export type WebAgentStreamDoneEvent = {
   type: "done";
   agentRunId: string;
+  chatId: string;
+  chatTitle: string;
   status: AgentRunStatus;
 };
 
-export type WebAgentStreamEvent = WebAgentStreamDeltaEvent | WebAgentStreamDoneEvent;
+export type WebAgentStreamEvent =
+  | WebAgentStreamDeltaEvent
+  | WebAgentStreamStatusEvent
+  | WebAgentStreamErrorEvent
+  | WebAgentStreamDoneEvent;
 
 export type TelegramAgentRunDocumentAttachmentInput = {
   kind: "document";

@@ -2,6 +2,7 @@
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
+  Avatar,
   Badge,
   Button,
   Card,
@@ -20,6 +21,7 @@ import {
   ArrowLeft,
   Box,
   CalendarDays,
+  Check,
   ChevronRight,
   Columns3,
   ExternalLink,
@@ -38,12 +40,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { DragEvent, ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties, DragEvent, ReactNode } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { issueIdentifier } from "../lib/issue-url";
 import {
   logicalStatusKeyForTask,
   mergeLogicalStatuses,
+  mergeLogicalStatusesForProjects,
   normalizeStatusFilterValue,
   noStatusKey,
   resolveProjectStatusId,
@@ -60,6 +63,7 @@ import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
 import { useWorkspaceStore } from "../lib/workspace-store";
 import { workspaceIssueHref, workspaceViewHref } from "../lib/workspace-url";
 import { TaskDetailsContent } from "./task-details-content";
+import { TaskStatusIndicator } from "./task-status-indicator";
 
 type ViewSettings = SavedView["settings"];
 type ViewGrouping = ViewSettings["grouping"];
@@ -73,12 +77,22 @@ type TaskWithProject = TaskSummary & {
 };
 type TaskGroup = { id: string; title: string; tasks: TaskWithProject[] };
 type TaskBoardOverride = { statusId: string | null; position: string };
+type SubtaskStatusSlice = {
+  id: string;
+  label: string;
+  color: string;
+  count: number;
+};
 type MoveBoardTask = (
   task: TaskWithProject,
   targetStatusKey: string,
   targetTasks: TaskWithProject[],
 ) => Promise<void>;
 type OpenTaskPreview = (task: TaskWithProject) => void;
+type QuickTaskUpdate =
+  | { operation: "assignee"; assigneeUserId: string | null }
+  | { operation: "status"; statusId: string };
+type UpdateCardTask = (task: TaskWithProject, update: QuickTaskUpdate) => Promise<void>;
 
 const defaultSettings: ViewSettings = {
   grouping: "status",
@@ -326,6 +340,30 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
       setMovingTaskId(null);
     }
   };
+  const updateCardTask: UpdateCardTask = async (task, update) => {
+    setMutationError(null);
+    try {
+      const response = await fetch(`/api/workspace/tasks/${task.id}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          workspaceId: data.workspace.id,
+          projectId: task.projectId,
+          ...update,
+        }),
+      });
+      const result: unknown = await response.json();
+      if (!response.ok || !isTaskSummary(result)) {
+        setMutationError(readError(result, "Не удалось обновить задачу."));
+        return;
+      }
+      updateWorkspaceTask(result);
+    } catch (updateError: unknown) {
+      setMutationError(
+        updateError instanceof Error ? updateError.message : "Не удалось обновить задачу.",
+      );
+    }
+  };
 
   const hasChanges = selected !== undefined && draft !== null && !viewDraftEquals(draft, selected);
 
@@ -373,6 +411,7 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
             movingTaskId={movingTaskId}
             onMoveTask={moveBoardTask}
             onOpenTask={(task) => setPreviewTaskId(task.id)}
+            onUpdateTask={updateCardTask}
           />
         </section>
       )}
@@ -661,7 +700,7 @@ function FilterEditor({
           }}
         >
           <Select.Trigger aria-label="Условие фильтра" />
-          <Select.Content>
+          <Select.Content className="view-nested-select-content">
             {operators.map((item) => (
               <Select.Item key={item.value} value={item.value}>
                 {item.label}
@@ -693,7 +732,7 @@ function FilterEditor({
           ) : (
             <Select.Root value={value} onValueChange={setValue}>
               <Select.Trigger aria-label="Значение фильтра" />
-              <Select.Content>
+              <Select.Content className="view-nested-select-content">
                 {valueOptions.map((item) => (
                   <Select.Item key={item.value} value={item.value}>
                     {item.label}
@@ -853,7 +892,7 @@ function SettingSelect<TValue extends string>({
       <Text size="2">{label}</Text>
       <Select.Root value={value} onValueChange={onChange}>
         <Select.Trigger />
-        <Select.Content>
+        <Select.Content className="view-nested-select-content">
           {options.map((option) => (
             <Select.Item key={option.value} value={option.value}>
               {option.label}
@@ -888,6 +927,7 @@ function ViewContent({
   movingTaskId,
   onMoveTask,
   onOpenTask,
+  onUpdateTask,
 }: Readonly<{
   data: WorkspaceBootstrap;
   draft: ViewDraft;
@@ -895,6 +935,7 @@ function ViewContent({
   movingTaskId: string | null;
   onMoveTask: MoveBoardTask;
   onOpenTask: OpenTaskPreview;
+  onUpdateTask: UpdateCardTask;
 }>): ReactNode {
   const tasks = useMemo(
     () => collectTasks(data, draft, taskOverrides),
@@ -922,11 +963,13 @@ function ViewContent({
   return draft.layout === "board" ? (
     <BoardView
       groups={groups}
+      tasks={tasks}
       data={data}
       draft={draft}
       movingTaskId={movingTaskId}
       onMoveTask={onMoveTask}
       onOpenTask={onOpenTask}
+      onUpdateTask={onUpdateTask}
     />
   ) : (
     <ListView groups={groups} data={data} draft={draft} onOpenTask={onOpenTask} />
@@ -1062,7 +1105,7 @@ function MatrixView({
                       type="button"
                       className="template-matrix-cell"
                       style={{
-                        backgroundColor: status?.color ?? "#e8e8ec",
+                        backgroundColor: status?.color ?? "#A1A1AA",
                         color: readableColor(status?.color),
                       }}
                       title={`${status?.name ?? "Без статуса"} · ${assignee}`}
@@ -1083,36 +1126,65 @@ function MatrixView({
 
 function BoardView({
   groups,
+  tasks,
   data,
   draft,
   movingTaskId,
   onMoveTask,
   onOpenTask,
+  onUpdateTask,
 }: Readonly<{
   groups: TaskGroup[];
+  tasks: TaskWithProject[];
   data: WorkspaceBootstrap;
   draft: ViewDraft;
   movingTaskId: string | null;
   onMoveTask: MoveBoardTask;
   onOpenTask: OpenTaskPreview;
+  onUpdateTask: UpdateCardTask;
 }>): ReactNode {
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
-  const [dropGroupId, setDropGroupId] = useState<string | null>(null);
+  const [dropTargetKey, setDropTargetKey] = useState<string | null>(null);
+  const [collapsedRowIds, setCollapsedRowIds] = useState<ReadonlySet<string>>(() => new Set());
   const canDrag = draft.settings.grouping === "status";
+  const rowGroups = useMemo(
+    () =>
+      draft.settings.subGrouping === "none"
+        ? []
+        : groupTasks(tasks, draft.settings.subGrouping, data, false),
+    [data, draft.settings.subGrouping, tasks],
+  );
+  const statusColorsByGroupId = useMemo(() => {
+    if (draft.settings.grouping !== "status") return new Map<string, string>();
+    return new Map(
+      mergeLogicalStatusesForProjects(
+        data.statuses,
+        new Set(tasks.map((task) => task.projectId)),
+      ).map((status) => [status.key, status.color]),
+    );
+  }, [data.statuses, draft.settings.grouping, tasks]);
+  const toggleRow = (rowId: string): void => {
+    setCollapsedRowIds((current) => {
+      const next = new Set(current);
+      if (next.has(rowId)) next.delete(rowId);
+      else next.add(rowId);
+      return next;
+    });
+  };
   const resetDrag = (): void => {
     setDraggedTaskId(null);
-    setDropGroupId(null);
+    setDropTargetKey(null);
   };
   const handleDragStart = (event: DragEvent<HTMLDivElement>, taskId: string): void => {
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.setData("text/plain", taskId);
     setDraggedTaskId(taskId);
   };
-  const handleDragOver = (event: DragEvent<HTMLElement>, groupId: string): void => {
+  const handleDragOver = (event: DragEvent<HTMLElement>, targetKey: string): void => {
     if (!canDrag || movingTaskId !== null) return;
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
-    setDropGroupId(groupId);
+    setDropTargetKey(targetKey);
   };
   const handleDrop = (event: DragEvent<HTMLElement>, group: TaskGroup): void => {
     event.preventDefault();
@@ -1127,48 +1199,108 @@ function BoardView({
     resetDrag();
     void onMoveTask(droppedTask, group.id, group.tasks);
   };
+  const renderTask = (task: TaskWithProject): ReactNode => (
+    // biome-ignore lint/a11y/noStaticElementInteractions: This wrapper owns native drag events; the card contains a keyboard-accessible preview button.
+    <div
+      key={task.id}
+      className={draggedTaskId === task.id ? "saved-task-drag dragging" : "saved-task-drag"}
+      draggable={canDrag && movingTaskId === null}
+      onDragStart={(event) => handleDragStart(event, task.id)}
+      onDragEnd={resetDrag}
+    >
+      <TaskCard
+        task={task}
+        data={data}
+        properties={draft.settings.displayProperties}
+        moving={movingTaskId === task.id}
+        onOpenTask={onOpenTask}
+        onUpdateTask={onUpdateTask}
+      />
+    </div>
+  );
+
+  if (draft.settings.subGrouping !== "none") {
+    return (
+      <div className="saved-board-grouped-scroll">
+        <div
+          className="saved-board-grouped"
+          style={{
+            gridTemplateColumns: `repeat(${Math.max(groups.length, 1)}, minmax(250px, 1fr))`,
+          }}
+        >
+          {groups.map((group) => (
+            <div className="saved-board-column-head" key={group.id}>
+              <strong>{group.title}</strong>
+              <GroupCountBadge
+                count={group.tasks.length}
+                statusColor={statusColorsByGroupId.get(group.id)}
+              />
+            </div>
+          ))}
+          {rowGroups.map((row) => {
+            const rowTaskIds = new Set(row.tasks.map((task) => task.id));
+            const collapsed = collapsedRowIds.has(row.id);
+            return (
+              <Fragment key={row.id}>
+                <button
+                  type="button"
+                  className="saved-board-row-head"
+                  aria-expanded={!collapsed}
+                  onClick={() => toggleRow(row.id)}
+                >
+                  <ChevronRight size={13} aria-hidden="true" />
+                  <strong>{row.title}</strong>
+                  <span>{row.tasks.length}</span>
+                  <MoreHorizontal size={15} aria-hidden="true" />
+                </button>
+                {!collapsed &&
+                  groups.map((group) => {
+                    const targetKey = `${row.id}:${group.id}`;
+                    const cellTasks = group.tasks.filter((task) => rowTaskIds.has(task.id));
+                    return (
+                      <section
+                        key={targetKey}
+                        className={
+                          dropTargetKey === targetKey
+                            ? "saved-board-group-cell kanban-drop-target"
+                            : "saved-board-group-cell"
+                        }
+                        aria-label={`${row.title}, ${group.title}`}
+                        onDragOver={(event) => handleDragOver(event, targetKey)}
+                        onDrop={(event) => handleDrop(event, group)}
+                      >
+                        {cellTasks.map(renderTask)}
+                      </section>
+                    );
+                  })}
+              </Fragment>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="saved-board">
       {groups.map((group) => (
         <section
           key={group.id}
-          className={dropGroupId === group.id ? "kanban-drop-target" : undefined}
+          className={dropTargetKey === group.id ? "kanban-drop-target" : undefined}
           aria-label={group.title}
           onDragOver={(event) => handleDragOver(event, group.id)}
           onDrop={(event) => handleDrop(event, group)}
         >
           <div className="saved-group-head">
             <strong>{group.title}</strong>
-            <Badge color="gray">{group.tasks.length}</Badge>
+            <GroupCountBadge
+              count={group.tasks.length}
+              statusColor={statusColorsByGroupId.get(group.id)}
+            />
           </div>
-          {renderSubgroups(group.tasks, draft.settings.subGrouping, data).map((subgroup) => (
+          {renderSubgroups(group.tasks, "none", data).map((subgroup) => (
             <div key={subgroup.id} className="saved-subgroup">
-              {draft.settings.subGrouping !== "none" && (
-                <Text size="1" color="gray">
-                  {subgroup.title}
-                </Text>
-              )}
-              {subgroup.tasks.map((task) => (
-                // biome-ignore lint/a11y/noStaticElementInteractions: This wrapper owns native drag events; the card contains a keyboard-accessible preview button.
-                <div
-                  key={task.id}
-                  className={
-                    draggedTaskId === task.id ? "saved-task-drag dragging" : "saved-task-drag"
-                  }
-                  draggable={canDrag && movingTaskId === null}
-                  onDragStart={(event) => handleDragStart(event, task.id)}
-                  onDragEnd={resetDrag}
-                >
-                  <TaskCard
-                    task={task}
-                    data={data}
-                    properties={draft.settings.displayProperties}
-                    moving={movingTaskId === task.id}
-                    onOpenTask={onOpenTask}
-                  />
-                </div>
-              ))}
+              {subgroup.tasks.map(renderTask)}
             </div>
           ))}
         </section>
@@ -1176,6 +1308,22 @@ function BoardView({
     </div>
   );
 }
+
+function GroupCountBadge({
+  count,
+  statusColor,
+}: Readonly<{ count: number; statusColor: string | undefined }>): ReactNode {
+  if (statusColor === undefined) return <Badge color="gray">{count}</Badge>;
+  return (
+    <Badge
+      className="status-count-badge"
+      style={{ "--status-badge-color": statusColor } as CSSProperties}
+    >
+      {count}
+    </Badge>
+  );
+}
+
 function ListView({
   groups,
   data,
@@ -1223,36 +1371,245 @@ function TaskCard({
   properties,
   moving = false,
   onOpenTask,
+  onUpdateTask,
 }: Readonly<{
   task: TaskWithProject;
   data: WorkspaceBootstrap;
   properties: DisplayProperty[];
   moving?: boolean;
   onOpenTask: OpenTaskPreview;
+  onUpdateTask: UpdateCardTask;
 }>): ReactNode {
+  const status = data.statuses.find((item) => item.id === task.statusId);
+  const assignee = data.workspace.members.find((member) => member.userId === task.assigneeUserId);
+  const hasSubtasks = subtaskStatusSlices(task.id, data).length > 0;
   return (
     <Card className={moving ? "saved-task-card moving" : "saved-task-card"}>
+      {hasSubtasks && <SubtaskStatusChart task={task} data={data} mode="chart" />}
       <button
         className="task-preview-button"
         type="button"
         aria-label={`Открыть задачу ${task.title}`}
         onClick={() => onOpenTask(task)}
       />
-      <Link
-        className="issue-identifier-link"
-        href={workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title)}
-        aria-label={`Открыть задачу ${issueIdentifier(task.projectKey, task.number)} на отдельной странице`}
-        onClick={(event) => event.stopPropagation()}
-      >
-        {issueIdentifier(task.projectKey, task.number)}
-        <ExternalLink size={11} />
-      </Link>
-      <strong>{task.title}</strong>
+      <div className="saved-task-card-head">
+        <Link
+          className="issue-identifier-link"
+          href={workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title)}
+          aria-label={`Открыть задачу ${issueIdentifier(task.projectKey, task.number)} на отдельной странице`}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {issueIdentifier(task.projectKey, task.number)}
+          <ExternalLink size={11} />
+        </Link>
+        <TaskAssigneePicker
+          task={task}
+          assignee={assignee}
+          members={data.workspace.members}
+          onChange={(assigneeUserId) =>
+            onUpdateTask(task, { operation: "assignee", assigneeUserId })
+          }
+        />
+      </div>
+      <div className="saved-task-card-title">
+        <TaskStatusPicker
+          status={status}
+          statuses={data.statuses.filter((item) => item.projectId === task.projectId)}
+          onChange={(statusId) => onUpdateTask(task, { operation: "status", statusId })}
+        />
+        <strong>{task.title}</strong>
+      </div>
       {task.parentTaskId !== null && task.parentTaskId !== undefined && <small>Подзадача</small>}
-      <TaskProperties task={task} data={data} properties={properties} />
+      {hasSubtasks && <SubtaskStatusChart task={task} data={data} mode="legend" />}
+      <TaskProperties
+        task={task}
+        data={data}
+        properties={properties.filter(
+          (property) => property !== "status" && property !== "assignee",
+        )}
+      />
     </Card>
   );
 }
+
+function TaskStatusPicker({
+  status,
+  statuses,
+  onChange,
+}: Readonly<{
+  status: WorkspaceBootstrap["statuses"][number] | undefined;
+  statuses: WorkspaceBootstrap["statuses"];
+  onChange: (statusId: string) => Promise<void>;
+}>): ReactNode {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const visibleStatuses = statuses.filter((item) =>
+    item.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()),
+  );
+  return (
+    <Popover.Root
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen);
+        if (!nextOpen) setQuery("");
+      }}
+    >
+      <Popover.Trigger>
+        <button
+          type="button"
+          className="task-card-status-trigger"
+          aria-label={`Изменить статус: ${status?.name ?? "Backlog"}`}
+          title={status?.name ?? "Backlog"}
+          onClick={(event) => event.stopPropagation()}
+          onPointerDown={(event) => event.stopPropagation()}
+        >
+          <TaskStatusIndicator color={status?.color} size="sm" />
+        </button>
+      </Popover.Trigger>
+      <Popover.Content className="task-card-picker" align="start" sideOffset={6}>
+        <TextField.Root
+          size="2"
+          value={query}
+          placeholder="Изменить статус…"
+          aria-label="Поиск статуса"
+          onChange={(event) => setQuery(event.target.value)}
+        >
+          <TextField.Slot>
+            <Search size={14} />
+          </TextField.Slot>
+        </TextField.Root>
+        <div className="task-card-picker-list">
+          {visibleStatuses.map((item) => (
+            <button
+              type="button"
+              className="task-card-picker-option"
+              key={item.id}
+              onClick={(event) => {
+                event.stopPropagation();
+                setOpen(false);
+                void onChange(item.id);
+              }}
+            >
+              <TaskStatusIndicator color={item.color} size="md" />
+              <span className="task-card-picker-option-label">{item.name}</span>
+              {item.id === status?.id && <Check size={15} aria-hidden="true" />}
+            </button>
+          ))}
+        </div>
+      </Popover.Content>
+    </Popover.Root>
+  );
+}
+
+function TaskAssigneePicker({
+  task,
+  assignee,
+  members,
+  onChange,
+}: Readonly<{
+  task: TaskWithProject;
+  assignee: WorkspaceBootstrap["workspace"]["members"][number] | undefined;
+  members: WorkspaceBootstrap["workspace"]["members"];
+  onChange: (assigneeUserId: string | null) => Promise<void>;
+}>): ReactNode {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const visibleMembers = members.filter((member) =>
+    `${member.displayName} ${member.email ?? ""}`
+      .toLocaleLowerCase()
+      .includes(query.trim().toLocaleLowerCase()),
+  );
+  return (
+    <Popover.Root
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen);
+        if (!nextOpen) setQuery("");
+      }}
+    >
+      <Popover.Trigger>
+        <button
+          type="button"
+          className="task-card-assignee-trigger"
+          aria-label={`Изменить исполнителя задачи ${task.title}`}
+          title={assignee?.displayName ?? "Не назначено"}
+          onClick={(event) => event.stopPropagation()}
+          onPointerDown={(event) => event.stopPropagation()}
+        >
+          <Avatar
+            size="1"
+            src={assignee?.avatarUrl ?? undefined}
+            fallback={
+              assignee === undefined ? (
+                <UserRound size={13} />
+              ) : (
+                memberInitials(assignee.displayName)
+              )
+            }
+          />
+        </button>
+      </Popover.Trigger>
+      <Popover.Content className="task-card-picker assignee" align="end" sideOffset={6}>
+        <TextField.Root
+          size="2"
+          value={query}
+          placeholder="Назначить…"
+          aria-label="Поиск исполнителя"
+          onChange={(event) => setQuery(event.target.value)}
+        >
+          <TextField.Slot>
+            <Search size={14} />
+          </TextField.Slot>
+        </TextField.Root>
+        <div className="task-card-picker-list">
+          <button
+            type="button"
+            className="task-card-picker-option"
+            onClick={(event) => {
+              event.stopPropagation();
+              setOpen(false);
+              void onChange(null);
+            }}
+          >
+            <Avatar size="1" fallback={<UserRound size={13} />} />
+            <span className="task-card-picker-option-label">Не назначено</span>
+            {assignee === undefined && <Check size={15} aria-hidden="true" />}
+          </button>
+          {visibleMembers.map((member) => (
+            <button
+              type="button"
+              className="task-card-picker-option"
+              key={member.userId}
+              onClick={(event) => {
+                event.stopPropagation();
+                setOpen(false);
+                void onChange(member.userId);
+              }}
+            >
+              <Avatar
+                size="1"
+                src={member.avatarUrl ?? undefined}
+                fallback={memberInitials(member.displayName)}
+              />
+              <span className="task-card-picker-option-label">{member.displayName}</span>
+              {member.userId === task.assigneeUserId && <Check size={15} aria-hidden="true" />}
+            </button>
+          ))}
+        </div>
+      </Popover.Content>
+    </Popover.Root>
+  );
+}
+
+function memberInitials(displayName: string): string {
+  return displayName
+    .split(/\s+/u)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toLocaleUpperCase() ?? "")
+    .join("");
+}
+
 function TaskLine({
   task,
   data,
@@ -1264,6 +1621,7 @@ function TaskLine({
   properties: DisplayProperty[];
   onOpenTask: OpenTaskPreview;
 }>): ReactNode {
+  const hasSubtasks = subtaskStatusSlices(task.id, data).length > 0;
   return (
     <div className="saved-task-line">
       <button
@@ -1272,7 +1630,10 @@ function TaskLine({
         aria-label={`Открыть задачу ${task.title}`}
         onClick={() => onOpenTask(task)}
       />
-      <span className="task-status-dot" />
+      <TaskStatusIndicator
+        color={data.statuses.find((status) => status.id === task.statusId)?.color}
+        size="sm"
+      />
       <Link
         className="issue-identifier-link"
         href={workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title)}
@@ -1283,10 +1644,93 @@ function TaskLine({
         <ExternalLink size={11} />
       </Link>
       <strong className="saved-task-line-title">{task.title}</strong>
+      {hasSubtasks && <SubtaskStatusChart task={task} data={data} compact mode="legend" />}
       <TaskProperties task={task} data={data} properties={properties} />
     </div>
   );
 }
+
+function SubtaskStatusChart({
+  task,
+  data,
+  compact = false,
+  mode = "both",
+}: Readonly<{
+  task: TaskWithProject;
+  data: WorkspaceBootstrap;
+  compact?: boolean;
+  mode?: "both" | "chart" | "legend";
+}>): ReactNode {
+  if (task.parentTaskId !== null && task.parentTaskId !== undefined) return null;
+
+  const slices = subtaskStatusSlices(task.id, data);
+  const total = slices.reduce((sum, slice) => sum + slice.count, 0);
+  if (total === 0) return null;
+
+  const breakdown = slices.map((slice) => `${slice.label}: ${slice.count}`).join(", ");
+
+  const chart = (
+    <div
+      className="subtask-status-chart"
+      role="img"
+      aria-label={`Всего подзадач: ${total}. ${breakdown}`}
+    >
+      {slices.map((slice) => (
+        <span
+          key={slice.id}
+          title={`${slice.label}: ${slice.count}`}
+          style={{
+            backgroundColor: slice.color,
+            flexGrow: slice.count,
+          }}
+        />
+      ))}
+    </div>
+  );
+
+  if (mode === "chart") return chart;
+
+  return (
+    <div className={compact ? "subtask-status-summary compact" : "subtask-status-summary"}>
+      {mode === "both" && chart}
+      <div className="subtask-status-legend" aria-hidden="true">
+        {slices.map((slice) => (
+          <span className="subtask-status-legend-item" key={slice.id}>
+            <TaskStatusIndicator color={slice.color} size="xs" />
+            <span>{slice.label}</span>
+            <strong>{slice.count}</strong>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function subtaskStatusSlices(parentTaskId: string, data: WorkspaceBootstrap): SubtaskStatusSlice[] {
+  const counts = new Map<string, number>();
+  for (const project of data.projectData) {
+    for (const task of project.tasks) {
+      if (task.parentTaskId !== parentTaskId) continue;
+      const key = task.statusId ?? noStatusKey;
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+  }
+
+  const slices = data.statuses.flatMap((status) => {
+    const count = counts.get(status.id);
+    return count === undefined
+      ? []
+      : [{ id: status.id, label: status.name, color: status.color ?? "#A1A1AA", count }];
+  });
+  const withoutStatus = counts.get(noStatusKey);
+  return withoutStatus === undefined
+    ? slices
+    : [
+        ...slices,
+        { id: noStatusKey, label: "Без статуса", color: "#A1A1AA", count: withoutStatus },
+      ];
+}
+
 function TaskProperties({
   task,
   data,
@@ -1299,7 +1743,15 @@ function TaskProperties({
   return (
     <div className="saved-task-properties">
       {properties.map((property) => (
-        <span key={property}>{propertyValue(property, task, data)}</span>
+        <span key={property}>
+          {property === "status" && (
+            <TaskStatusIndicator
+              color={data.statuses.find((status) => status.id === task.statusId)?.color}
+              size="xs"
+            />
+          )}
+          {propertyValue(property, task, data)}
+        </span>
       ))}
     </div>
   );
@@ -1431,7 +1883,10 @@ function CreateViewDialog({
                 description: null,
                 projectId: null,
                 layout,
-                settings: { ...defaultSettings },
+                settings: {
+                  ...defaultSettings,
+                  subGrouping: layout === "board" ? "parent_task" : "none",
+                },
               })
             }
           >
@@ -1469,7 +1924,6 @@ function entityFilterOptions(
 ): Array<{ label: string; value: string }> {
   if (field === "status")
     return [
-      { label: "Без статуса", value: noStatusKey },
       ...mergeLogicalStatuses(data.statuses).map((status) => ({
         label: status.name,
         value: status.key,
@@ -1687,11 +2141,13 @@ function groupingDefinitions(
 ): Array<{ id: string; title: string }> {
   if (grouping === "status")
     return [
-      ...mergeLogicalStatuses(data.statuses).map((status) => ({
+      ...mergeLogicalStatusesForProjects(
+        data.statuses,
+        new Set(tasks.map((task) => task.projectId)),
+      ).map((status) => ({
         id: status.key,
         title: status.name,
       })),
-      { id: noStatusKey, title: "Без статуса" },
     ];
   if (grouping === "project")
     return data.projects.map((project) => ({
@@ -1708,9 +2164,12 @@ function groupingDefinitions(
             parentTaskId !== null && parentTaskId !== undefined,
         ),
     );
-    const visibleParentTasks = tasks.filter(
-      (task) => task.parentTaskId === null || task.parentTaskId === undefined,
+    const visibleRootIds = new Set(
+      tasks
+        .filter((task) => task.parentTaskId === null || task.parentTaskId === undefined)
+        .map((task) => task.id),
     );
+    const visibleParentTasks = allWorkspaceTasks.filter((task) => visibleRootIds.has(task.id));
     const visibleParentIds = new Set(visibleParentTasks.map((task) => task.id));
     return [
       ...visibleParentTasks.map((task) => ({ id: task.id, title: task.title })),

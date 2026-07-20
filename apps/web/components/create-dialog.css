@@ -6,6 +6,7 @@
 }
 
 .create-dialog {
+  --create-dialog-gutter: 24px;
   position: fixed;
   z-index: 1000;
   top: 18vh;
@@ -59,7 +60,7 @@
   min-height: 46px;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px 8px;
+  padding: 14px var(--create-dialog-gutter) 8px;
 }
 
 .create-dialog-context {
@@ -115,7 +116,7 @@
 .create-dialog form {
   display: grid;
   gap: 0;
-  padding: 12px 24px 20px;
+  padding: 12px var(--create-dialog-gutter) 20px;
 }
 
 .create-title-input,
@@ -125,16 +126,25 @@
   background: transparent;
   box-shadow: none;
 }
+.create-dialog .create-title-input:focus-within,
+.create-dialog .create-description-input:focus-within {
+  outline: none;
+}
 
 .create-title-input {
   font-size: var(--font-size-4);
   font-weight: 600;
 }
+.create-title-input .rt-TextFieldInput {
+  text-indent: 0;
+}
 
 .create-description-input {
   min-height: 150px;
   margin-top: 2px;
-  padding-inline: var(--space-3);
+}
+.create-description-input .rt-TextAreaInput {
+  padding-inline: 0;
 }
 
 .create-property-row {
@@ -230,6 +240,7 @@
 
 @media (max-width: 560px) {
   .create-dialog {
+    --create-dialog-gutter: 16px;
     top: 8vh;
   }
 

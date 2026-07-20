@@ -1,4 +1,4 @@
-import { WorkspaceView } from "../../../components/workspace-view";
+import { AgentPage } from "../../../components/agent-chat";
 export default function Page() {
-  return <WorkspaceView kind="history" />;
+  return <AgentPage />;
 }
