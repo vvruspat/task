@@ -9,3 +9,4 @@ dist/
 .next/
 build/
 coverage/
+graphify-out/cache/
