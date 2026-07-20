@@ -9,7 +9,7 @@ export function selectDefaultTaskStatusId(statuses: DefaultTaskStatusCandidate[]
     backlogStatusNames.has(normalizeStatusName(status.name)),
   );
   if (backlog !== undefined) return backlog.id;
-  return statuses.find((status) => !status.isDone)?.id ?? null;
+  return statuses.find((status) => !status.isDone)?.id ?? statuses[0]?.id ?? null;
 }
 
 function normalizeStatusName(value: string): string {

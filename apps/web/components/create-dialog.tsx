@@ -3,10 +3,10 @@
 import "./create-dialog.css";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button, IconButton, Popover, Select, TextArea, TextField } from "@radix-ui/themes";
+import type { TaskSummary } from "@task/api-client";
 import {
   Check,
   ChevronRight,
-  CircleDashed,
   FolderKanban,
   Layers3,
   ListTodo,
@@ -16,11 +16,15 @@ import {
   Workflow,
   X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { isTaskSummary } from "../lib/task-summary";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
 import { useWorkspaceStore } from "../lib/workspace-store";
+import { workspaceIssueHref } from "../lib/workspace-url";
+import { TaskStatusIndicator } from "./task-status-indicator";
 
 type CreateKind = "project" | "skill" | "task";
 const noProjectValue = "none";
@@ -28,6 +32,7 @@ const unassignedValue = "none";
 const defaultStatusValue = "default";
 
 export function CreateDialog(): ReactNode {
+  const router = useRouter();
   const open = useWorkspaceStore((state) => state.createOpen);
   const setOpen = useWorkspaceStore((state) => state.setCreateOpen);
   const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
@@ -93,6 +98,11 @@ export function CreateDialog(): ReactNode {
         setError(readCreateError(body));
         return;
       }
+      const createdTask = kind === "task" ? readCreatedTask(body) : null;
+      if (kind === "task" && createdTask === null) {
+        setError("Задача создана, но сервер вернул некорректный адрес.");
+        return;
+      }
       if (kind === "task" && projectId !== null) setSelectedProjectId(projectId);
       await refresh();
       setTitle("");
@@ -102,6 +112,16 @@ export function CreateDialog(): ReactNode {
       setLabels([]);
       setLabelQuery("");
       setOpen(false);
+      if (createdTask !== null) {
+        router.push(
+          workspaceIssueHref(
+            data.workspace.slug,
+            createdTask.projectKey,
+            createdTask.number,
+            createdTask.title,
+          ),
+        );
+      }
     } catch {
       setError("Не удалось создать объект.");
     } finally {
@@ -179,10 +199,7 @@ export function CreateDialog(): ReactNode {
                 <Select.Root value={resolvedStatusValue} onValueChange={setStatusValue}>
                   <Select.Trigger className="create-property-trigger" variant="soft">
                     <span className="create-select-option">
-                      <CircleDashed
-                        size={14}
-                        style={{ color: selectedStatus?.color ?? "currentColor" }}
-                      />
+                      <TaskStatusIndicator color={selectedStatus?.color} size="sm" />
                       <span>{selectedStatus?.name ?? "Backlog"}</span>
                     </span>
                   </Select.Trigger>
@@ -190,14 +207,14 @@ export function CreateDialog(): ReactNode {
                     {statusOptions.length === 0 ? (
                       <Select.Item value={defaultStatusValue}>
                         <span className="create-select-option">
-                          <CircleDashed size={14} /> <span>Backlog</span>
+                          <TaskStatusIndicator size="sm" /> <span>Backlog</span>
                         </span>
                       </Select.Item>
                     ) : (
                       statusOptions.map((status) => (
                         <Select.Item key={status.id} value={status.id}>
                           <span className="create-select-option">
-                            <CircleDashed size={14} style={{ color: status.color }} />
+                            <TaskStatusIndicator color={status.color} size="sm" />
                             <span>{status.name}</span>
                           </span>
                         </Select.Item>
@@ -402,6 +419,15 @@ function readCreateError(value: unknown): string {
     typeof value.error === "string"
     ? value.error
     : "Не удалось создать объект.";
+}
+
+function readCreatedTask(value: unknown): (TaskSummary & { projectKey: string }) | null {
+  return isTaskSummary(value) &&
+    "projectKey" in value &&
+    typeof value.projectKey === "string" &&
+    value.projectKey.length > 0
+    ? { ...value, projectKey: value.projectKey }
+    : null;
 }
 
 function createDialogCopy(kind: CreateKind): {

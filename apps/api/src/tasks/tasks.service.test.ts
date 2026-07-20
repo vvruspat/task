@@ -81,6 +81,15 @@ test("TasksService returns one visible task DTO", async () => {
   assert.equal(response.projectId, projectId);
 });
 
+test("TasksService returns one task by workspace-scoped UUID", async () => {
+  const service = new TasksService(createReadStore({ task: taskSummary }));
+
+  const response = await service.getTaskById(workspaceId, taskId, userId);
+
+  assert.ok(response instanceof TaskDetailDto);
+  assert.equal(response.id, taskId);
+});
+
 test("TasksService returns one issue by project key and task number", async () => {
   const service = new TasksService(createReadStore({ task: taskSummary }));
 
@@ -539,6 +548,8 @@ function createReadStore(options: {
   bulkUpdateResult?: TaskBulkUpdateResult;
 }): TaskReadStore {
   return {
+    getByIdForWorkspace: async (): Promise<TaskDetail | null> =>
+      options.task === undefined ? null : options.task,
     listActiveForProject: async (): Promise<TaskSummary[] | null> =>
       options.tasks === undefined ? [] : options.tasks,
     listTableForProject: async (): Promise<TaskTablePage | null> =>

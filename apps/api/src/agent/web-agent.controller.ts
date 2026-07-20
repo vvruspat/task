@@ -1,4 +1,5 @@
-import { Readable } from "node:stream";
+import { PassThrough } from "node:stream";
+import { setTimeout as delay } from "node:timers/promises";
 import {
   Body,
   Controller,
@@ -21,7 +22,7 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
-import type { WebAgentStreamEvent } from "./agent.contracts.js";
+import type { CreateWebAgentChatTurnInput, WebAgentStreamEvent } from "./agent.contracts.js";
 import { CreateWebAgentChatDto, ParseCreateWebAgentChatBodyPipe } from "./agent.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { AgentService } from "./agent.service.js";
@@ -43,36 +44,103 @@ export class WebAgentController {
   @ApiProduces("text/event-stream")
   @ApiBadRequestResponse({ description: "Chat messages are invalid." })
   @ApiNotFoundResponse({ description: "Workspace is missing or not visible to the current user." })
-  async streamWebChat(
+  streamWebChat(
     @Param("workspaceId", uuidV4Pipe) workspaceId: string,
     @TrustedCurrentUserId() userId: string,
-    @Body(new ParseCreateWebAgentChatBodyPipe()) input: CreateWebAgentChatDto,
-  ): Promise<StreamableFile> {
-    const result = await this.agentService.createWebRun(workspaceId, userId, input);
-    return new StreamableFile(Readable.from(toSseFrames(result)), {
+    @Body(new ParseCreateWebAgentChatBodyPipe()) input: CreateWebAgentChatTurnInput,
+  ): StreamableFile {
+    const stream = new PassThrough();
+    setImmediate(() => {
+      let requestPrepared = false;
+      stream.write(
+        encodeSseEvent({
+          type: "status",
+          id: "request",
+          label: "Готовлю запрос",
+          state: "running",
+        }),
+      );
+      void this.agentService
+        .createWebChatTurn(workspaceId, userId, input, (progress) => {
+          if (!requestPrepared) {
+            requestPrepared = true;
+            stream.write(
+              encodeSseEvent({
+                type: "status",
+                id: "request",
+                label: "Запрос подготовлен",
+                state: "complete",
+              }),
+            );
+          }
+          stream.write(encodeSseEvent({ type: "status", ...progress }));
+        })
+        .then((result) => streamCompletedResult(stream, result))
+        .catch((error: unknown) => {
+          stream.write(
+            encodeSseEvent({
+              type: "error",
+              message: readErrorMessage(error),
+            }),
+          );
+          stream.end();
+        });
+    });
+    return new StreamableFile(stream, {
       type: "text/event-stream; charset=utf-8",
     });
   }
 }
 
-function* toSseFrames(result: {
-  agentRunId: string;
-  responseText: string;
-  status: "completed" | "failed" | "running" | "waiting_confirmation";
-}): Generator<string> {
-  const chunks = result.responseText.match(/\S+\s*/gu) ?? [result.responseText];
+async function streamCompletedResult(
+  stream: PassThrough,
+  result: {
+    response: {
+      agentRunId: string;
+      responseText: string;
+      status: "completed" | "failed" | "running" | "waiting_confirmation";
+    };
+    chat: { id: string; title: string };
+  },
+): Promise<void> {
+  stream.write(
+    encodeSseEvent({
+      type: "status",
+      id: "response",
+      label: "Формирую ответ",
+      state: "running",
+    }),
+  );
+  const chunks = result.response.responseText.match(/\S+\s*/gu) ?? [result.response.responseText];
   for (const delta of chunks) {
     const event: WebAgentStreamEvent = { type: "text-delta", delta };
-    yield encodeSseEvent(event);
+    stream.write(encodeSseEvent(event));
+    await delay(18);
   }
+  stream.write(
+    encodeSseEvent({
+      type: "status",
+      id: "response",
+      label: "Ответ готов",
+      state: "complete",
+    }),
+  );
   const done: WebAgentStreamEvent = {
     type: "done",
-    agentRunId: result.agentRunId,
-    status: result.status,
+    agentRunId: result.response.agentRunId,
+    chatId: result.chat.id,
+    chatTitle: result.chat.title,
+    status: result.response.status,
   };
-  yield encodeSseEvent(done);
+  stream.end(encodeSseEvent(done));
 }
 
 function encodeSseEvent(event: WebAgentStreamEvent): string {
   return `data: ${JSON.stringify(event)}\n\n`;
+}
+
+function readErrorMessage(error: unknown): string {
+  return error instanceof Error && error.message.length > 0
+    ? error.message
+    : "Agent execution failed.";
 }

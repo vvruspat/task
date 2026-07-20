@@ -1,9 +1,12 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import type { AttachmentsService } from "../attachments/attachments.service.js";
 import type { ProjectsService } from "../projects/projects.service.js";
+import type { WorkspaceRealtimeService } from "../realtime/workspace-realtime.service.js";
+import type { SearchService } from "../search/search.service.js";
 import type { StatusesService } from "../statuses/statuses.service.js";
 import type { TaskSkillSummaryDto } from "../task-skills/task-skills.dto.js";
 import type { TaskSkillsService } from "../task-skills/task-skills.service.js";
+import { parseIssueIdentifier } from "../tasks/issue-identifier.js";
 import type { TasksService } from "../tasks/tasks.service.js";
 import type { WorkspacesService } from "../workspaces/workspaces.service.js";
 import type { AgentRuntimeToolCall, TelegramAgentRuntimeContext } from "./agent.runtime.js";
@@ -17,13 +20,24 @@ type AgentTasksService = Pick<TasksService, "addTaskSubtasks" | "createTask"> &
   Partial<
     Pick<
       TasksService,
-      "updateTask" | "updateTaskAssignee" | "updateTaskDueDate" | "updateTaskStatus"
+      | "getTaskById"
+      | "getTaskByIdentifier"
+      | "updateTask"
+      | "updateTaskAssignee"
+      | "updateTaskDueDate"
+      | "updateTaskStatus"
     >
   >;
-type AgentTaskSkillsService = Pick<TaskSkillsService, "applyTaskSkill" | "listActiveTaskSkills">;
-type AgentWorkspacesService = Pick<WorkspacesService, "listMembers">;
+type AgentTaskSkillsService = Pick<
+  TaskSkillsService,
+  "applyTaskSkill" | "createTaskSkill" | "listActiveTaskSkills"
+>;
+type AgentWorkspacesService = Pick<WorkspacesService, "listMembers"> &
+  Partial<Pick<WorkspacesService, "getWorkspace">>;
 type AgentStatusesService = Pick<StatusesService, "listStatuses">;
 type AgentAttachmentsService = Pick<AttachmentsService, "createTaskLinkAttachment">;
+type AgentSearchService = Pick<SearchService, "search">;
+type AgentRealtimeService = Pick<WorkspaceRealtimeService, "publishChange">;
 
 type AgentProjectTaskInput = {
   title: string;
@@ -38,7 +52,69 @@ type AgentCreateProjectInput = {
   taskSkillId?: string;
 };
 
+type AgentCreateTaskSkillInput = {
+  name: string;
+  description?: string | null;
+  aliases?: string[];
+  subtasks: Array<{
+    title: string;
+    description?: string | null;
+    labels?: string[];
+  }>;
+};
+
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+const embeddedUuidV4Pattern =
+  /[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/iu;
+const embeddedIssueIdentifierPattern =
+  /(?:^|[^A-Z0-9])([A-Z][A-Z0-9]{1,7}-[1-9]\d*)(?:$|[^A-Z0-9])/iu;
+
+type ResolvedTask = {
+  id: string;
+  projectId: string;
+  number: number;
+  title: string;
+  description: string | null;
+  statusId: string | null;
+  workspaceId: string;
+};
+
+function extractIssueIdentifier(reference: string) {
+  const decoded = decodeTaskReference(reference);
+  const match = embeddedIssueIdentifierPattern.exec(decoded);
+  return match?.[1] === undefined ? null : parseIssueIdentifier(match[1]);
+}
+
+function extractUuid(reference: string): string | null {
+  return embeddedUuidV4Pattern.exec(decodeTaskReference(reference))?.[0] ?? null;
+}
+
+function decodeTaskReference(reference: string): string {
+  try {
+    return decodeURIComponent(reference.trim());
+  } catch {
+    return reference.trim();
+  }
+}
+
+function normalizeTaskReference(reference: string): string {
+  return reference.trim().toLocaleLowerCase().replaceAll(/\s+/gu, " ");
+}
+
+function toResolvedTaskResult(task: ResolvedTask, reference: string): Record<string, unknown> {
+  return {
+    kind: "task_found",
+    reference,
+    id: task.id,
+    taskId: task.id,
+    projectId: task.projectId,
+    number: task.number,
+    title: task.title,
+    description: task.description,
+    statusId: task.statusId,
+    workspaceId: task.workspaceId,
+  };
+}
 
 @Injectable()
 export class BackendAgentToolOperationDispatcher implements AgentToolOperationDispatcher {
@@ -49,6 +125,8 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     private readonly workspacesService?: AgentWorkspacesService,
     private readonly statusesService?: AgentStatusesService,
     private readonly attachmentsService?: AgentAttachmentsService,
+    private readonly searchService?: AgentSearchService,
+    private readonly realtimeService?: AgentRealtimeService,
   ) {}
 
   async dispatchToolCall(
@@ -56,6 +134,13 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     context: TelegramAgentRuntimeContext,
   ): Promise<AgentRuntimeToolCall> {
     const result = await this.executeToolCall(call, context);
+    if (isMutationToolName(call.toolName)) {
+      this.realtimeService?.publishChange({
+        workspaceId: context.workspaceId,
+        projectId: readResultIdentifier(result, "projectId"),
+        taskId: readResultIdentifier(result, "taskId"),
+      });
+    }
 
     return {
       toolName: call.toolName,
@@ -71,6 +156,42 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     call: AgentToolOperationCall,
     context: TelegramAgentRuntimeContext,
   ): Promise<Record<string, unknown>> {
+    if (call.toolName === "task_lookup") {
+      const reference =
+        readOptionalString(call.arguments, "reference") ??
+        readOptionalString(call.arguments, "identifier");
+      if (reference === undefined) {
+        throw new BadRequestException("Agent tool task_lookup requires a task reference.");
+      }
+      try {
+        return await this.resolveTaskReference(reference, context);
+      } catch (error: unknown) {
+        if (error instanceof NotFoundException) return { kind: "task_not_found", reference };
+        throw error;
+      }
+    }
+
+    if (call.toolName === "task_skill_create" || call.toolName === "task_skill.create") {
+      const { subtasks, ...metadata } = parseCreateTaskSkillArguments(call.arguments);
+      const taskSkill = await this.taskSkillsService.createTaskSkill(
+        context.workspaceId,
+        context.userId,
+        {
+          ...metadata,
+          definition: { subtasks },
+        },
+      );
+
+      return {
+        kind: "task_skill_created",
+        id: taskSkill.id,
+        name: taskSkill.name,
+        workspaceId: taskSkill.workspaceId,
+        subtaskCount: subtasks.length,
+        subtasks: subtasks.map((subtask) => ({ title: subtask.title })),
+      };
+    }
+
     if (call.toolName === "project_create" || call.toolName === "project.create") {
       const { tasks, taskTypeHint, taskSkillId, ...input } = parseCreateProjectArguments(
         call.arguments,
@@ -78,6 +199,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
       if (tasks !== undefined && tasks.length > 0) {
         return this.createProjectWithTasks(input, tasks, taskTypeHint, taskSkillId, context);
       }
+      const workspace = await this.getWorkspaceLinkContext(context);
       const project = await this.projectsService.createProject(
         context.workspaceId,
         context.userId,
@@ -86,6 +208,9 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
 
       return {
         id: project.id,
+        key: project.key,
+        slug: project.slug,
+        ...(workspace === null ? {} : { workspaceSlug: workspace.slug }),
         title: project.title,
         workspaceId: project.workspaceId,
       };
@@ -129,6 +254,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
 
       return {
         id: task.id,
+        number: task.number,
         projectId: task.projectId,
         title: task.title,
         workspaceId: task.workspaceId,
@@ -182,7 +308,21 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         projectId,
         context.userId,
       );
-      const matches = statusName === null ? [] : findMatchingNamedValues(statuses, statusName);
+      const defaultStatus =
+        statuses.find((status) =>
+          new Set(["backlog", "беклог", "бэклог"]).has(
+            status.name.normalize("NFKC").toLocaleLowerCase("ru").trim(),
+          ),
+        ) ??
+        statuses.find((status) => !status.isDone) ??
+        statuses[0] ??
+        null;
+      const matches =
+        statusName === null
+          ? defaultStatus === null
+            ? []
+            : [defaultStatus]
+          : findMatchingNamedValues(statuses, statusName);
       if (statusName !== null && matches.length === 0) {
         throw new BadRequestException(`Project status "${statusName}" was not found.`);
       }
@@ -199,13 +339,16 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
           })),
         };
       }
-      const status = matches[0] ?? null;
+      const status = matches[0];
+      if (status === undefined) {
+        throw new BadRequestException("Project must have at least one status.");
+      }
       const task = await this.requireUpdateTaskStatus()(
         context.workspaceId,
         projectId,
         taskId,
         context.userId,
-        { statusId: status?.id ?? null },
+        { statusId: status.id },
       );
       return {
         kind: "task_status_updated",
@@ -213,7 +356,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         projectId: task.projectId,
         taskId: task.id,
         statusId: task.statusId,
-        statusName: status?.name ?? null,
+        statusName: status.name,
         workspaceId: task.workspaceId,
       };
     }
@@ -313,6 +456,80 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     return method.bind(this.tasksService);
   }
 
+  private requireGetTaskByIdentifier(): TasksService["getTaskByIdentifier"] {
+    if (this.tasksService.getTaskByIdentifier === undefined) {
+      throw new BadRequestException("Agent task lookup is unavailable.");
+    }
+    return this.tasksService.getTaskByIdentifier.bind(this.tasksService);
+  }
+
+  private requireGetTaskById(): TasksService["getTaskById"] {
+    if (this.tasksService.getTaskById === undefined) {
+      throw new BadRequestException("Agent task id lookup is unavailable.");
+    }
+    return this.tasksService.getTaskById.bind(this.tasksService);
+  }
+
+  private async resolveTaskReference(
+    reference: string,
+    context: TelegramAgentRuntimeContext,
+  ): Promise<Record<string, unknown>> {
+    const parsedIdentifier = extractIssueIdentifier(reference);
+    if (parsedIdentifier !== null) {
+      const task = await this.requireGetTaskByIdentifier()(
+        context.workspaceId,
+        parsedIdentifier,
+        context.userId,
+      );
+      return toResolvedTaskResult(task, reference);
+    }
+
+    const taskId = extractUuid(reference);
+    if (taskId !== null) {
+      const task = await this.requireGetTaskById()(context.workspaceId, taskId, context.userId);
+      return toResolvedTaskResult(task, reference);
+    }
+
+    if (this.searchService === undefined) {
+      throw new BadRequestException("Agent task title search is unavailable.");
+    }
+    const page = await this.searchService.search(context.workspaceId, context.userId, {
+      query: reference,
+      page: 1,
+      pageSize: 50,
+    });
+    const candidates = page.items.filter((item) => item.type === "task" && item.projectId !== null);
+    const normalizedReference = normalizeTaskReference(reference);
+    const exactMatches = candidates.filter(
+      (candidate) => normalizeTaskReference(candidate.title) === normalizedReference,
+    );
+    const selected =
+      exactMatches.length === 1 ? exactMatches[0] : candidates.length === 1 ? candidates[0] : null;
+
+    if (selected !== null && selected !== undefined) {
+      const task = await this.requireGetTaskById()(
+        context.workspaceId,
+        selected.id,
+        context.userId,
+      );
+      return toResolvedTaskResult(task, reference);
+    }
+    if (candidates.length === 0) {
+      return { kind: "task_not_found", reference };
+    }
+
+    return {
+      kind: "task_candidates",
+      reference,
+      candidates: candidates.slice(0, 10).map((candidate) => ({
+        taskId: candidate.id,
+        projectId: candidate.projectId,
+        title: candidate.title,
+        description: candidate.description,
+      })),
+    };
+  }
+
   private requireUpdateTaskAssignee(): TasksService["updateTaskAssignee"] {
     const method = this.tasksService.updateTaskAssignee;
     if (method === undefined) {
@@ -389,6 +606,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
       resolvedTaskSkillId = matches[0]?.id;
     }
 
+    const workspace = await this.getWorkspaceLinkContext(context);
     const project = await this.projectsService.createProject(
       context.workspaceId,
       context.userId,
@@ -396,8 +614,10 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     );
     const createdTasks: Array<{
       id: string;
+      number: number;
       title: string;
       createdSubtaskCount: number;
+      subtasks: Array<{ id: string; number: number; title: string }>;
     }> = [];
 
     for (const taskInput of tasks) {
@@ -410,8 +630,14 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         );
         createdTasks.push({
           id: result.rootTask.id,
+          number: result.rootTask.number,
           title: result.rootTask.title,
           createdSubtaskCount: result.subtasks.length,
+          subtasks: result.subtasks.map((subtask) => ({
+            id: subtask.id,
+            number: subtask.number,
+            title: subtask.title,
+          })),
         });
         continue;
       }
@@ -422,12 +648,21 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         context.userId,
         taskInput,
       );
-      createdTasks.push({ id: task.id, title: task.title, createdSubtaskCount: 0 });
+      createdTasks.push({
+        id: task.id,
+        number: task.number,
+        title: task.title,
+        createdSubtaskCount: 0,
+        subtasks: [],
+      });
     }
 
     return {
       kind: "project_with_tasks_created",
       id: project.id,
+      key: project.key,
+      slug: project.slug,
+      ...(workspace === null ? {} : { workspaceSlug: workspace.slug }),
       title: project.title,
       workspaceId: project.workspaceId,
       createdTaskCount: createdTasks.length,
@@ -438,6 +673,17 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
       tasks: createdTasks,
       ...(resolvedTaskSkillId === undefined ? {} : { taskSkillId: resolvedTaskSkillId }),
     };
+  }
+
+  private async getWorkspaceLinkContext(
+    context: TelegramAgentRuntimeContext,
+  ): Promise<{ slug: string } | null> {
+    if (this.workspacesService?.getWorkspace === undefined) return null;
+    const workspace = await this.workspacesService.getWorkspace(
+      context.workspaceId,
+      context.userId,
+    );
+    return { slug: workspace.slug };
   }
 
   private async applyTaskSkill(
@@ -455,14 +701,29 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     return {
       kind: "task_skill_applied",
       id: result.rootTask.id,
+      number: result.rootTask.number,
       projectId: result.projectId,
       title: result.rootTask.title,
       workspaceId: result.workspaceId,
       taskSkillId: result.taskSkillId,
       taskSkillVersion: result.taskSkillVersion,
       createdSubtaskCount: result.subtasks.length,
+      subtasks: result.subtasks.map((subtask) => ({
+        id: subtask.id,
+        number: subtask.number,
+        title: subtask.title,
+      })),
     };
   }
+}
+
+function isMutationToolName(toolName: string): boolean {
+  return toolName !== "task_lookup";
+}
+
+function readResultIdentifier(result: Record<string, unknown>, key: string): string | null {
+  const value = result[key];
+  return typeof value === "string" && uuidV4Pattern.test(value) ? value : null;
 }
 
 function parseAddTaskSubtasksArguments(value: Record<string, unknown>): {
@@ -505,6 +766,40 @@ function parseCreateProjectArguments(value: Record<string, unknown>): AgentCreat
     ...(taskTypeHint === undefined ? {} : { taskTypeHint }),
     ...(taskSkillId === undefined ? {} : { taskSkillId }),
     ...(tasks === undefined ? {} : { tasks }),
+  };
+}
+
+function parseCreateTaskSkillArguments(value: Record<string, unknown>): AgentCreateTaskSkillInput {
+  const name = readRequiredString(value, "name");
+  const description = readOptionalNullableString(value, "description");
+  const aliases = readOptionalStringArray(value, "aliases");
+  const candidateSubtasks = value["subtasks"];
+  if (
+    !Array.isArray(candidateSubtasks) ||
+    candidateSubtasks.length === 0 ||
+    candidateSubtasks.length > 50
+  ) {
+    throw new BadRequestException("Agent tool subtasks must contain between 1 and 50 items.");
+  }
+  const subtasks = candidateSubtasks.map((candidate, index) => {
+    if (!isRecord(candidate)) {
+      throw new BadRequestException(`Agent tool subtasks[${index}] must be an object.`);
+    }
+    const title = readRequiredString(candidate, "title");
+    const subtaskDescription = readOptionalNullableString(candidate, "description");
+    const labels = readOptionalStringArray(candidate, "labels");
+    return {
+      title,
+      ...(subtaskDescription === undefined ? {} : { description: subtaskDescription }),
+      ...(labels === undefined ? {} : { labels }),
+    };
+  });
+
+  return {
+    name,
+    ...(description === undefined ? {} : { description }),
+    ...(aliases === undefined ? {} : { aliases }),
+    subtasks,
   };
 }
 
@@ -733,6 +1028,23 @@ function readRequiredString(value: Record<string, unknown>, key: string): string
   }
 
   return candidate.trim();
+}
+
+function readOptionalStringArray(
+  value: Record<string, unknown>,
+  key: string,
+): string[] | undefined {
+  const candidate = value[key];
+  if (candidate === undefined) return undefined;
+  if (!Array.isArray(candidate) || candidate.length > 50) {
+    throw new BadRequestException(`Agent tool ${key} must be an array of up to 50 strings.`);
+  }
+  return candidate.map((item, index) => {
+    if (typeof item !== "string" || item.trim().length === 0) {
+      throw new BadRequestException(`Agent tool ${key}[${index}] must be a non-empty string.`);
+    }
+    return item.trim();
+  });
 }
 
 function readOptionalNullableString(

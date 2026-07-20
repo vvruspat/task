@@ -38,7 +38,7 @@ export class TaskEntity implements TaskRecord {
   @Column({ nullable: true, type: "text" })
   description: string | null = null;
 
-  @Column({ name: "status_id", nullable: true, type: "uuid" })
+  @Column({ name: "status_id", type: "uuid" })
   statusId: string | null = null;
 
   @Column({ name: "assignee_user_id", nullable: true, type: "uuid" })

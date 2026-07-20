@@ -4,6 +4,7 @@ import type { WorkspaceStatus } from "@task/api-client";
 import {
   logicalStatusKeyForTask,
   mergeLogicalStatuses,
+  mergeLogicalStatusesForProjects,
   normalizeStatusFilterValue,
   resolveProjectStatusId,
 } from "./logical-statuses.ts";
@@ -32,6 +33,41 @@ test("mergeLogicalStatuses merges project statuses by normalized name", () => {
       { key: "status-name:backlog", name: "Backlog" },
       { key: "status-name:todo", name: "Todo" },
     ],
+  );
+});
+
+test("mergeLogicalStatusesForProjects preserves the relevant project's status order", () => {
+  const statuses = [
+    workspaceStatus(firstBacklogId, firstProjectId, "Backlog", "#111111", "100"),
+    workspaceStatus(
+      "55555555-5555-4555-8555-555555555555",
+      firstProjectId,
+      "Done",
+      "#333333",
+      "300",
+    ),
+    workspaceStatus(secondBacklogId, secondProjectId, "Backlog", "#222222", "1000"),
+    workspaceStatus(
+      "66666666-6666-4666-8666-666666666666",
+      secondProjectId,
+      "Todo",
+      "#444444",
+      "2000",
+    ),
+    workspaceStatus(
+      "77777777-7777-4777-8777-777777777777",
+      secondProjectId,
+      "Done",
+      "#555555",
+      "3000",
+    ),
+  ];
+
+  assert.deepEqual(
+    mergeLogicalStatusesForProjects(statuses, new Set([secondProjectId])).map(
+      (status) => status.name,
+    ),
+    ["Backlog", "Todo", "Done"],
   );
 });
 

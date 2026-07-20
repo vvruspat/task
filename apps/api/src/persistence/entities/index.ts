@@ -1,4 +1,6 @@
 export { ActivityEventEntity } from "./activity-event.entity.js";
+export { AgentChatEntity } from "./agent-chat.entity.js";
+export { AgentChatMessageEntity } from "./agent-chat-message.entity.js";
 export { AgentRunEntity } from "./agent-run.entity.js";
 export { AgentToolCallEntity } from "./agent-tool-call.entity.js";
 export { AttachmentEntity } from "./attachment.entity.js";

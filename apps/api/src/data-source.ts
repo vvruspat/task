@@ -2,6 +2,8 @@ import { DataSource, type DataSourceOptions } from "typeorm";
 import type { ApiDatabaseConfig } from "./config.js";
 import {
   ActivityEventEntity,
+  AgentChatEntity,
+  AgentChatMessageEntity,
   AgentRunEntity,
   AgentToolCallEntity,
   AttachmentEntity,
@@ -45,6 +47,11 @@ import { RepairCommentTimestamps1783297140000 } from "./persistence/migrations/1
 import { AddCommentAgentRun1783297200000 } from "./persistence/migrations/1783297200000-add-comment-agent-run.js";
 import { AddTaskNotifications1783297260000 } from "./persistence/migrations/1783297260000-add-task-notifications.js";
 import { AddDefaultMyIssuesView1783297320000 } from "./persistence/migrations/1783297320000-add-default-my-issues-view.js";
+import { CreateAgentChats1783297380000 } from "./persistence/migrations/1783297380000-create-agent-chats.js";
+import { RefreshDefaultProjectStatuses1783297440000 } from "./persistence/migrations/1783297440000-refresh-default-project-statuses.js";
+import { RequireTaskStatuses1783297500000 } from "./persistence/migrations/1783297500000-require-task-statuses.js";
+import { EnforceRequiredWorkflowStatuses1783297560000 } from "./persistence/migrations/1783297560000-enforce-required-workflow-statuses.js";
+import { LightenBacklogStatusColor1783297620000 } from "./persistence/migrations/1783297620000-lighten-backlog-status-color.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -59,6 +66,8 @@ const apiEntities = [
   CommentEntity,
   AttachmentEntity,
   ActivityEventEntity,
+  AgentChatEntity,
+  AgentChatMessageEntity,
   AgentRunEntity,
   AgentToolCallEntity,
   ConfirmationRequestEntity,
@@ -92,6 +101,11 @@ const apiMigrations = [
   AddCommentAgentRun1783297200000,
   AddTaskNotifications1783297260000,
   AddDefaultMyIssuesView1783297320000,
+  CreateAgentChats1783297380000,
+  RefreshDefaultProjectStatuses1783297440000,
+  RequireTaskStatuses1783297500000,
+  EnforceRequiredWorkflowStatuses1783297560000,
+  LightenBacklogStatusColor1783297620000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

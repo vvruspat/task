@@ -137,6 +137,11 @@ export type TaskBulkUpdateResult =
   | { status: "invalid_assignee" };
 
 export type TaskReadStore = {
+  getByIdForWorkspace?(
+    workspaceId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<TaskDetail | null>;
   getByIdentifierForWorkspace(
     workspaceId: string,
     identifier: ParsedIssueIdentifier,

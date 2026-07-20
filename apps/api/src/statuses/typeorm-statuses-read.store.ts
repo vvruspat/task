@@ -8,6 +8,8 @@ import {
   TaskEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
+import { selectDefaultTaskStatusId } from "../tasks/default-task-status.js";
+import { requiredProjectStatusName } from "./required-project-statuses.js";
 import type {
   CreateWorkspaceStatusInput,
   ReorderWorkspaceStatusesInput,
@@ -111,6 +113,15 @@ export class TypeOrmStatusesReadStore implements StatusesReadStore, StatusesWrit
       return { status: "status_not_found" };
     }
 
+    const requiredName = requiredProjectStatusName(workspaceStatus.name);
+    if (
+      requiredName !== null &&
+      input.name !== undefined &&
+      requiredProjectStatusName(input.name) !== requiredName
+    ) {
+      return { status: "required_status" };
+    }
+
     if (input.name !== undefined) workspaceStatus.name = input.name;
     if (input.color !== undefined) workspaceStatus.color = input.color;
     if (input.position !== undefined) workspaceStatus.position = input.position;
@@ -148,14 +159,28 @@ export class TypeOrmStatusesReadStore implements StatusesReadStore, StatusesWrit
     if (workspaceStatus === null) {
       return { status: "status_not_found" };
     }
+    if (requiredProjectStatusName(workspaceStatus.name) !== null) {
+      return { status: "required_status" };
+    }
 
-    await dataSource.transaction(async (manager): Promise<void> => {
+    const result = await dataSource.transaction(async (manager): Promise<StatusMutationResult> => {
+      const statusRepository = manager.getRepository(StatusEntity);
+      const statuses = await statusRepository.find({
+        lock: { mode: "pessimistic_write" },
+        order: { position: "ASC" },
+        where: { projectId, workspaceId },
+      });
+      const replacementStatusId = selectDefaultTaskStatusId(
+        statuses.filter((status) => status.id !== statusId),
+      );
+      if (replacementStatusId === null) return { status: "last_status" };
       await manager
         .getRepository(TaskEntity)
-        .update({ projectId, statusId, workspaceId }, { statusId: null });
-      await manager.getRepository(StatusEntity).remove(workspaceStatus);
+        .update({ projectId, statusId, workspaceId }, { statusId: replacementStatusId });
+      await statusRepository.remove(workspaceStatus);
+      return { status: "updated", workspaceStatus: toWorkspaceStatus(workspaceStatus) };
     });
-    return { status: "updated", workspaceStatus: toWorkspaceStatus(workspaceStatus) };
+    return result;
   }
 
   async reorderForProject(

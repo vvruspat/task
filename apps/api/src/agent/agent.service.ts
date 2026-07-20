@@ -1,13 +1,28 @@
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  ServiceUnavailableException,
+} from "@nestjs/common";
 import type { ConfirmationRequestSummaryDto } from "../confirmations/confirmations.dto.js";
 import type { ConfirmationsService } from "../confirmations/confirmations.service.js";
 import type {
+  AgentChatSummary,
   AgentRunDetail,
   CreateTelegramAgentRunInput,
   CreateWebAgentChatInput,
+  CreateWebAgentChatTurnInput,
+  UpdateAgentChatInput,
+  WebAgentChatMessage,
 } from "./agent.contracts.js";
-import { AgentRunDetailDto, AgentRunIntakeResponseDto, AgentRunSummaryDto } from "./agent.dto.js";
-import type { AgentRuntime } from "./agent.runtime.js";
+import {
+  AgentChatDetailDto,
+  AgentChatSummaryDto,
+  AgentRunDetailDto,
+  AgentRunIntakeResponseDto,
+  AgentRunSummaryDto,
+} from "./agent.dto.js";
+import type { AgentRuntime, AgentRuntimeProgressReporter } from "./agent.runtime.js";
 import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import type { AgentRunStore } from "./agent.store.js";
 
@@ -76,13 +91,58 @@ export class AgentService {
     if (!(await this.agentRunStore.isWorkspaceMember(workspaceId, userId))) {
       throw new NotFoundException("Workspace was not found.");
     }
-
     const lastUserMessage = input.messages.at(-1);
-    if (lastUserMessage === undefined) {
-      throw new NotFoundException("Agent message was not found.");
+    if (lastUserMessage === undefined) throw new NotFoundException("Agent message was not found.");
+    const runtimeResult = await this.agentRuntime.handleTelegramRequest({
+      input: {
+        telegramId: "web",
+        telegramChatId: "web",
+        inputText: formatWebConversation(input.messages, input.projectId),
+        attachments: [],
+      },
+      context: { workspaceId, userId },
+    });
+    const run = await this.agentRunStore.createWebRun({
+      workspaceId,
+      userId,
+      inputText: lastUserMessage.content,
+      runtimeResult: {
+        ...runtimeResult,
+        normalizedIntent: { ...(runtimeResult.normalizedIntent ?? {}), source: "web" },
+      },
+    });
+    return this.mapAgentRunToIntakeResponse(run);
+  }
+
+  async createWebChatTurn(
+    workspaceId: string,
+    userId: string,
+    input: CreateWebAgentChatTurnInput,
+    onProgress?: AgentRuntimeProgressReporter,
+  ): Promise<{ response: AgentRunIntakeResponseDto; chat: AgentChatSummaryDto }> {
+    if (!(await this.agentRunStore.isWorkspaceMember(workspaceId, userId))) {
+      throw new NotFoundException("Workspace was not found.");
+    }
+    if (
+      this.agentRunStore.getChat === undefined ||
+      this.agentRunStore.createWebChatTurn === undefined
+    ) {
+      throw new ServiceUnavailableException("Agent chats are not available.");
     }
 
-    const runtimeInput = formatWebConversation(input);
+    const chatId = input.chatId ?? null;
+    const existingChat =
+      chatId === null ? null : await this.agentRunStore.getChat(workspaceId, chatId, userId);
+    if (chatId !== null && existingChat === null)
+      throw new NotFoundException("Chat was not found.");
+    const messages: WebAgentChatMessage[] = [
+      ...(existingChat?.messages.map((message) => ({
+        role: message.role,
+        content: message.content,
+      })) ?? []),
+      { role: "user", content: input.message },
+    ];
+    const runtimeInput = formatWebConversation(messages, input.projectId);
     const runtimeResult = await this.agentRuntime.handleTelegramRequest({
       input: {
         telegramId: "web",
@@ -91,6 +151,7 @@ export class AgentService {
         attachments: [],
       },
       context: { workspaceId, userId },
+      ...(onProgress === undefined ? {} : { onProgress }),
     });
     const webRuntimeResult = {
       ...runtimeResult,
@@ -99,14 +160,88 @@ export class AgentService {
         source: "web",
       },
     };
-    const run = await this.agentRunStore.createWebRun({
+    const responseText = runtimeResult.finalResponse ?? agentRuntimeNotConnectedResponse;
+    let generatedTitle: string | null = null;
+    if (existingChat === null && this.agentRuntime.generateChatTitle !== undefined) {
+      onProgress?.({ id: "chat-title", label: "Подбираю название чата", state: "running" });
+      generatedTitle = await this.agentRuntime.generateChatTitle(input.message);
+      onProgress?.({
+        id: "chat-title",
+        label: "Название чата готово",
+        state: "complete",
+      });
+    }
+    const persisted = await this.agentRunStore.createWebChatTurn({
       workspaceId,
       userId,
-      inputText: lastUserMessage.content,
+      chatId,
+      chatTitle: generatedTitle ?? createFallbackChatTitle(input.message),
+      inputText: input.message,
+      assistantMessage: responseText,
       runtimeResult: webRuntimeResult,
     });
+    if (persisted === null) throw new NotFoundException("Chat was not found.");
+    return {
+      response: await this.mapAgentRunToIntakeResponse(persisted.run),
+      chat: new AgentChatSummaryDto(mapAgentChatSummary(persisted.chat)),
+    };
+  }
 
-    return this.mapAgentRunToIntakeResponse(run);
+  async listChats(
+    workspaceId: string,
+    userId: string,
+    query: string,
+  ): Promise<AgentChatSummaryDto[]> {
+    if (this.agentRunStore.listChats === undefined) {
+      throw new ServiceUnavailableException("Agent chats are not available.");
+    }
+    const chats = await this.agentRunStore.listChats(workspaceId, userId, query.trim());
+    if (chats === null) throw new NotFoundException("Workspace was not found.");
+    return chats.map((chat) => new AgentChatSummaryDto(mapAgentChatSummary(chat)));
+  }
+
+  async getChat(workspaceId: string, chatId: string, userId: string): Promise<AgentChatDetailDto> {
+    if (this.agentRunStore.getChat === undefined) {
+      throw new ServiceUnavailableException("Agent chats are not available.");
+    }
+    const detail = await this.agentRunStore.getChat(workspaceId, chatId, userId);
+    if (detail === null) throw new NotFoundException("Chat was not found.");
+    return new AgentChatDetailDto({
+      ...mapAgentChatSummary(detail.chat),
+      messages: detail.messages.map((message) => ({
+        id: message.id,
+        role: message.role,
+        content: message.content,
+        createdAt: message.createdAt.toISOString(),
+      })),
+    });
+  }
+
+  async updateChat(
+    workspaceId: string,
+    chatId: string,
+    userId: string,
+    input: UpdateAgentChatInput,
+  ): Promise<AgentChatSummaryDto> {
+    if (this.agentRunStore.updateChatTitle === undefined) {
+      throw new ServiceUnavailableException("Agent chats are not available.");
+    }
+    const chat = await this.agentRunStore.updateChatTitle(workspaceId, chatId, userId, input.title);
+    if (chat === null) throw new NotFoundException("Chat was not found.");
+    return new AgentChatSummaryDto(mapAgentChatSummary(chat));
+  }
+
+  async deleteChat(
+    workspaceId: string,
+    chatId: string,
+    userId: string,
+  ): Promise<AgentChatSummaryDto> {
+    if (this.agentRunStore.deleteChat === undefined) {
+      throw new ServiceUnavailableException("Agent chats are not available.");
+    }
+    const chat = await this.agentRunStore.deleteChat(workspaceId, chatId, userId);
+    if (chat === null) throw new NotFoundException("Chat was not found.");
+    return new AgentChatSummaryDto(mapAgentChatSummary(chat));
   }
 
   async listWorkspaceRuns(workspaceId: string, userId: string): Promise<AgentRunSummaryDto[]> {
@@ -195,15 +330,40 @@ export class AgentService {
   }
 }
 
-function formatWebConversation(input: CreateWebAgentChatInput): string {
+function formatWebConversation(
+  messages: WebAgentChatMessage[],
+  projectId: string | null | undefined,
+): string {
   const projectContext =
-    input.projectId === null || input.projectId === undefined
+    projectId === null || projectId === undefined
       ? "No project is selected."
-      : `Selected project id: ${input.projectId}.`;
-  const conversation = input.messages
+      : `Selected project id: ${projectId}.`;
+  const conversation = messages
     .map((message) => `${message.role === "user" ? "User" : "Assistant"}: ${message.content}`)
     .join("\n");
   return `${projectContext}\n\n${conversation}`;
+}
+
+function createFallbackChatTitle(message: string): string {
+  const compact = message.replace(/\s+/gu, " ").trim();
+  if (compact.length <= 64) return compact;
+  return `${compact.slice(0, 61).trimEnd()}…`;
+}
+
+function mapAgentChatSummary(chat: {
+  id: string;
+  workspaceId: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+}): AgentChatSummary {
+  return {
+    id: chat.id,
+    workspaceId: chat.workspaceId,
+    title: chat.title,
+    createdAt: chat.createdAt.toISOString(),
+    updatedAt: chat.updatedAt.toISOString(),
+  };
 }
 
 type AgentRunForIntakeResponse = {

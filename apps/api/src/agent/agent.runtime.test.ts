@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  type AgentRuntimeProgressEvent,
   type AgentRuntimeToolCall,
   OpenRouterAgentRuntime,
   type OpenRouterFetch,
@@ -81,7 +82,9 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.messages), /Use the provided tools/);
   assert.match(JSON.stringify(requestBody.messages), /@task summarize today/);
   assert.match(JSON.stringify(requestBody.tools), /project_create/);
+  assert.match(JSON.stringify(requestBody.tools), /task_skill_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_create/);
+  assert.match(JSON.stringify(requestBody.tools), /task_lookup/);
   assert.match(JSON.stringify(requestBody.tools), /task_update/);
   assert.match(JSON.stringify(requestBody.tools), /task_set_status/);
   assert.match(JSON.stringify(requestBody.tools), /task_set_assignee/);
@@ -90,6 +93,138 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /taskTypeHint/);
   assert.match(JSON.stringify(requestBody.tools), /independent root task/);
   assert.match(JSON.stringify(requestBody.messages), /named list or count of peer items/);
+  assert.match(JSON.stringify(requestBody.messages), /new template and project items/);
+});
+
+test("OpenRouterAgentRuntime creates a template before a project that uses it", async () => {
+  const taskSkillId = "77777777-7777-4777-8777-777777777777";
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const toolResponse = (
+    id: string,
+    name: string,
+    argumentsValue: Record<string, unknown>,
+  ): OpenRouterFetchResponse =>
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id,
+                type: "function",
+                function: { name, arguments: JSON.stringify(argumentsValue) },
+              },
+            ],
+          },
+        },
+      ],
+    });
+  const fetcher = new RecordingOpenRouterFetch([
+    toolResponse("call-template", "task_skill_create", {
+      name: "Песня",
+      aliases: ["трек"],
+      subtasks: [{ title: "Аранжировка" }, { title: "Запись" }, { title: "Сведение" }],
+    }),
+    toolResponse("call-project", "project_create", {
+      title: "Запись нового альбома",
+      taskSkillId,
+      tasks: [1, 2, 3, 4].map((number) => ({ title: `Песня ${number}` })),
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "Готово." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("task_skill_create", {
+      kind: "task_skill_created",
+      id: taskSkillId,
+      name: "Песня",
+      subtaskCount: 3,
+      subtasks: [{ title: "Аранжировка" }, { title: "Запись" }, { title: "Сведение" }],
+    }),
+    successfulToolCall("project_create", {
+      kind: "project_with_tasks_created",
+      id: projectId,
+      key: "ALBUM",
+      slug: "zapis-novogo-alboma",
+      workspaceSlug: "t-ask-local",
+      title: "Запись нового альбома",
+      createdTaskCount: 4,
+      createdSubtaskCount: 12,
+      taskSkillId,
+      tasks: [1, 2, 3, 4].map((number) => ({
+        id: `task-${number}`,
+        number: (number - 1) * 4 + 1,
+        title: `Песня ${number}`,
+        subtasks: ["Аранжировка", "Запись", "Сведение"].map((title, index) => ({
+          id: `subtask-${number}-${index + 1}`,
+          number: (number - 1) * 4 + index + 2,
+          title,
+        })),
+      })),
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: {
+      ...request.input,
+      inputText: 'создай проект "запись нового альбома", шаблон "песня" и четыре задачи по нему',
+    },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.equal(result.toolCalls.length, 2);
+  assert.equal(dispatcher.calls[1]?.arguments["taskSkillId"], taskSkillId);
+  assert.ok(result.finalResponse);
+  const finalResponse = result.finalResponse;
+  assert.match(finalResponse, /^## Готово/u);
+  assert.match(
+    finalResponse,
+    /\[Запись нового альбома\]\(\/w\/t-ask-local\/project\/zapis-novogo-alboma\)/u,
+  );
+  assert.match(
+    finalResponse,
+    new RegExp(`\\[Песня\\]\\(/templates\\?skill=${taskSkillId}\\)`, "u"),
+  );
+  assert.match(finalResponse, /\[Песня 1\]\(\/issue\/ALBUM-1\)/u);
+  assert.match(finalResponse, /\[Аранжировка\]\(\/issue\/ALBUM-2\)/u);
+  assert.doesNotMatch(finalResponse, /\bID:/u);
+});
+
+test("OpenRouterAgentRuntime generates a concise chat title", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, { choices: [{ message: { content: "  План релиза альбома.  " } }] }),
+  );
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch);
+
+  assert.equal(
+    await runtime.generateChatTitle("Помоги составить план релиза альбома"),
+    "План релиза альбома",
+  );
+  const body = parseRequestBody(getOnlyCall(fetcher).init.body);
+  assert.ok(isOpenRouterRequestBody(body));
+  assert.equal(body.model, "openai/gpt-4.1-mini");
+  assert.equal("tools" in body, false);
+  assert.equal(body.max_tokens, 32);
+});
+
+test("OpenRouterAgentRuntime trims verbose model titles to one concise topic", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content:
+              "Проект: Запись нового альбома Шаблон: Песня — написать текст и сделать мастеринг",
+          },
+        },
+      ],
+    }),
+  );
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch);
+
+  assert.equal(await runtime.generateChatTitle("Создай новый альбом"), "Запись нового альбома");
 });
 
 test("OpenRouterAgentRuntime reports project batches without inventing a container task", async () => {
@@ -130,6 +265,7 @@ test("OpenRouterAgentRuntime reports project batches without inventing a contain
     }),
   ]);
   const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+  const progress: AgentRuntimeProgressEvent[] = [];
 
   const result = await runtime.handleTelegramRequest({
     ...request,
@@ -137,14 +273,31 @@ test("OpenRouterAgentRuntime reports project batches without inventing a contain
       ...request.input,
       inputText: "Создай проект Album с двумя песнями: Descent и Vessel",
     },
+    onProgress: (event) => progress.push(event),
   });
 
   assert.equal(result.status, "completed");
   assert.equal(result.toolCalls.length, 1);
   assert.equal(
     result.finalResponse,
-    `Project "Album" created (ID: ${projectId}) with 2 root tasks and 10 template subtasks.`,
+    `## Готово\n\n### 📁 [Album](/projects/${projectId})\nСоздано **2 задачи** и **10 подзадач**.`,
   );
+  assert.deepEqual(progress, [
+    { id: "thinking-1", label: "Анализирую запрос", state: "running" },
+    { id: "thinking-1", label: "Запрос проанализирован", state: "complete" },
+    {
+      id: "call-project-with-songs",
+      label: "Создаю проект «Album»",
+      state: "running",
+    },
+    {
+      id: "call-project-with-songs",
+      label: "Создаю проект «Album» — готово",
+      state: "complete",
+    },
+    { id: "thinking-2", label: "Планирую следующий шаг", state: "running" },
+    { id: "thinking-2", label: "Следующий шаг определён", state: "complete" },
+  ]);
 });
 
 test("OpenRouterAgentRuntime rejects mutation success text without a tool call", async () => {
@@ -171,6 +324,169 @@ test("OpenRouterAgentRuntime rejects mutation success text without a tool call",
     "No project or task was created because the agent did not call a tool.",
   );
   assert.deepEqual(result.toolCalls, []);
+  const requestBody = parseRequestBody(getOnlyCall(fetcher).init.body);
+  assert.ok(isOpenRouterRequestBody(requestBody));
+  assert.equal(requestBody.tool_choice, "required");
+});
+
+test("OpenRouterAgentRuntime resolves an issue identifier before mutating the task", async () => {
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const taskId = "55555555-5555-4555-8555-555555555555";
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-lookup-task",
+                type: "function",
+                function: {
+                  name: "task_lookup",
+                  arguments: JSON.stringify({ reference: "ZNA-26" }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-update-task",
+                type: "function",
+                function: {
+                  name: "task_update",
+                  arguments: JSON.stringify({
+                    projectId,
+                    taskId,
+                    description: "Описание песни",
+                  }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "Описание задачи обновлено." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("task_lookup", {
+      kind: "task_found",
+      id: taskId,
+      taskId,
+      projectId,
+      number: 26,
+      title: "Песня",
+    }),
+    successfulToolCall("task_update", {
+      kind: "task_updated",
+      id: taskId,
+      taskId,
+      projectId,
+      number: 26,
+      title: "Песня",
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: {
+      ...request.input,
+      inputText: "добавь описание к ZNA-26",
+    },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["task_lookup", "task_update"],
+  );
+  assert.deepEqual(dispatcher.calls[1]?.arguments, {
+    projectId,
+    taskId,
+    description: "Описание песни",
+  });
+  assert.deepEqual(
+    fetcher.calls.map((call) => {
+      const body = parseRequestBody(call.init.body);
+      assert.ok(isOpenRouterRequestBody(body));
+      return body.tool_choice;
+    }),
+    ["required", "required", "auto"],
+  );
+});
+
+test("OpenRouterAgentRuntime asks for clarification when a task title is ambiguous", async () => {
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-lookup-task",
+                type: "function",
+                function: {
+                  name: "task_lookup",
+                  arguments: JSON.stringify({ reference: "Записать гитары" }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: "Какую из двух задач «Записать гитары» вы имеете в виду?",
+          },
+        },
+      ],
+    }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("task_lookup", {
+      kind: "task_candidates",
+      reference: "Записать гитары",
+      candidates: [
+        { taskId: "task-1", projectId: "project-1", title: "Записать гитары" },
+        { taskId: "task-2", projectId: "project-2", title: "Записать гитары" },
+      ],
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: {
+      ...request.input,
+      inputText: "обнови описание задачи Записать гитары",
+    },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.equal(result.toolCalls.length, 1);
+  assert.match(result.finalResponse ?? "", /Какую/u);
+  assert.deepEqual(
+    fetcher.calls.map((call) => {
+      const body = parseRequestBody(call.init.body);
+      assert.ok(isOpenRouterRequestBody(body));
+      return body.tool_choice;
+    }),
+    ["required", "auto"],
+  );
 });
 
 test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed operations", async () => {
@@ -230,7 +546,7 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
       kind: "openrouter_chat_completion",
       source: "telegram",
     },
-    finalResponse: "Task created (ID: 55555555-5555-4555-8555-555555555555).",
+    finalResponse: "## Готово\n\n### ✅ Follow up with Marina\nЗадача создана.",
     status: "completed",
     tokenUsage: {
       total_tokens: 24,
@@ -393,7 +709,7 @@ test("OpenRouterAgentRuntime continues through project, task, and subtask tool r
   );
   assert.equal(
     result.finalResponse,
-    `Project "Isekai" created (ID: ${projectId}). Task "Song 1" created (ID: ${taskId}). 2 subtasks created across 1 parent tasks.`,
+    `## Готово\n\n### 📁 [Isekai](/projects/${projectId})\nПроект создан.\n\n### ✅ Song 1\nЗадача создана.`,
   );
   const finalRequestBody = parseRequestBody(fetcher.calls[3]?.init.body ?? "{}");
   assert.match(JSON.stringify(finalRequestBody), /call-project/);
@@ -806,6 +1122,7 @@ function readRequestModel(value: string): unknown {
 }
 
 type OpenRouterRequestBody = {
+  max_tokens?: unknown;
   model?: unknown;
   messages?: unknown;
   stream?: unknown;

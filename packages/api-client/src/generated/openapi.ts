@@ -679,6 +679,42 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/agent/chats": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List the current user's agent chats */
+    get: operations["AgentChatsController_list"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/agent/chats/{chatId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get an agent chat with its messages */
+    get: operations["AgentChatsController_get"];
+    put?: never;
+    post?: never;
+    /** Delete an agent chat */
+    delete: operations["AgentChatsController_remove"];
+    options?: never;
+    head?: never;
+    /** Rename an agent chat */
+    patch: operations["AgentChatsController_update"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/agent/runs": {
     parameters: {
       query?: never;
@@ -1274,6 +1310,8 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+      /** @example 3 */
+      commentCount?: number;
     };
     ProjectMatrixStageDto: {
       /** Format: uuid */
@@ -1397,6 +1435,8 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+      /** @example 3 */
+      commentCount?: number;
     };
     CreateTaskDto: {
       /** @example Record bass */
@@ -1723,6 +1763,41 @@ export interface components {
       /** Format: date-time */
       createdAt: string;
     };
+    AgentChatSummaryDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      title: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    AgentChatMessageDto: {
+      /** Format: uuid */
+      id: string;
+      /** @enum {string} */
+      role: "user" | "assistant";
+      content: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    AgentChatDetailDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      title: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      messages: components["schemas"]["AgentChatMessageDto"][];
+    };
+    UpdateAgentChatDto: {
+      title: string;
+    };
     AgentRunSummaryDto: {
       /** Format: uuid */
       id: string;
@@ -1803,15 +1878,12 @@ export interface components {
       toolCalls: components["schemas"]["AgentRunToolCallAuditDto"][];
       confirmationRequests: components["schemas"]["AgentRunConfirmationLinkDto"][];
     };
-    WebAgentChatMessageDto: {
-      /** @enum {string} */
-      role: "user" | "assistant";
-      content: Record<string, never>;
-    };
     CreateWebAgentChatDto: {
-      messages: components["schemas"]["WebAgentChatMessageDto"][];
       /** Format: uuid */
-      projectId?: Record<string, never> | null;
+      chatId?: string | null;
+      message: string;
+      /** Format: uuid */
+      projectId?: string | null;
     };
     TaskAttachmentDto: {
       /** Format: uuid */
@@ -4256,6 +4328,118 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  AgentChatsController_list: {
+    parameters: {
+      query?: {
+        query?: string;
+      };
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentChatSummaryDto"][];
+        };
+      };
+    };
+  };
+  AgentChatsController_get: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        chatId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentChatDetailDto"];
+        };
+      };
+      /** @description Chat was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AgentChatsController_remove: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        chatId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentChatSummaryDto"];
+        };
+      };
+    };
+  };
+  AgentChatsController_update: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        chatId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateAgentChatDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentChatSummaryDto"];
+        };
       };
     };
   };

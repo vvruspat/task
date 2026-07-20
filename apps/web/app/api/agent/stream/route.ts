@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 const apiBaseUrl = process.env["TASK_API_BASE_URL"] ?? "http://localhost:3000";
 const trustedUserId = process.env["TASK_USER_ID"];
 
-type AgentMessage = { role: "assistant" | "user"; content: string };
 type AgentStreamRequest = {
+  chatId: string | null;
   workspaceId: string;
   projectId: string | null;
-  messages: AgentMessage[];
+  message: string;
 };
 
 export async function POST(request: Request): Promise<Response> {
@@ -29,7 +29,11 @@ export async function POST(request: Request): Promise<Response> {
         "content-type": "application/json",
         "x-task-user-id": trustedUserId,
       },
-      body: JSON.stringify({ messages: body.messages, projectId: body.projectId }),
+      body: JSON.stringify({
+        chatId: body.chatId,
+        message: body.message,
+        projectId: body.projectId,
+      }),
       signal: request.signal,
     },
   );
@@ -54,24 +58,13 @@ function isAgentStreamRequest(value: unknown): value is AgentStreamRequest {
     value !== null &&
     "workspaceId" in value &&
     typeof value.workspaceId === "string" &&
+    "chatId" in value &&
+    (typeof value.chatId === "string" || value.chatId === null) &&
     "projectId" in value &&
     (typeof value.projectId === "string" || value.projectId === null) &&
-    "messages" in value &&
-    Array.isArray(value.messages) &&
-    value.messages.length > 0 &&
-    value.messages.every(isAgentMessage)
-  );
-}
-
-function isAgentMessage(value: unknown): value is AgentMessage {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    "role" in value &&
-    (value.role === "assistant" || value.role === "user") &&
-    "content" in value &&
-    typeof value.content === "string" &&
-    value.content.trim().length > 0
+    "message" in value &&
+    typeof value.message === "string" &&
+    value.message.trim().length > 0
   );
 }
 

@@ -375,6 +375,9 @@ export class TaskSummaryDto implements TaskSummary {
   @ApiProperty({ format: "date-time" })
   readonly updatedAt: Date;
 
+  @ApiPropertyOptional({ example: 3, minimum: 0 })
+  readonly commentCount?: number;
+
   constructor(task: TaskSummary) {
     this.id = task.id;
     this.workspaceId = task.workspaceId;
@@ -394,6 +397,7 @@ export class TaskSummaryDto implements TaskSummary {
     this.archivedAt = task.archivedAt;
     this.createdAt = task.createdAt;
     this.updatedAt = task.updatedAt;
+    if (task.commentCount !== undefined) this.commentCount = task.commentCount;
   }
 }
 

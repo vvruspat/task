@@ -1,0 +1,31 @@
+.task-status-indicator {
+  display: inline-block;
+  flex: none;
+  border: 2px solid var(--task-status-color);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--task-status-color) 20%, transparent);
+}
+
+.task-status-indicator.xs {
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+}
+
+.task-status-indicator.sm {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+}
+
+.task-status-indicator.md {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.task-status-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}

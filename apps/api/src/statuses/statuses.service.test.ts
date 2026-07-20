@@ -102,6 +102,24 @@ test("StatusesService permits typed status mutations and surfaces permission err
       }),
     ConflictException,
   );
+
+  const lastStatusService = new StatusesService(
+    createReadStore({}),
+    createWriteStore({ result: "last_status" }),
+  );
+  await assert.rejects(
+    () => lastStatusService.deleteStatus(workspaceId, projectId, statusId, userId),
+    BadRequestException,
+  );
+
+  const requiredStatusService = new StatusesService(
+    createReadStore({}),
+    createWriteStore({ result: "required_status" }),
+  );
+  await assert.rejects(
+    () => requiredStatusService.deleteStatus(workspaceId, projectId, statusId, userId),
+    /Backlog and In progress are required/,
+  );
 });
 
 test("ParseUpdateWorkspaceStatusBodyPipe rejects an empty status update", () => {
@@ -145,12 +163,19 @@ function createReadStore(options: { statuses?: WorkspaceStatus[] | null }): Stat
 }
 
 function createWriteStore(options: {
-  result?: "duplicate_name" | "forbidden" | "status_not_found";
+  result?: "duplicate_name" | "forbidden" | "last_status" | "required_status" | "status_not_found";
   reorderResult?: "forbidden" | "invalid_order";
   workspaceStatus?: WorkspaceStatus;
 }): StatusesWriteStore {
   const result = ():
-    | { status: "duplicate_name" | "forbidden" | "status_not_found" }
+    | {
+        status:
+          | "duplicate_name"
+          | "forbidden"
+          | "last_status"
+          | "required_status"
+          | "status_not_found";
+      }
     | {
         status: "created" | "updated";
         workspaceStatus: WorkspaceStatus;

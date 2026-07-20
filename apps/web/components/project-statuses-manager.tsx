@@ -36,7 +36,7 @@ export function ProjectStatusesManager({
   workspaceId,
 }: Readonly<ProjectStatusesManagerProps>): ReactNode {
   const [newName, setNewName] = useState("");
-  const [newColor, setNewColor] = useState("#8B8D98");
+  const [newColor, setNewColor] = useState("#A1A1AA");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [orderedStatuses, setOrderedStatuses] = useState(statuses);
@@ -275,6 +275,7 @@ function ProjectStatusRow({
   const [name, setName] = useState(status.name);
   const [color, setColor] = useState(status.color);
   const [busy, setBusy] = useState(false);
+  const required = isRequiredStatusName(status.name);
   const changed = name.trim() !== status.name || color.toLowerCase() !== status.color.toLowerCase();
 
   useEffect(() => {
@@ -331,6 +332,7 @@ function ProjectStatusRow({
       />
       <TextField.Root
         aria-label={`Название статуса ${status.name}`}
+        disabled={required}
         value={name}
         onChange={(event) => setName(event.target.value)}
       />
@@ -342,7 +344,7 @@ function ProjectStatusRow({
       <IconButton
         color="red"
         variant="soft"
-        disabled={busy}
+        disabled={busy || required}
         aria-label={`Удалить статус ${status.name}`}
         onClick={() => void remove()}
       >
@@ -366,6 +368,12 @@ function statusReorderUrl(workspaceId: string, projectId: string): string {
 
 function isDoneStatusName(name: string): boolean {
   return ["done", "closed", "готово", "завершено"].includes(name.trim().toLocaleLowerCase("ru"));
+}
+
+function isRequiredStatusName(name: string): boolean {
+  return ["backlog", "in progress"].includes(
+    name.normalize("NFKC").trim().replace(/\s+/gu, " ").toLocaleLowerCase("en"),
+  );
 }
 
 async function readError(response: Response, fallback: string): Promise<string> {

@@ -23,6 +23,12 @@ import type { TaskReadStore } from "./tasks.store.js";
 export class TasksService {
   constructor(private readonly readStore: TaskReadStore) {}
 
+  async getTaskById(workspaceId: string, taskId: string, userId: string): Promise<TaskDetailDto> {
+    const task = await this.readStore.getByIdForWorkspace?.(workspaceId, taskId, userId);
+    if (task === null || task === undefined) throw new NotFoundException("Issue was not found.");
+    return new TaskDetailDto(task);
+  }
+
   async getTaskByIdentifier(
     workspaceId: string,
     identifier: ParsedIssueIdentifier,

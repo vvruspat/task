@@ -4,6 +4,8 @@ import type { DataSource } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
+  AgentChatEntity,
+  AgentChatMessageEntity,
   AgentRunEntity,
   AgentToolCallEntity,
   ConfirmationRequestEntity,
@@ -16,8 +18,10 @@ import type {
   AgentRunDetailRecord,
   AgentRunStore,
   FindTelegramAgentRunInput,
+  PersistedWebChatTurn,
   PersistTelegramAgentRunInput,
   PersistWebAgentRunInput,
+  PersistWebChatTurnInput,
   TelegramAgentRunContextResult,
 } from "./agent.store.js";
 
@@ -97,6 +101,71 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
     return membership !== null;
   }
 
+  async listChats(
+    workspaceId: string,
+    userId: string,
+    query: string,
+  ): Promise<AgentChatEntity[] | null> {
+    const dataSource = await this.getInitializedDataSource();
+    if (!(await this.isWorkspaceMember(workspaceId, userId))) return null;
+    const builder = dataSource
+      .getRepository(AgentChatEntity)
+      .createQueryBuilder("chat")
+      .where("chat.workspace_id = :workspaceId", { workspaceId })
+      .andWhere("chat.user_id = :userId", { userId })
+      .orderBy("chat.updated_at", "DESC")
+      .take(agentRunHistoryLimit);
+    if (query.length > 0) builder.andWhere("chat.title ILIKE :query", { query: `%${query}%` });
+    return builder.getMany();
+  }
+
+  async getChat(
+    workspaceId: string,
+    chatId: string,
+    userId: string,
+  ): Promise<{ chat: AgentChatEntity; messages: AgentChatMessageEntity[] } | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const chat = await dataSource.getRepository(AgentChatEntity).findOneBy({
+      id: chatId,
+      userId,
+      workspaceId,
+    });
+    if (chat === null) return null;
+    const messages = await dataSource.getRepository(AgentChatMessageEntity).find({
+      order: { createdAt: "ASC" },
+      where: { chatId },
+    });
+    return { chat, messages };
+  }
+
+  async updateChatTitle(
+    workspaceId: string,
+    chatId: string,
+    userId: string,
+    title: string,
+  ): Promise<AgentChatEntity | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const repository = dataSource.getRepository(AgentChatEntity);
+    const chat = await repository.findOneBy({ id: chatId, userId, workspaceId });
+    if (chat === null) return null;
+    chat.title = title;
+    chat.updatedAt = new Date();
+    return repository.save(chat);
+  }
+
+  async deleteChat(
+    workspaceId: string,
+    chatId: string,
+    userId: string,
+  ): Promise<AgentChatEntity | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const repository = dataSource.getRepository(AgentChatEntity);
+    const chat = await repository.findOneBy({ id: chatId, userId, workspaceId });
+    if (chat === null) return null;
+    await repository.remove(chat);
+    return chat;
+  }
+
   async getDetailForWorkspace(
     workspaceId: string,
     agentRunId: string,
@@ -153,10 +222,60 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
   }
 
   async createWebRun(input: PersistWebAgentRunInput): Promise<AgentRunEntity> {
-    return this.createRun("web", {
-      ...input,
-      sourceThreadId: null,
-      sourceMessageId: null,
+    return this.createRun("web", { ...input, sourceThreadId: null, sourceMessageId: null });
+  }
+
+  async createWebChatTurn(input: PersistWebChatTurnInput): Promise<PersistedWebChatTurn | null> {
+    const dataSource = await this.getInitializedDataSource();
+    return dataSource.transaction(async (entityManager): Promise<PersistedWebChatTurn | null> => {
+      const now = new Date();
+      const chatRepository = entityManager.getRepository(AgentChatEntity);
+      const chat =
+        input.chatId === null
+          ? await chatRepository.save(
+              chatRepository.create({
+                id: randomUUID(),
+                workspaceId: input.workspaceId,
+                userId: input.userId,
+                title: input.chatTitle,
+                createdAt: now,
+                updatedAt: now,
+              }),
+            )
+          : await chatRepository.findOneBy({
+              id: input.chatId,
+              workspaceId: input.workspaceId,
+              userId: input.userId,
+            });
+      if (chat === null) return null;
+
+      const run = await this.saveRun(entityManager, "web", {
+        ...input,
+        sourceThreadId: chat.id,
+        sourceMessageId: null,
+      });
+      const messageRepository = entityManager.getRepository(AgentChatMessageEntity);
+      await messageRepository.save([
+        messageRepository.create({
+          id: randomUUID(),
+          chatId: chat.id,
+          agentRunId: run.id,
+          role: "user",
+          content: input.inputText,
+          createdAt: now,
+        }),
+        messageRepository.create({
+          id: randomUUID(),
+          chatId: chat.id,
+          agentRunId: run.id,
+          role: "assistant",
+          content: input.assistantMessage,
+          createdAt: new Date(now.getTime() + 1),
+        }),
+      ]);
+      chat.updatedAt = new Date(now.getTime() + 1);
+      await chatRepository.save(chat);
+      return { chat, run };
     });
   }
 
@@ -166,51 +285,57 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
   ): Promise<AgentRunEntity> {
     const dataSource = await this.getInitializedDataSource();
 
-    return dataSource.transaction(async (entityManager) => {
-      const now = new Date();
-      const runRepository = entityManager.getRepository(AgentRunEntity);
-      const run = await runRepository.save(
-        runRepository.create({
+    return dataSource.transaction((entityManager) => this.saveRun(entityManager, source, input));
+  }
+
+  private async saveRun(
+    entityManager: import("typeorm").EntityManager,
+    source: "telegram" | "web",
+    input: PersistTelegramAgentRunInput,
+  ): Promise<AgentRunEntity> {
+    const now = new Date();
+    const runRepository = entityManager.getRepository(AgentRunEntity);
+    const run = await runRepository.save(
+      runRepository.create({
+        id: randomUUID(),
+        workspaceId: input.workspaceId,
+        userId: input.userId,
+        source,
+        sourceThreadId: input.sourceThreadId,
+        sourceMessageId: input.sourceMessageId,
+        model: input.runtimeResult.model,
+        inputText: input.inputText,
+        normalizedIntent: input.runtimeResult.normalizedIntent,
+        finalResponse: input.runtimeResult.finalResponse,
+        status: input.runtimeResult.status,
+        tokenUsage: input.runtimeResult.tokenUsage,
+        cost: input.runtimeResult.cost,
+        error: input.runtimeResult.error,
+        createdAt: now,
+        updatedAt: now,
+      }),
+    );
+
+    if (input.runtimeResult.toolCalls.length > 0) {
+      const toolCallRepository = entityManager.getRepository(AgentToolCallEntity);
+      const toolCalls = input.runtimeResult.toolCalls.map((toolCall) =>
+        toolCallRepository.create({
           id: randomUUID(),
-          workspaceId: input.workspaceId,
-          userId: input.userId,
-          source,
-          sourceThreadId: input.sourceThreadId,
-          sourceMessageId: input.sourceMessageId,
-          model: input.runtimeResult.model,
-          inputText: input.inputText,
-          normalizedIntent: input.runtimeResult.normalizedIntent,
-          finalResponse: input.runtimeResult.finalResponse,
-          status: input.runtimeResult.status,
-          tokenUsage: input.runtimeResult.tokenUsage,
-          cost: input.runtimeResult.cost,
-          error: input.runtimeResult.error,
+          agentRunId: run.id,
+          toolName: toolCall.toolName,
+          arguments: toolCall.arguments,
+          result: toolCall.result,
+          status: toolCall.status,
+          error: toolCall.error,
+          completedAt: toolCall.completedAt,
           createdAt: now,
-          updatedAt: now,
         }),
       );
 
-      if (input.runtimeResult.toolCalls.length > 0) {
-        const toolCallRepository = entityManager.getRepository(AgentToolCallEntity);
-        const toolCalls = input.runtimeResult.toolCalls.map((toolCall) =>
-          toolCallRepository.create({
-            id: randomUUID(),
-            agentRunId: run.id,
-            toolName: toolCall.toolName,
-            arguments: toolCall.arguments,
-            result: toolCall.result,
-            status: toolCall.status,
-            error: toolCall.error,
-            completedAt: toolCall.completedAt,
-            createdAt: now,
-          }),
-        );
+      await toolCallRepository.save(toolCalls);
+    }
 
-        await toolCallRepository.save(toolCalls);
-      }
-
-      return run;
-    });
+    return run;
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {

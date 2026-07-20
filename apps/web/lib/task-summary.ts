@@ -22,8 +22,14 @@ export function isTaskSummary(value: unknown): value is TaskSummary {
     hasOptionalNullableString(value, "dueAt") &&
     hasOptionalNullableString(value, "sourceSkillId") &&
     hasOptionalNullableString(value, "sourceSkillVersionId") &&
-    hasOptionalNullableString(value, "archivedAt")
+    hasOptionalNullableString(value, "archivedAt") &&
+    hasOptionalNonNegativeInteger(value, "commentCount")
   );
+}
+
+function hasOptionalNonNegativeInteger(value: Record<string, unknown>, key: string): boolean {
+  if (!(key in value)) return true;
+  return typeof value[key] === "number" && Number.isInteger(value[key]) && value[key] >= 0;
 }
 
 function hasOptionalNullableString(value: Record<string, unknown>, key: string): boolean {

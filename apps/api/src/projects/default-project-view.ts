@@ -11,7 +11,7 @@ export function buildDefaultProjectView(
     layout: "board",
     settings: {
       grouping: "status",
-      subGrouping: "none",
+      subGrouping: "parent_task",
       ordering: "manual",
       orderDirection: "asc",
       showSubtasks: true,

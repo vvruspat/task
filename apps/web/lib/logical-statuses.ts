@@ -35,6 +35,14 @@ export function mergeLogicalStatuses(statuses: readonly WorkspaceStatus[]): Logi
   );
 }
 
+export function mergeLogicalStatusesForProjects(
+  statuses: readonly WorkspaceStatus[],
+  projectIds: ReadonlySet<string>,
+): LogicalStatus[] {
+  const projectStatuses = statuses.filter((status) => projectIds.has(status.projectId));
+  return mergeLogicalStatuses(projectStatuses.length > 0 ? projectStatuses : statuses);
+}
+
 export function logicalStatusKeyForTask(
   statusId: string | null | undefined,
   statuses: readonly WorkspaceStatus[],

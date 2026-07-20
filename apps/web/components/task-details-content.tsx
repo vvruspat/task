@@ -16,7 +16,6 @@ import type { TaskSummary } from "@task/api-client";
 import {
   CalendarDays,
   Check,
-  Circle,
   FolderKanban,
   GitBranch,
   Tags,
@@ -34,6 +33,7 @@ import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
 import { workspaceIssueHref } from "../lib/workspace-url";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { TaskActivity } from "./task-activity";
+import { TaskStatusIndicator } from "./task-status-indicator";
 
 type EditableTextField = "due-date" | "title";
 
@@ -226,12 +226,8 @@ export function TaskDetailsContent({
                         )}
                         key={subtask.id}
                       >
-                        <Circle
-                          size={13}
-                          color={subtaskStatus?.color}
-                          fill={subtaskStatus?.color ?? "transparent"}
-                        />
-                        <span>{subtask.title}</span>
+                        <TaskStatusIndicator color={subtaskStatus?.color} size="sm" />
+                        <span className="issue-subtask-title">{subtask.title}</span>
                         <small>{issueIdentifier(project.key, subtask.number)}</small>
                       </Link>
                     );
@@ -246,28 +242,24 @@ export function TaskDetailsContent({
               Свойства
             </Text>
             <Separator size="4" />
-            <Property
-              icon={
-                <Circle size={15} color={status?.color} fill={status?.color ?? "transparent"} />
-              }
-              label="Статус"
-            >
+            <Property icon={<TaskStatusIndicator color={status?.color} size="md" />} label="Статус">
               <Select.Root
                 disabled={saving || data === null}
-                value={currentTask.statusId ?? "none"}
+                value={currentTask.statusId ?? projectStatuses[0]?.id ?? "none"}
                 onValueChange={(statusId) =>
                   void mutate({
                     operation: "status",
-                    statusId: statusId === "none" ? null : statusId,
+                    statusId,
                   })
                 }
               >
                 <Select.Trigger className="inline-property-select" variant="ghost" />
                 <Select.Content container={portalContainer ?? undefined}>
-                  <Select.Item value="none">Без статуса</Select.Item>
                   {projectStatuses.map((item) => (
                     <Select.Item key={item.id} value={item.id}>
-                      {item.name}
+                      <span className="task-status-label">
+                        <TaskStatusIndicator color={item.color} size="xs" /> {item.name}
+                      </span>
                     </Select.Item>
                   ))}
                 </Select.Content>
