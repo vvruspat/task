@@ -1143,28 +1143,55 @@ nav {
   z-index: 3;
 }
 .template-matrix-cell {
+  position: relative;
   width: 100%;
   height: 100%;
   padding: 10px 12px;
-  border: 0;
+  display: grid;
+  align-content: space-between;
+  gap: 7px;
+  border: 1px solid var(--matrix-status-color);
   border-radius: 0;
+  background: color-mix(in srgb, var(--matrix-status-color) 20%, white);
+  color: var(--gray-12);
   font: inherit;
   font-size: 12px;
   font-weight: 600;
   text-align: left;
-  cursor: pointer;
   transition: filter 120ms ease;
+}
+.template-matrix-preview {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.template-matrix-cell-head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
+}
+.template-matrix-cell-head > strong {
+  min-width: 0;
+  flex: 1;
 }
 .template-matrix-cell:hover {
   filter: brightness(0.94);
 }
-.template-matrix-cell:focus-visible {
+.template-matrix-cell:has(.template-matrix-preview:focus-visible) {
   position: relative;
   z-index: 1;
   outline: 2px solid #3e63dd;
   outline-offset: -2px;
 }
 .template-matrix-cell.missing {
+  display: block;
+  border: 0;
   background: #f8f8f9;
   color: #c1c2c5;
   cursor: not-allowed;
@@ -1247,6 +1274,13 @@ nav {
   outline: 2px solid var(--accent-8);
   outline-offset: 2px;
 }
+.template-matrix-cell-head .task-card-status-trigger,
+.template-matrix-cell-head .task-card-assignee-trigger {
+  pointer-events: auto;
+}
+.template-matrix-cell-head .task-card-assignee-trigger {
+  margin-left: auto;
+}
 .task-card-picker {
   z-index: 60;
   width: 250px;
@@ -1315,6 +1349,21 @@ nav {
 .saved-task-card small {
   font-size: 11px;
   color: #8b8d98;
+}
+.task-comment-count {
+  position: relative;
+  z-index: 2;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--gray-10);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+}
+.saved-task-card > .task-comment-count {
+  justify-self: end;
 }
 .subtask-status-summary {
   min-width: 0;

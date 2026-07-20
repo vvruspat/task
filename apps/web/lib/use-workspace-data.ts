@@ -84,7 +84,12 @@ export function updateProjectStatuses(projectId: string, statuses: WorkspaceStat
 
 function replaceTask(tasks: TaskSummary[], task: TaskSummary): void {
   const index = tasks.findIndex((item) => item.id === task.id);
-  if (index >= 0) tasks[index] = task;
+  if (index < 0) return;
+  const current = tasks[index];
+  tasks[index] =
+    task.commentCount === undefined && current?.commentCount !== undefined
+      ? { ...task, commentCount: current.commentCount }
+      : task;
 }
 
 function isWorkspaceBootstrap(value: unknown): value is WorkspaceBootstrap {

@@ -4,6 +4,7 @@ import { type DataSource, type EntityManager, In, IsNull } from "typeorm";
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   ActivityEventEntity,
+  CommentEntity,
   ProjectEntity,
   StatusEntity,
   TaskEntity,
@@ -134,7 +135,9 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       order: { parentTaskId: "ASC", position: "ASC", createdAt: "ASC" },
     });
 
-    return tasks.map(toTaskSummary);
+    const commentCounts = await loadCommentCounts(dataSource, workspaceId, tasks);
+
+    return tasks.map((task) => toTaskSummary(task, commentCounts.get(task.id) ?? 0));
   }
 
   async listTableForProject(
@@ -1050,7 +1053,25 @@ function getBulkUpdatedTaskFields(input: BulkUpdateTasksInput): string[] {
   return fields;
 }
 
-function toTaskSummary(task: TaskEntity): TaskSummary {
+async function loadCommentCounts(
+  dataSource: DataSource,
+  workspaceId: string,
+  tasks: readonly TaskEntity[],
+): Promise<Map<string, number>> {
+  if (tasks.length === 0) return new Map();
+  const rows = await dataSource
+    .getRepository(CommentEntity)
+    .createQueryBuilder("comment")
+    .select("comment.task_id", "taskId")
+    .addSelect("COUNT(*)", "commentCount")
+    .where("comment.workspace_id = :workspaceId", { workspaceId })
+    .andWhere("comment.task_id IN (:...taskIds)", { taskIds: tasks.map((task) => task.id) })
+    .groupBy("comment.task_id")
+    .getRawMany<{ taskId: string; commentCount: string }>();
+  return new Map(rows.map((row) => [row.taskId, Number.parseInt(row.commentCount, 10)]));
+}
+
+function toTaskSummary(task: TaskEntity, commentCount?: number): TaskSummary {
   return {
     id: task.id,
     workspaceId: task.workspaceId,
@@ -1070,5 +1091,6 @@ function toTaskSummary(task: TaskEntity): TaskSummary {
     archivedAt: task.archivedAt,
     createdAt: task.createdAt,
     updatedAt: task.updatedAt,
+    ...(commentCount === undefined ? {} : { commentCount }),
   };
 }

@@ -1310,6 +1310,8 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+      /** @example 3 */
+      commentCount?: number;
     };
     ProjectMatrixStageDto: {
       /** Format: uuid */
@@ -1433,6 +1435,8 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+      /** @example 3 */
+      commentCount?: number;
     };
     CreateTaskDto: {
       /** @example Record bass */

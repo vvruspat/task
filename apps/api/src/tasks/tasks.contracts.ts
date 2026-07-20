@@ -17,6 +17,7 @@ export type TaskSummary = {
   archivedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  commentCount?: number;
 };
 
 export type TaskDetail = TaskSummary;

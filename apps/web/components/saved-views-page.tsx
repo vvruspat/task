@@ -29,6 +29,7 @@ import {
   Grid3X3,
   Layers3,
   List,
+  MessageSquare,
   MoreHorizontal,
   Search,
   Settings2,
@@ -947,7 +948,13 @@ function ViewContent({
   );
   if (draft.layout === "matrix") {
     return (
-      <MatrixView data={data} draft={draft} taskOverrides={taskOverrides} onOpenTask={onOpenTask} />
+      <MatrixView
+        data={data}
+        draft={draft}
+        taskOverrides={taskOverrides}
+        onOpenTask={onOpenTask}
+        onUpdateTask={onUpdateTask}
+      />
     );
   }
   if (tasks.length === 0)
@@ -981,11 +988,13 @@ function MatrixView({
   draft,
   taskOverrides,
   onOpenTask,
+  onUpdateTask,
 }: Readonly<{
   data: WorkspaceBootstrap;
   draft: ViewDraft;
   taskOverrides: Record<string, TaskBoardOverride>;
   onOpenTask: OpenTaskPreview;
+  onUpdateTask: UpdateCardTask;
 }>): ReactNode {
   const matrix = useMemo(() => {
     const allTasks = collectWorkspaceTasks(data, draft.projectId ?? null, taskOverrides);
@@ -1093,26 +1102,48 @@ function MatrixView({
                   );
                 }
                 const status = data.statuses.find((item) => item.id === task.statusId);
-                const assignee =
-                  task.assigneeUserId === null || task.assigneeUserId === undefined
-                    ? "Не назначен"
-                    : (data.workspace.members.find(
-                        (member) => member.userId === task.assigneeUserId,
-                      )?.displayName ?? "Исполнитель");
+                const assignee = data.workspace.members.find(
+                  (member) => member.userId === task.assigneeUserId,
+                );
+                const statusColor = status?.color ?? "#A1A1AA";
                 return (
                   <td key={task.id}>
-                    <button
-                      type="button"
+                    <div
                       className="template-matrix-cell"
-                      style={{
-                        backgroundColor: status?.color ?? "#A1A1AA",
-                        color: readableColor(status?.color),
-                      }}
-                      title={`${status?.name ?? "Без статуса"} · ${assignee}`}
-                      onClick={() => onOpenTask(task)}
+                      style={
+                        {
+                          "--matrix-status-color": statusColor,
+                        } as CSSProperties
+                      }
                     >
-                      {assignee}
-                    </button>
+                      <button
+                        type="button"
+                        className="template-matrix-preview"
+                        aria-label={`Открыть задачу ${task.title}`}
+                        onClick={() => onOpenTask(task)}
+                      />
+                      <div className="template-matrix-cell-head">
+                        <TaskStatusPicker
+                          status={status}
+                          statuses={data.statuses.filter(
+                            (item) => item.projectId === task.projectId,
+                          )}
+                          onChange={(statusId) =>
+                            onUpdateTask(task, { operation: "status", statusId })
+                          }
+                        />
+                        <strong>{issueIdentifier(task.projectKey, task.number)}</strong>
+                        <TaskAssigneePicker
+                          task={task}
+                          assignee={assignee}
+                          members={data.workspace.members}
+                          onChange={(assigneeUserId) =>
+                            onUpdateTask(task, { operation: "assignee", assigneeUserId })
+                          }
+                        />
+                      </div>
+                      <TaskCommentCount task={task} />
+                    </div>
                   </td>
                 );
               })}
@@ -1428,6 +1459,7 @@ function TaskCard({
           (property) => property !== "status" && property !== "assignee",
         )}
       />
+      <TaskCommentCount task={task} />
     </Card>
   );
 }
@@ -1646,7 +1678,18 @@ function TaskLine({
       <strong className="saved-task-line-title">{task.title}</strong>
       {hasSubtasks && <SubtaskStatusChart task={task} data={data} compact mode="legend" />}
       <TaskProperties task={task} data={data} properties={properties} />
+      <TaskCommentCount task={task} />
     </div>
+  );
+}
+
+function TaskCommentCount({ task }: Readonly<{ task: TaskSummary }>): ReactNode {
+  const count = task.commentCount ?? 0;
+  return (
+    <span className="task-comment-count" title={`Комментариев: ${count}`}>
+      <MessageSquare size={12} aria-hidden="true" />
+      {count}
+    </span>
   );
 }
 
@@ -2061,13 +2104,6 @@ function matchesFilter(
       : filter.value;
   const matches = actualValue === expectedValue;
   return filter.operator === "is_not" ? !matches : matches;
-}
-function readableColor(color: string | undefined): "#111113" | "#ffffff" {
-  if (color === undefined || !/^#[0-9a-f]{6}$/i.test(color)) return "#111113";
-  const red = Number.parseInt(color.slice(1, 3), 16);
-  const green = Number.parseInt(color.slice(3, 5), 16);
-  const blue = Number.parseInt(color.slice(5, 7), 16);
-  return red * 0.299 + green * 0.587 + blue * 0.114 > 160 ? "#111113" : "#ffffff";
 }
 function withoutTaskOverride(
   overrides: Record<string, TaskBoardOverride>,
