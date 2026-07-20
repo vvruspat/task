@@ -9,4 +9,5 @@ dist/
 .next/
 build/
 coverage/
+.serena/
 graphify-out/cache/
