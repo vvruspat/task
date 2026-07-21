@@ -5,6 +5,7 @@ import type { TaskDetail } from "@task/api-client";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 import { issueHref, issueIdentifier, issueTitleSlug } from "../lib/issue-url";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import { isApiFailure } from "../lib/workspace-contracts";
@@ -38,6 +39,7 @@ export function IssuePage({
   slug,
   workspaceSlug,
 }: Readonly<{ identifier: string; slug: string | null; workspaceSlug?: string }>): ReactNode {
+  const { t } = useI18n();
   const router = useRouter();
   const { data } = useWorkspaceData();
   const [state, setState] = useState<IssueState>({ status: "loading" });
@@ -59,23 +61,23 @@ export function IssuePage({
         if (!response.ok || isApiFailure(body)) {
           setState({
             status: "error",
-            message: isApiFailure(body) ? body.error : "Задача не найдена.",
+            message: isApiFailure(body) ? body.error : t("issue.notFound"),
           });
           return;
         }
         if (!isTaskDetail(body)) {
-          setState({ status: "error", message: "Сервер вернул некорректную задачу." });
+          setState({ status: "error", message: t("issue.invalid") });
           return;
         }
         setState({ status: "ready", task: body });
       } catch (error: unknown) {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        setState({ status: "error", message: "Не удалось загрузить задачу." });
+        setState({ status: "error", message: t("issue.loadError") });
       }
     }
     void load();
     return () => controller.abort();
-  }, [identifier, workspaceSlug]);
+  }, [identifier, workspaceSlug, t]);
 
   const project = useMemo(() => {
     if (state.status !== "ready") return undefined;

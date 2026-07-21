@@ -2,8 +2,10 @@
 
 import { Box, Button, Card, Flex, Heading, Text, TextField } from "@task/ui";
 import { type FormEvent, type ReactNode, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 
 export function WorkspaceOnboarding({ refresh }: { refresh: () => Promise<void> }): ReactNode {
+  const { t } = useI18n();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -20,12 +22,12 @@ export function WorkspaceOnboarding({ refresh }: { refresh: () => Promise<void> 
       });
       const body: unknown = await response.json().catch((): null => null);
       if (!response.ok) {
-        setError(readError(body, "Не удалось создать рабочее пространство."));
+        setError(readError(body, t("workspace.createError")));
         return;
       }
       await refresh();
     } catch {
-      setError("Не удалось связаться с сервером. Попробуйте ещё раз.");
+      setError(t("auth.unreachable"));
     } finally {
       setSubmitting(false);
     }
@@ -37,23 +39,23 @@ export function WorkspaceOnboarding({ refresh }: { refresh: () => Promise<void> 
         <Card size="4">
           <Flex direction="column" gap="5">
             <Box>
-              <Heading size="7">Создайте рабочее пространство</Heading>
+              <Heading size="7">{t("workspace.onboardingTitle")}</Heading>
               <Text as="p" color="gray" mt="2" size="2">
-                Здесь будут храниться ваши проекты, задачи и шаблоны.
+                {t("workspace.onboardingIntro")}
               </Text>
             </Box>
             <form onSubmit={submit}>
               <Flex direction="column" gap="4">
                 <label htmlFor="workspaceName">
                   <Text as="div" mb="1" size="2" weight="medium">
-                    Название
+                    {t("common.name")}
                   </Text>
                   <TextField.Root
                     id="workspaceName"
                     name="name"
                     autoFocus
                     maxLength={80}
-                    placeholder="Например, Моя команда"
+                    placeholder={t("workspace.onboardingPlaceholder")}
                     required
                   />
                 </label>
@@ -63,7 +65,7 @@ export function WorkspaceOnboarding({ refresh }: { refresh: () => Promise<void> 
                   </Text>
                 )}
                 <Button disabled={submitting} size="3" type="submit">
-                  {submitting ? "Создаю…" : "Создать workspace"}
+                  {submitting ? t("workspace.creating") : t("workspace.create")}
                 </Button>
               </Flex>
             </form>

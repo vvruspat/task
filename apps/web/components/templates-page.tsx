@@ -44,6 +44,8 @@ import {
 import { useSearchParams } from "next/navigation";
 import type { FormEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { localizeWorkspaceError } from "../lib/i18n/errors";
+import { useI18n } from "../lib/i18n/i18n";
 import {
   buildCreateTaskSkillInput,
   buildTaskSkillApplyInput,
@@ -62,6 +64,7 @@ import { useWorkspaceStore } from "../lib/workspace-store";
 type Feedback = { color: "green" | "red"; message: string } | null;
 
 export function TemplatesPage(): ReactNode {
+  const { t } = useI18n();
   const searchParams = useSearchParams();
   const requestedSkillId = searchParams.get("skill");
   const { data, error, loading, refresh } = useWorkspaceData();
@@ -112,29 +115,32 @@ export function TemplatesPage(): ReactNode {
       `/api/task-skills/${selectedSkillId}?workspaceId=${encodeURIComponent(data.workspace.id)}`,
       { signal: controller.signal },
       isTaskSkillDetail,
-      "Не удалось загрузить шаблон.",
+      t("templates.loadOneError"),
     )
       .then((result) => setDetail(result))
       .catch((requestError: unknown) => {
         if (requestError instanceof DOMException && requestError.name === "AbortError") return;
-        setFeedback({ color: "red", message: toErrorMessage(requestError) });
+        setFeedback({
+          color: "red",
+          message: toErrorMessage(requestError, t("templates.actionError")),
+        });
       });
     return () => controller.abort();
-  }, [data, selectedSkillId]);
+  }, [data, selectedSkillId, t]);
 
   if (loading && data === null)
     return (
       <Card>
-        <Text color="gray">Загружаю шаблоны…</Text>
+        <Text color="gray">{t("templates.loading")}</Text>
       </Card>
     );
   if (error !== null || data === null)
     return (
       <Card>
         <Flex direction="column" gap="3" align="start">
-          <Heading size="4">Не удалось загрузить шаблоны</Heading>
-          <Text color="gray">{error ?? "Backend API недоступен."}</Text>
-          <Button onClick={() => void refresh()}>Повторить</Button>
+          <Heading size="4">{t("templates.loadError")}</Heading>
+          <Text color="gray">{localizeWorkspaceError(error, t, "templates.backendError")}</Text>
+          <Button onClick={() => void refresh()}>{t("common.retry")}</Button>
         </Flex>
       </Card>
     );
@@ -157,14 +163,17 @@ export function TemplatesPage(): ReactNode {
           method,
         },
         isTaskSkillDetail,
-        "Некорректный ответ при обновлении шаблона.",
+        t("templates.invalidUpdate"),
       );
       setDetail(result);
       await refresh();
       setFeedback({ color: "green", message: successMessage });
       return result;
     } catch (mutationError: unknown) {
-      setFeedback({ color: "red", message: toErrorMessage(mutationError) });
+      setFeedback({
+        color: "red",
+        message: toErrorMessage(mutationError, t("templates.actionError")),
+      });
       return null;
     } finally {
       setBusy(false);
@@ -175,13 +184,13 @@ export function TemplatesPage(): ReactNode {
     <Flex direction="column" gap="4">
       <Flex justify="between" align="center" gap="3" wrap="wrap">
         <Box>
-          <Heading size="6">Шаблоны</Heading>
+          <Heading size="6">{t("templates.title")}</Heading>
           <Text color="gray" size="2">
-            Повторяемые структуры задач для проектов
+            {t("templates.subtitle")}
           </Text>
         </Box>
         <Button onClick={() => setCreateOpen(true)}>
-          <Plus size={15} /> Новый шаблон
+          <Plus size={15} /> {t("templates.new")}
         </Button>
       </Flex>
 
@@ -198,8 +207,8 @@ export function TemplatesPage(): ReactNode {
         <Card>
           <Flex direction="column" gap="3">
             <TextField.Root
-              aria-label="Поиск шаблонов"
-              placeholder="Найти шаблон…"
+              aria-label={t("templates.search")}
+              placeholder={t("templates.searchPlaceholder")}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             >
@@ -229,7 +238,7 @@ export function TemplatesPage(): ReactNode {
                       <Flex direction="column" align="start" gap="1">
                         <Text weight="medium">{skill.name}</Text>
                         <Text size="1" color="gray">
-                          {skill.description ?? "Без описания"}
+                          {skill.description ?? t("common.noDescription")}
                         </Text>
                       </Flex>
                     </Flex>
@@ -240,12 +249,12 @@ export function TemplatesPage(): ReactNode {
                     <Workflow size={24} />
                     <Text color="gray" align="center" size="2">
                       {data.taskSkills.length === 0
-                        ? "Шаблонов пока нет"
-                        : "По запросу ничего не найдено"}
+                        ? t("templates.empty")
+                        : t("templates.noResults")}
                     </Text>
                     {data.taskSkills.length === 0 && (
                       <Button size="1" variant="soft" onClick={() => setCreateOpen(true)}>
-                        Создать первый
+                        {t("templates.createFirst")}
                       </Button>
                     )}
                   </Flex>
@@ -259,7 +268,7 @@ export function TemplatesPage(): ReactNode {
           <EmptyDetail onCreate={() => setCreateOpen(true)} />
         ) : detail === null ? (
           <Card>
-            <Text color="gray">Загружаю шаблон…</Text>
+            <Text color="gray">{t("templates.loadingOne")}</Text>
           </Card>
         ) : (
           <Card>
@@ -275,23 +284,25 @@ export function TemplatesPage(): ReactNode {
                       <Badge color="gray">v{getLatestTaskSkillVersion(detail)?.version ?? 1}</Badge>
                     </Flex>
                     <Text color="gray" size="2">
-                      {extractTaskSkillSubtasks(detail).length} подзадач
+                      {t("templates.subtaskCount", {
+                        count: extractTaskSkillSubtasks(detail).length,
+                      })}
                     </Text>
                   </Box>
                 </Flex>
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger>
-                    <IconButton variant="ghost" color="gray" aria-label="Действия шаблона">
+                    <IconButton variant="ghost" color="gray" aria-label={t("templates.actions")}>
                       <MoreHorizontal size={17} />
                     </IconButton>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content align="end">
                     <DropdownMenu.Item onSelect={() => setCloneOpen(true)}>
-                      <Copy size={14} /> Клонировать
+                      <Copy size={14} /> {t("templates.clone")}
                     </DropdownMenu.Item>
                     <DropdownMenu.Separator />
                     <DropdownMenu.Item color="red" onSelect={() => setArchiveOpen(true)}>
-                      <Trash2 size={14} /> Архивировать
+                      <Trash2 size={14} /> {t("common.archive")}
                     </DropdownMenu.Item>
                   </DropdownMenu.Content>
                 </DropdownMenu.Root>
@@ -305,7 +316,7 @@ export function TemplatesPage(): ReactNode {
                   runDetailMutation(
                     "PATCH",
                     { action: "metadata", input, workspaceId },
-                    "Данные шаблона сохранены.",
+                    t("templates.metadataSaved"),
                   ).then(() => undefined)
                 }
               />
@@ -327,7 +338,7 @@ export function TemplatesPage(): ReactNode {
                       },
                       workspaceId,
                     },
-                    "Новая версия шаблона сохранена.",
+                    t("templates.versionSaved"),
                   ).then(() => undefined)
                 }
               />
@@ -355,13 +366,13 @@ export function TemplatesPage(): ReactNode {
                         method: "POST",
                       },
                       isTaskSkillApplyPreview,
-                      "Некорректный preview шаблона.",
+                      t("templates.invalidPreview"),
                     );
                     setPreview(result);
                   } catch (previewError: unknown) {
                     setFeedback({
                       color: "red",
-                      message: toErrorMessage(previewError),
+                      message: toErrorMessage(previewError, t("templates.actionError")),
                     });
                   } finally {
                     setBusy(false);
@@ -383,18 +394,18 @@ export function TemplatesPage(): ReactNode {
                         method: "POST",
                       },
                       isAppliedTaskSkillSummary,
-                      "Некорректный результат применения шаблона.",
+                      t("templates.invalidApply"),
                     );
                     setPreview(null);
                     await refresh();
                     setFeedback({
                       color: "green",
-                      message: `Создано задач: ${result.createdCount}.`,
+                      message: t("templates.createdFeedback", { count: result.createdCount }),
                     });
                   } catch (applyError: unknown) {
                     setFeedback({
                       color: "red",
-                      message: toErrorMessage(applyError),
+                      message: toErrorMessage(applyError, t("templates.actionError")),
                     });
                   } finally {
                     setBusy(false);
@@ -423,15 +434,18 @@ export function TemplatesPage(): ReactNode {
                 method: "POST",
               },
               isTaskSkillDetail,
-              "Некорректный ответ при создании шаблона.",
+              t("templates.invalidCreate"),
             );
             setCreateOpen(false);
             setSelectedSkillId(created.id);
             setDetail(created);
             await refresh();
-            setFeedback({ color: "green", message: "Шаблон создан." });
+            setFeedback({ color: "green", message: t("templates.created") });
           } catch (createError: unknown) {
-            setFeedback({ color: "red", message: toErrorMessage(createError) });
+            setFeedback({
+              color: "red",
+              message: toErrorMessage(createError, t("templates.actionError")),
+            });
           } finally {
             setBusy(false);
           }
@@ -448,7 +462,7 @@ export function TemplatesPage(): ReactNode {
               const cloned = await runDetailMutation(
                 "POST",
                 { action: "clone", input, workspaceId },
-                "Шаблон клонирован.",
+                t("templates.cloned"),
               );
               if (cloned !== null) {
                 setCloneOpen(false);
@@ -470,17 +484,16 @@ export function TemplatesPage(): ReactNode {
                   { method: "DELETE" },
                 );
                 const body: unknown = await response.json();
-                if (!response.ok)
-                  throw new Error(readApiError(body, "Не удалось архивировать шаблон."));
+                if (!response.ok) throw new Error(readApiError(body, t("templates.archiveError")));
                 setArchiveOpen(false);
                 setSelectedSkillId(null);
                 setDetail(null);
                 await refresh();
-                setFeedback({ color: "green", message: "Шаблон архивирован." });
+                setFeedback({ color: "green", message: t("templates.archived") });
               } catch (archiveError: unknown) {
                 setFeedback({
                   color: "red",
-                  message: toErrorMessage(archiveError),
+                  message: toErrorMessage(archiveError, t("templates.actionError")),
                 });
               } finally {
                 setBusy(false);
@@ -494,15 +507,16 @@ export function TemplatesPage(): ReactNode {
 }
 
 function EmptyDetail({ onCreate }: Readonly<{ onCreate: () => void }>): ReactNode {
+  const { t } = useI18n();
   return (
     <Card>
       <Flex direction="column" align="center" gap="3" py="8">
         <Workflow size={32} />
-        <Heading size="4">Создайте первый шаблон</Heading>
+        <Heading size="4">{t("templates.emptyTitle")}</Heading>
         <Text color="gray" align="center" size="2">
-          Опишите повторяемый набор подзадач и применяйте его к новым задачам.
+          {t("templates.emptyText")}
         </Text>
-        <Button onClick={onCreate}>Новый шаблон</Button>
+        <Button onClick={onCreate}>{t("templates.new")}</Button>
       </Flex>
     </Card>
   );
@@ -517,6 +531,7 @@ function MetadataForm({
   detail: TaskSkillDetail;
   onSave: (input: UpdateTaskSkillMetadataInput) => Promise<void>;
 }>): ReactNode {
+  const { t } = useI18n();
   const [name, setName] = useState(detail.name);
   const [description, setDescription] = useState(detail.description ?? "");
   const [aliases, setAliases] = useState(detail.aliases.join(", "));
@@ -532,23 +547,23 @@ function MetadataForm({
       }}
     >
       <Flex direction="column" gap="3">
-        <Heading size="3">Основное</Heading>
-        <Field label="Название">
+        <Heading size="3">{t("templates.basics")}</Heading>
+        <Field label={t("common.name")}>
           <TextField.Root value={name} onChange={(event) => setName(event.target.value)} />
         </Field>
-        <Field label="Описание">
+        <Field label={t("common.description")}>
           <TextArea value={description} onChange={(event) => setDescription(event.target.value)} />
         </Field>
-        <Field label="Алиасы">
+        <Field label={t("templates.aliases")}>
           <TextField.Root
             value={aliases}
             onChange={(event) => setAliases(event.target.value)}
-            placeholder="песня, трек"
+            placeholder={t("templates.aliasPlaceholder")}
           />
         </Field>
         <Flex justify="end">
           <Button type="submit" variant="soft" disabled={busy || name.trim().length === 0}>
-            Сохранить
+            {t("common.save")}
           </Button>
         </Flex>
       </Flex>
@@ -567,6 +582,7 @@ function DefinitionForm({
   members: WorkspaceMember[];
   onSave: (subtasks: TaskSkillSubtaskDefinition[]) => Promise<void>;
 }>): ReactNode {
+  const { t } = useI18n();
   const [subtasks, setSubtasks] = useState<TaskSkillSubtaskDefinition[]>(
     extractTaskSkillSubtasks(detail),
   );
@@ -580,18 +596,18 @@ function DefinitionForm({
     >
       <Flex direction="column" gap="3">
         <Box>
-          <Heading size="3">Состав шаблона</Heading>
+          <Heading size="3">{t("templates.structure")}</Heading>
           <Text size="2" color="gray">
-            Назначьте исполнителей и labels для каждой подзадачи. Сохранение создаёт новую версию.
+            {t("templates.structureHint")}
           </Text>
         </Box>
         <SubtaskDefinitionEditor members={members} subtasks={subtasks} onChange={setSubtasks} />
         <Flex justify="between" align="center">
           <Text size="1" color="gray">
-            Подзадач: {parsed.length}
+            {t("templates.subtaskCount", { count: parsed.length })}
           </Text>
           <Button type="submit" variant="soft" disabled={busy || parsed.length === 0}>
-            Сохранить новую версию
+            {t("templates.saveVersion")}
           </Button>
         </Flex>
       </Flex>
@@ -610,6 +626,7 @@ function SubtaskDefinitionEditor({
   onChange: (subtasks: TaskSkillSubtaskDefinition[]) => void;
   subtasks: TaskSkillSubtaskDefinition[];
 }>): ReactNode {
+  const { t } = useI18n();
   const updateSubtask = (index: number, changes: Partial<TaskSkillSubtaskDefinition>): void => {
     onChange(
       subtasks.map((subtask, subtaskIndex) =>
@@ -626,11 +643,11 @@ function SubtaskDefinitionEditor({
           {index > 0 && <Separator size="4" />}
           <Flex align="center" justify="between" gap="2">
             <Text size="2" weight="medium">
-              Подзадача {index + 1}
+              {t("templates.subtaskNumber", { count: index + 1 })}
             </Text>
             <IconButton
               type="button"
-              aria-label={`Удалить подзадачу ${index + 1}`}
+              aria-label={t("templates.removeSubtask", { count: index + 1 })}
               color="gray"
               variant="ghost"
               disabled={subtasks.length === 1}
@@ -640,14 +657,14 @@ function SubtaskDefinitionEditor({
             </IconButton>
           </Flex>
           <Grid columns={{ initial: "1", sm: "1fr 1fr" }} gap="2">
-            <Field label="Название">
+            <Field label={t("common.name")}>
               <TextField.Root
                 value={subtask.title}
-                placeholder="Запись вокала"
+                placeholder={t("templates.subtaskTitlePlaceholder")}
                 onChange={(event) => updateSubtask(index, { title: event.target.value })}
               />
             </Field>
-            <Field label="Исполнитель">
+            <Field label={t("task.assignee")}>
               <Select.Root
                 value={subtask.assigneeUserId ?? unassignedValue}
                 onValueChange={(value) =>
@@ -658,7 +675,7 @@ function SubtaskDefinitionEditor({
               >
                 <Select.Trigger />
                 <Select.Content>
-                  <Select.Item value={unassignedValue}>Не назначен</Select.Item>
+                  <Select.Item value={unassignedValue}>{t("common.notAssigned")}</Select.Item>
                   {members.map((member) => (
                     <Select.Item key={member.userId} value={member.userId}>
                       {member.displayName}
@@ -667,17 +684,17 @@ function SubtaskDefinitionEditor({
                 </Select.Content>
               </Select.Root>
             </Field>
-            <Field label="Описание">
+            <Field label={t("common.description")}>
               <TextField.Root
                 value={subtask.description ?? ""}
-                placeholder="Необязательно"
+                placeholder={t("templates.optional")}
                 onChange={(event) => updateSubtask(index, { description: event.target.value })}
               />
             </Field>
-            <Field label="Labels">
+            <Field label={t("task.labels")}>
               <TextField.Root
                 value={(subtask.labels ?? []).join(", ")}
-                placeholder="вокал, студия"
+                placeholder={t("templates.labelsPlaceholder")}
                 onChange={(event) =>
                   updateSubtask(index, {
                     labels: splitTaskSkillList(event.target.value),
@@ -695,7 +712,7 @@ function SubtaskDefinitionEditor({
           variant="soft"
           onClick={() => onChange([...subtasks, { title: "" }])}
         >
-          <Plus size={15} /> Добавить подзадачу
+          <Plus size={15} /> {t("templates.addSubtask")}
         </Button>
       </Flex>
     </Flex>
@@ -721,6 +738,7 @@ function ApplyForm({
   preview: TaskSkillApplyPreview | null;
   projects: ProjectSummary[];
 }>): ReactNode {
+  const { t } = useI18n();
   const defaultProjectId =
     projects.some((project) => project.id === initialProjectId) && initialProjectId !== null
       ? initialProjectId
@@ -745,18 +763,18 @@ function ApplyForm({
     >
       <Flex direction="column" gap="3">
         <Box>
-          <Heading size="3">Применить к проекту</Heading>
+          <Heading size="3">{t("templates.apply")}</Heading>
           <Text color="gray" size="2">
-            Сначала проверьте дерево задач, затем подтвердите создание.
+            {t("templates.applyHint")}
           </Text>
         </Box>
         {projects.length === 0 ? (
           <Callout.Root color="amber">
-            <Callout.Text>Сначала создайте проект.</Callout.Text>
+            <Callout.Text>{t("templates.createProjectFirst")}</Callout.Text>
           </Callout.Root>
         ) : (
           <>
-            <Field label="Проект">
+            <Field label={t("common.project")}>
               <Select.Root value={projectId} onValueChange={setProjectId}>
                 <Select.Trigger />
                 <Select.Content>
@@ -768,7 +786,7 @@ function ApplyForm({
                 </Select.Content>
               </Select.Root>
             </Field>
-            <Field label="Название корневой задачи">
+            <Field label={t("templates.rootTaskTitle")}>
               <TextField.Root
                 value={rootTaskTitle}
                 onChange={(event) => setRootTaskTitle(event.target.value)}
@@ -776,18 +794,18 @@ function ApplyForm({
               />
             </Field>
             <Grid columns={{ initial: "1", sm: "1fr 1fr" }} gap="3">
-              <Field label="Добавить подзадачи">
+              <Field label={t("templates.includeSubtasks")}>
                 <TextField.Root
                   value={addedSubtasks}
                   onChange={(event) => setAddedSubtasks(event.target.value)}
-                  placeholder="через запятую"
+                  placeholder={t("templates.commaSeparated")}
                 />
               </Field>
-              <Field label="Исключить подзадачи">
+              <Field label={t("templates.excludeSubtasks")}>
                 <TextField.Root
                   value={removedSubtasks}
                   onChange={(event) => setRemovedSubtasks(event.target.value)}
-                  placeholder="через запятую"
+                  placeholder={t("templates.commaSeparated")}
                 />
               </Field>
             </Grid>
@@ -797,7 +815,7 @@ function ApplyForm({
                 variant="soft"
                 disabled={busy || projectId.length === 0 || rootTaskTitle.trim().length === 0}
               >
-                Предпросмотр
+                {t("templates.preview")}
               </Button>
             </Flex>
           </>
@@ -815,10 +833,12 @@ function ApplyForm({
                   <Flex key={`${subtask.source}-${subtask.title}`} align="center" gap="2">
                     <Text color="gray">↳</Text>
                     <Text size="2">{subtask.title}</Text>
-                    {subtask.source === "added" && <Badge color="green">добавлена</Badge>}
+                    {subtask.source === "added" && (
+                      <Badge color="green">{t("templates.added")}</Badge>
+                    )}
                     {typeof subtask.assigneeUserId === "string" && (
                       <Badge color="blue">
-                        {memberNames.get(subtask.assigneeUserId) ?? "Исполнитель"}
+                        {memberNames.get(subtask.assigneeUserId) ?? t("task.assignee")}
                       </Badge>
                     )}
                     {subtask.labels.map((label) => (
@@ -831,7 +851,7 @@ function ApplyForm({
               </Flex>
               <Flex justify="end">
                 <Button type="button" disabled={busy} onClick={() => void onApply(input)}>
-                  Создать {preview.subtasks.length + 1} задач
+                  {t("templates.createdCount", { count: preview.subtasks.length + 1 })}
                 </Button>
               </Flex>
             </Flex>
@@ -855,6 +875,7 @@ function CreateTemplateDialog({
   onOpenChange: (open: boolean) => void;
   open: boolean;
 }>): ReactNode {
+  const { t } = useI18n();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [aliases, setAliases] = useState("");
@@ -863,9 +884,9 @@ function CreateTemplateDialog({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content maxWidth="560px">
-        <Dialog.Title>Новый шаблон</Dialog.Title>
+        <Dialog.Title>{t("templates.new")}</Dialog.Title>
         <Dialog.Description size="2" color="gray">
-          Создайте повторяемую структуру подзадач.
+          {t("templates.newHint")}
         </Dialog.Description>
         <form
           onSubmit={(event: FormEvent<HTMLFormElement>) => {
@@ -881,43 +902,43 @@ function CreateTemplateDialog({
           }}
         >
           <Flex direction="column" gap="3" mt="4">
-            <Field label="Название">
+            <Field label={t("common.name")}>
               <TextField.Root
                 autoFocus
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="Например, Песня"
+                placeholder={t("templates.namePlaceholder")}
               />
             </Field>
-            <Field label="Описание">
+            <Field label={t("common.description")}>
               <TextArea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
             </Field>
-            <Field label="Алиасы">
+            <Field label={t("templates.aliases")}>
               <TextField.Root
                 value={aliases}
                 onChange={(event) => setAliases(event.target.value)}
-                placeholder="песня, трек"
+                placeholder={t("templates.aliasPlaceholder")}
               />
             </Field>
             <SubtaskDefinitionEditor members={members} subtasks={subtasks} onChange={setSubtasks} />
             <Flex justify="between" align="center">
               <Text color="gray" size="1">
-                Подзадач: {parsedSubtasks.length}
+                {t("templates.subtaskCount", { count: parsedSubtasks.length })}
               </Text>
               <Flex gap="2">
                 <Dialog.Close>
                   <Button type="button" variant="soft" color="gray">
-                    Отмена
+                    {t("common.cancel")}
                   </Button>
                 </Dialog.Close>
                 <Button
                   type="submit"
                   disabled={busy || name.trim().length === 0 || parsedSubtasks.length === 0}
                 >
-                  {busy ? "Создаю…" : "Создать"}
+                  {busy ? t("workspace.creating") : t("common.create")}
                 </Button>
               </Flex>
             </Flex>
@@ -941,11 +962,12 @@ function CloneTemplateDialog({
   onOpenChange: (open: boolean) => void;
   open: boolean;
 }>): ReactNode {
-  const [name, setName] = useState(`${detail.name} — копия`);
+  const { t } = useI18n();
+  const [name, setName] = useState(() => t("templates.copyDefault", { name: detail.name }));
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content maxWidth="440px">
-        <Dialog.Title>Клонировать шаблон</Dialog.Title>
+        <Dialog.Title>{t("templates.cloneTitle")}</Dialog.Title>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -957,17 +979,17 @@ function CloneTemplateDialog({
           }}
         >
           <Flex direction="column" gap="4" mt="4">
-            <Field label="Название копии">
+            <Field label={t("templates.copyName")}>
               <TextField.Root value={name} onChange={(event) => setName(event.target.value)} />
             </Field>
             <Flex justify="end" gap="2">
               <Dialog.Close>
                 <Button type="button" variant="soft" color="gray">
-                  Отмена
+                  {t("common.cancel")}
                 </Button>
               </Dialog.Close>
               <Button type="submit" disabled={busy || name.trim().length === 0}>
-                Клонировать
+                {t("templates.clone")}
               </Button>
             </Flex>
           </Flex>
@@ -990,21 +1012,20 @@ function ArchiveTemplateDialog({
   onOpenChange: (open: boolean) => void;
   open: boolean;
 }>): ReactNode {
+  const { t } = useI18n();
   return (
     <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
       <AlertDialog.Content maxWidth="440px">
-        <AlertDialog.Title>Архивировать «{name}»?</AlertDialog.Title>
-        <AlertDialog.Description size="2">
-          Шаблон исчезнет из активного каталога. Уже созданные задачи не изменятся.
-        </AlertDialog.Description>
+        <AlertDialog.Title>{t("templates.archiveConfirm", { name })}</AlertDialog.Title>
+        <AlertDialog.Description size="2">{t("templates.archiveHint")}</AlertDialog.Description>
         <Flex justify="end" gap="2" mt="4">
           <AlertDialog.Cancel>
             <Button variant="soft" color="gray">
-              Отмена
+              {t("common.cancel")}
             </Button>
           </AlertDialog.Cancel>
           <Button color="red" disabled={busy} onClick={() => void onArchive()}>
-            Архивировать
+            {t("common.archive")}
           </Button>
         </Flex>
       </AlertDialog.Content>
@@ -1036,6 +1057,6 @@ async function requestJson<T>(
   return body;
 }
 
-function toErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Не удалось выполнить действие с шаблоном.";
+function toErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error ? error.message : fallback;
 }

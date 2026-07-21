@@ -18,12 +18,15 @@ import {
   PanelLeftOpen,
   Plus,
   Settings,
+  UserRound,
   Workflow,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
+import type { MessageKey } from "../lib/i18n/messages";
 import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
 import { useWorkspaceData, workspaceRealtimeEvent } from "../lib/use-workspace-data";
 import { buildWorkspaceBreadcrumbs } from "../lib/workspace-breadcrumbs";
@@ -35,20 +38,21 @@ import { WorkspaceOnboarding } from "./workspace-onboarding";
 
 type NavItem = {
   href: string;
-  label: string;
+  label: MessageKey;
   icon: LucideIcon;
 };
 const navigation: NavItem[] = [
-  { href: "/agent", label: "Агент", icon: Bot },
-  { href: "/projects", label: "Проекты", icon: FolderKanban },
-  { href: "/views", label: "Views", icon: Layers3 },
-  { href: "/templates", label: "Шаблоны", icon: Workflow },
-  { href: "/notifications", label: "Уведомления", icon: Bell },
-  { href: "/settings", label: "Настройки", icon: Settings },
+  { href: "/agent", label: "nav.agent", icon: Bot },
+  { href: "/projects", label: "nav.projects", icon: FolderKanban },
+  { href: "/views", label: "nav.savedViews", icon: Layers3 },
+  { href: "/templates", label: "nav.templates", icon: Workflow },
+  { href: "/notifications", label: "nav.notifications", icon: Bell },
+  { href: "/settings", label: "common.settings", icon: Settings },
 ];
 const sidebarCompactStorageKey = "task:sidebar-compact";
 
 export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
+  const { t } = useI18n();
   const [sidebarCompact, setSidebarCompact] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -73,7 +77,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   const routeViewSlug = pathname.match(/^\/w\/[^/]+\/view\/([^/]+)$/)?.[1];
   const selectedViewId =
     searchParams.get("view") ?? (pathname === "/views" ? workspaceData?.views.at(0)?.id : null);
-  const breadcrumbs = buildWorkspaceBreadcrumbs(pathname, workspaceData);
+  const breadcrumbs = buildWorkspaceBreadcrumbs(pathname, workspaceData, t);
   useEffect(() => {
     setSidebarCompact(window.localStorage.getItem(sidebarCompactStorageKey) === "true");
   }, []);
@@ -136,8 +140,8 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
           size="1"
           variant="soft"
           color="gray"
-          aria-label={sidebarCompact ? "Развернуть сайдбар" : "Свернуть сайдбар"}
-          title={sidebarCompact ? "Развернуть сайдбар" : "Свернуть сайдбар"}
+          aria-label={sidebarCompact ? t("nav.expandSidebar") : t("nav.collapseSidebar")}
+          title={sidebarCompact ? t("nav.expandSidebar") : t("nav.collapseSidebar")}
           onClick={toggleSidebar}
         >
           {sidebarCompact ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
@@ -151,19 +155,24 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             <span className="brand-mark">{workspace?.name.slice(0, 2).toUpperCase() ?? "TA"}</span>
             <span>
               <strong>{workspace?.name ?? "tAsk"}</strong>
-              <small>Workspace</small>
+              <small>{t("common.workspace")}</small>
             </span>
           </Link>
           {workspace !== undefined && (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
-                <IconButton size="1" variant="ghost" color="gray" aria-label="Меню workspace">
+                <IconButton
+                  size="1"
+                  variant="ghost"
+                  color="gray"
+                  aria-label={t("nav.workspaceMenu")}
+                >
                   <MoreHorizontal size={16} />
                 </IconButton>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content align="start">
                 <DropdownMenu.Sub>
-                  <DropdownMenu.SubTrigger>Change workspace</DropdownMenu.SubTrigger>
+                  <DropdownMenu.SubTrigger>{t("nav.changeWorkspace")}</DropdownMenu.SubTrigger>
                   <DropdownMenu.SubContent>
                     {workspaceData?.availableWorkspaces.map((item) => (
                       <DropdownMenu.Item
@@ -185,14 +194,15 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                 </DropdownMenu.Sub>
                 <DropdownMenu.Separator />
                 <DropdownMenu.Item onSelect={() => router.push("/settings")}>
-                  Settings
+                  {t("common.settings")}
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           )}
         </div>
         <nav>
-          {navigation.map(({ href, label, icon: Icon }) => {
+          {navigation.map(({ href, label: labelKey, icon: Icon }) => {
+            const label = t(labelKey);
             if (href === "/views")
               return (
                 <div className="nav-section" key={href}>
@@ -214,7 +224,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                       size="1"
                       variant="ghost"
                       color="gray"
-                      aria-label="Создать view"
+                      aria-label={t("views.create")}
                       onClick={() => {
                         setCreateViewOpen(true);
                         router.push(projectHref("/views", selectedProject?.id));
@@ -274,36 +284,42 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             );
           })}
         </nav>
-        <div
-          className="profile"
-          title={
-            sidebarCompact ? (workspace?.members.at(0)?.displayName ?? "Пользователь") : undefined
-          }
-        >
-          <Avatar
-            fallback={workspace?.members.at(0)?.displayName.slice(0, 1) ?? "?"}
-            size="2"
-            color="indigo"
-          />
-          <span>
-            <strong>{workspace?.members.at(0)?.displayName ?? "Пользователь"}</strong>
-            <small>{workspace?.members.at(0)?.role ?? "Нет подключения"}</small>
-          </span>
-          <IconButton
-            aria-label="Выйти"
-            color="gray"
-            size="1"
-            title="Выйти"
-            variant="ghost"
-            onClick={() => void logout()}
-          >
-            <LogOut size={14} />
-          </IconButton>
-        </div>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <button
+              className="profile"
+              type="button"
+              title={
+                sidebarCompact
+                  ? (workspace?.members.at(0)?.displayName ?? t("nav.user"))
+                  : undefined
+              }
+            >
+              <Avatar
+                fallback={workspace?.members.at(0)?.displayName.slice(0, 1) ?? "?"}
+                size="2"
+                color="indigo"
+              />
+              <span>
+                <strong>{workspace?.members.at(0)?.displayName ?? t("nav.user")}</strong>
+                <small>{workspace?.members.at(0)?.role ?? t("nav.disconnected")}</small>
+              </span>
+              <MoreHorizontal size={14} />
+            </button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content align="end">
+            <DropdownMenu.Item onSelect={() => router.push("/settings/profile")}>
+              <UserRound size={14} /> {t("nav.profile")}
+            </DropdownMenu.Item>
+            <DropdownMenu.Item color="red" onSelect={() => void logout()}>
+              <LogOut size={14} /> {t("nav.logout")}
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </aside>
       <section className="main">
         <header className="topbar">
-          <nav aria-label="Breadcrumbs" className="topbar-breadcrumbs">
+          <nav aria-label={t("nav.breadcrumbs")} className="topbar-breadcrumbs">
             {breadcrumbs.map((breadcrumb, index) => (
               <span key={`${breadcrumb.href ?? "current"}:${breadcrumb.label}`}>
                 {index > 0 && <ChevronRight aria-hidden="true" size={14} />}
@@ -317,7 +333,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
           </nav>
           <div>
             <Button size="1" onClick={() => setCreateOpen(true)}>
-              <Plus size={14} /> Создать
+              <Plus size={14} /> {t("common.create")}
             </Button>
           </div>
         </header>

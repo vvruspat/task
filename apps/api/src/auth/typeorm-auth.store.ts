@@ -15,6 +15,7 @@ import type {
   CreateAccountRecord,
   CreateAccountResult,
   StoredPasswordCredential,
+  UpdateProfileInput,
 } from "./auth.contracts.js";
 import { AuthStore } from "./auth.store.js";
 
@@ -36,6 +37,7 @@ export class TypeOrmAuthStore extends AuthStore {
           displayName: input.displayName,
           email: input.email,
           avatarUrl: null,
+          locale: null,
         });
         const savedUser = await manager.getRepository(UserEntity).save(user);
         await manager.getRepository(PasswordCredentialEntity).save(
@@ -122,6 +124,16 @@ export class TypeOrmAuthStore extends AuthStore {
       .execute();
   }
 
+  async updateProfile(userId: string, input: UpdateProfileInput): Promise<AuthUser | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const repository = dataSource.getRepository(UserEntity);
+    const user = await repository.findOneBy({ id: userId });
+    if (user === null || user.email === null) return null;
+    user.displayName = input.displayName;
+    user.locale = input.locale;
+    return toAuthUser(await repository.save(user));
+  }
+
   private async getInitializedDataSource(): Promise<DataSource> {
     const dataSource = this.dataSourceProvider.getDataSource();
     if (dataSource === null) throw new ServiceUnavailableException("Database is not configured.");
@@ -138,7 +150,7 @@ export class TypeOrmAuthStore extends AuthStore {
 
 function toAuthUser(user: UserEntity): AuthUser {
   if (user.email === null) throw new Error("Password-authenticated users must have an email.");
-  return { id: user.id, displayName: user.displayName, email: user.email };
+  return { id: user.id, displayName: user.displayName, email: user.email, locale: user.locale };
 }
 
 function isUniqueViolation(error: unknown): boolean {

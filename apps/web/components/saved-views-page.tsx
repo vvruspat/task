@@ -43,6 +43,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { CSSProperties, DragEvent, ReactNode } from "react";
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { localizeWorkspaceError } from "../lib/i18n/errors";
+import { useI18n } from "../lib/i18n/i18n";
+import type { MessageKey } from "../lib/i18n/messages";
 import { issueIdentifier } from "../lib/issue-url";
 import {
   logicalStatusKeyForTask,
@@ -105,30 +108,30 @@ const defaultSettings: ViewSettings = {
   displayProperties: ["status", "project", "due_at"],
   filters: [],
 };
-const groupingOptions: ReadonlyArray<{ value: ViewGrouping; label: string }> = [
-  { value: "none", label: "Без группировки" },
-  { value: "status", label: "Статус" },
-  { value: "project", label: "Проект" },
-  { value: "parent_task", label: "Родительская задача" },
+const groupingOptions: ReadonlyArray<{ value: ViewGrouping; label: MessageKey }> = [
+  { value: "none", label: "views.group.none" },
+  { value: "status", label: "common.status" },
+  { value: "project", label: "common.project" },
+  { value: "parent_task", label: "views.parentTask" },
 ];
 const orderingOptions: ReadonlyArray<{
   value: ViewSettings["ordering"];
-  label: string;
+  label: MessageKey;
 }> = [
-  { value: "manual", label: "Вручную" },
-  { value: "title", label: "Название" },
-  { value: "status", label: "Статус" },
-  { value: "created_at", label: "Создано" },
-  { value: "updated_at", label: "Обновлено" },
-  { value: "due_at", label: "Срок" },
+  { value: "manual", label: "views.order.manual" },
+  { value: "title", label: "common.name" },
+  { value: "status", label: "common.status" },
+  { value: "created_at", label: "views.created" },
+  { value: "updated_at", label: "views.updated" },
+  { value: "due_at", label: "workspace.dueDate" },
 ];
-const propertyLabels: Record<DisplayProperty, string> = {
-  status: "Статус",
-  project: "Проект",
-  assignee: "Исполнитель",
-  due_at: "Срок",
-  created_at: "Создано",
-  updated_at: "Обновлено",
+const propertyLabels: Record<DisplayProperty, MessageKey> = {
+  status: "common.status",
+  project: "common.project",
+  assignee: "task.assignee",
+  due_at: "workspace.dueDate",
+  created_at: "views.created",
+  updated_at: "views.updated",
 };
 const allProperties: readonly DisplayProperty[] = [
   "status",
@@ -141,15 +144,15 @@ const allProperties: readonly DisplayProperty[] = [
 const filterFields: ReadonlyArray<{
   field: FilterField;
   icon: typeof Funnel;
-  label: string;
+  label: MessageKey;
 }> = [
-  { field: "status", icon: SlidersHorizontal, label: "Статус" },
-  { field: "assignee", icon: UserRound, label: "Исполнитель" },
-  { field: "creator", icon: UserRound, label: "Создатель" },
-  { field: "project", icon: Box, label: "Проект" },
-  { field: "template", icon: Workflow, label: "Шаблон" },
-  { field: "due_date", icon: CalendarDays, label: "Даты" },
-  { field: "content", icon: Search, label: "Содержимое" },
+  { field: "status", icon: SlidersHorizontal, label: "common.status" },
+  { field: "assignee", icon: UserRound, label: "task.assignee" },
+  { field: "creator", icon: UserRound, label: "views.creator" },
+  { field: "project", icon: Box, label: "common.project" },
+  { field: "template", icon: Workflow, label: "common.template" },
+  { field: "due_date", icon: CalendarDays, label: "views.dates" },
+  { field: "content", icon: Search, label: "views.content" },
 ];
 const filterOperators: readonly FilterOperator[] = [
   "is",
@@ -163,6 +166,7 @@ const filterOperators: readonly FilterOperator[] = [
 ];
 
 export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): ReactNode {
+  const { t } = useI18n();
   const { data, error, loading, refresh } = useWorkspaceData();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -200,15 +204,15 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
   if (loading)
     return (
       <Card className="panel">
-        <Text color="gray">Загружаю представления…</Text>
+        <Text color="gray">{t("views.loading")}</Text>
       </Card>
     );
   if (error !== null || data === null)
     return (
       <Card className="panel connection-error">
-        <h2>Не удалось загрузить Views</h2>
-        <p>{error ?? "Backend не ответил."}</p>
-        <Button onClick={() => void refresh()}>Повторить</Button>
+        <h2>{t("views.loadError")}</h2>
+        <p>{localizeWorkspaceError(error, t, "views.backendError")}</p>
+        <Button onClick={() => void refresh()}>{t("common.retry")}</Button>
       </Card>
     );
 
@@ -225,7 +229,7 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
     );
     const result: unknown = await response.json();
     if (!response.ok || !isSavedView(result)) {
-      setMutationError(readError(result, "Не удалось создать view."));
+      setMutationError(readError(result, t("views.createError")));
       setSaving(false);
       return;
     }
@@ -250,7 +254,7 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
     );
     const result: unknown = await response.json();
     if (!response.ok || !isSavedView(result)) {
-      setMutationError(readError(result, "Не удалось сохранить view."));
+      setMutationError(readError(result, t("views.saveError")));
       setSaving(false);
       return;
     }
@@ -273,7 +277,7 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
     );
     if (!response.ok) {
       const result: unknown = await response.json();
-      setMutationError(readError(result, "Не удалось удалить view."));
+      setMutationError(readError(result, t("views.deleteError")));
       setSaving(false);
       return;
     }
@@ -294,7 +298,7 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
   const moveBoardTask: MoveBoardTask = async (task, targetStatusKey, targetTasks) => {
     const targetStatusId = resolveProjectStatusId(task.projectId, targetStatusKey, data.statuses);
     if (targetStatusId === undefined) {
-      setMutationError(`В проекте «${task.projectTitle}» нет статуса этой колонки.`);
+      setMutationError(t("views.missingColumnStatus", { project: task.projectTitle }));
       return;
     }
     const nextPosition = String(
@@ -326,16 +330,14 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
       });
       const result: unknown = await response.json();
       if (!response.ok || !isTaskSummary(result)) {
-        setMutationError(readError(result, "Не удалось переместить задачу."));
+        setMutationError(readError(result, t("views.moveError")));
         setTaskOverrides((current) => withoutTaskOverride(current, task.id));
         return;
       }
       updateWorkspaceTask(result);
       setTaskOverrides((current) => withoutTaskOverride(current, task.id));
     } catch (moveError: unknown) {
-      setMutationError(
-        moveError instanceof Error ? moveError.message : "Не удалось переместить задачу.",
-      );
+      setMutationError(moveError instanceof Error ? moveError.message : t("views.moveError"));
       setTaskOverrides((current) => withoutTaskOverride(current, task.id));
     } finally {
       setMovingTaskId(null);
@@ -355,13 +357,13 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
       });
       const result: unknown = await response.json();
       if (!response.ok || !isTaskSummary(result)) {
-        setMutationError(readError(result, "Не удалось обновить задачу."));
+        setMutationError(readError(result, t("views.updateTaskError")));
         return;
       }
       updateWorkspaceTask(result);
     } catch (updateError: unknown) {
       setMutationError(
-        updateError instanceof Error ? updateError.message : "Не удалось обновить задачу.",
+        updateError instanceof Error ? updateError.message : t("views.updateTaskError"),
       );
     }
   };
@@ -382,18 +384,18 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
                   disabled={saving || draft.name.trim().length === 0}
                   onClick={() => void saveView()}
                 >
-                  {saving ? "Сохраняю…" : "Сохранить"}
+                  {saving ? t("common.saving") : t("common.save")}
                 </Button>
               )}
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
-                  <IconButton variant="ghost" color="gray" aria-label="Действия view">
+                  <IconButton variant="ghost" color="gray" aria-label={t("views.actions")}>
                     <MoreHorizontal size={17} />
                   </IconButton>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content align="end">
                   <DropdownMenu.Item color="red" onSelect={() => void deleteView()}>
-                    <Trash2 size={14} /> Удалить view
+                    <Trash2 size={14} /> {t("views.delete")}
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
@@ -434,6 +436,7 @@ function ViewIdentityEditor({
   draft: ViewDraft;
   setDraft: (draft: ViewDraft) => void;
 }>): ReactNode {
+  const { t } = useI18n();
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingDescription, setEditingDescription] = useState(false);
   return (
@@ -442,7 +445,7 @@ function ViewIdentityEditor({
         <TextField.Root
           autoFocus
           value={draft.name}
-          aria-label="Название view"
+          aria-label={t("views.name")}
           onBlur={() => setEditingTitle(false)}
           onKeyDown={(event) => {
             if (event.key === "Enter") event.currentTarget.blur();
@@ -460,8 +463,8 @@ function ViewIdentityEditor({
         <TextArea
           autoFocus
           value={draft.description ?? ""}
-          placeholder="Описание (необязательно)"
-          aria-label="Описание view"
+          placeholder={t("views.descriptionPlaceholder")}
+          aria-label={t("views.description")}
           resize="vertical"
           onBlur={() => setEditingDescription(false)}
           onChange={(event) => setDraft({ ...draft, description: event.target.value || null })}
@@ -472,7 +475,7 @@ function ViewIdentityEditor({
           type="button"
           onClick={() => setEditingDescription(true)}
         >
-          {draft.description ?? "Добавить описание"}
+          {draft.description ?? t("views.addDescription")}
         </button>
       )}
     </div>
@@ -480,14 +483,15 @@ function ViewIdentityEditor({
 }
 
 function ViewsEmpty({ onCreate }: Readonly<{ onCreate: () => void }>): ReactNode {
+  const { t } = useI18n();
   return (
     <Card className="views-empty">
       <span>
         <Layers3 size={30} />
       </span>
-      <h2>Создайте первый view</h2>
-      <p>Выберите список, доску или матрицу. Настройки сохранятся для быстрого доступа.</p>
-      <Button onClick={onCreate}>Создать view</Button>
+      <h2>{t("views.createFirstTitle")}</h2>
+      <p>{t("views.createFirstText")}</p>
+      <Button onClick={onCreate}>{t("views.create")}</Button>
     </Card>
   );
 }
@@ -501,6 +505,7 @@ function ViewToolbar({
   draft: ViewDraft;
   setDraft: (draft: ViewDraft) => void;
 }>): ReactNode {
+  const { t } = useI18n();
   const filters = draft.settings.filters ?? [];
   const addFilter = (filter: ViewFilter): void =>
     setDraft({
@@ -525,7 +530,7 @@ function ViewToolbar({
             color={draft.layout === "list" ? "indigo" : "gray"}
             onClick={() => setDraft(changeSavedViewLayout(draft, "list"))}
           >
-            <List size={14} /> Список
+            <List size={14} /> {t("views.list")}
           </Button>
           <Button
             size="1"
@@ -533,7 +538,7 @@ function ViewToolbar({
             color={draft.layout === "board" ? "indigo" : "gray"}
             onClick={() => setDraft(changeSavedViewLayout(draft, "board"))}
           >
-            <Columns3 size={14} /> Доска
+            <Columns3 size={14} /> {t("views.board")}
           </Button>
           <Button
             size="1"
@@ -541,7 +546,7 @@ function ViewToolbar({
             color={draft.layout === "matrix" ? "indigo" : "gray"}
             onClick={() => setDraft(changeSavedViewLayout(draft, "matrix"))}
           >
-            <Grid3X3 size={14} /> Матрица
+            <Grid3X3 size={14} /> {t("views.matrix")}
           </Button>
         </div>
         <div className="view-toolbar-actions">
@@ -553,10 +558,10 @@ function ViewToolbar({
         <div className="view-filter-chips">
           {filters.map((filter, index) => (
             <span key={`${filter.field}-${filter.operator}-${filter.value ?? "none"}`}>
-              {filterLabel(filter, data)}
+              {filterLabel(filter, data, t)}
               <button
                 type="button"
-                aria-label={`Удалить фильтр ${filterLabel(filter, data)}`}
+                aria-label={t("views.removeFilter", { filter: filterLabel(filter, data, t) })}
                 onClick={() => removeFilter(index)}
               >
                 <X size={12} />
@@ -576,13 +581,14 @@ function ViewFiltersPopover({
   data: WorkspaceBootstrap;
   onAdd: (filter: ViewFilter) => void;
 }>): ReactNode {
+  const { locale, t } = useI18n();
   const [open, setOpen] = useState(false);
   const [field, setField] = useState<FilterField | null>(null);
   const [operator, setOperator] = useState<FilterOperator>("is");
   const [value, setValue] = useState("");
   const [search, setSearch] = useState("");
   const beginFilter = (nextField: FilterField): void => {
-    const initial = initialFilter(nextField, data);
+    const initial = initialFilter(nextField, data, t);
     setField(nextField);
     setOperator(initial.operator);
     setValue(initial.value ?? "");
@@ -595,7 +601,7 @@ function ViewFiltersPopover({
     field !== null &&
     (operator === "is_empty" || operator === "is_not_empty" || value.trim().length > 0);
   const visibleFields = filterFields.filter((item) =>
-    item.label.toLocaleLowerCase("ru").includes(search.toLocaleLowerCase("ru")),
+    t(item.label).toLocaleLowerCase(locale).includes(search.toLocaleLowerCase(locale)),
   );
   return (
     <Popover.Root
@@ -606,7 +612,7 @@ function ViewFiltersPopover({
       }}
     >
       <Popover.Trigger>
-        <IconButton aria-label="Фильтры view" variant="soft">
+        <IconButton aria-label={t("views.filters")} variant="soft">
           <Funnel size={16} />
         </IconButton>
       </Popover.Trigger>
@@ -616,15 +622,15 @@ function ViewFiltersPopover({
             <TextField.Root
               autoFocus
               value={search}
-              placeholder="Добавить фильтр…"
-              aria-label="Найти фильтр"
+              placeholder={t("views.addFilter")}
+              aria-label={t("views.findFilter")}
               onChange={(event) => setSearch(event.target.value)}
             />
             <div className="filter-field-list">
               {visibleFields.map(({ field: optionField, icon: Icon, label }) => (
                 <button type="button" key={optionField} onClick={() => beginFilter(optionField)}>
                   <Icon size={17} />
-                  <span>{label}</span>
+                  <span>{t(label)}</span>
                   <ChevronRight size={14} />
                 </button>
               ))}
@@ -677,21 +683,30 @@ function FilterEditor({
   onBack: () => void;
   onAdd: () => void;
 }>): ReactNode {
+  const { t } = useI18n();
   const fieldDefinition = filterFields.find((item) => item.field === field);
   const operators = operatorsForField(field);
-  const valueOptions = entityFilterOptions(field, data);
+  const valueOptions = entityFilterOptions(field, data, t);
   const needsValue = operator !== "is_empty" && operator !== "is_not_empty";
   return (
     <div className="filter-editor">
       <div className="filter-editor-head">
-        <IconButton size="1" variant="ghost" color="gray" aria-label="Назад" onClick={onBack}>
+        <IconButton
+          size="1"
+          variant="ghost"
+          color="gray"
+          aria-label={t("common.back")}
+          onClick={onBack}
+        >
           <ArrowLeft size={15} />
         </IconButton>
-        <Text weight="medium">{fieldDefinition?.label ?? "Фильтр"}</Text>
+        <Text weight="medium">
+          {fieldDefinition === undefined ? t("views.filter") : t(fieldDefinition.label)}
+        </Text>
       </div>
       <div className="filter-editor-control">
         <Text size="1" color="gray">
-          Условие
+          {t("views.condition")}
         </Text>
         <Select.Root
           value={operator}
@@ -700,11 +715,11 @@ function FilterEditor({
             if (nextOperator !== undefined) setOperator(nextOperator);
           }}
         >
-          <Select.Trigger aria-label="Условие фильтра" />
+          <Select.Trigger aria-label={t("views.filterCondition")} />
           <Select.Content className="view-nested-select-content">
             {operators.map((item) => (
               <Select.Item key={item.value} value={item.value}>
-                {item.label}
+                {t(item.label)}
               </Select.Item>
             ))}
           </Select.Content>
@@ -713,26 +728,26 @@ function FilterEditor({
       {needsValue && (
         <div className="filter-editor-control">
           <Text size="1" color="gray">
-            Значение
+            {t("views.value")}
           </Text>
           {field === "content" ? (
             <TextField.Root
               autoFocus
               value={value}
-              placeholder="Текст в названии или описании"
-              aria-label="Значение фильтра"
+              placeholder={t("views.textValue")}
+              aria-label={t("views.filterValue")}
               onChange={(event) => setValue(event.target.value)}
             />
           ) : field === "due_date" ? (
             <TextField.Root
               type="date"
               value={value}
-              aria-label="Дата фильтра"
+              aria-label={t("views.filterDate")}
               onChange={(event) => setValue(event.target.value)}
             />
           ) : (
             <Select.Root value={value} onValueChange={setValue}>
-              <Select.Trigger aria-label="Значение фильтра" />
+              <Select.Trigger aria-label={t("views.filterValue")} />
               <Select.Content className="view-nested-select-content">
                 {valueOptions.map((item) => (
                   <Select.Item key={item.value} value={item.value}>
@@ -745,7 +760,7 @@ function FilterEditor({
         </div>
       )}
       <Button disabled={!canAdd} onClick={onAdd}>
-        Добавить фильтр
+        {t("views.addFilterAction")}
       </Button>
     </div>
   );
@@ -758,13 +773,14 @@ function ViewSettingsPopover({
   draft: ViewDraft;
   setDraft: (draft: ViewDraft) => void;
 }>): ReactNode {
+  const { t } = useI18n();
   const settings = draft.settings;
   const update = (next: Partial<ViewSettings>): void =>
     setDraft({ ...draft, settings: { ...settings, ...next } });
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <IconButton aria-label="Настройки view" variant="soft">
+        <IconButton aria-label={t("views.settings")} variant="soft">
           <Settings2 size={16} />
         </IconButton>
       </Popover.Trigger>
@@ -776,7 +792,7 @@ function ViewSettingsPopover({
             color="gray"
             onClick={() => setDraft(changeSavedViewLayout(draft, "list"))}
           >
-            <List size={14} /> List
+            <List size={14} /> {t("views.list")}
           </Button>
           <Button
             size="1"
@@ -784,7 +800,7 @@ function ViewSettingsPopover({
             color="gray"
             onClick={() => setDraft(changeSavedViewLayout(draft, "board"))}
           >
-            <Columns3 size={14} /> Board
+            <Columns3 size={14} /> {t("views.board")}
           </Button>
           <Button
             size="1"
@@ -792,19 +808,19 @@ function ViewSettingsPopover({
             color="gray"
             onClick={() => setDraft(changeSavedViewLayout(draft, "matrix"))}
           >
-            <Grid3X3 size={14} /> Matrix
+            <Grid3X3 size={14} /> {t("views.matrix")}
           </Button>
         </div>
         {draft.layout !== "matrix" && (
           <>
             <SettingSelect
-              label={draft.layout === "board" ? "Колонки" : "Группировка"}
+              label={draft.layout === "board" ? "views.columns" : "views.grouping"}
               value={settings.grouping}
               options={groupingOptions}
               onChange={(value) => update({ grouping: value })}
             />
             <SettingSelect
-              label={draft.layout === "board" ? "Строки" : "Подгруппировка"}
+              label={draft.layout === "board" ? "views.rows" : "views.subgrouping"}
               value={settings.subGrouping}
               options={groupingOptions}
               onChange={(value) => update({ subGrouping: value })}
@@ -812,13 +828,13 @@ function ViewSettingsPopover({
           </>
         )}
         <SettingSelect
-          label="Сортировка"
+          label="views.sorting"
           value={settings.ordering}
           options={orderingOptions}
           onChange={(value) => update({ ordering: value })}
         />
         <div className="setting-row">
-          <Text size="2">Направление</Text>
+          <Text size="2">{t("views.direction")}</Text>
           <Button
             size="1"
             variant="soft"
@@ -829,25 +845,25 @@ function ViewSettingsPopover({
               })
             }
           >
-            {settings.orderDirection === "asc" ? "По возрастанию" : "По убыванию"}
+            {settings.orderDirection === "asc" ? t("views.ascending") : t("views.descending")}
           </Button>
         </div>
         {draft.layout !== "matrix" && (
           <>
             <div className="settings-divider" />
             <SettingSwitch
-              label="Показывать подзадачи"
+              label="views.showSubtasks"
               checked={settings.showSubtasks}
               onChange={(checked) => update({ showSubtasks: checked })}
             />
             <SettingSwitch
-              label="Пустые группы"
+              label="views.emptyGroups"
               checked={settings.showEmptyGroups}
               onChange={(checked) => update({ showEmptyGroups: checked })}
             />
             <div className="settings-divider" />
             <Text size="2" weight="medium">
-              Показывать поля
+              {t("views.showFields")}
             </Text>
             <div className="display-properties">
               {allProperties.map((property) => {
@@ -865,7 +881,7 @@ function ViewSettingsPopover({
                       })
                     }
                   >
-                    {propertyLabels[property]}
+                    {t(propertyLabels[property])}
                   </button>
                 );
               })}
@@ -883,20 +899,21 @@ function SettingSelect<TValue extends string>({
   options,
   onChange,
 }: Readonly<{
-  label: string;
+  label: MessageKey;
   value: TValue;
-  options: ReadonlyArray<{ value: TValue; label: string }>;
+  options: ReadonlyArray<{ value: TValue; label: MessageKey }>;
   onChange: (value: TValue) => void;
 }>): ReactNode {
+  const { t } = useI18n();
   return (
     <div className="setting-row">
-      <Text size="2">{label}</Text>
+      <Text size="2">{t(label)}</Text>
       <Select.Root value={value} onValueChange={onChange}>
         <Select.Trigger />
         <Select.Content className="view-nested-select-content">
           {options.map((option) => (
             <Select.Item key={option.value} value={option.value}>
-              {option.label}
+              {t(option.label)}
             </Select.Item>
           ))}
         </Select.Content>
@@ -909,14 +926,15 @@ function SettingSwitch({
   checked,
   onChange,
 }: Readonly<{
-  label: string;
+  label: MessageKey;
   checked: boolean;
   onChange: (checked: boolean) => void;
 }>): ReactNode {
+  const { t } = useI18n();
   return (
     <div className="setting-row">
-      <Text size="2">{label}</Text>
-      <Switch aria-label={label} checked={checked} onCheckedChange={onChange} />
+      <Text size="2">{t(label)}</Text>
+      <Switch aria-label={t(label)} checked={checked} onCheckedChange={onChange} />
     </div>
   );
 }
@@ -938,13 +956,14 @@ function ViewContent({
   onOpenTask: OpenTaskPreview;
   onUpdateTask: UpdateCardTask;
 }>): ReactNode {
+  const { t } = useI18n();
   const tasks = useMemo(
     () => collectTasks(data, draft, taskOverrides),
     [data, draft, taskOverrides],
   );
   const groups = useMemo(
-    () => groupTasks(tasks, draft.settings.grouping, data, draft.settings.showEmptyGroups),
-    [tasks, draft.settings.grouping, draft.settings.showEmptyGroups, data],
+    () => groupTasks(tasks, draft.settings.grouping, data, draft.settings.showEmptyGroups, t),
+    [tasks, draft.settings.grouping, draft.settings.showEmptyGroups, data, t],
   );
   if (draft.layout === "matrix") {
     return (
@@ -961,9 +980,9 @@ function ViewContent({
     return (
       <div className="view-no-tasks">
         <SlidersHorizontal size={24} />
-        <strong>Задач по этим настройкам нет</strong>
+        <strong>{t("views.noTasksTitle")}</strong>
         <Text size="2" color="gray">
-          Измените область view или включите подзадачи.
+          {t("views.noTasksText")}
         </Text>
       </div>
     );
@@ -996,6 +1015,7 @@ function MatrixView({
   onOpenTask: OpenTaskPreview;
   onUpdateTask: UpdateCardTask;
 }>): ReactNode {
+  const { t } = useI18n();
   const matrix = useMemo(() => {
     const allTasks = collectWorkspaceTasks(data, draft.projectId ?? null, taskOverrides);
     const filters = draft.settings.filters ?? [];
@@ -1049,9 +1069,9 @@ function MatrixView({
     return (
       <div className="view-no-tasks">
         <Workflow size={24} />
-        <strong>Выберите один шаблон</strong>
+        <strong>{t("views.selectTemplateTitle")}</strong>
         <Text size="2" color="gray">
-          Добавьте фильтр «Шаблон», чтобы определить набор родительских задач для матрицы.
+          {t("views.selectTemplateText")}
         </Text>
       </div>
     );
@@ -1060,9 +1080,9 @@ function MatrixView({
     return (
       <div className="view-no-tasks">
         <Grid3X3 size={24} />
-        <strong>Задач по этому шаблону нет</strong>
+        <strong>{t("views.noTemplateTasksTitle")}</strong>
         <Text size="2" color="gray">
-          Измените фильтры или создайте родительские задачи из выбранного шаблона.
+          {t("views.noTemplateTasksText")}
         </Text>
       </div>
     );
@@ -1073,7 +1093,7 @@ function MatrixView({
       <table className="template-matrix">
         <thead>
           <tr>
-            <th scope="col">Подзадача</th>
+            <th scope="col">{t("task.subtask")}</th>
             {matrix.columns.map((task) => (
               <th scope="col" key={task.id} title={task.title}>
                 {task.title}
@@ -1094,7 +1114,10 @@ function MatrixView({
                         type="button"
                         className="template-matrix-cell missing"
                         disabled
-                        aria-label={`${column?.title ?? "Задача"}: подзадача «${row.title}» отсутствует`}
+                        aria-label={t("views.missingSubtask", {
+                          column: column?.title ?? t("common.task"),
+                          task: row.title,
+                        })}
                       >
                         —
                       </button>
@@ -1119,7 +1142,7 @@ function MatrixView({
                       <button
                         type="button"
                         className="template-matrix-preview"
-                        aria-label={`Открыть задачу ${task.title}`}
+                        aria-label={t("views.openTask", { task: task.title })}
                         onClick={() => onOpenTask(task)}
                       />
                       <div className="template-matrix-cell-head">
@@ -1174,6 +1197,7 @@ function BoardView({
   onOpenTask: OpenTaskPreview;
   onUpdateTask: UpdateCardTask;
 }>): ReactNode {
+  const { t } = useI18n();
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
   const [dropTargetKey, setDropTargetKey] = useState<string | null>(null);
   const [collapsedRowIds, setCollapsedRowIds] = useState<ReadonlySet<string>>(() => new Set());
@@ -1182,8 +1206,8 @@ function BoardView({
     () =>
       draft.settings.subGrouping === "none"
         ? []
-        : groupTasks(tasks, draft.settings.subGrouping, data, false),
-    [data, draft.settings.subGrouping, tasks],
+        : groupTasks(tasks, draft.settings.subGrouping, data, false, t),
+    [data, draft.settings.subGrouping, tasks, t],
   );
   const statusColorsByGroupId = useMemo(() => {
     if (draft.settings.grouping !== "status") return new Map<string, string>();
@@ -1329,7 +1353,7 @@ function BoardView({
               statusColor={statusColorsByGroupId.get(group.id)}
             />
           </div>
-          {renderSubgroups(group.tasks, "none", data).map((subgroup) => (
+          {renderSubgroups(group.tasks, "none", data, t).map((subgroup) => (
             <div key={subgroup.id} className="saved-subgroup">
               {subgroup.tasks.map(renderTask)}
             </div>
@@ -1366,6 +1390,7 @@ function ListView({
   draft: ViewDraft;
   onOpenTask: OpenTaskPreview;
 }>): ReactNode {
+  const { t } = useI18n();
   return (
     <Card className="saved-list">
       {groups.map((group) => (
@@ -1374,7 +1399,7 @@ function ListView({
             <strong>{group.title}</strong>
             <Badge color="gray">{group.tasks.length}</Badge>
           </div>
-          {renderSubgroups(group.tasks, draft.settings.subGrouping, data).map((subgroup) => (
+          {renderSubgroups(group.tasks, draft.settings.subGrouping, data, t).map((subgroup) => (
             <div key={subgroup.id}>
               {draft.settings.subGrouping !== "none" && (
                 <div className="saved-list-subgroup">{subgroup.title}</div>
@@ -1411,23 +1436,26 @@ function TaskCard({
   onOpenTask: OpenTaskPreview;
   onUpdateTask: UpdateCardTask;
 }>): ReactNode {
+  const { t } = useI18n();
   const status = data.statuses.find((item) => item.id === task.statusId);
   const assignee = data.workspace.members.find((member) => member.userId === task.assigneeUserId);
-  const hasSubtasks = subtaskStatusSlices(task.id, data).length > 0;
+  const hasSubtasks = subtaskStatusSlices(task.id, data, t("views.noStatus")).length > 0;
   return (
     <Card className={moving ? "saved-task-card moving" : "saved-task-card"}>
       {hasSubtasks && <SubtaskStatusChart task={task} data={data} mode="chart" />}
       <button
         className="task-preview-button"
         type="button"
-        aria-label={`Открыть задачу ${task.title}`}
+        aria-label={t("views.openTask", { task: task.title })}
         onClick={() => onOpenTask(task)}
       />
       <div className="saved-task-card-head">
         <Link
           className="issue-identifier-link"
           href={workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title)}
-          aria-label={`Открыть задачу ${issueIdentifier(task.projectKey, task.number)} на отдельной странице`}
+          aria-label={t("views.openIssuePage", {
+            identifier: issueIdentifier(task.projectKey, task.number),
+          })}
           onClick={(event) => event.stopPropagation()}
         >
           {issueIdentifier(task.projectKey, task.number)}
@@ -1450,7 +1478,9 @@ function TaskCard({
         />
         <strong>{task.title}</strong>
       </div>
-      {task.parentTaskId !== null && task.parentTaskId !== undefined && <small>Подзадача</small>}
+      {task.parentTaskId !== null && task.parentTaskId !== undefined && (
+        <small>{t("task.subtask")}</small>
+      )}
       {hasSubtasks && <SubtaskStatusChart task={task} data={data} mode="legend" />}
       <TaskProperties
         task={task}
@@ -1473,6 +1503,7 @@ function TaskStatusPicker({
   statuses: WorkspaceBootstrap["statuses"];
   onChange: (statusId: string) => Promise<void>;
 }>): ReactNode {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const visibleStatuses = statuses.filter((item) =>
@@ -1490,8 +1521,8 @@ function TaskStatusPicker({
         <button
           type="button"
           className="task-card-status-trigger"
-          aria-label={`Изменить статус: ${status?.name ?? "Backlog"}`}
-          title={status?.name ?? "Backlog"}
+          aria-label={t("views.changeStatus", { status: status?.name ?? t("common.backlog") })}
+          title={status?.name ?? t("common.backlog")}
           onClick={(event) => event.stopPropagation()}
           onPointerDown={(event) => event.stopPropagation()}
         >
@@ -1502,8 +1533,8 @@ function TaskStatusPicker({
         <TextField.Root
           size="2"
           value={query}
-          placeholder="Изменить статус…"
-          aria-label="Поиск статуса"
+          placeholder={t("views.changeStatusPlaceholder")}
+          aria-label={t("views.searchStatus")}
           onChange={(event) => setQuery(event.target.value)}
         >
           <TextField.Slot>
@@ -1544,6 +1575,7 @@ function TaskAssigneePicker({
   members: WorkspaceBootstrap["workspace"]["members"];
   onChange: (assigneeUserId: string | null) => Promise<void>;
 }>): ReactNode {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const visibleMembers = members.filter((member) =>
@@ -1563,8 +1595,8 @@ function TaskAssigneePicker({
         <button
           type="button"
           className="task-card-assignee-trigger"
-          aria-label={`Изменить исполнителя задачи ${task.title}`}
-          title={assignee?.displayName ?? "Не назначено"}
+          aria-label={t("views.changeAssignee", { task: task.title })}
+          title={assignee?.displayName ?? t("common.notAssigned")}
           onClick={(event) => event.stopPropagation()}
           onPointerDown={(event) => event.stopPropagation()}
         >
@@ -1585,8 +1617,8 @@ function TaskAssigneePicker({
         <TextField.Root
           size="2"
           value={query}
-          placeholder="Назначить…"
-          aria-label="Поиск исполнителя"
+          placeholder={t("views.assignPlaceholder")}
+          aria-label={t("views.searchAssignee")}
           onChange={(event) => setQuery(event.target.value)}
         >
           <TextField.Slot>
@@ -1604,7 +1636,7 @@ function TaskAssigneePicker({
             }}
           >
             <Avatar size="1" fallback={<UserRound size={13} />} />
-            <span className="task-card-picker-option-label">Не назначено</span>
+            <span className="task-card-picker-option-label">{t("common.notAssigned")}</span>
             {assignee === undefined && <Check size={15} aria-hidden="true" />}
           </button>
           {visibleMembers.map((member) => (
@@ -1653,13 +1685,14 @@ function TaskLine({
   properties: DisplayProperty[];
   onOpenTask: OpenTaskPreview;
 }>): ReactNode {
-  const hasSubtasks = subtaskStatusSlices(task.id, data).length > 0;
+  const { t } = useI18n();
+  const hasSubtasks = subtaskStatusSlices(task.id, data, t("views.noStatus")).length > 0;
   return (
     <div className="saved-task-line">
       <button
         className="task-preview-button"
         type="button"
-        aria-label={`Открыть задачу ${task.title}`}
+        aria-label={t("views.openTask", { task: task.title })}
         onClick={() => onOpenTask(task)}
       />
       <TaskStatusIndicator
@@ -1669,7 +1702,9 @@ function TaskLine({
       <Link
         className="issue-identifier-link"
         href={workspaceIssueHref(data.workspace.slug, task.projectKey, task.number, task.title)}
-        aria-label={`Открыть задачу ${issueIdentifier(task.projectKey, task.number)} на отдельной странице`}
+        aria-label={t("views.openIssuePage", {
+          identifier: issueIdentifier(task.projectKey, task.number),
+        })}
         onClick={(event) => event.stopPropagation()}
       >
         {issueIdentifier(task.projectKey, task.number)}
@@ -1684,9 +1719,10 @@ function TaskLine({
 }
 
 function TaskCommentCount({ task }: Readonly<{ task: TaskSummary }>): ReactNode {
+  const { t } = useI18n();
   const count = task.commentCount ?? 0;
   return (
-    <span className="task-comment-count" title={`Комментариев: ${count}`}>
+    <span className="task-comment-count" title={t("views.commentCount", { count })}>
       <MessageSquare size={12} aria-hidden="true" />
       {count}
     </span>
@@ -1704,9 +1740,10 @@ function SubtaskStatusChart({
   compact?: boolean;
   mode?: "both" | "chart" | "legend";
 }>): ReactNode {
+  const { t } = useI18n();
   if (task.parentTaskId !== null && task.parentTaskId !== undefined) return null;
 
-  const slices = subtaskStatusSlices(task.id, data);
+  const slices = subtaskStatusSlices(task.id, data, t("views.noStatus"));
   const total = slices.reduce((sum, slice) => sum + slice.count, 0);
   if (total === 0) return null;
 
@@ -1716,7 +1753,7 @@ function SubtaskStatusChart({
     <div
       className="subtask-status-chart"
       role="img"
-      aria-label={`Всего подзадач: ${total}. ${breakdown}`}
+      aria-label={t("views.subtaskBreakdown", { total, breakdown })}
     >
       {slices.map((slice) => (
         <span
@@ -1749,7 +1786,11 @@ function SubtaskStatusChart({
   );
 }
 
-function subtaskStatusSlices(parentTaskId: string, data: WorkspaceBootstrap): SubtaskStatusSlice[] {
+function subtaskStatusSlices(
+  parentTaskId: string,
+  data: WorkspaceBootstrap,
+  noStatusLabel: string,
+): SubtaskStatusSlice[] {
   const counts = new Map<string, number>();
   for (const project of data.projectData) {
     for (const task of project.tasks) {
@@ -1770,7 +1811,7 @@ function subtaskStatusSlices(parentTaskId: string, data: WorkspaceBootstrap): Su
     ? slices
     : [
         ...slices,
-        { id: noStatusKey, label: "Без статуса", color: "#A1A1AA", count: withoutStatus },
+        { id: noStatusKey, label: noStatusLabel, color: "#A1A1AA", count: withoutStatus },
       ];
 }
 
@@ -1783,6 +1824,7 @@ function TaskProperties({
   data: WorkspaceBootstrap;
   properties: DisplayProperty[];
 }>): ReactNode {
+  const { locale, t } = useI18n();
   return (
     <div className="saved-task-properties">
       {properties.map((property) => (
@@ -1793,7 +1835,7 @@ function TaskProperties({
               size="xs"
             />
           )}
-          {propertyValue(property, task, data)}
+          {propertyValue(property, task, data, locale, t)}
         </span>
       ))}
     </div>
@@ -1809,8 +1851,10 @@ function TaskDetailsDrawer({
   task: TaskWithProject | null;
   onClose: () => void;
 }>): ReactNode {
+  const { t } = useI18n();
   const [portalContainer, setPortalContainer] = useState<HTMLDivElement | null>(null);
-  const identifier = task === null ? "Задача" : issueIdentifier(task.projectKey, task.number);
+  const identifier =
+    task === null ? t("common.task") : issueIdentifier(task.projectKey, task.number);
   const href =
     task === null
       ? null
@@ -1829,18 +1873,18 @@ function TaskDetailsDrawer({
           <header className="task-drawer-header">
             <div>
               <DialogPrimitive.Title>{identifier}</DialogPrimitive.Title>
-              <DialogPrimitive.Description>Просмотр задачи</DialogPrimitive.Description>
+              <DialogPrimitive.Description>{t("views.taskPreview")}</DialogPrimitive.Description>
             </div>
             <div className="task-drawer-actions">
               {href !== null && (
                 <IconButton asChild variant="ghost" color="gray">
-                  <Link href={href} aria-label="Открыть задачу на отдельной странице">
+                  <Link href={href} aria-label={t("views.openTaskPage")}>
                     <ExternalLink size={17} />
                   </Link>
                 </IconButton>
               )}
               <DialogPrimitive.Close asChild>
-                <IconButton variant="ghost" color="gray" aria-label="Закрыть задачу">
+                <IconButton variant="ghost" color="gray" aria-label={t("views.closeTask")}>
                   <X size={18} />
                 </IconButton>
               </DialogPrimitive.Close>
@@ -1874,27 +1918,28 @@ function CreateViewDialog({
   saving: boolean;
   onCreate: (draft: ViewDraft) => Promise<void>;
 }>): ReactNode {
-  const [name, setName] = useState("Новый view");
+  const { t } = useI18n();
+  const [name, setName] = useState(() => t("views.newName"));
   const [layout, setLayout] = useState<SavedView["layout"]>("board");
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Content maxWidth="480px">
-        <Dialog.Title>Создать view</Dialog.Title>
+        <Dialog.Title>{t("views.create")}</Dialog.Title>
         <Dialog.Description size="2" color="gray">
-          Настройки можно изменить после создания.
+          {t("views.createHint")}
         </Dialog.Description>
         <div className="create-view-form">
           <div className="create-view-field">
-            <Text size="2">Название</Text>
+            <Text size="2">{t("common.name")}</Text>
             <TextField.Root
-              aria-label="Название view"
+              aria-label={t("views.name")}
               autoFocus
               value={name}
               onChange={(event) => setName(event.target.value)}
             />
           </div>
           <div className="create-view-field">
-            <Text size="2">Вид</Text>
+            <Text size="2">{t("views.type")}</Text>
             <Select.Root
               value={layout}
               onValueChange={(value) => {
@@ -1903,11 +1948,11 @@ function CreateViewDialog({
                 }
               }}
             >
-              <Select.Trigger aria-label="Вид отображения" />
+              <Select.Trigger aria-label={t("views.displayType")} />
               <Select.Content>
-                <Select.Item value="list">Список</Select.Item>
-                <Select.Item value="board">Доска</Select.Item>
-                <Select.Item value="matrix">Матрица</Select.Item>
+                <Select.Item value="list">{t("views.list")}</Select.Item>
+                <Select.Item value="board">{t("views.board")}</Select.Item>
+                <Select.Item value="matrix">{t("views.matrix")}</Select.Item>
               </Select.Content>
             </Select.Root>
           </div>
@@ -1915,7 +1960,7 @@ function CreateViewDialog({
         <div className="dialog-actions">
           <Dialog.Close>
             <Button color="gray" variant="soft">
-              Отмена
+              {t("common.cancel")}
             </Button>
           </Dialog.Close>
           <Button
@@ -1933,7 +1978,7 @@ function CreateViewDialog({
               })
             }
           >
-            Создать
+            {t("common.create")}
           </Button>
         </div>
       </Dialog.Content>
@@ -1943,27 +1988,28 @@ function CreateViewDialog({
 
 function operatorsForField(
   field: FilterField,
-): ReadonlyArray<{ label: string; value: FilterOperator }> {
+): ReadonlyArray<{ label: MessageKey; value: FilterOperator }> {
   if (field === "due_date")
     return [
-      { label: "До даты", value: "before" },
-      { label: "После даты", value: "after" },
-      { label: "Без срока", value: "is_empty" },
-      { label: "С указанным сроком", value: "is_not_empty" },
+      { label: "views.operator.before", value: "before" },
+      { label: "views.operator.after", value: "after" },
+      { label: "views.operator.noDue", value: "is_empty" },
+      { label: "views.operator.hasDue", value: "is_not_empty" },
     ];
   if (field === "content")
     return [
-      { label: "Содержит", value: "contains" },
-      { label: "Не содержит", value: "not_contains" },
+      { label: "views.operator.contains", value: "contains" },
+      { label: "views.operator.notContains", value: "not_contains" },
     ];
   return [
-    { label: "Совпадает", value: "is" },
-    { label: "Не совпадает", value: "is_not" },
+    { label: "views.operator.is", value: "is" },
+    { label: "views.operator.isNot", value: "is_not" },
   ];
 }
 function entityFilterOptions(
   field: FilterField,
   data: WorkspaceBootstrap,
+  t: ReturnType<typeof useI18n>["t"],
 ): Array<{ label: string; value: string }> {
   if (field === "status")
     return [
@@ -1983,12 +2029,12 @@ function entityFilterOptions(
         label: taskSkill.name,
         value: taskSkill.id,
       })),
-      { label: "Без шаблона", value: "none" },
+      { label: t("views.noTemplate"), value: "none" },
     ];
   if (field === "assignee" || field === "creator")
     return [
       {
-        label: field === "assignee" ? "Не назначено" : "Неизвестный пользователь",
+        label: field === "assignee" ? t("common.notAssigned") : t("activity.unknownUser"),
         value: "none",
       },
       ...data.workspace.members.map((member) => ({
@@ -1998,30 +2044,40 @@ function entityFilterOptions(
     ];
   return [];
 }
-function initialFilter(field: FilterField, data: WorkspaceBootstrap): ViewFilter {
+function initialFilter(
+  field: FilterField,
+  data: WorkspaceBootstrap,
+  t: ReturnType<typeof useI18n>["t"],
+): ViewFilter {
   if (field === "due_date") return { field, operator: "is_empty", value: null };
   if (field === "content") return { field, operator: "contains", value: "" };
   return {
     field,
     operator: "is",
-    value: entityFilterOptions(field, data).at(0)?.value ?? "none",
+    value: entityFilterOptions(field, data, t).at(0)?.value ?? "none",
   };
 }
-function filterLabel(filter: ViewFilter, data: WorkspaceBootstrap): string {
-  const fieldLabel = filterFields.find((item) => item.field === filter.field)?.label ?? "Фильтр";
+function filterLabel(
+  filter: ViewFilter,
+  data: WorkspaceBootstrap,
+  t: ReturnType<typeof useI18n>["t"],
+): string {
+  const fieldKey = filterFields.find((item) => item.field === filter.field)?.label;
+  const fieldLabel = fieldKey === undefined ? t("views.filter") : t(fieldKey);
   const operatorLabel = operatorsForField(filter.field).find(
     (item) => item.value === filter.operator,
   )?.label;
+  const translatedOperator = operatorLabel === undefined ? filter.operator : t(operatorLabel);
   if (filter.operator === "is_empty" || filter.operator === "is_not_empty")
-    return `${fieldLabel}: ${operatorLabel ?? filter.operator}`;
+    return `${fieldLabel}: ${translatedOperator}`;
   const normalizedValue =
     filter.field === "status"
       ? normalizeStatusFilterValue(filter.value, data.statuses)
       : filter.value;
-  const optionLabel = entityFilterOptions(filter.field, data).find(
+  const optionLabel = entityFilterOptions(filter.field, data, t).find(
     (item) => item.value === normalizedValue,
   )?.label;
-  return `${fieldLabel} ${operatorLabel?.toLocaleLowerCase("ru") ?? filter.operator} ${optionLabel ?? filter.value ?? "—"}`;
+  return `${fieldLabel} ${translatedOperator.toLocaleLowerCase()} ${optionLabel ?? filter.value ?? "—"}`;
 }
 
 function collectTasks(
@@ -2139,9 +2195,10 @@ function groupTasks(
   grouping: ViewGrouping,
   data: WorkspaceBootstrap,
   showEmpty: boolean,
+  t: ReturnType<typeof useI18n>["t"],
 ): TaskGroup[] {
-  if (grouping === "none") return [{ id: "all", title: "Все задачи", tasks }];
-  const definitions = groupingDefinitions(grouping, tasks, data);
+  if (grouping === "none") return [{ id: "all", title: t("views.allTasks"), tasks }];
+  const definitions = groupingDefinitions(grouping, tasks, data, t);
   const parentTaskIds = new Set(
     tasks.flatMap((task) =>
       task.parentTaskId === null || task.parentTaskId === undefined ? [] : [task.parentTaskId],
@@ -2167,13 +2224,15 @@ function renderSubgroups(
   tasks: TaskWithProject[],
   grouping: ViewGrouping,
   data: WorkspaceBootstrap,
+  t: ReturnType<typeof useI18n>["t"],
 ): TaskGroup[] {
-  return groupTasks(tasks, grouping, data, false);
+  return groupTasks(tasks, grouping, data, false, t);
 }
 function groupingDefinitions(
   grouping: ViewGrouping,
   tasks: TaskWithProject[],
   data: WorkspaceBootstrap,
+  t: ReturnType<typeof useI18n>["t"],
 ): Array<{ id: string; title: string }> {
   if (grouping === "status")
     return [
@@ -2215,12 +2274,12 @@ function groupingDefinitions(
           id: parentTaskId,
           title:
             allWorkspaceTasks.find((task) => task.id === parentTaskId)?.title ??
-            "Родительская задача",
+            t("views.parentTask"),
         })),
-      { id: "none", title: "Без родительской задачи" },
+      { id: "none", title: t("views.noParentTask") },
     ];
   }
-  return [{ id: "all", title: "Все задачи" }];
+  return [{ id: "all", title: t("views.allTasks") }];
 }
 function groupId(
   task: TaskWithProject,
@@ -2240,23 +2299,26 @@ function propertyValue(
   property: DisplayProperty,
   task: TaskWithProject,
   data: WorkspaceBootstrap,
+  locale: "en" | "ru",
+  t: ReturnType<typeof useI18n>["t"],
 ): string {
   if (property === "status")
-    return data.statuses.find((status) => status.id === task.statusId)?.name ?? "Без статуса";
+    return data.statuses.find((status) => status.id === task.statusId)?.name ?? t("views.noStatus");
   if (property === "project") return task.projectTitle;
   if (property === "assignee")
     return task.assigneeUserId === null || task.assigneeUserId === undefined
-      ? "Не назначено"
+      ? t("common.notAssigned")
       : (data.workspace.members.find((member) => member.userId === task.assigneeUserId)
-          ?.displayName ?? "Исполнитель");
-  if (property === "due_at") return formatDate(task.dueAt);
-  if (property === "created_at") return `Создано ${formatDate(task.createdAt)}`;
-  return `Обновлено ${formatDate(task.updatedAt)}`;
+          ?.displayName ?? t("task.assignee"));
+  if (property === "due_at") return formatDate(task.dueAt, locale, t("views.noDueDate"));
+  if (property === "created_at")
+    return t("views.createdDate", { date: formatDate(task.createdAt, locale, "—") });
+  return t("common.updated", { date: formatDate(task.updatedAt, locale, "—") });
 }
-function formatDate(value: string | null | undefined): string {
+function formatDate(value: string | null | undefined, locale: "en" | "ru", empty: string): string {
   return value === null || value === undefined
-    ? "Без срока"
-    : new Intl.DateTimeFormat("ru-RU", {
+    ? empty
+    : new Intl.DateTimeFormat(locale, {
         day: "2-digit",
         month: "short",
       }).format(new Date(value));

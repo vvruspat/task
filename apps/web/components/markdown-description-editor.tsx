@@ -3,6 +3,7 @@
 import { MarkdownContent, MarkdownEditor, Text } from "@task/ui";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 
 export function MarkdownDescriptionEditor({
   ariaLabel,
@@ -17,6 +18,7 @@ export function MarkdownDescriptionEditor({
   onSave: (value: string | null) => Promise<void>;
   value: string | null;
 }>): ReactNode {
+  const { t } = useI18n();
   const [draft, setDraft] = useState(value ?? "");
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -40,7 +42,7 @@ export function MarkdownDescriptionEditor({
       await onSave(nextValue);
       setEditing(false);
     } catch (cause: unknown) {
-      setError(cause instanceof Error ? cause.message : "Не удалось сохранить описание.");
+      setError(cause instanceof Error ? cause.message : t("common.descriptionSaveError"));
     } finally {
       setSaving(false);
     }

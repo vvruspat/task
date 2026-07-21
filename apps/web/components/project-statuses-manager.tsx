@@ -22,6 +22,7 @@ import type { WorkspaceStatus } from "@task/api-client";
 import { GripVertical, Plus, Save, Trash2 } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 import { updateProjectStatuses } from "../lib/use-workspace-data";
 
 type ProjectStatusesManagerProps = {
@@ -35,6 +36,7 @@ export function ProjectStatusesManager({
   statuses,
   workspaceId,
 }: Readonly<ProjectStatusesManagerProps>): ReactNode {
+  const { t } = useI18n();
   const [newName, setNewName] = useState("");
   const [newColor, setNewColor] = useState("#A1A1AA");
   const [error, setError] = useState<string | null>(null);
@@ -72,14 +74,14 @@ export function ProjectStatusesManager({
     });
     if (!response.ok) {
       setOrderedStatuses(previous);
-      setError(await readError(response, "Не удалось сохранить порядок статусов."));
+      setError(await readError(response, t("statuses.reorderError")));
       setBusy(false);
       return;
     }
     const body: unknown = await response.json();
     if (!isWorkspaceStatusList(body)) {
       setOrderedStatuses(previous);
-      setError("Сервер вернул некорректный порядок статусов.");
+      setError(t("statuses.invalidOrder"));
       setBusy(false);
       return;
     }
@@ -111,13 +113,13 @@ export function ProjectStatusesManager({
       }),
     });
     if (!response.ok) {
-      setError(await readError(response, "Не удалось добавить статус."));
+      setError(await readError(response, t("statuses.createError")));
       setBusy(false);
       return;
     }
     const body: unknown = await response.json();
     if (!isWorkspaceStatus(body)) {
-      setError("Сервер вернул некорректный статус.");
+      setError(t("statuses.invalid"));
       setBusy(false);
       return;
     }
@@ -133,10 +135,10 @@ export function ProjectStatusesManager({
       <Flex direction="column" gap="4">
         <div>
           <Text as="div" size="3" weight="bold">
-            Статусы проекта
+            {t("statuses.title")}
           </Text>
           <Text as="div" size="2" color="gray">
-            Названия и цвета используются во Views, задачах и на доске.
+            {t("statuses.subtitle")}
           </Text>
         </div>
         <DndContext collisionDetection={closestCenter} sensors={sensors} onDragEnd={finishDrag}>
@@ -174,13 +176,13 @@ export function ProjectStatusesManager({
           <input
             className="status-color-input"
             type="color"
-            aria-label="Цвет нового статуса"
+            aria-label={t("statuses.newColor")}
             value={newColor}
             onChange={(event) => setNewColor(event.target.value)}
           />
           <TextField.Root
-            aria-label="Название нового статуса"
-            placeholder="Новый статус"
+            aria-label={t("statuses.newName")}
+            placeholder={t("statuses.new")}
             value={newName}
             onChange={(event) => setNewName(event.target.value)}
           />
@@ -188,7 +190,7 @@ export function ProjectStatusesManager({
             disabled={busy || newName.trim().length === 0}
             onClick={() => void createStatus()}
           >
-            <Plus size={14} /> Добавить
+            <Plus size={14} /> {t("common.add")}
           </Button>
         </Flex>
         {error !== null && (
@@ -216,6 +218,7 @@ function SortableProjectStatusRow({
   onStatusChanged: (status: WorkspaceStatus | null) => void;
   reportError: (message: string | null) => void;
 }>): ReactNode {
+  const { t } = useI18n();
   const {
     attributes,
     isDragging,
@@ -244,7 +247,7 @@ function SortableProjectStatusRow({
           <IconButton
             {...attributes}
             {...listeners}
-            aria-label={`Изменить порядок статуса ${status.name}`}
+            aria-label={t("statuses.reorder", { name: status.name })}
             disabled={busy}
             ref={setActivatorNodeRef}
             variant="ghost"
@@ -272,6 +275,7 @@ function ProjectStatusRow({
   reportError: (message: string | null) => void;
   dragHandle: ReactNode;
 }>): ReactNode {
+  const { t } = useI18n();
   const [name, setName] = useState(status.name);
   const [color, setColor] = useState(status.color);
   const [busy, setBusy] = useState(false);
@@ -306,13 +310,13 @@ function ProjectStatusRow({
           },
     );
     if (!response.ok) {
-      reportError(await readError(response, "Не удалось изменить статус."));
+      reportError(await readError(response, t("statuses.updateError")));
       setBusy(false);
       return;
     }
     const responseBody: unknown = await response.json();
     if (!isWorkspaceStatus(responseBody)) {
-      reportError("Сервер вернул некорректный статус.");
+      reportError(t("statuses.invalid"));
       setBusy(false);
       return;
     }
@@ -326,12 +330,12 @@ function ProjectStatusRow({
       <input
         className="status-color-input"
         type="color"
-        aria-label={`Цвет статуса ${status.name}`}
+        aria-label={t("statuses.color", { name: status.name })}
         value={color}
         onChange={(event) => setColor(event.target.value)}
       />
       <TextField.Root
-        aria-label={`Название статуса ${status.name}`}
+        aria-label={t("statuses.name", { name: status.name })}
         disabled={required}
         value={name}
         onChange={(event) => setName(event.target.value)}
@@ -345,7 +349,7 @@ function ProjectStatusRow({
         color="red"
         variant="soft"
         disabled={busy || required}
-        aria-label={`Удалить статус ${status.name}`}
+        aria-label={t("statuses.delete", { name: status.name })}
         onClick={() => void remove()}
       >
         <Trash2 size={14} />

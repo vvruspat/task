@@ -9,23 +9,25 @@ export type WorkspaceBreadcrumbData = {
   workspace: { name: string; slug: string };
 };
 
-const routeLabels: Readonly<Record<string, string>> = {
-  "/agent": "Agent",
-  "/agent-history": "Агент",
-  "/confirmations": "Подтверждения",
-  "/notifications": "Уведомления",
-  "/kanban": "Доска",
-  "/matrix": "Матрица",
-  "/projects": "Проекты",
-  "/settings": "Настройки",
-  "/table": "Таблица",
-  "/templates": "Шаблоны",
-  "/views": "Views",
+const routeLabels: Readonly<Record<string, MessageKey>> = {
+  "/agent": "nav.agent",
+  "/agent-history": "nav.agentHistory",
+  "/confirmations": "nav.confirmations",
+  "/notifications": "nav.notifications",
+  "/kanban": "nav.kanban",
+  "/matrix": "nav.matrix",
+  "/projects": "nav.projects",
+  "/settings": "common.settings",
+  "/settings/profile": "profile.title",
+  "/table": "nav.table",
+  "/templates": "nav.templates",
+  "/views": "nav.savedViews",
 };
 
 export function buildWorkspaceBreadcrumbs(
   pathname: string,
   data: WorkspaceBreadcrumbData | null,
+  t: (key: MessageKey) => string,
 ): WorkspaceBreadcrumb[] {
   const workspaceCrumb: WorkspaceBreadcrumb = {
     href: "/agent",
@@ -34,7 +36,11 @@ export function buildWorkspaceBreadcrumbs(
   const viewSlug = pathname.match(/^\/w\/[^/]+\/view\/([^/]+)$/)?.[1];
   if (viewSlug !== undefined) {
     const view = data?.views.find((item) => item.slug === decodeSegment(viewSlug));
-    return [workspaceCrumb, { href: "/views", label: "Views" }, { label: view?.name ?? "View" }];
+    return [
+      workspaceCrumb,
+      { href: "/views", label: t("nav.savedViews") },
+      { label: view?.name ?? t("views.view") },
+    ];
   }
 
   const projectId = pathname.match(/^\/projects\/([^/]+)$/)?.[1];
@@ -45,8 +51,8 @@ export function buildWorkspaceBreadcrumbs(
     );
     return [
       workspaceCrumb,
-      { href: "/projects", label: "Проекты" },
-      { label: project?.title ?? "Проект" },
+      { href: "/projects", label: t("nav.projects") },
+      { label: project?.title ?? t("common.project") },
     ];
   }
 
@@ -61,16 +67,24 @@ export function buildWorkspaceBreadcrumbs(
         : "/projects";
     return [
       workspaceCrumb,
-      { href: projectHref, label: project?.title ?? "Проект" },
+      { href: projectHref, label: project?.title ?? t("common.project") },
       { label: decodedIdentifier },
     ];
   }
 
   if (pathname === "/settings/telegram") {
-    return [workspaceCrumb, { href: "/settings", label: "Настройки" }, { label: "Telegram" }];
+    return [
+      workspaceCrumb,
+      { href: "/settings", label: t("common.settings") },
+      { label: "Telegram" },
+    ];
   }
 
-  return [workspaceCrumb, { label: routeLabels[pathname] ?? "Рабочее пространство" }];
+  const routeLabel = routeLabels[pathname];
+  return [
+    workspaceCrumb,
+    { label: routeLabel === undefined ? t("common.workspace") : t(routeLabel) },
+  ];
 }
 
 function workspaceProjectBreadcrumbHref(workspaceSlug: string, projectSlug: string): string {
@@ -84,3 +98,5 @@ function decodeSegment(value: string): string {
     return value;
   }
 }
+
+import type { MessageKey } from "./i18n/messages";

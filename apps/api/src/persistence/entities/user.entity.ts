@@ -22,6 +22,9 @@ export class UserEntity implements UserRecord {
   @Column({ name: "avatar_url", nullable: true, type: "text" })
   avatarUrl: string | null = null;
 
+  @Column({ nullable: true, type: "text" })
+  locale: "en" | "ru" | null = null;
+
   @CreateDateColumn({ name: "created_at", type: "timestamptz" })
   createdAt = new Date(0);
 

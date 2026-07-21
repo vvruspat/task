@@ -2,6 +2,7 @@
 
 import { Box, Button, Flex, Text, TextField } from "@task/ui";
 import { type FormEvent, type ReactNode, useEffect, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 import { updateWorkspaceData } from "../lib/use-workspace-data";
 
 export function WorkspaceNameEditor({
@@ -11,6 +12,7 @@ export function WorkspaceNameEditor({
   name: string;
   workspaceId: string;
 }): ReactNode {
+  const { t } = useI18n();
   const [value, setValue] = useState(name);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -33,7 +35,7 @@ export function WorkspaceNameEditor({
       });
       const body: unknown = await response.json().catch((): null => null);
       if (!response.ok) {
-        setError(readError(body));
+        setError(readError(body, t("workspace.renameError")));
         return;
       }
       updateWorkspaceData((current) => ({
@@ -45,7 +47,7 @@ export function WorkspaceNameEditor({
       }));
       setSaved(true);
     } catch {
-      setError("Не удалось связаться с сервером.");
+      setError(t("auth.unreachable"));
     } finally {
       setSaving(false);
     }
@@ -55,7 +57,7 @@ export function WorkspaceNameEditor({
     <form onSubmit={submit}>
       <label htmlFor="workspace-settings-name">
         <Text as="div" size="2" weight="medium">
-          Название
+          {t("common.name")}
         </Text>
       </label>
       <Flex align="center" gap="2">
@@ -75,7 +77,11 @@ export function WorkspaceNameEditor({
           disabled={saving || value.trim().length === 0 || value.trim() === name}
           type="submit"
         >
-          {saving ? "Сохраняю…" : saved && value.trim() === name ? "Сохранено" : "Сохранить"}
+          {saving
+            ? t("common.saving")
+            : saved && value.trim() === name
+              ? t("common.saved")
+              : t("common.save")}
         </Button>
       </Flex>
       {error !== null && (
@@ -87,11 +93,11 @@ export function WorkspaceNameEditor({
   );
 }
 
-function readError(value: unknown): string {
+function readError(value: unknown, fallback: string): string {
   return typeof value === "object" &&
     value !== null &&
     "error" in value &&
     typeof value.error === "string"
     ? value.error
-    : "Не удалось переименовать workspace.";
+    : fallback;
 }

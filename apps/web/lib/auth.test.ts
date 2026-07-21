@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-  authErrorMessage,
+  authErrorCode,
   authenticatedUserIdHeader,
   readAuthenticatedUserId,
   readSessionToken,
@@ -21,11 +21,8 @@ test("authenticated user id is sourced from the proxy-owned request header", () 
   assert.equal(readAuthenticatedUserId(request), "11111111-1111-4111-8111-111111111111");
 });
 
-test("auth backend failures are converted to actionable Russian messages", () => {
-  assert.equal(
-    authErrorMessage("/auth/register", 404),
-    "Сервис входа ещё не запущен или не обновлён. Попробуйте позже.",
-  );
-  assert.equal(authErrorMessage("/auth/register", 409), "Аккаунт с таким email уже существует.");
-  assert.equal(authErrorMessage("/auth/login", 401), "Неверный email или пароль.");
+test("auth backend failures are converted to stable localized error codes", () => {
+  assert.equal(authErrorCode("/auth/register", 404), "backend_missing");
+  assert.equal(authErrorCode("/auth/register", 409), "email_taken");
+  assert.equal(authErrorCode("/auth/login", 401), "invalid_credentials");
 });

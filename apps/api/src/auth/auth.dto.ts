@@ -6,6 +6,8 @@ import type {
   AuthUser,
   LoginInput,
   RegisterInput,
+  SupportedLocale,
+  UpdateProfileInput,
 } from "./auth.contracts.js";
 
 const maxEmailLength = 320;
@@ -53,6 +55,14 @@ export class LoginDto implements LoginInput {
   readonly password = "";
 }
 
+export class UpdateProfileDto implements UpdateProfileInput {
+  @ApiProperty({ maxLength: maxDisplayNameLength, type: String })
+  readonly displayName = "";
+
+  @ApiProperty({ enum: ["en", "ru"], nullable: true, type: String })
+  readonly locale: SupportedLocale | null = null;
+}
+
 export class ParseRegisterBodyPipe implements PipeTransform<unknown, RegisterInput> {
   transform(value: unknown): RegisterInput {
     const input = readRecord(value, "Registration payload must be an object.");
@@ -71,6 +81,16 @@ export class ParseLoginBodyPipe implements PipeTransform<unknown, LoginInput> {
   }
 }
 
+export class ParseUpdateProfileBodyPipe implements PipeTransform<unknown, UpdateProfileInput> {
+  transform(value: unknown): UpdateProfileInput {
+    const input = readRecord(value, "Profile payload must be an object.");
+    return {
+      displayName: readDisplayName(input["displayName"]),
+      locale: readLocale(input["locale"]),
+    };
+  }
+}
+
 export class AuthUserDto implements AuthUser {
   @ApiProperty({ format: "uuid" })
   readonly id: string;
@@ -81,10 +101,14 @@ export class AuthUserDto implements AuthUser {
   @ApiProperty({ format: "email" })
   readonly email: string;
 
+  @ApiProperty({ enum: ["en", "ru"], nullable: true, type: String })
+  readonly locale: SupportedLocale | null;
+
   constructor(user: AuthUser) {
     this.id = user.id;
     this.displayName = user.displayName;
     this.email = user.email;
+    this.locale = user.locale;
   }
 }
 
@@ -162,4 +186,9 @@ function readPassword(value: unknown): string {
     );
   }
   return value;
+}
+
+function readLocale(value: unknown): SupportedLocale | null {
+  if (value === null || value === "en" || value === "ru") return value;
+  throw new BadRequestException("Locale must be en, ru, or null.");
 }
