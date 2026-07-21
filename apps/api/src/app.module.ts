@@ -4,6 +4,7 @@ import { AgentModule } from "./agent/agent.module.js";
 import { AppController } from "./app.controller.js";
 import { AppService } from "./app.service.js";
 import { AttachmentsModule } from "./attachments/attachments.module.js";
+import { AuthModule } from "./auth/auth.module.js";
 import { CommentsModule } from "./comments/comments.module.js";
 import { ConfirmationsModule } from "./confirmations/confirmations.module.js";
 import { DashboardModule } from "./dashboard/dashboard.module.js";
@@ -21,6 +22,7 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
 
 @Module({
   imports: [
+    AuthModule,
     ActivityModule,
     WorkspacesModule,
     DashboardModule,

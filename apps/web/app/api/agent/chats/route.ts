@@ -6,7 +6,7 @@ export async function GET(request: Request): Promise<NextResponse> {
   if (workspaceId === undefined || workspaceId.length === 0) {
     return NextResponse.json({ error: "workspaceId is required." }, { status: 400 });
   }
-  const result = createServerTaskApi();
+  const result = createServerTaskApi(request);
   if (result.response !== undefined) return result.response;
   try {
     const query = new URL(request.url).searchParams.get("query")?.trim();

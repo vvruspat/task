@@ -38,6 +38,72 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/auth/register": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create an email/password account and initial session */
+    post: operations["AuthController_register"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create a session with email and password */
+    post: operations["AuthController_login"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/session": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["AuthController_session"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/logout": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["AuthController_logout"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/activity": {
     parameters: {
       query?: never;
@@ -65,7 +131,8 @@ export interface paths {
     /** List workspaces visible to the current user */
     get: operations["WorkspacesController_listWorkspaces"];
     put?: never;
-    post?: never;
+    /** Create a workspace owned by the current user */
+    post: operations["WorkspacesController_createWorkspace"];
     delete?: never;
     options?: never;
     head?: never;
@@ -83,7 +150,8 @@ export interface paths {
     get: operations["WorkspacesController_getWorkspace"];
     put?: never;
     post?: never;
-    delete?: never;
+    /** Permanently delete a workspace and its data */
+    delete: operations["WorkspacesController_deleteWorkspace"];
     options?: never;
     head?: never;
     /** Update one workspace */
@@ -1046,6 +1114,45 @@ export interface components {
        */
       version: string;
     };
+    RegisterDto: {
+      /** @example Alex */
+      displayName: string;
+      /**
+       * Format: email
+       * @example alex@example.com
+       */
+      email: string;
+      /** Format: password */
+      password: string;
+    };
+    AuthUserDto: {
+      /** Format: uuid */
+      id: string;
+      displayName: string;
+      /** Format: email */
+      email: string;
+    };
+    AuthSessionDto: {
+      /** @description Opaque bearer token. Store it only in a secure HttpOnly cookie. */
+      token: string;
+      /** Format: date-time */
+      expiresAt: string;
+      user: components["schemas"]["AuthUserDto"];
+    };
+    LoginDto: {
+      /**
+       * Format: email
+       * @example alex@example.com
+       */
+      email: string;
+      /** Format: password */
+      password: string;
+    };
+    AuthSessionInfoDto: {
+      /** Format: date-time */
+      expiresAt: string;
+      user: components["schemas"]["AuthUserDto"];
+    };
     TaskActivityEventDto: {
       /** Format: uuid */
       id: string;
@@ -1072,6 +1179,10 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    CreateWorkspaceDto: {
+      /** @example Studio */
+      name: string;
     };
     WorkspaceMemberDto: {
       /** Format: uuid */
@@ -1108,7 +1219,9 @@ export interface components {
       members: components["schemas"]["WorkspaceMemberDto"][];
     };
     UpdateWorkspaceDto: {
-      description: string | null;
+      /** @example Studio */
+      name?: string;
+      description?: string | null;
     };
     UpdateWorkspaceMemberRoleDto: {
       /** @enum {string} */
@@ -2204,6 +2317,117 @@ export interface operations {
       };
     };
   };
+  AuthController_register: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RegisterDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AuthSessionDto"];
+        };
+      };
+      /** @description The email address is already registered. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AuthController_login: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AuthSessionDto"];
+        };
+      };
+      /** @description Email or password is incorrect. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AuthController_session: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AuthSessionInfoDto"];
+        };
+      };
+      /** @description Session is invalid or expired. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AuthController_logout: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Session revoked. */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description A bearer session token is required. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   ActivityController_listTaskActivity: {
     parameters: {
       query?: never;
@@ -2259,6 +2483,39 @@ export interface operations {
       };
     };
   };
+  WorkspacesController_createWorkspace: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWorkspaceDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceDetailDto"];
+        };
+      };
+      /** @description Workspace payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   WorkspacesController_getWorkspace: {
     parameters: {
       query?: never;
@@ -2282,6 +2539,44 @@ export interface operations {
         };
       };
       /** @description Workspace is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WorkspacesController_deleteWorkspace: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceSummaryDto"];
+        };
+      };
+      /** @description Only the workspace owner can delete it. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace was not found. */
       404: {
         headers: {
           [name: string]: unknown;

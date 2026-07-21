@@ -14,7 +14,6 @@ const routeLabels: Readonly<Record<string, string>> = {
   "/agent-history": "Агент",
   "/confirmations": "Подтверждения",
   "/notifications": "Уведомления",
-  "/dashboard": "Дашборд",
   "/kanban": "Доска",
   "/matrix": "Матрица",
   "/projects": "Проекты",
@@ -29,7 +28,7 @@ export function buildWorkspaceBreadcrumbs(
   data: WorkspaceBreadcrumbData | null,
 ): WorkspaceBreadcrumb[] {
   const workspaceCrumb: WorkspaceBreadcrumb = {
-    href: "/dashboard",
+    href: "/agent",
     label: data?.workspace.name ?? "tAsk",
   };
   const viewSlug = pathname.match(/^\/w\/[^/]+\/view\/([^/]+)$/)?.[1];

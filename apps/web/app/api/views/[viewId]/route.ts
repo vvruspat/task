@@ -1,9 +1,9 @@
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../lib/auth";
 import { isUpdateSavedViewInput } from "../../../../lib/saved-view-input";
 
 const apiBaseUrl = process.env["TASK_API_BASE_URL"] ?? "http://localhost:3000";
-const trustedUserId = process.env["TASK_USER_ID"];
 type RouteContext = { params: Promise<{ viewId: string }> };
 
 export async function PATCH(request: Request, context: RouteContext): Promise<NextResponse> {
@@ -23,8 +23,9 @@ async function mutate(
   request: Request,
   context: RouteContext,
 ): Promise<NextResponse> {
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   const { viewId } = await context.params;
   try {
     const api = createTaskApiClient({ baseUrl: apiBaseUrl, fetch, trustedUserId });

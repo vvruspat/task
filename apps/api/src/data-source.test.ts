@@ -9,10 +9,12 @@ import {
   AgentRunEntity,
   AgentToolCallEntity,
   AttachmentEntity,
+  AuthSessionEntity,
   CommentEntity,
   ConfirmationRequestEntity,
   InviteEntity,
   NotificationReadStateEntity,
+  PasswordCredentialEntity,
   ProjectEntity,
   SavedViewEntity,
   StatusEntity,
@@ -54,6 +56,7 @@ import { RefreshDefaultProjectStatuses1783297440000 } from "./persistence/migrat
 import { RequireTaskStatuses1783297500000 } from "./persistence/migrations/1783297500000-require-task-statuses.js";
 import { EnforceRequiredWorkflowStatuses1783297560000 } from "./persistence/migrations/1783297560000-enforce-required-workflow-statuses.js";
 import { LightenBacklogStatusColor1783297620000 } from "./persistence/migrations/1783297620000-lighten-backlog-status-color.js";
+import { AddEmailPasswordAuth1783297680000 } from "./persistence/migrations/1783297680000-add-email-password-auth.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -75,6 +78,8 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
   assert.deepEqual(options.entities, [
     WorkspaceEntity,
     UserEntity,
+    PasswordCredentialEntity,
+    AuthSessionEntity,
     WorkspaceMemberEntity,
     ProjectEntity,
     SavedViewEntity,
@@ -125,6 +130,7 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     RequireTaskStatuses1783297500000,
     EnforceRequiredWorkflowStatuses1783297560000,
     LightenBacklogStatusColor1783297620000,
+    AddEmailPasswordAuth1783297680000,
   ]);
 });
 

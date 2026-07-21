@@ -20,16 +20,16 @@ const data: WorkspaceBreadcrumbData = {
 
 test("builds route breadcrumbs without a global project selector", () => {
   assert.deepEqual(buildWorkspaceBreadcrumbs("/confirmations", data), [
-    { href: "/dashboard", label: "Product Workspace" },
+    { href: "/agent", label: "Product Workspace" },
     { label: "Подтверждения" },
   ]);
   assert.deepEqual(buildWorkspaceBreadcrumbs("/w/product-workspace/view/album-dream", data), [
-    { href: "/dashboard", label: "Product Workspace" },
+    { href: "/agent", label: "Product Workspace" },
     { href: "/views", label: "Views" },
     { label: "Альбом мечты" },
   ]);
   assert.deepEqual(buildWorkspaceBreadcrumbs("/w/product-workspace/issue/AM-1/song", data), [
-    { href: "/dashboard", label: "Product Workspace" },
+    { href: "/agent", label: "Product Workspace" },
     { href: "/w/product-workspace/project/album", label: "Альбом" },
     { label: "AM-1" },
   ]);

@@ -7,7 +7,7 @@ export async function GET(request: Request, context: RouteContext): Promise<Next
   const scope = await readScope(request, context);
   if (scope === null)
     return NextResponse.json({ error: "workspaceId is required." }, { status: 400 });
-  const result = createServerTaskApi();
+  const result = createServerTaskApi(request);
   if (result.response !== undefined) return result.response;
   try {
     return NextResponse.json(await result.api.getAgentChat(scope));
@@ -22,7 +22,7 @@ export async function PATCH(request: Request, context: RouteContext): Promise<Ne
   if (scope === null || !isTitleUpdate(body)) {
     return NextResponse.json({ error: "workspaceId and title are required." }, { status: 400 });
   }
-  const result = createServerTaskApi();
+  const result = createServerTaskApi(request);
   if (result.response !== undefined) return result.response;
   try {
     return NextResponse.json(await result.api.updateAgentChat({ ...scope, body }));
@@ -35,7 +35,7 @@ export async function DELETE(request: Request, context: RouteContext): Promise<N
   const scope = await readScope(request, context);
   if (scope === null)
     return NextResponse.json({ error: "workspaceId is required." }, { status: 400 });
-  const result = createServerTaskApi();
+  const result = createServerTaskApi(request);
   if (result.response !== undefined) return result.response;
   try {
     return NextResponse.json(await result.api.deleteAgentChat(scope));

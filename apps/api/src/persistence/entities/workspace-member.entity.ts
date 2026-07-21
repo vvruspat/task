@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   Check,
   Column,
@@ -20,7 +21,7 @@ import type {
 @Index("idx_workspace_members_user_id", ["userId"])
 export class WorkspaceMemberEntity implements WorkspaceMemberRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";

@@ -1,13 +1,14 @@
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../lib/auth";
 import { isCreateSavedViewInput } from "../../../lib/saved-view-input";
 
 const apiBaseUrl = process.env["TASK_API_BASE_URL"] ?? "http://localhost:3000";
-const trustedUserId = process.env["TASK_USER_ID"];
 
 export async function POST(request: Request): Promise<NextResponse> {
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   const body: unknown = await request.json();
   if (!isCreateSavedViewInput(body))
     return NextResponse.json({ error: "Invalid saved view payload." }, { status: 400 });

@@ -4,6 +4,7 @@ import {
   TaskApiClientError,
 } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../lib/auth";
 
 type CreateTaskSkillBody = {
   input: CreateTaskSkillInput;
@@ -11,9 +12,9 @@ type CreateTaskSkillBody = {
 };
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const trustedUserId = process.env["TASK_USER_ID"];
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   const body: unknown = await request.json();
   if (!isCreateTaskSkillBody(body))
     return NextResponse.json({ error: "Invalid task skill payload." }, { status: 400 });

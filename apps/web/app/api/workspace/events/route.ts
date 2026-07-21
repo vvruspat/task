@@ -1,9 +1,11 @@
+import { readAuthenticatedUserId } from "../../../../lib/auth";
+
 const apiBaseUrl = readEnvironment("TASK_API_BASE_URL") ?? "http://localhost:3000";
-const trustedUserId = readEnvironment("TASK_USER_ID");
 
 export async function GET(request: Request): Promise<Response> {
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
-    return Response.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return Response.json({ error: "Authentication is required." }, { status: 401 });
   }
   const workspaceId = new URL(request.url).searchParams.get("workspaceId");
   if (workspaceId === null || !uuidV4Pattern.test(workspaceId)) {
@@ -37,7 +39,7 @@ export async function GET(request: Request): Promise<Response> {
   });
 }
 
-function readEnvironment(name: "TASK_API_BASE_URL" | "TASK_USER_ID"): string | undefined {
+function readEnvironment(name: "TASK_API_BASE_URL"): string | undefined {
   return process.env[name];
 }
 

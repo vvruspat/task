@@ -10,8 +10,9 @@ import {
   FolderKanban,
   Grid3X3,
   Layers3,
-  LayoutDashboard,
   List,
+  LogOut,
+  type LucideIcon,
   MoreHorizontal,
   PanelLeftClose,
   PanelLeftOpen,
@@ -30,15 +31,15 @@ import { useWorkspaceStore } from "../lib/workspace-store";
 import { workspaceViewHref } from "../lib/workspace-url";
 import { AgentDrawer } from "./agent-chat";
 import { CreateDialog } from "./create-dialog";
+import { WorkspaceOnboarding } from "./workspace-onboarding";
 
 type NavItem = {
   href: string;
   label: string;
-  icon: typeof LayoutDashboard;
+  icon: LucideIcon;
 };
 const navigation: NavItem[] = [
   { href: "/agent", label: "Агент", icon: Bot },
-  { href: "/dashboard", label: "Дашборд", icon: LayoutDashboard },
   { href: "/projects", label: "Проекты", icon: FolderKanban },
   { href: "/views", label: "Views", icon: Layers3 },
   { href: "/templates", label: "Шаблоны", icon: Workflow },
@@ -52,7 +53,8 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const workspaceData = useWorkspaceData().data;
+  const workspaceState = useWorkspaceData();
+  const workspaceData = workspaceState.data;
   const workspace = workspaceData?.workspace;
   const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
   const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
@@ -117,6 +119,15 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
       return next;
     });
   };
+  const logout = async (): Promise<void> => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.replace("/login");
+    router.refresh();
+  };
+  if (workspaceState.loading && workspaceData === null) return null;
+  if (workspaceState.requiresWorkspace) {
+    return <WorkspaceOnboarding refresh={workspaceState.refresh} />;
+  }
   return (
     <main className={sidebarCompact ? "workspace sidebar-compact" : "workspace"}>
       <aside className="sidebar">
@@ -134,7 +145,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
         <div className="brand">
           <Link
             className="brand-home"
-            href={projectHref("/dashboard", selectedProject?.id)}
+            href={projectHref("/agent", selectedProject?.id)}
             title={sidebarCompact ? (workspace?.name ?? "tAsk") : undefined}
           >
             <span className="brand-mark">{workspace?.name.slice(0, 2).toUpperCase() ?? "TA"}</span>
@@ -278,6 +289,16 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             <strong>{workspace?.members.at(0)?.displayName ?? "Пользователь"}</strong>
             <small>{workspace?.members.at(0)?.role ?? "Нет подключения"}</small>
           </span>
+          <IconButton
+            aria-label="Выйти"
+            color="gray"
+            size="1"
+            title="Выйти"
+            variant="ghost"
+            onClick={() => void logout()}
+          >
+            <LogOut size={14} />
+          </IconButton>
         </div>
       </aside>
       <section className="main">
@@ -350,5 +371,5 @@ function changeWorkspace(
 ): void {
   setSelectedWorkspaceId(workspaceId);
   setSelectedProjectId(null);
-  router.push("/dashboard");
+  router.push("/agent");
 }

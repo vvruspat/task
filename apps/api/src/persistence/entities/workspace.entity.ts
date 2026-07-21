@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   Column,
   CreateDateColumn,
@@ -10,7 +11,7 @@ import type { WorkspaceRecord } from "../types/core-persistence.types.js";
 @Entity({ name: "workspaces" })
 export class WorkspaceEntity implements WorkspaceRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ type: "text" })
   name = "";

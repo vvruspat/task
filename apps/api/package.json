@@ -11,7 +11,8 @@
     "format": "biome format --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test \"dist/**/*.test.js\"",
-    "generate:openapi": "npm run build && node dist/generate-openapi.js && biome format --write openapi/openapi.json"
+    "generate:openapi": "npm run build && node dist/generate-openapi.js && biome format --write openapi/openapi.json",
+    "migration:run": "npm run build && node dist/run-migrations.js"
   },
   "dependencies": {
     "@fastify/static": "^8.3.0",

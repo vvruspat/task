@@ -1,5 +1,6 @@
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
+import { readAuthenticatedUserId } from "../../../../../lib/auth";
 
 type ConfirmationBody = { action: "cancel" | "confirm"; workspaceId: string };
 function isConfirmationBody(value: unknown): value is ConfirmationBody {
@@ -17,9 +18,9 @@ export async function PATCH(
   request: Request,
   context: { params: Promise<{ confirmationId: string }> },
 ): Promise<NextResponse> {
-  const trustedUserId = process.env["TASK_USER_ID"];
+  const trustedUserId = readAuthenticatedUserId(request);
   if (trustedUserId === undefined || trustedUserId.trim().length === 0)
-    return NextResponse.json({ error: "TASK_USER_ID is not configured." }, { status: 503 });
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   const payload: unknown = await request.json();
   if (!isConfirmationBody(payload))
     return NextResponse.json({ error: "Invalid confirmation request." }, { status: 400 });

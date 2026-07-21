@@ -1,5 +1,6 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
 import { type DataSource, In } from "typeorm";
+import { selectAvailableWorkspaceScopedSlug } from "../common/workspace-slug.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
@@ -8,6 +9,7 @@ import {
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type {
+  CreateWorkspaceInput,
   UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
   WorkspaceDetail,
@@ -15,6 +17,7 @@ import type {
   WorkspaceSummary,
 } from "./workspaces.contracts.js";
 import type {
+  WorkspaceDeleteResult,
   WorkspaceManagementStore,
   WorkspaceMemberManagementStore,
   WorkspaceMemberRoleUpdateResult,
@@ -30,6 +33,41 @@ export class TypeOrmWorkspaceReadStore
   private initialization: Promise<DataSource> | null = null;
 
   constructor(private readonly dataSourceProvider: ApiDataSourceProvider) {}
+
+  async createWorkspace(
+    userId: string,
+    input: CreateWorkspaceInput,
+  ): Promise<WorkspaceDetail | null> {
+    const dataSource = await this.getInitializedDataSource();
+    return dataSource.transaction(async (manager): Promise<WorkspaceDetail | null> => {
+      const user = await manager.getRepository(UserEntity).findOneBy({ id: userId });
+      if (user === null) return null;
+      const existing = await manager
+        .getRepository(WorkspaceEntity)
+        .find({ select: { slug: true } });
+      const workspace = await manager.getRepository(WorkspaceEntity).save(
+        manager.getRepository(WorkspaceEntity).create({
+          name: input.name,
+          slug: selectAvailableWorkspaceScopedSlug(
+            input.name,
+            new Set(existing.map((item) => item.slug)),
+          ),
+        }),
+      );
+      const member = await manager.getRepository(WorkspaceMemberEntity).save(
+        manager.getRepository(WorkspaceMemberEntity).create({
+          role: "owner",
+          userId,
+          workspaceId: workspace.id,
+        }),
+      );
+      return {
+        ...toWorkspaceSummary(workspace),
+        description: workspace.description,
+        members: [toWorkspaceMember(member, user)],
+      };
+    });
+  }
 
   async listForUser(userId: string): Promise<WorkspaceSummary[]> {
     const dataSource = await this.getInitializedDataSource();
@@ -56,6 +94,25 @@ export class TypeOrmWorkspaceReadStore
       }
 
       return [toWorkspaceSummary(workspace)];
+    });
+  }
+
+  async deleteWorkspace(workspaceId: string, userId: string): Promise<WorkspaceDeleteResult> {
+    const dataSource = await this.getInitializedDataSource();
+    return dataSource.transaction(async (manager): Promise<WorkspaceDeleteResult> => {
+      const workspaceRepository = manager.getRepository(WorkspaceEntity);
+      const workspace = await workspaceRepository.findOneBy({ id: workspaceId });
+      if (workspace === null) return { status: "workspace_not_found" };
+
+      const membership = await manager.getRepository(WorkspaceMemberEntity).findOneBy({
+        workspaceId,
+        userId,
+      });
+      if (membership?.role !== "owner") return { status: "forbidden" };
+
+      const summary = toWorkspaceSummary(workspace);
+      await workspaceRepository.remove(workspace);
+      return { status: "deleted", workspace: summary };
     });
   }
 
@@ -94,7 +151,8 @@ export class TypeOrmWorkspaceReadStore
     const workspace = await repository.findOneBy({ id: workspaceId });
     if (workspace === null) return { status: "workspace_not_found" };
 
-    workspace.description = input.description;
+    if (input.name !== undefined) workspace.name = input.name;
+    if (input.description !== undefined) workspace.description = input.description;
     await repository.save(workspace);
 
     return {

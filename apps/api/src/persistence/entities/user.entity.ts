@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   Column,
   CreateDateColumn,
@@ -10,7 +11,7 @@ import type { UserRecord } from "../types/core-persistence.types.js";
 @Entity({ name: "users" })
 export class UserEntity implements UserRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "display_name", type: "text" })
   displayName = "";

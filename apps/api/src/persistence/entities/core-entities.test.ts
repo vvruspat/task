@@ -6,6 +6,7 @@ import {
   AgentRunEntity,
   AgentToolCallEntity,
   AttachmentEntity,
+  AuthSessionEntity,
   CommentEntity,
   ConfirmationRequestEntity,
   InviteEntity,
@@ -78,6 +79,10 @@ test("transactionally created entities receive UUIDs before saves", () => {
   assert.match(new TaskSkillVersionEntity().id, uuidPattern);
   assert.match(new StatusEntity().id, uuidPattern);
   assert.match(new CommentEntity().id, uuidPattern);
+  assert.match(new UserEntity().id, uuidPattern);
+  assert.match(new WorkspaceEntity().id, uuidPattern);
+  assert.match(new WorkspaceMemberEntity().id, uuidPattern);
+  assert.match(new AuthSessionEntity().id, uuidPattern);
 });
 
 test("invite columns, role check, uniqueness, and indexes metadata are registered", () => {

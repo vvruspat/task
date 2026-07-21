@@ -1,6 +1,7 @@
 import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
+  CreateWorkspaceInput,
   UpdateWorkspaceInput,
   UpdateWorkspaceMemberRoleInput,
   WorkspaceDetail,
@@ -10,23 +11,44 @@ import type {
 
 const assignableWorkspaceMemberRoles = ["admin", "member", "guest"] as const;
 
+export class CreateWorkspaceDto implements CreateWorkspaceInput {
+  @ApiProperty({ example: "Studio", maxLength: 80, minLength: 1, type: String })
+  readonly name: string = "";
+}
+
+export class ParseCreateWorkspaceBodyPipe implements PipeTransform<unknown, CreateWorkspaceInput> {
+  transform(value: unknown): CreateWorkspaceInput {
+    if (!isUnknownRecord(value) || !("name" in value)) {
+      throw new BadRequestException("Workspace payload must include a name.");
+    }
+    return { name: readWorkspaceName(readProperty(value, "name")) };
+  }
+}
+
 export class UpdateWorkspaceDto implements UpdateWorkspaceInput {
-  @ApiProperty({ nullable: true, type: String })
-  readonly description: string | null = null;
+  @ApiPropertyOptional({ example: "Studio", maxLength: 80, minLength: 1 })
+  readonly name?: string;
+
+  @ApiPropertyOptional({ nullable: true, type: String })
+  readonly description?: string | null;
 }
 
 export class ParseUpdateWorkspaceBodyPipe implements PipeTransform<unknown, UpdateWorkspaceInput> {
   transform(value: unknown): UpdateWorkspaceInput {
-    if (!isUnknownRecord(value) || !("description" in value)) {
-      throw new BadRequestException("Workspace payload must include a description.");
+    if (!isUnknownRecord(value) || (!("name" in value) && !("description" in value))) {
+      throw new BadRequestException("Workspace payload must include a name or description.");
     }
 
-    const description = readProperty(value, "description");
-    if (description !== null && typeof description !== "string") {
-      throw new BadRequestException("Workspace description must be a string or null.");
+    const result: UpdateWorkspaceInput = {};
+    if ("name" in value) result.name = readWorkspaceName(readProperty(value, "name"));
+    if ("description" in value) {
+      const description = readProperty(value, "description");
+      if (description !== null && typeof description !== "string") {
+        throw new BadRequestException("Workspace description must be a string or null.");
+      }
+      result.description = description;
     }
-
-    return { description };
+    return result;
   }
 }
 
@@ -139,6 +161,15 @@ function isUnknownRecord(value: unknown): value is Record<string, unknown> {
 
 function readProperty(value: Record<string, unknown>, key: string): unknown {
   return value[key];
+}
+
+function readWorkspaceName(value: unknown): string {
+  if (typeof value !== "string") throw new BadRequestException("Workspace name must be a string.");
+  const name = value.trim();
+  if (name.length === 0 || name.length > 80) {
+    throw new BadRequestException("Workspace name must contain between 1 and 80 characters.");
+  }
+  return name;
 }
 
 function isAssignableWorkspaceMemberRole(

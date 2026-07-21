@@ -13,7 +13,7 @@ export async function GET(
   if (scope === null) {
     return NextResponse.json({ error: "workspaceId and projectId are required." }, { status: 400 });
   }
-  const client = createServerTaskApi();
+  const client = createServerTaskApi(request);
   if (client.response !== undefined) return client.response;
 
   try {
