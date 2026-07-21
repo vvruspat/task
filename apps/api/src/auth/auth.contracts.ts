@@ -9,10 +9,18 @@ export type LoginInput = {
   password: string;
 };
 
+export type SupportedLocale = "en" | "ru";
+
+export type UpdateProfileInput = {
+  displayName: string;
+  locale: SupportedLocale | null;
+};
+
 export type AuthUser = {
   id: string;
   displayName: string;
   email: string;
+  locale: SupportedLocale | null;
 };
 
 export type AuthSession = {

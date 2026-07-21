@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useEffect, useId, useRef, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 import { isTaskSubscription } from "../lib/notifications";
 import {
   formatActivityTime,
@@ -46,6 +47,7 @@ export function TaskActivity({
   data,
   task,
 }: Readonly<{ data: WorkspaceBootstrap | null; task: TaskSummary }>): ReactNode {
+  const { t } = useI18n();
   const [events, setEvents] = useState<TaskActivityEvent[]>([]);
   const [comments, setComments] = useState<TaskComment[]>([]);
   const [comment, setComment] = useState("");
@@ -65,7 +67,7 @@ export function TaskActivity({
     const controller = new AbortController();
     setLoading(true);
     setError(null);
-    void loadTaskActivity(activityUrl, commentsUrl, controller.signal)
+    void loadTaskActivity(activityUrl, commentsUrl, t("activity.requestError"), controller.signal)
       .then((result) => {
         setEvents(result.events);
         setComments(result.comments);
@@ -73,14 +75,14 @@ export function TaskActivity({
       })
       .catch((loadError: unknown) => {
         if (!controller.signal.aborted) {
-          setError(loadError instanceof Error ? loadError.message : "Не удалось загрузить ленту.");
+          setError(loadError instanceof Error ? loadError.message : t("activity.loadError"));
         }
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [activityUrl, commentsUrl]);
+  }, [activityUrl, commentsUrl, t]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -93,33 +95,31 @@ export function TaskActivity({
       .catch((loadError: unknown) => {
         if (controller.signal.aborted) return;
         setError(
-          loadError instanceof Error
-            ? loadError.message
-            : "Не удалось загрузить состояние подписки.",
+          loadError instanceof Error ? loadError.message : t("activity.subscriptionLoadError"),
         );
       })
       .finally(() => {
         if (!controller.signal.aborted) setSubscriptionLoading(false);
       });
     return () => controller.abort();
-  }, [subscriptionUrl]);
+  }, [subscriptionUrl, t]);
 
   useEffect(() => {
     const handleRealtimeChange = (event: Event): void => {
       if (!(event instanceof CustomEvent) || !isWorkspaceRealtimeChange(event.detail)) return;
       if (event.detail.taskId !== task.id) return;
-      void loadTaskActivity(activityUrl, commentsUrl)
+      void loadTaskActivity(activityUrl, commentsUrl, t("activity.requestError"))
         .then((result) => {
           setEvents(result.events);
           setComments(result.comments);
         })
         .catch((loadError: unknown) => {
-          setError(loadError instanceof Error ? loadError.message : "Не удалось обновить ленту.");
+          setError(loadError instanceof Error ? loadError.message : t("activity.refreshError"));
         });
     };
     window.addEventListener(workspaceRealtimeEvent, handleRealtimeChange);
     return () => window.removeEventListener(workspaceRealtimeEvent, handleRealtimeChange);
-  }, [activityUrl, commentsUrl, task.id]);
+  }, [activityUrl, commentsUrl, task.id, t]);
 
   const memberById = (userId: string) =>
     data?.workspace.members.find((member) => member.userId === userId);
@@ -143,17 +143,20 @@ export function TaskActivity({
         }),
       });
       const value: unknown = await response.json();
-      if (!response.ok || !isTaskComment(value)) throw new Error(readResponseError(value));
+      if (!response.ok || !isTaskComment(value))
+        throw new Error(readResponseError(value, t("activity.requestError")));
       setComment("");
       setMentionedUserIds([]);
       setReplyingToId(null);
-      const refreshed = await loadTaskActivity(activityUrl, commentsUrl);
+      const refreshed = await loadTaskActivity(
+        activityUrl,
+        commentsUrl,
+        t("activity.requestError"),
+      );
       setComments(refreshed.comments);
       setEvents(refreshed.events);
     } catch (submitError: unknown) {
-      setError(
-        submitError instanceof Error ? submitError.message : "Не удалось добавить комментарий.",
-      );
+      setError(submitError instanceof Error ? submitError.message : t("activity.commentError"));
     } finally {
       setSubmitting(false);
     }
@@ -163,7 +166,7 @@ export function TaskActivity({
     <Card className="task-activity">
       <Flex className="task-activity-heading" align="center" justify="between">
         <Heading as="h2" size="4">
-          История изменений
+          {t("activity.history")}
         </Heading>
         <Button
           color="gray"
@@ -177,22 +180,22 @@ export function TaskActivity({
               .then((value) => {
                 if (isTaskSubscription(value)) setSubscribed(value.subscribed);
               })
-              .catch(() => setError("Не удалось изменить подписку."))
+              .catch(() => setError(t("activity.subscriptionError")))
               .finally(() => setSubscriptionLoading(false));
           }}
         >
           {subscribed ? <BellOff size={14} /> : <Bell size={14} />}
-          {subscribed ? "Отписаться" : "Подписаться"}
+          {subscribed ? t("activity.unsubscribe") : t("activity.subscribe")}
         </Button>
       </Flex>
       {loading && history.length === 0 && (
         <Text size="2" color="gray">
-          Загружаю события…
+          {t("activity.loading")}
         </Text>
       )}
       {!loading && history.length === 0 && (
         <Text size="2" color="gray">
-          Событий пока нет.
+          {t("activity.empty")}
         </Text>
       )}
       <Flex className="task-activity-timeline" direction="column" gap="3">
@@ -214,12 +217,14 @@ export function TaskActivity({
           onClick={() => setHistoryExpanded((expanded) => !expanded)}
         >
           {historyExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-          {historyExpanded ? "Скрыть историю" : `Показать все события (${history.length})`}
+          {historyExpanded
+            ? t("activity.hideHistory")
+            : t("activity.showAll", { count: history.length })}
         </Button>
       )}
       <Box className="task-comments">
         <Heading as="h3" size="3">
-          Комментарии
+          {t("activity.comments")}
         </Heading>
         <Flex direction="column" gap="3">
           {rootComments.map((item) => {
@@ -254,7 +259,10 @@ export function TaskActivity({
                       comment={comment}
                       members={data?.workspace.members ?? []}
                       mentionedUserIds={mentionedUserIds}
-                      placeholder={`Ответить ${memberById(item.authorUserId)?.displayName ?? "пользователю"}…`}
+                      placeholder={t("activity.replyPlaceholder", {
+                        user:
+                          memberById(item.authorUserId)?.displayName ?? t("activity.userDative"),
+                      })}
                       submitting={submitting}
                       onCancel={() => {
                         setComment("");
@@ -279,7 +287,7 @@ export function TaskActivity({
             comment={comment}
             members={data?.workspace.members ?? []}
             mentionedUserIds={mentionedUserIds}
-            placeholder="Оставить комментарий…"
+            placeholder={t("activity.commentPlaceholder")}
             submitting={submitting}
             onCancel={undefined}
             onChange={(value, mentions) => {
@@ -319,12 +327,15 @@ function ActivityRow({
   event: TaskActivityEvent;
   member: WorkspaceBootstrap["workspace"]["members"][number] | undefined;
 }>): ReactNode {
+  const { locale, t } = useI18n();
   const actorName =
-    member?.displayName ?? (event.actorUserId === null ? "Система" : "Пользователь");
+    member?.displayName ?? (event.actorUserId === null ? t("notifications.system") : t("nav.user"));
   const description = formatTaskActivity(event, {
+    locale,
     memberName: (userId) =>
       data?.workspace.members.find((item) => item.userId === userId)?.displayName ?? null,
     statusName: (statusId) => data?.statuses.find((status) => status.id === statusId)?.name ?? null,
+    t,
   });
   return (
     <Flex className="task-activity-row" align="center" gap="3">
@@ -348,8 +359,9 @@ function CommentCard({
   mentionedMembers: WorkspaceMember[];
   onReply: (() => void) | undefined;
 }>): ReactNode {
+  const { t } = useI18n();
   const isAgent = comment.agentRunId !== null;
-  const name = isAgent ? "tAsk Agent" : (member?.displayName ?? "Пользователь");
+  const name = isAgent ? "tAsk Agent" : (member?.displayName ?? t("nav.user"));
   return (
     <Box className="task-comment-card">
       <Flex align="center" gap="2">
@@ -361,7 +373,7 @@ function CommentCard({
         <Text size="2" weight="bold">
           {name}
         </Text>
-        {isAgent && <Badge variant="soft">Agent</Badge>}
+        {isAgent && <Badge variant="soft">{t("common.agent")}</Badge>}
         <Time value={comment.createdAt} />
       </Flex>
       <Text className="task-comment-body" size="3">
@@ -378,7 +390,7 @@ function CommentCard({
       )}
       {onReply !== undefined && (
         <Button color="gray" size="1" variant="ghost" onClick={onReply}>
-          Ответить
+          {t("activity.reply")}
         </Button>
       )}
     </Box>
@@ -406,6 +418,7 @@ function CommentComposer({
   onChange: (value: string, mentionedUserIds: string[]) => void;
   onSubmit: () => Promise<void>;
 }>): ReactNode {
+  const { t } = useI18n();
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const mentionMenuId = useId();
   const [mentionRange, setMentionRange] = useState<MentionRange | null>(null);
@@ -436,7 +449,7 @@ function CommentComposer({
       <Box className="task-comment-composer-input">
         <TextArea
           ref={inputRef}
-          aria-label="Добавить комментарий"
+          aria-label={t("activity.addComment")}
           aria-activedescendant={
             mentionRange !== null && activeCandidate !== undefined
               ? mentionCandidateId(mentionMenuId, activeCandidate)
@@ -498,14 +511,14 @@ function CommentComposer({
         />
         {mentionRange !== null && (
           <Box
-            aria-label="Варианты упоминания"
+            aria-label={t("activity.mentionOptions")}
             className="task-mention-menu"
             id={mentionMenuId}
             role="listbox"
           >
             {matchingCandidates.length === 0 ? (
               <Text size="2" color="gray">
-                Участники не найдены
+                {t("activity.noMembers")}
               </Text>
             ) : (
               matchingCandidates.map((candidate, index) => (
@@ -540,11 +553,11 @@ function CommentComposer({
         <Flex className="task-comment-composer-actions" align="center" gap="2">
           {onCancel !== undefined && (
             <Button color="gray" size="1" variant="ghost" onClick={onCancel}>
-              Отмена
+              {t("common.cancel")}
             </Button>
           )}
           <IconButton
-            aria-label="Отправить комментарий"
+            aria-label={t("activity.sendComment")}
             disabled={submitting || comment.trim().length === 0}
             radius="full"
             type="button"
@@ -555,17 +568,18 @@ function CommentComposer({
         </Flex>
       </Box>
       <Text className="task-comment-hint" size="1" color="gray">
-        @ — упомянуть · Enter — отправить · Shift+Enter — новая строка
+        {t("activity.shortcut")}
       </Text>
     </Box>
   );
 }
 
 function Time({ value }: Readonly<{ value: string }>): ReactNode {
+  const { locale } = useI18n();
   return (
     <Text asChild className="task-activity-time" size="2" color="gray">
-      <time dateTime={value} title={formatFullDate(value)}>
-        {formatActivityTime(value)}
+      <time dateTime={value} title={formatFullDate(value, locale)}>
+        {formatActivityTime(value, locale)}
       </time>
     </Text>
   );
@@ -581,6 +595,7 @@ function activityIcon(eventType: string): ReactNode {
 async function loadTaskActivity(
   activityUrl: string,
   commentsUrl: string,
+  fallback: string,
   signal?: AbortSignal,
 ): Promise<{ comments: TaskComment[]; events: TaskActivityEvent[] }> {
   const requestInit: RequestInit = signal === undefined ? {} : { signal };
@@ -591,10 +606,10 @@ async function loadTaskActivity(
   const activity: unknown = await activityResponse.json();
   const comments: unknown = await commentsResponse.json();
   if (!activityResponse.ok || !isArrayOf(activity, isTaskActivityEvent)) {
-    throw new Error(readResponseError(activity));
+    throw new Error(readResponseError(activity, fallback));
   }
   if (!commentsResponse.ok || !isArrayOf(comments, isTaskComment)) {
-    throw new Error(readResponseError(comments));
+    throw new Error(readResponseError(comments, fallback));
   }
   return { comments, events: activity };
 }
@@ -617,20 +632,20 @@ function isArrayOf<T>(value: unknown, guard: (item: unknown) => item is T): valu
   return Array.isArray(value) && value.every(guard);
 }
 
-function readResponseError(value: unknown): string {
+function readResponseError(value: unknown, fallback: string): string {
   return typeof value === "object" &&
     value !== null &&
     "error" in value &&
     typeof value.error === "string"
     ? value.error
-    : "Не удалось выполнить запрос.";
+    : fallback;
 }
 
-function formatFullDate(value: string): string {
+function formatFullDate(value: string, locale: "en" | "ru"): string {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? value
-    : new Intl.DateTimeFormat("ru-RU", { dateStyle: "long", timeStyle: "short" }).format(date);
+    : new Intl.DateTimeFormat(locale, { dateStyle: "long", timeStyle: "short" }).format(date);
 }
 
 function initials(name: string): string {

@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 import { useWorkspaceStore } from "../lib/workspace-store";
 
 type ProjectDangerZoneProps = {
@@ -20,6 +21,7 @@ export function ProjectDangerZone({
   refresh,
   workspaceId,
 }: Readonly<ProjectDangerZoneProps>): ReactNode {
+  const { t } = useI18n();
   const router = useRouter();
   const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
   const [open, setOpen] = useState(false);
@@ -37,7 +39,7 @@ export function ProjectDangerZone({
       { method: "DELETE" },
     );
     if (!response.ok) {
-      setError(await readError(response));
+      setError(await readError(response, t("project.deleteError")));
       setBusy(false);
       return;
     }
@@ -53,14 +55,14 @@ export function ProjectDangerZone({
       <Flex align="center" justify="between" gap="4" wrap="wrap">
         <div>
           <Text as="div" size="3" weight="bold" color="red">
-            Удалить проект
+            {t("project.deleteTitle")}
           </Text>
           <Text as="div" size="2" color="gray">
-            Проект, задачи, подзадачи, статусы и связанные views будут удалены безвозвратно.
+            {t("project.deleteDescription")}
           </Text>
         </div>
         <Button color="red" variant="soft" onClick={() => setOpen(true)}>
-          <Trash2 size={14} /> Удалить проект
+          <Trash2 size={14} /> {t("project.deleteTitle")}
         </Button>
       </Flex>
       <AlertDialog.Root
@@ -74,14 +76,16 @@ export function ProjectDangerZone({
         }}
       >
         <AlertDialog.Content maxWidth="480px">
-          <AlertDialog.Title>Удалить «{projectTitle}»?</AlertDialog.Title>
+          <AlertDialog.Title>
+            {t("project.deleteConfirm", { name: projectTitle })}
+          </AlertDialog.Title>
           <AlertDialog.Description size="2">
-            Это действие нельзя отменить. Введите название проекта для подтверждения.
+            {t("project.deleteInstruction")}
           </AlertDialog.Description>
           <Flex direction="column" gap="3" mt="4">
             <TextField.Root
               autoFocus
-              aria-label="Подтверждение названия проекта"
+              aria-label={t("project.deleteInput")}
               placeholder={projectTitle}
               value={confirmation}
               onChange={(event) => setConfirmation(event.target.value)}
@@ -94,7 +98,7 @@ export function ProjectDangerZone({
             <Flex justify="end" gap="3">
               <AlertDialog.Cancel>
                 <Button color="gray" variant="soft" disabled={busy}>
-                  Отмена
+                  {t("common.cancel")}
                 </Button>
               </AlertDialog.Cancel>
               <Button
@@ -102,7 +106,7 @@ export function ProjectDangerZone({
                 disabled={!confirmed || busy}
                 onClick={() => void deleteProject()}
               >
-                {busy ? "Удаляю…" : "Удалить навсегда"}
+                {busy ? t("workspace.deleting") : t("common.deleteForever")}
               </Button>
             </Flex>
           </Flex>
@@ -112,12 +116,12 @@ export function ProjectDangerZone({
   );
 }
 
-async function readError(response: Response): Promise<string> {
+async function readError(response: Response, fallback: string): Promise<string> {
   const value: unknown = await response.json().catch((): null => null);
   return typeof value === "object" &&
     value !== null &&
     "error" in value &&
     typeof value.error === "string"
     ? value.error
-    : "Не удалось удалить проект.";
+    : fallback;
 }

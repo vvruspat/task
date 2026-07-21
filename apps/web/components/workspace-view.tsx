@@ -6,6 +6,9 @@ import { Bot, MoreHorizontal, Plus, Workflow } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
+import { localizeWorkspaceError } from "../lib/i18n/errors";
+import { useI18n } from "../lib/i18n/i18n";
+import type { MessageKey } from "../lib/i18n/messages";
 import { updateWorkspaceData, useWorkspaceData } from "../lib/use-workspace-data";
 import {
   isApiFailure,
@@ -33,19 +36,19 @@ export type ViewKind =
   | "history"
   | "settings"
   | "telegram";
-const copy: Record<ViewKind, { title: string; subtitle: string }> = {
-  projects: { title: "Проекты", subtitle: "Активные проекты рабочего пространства" },
-  project: { title: "Проект", subtitle: "Задачи и прогресс проекта" },
-  kanban: { title: "Канбан", subtitle: "Задачи сгруппированы по статусам" },
-  matrix: { title: "Матрица", subtitle: "Этапы и задачи выбранного проекта" },
-  table: { title: "Таблица", subtitle: "Плоский список задач выбранного проекта" },
-  templates: { title: "Шаблоны", subtitle: "Task skills рабочего пространства" },
-  confirmations: { title: "Подтверждения", subtitle: "Ожидающие решения действия агента" },
-  history: { title: "История агента", subtitle: "Запуски агента в рабочем пространстве" },
-  settings: { title: "Настройки", subtitle: "Участники и конфигурация рабочего пространства" },
+const copy: Record<ViewKind, { title: MessageKey; subtitle: MessageKey }> = {
+  projects: { title: "workspace.projectsTitle", subtitle: "workspace.projectsSubtitle" },
+  project: { title: "workspace.projectTitle", subtitle: "workspace.projectSubtitle" },
+  kanban: { title: "workspace.kanbanTitle", subtitle: "workspace.kanbanSubtitle" },
+  matrix: { title: "workspace.matrixTitle", subtitle: "workspace.matrixSubtitle" },
+  table: { title: "workspace.tableTitle", subtitle: "workspace.tableSubtitle" },
+  templates: { title: "templates.title", subtitle: "workspace.templatesSubtitle" },
+  confirmations: { title: "nav.confirmations", subtitle: "workspace.confirmationsSubtitle" },
+  history: { title: "nav.agentHistory", subtitle: "workspace.historySubtitle" },
+  settings: { title: "common.settings", subtitle: "workspace.settingsSubtitle" },
   telegram: {
-    title: "Настройки Telegram",
-    subtitle: "Статус привязки Telegram доступен через backend API.",
+    title: "workspace.telegramTitle",
+    subtitle: "workspace.telegramSubtitle",
   },
 };
 
@@ -54,24 +57,25 @@ export function WorkspaceView({
   projectId,
   projectSlug,
 }: Readonly<{ kind: ViewKind; projectId?: string; projectSlug?: string }>): ReactNode {
+  const { t } = useI18n();
   const { data, error, loading, refresh, requiresWorkspace } = useWorkspaceData();
   const searchParams = useSearchParams();
   const setCreateOpen = useWorkspaceStore((state) => state.setCreateOpen);
   if (loading)
     return (
       <Card className="panel">
-        <Text color="gray">Загружаю данные рабочего пространства…</Text>
+        <Text color="gray">{t("workspace.loading")}</Text>
       </Card>
     );
   if (requiresWorkspace) return <WorkspaceOnboarding refresh={refresh} />;
   if (error !== null || data === null)
     return (
       <Card className="panel connection-error">
-        <h2>Нет подключения к backend API</h2>
-        <p>{error ?? "Не удалось загрузить данные."}</p>
+        <h2>{t("workspace.backendUnavailable")}</h2>
+        <p>{localizeWorkspaceError(error, t, "workspace.loadError")}</p>
         <code>TASK_API_BASE_URL=http://localhost:3000</code>
         <Button size="1" onClick={() => void refresh()}>
-          Повторить
+          {t("common.retry")}
         </Button>
       </Card>
     );
@@ -83,18 +87,18 @@ export function WorkspaceView({
   const title =
     kind === "project" && selectedProjectId !== undefined
       ? (data.projects.find((project) => project.id === selectedProjectId)?.title ??
-        copy[kind].title)
-      : copy[kind].title;
+        t(copy[kind].title))
+      : t(copy[kind].title);
   return (
     <>
       <div className="page-heading">
         <div>
           <h1>{title}</h1>
-          <p>{copy[kind].subtitle}</p>
+          <p>{t(copy[kind].subtitle)}</p>
         </div>
         {["projects", "templates"].includes(kind) && (
           <Button size="1" onClick={() => setCreateOpen(true)}>
-            <Plus size={14} /> Создать
+            <Plus size={14} /> {t("common.create")}
           </Button>
         )}
       </div>
@@ -125,6 +129,7 @@ function findProjectData(data: WorkspaceBootstrap, projectId?: string): ProjectD
   return data.projectData.find((item) => item.projectId === projectId) ?? data.projectData[0];
 }
 function Projects({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
+  const { locale, t } = useI18n();
   return (
     <div className="project-grid">
       {data.projects.map((project) => (
@@ -135,11 +140,11 @@ function Projects({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
         >
           <div>
             <span className="cover">{project.title.slice(0, 1)}</span>
-            <Badge color="indigo">{project.status ?? "Активный"}</Badge>
+            <Badge color="indigo">{project.status ?? t("common.active")}</Badge>
           </div>
           <h2>{project.title}</h2>
           {project.description === null ? (
-            <p>Описание не задано</p>
+            <p>{t("common.noDescription")}</p>
           ) : (
             <MarkdownContent
               className="project-card-description"
@@ -147,7 +152,7 @@ function Projects({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
               value={project.description}
             />
           )}
-          <small>Обновлено {formatDate(project.updatedAt)}</small>
+          <small>{t("common.updated", { date: formatDate(project.updatedAt, locale) })}</small>
         </Link>
       ))}
     </div>
@@ -162,22 +167,24 @@ function ProjectDetail({
   project: ProjectData | undefined;
   refresh: () => Promise<void>;
 }>): ReactNode {
-  if (project === undefined) return <Empty text="В рабочем пространстве пока нет проектов." />;
+  const { t } = useI18n();
+  if (project === undefined) return <Empty text={t("workspace.noProjects")} />;
   const projectSummary = data.projects.find((item) => item.id === project.projectId);
   return (
     <Flex direction="column" gap="4">
       {projectSummary !== undefined && (
         <Card className="panel project-description-panel">
-          <PanelTitle title="Описание" />
+          <PanelTitle title={t("common.description")} />
           <MarkdownDescriptionEditor
-            ariaLabel="Редактировать описание проекта"
-            emptyText="Описание проекта не добавлено"
+            ariaLabel={t("project.editDescription")}
+            emptyText={t("project.noDescription")}
             value={projectSummary.description ?? null}
             onSave={(description) =>
               saveMarkdownDescription(
                 `/api/workspace/projects/${project.projectId}`,
                 data.workspace.id,
                 description,
+                t("common.descriptionSaveError"),
                 () =>
                   updateWorkspaceData((current) => ({
                     ...current,
@@ -210,7 +217,8 @@ function Kanban({
   data,
   project,
 }: Readonly<{ data: WorkspaceBootstrap; project: ProjectData | undefined }>): ReactNode {
-  if (project === undefined) return <Empty text="Выберите проект, чтобы увидеть канбан." />;
+  const { t } = useI18n();
+  if (project === undefined) return <Empty text={t("workspace.selectProjectKanban")} />;
   return (
     <div className="board">
       {data.statuses
@@ -229,6 +237,7 @@ function KanbanColumn({
   color,
   tasks,
 }: Readonly<{ title: string; color?: string; tasks: ProjectData["tasks"] }>): ReactNode {
+  const { t } = useI18n();
   return (
     <section>
       <div className="board-heading">
@@ -244,18 +253,19 @@ function KanbanColumn({
             <TaskStatusIndicator color={color} size="sm" />
             <strong>{task.title}</strong>
           </span>
-          <small>{task.description ?? "Без описания"}</small>
+          <small>{task.description ?? t("common.noDescription")}</small>
         </Card>
       ))}
     </section>
   );
 }
 function Matrix({ project }: Readonly<{ project: ProjectData | undefined }>): ReactNode {
-  if (project === undefined) return <Empty text="Выберите проект, чтобы увидеть матрицу." />;
+  const { t } = useI18n();
+  if (project === undefined) return <Empty text={t("workspace.selectProjectMatrix")} />;
   return (
     <Card className="panel matrix">
       <div className="matrix-grid matrix-head">
-        <span>Этап</span>
+        <span>{t("workspace.stage")}</span>
         {project.matrix.columns.map((column) => (
           <span key={column.id}>{column.title}</span>
         ))}
@@ -279,15 +289,16 @@ function Matrix({ project }: Readonly<{ project: ProjectData | undefined }>): Re
   );
 }
 function TaskTable({ project }: Readonly<{ project: ProjectData | undefined }>): ReactNode {
-  if (project === undefined) return <Empty text="Выберите проект, чтобы увидеть таблицу." />;
+  const { locale, t } = useI18n();
+  if (project === undefined) return <Empty text={t("workspace.selectProjectTable")} />;
   return (
     <Card className="table-card">
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Задача</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Срок</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Описание</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>{t("common.task")}</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>{t("workspace.dueDate")}</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>{t("common.description")}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell />
           </Table.Row>
         </Table.Header>
@@ -295,7 +306,7 @@ function TaskTable({ project }: Readonly<{ project: ProjectData | undefined }>):
           {project.table.items.map((task) => (
             <Table.Row key={task.id}>
               <Table.RowHeaderCell>{task.title}</Table.RowHeaderCell>
-              <Table.Cell>{formatDate(task.dueAt ?? null)}</Table.Cell>
+              <Table.Cell>{formatDate(task.dueAt ?? null, locale)}</Table.Cell>
               <Table.Cell>{task.description ?? "—"}</Table.Cell>
               <Table.Cell>
                 <MoreHorizontal size={16} />
@@ -308,14 +319,15 @@ function TaskTable({ project }: Readonly<{ project: ProjectData | undefined }>):
   );
 }
 function Templates({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
+  const { t } = useI18n();
   return (
     <div className="template-grid">
       {data.taskSkills.map((skill) => (
         <Card className="template-card" key={skill.id}>
           <Workflow size={22} />
           <h2>{skill.name}</h2>
-          <p>{skill.description ?? "Без описания"}</p>
-          <small>{skill.aliases.join(", ") || "Нет алиасов"}</small>
+          <p>{skill.description ?? t("common.noDescription")}</p>
+          <small>{skill.aliases.join(", ") || t("workspace.noAliases")}</small>
         </Card>
       ))}
     </div>
@@ -325,6 +337,7 @@ function Confirmations({
   data,
   refresh,
 }: Readonly<{ data: WorkspaceBootstrap; refresh: () => Promise<void> }>): ReactNode {
+  const { locale, t } = useI18n();
   return (
     <div className="stacked">
       {data.confirmations.map((confirmation) => (
@@ -334,7 +347,7 @@ function Confirmations({
               <Bot size={18} />
             </span>
             <strong>{confirmation.kind}</strong>
-            <p>Истекает {formatDate(confirmation.expiresAt)}</p>
+            <p>{t("workspace.expires", { date: formatDate(confirmation.expiresAt, locale) })}</p>
           </div>
           <div>
             <Button
@@ -345,7 +358,7 @@ function Confirmations({
                 void updateConfirmation(data.workspace.id, confirmation.id, "cancel", refresh)
               }
             >
-              Отклонить
+              {t("workspace.reject")}
             </Button>
             <Button
               size="1"
@@ -353,7 +366,7 @@ function Confirmations({
                 void updateConfirmation(data.workspace.id, confirmation.id, "confirm", refresh)
               }
             >
-              Подтвердить
+              {t("common.confirm")}
             </Button>
           </div>
         </Card>
@@ -362,6 +375,7 @@ function Confirmations({
   );
 }
 function History({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
+  const { locale, t } = useI18n();
   return (
     <Card className="panel timeline">
       {data.agentRuns.map((run) => (
@@ -369,47 +383,62 @@ function History({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
           <span className="timeline-dot" />
           <strong>{run.inputText}</strong>
           <small>
-            {run.source} · {run.status} · {formatDate(run.createdAt)}
+            {run.source} · {run.status} · {formatDate(run.createdAt, locale)}
           </small>
-          <p>{run.finalResponse ?? run.error ?? "Выполняется"}</p>
+          <p>{run.finalResponse ?? run.error ?? t("workspace.running")}</p>
         </div>
       ))}
     </Card>
   );
 }
 function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
+  const { t } = useI18n();
   return (
     <section className="settings">
       <Card className="panel">
-        <PanelTitle title="Рабочее пространство" />
+        <PanelTitle title={t("profile.title")} />
+        <Text color="gray" size="2">
+          {t("profile.subtitle")}
+        </Text>
+        <Button asChild size="1" variant="soft">
+          <Link href="/settings/profile">{t("nav.profile")}</Link>
+        </Button>
+      </Card>
+      <Card className="panel">
+        <PanelTitle title={t("common.workspace")} />
         <WorkspaceNameEditor name={data.workspace.name} workspaceId={data.workspace.id} />
         <div className="settings-description-field">
           <Text color="gray" size="2">
-            Описание
+            {t("common.description")}
           </Text>
           <MarkdownDescriptionEditor
-            ariaLabel="Редактировать описание рабочего пространства"
-            emptyText="Описание рабочего пространства не добавлено"
+            ariaLabel={t("workspace.editDescription")}
+            emptyText={t("workspace.noDescription")}
             value={data.workspace.description}
             onSave={(description) =>
-              saveMarkdownDescription("/api/workspace", data.workspace.id, description, () =>
-                updateWorkspaceData((current) => ({
-                  ...current,
-                  workspace: { ...current.workspace, description },
-                })),
+              saveMarkdownDescription(
+                "/api/workspace",
+                data.workspace.id,
+                description,
+                t("common.descriptionSaveError"),
+                () =>
+                  updateWorkspaceData((current) => ({
+                    ...current,
+                    workspace: { ...current.workspace, description },
+                  })),
               )
             }
           />
         </div>
       </Card>
       <Card className="panel">
-        <PanelTitle title="Участники" />
+        <PanelTitle title={t("workspace.members")} />
         {data.workspace.members.map((member) => (
           <div className="person" key={member.id}>
             <span className="avatar">{member.displayName.slice(0, 1)}</span>
             <span>
               <strong>{member.displayName}</strong>
-              <small>{workspaceMemberRoleLabel(member.role)}</small>
+              <small>{workspaceMemberRoleLabel(member.role, t)}</small>
             </span>
           </div>
         ))}
@@ -419,15 +448,13 @@ function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
   );
 }
 function Telegram({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
+  const { t } = useI18n();
   return (
     <Card className="panel">
       <PanelTitle title="Telegram Mini App" />
-      <p>
-        Для Telegram backend предоставляет проверку initData и статус привязки identity. Настройки
-        каналов и bot permissions пока не входят в опубликованный API-контракт.
-      </p>
+      <p>{t("workspace.telegramInfo")}</p>
       <Text size="2" color="gray">
-        Workspace: {data.workspace.name}
+        {t("common.workspace")}: {data.workspace.name}
       </Text>
     </Card>
   );
@@ -444,21 +471,23 @@ function PanelTitle({ title }: Readonly<{ title: string }>): ReactNode {
 }
 function workspaceMemberRoleLabel(
   role: WorkspaceBootstrap["workspace"]["members"][number]["role"],
+  t: ReturnType<typeof useI18n>["t"],
 ): string {
-  if (role === "owner") return "Владелец";
-  if (role === "admin") return "Администратор";
-  if (role === "guest") return "Гость";
-  return "Участник";
+  if (role === "owner") return t("workspace.role.owner");
+  if (role === "admin") return t("workspace.role.admin");
+  if (role === "guest") return t("workspace.role.guest");
+  return t("workspace.role.member");
 }
-function formatDate(value: string | null | undefined): string {
+function formatDate(value: string | null | undefined, locale: "en" | "ru"): string {
   return value === null || value === undefined
     ? "—"
-    : new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "short" }).format(new Date(value));
+    : new Intl.DateTimeFormat(locale, { day: "2-digit", month: "short" }).format(new Date(value));
 }
 async function saveMarkdownDescription(
   url: string,
   workspaceId: string,
   description: string | null,
+  fallback: string,
   onSaved: () => void,
 ): Promise<void> {
   const response = await fetch(url, {
@@ -468,7 +497,7 @@ async function saveMarkdownDescription(
   });
   const body: unknown = await response.json().catch((): null => null);
   if (!response.ok) {
-    throw new Error(isApiFailure(body) ? body.error : "Не удалось сохранить описание.");
+    throw new Error(isApiFailure(body) ? body.error : fallback);
   }
   onSaved();
 }

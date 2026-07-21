@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, HttpCode, Inject, Post } from "@nestjs/common";
+import { Body, Controller, Get, Headers, HttpCode, Inject, Patch, Post } from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiBody,
@@ -10,14 +10,17 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import type { LoginInput, RegisterInput } from "./auth.contracts.js";
+import type { LoginInput, RegisterInput, UpdateProfileInput } from "./auth.contracts.js";
 import {
   AuthSessionDto,
   AuthSessionInfoDto,
+  AuthUserDto,
   LoginDto,
   ParseLoginBodyPipe,
   ParseRegisterBodyPipe,
+  ParseUpdateProfileBodyPipe,
   RegisterDto,
+  UpdateProfileDto,
 } from "./auth.dto.js";
 import { AuthService, readBearerToken } from "./auth.service.js";
 
@@ -53,6 +56,18 @@ export class AuthController {
     @Headers("authorization") authorization: string | undefined,
   ): Promise<AuthSessionInfoDto> {
     return new AuthSessionInfoDto(await this.service.getSession(readBearerToken(authorization)));
+  }
+
+  @Patch("profile")
+  @ApiBearerAuth()
+  @ApiBody({ type: UpdateProfileDto })
+  @ApiOkResponse({ type: AuthUserDto })
+  @ApiUnauthorizedResponse({ description: "Session is invalid or expired." })
+  async updateProfile(
+    @Headers("authorization") authorization: string | undefined,
+    @Body(ParseUpdateProfileBodyPipe) input: UpdateProfileInput,
+  ): Promise<AuthUserDto> {
+    return new AuthUserDto(await this.service.updateProfile(readBearerToken(authorization), input));
   }
 
   @Post("logout")

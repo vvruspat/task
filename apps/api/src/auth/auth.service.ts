@@ -1,6 +1,13 @@
 import { createHash, randomBytes } from "node:crypto";
 import { ConflictException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
-import type { AuthSession, AuthSessionInfo, LoginInput, RegisterInput } from "./auth.contracts.js";
+import type {
+  AuthSession,
+  AuthSessionInfo,
+  AuthUser,
+  LoginInput,
+  RegisterInput,
+  UpdateProfileInput,
+} from "./auth.contracts.js";
 import { AuthStore } from "./auth.store.js";
 import { hashPassword, verifyPassword } from "./password.js";
 
@@ -49,6 +56,13 @@ export class AuthService {
 
   async logout(token: string, now = new Date()): Promise<void> {
     await this.store.revokeSession(hashSessionToken(token), now);
+  }
+
+  async updateProfile(token: string, input: UpdateProfileInput): Promise<AuthUser> {
+    const session = await this.getSession(token);
+    const user = await this.store.updateProfile(session.user.id, input);
+    if (user === null) throw new UnauthorizedException("Session user no longer exists.");
+    return user;
   }
 }
 

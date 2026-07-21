@@ -88,6 +88,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/auth/profile": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations["AuthController_updateProfile"];
+    trace?: never;
+  };
   "/auth/logout": {
     parameters: {
       query?: never;
@@ -1131,6 +1147,8 @@ export interface components {
       displayName: string;
       /** Format: email */
       email: string;
+      /** @enum {string|null} */
+      locale: "en" | "ru" | null;
     };
     AuthSessionDto: {
       /** @description Opaque bearer token. Store it only in a secure HttpOnly cookie. */
@@ -1152,6 +1170,11 @@ export interface components {
       /** Format: date-time */
       expiresAt: string;
       user: components["schemas"]["AuthUserDto"];
+    };
+    UpdateProfileDto: {
+      displayName: string;
+      /** @enum {string|null} */
+      locale: "en" | "ru" | null;
     };
     TaskActivityEventDto: {
       /** Format: uuid */
@@ -2392,6 +2415,36 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["AuthSessionInfoDto"];
+        };
+      };
+      /** @description Session is invalid or expired. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AuthController_updateProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateProfileDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AuthUserDto"];
         };
       };
       /** @description Session is invalid or expired. */

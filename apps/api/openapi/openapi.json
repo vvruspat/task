@@ -134,6 +134,43 @@
         "tags": ["auth"]
       }
     },
+    "/auth/profile": {
+      "patch": {
+        "operationId": "AuthController_updateProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthUserDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Session is invalid or expired."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["auth"]
+      }
+    },
     "/auth/logout": {
       "post": {
         "operationId": "AuthController_logout",
@@ -4898,9 +4935,14 @@
           "email": {
             "type": "string",
             "format": "email"
+          },
+          "locale": {
+            "type": "string",
+            "enum": ["en", "ru"],
+            "nullable": true
           }
         },
-        "required": ["id", "displayName", "email"]
+        "required": ["id", "displayName", "email", "locale"]
       },
       "AuthSessionDto": {
         "type": "object",
@@ -4949,6 +4991,21 @@
           }
         },
         "required": ["expiresAt", "user"]
+      },
+      "UpdateProfileDto": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "locale": {
+            "type": "string",
+            "enum": ["en", "ru"],
+            "nullable": true
+          }
+        },
+        "required": ["displayName", "locale"]
       },
       "TaskActivityEventDto": {
         "type": "object",

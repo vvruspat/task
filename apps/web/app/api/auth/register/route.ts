@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createBackendSession, sessionCookieName } from "../../../../lib/auth";
+import { localeCookieName } from "../../../../lib/i18n/locale";
 
 export async function POST(request: Request): Promise<NextResponse> {
   const body: unknown = await request.json().catch((): null => null);
@@ -12,6 +13,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     result.session.token,
     cookieOptions(result.session.expiresAt),
   );
+  response.cookies.set(localeCookieName, result.session.user.locale ?? "system", {
+    maxAge: 31_536_000,
+    path: "/",
+    sameSite: "lax",
+  });
   return response;
 }
 

@@ -12,6 +12,7 @@ export type UserRecord = {
   displayName: string;
   email: string | null;
   avatarUrl: string | null;
+  locale: "en" | "ru" | null;
   createdAt: Date;
   updatedAt: Date;
 };

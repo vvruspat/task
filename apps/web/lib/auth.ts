@@ -1,5 +1,14 @@
 import type { AuthSession, AuthSessionInfo } from "@task/api-client";
 
+export type AuthErrorCode =
+  | "backend_missing"
+  | "email_taken"
+  | "generic"
+  | "invalid_credentials"
+  | "invalid_login"
+  | "invalid_register"
+  | "unavailable";
+
 export const sessionCookieName = "task_session";
 export const authenticatedUserIdHeader = "x-task-authenticated-user-id";
 
@@ -41,7 +50,7 @@ export async function resolveSession(request: Request): Promise<AuthSessionInfo 
 export async function createBackendSession(
   path: "/auth/login" | "/auth/register",
   body: unknown,
-): Promise<{ session: AuthSession } | { error: string; status: number }> {
+): Promise<{ session: AuthSession } | { error: AuthErrorCode; status: number }> {
   let response: Response;
   try {
     response = await fetch(`${apiBaseUrl()}${path}`, {
@@ -53,7 +62,7 @@ export async function createBackendSession(
   } catch (error: unknown) {
     console.error("Authentication backend is unreachable.", { cause: error, path });
     return {
-      error: "Сервис входа временно недоступен. Попробуйте ещё раз через минуту.",
+      error: "unavailable",
       status: 503,
     };
   }
@@ -66,10 +75,10 @@ export async function createBackendSession(
         status: response.status,
       });
     }
-    return { error: authErrorMessage(path, response.status), status: response.status };
+    return { error: authErrorCode(path, response.status), status: response.status };
   }
   if (!isAuthSession(responseBody)) {
-    return { error: "Authentication service returned an invalid response.", status: 502 };
+    return { error: "generic", status: 502 };
   }
   return { session: responseBody };
 }
@@ -107,25 +116,26 @@ function isAuthSession(value: unknown): value is AuthSession {
   );
 }
 
-export function authErrorMessage(path: "/auth/login" | "/auth/register", status: number): string {
+export function authErrorCode(
+  path: "/auth/login" | "/auth/register",
+  status: number,
+): AuthErrorCode {
   if (status === 404) {
-    return "Сервис входа ещё не запущен или не обновлён. Попробуйте позже.";
+    return "backend_missing";
   }
   if (status >= 500) {
-    return "Сервис входа временно недоступен. Попробуйте ещё раз через минуту.";
+    return "unavailable";
   }
   if (path === "/auth/register" && status === 409) {
-    return "Аккаунт с таким email уже существует.";
+    return "email_taken";
   }
   if (path === "/auth/login" && status === 401) {
-    return "Неверный email или пароль.";
+    return "invalid_credentials";
   }
   if (status === 400) {
-    return path === "/auth/register"
-      ? "Проверьте имя, email и пароль. Пароль должен содержать от 8 до 128 символов."
-      : "Проверьте формат email и пароля.";
+    return path === "/auth/register" ? "invalid_register" : "invalid_login";
   }
-  return "Не удалось выполнить вход. Проверьте данные и попробуйте ещё раз.";
+  return "generic";
 }
 
 function readBackendMessage(value: unknown): string | null {

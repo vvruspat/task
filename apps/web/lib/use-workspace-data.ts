@@ -126,7 +126,7 @@ async function readJson(
 ): Promise<WorkspaceBootstrap | WorkspaceRequired | ApiFailure> {
   const body: unknown = await response.json();
   if (isWorkspaceBootstrap(body) || isWorkspaceRequired(body) || isApiFailure(body)) return body;
-  return { error: "The web API returned an invalid response." };
+  return { error: "workspace_invalid_response" };
 }
 
 async function requestWorkspace(
@@ -199,7 +199,7 @@ export function useWorkspaceData(): WorkspaceDataState & {
             latest.data === null
               ? error instanceof Error
                 ? error.message
-                : "Unable to reach the local web API."
+                : "workspace_unreachable"
               : null,
           loading: false,
           requiresWorkspace: false,

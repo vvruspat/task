@@ -1,49 +1,67 @@
 import type { TaskActivityEvent, TaskComment } from "@task/api-client";
+import type { MessageValues } from "./i18n/i18n";
+import type { MessageKey } from "./i18n/messages";
 
 export type TaskActivityContext = {
+  locale: "en" | "ru";
   memberName: (userId: string) => string | null;
   statusName: (statusId: string) => string | null;
+  t: (key: MessageKey, values?: MessageValues) => string;
 };
 
 export function formatTaskActivity(event: TaskActivityEvent, context: TaskActivityContext): string {
-  if (event.eventType === "task.created") return "создал(а) задачу";
+  if (event.eventType === "task.created") return context.t("activity.event.created");
   if (event.eventType === "task.subtasks_created") {
     const count = readNumber(event.payload, "count");
-    return count === null ? "добавил(а) подзадачи" : `добавил(а) подзадачи: ${count}`;
+    return count === null
+      ? context.t("activity.event.subtasksAdded")
+      : context.t("activity.event.subtasksAddedCount", { count });
   }
   if (event.eventType === "task.status_updated") {
     const statusId = readString(event.payload, "statusId");
-    if (statusId === null) return "убрал(а) статус задачи";
-    return `изменил(а) статус на «${context.statusName(statusId) ?? "Неизвестный статус"}»`;
+    if (statusId === null) return context.t("activity.event.statusRemoved");
+    return context.t("activity.event.statusChanged", {
+      status: context.statusName(statusId) ?? context.t("activity.unknownStatus"),
+    });
   }
   if (event.eventType === "task.assignee_updated") {
     const assigneeUserId = readString(event.payload, "assigneeUserId");
-    if (assigneeUserId === null) return "снял(а) исполнителя";
-    return `назначил(а) исполнителя ${context.memberName(assigneeUserId) ?? "Неизвестный пользователь"}`;
+    if (assigneeUserId === null) return context.t("activity.event.assigneeRemoved");
+    return context.t("activity.event.assigneeChanged", {
+      assignee: context.memberName(assigneeUserId) ?? context.t("activity.unknownUser"),
+    });
   }
   if (event.eventType === "task.due_date_updated") {
     const dueAt = readString(event.payload, "dueAt");
-    return dueAt === null ? "убрал(а) срок" : `изменил(а) срок на ${formatActivityDate(dueAt)}`;
+    return dueAt === null
+      ? context.t("activity.event.dueRemoved")
+      : context.t("activity.event.dueChanged", {
+          date: formatActivityDate(dueAt, context.locale),
+        });
   }
-  if (event.eventType === "task.updated") return formatUpdatedFields(event.payload);
-  if (event.eventType === "task.moved") return "изменил(а) положение задачи";
-  if (event.eventType === "task.bulk_updated") return "изменил(а) свойства задачи";
-  if (event.eventType === "task.archived") return "архивировал(а) задачу";
+  if (event.eventType === "task.updated") return formatUpdatedFields(event.payload, context);
+  if (event.eventType === "task.moved") return context.t("activity.event.moved");
+  if (event.eventType === "task.bulk_updated") return context.t("activity.event.propertiesChanged");
+  if (event.eventType === "task.archived") return context.t("activity.event.archived");
   if (event.eventType === "task_skill.applied") {
     const count = readNumber(event.payload, "subtaskCount");
     return count === null
-      ? "применил(а) шаблон"
-      : `применил(а) шаблон и создал(а) подзадачи: ${count}`;
+      ? context.t("activity.event.templateApplied")
+      : context.t("activity.event.templateAppliedCount", { count });
   }
-  if (event.eventType === "attachment.created") return "добавил(а) вложение";
-  return "изменил(а) задачу";
+  if (event.eventType === "attachment.created") return context.t("activity.event.attachmentAdded");
+  return context.t("activity.event.changed");
 }
 
-export function formatActivityTime(value: string, now: Date = new Date()): string {
+export function formatActivityTime(
+  value: string,
+  locale: "en" | "ru",
+  now: Date = new Date(),
+): string {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "недавно";
+  if (Number.isNaN(date.getTime())) return locale === "ru" ? "недавно" : "recently";
   const seconds = Math.round((date.getTime() - now.getTime()) / 1000);
-  const formatter = new Intl.RelativeTimeFormat("ru", { numeric: "auto" });
+  const formatter = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
   if (Math.abs(seconds) < 60) return formatter.format(seconds, "second");
   const minutes = Math.round(seconds / 60);
   if (Math.abs(minutes) < 60) return formatter.format(minutes, "minute");
@@ -85,21 +103,26 @@ export function isTaskComment(value: unknown): value is TaskComment {
   );
 }
 
-function formatUpdatedFields(payload: Record<string, unknown>): string {
+function formatUpdatedFields(
+  payload: Record<string, unknown>,
+  context: TaskActivityContext,
+): string {
   const fields = readUnknown(payload, "fields");
-  if (!Array.isArray(fields)) return "изменил(а) задачу";
+  if (!Array.isArray(fields)) return context.t("activity.event.changed");
   const names = fields.filter((field): field is string => typeof field === "string");
-  if (names.length === 1 && names[0] === "title") return "изменил(а) название задачи";
-  if (names.length === 1 && names[0] === "description") return "изменил(а) описание задачи";
-  if (names.length === 1 && names[0] === "metadata") return "изменил(а) labels задачи";
-  return "изменил(а) свойства задачи";
+  if (names.length === 1 && names[0] === "title") return context.t("activity.event.titleChanged");
+  if (names.length === 1 && names[0] === "description")
+    return context.t("activity.event.descriptionChanged");
+  if (names.length === 1 && names[0] === "metadata")
+    return context.t("activity.event.labelsChanged");
+  return context.t("activity.event.propertiesChanged");
 }
 
-function formatActivityDate(value: string): string {
+function formatActivityDate(value: string, locale: "en" | "ru"): string {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? value
-    : new Intl.DateTimeFormat("ru-RU", {
+    : new Intl.DateTimeFormat(locale, {
         day: "numeric",
         month: "short",
         year: "numeric",

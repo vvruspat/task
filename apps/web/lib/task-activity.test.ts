@@ -1,11 +1,21 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { TaskActivityEvent } from "@task/api-client";
+import { type MessageKey, ru } from "./i18n/messages.ts";
 import { formatActivityTime, formatTaskActivity, isTaskActivityEvent } from "./task-activity.ts";
 
 const context = {
+  locale: "ru" as const,
   memberName: (userId: string): string | null => (userId === "user-2" ? "Мария" : null),
   statusName: (statusId: string): string | null => (statusId === "status-2" ? "Review" : null),
+  t: (key: MessageKey, values?: Readonly<Record<string, string | number>>): string => {
+    const template = ru[key];
+    if (values === undefined) return template;
+    return template.replace(/\{\{(\w+)\}\}/gu, (match, name: string): string => {
+      const value = values[name];
+      return value === undefined ? match : String(value);
+    });
+  },
 };
 
 test("formats status and assignee activity using workspace names", () => {
@@ -32,7 +42,7 @@ test("formats task detail changes", () => {
 
 test("formats relative activity time", () => {
   assert.equal(
-    formatActivityTime("2026-07-19T11:59:00.000Z", new Date("2026-07-19T12:00:00.000Z")),
+    formatActivityTime("2026-07-19T11:59:00.000Z", "ru", new Date("2026-07-19T12:00:00.000Z")),
     "1 минуту назад",
   );
 });

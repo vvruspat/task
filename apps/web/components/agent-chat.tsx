@@ -41,6 +41,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 import { notifyWorkspaceDataChanged, useWorkspaceData } from "../lib/use-workspace-data";
 import { useWorkspaceStore } from "../lib/workspace-store";
 
@@ -84,6 +85,7 @@ export function AgentPage(): ReactNode {
 }
 
 export function AgentDrawer(): ReactNode {
+  const { t } = useI18n();
   const open = useWorkspaceStore((state) => state.agentOpen);
   const setOpen = useWorkspaceStore((state) => state.setAgentOpen);
   return (
@@ -91,7 +93,7 @@ export function AgentDrawer(): ReactNode {
       <Dialog.Portal>
         <Dialog.Overlay className="agent-drawer-overlay" />
         <Dialog.Content className="agent-drawer" aria-describedby={undefined}>
-          <Dialog.Title className="agent-visually-hidden">Чаты с агентом</Dialog.Title>
+          <Dialog.Title className="agent-visually-hidden">{t("agent.chats")}</Dialog.Title>
           <AgentChatSystem onClose={() => setOpen(false)} />
         </Dialog.Content>
       </Dialog.Portal>
@@ -100,6 +102,7 @@ export function AgentDrawer(): ReactNode {
 }
 
 function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): ReactNode {
+  const { t } = useI18n();
   const workspaceId = useWorkspaceData().data?.workspace.id ?? null;
   const [chats, setChats] = useState<AgentChatSummary[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
@@ -117,13 +120,13 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
       const response = await fetch(`/api/agent/chats?${params.toString()}`);
       if (!response.ok) throw new Error(await readAgentError(response));
       const value: unknown = await response.json();
-      if (!isAgentChatSummaryArray(value)) throw new Error("Список чатов имеет неверный формат.");
+      if (!isAgentChatSummaryArray(value)) throw new Error(t("agent.invalidList"));
       setChats(value);
       setError(null);
     } catch (loadError: unknown) {
-      setError(readErrorMessage(loadError, "Не удалось загрузить чаты."));
+      setError(readErrorMessage(loadError, t("agent.loadError")));
     }
-  }, [query, workspaceId]);
+  }, [query, workspaceId, t]);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => void loadChats(), 200);
@@ -144,14 +147,14 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
       .then(async (response) => {
         if (!response.ok) throw new Error(await readAgentError(response));
         const value: unknown = await response.json();
-        if (!isAgentChatDetail(value)) throw new Error("Чат имеет неверный формат.");
+        if (!isAgentChatDetail(value)) throw new Error(t("agent.invalidChat"));
         if (active) {
           setChat(value);
           setError(null);
         }
       })
       .catch((loadError: unknown) => {
-        if (active) setError(readErrorMessage(loadError, "Не удалось открыть чат."));
+        if (active) setError(readErrorMessage(loadError, t("agent.openError")));
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -159,7 +162,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
     return () => {
       active = false;
     };
-  }, [selectedChatId, workspaceId]);
+  }, [selectedChatId, workspaceId, t]);
 
   const startNewChat = (): void => {
     setSelectedChatId(null);
@@ -198,10 +201,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
   };
 
   const deleteChat = async (chatId: string): Promise<void> => {
-    if (
-      workspaceId === null ||
-      !window.confirm("Удалить этот чат без возможности восстановления?")
-    ) {
+    if (workspaceId === null || !window.confirm(t("agent.deleteConfirm"))) {
       return;
     }
     const response = await fetch(
@@ -222,26 +222,26 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
         <div className="agent-chat-list-header">
           <div className="agent-chat-brand">
             <Bot size={18} />
-            <strong>Агент</strong>
+            <strong>{t("common.agent")}</strong>
           </div>
           <IconButton
             type="button"
             variant="ghost"
             color="gray"
-            aria-label="Новый чат"
+            aria-label={t("agent.newChat")}
             onClick={startNewChat}
           >
             <Plus size={18} />
           </IconButton>
         </div>
         <Button className="agent-new-chat" variant="soft" color="gray" onClick={startNewChat}>
-          <Pencil size={15} /> Новый чат
+          <Pencil size={15} /> {t("agent.newChat")}
         </Button>
         <TextField.Root
           className="agent-chat-search"
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
-          placeholder="Поиск по чатам"
+          placeholder={t("agent.searchChats")}
         >
           <TextField.Slot>
             <Search size={14} />
@@ -252,7 +252,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
                 size="1"
                 variant="ghost"
                 color="gray"
-                aria-label="Очистить поиск"
+                aria-label={t("agent.clearSearch")}
                 onClick={() => setQuery("")}
               >
                 <X size={13} />
@@ -263,7 +263,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
         <div className="agent-chat-items">
           {chats.length === 0 && (
             <p className="agent-chat-list-empty">
-              {query.length > 0 ? "Ничего не найдено" : "Пока нет чатов"}
+              {query.length > 0 ? t("agent.noResults") : t("agent.noChats")}
             </p>
           )}
           {chats.map((item) => (
@@ -297,7 +297,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
                     setSelectedChatId(item.id);
                   }}
                   onDoubleClick={() => setEditingChatId(item.id)}
-                  aria-label={`Открыть чат ${item.title}. Двойной клик — переименовать`}
+                  aria-label={t("agent.openChat", { title: item.title })}
                 >
                   <MessageSquare size={14} />
                   <span>{item.title}</span>
@@ -310,7 +310,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
                     size="1"
                     variant="ghost"
                     color="gray"
-                    aria-label={`Меню чата ${item.title}`}
+                    aria-label={t("agent.chatMenu", { title: item.title })}
                   >
                     <MoreHorizontal size={15} />
                   </IconButton>
@@ -318,11 +318,11 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
                 <DropdownMenu.Content align="end">
                   <DropdownMenu.Item onSelect={() => setEditingChatId(item.id)}>
                     <Pencil size={14} />
-                    Переименовать
+                    {t("agent.rename")}
                   </DropdownMenu.Item>
                   <DropdownMenu.Item color="red" onSelect={() => void deleteChat(item.id)}>
                     <Trash2 size={14} />
-                    Удалить
+                    {t("agent.delete")}
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
@@ -333,17 +333,15 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
       <section className="agent-conversation-panel">
         <header className="agent-conversation-header">
           <div>
-            <strong>{chat?.title ?? "Новый чат"}</strong>
-            <span>
-              {chat === null ? "Начните разговор с агентом" : "Контекст сохраняется в этом чате"}
-            </span>
+            <strong>{chat?.title ?? t("agent.newChat")}</strong>
+            <span>{chat === null ? t("agent.startConversation") : t("agent.contextSaved")}</span>
           </div>
           {onClose !== undefined && (
             <IconButton
               type="button"
               variant="ghost"
               color="gray"
-              aria-label="Закрыть агента"
+              aria-label={t("agent.close")}
               onClick={onClose}
             >
               <X size={18} />
@@ -377,6 +375,7 @@ function AgentConversation({
   workspaceId: string | null;
   onTurnDone: (chat: { id: string; title: string }) => void;
 }>): ReactNode {
+  const { t } = useI18n();
   const projectId = useWorkspaceStore((state) => state.selectedProjectId);
   const [activities, setActivities] = useState<AgentActivity[]>([]);
   const [startedAt, setStartedAt] = useState<number | null>(null);
@@ -384,7 +383,7 @@ function AgentConversation({
   const adapter = useMemo<ChatModelAdapter>(
     () => ({
       async *run({ messages, abortSignal }) {
-        if (workspaceId === null) throw new Error("Рабочее пространство ещё не загружено.");
+        if (workspaceId === null) throw new Error(t("agent.workspaceLoading"));
         const lastMessage = messages.at(-1);
         const message =
           lastMessage?.role === "user"
@@ -394,7 +393,7 @@ function AgentConversation({
                 .join("\n")
                 .trim()
             : "";
-        if (message.length === 0) throw new Error("Сообщение пустое.");
+        if (message.length === 0) throw new Error(t("agent.emptyMessage"));
         setActivities([]);
         setStartedAt(Date.now());
         setCompletedAt(null);
@@ -419,7 +418,7 @@ function AgentConversation({
         }
       },
     }),
-    [chat?.id, onTurnDone, projectId, workspaceId],
+    [chat?.id, onTurnDone, projectId, workspaceId, t],
   );
   const initialMessages = useMemo(
     () =>
@@ -443,8 +442,8 @@ function AgentConversation({
                 <span>
                   <Sparkles size={22} />
                 </span>
-                <h2>Чем помочь?</h2>
-                <p>Создавайте задачи, уточняйте статус и продолжайте работу в отдельных чатах.</p>
+                <h2>{t("agent.helpTitle")}</h2>
+                <p>{t("agent.helpText")}</p>
               </div>
             </ThreadPrimitive.Empty>
             <ThreadPrimitive.Messages components={{ UserMessage, AssistantMessage }} />
@@ -452,15 +451,15 @@ function AgentConversation({
               <ComposerPrimitive.Root className="agent-composer">
                 <ComposerPrimitive.Input
                   className="agent-composer-input"
-                  placeholder="Напишите агенту…"
+                  placeholder={t("agent.placeholder")}
                 />
                 <ComposerPrimitive.Send asChild>
-                  <Button aria-label="Отправить" size="2">
+                  <Button aria-label={t("agent.send")} size="2">
                     <Send size={16} />
                   </Button>
                 </ComposerPrimitive.Send>
               </ComposerPrimitive.Root>
-              <small>Enter — отправить · Shift+Enter — новая строка</small>
+              <small>{t("agent.shortcut")}</small>
             </div>
           </ThreadPrimitive.Viewport>
         </ThreadPrimitive.Root>
@@ -487,6 +486,7 @@ function UserMessage(): ReactNode {
 }
 
 function AssistantMessage(): ReactNode {
+  const { t } = useI18n();
   const progress = useContext(AgentProgressContext);
   const isLast = useMessage((message) => message.isLast);
   return (
@@ -498,7 +498,7 @@ function AssistantMessage(): ReactNode {
         {isLast && progress.activities.length > 0 && <AgentActivityPanel {...progress} />}
         <MessagePrimitive.Parts components={{ Text: AgentMarkdownText }} />
         <MessagePrimitive.Error>
-          <p className="agent-message-error">Не удалось получить ответ агента.</p>
+          <p className="agent-message-error">{t("agent.responseError")}</p>
         </MessagePrimitive.Error>
         <MessageCopyAction />
       </div>
@@ -515,6 +515,7 @@ function AgentActivityPanel({
   startedAt,
   completedAt,
 }: Readonly<AgentProgressContextValue>): ReactNode {
+  const { t } = useI18n();
   const [expanded, setExpanded] = useState(true);
   const [now, setNow] = useState(() => Date.now());
   const running = activities.some((activity) => activity.state === "running");
@@ -530,7 +531,9 @@ function AgentActivityPanel({
     startedAt === null ? 0 : Math.max(0, Math.round(((completedAt ?? now) - startedAt) / 1000));
   const summary =
     current?.label ??
-    (activities.some((activity) => activity.state === "error") ? "Ошибка" : "Готово");
+    (activities.some((activity) => activity.state === "error")
+      ? t("agent.error")
+      : t("agent.done"));
 
   return (
     <section className="agent-activity" aria-live="polite">
@@ -546,7 +549,7 @@ function AgentActivityPanel({
           <CircleCheck size={15} />
         )}
         <span>{summary}</span>
-        <small>{elapsedSeconds}с</small>
+        <small>{t("agent.elapsedSeconds", { count: elapsedSeconds })}</small>
         <ChevronDown className={expanded ? "is-expanded" : ""} size={15} />
       </button>
       {expanded && (
@@ -568,6 +571,7 @@ function AgentActivityPanel({
 }
 
 function MessageCopyAction(): ReactNode {
+  const { t } = useI18n();
   const text = useMessage((message) =>
     message.content
       .filter((part) => part.type === "text")
@@ -584,7 +588,7 @@ function MessageCopyAction(): ReactNode {
 
   const copyMessage = async (): Promise<void> => {
     if (text.length === 0) return;
-    await copyTextToClipboard(text);
+    await copyTextToClipboard(text, t("agent.copyError"));
     setCopied(true);
   };
 
@@ -595,8 +599,8 @@ function MessageCopyAction(): ReactNode {
         className="agent-message-copy"
         data-copied={copied ? "true" : undefined}
         disabled={text.length === 0}
-        aria-label={copied ? "Сообщение скопировано" : "Копировать сообщение"}
-        title={copied ? "Скопировано" : "Копировать сообщение"}
+        aria-label={copied ? t("agent.messageCopied") : t("agent.copyMessage")}
+        title={copied ? t("agent.copied") : t("agent.copyMessage")}
         onClick={() => void copyMessage()}
       >
         <span className="agent-copy-idle">
@@ -604,14 +608,14 @@ function MessageCopyAction(): ReactNode {
         </span>
         <span className="agent-copy-done" aria-live="polite">
           <Check size={14} />
-          <span className="agent-visually-hidden">Скопировано</span>
+          <span className="agent-visually-hidden">{t("agent.copied")}</span>
         </span>
       </button>
     </div>
   );
 }
 
-async function copyTextToClipboard(text: string): Promise<void> {
+async function copyTextToClipboard(text: string, fallback: string): Promise<void> {
   if (window.navigator.clipboard !== undefined) {
     try {
       await window.navigator.clipboard.writeText(text);
@@ -628,7 +632,7 @@ async function copyTextToClipboard(text: string): Promise<void> {
   textarea.select();
   const copied = document.execCommand("copy");
   textarea.remove();
-  if (!copied) throw new Error("Не удалось скопировать сообщение.");
+  if (!copied) throw new Error(fallback);
 }
 
 async function* streamAgentResponse(

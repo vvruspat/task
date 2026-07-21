@@ -3,9 +3,11 @@ import test from "node:test";
 import { ConflictException, UnauthorizedException } from "@nestjs/common";
 import type {
   AuthSessionInfo,
+  AuthUser,
   CreateAccountRecord,
   CreateAccountResult,
   StoredPasswordCredential,
+  UpdateProfileInput,
 } from "./auth.contracts.js";
 import { AuthService, hashSessionToken, readBearerToken } from "./auth.service.js";
 import { AuthStore } from "./auth.store.js";
@@ -15,6 +17,7 @@ const user = {
   id: "11111111-1111-4111-8111-111111111111",
   displayName: "Alex",
   email: "alex@example.com",
+  locale: null,
 };
 
 test("AuthService registers an account with a hashed password and durable session", async () => {
@@ -56,10 +59,22 @@ test("readBearerToken validates opaque session authorization", () => {
   assert.throws(() => readBearerToken("Bearer short"), UnauthorizedException);
 });
 
+test("AuthService updates the authenticated user's profile", async () => {
+  const store = new RecordingAuthStore();
+  store.session = { expiresAt: new Date("2026-08-20T10:00:00.000Z"), user };
+  const updated = await new AuthService(store).updateProfile("session-token", {
+    displayName: "Алекс",
+    locale: "ru",
+  });
+  assert.equal(updated.displayName, "Алекс");
+  assert.equal(updated.locale, "ru");
+});
+
 class RecordingAuthStore extends AuthStore {
   account: CreateAccountRecord | null = null;
   credential: StoredPasswordCredential | null = null;
   emailTaken = false;
+  session: AuthSessionInfo | null = null;
 
   async createAccount(input: CreateAccountRecord): Promise<CreateAccountResult> {
     this.account = input;
@@ -73,7 +88,11 @@ class RecordingAuthStore extends AuthStore {
   async createSession(): Promise<void> {}
 
   async findSession(): Promise<AuthSessionInfo | null> {
-    return null;
+    return this.session;
+  }
+
+  async updateProfile(_userId: string, input: UpdateProfileInput): Promise<AuthUser> {
+    return { ...user, displayName: input.displayName, locale: input.locale };
   }
 
   async revokeSession(): Promise<void> {}

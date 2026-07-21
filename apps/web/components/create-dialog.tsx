@@ -19,6 +19,8 @@ import {
 import { useRouter } from "next/navigation";
 import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
+import type { MessageKey } from "../lib/i18n/messages";
 import { isTaskSummary } from "../lib/task-summary";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
@@ -32,6 +34,7 @@ const unassignedValue = "none";
 const defaultStatusValue = "default";
 
 export function CreateDialog(): ReactNode {
+  const { t } = useI18n();
   const router = useRouter();
   const open = useWorkspaceStore((state) => state.createOpen);
   const setOpen = useWorkspaceStore((state) => state.setCreateOpen);
@@ -95,12 +98,12 @@ export function CreateDialog(): ReactNode {
       });
       const body: unknown = await response.json();
       if (!response.ok) {
-        setError(readCreateError(body));
+        setError(readCreateError(body, t("create.error")));
         return;
       }
       const createdTask = kind === "task" ? readCreatedTask(body) : null;
       if (kind === "task" && createdTask === null) {
-        setError("Задача создана, но сервер вернул некорректный адрес.");
+        setError(t("create.invalidTaskAddress"));
         return;
       }
       if (kind === "task" && projectId !== null) setSelectedProjectId(projectId);
@@ -123,7 +126,7 @@ export function CreateDialog(): ReactNode {
         );
       }
     } catch {
-      setError("Не удалось создать объект.");
+      setError(t("create.error"));
     } finally {
       setSubmitting(false);
     }
@@ -147,47 +150,47 @@ export function CreateDialog(): ReactNode {
                 <Select.Content className="create-dialog-select-content">
                   <Select.Item value="task">
                     <span className="create-select-option">
-                      <ListTodo size={14} /> <span>Issue</span>
+                      <ListTodo size={14} /> <span>{t("create.issue")}</span>
                     </span>
                   </Select.Item>
                   <Select.Item value="project">
                     <span className="create-select-option">
-                      <FolderKanban size={14} /> <span>Проект</span>
+                      <FolderKanban size={14} /> <span>{t("common.project")}</span>
                     </span>
                   </Select.Item>
                   <Select.Item value="skill">
                     <span className="create-select-option">
-                      <Workflow size={14} /> <span>Шаблон</span>
+                      <Workflow size={14} /> <span>{t("common.template")}</span>
                     </span>
                   </Select.Item>
                 </Select.Content>
               </Select.Root>
               <ChevronRight aria-hidden="true" className="create-context-separator" size={14} />
-              <span className="create-context-label">{copy.contextLabel}</span>
+              <span className="create-context-label">{t(copy.contextLabel)}</span>
             </div>
             <Dialog.Close asChild>
-              <IconButton aria-label="Закрыть" color="gray" size="1" variant="ghost">
+              <IconButton aria-label={t("common.close")} color="gray" size="1" variant="ghost">
                 <X size={16} />
               </IconButton>
             </Dialog.Close>
           </div>
 
           <Dialog.Title className="create-dialog-accessible-title">
-            {copy.titlePlaceholder}
+            {t(copy.titlePlaceholder)}
           </Dialog.Title>
 
           <form onSubmit={(event) => void submit(event)}>
             <TextField.Root
               autoFocus
               className="create-title-input"
-              placeholder={copy.titlePlaceholder}
+              placeholder={t(copy.titlePlaceholder)}
               size="3"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
             />
             <TextArea
               className="create-description-input"
-              placeholder="Добавить описание…"
+              placeholder={t("create.addDescription")}
               resize="vertical"
               size="2"
               value={description}
@@ -200,14 +203,14 @@ export function CreateDialog(): ReactNode {
                   <Select.Trigger className="create-property-trigger" variant="soft">
                     <span className="create-select-option">
                       <TaskStatusIndicator color={selectedStatus?.color} size="sm" />
-                      <span>{selectedStatus?.name ?? "Backlog"}</span>
+                      <span>{selectedStatus?.name ?? t("common.backlog")}</span>
                     </span>
                   </Select.Trigger>
                   <Select.Content className="create-dialog-select-content">
                     {statusOptions.length === 0 ? (
                       <Select.Item value={defaultStatusValue}>
                         <span className="create-select-option">
-                          <TaskStatusIndicator size="sm" /> <span>Backlog</span>
+                          <TaskStatusIndicator size="sm" /> <span>{t("common.backlog")}</span>
                         </span>
                       </Select.Item>
                     ) : (
@@ -233,7 +236,7 @@ export function CreateDialog(): ReactNode {
                   <Select.Content className="create-dialog-select-content">
                     <Select.Item value={noProjectValue}>
                       <span className="create-select-option">
-                        <Layers3 size={14} /> <span>Без проекта</span>
+                        <Layers3 size={14} /> <span>{t("create.noProject")}</span>
                       </span>
                     </Select.Item>
                     {data?.projects.map((project) => (
@@ -250,7 +253,7 @@ export function CreateDialog(): ReactNode {
                   <Select.Content className="create-dialog-select-content">
                     <Select.Item value={unassignedValue}>
                       <span className="create-select-option">
-                        <UserRound size={14} /> <span>Не назначен</span>
+                        <UserRound size={14} /> <span>{t("common.notAssigned")}</span>
                       </span>
                     </Select.Item>
                     {data?.workspace.members.map((member) => (
@@ -271,13 +274,13 @@ export function CreateDialog(): ReactNode {
                       variant="soft"
                     >
                       <Tags size={14} />
-                      {labels.length === 0 ? "Labels" : labels.join(", ")}
+                      {labels.length === 0 ? t("task.labels") : labels.join(", ")}
                     </Button>
                   </Popover.Trigger>
                   <Popover.Content className="create-label-popover" align="start" size="1">
                     <TextField.Root
                       autoFocus
-                      placeholder="Найти или создать label…"
+                      placeholder={t("task.findOrCreateLabel")}
                       value={labelQuery}
                       onChange={(event) => setLabelQuery(event.target.value)}
                       onKeyDown={(event) =>
@@ -307,7 +310,7 @@ export function CreateDialog(): ReactNode {
                           }}
                         >
                           <Plus aria-hidden="true" size={14} />
-                          Создать «{labelQuery.trim()}»
+                          {t("task.createLabel", { name: labelQuery.trim() })}
                         </button>
                       )}
                     </div>
@@ -316,11 +319,11 @@ export function CreateDialog(): ReactNode {
               </div>
             )}
             <div className="create-dialog-footer">
-              <span className="create-shortcut-hint">Enter — создать</span>
+              <span className="create-shortcut-hint">{t("create.shortcut")}</span>
               <div className="dialog-actions">
                 <Button type="submit" disabled={submitting || title.trim().length === 0}>
                   <Plus size={14} />
-                  {submitting ? "Создаю…" : copy.action}
+                  {submitting ? t("workspace.creating") : t(copy.action)}
                 </Button>
               </div>
             </div>
@@ -412,13 +415,13 @@ function isCreateKind(value: string): value is CreateKind {
   return value === "project" || value === "skill" || value === "task";
 }
 
-function readCreateError(value: unknown): string {
+function readCreateError(value: unknown, fallback: string): string {
   return typeof value === "object" &&
     value !== null &&
     "error" in value &&
     typeof value.error === "string"
     ? value.error
-    : "Не удалось создать объект.";
+    : fallback;
 }
 
 function readCreatedTask(value: unknown): (TaskSummary & { projectKey: string }) | null {
@@ -431,27 +434,27 @@ function readCreatedTask(value: unknown): (TaskSummary & { projectKey: string })
 }
 
 function createDialogCopy(kind: CreateKind): {
-  action: string;
-  contextLabel: string;
-  titlePlaceholder: string;
+  action: MessageKey;
+  contextLabel: MessageKey;
+  titlePlaceholder: MessageKey;
 } {
   if (kind === "project") {
     return {
-      action: "Создать проект",
-      contextLabel: "Новый проект",
-      titlePlaceholder: "Новый проект",
+      action: "create.projectAction",
+      contextLabel: "create.newProject",
+      titlePlaceholder: "create.newProject",
     };
   }
   if (kind === "skill") {
     return {
-      action: "Создать шаблон",
-      contextLabel: "Новый шаблон",
-      titlePlaceholder: "Новый шаблон",
+      action: "create.templateAction",
+      contextLabel: "create.newTemplate",
+      titlePlaceholder: "create.newTemplate",
     };
   }
   return {
-    action: "Создать issue",
-    contextLabel: "New issue",
-    titlePlaceholder: "Новый issue",
+    action: "create.issueAction",
+    contextLabel: "create.newIssue",
+    titlePlaceholder: "create.newIssue",
   };
 }

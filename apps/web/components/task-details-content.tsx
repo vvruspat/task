@@ -26,6 +26,7 @@ import {
 import Link from "next/link";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { useI18n } from "../lib/i18n/i18n";
 import { issueIdentifier } from "../lib/issue-url";
 import { isTaskSummary } from "../lib/task-summary";
 import { updateWorkspaceTask } from "../lib/use-workspace-data";
@@ -61,6 +62,7 @@ export function TaskDetailsContent({
   task: TaskSummary;
   onTaskUpdated?: (task: TaskSummary) => void;
 }>): ReactNode {
+  const { locale, t } = useI18n();
   const [currentTask, setCurrentTask] = useState(task);
   const [editing, setEditing] = useState<EditableTextField | null>(null);
   const [title, setTitle] = useState(task.title);
@@ -88,10 +90,10 @@ export function TaskDetailsContent({
   );
   const parentTask = projectTasks.find((item) => item.id === currentTask.parentTaskId);
   const subtasks = projectTasks.filter((item) => item.parentTaskId === currentTask.id);
-  const workspaceLabels = useMemo(() => collectWorkspaceLabels(data), [data]);
+  const workspaceLabels = useMemo(() => collectWorkspaceLabels(data, locale), [data, locale]);
   const selectedLabels = readTaskLabels(currentTask);
   const filteredLabels = workspaceLabels.filter((label) =>
-    label.toLocaleLowerCase("ru").includes(labelQuery.trim().toLocaleLowerCase("ru")),
+    label.toLocaleLowerCase(locale).includes(labelQuery.trim().toLocaleLowerCase(locale)),
   );
 
   const mutate = async (mutation: TaskMutation): Promise<void> => {
@@ -110,7 +112,7 @@ export function TaskDetailsContent({
       });
       const body: unknown = await response.json();
       if (!response.ok || !isTaskSummary(body)) {
-        throw new Error(readMutationError(body));
+        throw new Error(readMutationError(body, t("task.saveError")));
       }
       setCurrentTask(body);
       setTitle(body.title);
@@ -118,7 +120,7 @@ export function TaskDetailsContent({
       onTaskUpdated?.(body);
       updateWorkspaceTask(body);
     } catch (error: unknown) {
-      setMutationError(error instanceof Error ? error.message : "Не удалось сохранить задачу.");
+      setMutationError(error instanceof Error ? error.message : t("task.saveError"));
     } finally {
       setSaving(false);
     }
@@ -192,9 +194,9 @@ export function TaskDetailsContent({
               )}
             </Heading>
             <MarkdownDescriptionEditor
-              ariaLabel="Редактировать описание задачи"
+              ariaLabel={t("task.editDescription")}
               className="issue-description"
-              emptyText="Описание не добавлено"
+              emptyText={t("task.noDescription")}
               value={currentTask.description ?? null}
               onSave={(nextDescription) =>
                 mutate({ description: nextDescription, operation: "details" })
@@ -206,7 +208,7 @@ export function TaskDetailsContent({
                 <Separator size="4" />
                 <Flex align="center" justify="between">
                   <Text size="2" weight="bold">
-                    Подзадачи
+                    {t("task.subtasks")}
                   </Text>
                   <Badge color="gray">{subtasks.length}</Badge>
                 </Flex>
@@ -239,10 +241,13 @@ export function TaskDetailsContent({
 
           <Box className="issue-properties">
             <Text size="2" weight="bold">
-              Свойства
+              {t("task.properties")}
             </Text>
             <Separator size="4" />
-            <Property icon={<TaskStatusIndicator color={status?.color} size="md" />} label="Статус">
+            <Property
+              icon={<TaskStatusIndicator color={status?.color} size="md" />}
+              label={t("common.status")}
+            >
               <Select.Root
                 disabled={saving || data === null}
                 value={currentTask.statusId ?? projectStatuses[0]?.id ?? "none"}
@@ -265,7 +270,7 @@ export function TaskDetailsContent({
                 </Select.Content>
               </Select.Root>
             </Property>
-            <Property icon={<UserRound size={15} />} label="Исполнитель">
+            <Property icon={<UserRound size={15} />} label={t("task.assignee")}>
               <Select.Root
                 disabled={saving || data === null}
                 value={currentTask.assigneeUserId ?? "none"}
@@ -278,7 +283,7 @@ export function TaskDetailsContent({
               >
                 <Select.Trigger className="inline-property-select" variant="ghost" />
                 <Select.Content container={portalContainer ?? undefined}>
-                  <Select.Item value="none">Не назначен</Select.Item>
+                  <Select.Item value="none">{t("common.notAssigned")}</Select.Item>
                   {data?.workspace.members.map((member) => (
                     <Select.Item key={member.userId} value={member.userId}>
                       {member.displayName}
@@ -287,7 +292,7 @@ export function TaskDetailsContent({
                 </Select.Content>
               </Select.Root>
             </Property>
-            <Property icon={<CalendarDays size={15} />} label="Срок">
+            <Property icon={<CalendarDays size={15} />} label={t("workspace.dueDate")}>
               {editing === "due-date" ? (
                 <TextField.Root
                   autoFocus
@@ -305,11 +310,11 @@ export function TaskDetailsContent({
                   type="button"
                   onClick={() => setEditing("due-date")}
                 >
-                  {formatDateLabel(currentTask.dueAt)}
+                  {formatDateLabel(currentTask.dueAt, locale, t("task.addDueDate"))}
                 </button>
               )}
             </Property>
-            <Property icon={<Tags size={15} />} label="Labels">
+            <Property icon={<Tags size={15} />} label={t("task.labels")}>
               <Popover.Root
                 open={labelsOpen}
                 onOpenChange={(open) => {
@@ -320,7 +325,7 @@ export function TaskDetailsContent({
                 <Popover.Trigger>
                   <button className="label-autocomplete-trigger" type="button">
                     {selectedLabels.length === 0 ? (
-                      <span>Добавить labels</span>
+                      <span>{t("task.addLabels")}</span>
                     ) : (
                       selectedLabels.map((label) => <Badge key={label}>{label}</Badge>)
                     )}
@@ -335,7 +340,7 @@ export function TaskDetailsContent({
                   <TextField.Root
                     autoFocus
                     disabled={saving}
-                    placeholder="Найти или создать label…"
+                    placeholder={t("task.findOrCreateLabel")}
                     value={labelQuery}
                     onChange={(event) => setLabelQuery(event.target.value)}
                     onKeyDown={(event) => {
@@ -348,7 +353,7 @@ export function TaskDetailsContent({
                     <Flex className="selected-labels" gap="1" wrap="wrap">
                       {selectedLabels.map((label) => (
                         <button
-                          aria-label={`Удалить label ${label}`}
+                          aria-label={t("task.removeLabel", { label })}
                           disabled={saving}
                           key={label}
                           type="button"
@@ -379,29 +384,29 @@ export function TaskDetailsContent({
                     })}
                     {canCreateLabel(labelQuery, workspaceLabels) && (
                       <button disabled={saving} type="button" onClick={() => void createLabel()}>
-                        <span>Создать “{labelQuery.trim()}”</span>
+                        <span>{t("task.createLabel", { name: labelQuery.trim() })}</span>
                         <kbd>Enter</kbd>
                       </button>
                     )}
                     {filteredLabels.length === 0 &&
                       !canCreateLabel(labelQuery, workspaceLabels) && (
                         <Text size="1" color="gray">
-                          Подходящих labels нет
+                          {t("task.noMatchingLabels")}
                         </Text>
                       )}
                   </div>
                 </Popover.Content>
               </Popover.Root>
             </Property>
-            <Property icon={<FolderKanban size={15} />} label="Проект">
+            <Property icon={<FolderKanban size={15} />} label={t("common.project")}>
               <Text size="2" weight="medium">
                 {projectContext?.projectless === true
-                  ? "Без проекта"
-                  : (project?.title ?? "Неизвестный проект")}
+                  ? t("create.noProject")
+                  : (project?.title ?? t("task.unknownProject"))}
               </Text>
             </Property>
             {parentTask !== undefined && data !== null && project !== undefined && (
-              <Property icon={<GitBranch size={15} />} label="Родитель">
+              <Property icon={<GitBranch size={15} />} label={t("task.parent")}>
                 <Link
                   className="issue-property-link"
                   href={workspaceIssueHref(
@@ -416,7 +421,7 @@ export function TaskDetailsContent({
               </Property>
             )}
             {sourceTemplate !== undefined && (
-              <Property icon={<Workflow size={15} />} label="Шаблон">
+              <Property icon={<Workflow size={15} />} label={t("common.template")}>
                 <Text size="2" weight="medium">
                   {sourceTemplate.name}
                 </Text>
@@ -424,12 +429,12 @@ export function TaskDetailsContent({
             )}
             {currentTask.parentTaskId !== null && currentTask.parentTaskId !== undefined && (
               <Badge color="gray" variant="soft">
-                Подзадача
+                {t("task.subtask")}
               </Badge>
             )}
             {saving && (
               <Text size="1" color="gray">
-                Сохраняю…
+                {t("common.saving")}
               </Text>
             )}
             {mutationError !== null && (
@@ -469,17 +474,17 @@ function readTaskLabels(task: TaskSummary): string[] {
     : [];
 }
 
-function collectWorkspaceLabels(data: WorkspaceBootstrap | null): string[] {
+function collectWorkspaceLabels(data: WorkspaceBootstrap | null, locale: "en" | "ru"): string[] {
   if (data === null) return [];
   const labels = data.projectData.flatMap((project) =>
     project.tasks.flatMap((task) => readTaskLabels(task)),
   );
   const uniqueLabels = new Map<string, string>();
   for (const label of labels) {
-    const key = label.toLocaleLowerCase("ru");
+    const key = label.toLocaleLowerCase(locale);
     if (!uniqueLabels.has(key)) uniqueLabels.set(key, label);
   }
-  return [...uniqueLabels.values()].sort((left, right) => left.localeCompare(right, "ru"));
+  return [...uniqueLabels.values()].sort((left, right) => left.localeCompare(right, locale));
 }
 
 function canCreateLabel(query: string, workspaceLabels: string[]): boolean {
@@ -499,10 +504,14 @@ function formatDateInput(value: string | null | undefined): string {
   return value?.slice(0, 10) ?? "";
 }
 
-function formatDateLabel(value: string | null | undefined): string {
+function formatDateLabel(
+  value: string | null | undefined,
+  locale: "en" | "ru",
+  empty: string,
+): string {
   return value === null || value === undefined
-    ? "Добавить срок"
-    : new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "short", year: "numeric" }).format(
+    ? empty
+    : new Intl.DateTimeFormat(locale, { day: "2-digit", month: "short", year: "numeric" }).format(
         new Date(value),
       );
 }
@@ -511,11 +520,11 @@ function blurOnEnter(event: KeyboardEvent<HTMLInputElement>): void {
   if (event.key === "Enter") event.currentTarget.blur();
 }
 
-function readMutationError(value: unknown): string {
+function readMutationError(value: unknown, fallback: string): string {
   return typeof value === "object" &&
     value !== null &&
     "error" in value &&
     typeof value.error === "string"
     ? value.error
-    : "Не удалось сохранить задачу.";
+    : fallback;
 }
