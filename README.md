@@ -28,6 +28,10 @@ packages/ui
 
 ## Local Checks
 
+Use `.env.example` as the complete environment variable reference. App-specific templates live in
+`apps/api`, `apps/web`, `apps/tg-bot`, and `apps/mcp-server`; copy the relevant template into your
+runtime environment when running a service separately.
+
 ```bash
 npm install
 npm run lint
