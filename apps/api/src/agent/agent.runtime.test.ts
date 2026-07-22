@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import type { IntegrationAgentToolDefinition } from "@task/integration-sdk";
 import {
   type AgentRuntimeProgressEvent,
   type AgentRuntimeToolCall,
@@ -94,6 +95,38 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /independent root task/);
   assert.match(JSON.stringify(requestBody.messages), /named list or count of peer items/);
   assert.match(JSON.stringify(requestBody.messages), /new template and project items/);
+});
+
+test("OpenRouterAgentRuntime exposes connected workspace integration tools", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, { choices: [{ message: { content: "Found the brief." } }] }),
+  );
+  const dispatcher = new RecordingAgentToolOperationDispatcher(
+    [],
+    [
+      {
+        description: "Search connected Google Drive files.",
+        inputSchema: {
+          additionalProperties: false,
+          properties: { query: { minLength: 1, type: "string" } },
+          required: ["query"],
+          type: "object",
+        },
+        name: "gdrive_search",
+        readOnly: true,
+      },
+    ],
+  );
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest(request);
+
+  assert.equal(result.status, "completed");
+  assert.deepEqual(dispatcher.listContexts, [request.context]);
+  const body = parseRequestBody(getOnlyCall(fetcher).init.body);
+  assert.ok(isOpenRouterRequestBody(body));
+  assert.match(JSON.stringify(body.tools), /gdrive_search/u);
+  assert.match(JSON.stringify(body.tools), /Search connected Google Drive files/u);
 });
 
 test("OpenRouterAgentRuntime creates a template before a project that uses it", async () => {
@@ -1043,9 +1076,21 @@ class RecordingOpenRouterFetch {
 
 class RecordingAgentToolOperationDispatcher implements AgentToolOperationDispatcher {
   readonly calls: AgentToolOperationCall[] = [];
+  readonly listContexts: Array<{ userId: string; workspaceId: string }> = [];
   private responseIndex = 0;
 
-  constructor(private readonly responses: AgentRuntimeToolCall[]) {}
+  constructor(
+    private readonly responses: AgentRuntimeToolCall[],
+    private readonly toolDefinitions: readonly IntegrationAgentToolDefinition[] = [],
+  ) {}
+
+  async listToolDefinitions(context: {
+    userId: string;
+    workspaceId: string;
+  }): Promise<readonly IntegrationAgentToolDefinition[]> {
+    this.listContexts.push(context);
+    return this.toolDefinitions;
+  }
 
   async dispatchToolCall(call: AgentToolOperationCall): Promise<AgentRuntimeToolCall> {
     this.calls.push(call);

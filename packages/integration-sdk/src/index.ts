@@ -39,7 +39,75 @@ export type IntegrationDomainEventHandler = (
   context: IntegrationDomainEventHandlerContext,
 ) => Promise<void>;
 
+export type IntegrationAgentToolJsonScalar = string | number | boolean | null;
+
+export type IntegrationAgentToolJsonType =
+  | "array"
+  | "boolean"
+  | "integer"
+  | "null"
+  | "number"
+  | "object"
+  | "string";
+
+export type IntegrationAgentToolJsonSchema = {
+  additionalProperties?: boolean;
+  description?: string;
+  enum?: readonly IntegrationAgentToolJsonScalar[];
+  format?: string;
+  items?: IntegrationAgentToolJsonSchema;
+  maxItems?: number;
+  maxLength?: number;
+  maximum?: number;
+  minItems?: number;
+  minLength?: number;
+  minimum?: number;
+  properties?: Readonly<Record<string, IntegrationAgentToolJsonSchema>>;
+  required?: readonly string[];
+  type?: IntegrationAgentToolJsonType | readonly IntegrationAgentToolJsonType[];
+};
+
+export type IntegrationAgentToolInputSchema = IntegrationAgentToolJsonSchema & {
+  additionalProperties: false;
+  properties: Readonly<Record<string, IntegrationAgentToolJsonSchema>>;
+  type: "object";
+};
+
+export type IntegrationAgentToolDefinition = {
+  description: string;
+  inputSchema: IntegrationAgentToolInputSchema;
+  /** Short local name. The runtime prefixes it with the manifest capability namespace. */
+  name: string;
+  /** True only when execution cannot mutate tAsk or the external provider. */
+  readOnly: boolean;
+};
+
+/** Server-owned authorization and installation context. Tool arguments must never override it. */
+export type IntegrationAgentToolExecutionContext = {
+  installationId: string;
+  pluginKey: string;
+  pluginVersion: string;
+  userId: string;
+  workspaceId: string;
+};
+
+export type IntegrationAgentToolCall = {
+  arguments: Readonly<Record<string, unknown>>;
+  /** Provider-local name, without the runtime namespace prefix. */
+  name: string;
+};
+
+/** Workspace plugin boundary used by the agent runtime and the future controlled MCP adapter. */
+export type IntegrationAgentToolProvider = {
+  tools: readonly IntegrationAgentToolDefinition[];
+  execute(
+    call: IntegrationAgentToolCall,
+    context: IntegrationAgentToolExecutionContext,
+  ): Promise<Record<string, unknown>>;
+};
+
 export type IntegrationPluginHandlers = {
+  agentTools?: IntegrationAgentToolProvider;
   handleDomainEvent?: IntegrationDomainEventHandler;
 };
 

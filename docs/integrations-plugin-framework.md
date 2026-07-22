@@ -34,7 +34,7 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 - [x] Add verified webhook receipts, deduplication, and delivery audit.
 - [ ] Add integration health aggregation and operator-facing diagnostics.
 - [x] Add external resources, resource links, references, and renewable subscriptions.
-- [ ] Replace static agent tools with a workspace-aware tool-provider registry.
+- [x] Replace static agent tools with a workspace-aware tool-provider registry.
 - [ ] Add a controlled MCP adapter that preserves permissions, confirmations, and audit.
 
 ### Google Drive plugin
@@ -46,7 +46,7 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 - [x] Export new file attachments to the managed task folder idempotently.
 - [x] Create, renew, and stop Drive change channels.
 - [x] Normalize Drive changes into task activity and subscriber notifications.
-- [ ] Expose read/search agent tools before enabling mutating tools.
+- [x] Expose read/search agent tools before enabling mutating tools.
 
 ### Telegram plugin
 
@@ -91,6 +91,33 @@ resources. This preserves unresolved and removed URLs and lets a scanner reconci
 without deleting unrelated links. Renewable provider watches use `integration_subscriptions` with
 provider cursors, expiry and renewal timestamps, bounded status, and an optional opaque callback
 secret reference. Callback secrets follow the same secret-provider boundary as OAuth credentials.
+
+## Workspace integration agent tools
+
+Plugins declare a local tool provider through `IntegrationPluginHandlers.agentTools` and pair it
+with one `agent_tool_provider` capability. The capability owns a stable namespace, while every tool
+uses a local snake-case name. The runtime qualifies them as `<namespace>_<name>`; the Google Drive
+plugin therefore exposes `gdrive_search` and `gdrive_get`. The registry rejects duplicate or invalid
+names and requires every input to use a closed object JSON schema.
+
+Before each agent run, the backend discovers providers only from connected installations that also
+have a connected external account. The current user must be a non-guest member of the workspace.
+Execution resolves the same provider again and supplies server-owned workspace, user, installation,
+plugin-key, and plugin-version context; model arguments cannot replace that context. The provider
+still validates every argument at runtime and re-enters its normal access service, so token refresh,
+installation state, and connection state are checked at the point of use.
+
+The first Drive tools are intentionally read-only. `gdrive_search` performs a bounded full-text
+`files.list` query and `gdrive_get` returns validated metadata for one stable Drive file ID. Results
+contain names, MIME types, modification times, parent IDs, versions, and web links, but not OAuth
+credentials, private app properties, or file contents. Visibility remains constrained by the
+connected account and the current `drive.file` OAuth scope. Agent runs persist the qualified tool
+name, arguments, result, status, and error through the existing tool-call audit path. Read-only tools
+do not satisfy a user request that requires a mutation.
+
+See [Integration plugin authoring](./integration-plugin-authoring.md) for the contract and provider
+checklist. The controlled MCP adapter is still pending; plugins currently reach the backend agent
+runtime through this provider boundary rather than receiving an independent MCP process.
 
 ## Google Drive root folder selection
 

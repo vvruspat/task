@@ -1,5 +1,6 @@
 import {
   defineIntegrationPlugin,
+  type IntegrationAgentToolProvider,
   type IntegrationDomainEventHandler,
   type IntegrationPluginManifest,
 } from "@task/integration-sdk";
@@ -45,6 +46,10 @@ export const googleDriveIntegrationPlugin = defineIntegrationPlugin(googleDriveI
 
 export function createGoogleDriveIntegrationPlugin(
   handleDomainEvent: IntegrationDomainEventHandler,
+  agentTools?: IntegrationAgentToolProvider,
 ): ReturnType<typeof defineIntegrationPlugin> {
-  return defineIntegrationPlugin(googleDriveIntegrationManifest, { handleDomainEvent });
+  return defineIntegrationPlugin(
+    googleDriveIntegrationManifest,
+    agentTools === undefined ? { handleDomainEvent } : { agentTools, handleDomainEvent },
+  );
 }

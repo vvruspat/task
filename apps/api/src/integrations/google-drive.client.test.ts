@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  escapeGoogleDriveQueryLiteral,
   GoogleDriveApiError,
   GoogleDriveClient,
   googleDriveFolderMimeType,
   parseGeneratedGoogleDriveFileId,
   parseGoogleDriveFile,
+  parseGoogleDriveFileSearchResult,
   parseGoogleDriveFolder,
 } from "./google-drive.client.js";
 
@@ -62,6 +64,64 @@ test("Google Drive file metadata is runtime validated", () => {
     () => parseGoogleDriveFile({ id: "file-id", mimeType: "application/pdf", name: "x" }),
     GoogleDriveApiError,
   );
+});
+
+test("Google Drive search results and query literals are runtime safe", () => {
+  assert.equal(escapeGoogleDriveQueryLiteral("quinn's paper\\essay"), "quinn\\'s paper\\\\essay");
+  assert.deepEqual(
+    parseGoogleDriveFileSearchResult({
+      files: [
+        {
+          id: "file-id",
+          mimeType: "application/pdf",
+          name: "brief.pdf",
+          trashed: false,
+        },
+      ],
+      incompleteSearch: true,
+    }),
+    {
+      files: [
+        {
+          appProperties: {},
+          id: "file-id",
+          mimeType: "application/pdf",
+          modifiedAt: null,
+          name: "brief.pdf",
+          parentId: null,
+          version: null,
+          webViewLink: null,
+        },
+      ],
+      incomplete: true,
+    },
+  );
+  assert.throws(() => parseGoogleDriveFileSearchResult({ files: [{}] }), GoogleDriveApiError);
+});
+
+test("Google Drive file search sends a bounded escaped full-text query", async (context) => {
+  const originalFetch = globalThis.fetch;
+  context.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+  let requestedUrl = "";
+  globalThis.fetch = async (input) => {
+    requestedUrl = input instanceof Request ? input.url : input.toString();
+    return Response.json({ files: [], incompleteSearch: false });
+  };
+
+  await new GoogleDriveClient().searchFiles("access-token", {
+    limit: 12,
+    query: "producer's brief",
+  });
+
+  const url = new URL(requestedUrl);
+  assert.equal(url.searchParams.get("pageSize"), "12");
+  assert.equal(
+    url.searchParams.get("q"),
+    "fullText contains 'producer\\'s brief' and trashed = false",
+  );
+  assert.equal(url.searchParams.get("orderBy"), "modifiedTime desc");
 });
 
 test("Google Drive file upload treats a pre-generated ID conflict as an idempotent retry", async (context) => {

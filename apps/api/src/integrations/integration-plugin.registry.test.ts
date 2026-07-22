@@ -47,6 +47,19 @@ test("integration registry rejects duplicate capability kinds", () => {
   );
 });
 
+test("integration registry rejects duplicate agent tool namespaces", () => {
+  const duplicateNamespace = defineIntegrationPlugin({
+    ...telegramIntegrationPlugin.manifest,
+    capabilities: [{ kind: "agent_tool_provider", namespace: "gdrive" }],
+    pluginKey: "duplicate-namespace",
+  });
+
+  assert.throws(
+    () => new IntegrationPluginRegistry([googleDriveIntegrationPlugin, duplicateNamespace]),
+    /Duplicate integration agent tool namespace gdrive/u,
+  );
+});
+
 test("Google Drive plugin factory binds its domain-event handler", async () => {
   const handled: string[] = [];
   const plugin = createGoogleDriveIntegrationPlugin(async (event) => {
@@ -74,4 +87,93 @@ test("Google Drive plugin factory binds its domain-event handler", async () => {
     },
   );
   assert.deepEqual(handled, ["event-id"]);
+});
+
+test("integration registry validates namespaced agent tool providers", () => {
+  const plugin = defineIntegrationPlugin(
+    {
+      ...googleDriveIntegrationPlugin.manifest,
+      capabilities: [{ kind: "agent_tool_provider", namespace: "gdrive" }],
+    },
+    {
+      agentTools: {
+        tools: [
+          {
+            description: "Find Drive files.",
+            inputSchema: {
+              additionalProperties: false,
+              properties: { query: { minLength: 1, type: "string" } },
+              required: ["query"],
+              type: "object",
+            },
+            name: "search",
+            readOnly: true,
+          },
+        ],
+        async execute(): Promise<Record<string, unknown>> {
+          return {};
+        },
+      },
+    },
+  );
+
+  assert.equal(new IntegrationPluginRegistry([plugin]).get("google-drive"), plugin);
+  const provider = plugin.handlers?.agentTools;
+  const tool = provider?.tools[0];
+  if (provider === undefined || tool === undefined) {
+    throw new Error("Expected the test plugin to expose one agent tool.");
+  }
+  assert.throws(
+    () =>
+      new IntegrationPluginRegistry([
+        defineIntegrationPlugin(
+          {
+            ...plugin.manifest,
+            pluginKey: "invalid-tools",
+          },
+          {
+            agentTools: {
+              ...provider,
+              tools: [
+                {
+                  ...tool,
+                  description: "Invalid tool.",
+                  inputSchema: {
+                    additionalProperties: false,
+                    properties: {},
+                    type: "object",
+                  },
+                  name: "Invalid tool name",
+                  readOnly: true,
+                },
+              ],
+              async execute(): Promise<Record<string, unknown>> {
+                return {};
+              },
+            },
+          },
+        ),
+      ]),
+    /invalid agent tool name/u,
+  );
+  assert.throws(
+    () =>
+      new IntegrationPluginRegistry([
+        defineIntegrationPlugin(
+          { ...plugin.manifest, pluginKey: "invalid-schema" },
+          {
+            agentTools: {
+              ...provider,
+              tools: [
+                {
+                  ...tool,
+                  inputSchema: { ...tool.inputSchema, required: ["missing"] },
+                },
+              ],
+            },
+          },
+        ),
+      ]),
+    /invalid required properties/u,
+  );
 });

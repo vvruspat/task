@@ -1,3 +1,4 @@
+import type { IntegrationAgentToolDefinition } from "@task/integration-sdk";
 import type { AgentRuntimeToolCall, TelegramAgentRuntimeContext } from "./agent.runtime.js";
 
 export type AgentToolOperationCall = {
@@ -26,6 +27,9 @@ export type AgentToolOperationDispatcher = {
     call: AgentToolOperationCall,
     context: TelegramAgentRuntimeContext,
   ): Promise<AgentRuntimeToolCall>;
+  listToolDefinitions?(
+    context: TelegramAgentRuntimeContext,
+  ): Promise<readonly IntegrationAgentToolDefinition[]>;
 };
 
 export class StaticAgentToolOperationDispatcher implements AgentToolOperationDispatcher {

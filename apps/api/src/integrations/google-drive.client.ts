@@ -42,6 +42,16 @@ export type UploadGoogleDriveFileInput = {
   parentId: string;
 };
 
+export type SearchGoogleDriveFilesInput = {
+  limit: number;
+  query: string;
+};
+
+export type GoogleDriveFileSearchResult = {
+  files: readonly GoogleDriveFile[];
+  incomplete: boolean;
+};
+
 export class GoogleDriveApiError extends Error {
   constructor(message: string) {
     super(message);
@@ -203,6 +213,45 @@ export class GoogleDriveClient {
     if (!response.ok) throw new GoogleDriveApiError("Google Drive file is unavailable.");
     return parseGoogleDriveFile(payload);
   }
+
+  async searchFiles(
+    accessToken: string,
+    input: SearchGoogleDriveFilesInput,
+  ): Promise<GoogleDriveFileSearchResult> {
+    const url = new URL(driveFilesEndpoint);
+    url.search = new URLSearchParams({
+      corpora: "user",
+      fields:
+        "files(id,name,mimeType,webViewLink,parents,modifiedTime,version,trashed,appProperties),incompleteSearch",
+      includeItemsFromAllDrives: "true",
+      orderBy: "modifiedTime desc",
+      pageSize: String(input.limit),
+      q: `fullText contains '${escapeGoogleDriveQueryLiteral(input.query)}' and trashed = false`,
+      spaces: "drive",
+      supportsAllDrives: "true",
+    }).toString();
+    const response = await requestDrive(url, {
+      headers: { authorization: `Bearer ${accessToken}` },
+      signal: AbortSignal.timeout(15_000),
+    });
+    const payload: unknown = await response.json().catch(() => null);
+    if (!response.ok) throw new GoogleDriveApiError("Google Drive file search failed.");
+    return parseGoogleDriveFileSearchResult(payload);
+  }
+}
+
+export function parseGoogleDriveFileSearchResult(value: unknown): GoogleDriveFileSearchResult {
+  if (!isRecord(value) || !Array.isArray(value["files"])) {
+    throw new GoogleDriveApiError("Google Drive returned malformed search results.");
+  }
+  return {
+    files: value["files"].map(parseGoogleDriveFile),
+    incomplete: value["incompleteSearch"] === true,
+  };
+}
+
+export function escapeGoogleDriveQueryLiteral(value: string): string {
+  return value.replaceAll("\\", "\\\\").replaceAll("'", "\\'");
 }
 
 export function parseGeneratedGoogleDriveFileId(value: unknown): string {

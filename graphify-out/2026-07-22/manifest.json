@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1784733243.7492068,
-    "ast_hash": "b4622f363dd87bc75cc1a6bd65eb17fa",
+    "mtime": 1784737831.1905954,
+    "ast_hash": "5493b6aa6bfbb0a584b50a22d8df0bd8",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -305,13 +305,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/data-source.test.ts": {
-    "mtime": 1784730391.6930478,
-    "ast_hash": "5237ed7b722812b1af41b8f079c77e69",
+    "mtime": 1784737098.1378248,
+    "ast_hash": "b4dae498defde9f4ec5343cdf87ae5d6",
     "semantic_hash": ""
   },
   "apps/api/src/data-source.ts": {
-    "mtime": 1784730391.6927805,
-    "ast_hash": "cf25c71534d45a93a9391844366c50cd",
+    "mtime": 1784737098.1372917,
+    "ast_hash": "6eadfb882900c31f22414554db034943",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/core-entities.test.ts": {
@@ -320,8 +320,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/index.ts": {
-    "mtime": 1784730435.8042269,
-    "ast_hash": "e3b406c62c68184b67605c5e7a55cd8f",
+    "mtime": 1784737098.1365285,
+    "ast_hash": "6c987c8176ff6f73b230cd9993946872",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/status.entity.ts": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1784733245.2874393,
-    "ast_hash": "dd43851ec76c3467ca5e661ddb99909d",
+    "mtime": 1784737832.2885482,
+    "ast_hash": "e290fdd4e5772ca88bb22162d6de37d2",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
@@ -1635,7 +1635,7 @@
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
-    "mtime": 1784733497.764878,
+    "mtime": 1784738046.5877223,
     "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
@@ -2960,8 +2960,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.module.ts": {
-    "mtime": 1784734777.4123147,
-    "ast_hash": "733957daaf639d87d6228eb2c21bc523",
+    "mtime": 1784737565.6579146,
+    "ast_hash": "82ddb485b08573a5bae4c732ddc722b0",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.test.ts": {
@@ -3050,8 +3050,8 @@
     "semantic_hash": ""
   },
   "docs/integrations-plugin-framework.md": {
-    "mtime": 1784734719.9450667,
-    "ast_hash": "71aee110969e91d9f25cc85585b37283",
+    "mtime": 1784737721.4437697,
+    "ast_hash": "e87f0f478bda4f6f525041a821817b0b",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {
@@ -3140,13 +3140,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.config.test.ts": {
-    "mtime": 1784734528.451452,
-    "ast_hash": "5a938ddbffb9c73dba2744ae1f5f5a2e",
+    "mtime": 1784737071.3870862,
+    "ast_hash": "27887ec3431a207c71410e39adec48a8",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.config.ts": {
-    "mtime": 1784734777.4131534,
-    "ast_hash": "9a7790bd2af049cafa004c952baca0d4",
+    "mtime": 1784737726.848753,
+    "ast_hash": "5dd5f006969628b52e7b8515414159db",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/typeorm-integration-outbox.store.test.ts": {
@@ -3382,6 +3382,126 @@
   "apps/api/src/integrations/typeorm-google-drive-attachment-export.store.ts": {
     "mtime": 1784734777.3925877,
     "ast_hash": "0965a16ff08661acda4f6754cd93d920",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-change.processor.test.ts": {
+    "mtime": 1784737726.8346372,
+    "ast_hash": "42908272e4a38f0f07e7f9872943ec91",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-change.processor.ts": {
+    "mtime": 1784737734.8555748,
+    "ast_hash": "d50ef6ef05c73405a3b8b9e579638399",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-change.store.ts": {
+    "mtime": 1784737521.6503563,
+    "ast_hash": "4ab407e9d07312ab7fb3e4e635bb5285",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-changes.client.test.ts": {
+    "mtime": 1784737153.9846256,
+    "ast_hash": "95c0354b2ddf06c436df780c5c3b6289",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-changes.client.ts": {
+    "mtime": 1784737153.9844074,
+    "ast_hash": "b9de1955262cca2021636d6826283bc8",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-watch.contracts.ts": {
+    "mtime": 1784737883.4472597,
+    "ast_hash": "74e60135d829b0316d9a1ca7e2b5f420",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-watch.service.test.ts": {
+    "mtime": 1784737726.8375225,
+    "ast_hash": "9147736b26ef85efc8168b9ac0140aba",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-watch.service.ts": {
+    "mtime": 1784737912.902283,
+    "ast_hash": "d21f6df14915983ebed66d81032e8d9c",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-watch.worker.ts": {
+    "mtime": 1784737726.8400497,
+    "ast_hash": "18217a28cf1e89bb56fbc205a641c9d7",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-webhook.contracts.test.ts": {
+    "mtime": 1784737467.668885,
+    "ast_hash": "fd92ed3f48162ad4540762b8211f8471",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-webhook.contracts.ts": {
+    "mtime": 1784737726.8420656,
+    "ast_hash": "9fa99391b8d6c4bd4eda34872835aba0",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-webhook.controller.ts": {
+    "mtime": 1784737726.8415415,
+    "ast_hash": "bab281c058fc1ca8707d993eff15f67d",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-webhook.service.test.ts": {
+    "mtime": 1784737726.8428123,
+    "ast_hash": "c239822a8c11d4fcc98d807ed165f32a",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-webhook.service.ts": {
+    "mtime": 1784737788.6241815,
+    "ast_hash": "d01dea7b58f89cfec827de522032bc96",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-webhook.store.ts": {
+    "mtime": 1784737726.8437216,
+    "ast_hash": "5eb4080e5b49197f74c4c1e6eb9bf2d2",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-webhook.contracts.ts": {
+    "mtime": 1784737726.8446522,
+    "ast_hash": "7edeeb91bdaede40a2070aef13feb5cd",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-google-drive-change.store.test.ts": {
+    "mtime": 1784737521.650885,
+    "ast_hash": "fb606a7888eb199384b0a016abb2d5e9",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-google-drive-change.store.ts": {
+    "mtime": 1784737815.4472506,
+    "ast_hash": "759cd53eaf8021badfadbc97be1838ad",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-google-drive-watch.store.test.ts": {
+    "mtime": 1784737251.191612,
+    "ast_hash": "b4fb7c9e06011a335d5c857a4cf19803",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-google-drive-watch.store.ts": {
+    "mtime": 1784737883.4483,
+    "ast_hash": "406c0b36bd3a8eb1aec47d408c1ec77b",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-google-drive-webhook.store.ts": {
+    "mtime": 1784737820.7804327,
+    "ast_hash": "4a284c68b4b63fd8c760ef409333dfb7",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/entities/integration-webhook-receipt.entity.ts": {
+    "mtime": 1784737449.3684678,
+    "ast_hash": "ed5900199371a5aa3fcfb7239c3fdc30",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/migrations/1783298160000-create-integration-webhook-receipts.ts": {
+    "mtime": 1784737449.3690286,
+    "ast_hash": "b4c3860fd52783e5a7ff3eba2ba59a11",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/migrations/create-integration-webhook-receipts.test.ts": {
+    "mtime": 1784737726.8343937,
+    "ast_hash": "09f60ac47302405bc678962e72cd9779",
     "semantic_hash": ""
   }
 }

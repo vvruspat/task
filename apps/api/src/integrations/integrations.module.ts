@@ -10,6 +10,7 @@ import {
 import { DatabaseIntegrationSecretProvider } from "./database-integration-secret.provider.js";
 import { GoogleDriveClient } from "./google-drive.client.js";
 import { GoogleDriveAccessService } from "./google-drive-access.service.js";
+import { GoogleDriveAgentToolProvider } from "./google-drive-agent-tools.js";
 import { GoogleDriveAttachmentExportService } from "./google-drive-attachment-export.service.js";
 import { GoogleDriveChangeProcessor } from "./google-drive-change.processor.js";
 import { GoogleDriveChangesClient } from "./google-drive-changes.client.js";
@@ -26,6 +27,7 @@ import { GoogleDriveWatchService } from "./google-drive-watch.service.js";
 import { GoogleDriveWatchWorker } from "./google-drive-watch.worker.js";
 import { GoogleDriveWebhookController } from "./google-drive-webhook.controller.js";
 import { GoogleDriveWebhookService } from "./google-drive-webhook.service.js";
+import { IntegrationAgentToolsService } from "./integration-agent-tools.service.js";
 import { IntegrationEventDispatcher } from "./integration-event-dispatcher.js";
 import { IntegrationOutboxPublisher } from "./integration-outbox.publisher.js";
 import { IntegrationOutboxWorker } from "./integration-outbox.worker.js";
@@ -45,6 +47,7 @@ import { TypeOrmGoogleDriveAttachmentExportStore } from "./typeorm-google-drive-
 import { TypeOrmGoogleDriveChangeStore } from "./typeorm-google-drive-change.store.js";
 import { TypeOrmGoogleDriveWatchStore } from "./typeorm-google-drive-watch.store.js";
 import { TypeOrmGoogleDriveWebhookStore } from "./typeorm-google-drive-webhook.store.js";
+import { TypeOrmIntegrationAgentToolsStore } from "./typeorm-integration-agent-tools.store.js";
 import { TypeOrmIntegrationOutboxStore } from "./typeorm-integration-outbox.store.js";
 import { TypeOrmWorkspaceIntegrationsStore } from "./typeorm-workspace-integrations.store.js";
 
@@ -62,6 +65,7 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
     googleDriveAttachmentExports: GoogleDriveAttachmentExportService,
     googleDriveReferences: GoogleDriveReferenceService,
     googleDriveWatches: GoogleDriveWatchService,
+    googleDriveAgentTools: GoogleDriveAgentToolProvider,
   ): IntegrationPluginRegistry => {
     const plugins: readonly IntegrationPlugin[] = [
       createGoogleDriveIntegrationPlugin(async (event, context) => {
@@ -69,7 +73,7 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
         await googleDriveAttachmentExports.handleDomainEvent(event, context);
         await googleDriveReferences.handleDomainEvent(event, context);
         await googleDriveWatches.handleDomainEvent(event, context);
-      }),
+      }, googleDriveAgentTools),
       telegramIntegrationPlugin,
     ];
     return new IntegrationPluginRegistry(plugins);
@@ -79,6 +83,7 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
     GoogleDriveAttachmentExportService,
     GoogleDriveReferenceService,
     GoogleDriveWatchService,
+    GoogleDriveAgentToolProvider,
   ],
 };
 
@@ -107,6 +112,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     integrationPluginRegistryProvider,
     integrationsServiceProvider,
     TypeOrmIntegrationOutboxStore,
+    TypeOrmIntegrationAgentToolsStore,
     TypeOrmGoogleDriveAttachmentExportStore,
     TypeOrmGoogleDriveChangeStore,
     TypeOrmGoogleDriveWatchStore,
@@ -115,6 +121,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     attachmentContentProvider,
     DatabaseIntegrationSecretProvider,
     GoogleDriveAccessService,
+    GoogleDriveAgentToolProvider,
     GoogleDriveAttachmentExportService,
     GoogleDriveChangeProcessor,
     GoogleDriveChangesClient,
@@ -128,12 +135,14 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     GoogleDriveWatchWorker,
     GoogleDriveWebhookService,
     IntegrationEventDispatcher,
+    IntegrationAgentToolsService,
     IntegrationOutboxPublisher,
     IntegrationOutboxWorker,
     TelegramConnectService,
   ],
   exports: [
     DatabaseIntegrationSecretProvider,
+    IntegrationAgentToolsService,
     IntegrationEventDispatcher,
     IntegrationOutboxPublisher,
     IntegrationPluginRegistry,

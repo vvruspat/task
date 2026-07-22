@@ -245,7 +245,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1784737831.1905954,
+    "mtime": 1784738091.9570107,
     "ast_hash": "5493b6aa6bfbb0a584b50a22d8df0bd8",
     "semantic_hash": ""
   },
@@ -675,7 +675,7 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1784737832.2885482,
+    "mtime": 1784738093.0435605,
     "ast_hash": "e290fdd4e5772ca88bb22162d6de37d2",
     "semantic_hash": ""
   },
@@ -1145,8 +1145,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.module.ts": {
-    "mtime": 1784572179.6141803,
-    "ast_hash": "f8876439a992e6ee6b95304b437a3714",
+    "mtime": 1784738424.2972164,
+    "ast_hash": "4ae173379314afc787e1c016b53d3bb7",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.service.test.ts": {
@@ -1170,13 +1170,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.ts": {
-    "mtime": 1784572179.6151175,
-    "ast_hash": "b7676ecc6b4449b2dfcc14f66aedec50",
+    "mtime": 1784738466.0740879,
+    "ast_hash": "a3feaa9349a5043748aee4a774ad9fe6",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.test.ts": {
-    "mtime": 1784572179.6145468,
-    "ast_hash": "4ea0d6843c232ec0d6128b5a15acd756",
+    "mtime": 1784738580.6532078,
+    "ast_hash": "d79a82122d4ddda9eb45c186b51ff90c",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296660000-add-agent-run-source-thread-id.ts": {
@@ -1320,8 +1320,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent-tool-dispatcher.ts": {
-    "mtime": 1784533008.7312863,
-    "ast_hash": "83976fa189b5227617a520c9f3c994b4",
+    "mtime": 1784738424.2957175,
+    "ast_hash": "94c97905c97779873f6c7092414eef82",
     "semantic_hash": ""
   },
   "packages/ui/global-types.d.ts": {
@@ -1705,13 +1705,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.test.ts": {
-    "mtime": 1784726079.65937,
-    "ast_hash": "3a07b3b89d684ec4b857d025abf39ebd",
+    "mtime": 1784738670.7068388,
+    "ast_hash": "238b716ce0a846a866fc3ba95f3d79ad",
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.ts": {
-    "mtime": 1784726079.6596885,
-    "ast_hash": "38eb86e14f1551b2892257d07728fee3",
+    "mtime": 1784738635.0245817,
+    "ast_hash": "5fb323f5c0a4ce31ef4b270e6f3297cd",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/saved-view.entity.ts": {
@@ -2935,13 +2935,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-plugin.registry.test.ts": {
-    "mtime": 1784732275.9216187,
-    "ast_hash": "45dff2d16e78a2ceba71c05b120d587b",
+    "mtime": 1784738869.127527,
+    "ast_hash": "69d922ec78ecce6ab53a89ed2640b323",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-plugin.registry.ts": {
-    "mtime": 1784727498.8239598,
-    "ast_hash": "71262c0cf8b17bec9be151c99a0dad6a",
+    "mtime": 1784738875.6262863,
+    "ast_hash": "5f67f81cda6f939d8b7cf7f0a19de675",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.contracts.ts": {
@@ -2960,8 +2960,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.module.ts": {
-    "mtime": 1784737565.6579146,
-    "ast_hash": "82ddb485b08573a5bae4c732ddc722b0",
+    "mtime": 1784738635.0040264,
+    "ast_hash": "d8f73f5806accf47b899195f1e2a091b",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.test.ts": {
@@ -2980,8 +2980,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/plugins/google-drive.integration-plugin.ts": {
-    "mtime": 1784732242.4261456,
-    "ast_hash": "cd78836122ec421f5dff911f833a04d7",
+    "mtime": 1784738351.9534266,
+    "ast_hash": "13929d8c8d3270e509528f6788de00c7",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/plugins/telegram.integration-plugin.ts": {
@@ -3040,8 +3040,8 @@
     "semantic_hash": ""
   },
   "packages/integration-sdk/src/index.ts": {
-    "mtime": 1784729339.306462,
-    "ast_hash": "948d253d01f69ecd98bea3e5e9545b2a",
+    "mtime": 1784738801.691791,
+    "ast_hash": "50dc4baec4ec9ae9995536daf8b13677",
     "semantic_hash": ""
   },
   "packages/integration-sdk/tsconfig.json": {
@@ -3050,8 +3050,8 @@
     "semantic_hash": ""
   },
   "docs/integrations-plugin-framework.md": {
-    "mtime": 1784737721.4437697,
-    "ast_hash": "e87f0f478bda4f6f525041a821817b0b",
+    "mtime": 1784738745.2898245,
+    "ast_hash": "6db2ff75cffcbcb524d3a450d26a44fa",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {
@@ -3255,13 +3255,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive.client.test.ts": {
-    "mtime": 1784734734.9271472,
-    "ast_hash": "7d10baeab6bcdf1f5b8502ba8f4a5905",
+    "mtime": 1784738312.1041257,
+    "ast_hash": "5d3a09fa2fa91275f710683a3b5c0aff",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive.client.ts": {
-    "mtime": 1784734584.5415657,
-    "ast_hash": "74c1b7f9ed181e9e5c018e8daa2bceb0",
+    "mtime": 1784738297.8116276,
+    "ast_hash": "5794774fc1c12d2c3e317e1aefb97a4e",
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/integrations/google-drive/picker-session/route.ts": {
@@ -3502,6 +3502,41 @@
   "apps/api/src/persistence/migrations/create-integration-webhook-receipts.test.ts": {
     "mtime": 1784737726.8343937,
     "ast_hash": "09f60ac47302405bc678962e72cd9779",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-agent-tools.test.ts": {
+    "mtime": 1784738580.650945,
+    "ast_hash": "83d7f264dd923f66b508483e537ddb55",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-agent-tools.ts": {
+    "mtime": 1784738635.007916,
+    "ast_hash": "637a448e2296d87f0bfcd023d05aa4b8",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-agent-tools.service.test.ts": {
+    "mtime": 1784738635.0066364,
+    "ast_hash": "670a7038ef26ce12fabd706acc206536",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-agent-tools.service.ts": {
+    "mtime": 1784738580.6513662,
+    "ast_hash": "63872006c8db0eaeb315f100211c9838",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-agent-tools.store.ts": {
+    "mtime": 1784738397.7608826,
+    "ast_hash": "8a76945e49ad737a96dc96beb9f88b0b",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-integration-agent-tools.store.ts": {
+    "mtime": 1784738397.7612882,
+    "ast_hash": "8365e9a28ec0e39b8c58dd705369421f",
+    "semantic_hash": ""
+  },
+  "docs/integration-plugin-authoring.md": {
+    "mtime": 1784738762.3718731,
+    "ast_hash": "8bbe03e8955c149ae3958fb8bd0e85e7",
     "semantic_hash": ""
   }
 }
