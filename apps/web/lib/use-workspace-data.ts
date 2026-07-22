@@ -31,6 +31,7 @@ import {
   applyWorkspaceTaskUpdate,
   workspaceTaskUpdateRequiresProjectReconciliation,
 } from "./workspace-task-cache";
+import { workspacePageHref } from "./workspace-url";
 
 type WorkspaceDataState = {
   data: WorkspaceBootstrap | null;
@@ -318,6 +319,9 @@ export function useWorkspaceData(): WorkspaceDataState & {
         return;
       }
       const fallbackWorkspaceId = findFallbackWorkspaceId(current, change.workspaceId);
+      const fallbackWorkspace = current.availableWorkspaces.find(
+        (workspace) => workspace.id === fallbackWorkspaceId,
+      );
       workspaceRequestCoordinator.cancel();
       setSelectedWorkspaceId(fallbackWorkspaceId);
       setSelectedProjectId(null);
@@ -330,7 +334,11 @@ export function useWorkspaceData(): WorkspaceDataState & {
       useWorkspaceDataStore
         .getState()
         .setConnectionStatus(fallbackWorkspaceId === null ? "idle" : "connecting");
-      router.replace("/agent");
+      router.replace(
+        fallbackWorkspace === undefined
+          ? "/agent"
+          : workspacePageHref(fallbackWorkspace.slug, "agent"),
+      );
     };
     window.addEventListener(workspaceMembershipRemovedEvent, handleMembershipRemoved);
     return () =>
