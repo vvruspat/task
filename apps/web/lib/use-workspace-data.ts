@@ -2,11 +2,17 @@
 
 import type { TaskSummary, WorkspaceStatus } from "@task/api-client";
 import { produce } from "immer";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo } from "react";
 import { create } from "zustand";
 import { LatestRequestCoordinator } from "./latest-request";
 import { ReconciliationScheduler } from "./reconciliation-scheduler";
+import {
+  type WorkspaceBootstrapRequest,
+  workspaceBootstrapRequestCovers,
+  workspaceBootstrapRequestForRoute,
+  workspaceBootstrapRequestKey,
+} from "./workspace-bootstrap";
 import type {
   ApiFailure,
   WorkspaceBootstrap,
@@ -57,9 +63,11 @@ const workspaceRefreshEvent = "task:workspace-data-refresh";
 const workspaceMembershipRemovedEvent = "task:workspace-membership-removed";
 export const workspaceRealtimeEvent = "task:workspace-realtime-event";
 const workspaceRequestCoordinator = new LatestRequestCoordinator<
-  string | null,
+  string,
   WorkspaceBootstrap | WorkspaceRequired
 >();
+let loadedWorkspaceRequestKey: string | null = null;
+let loadedWorkspaceBootstrapRequest: WorkspaceBootstrapRequest | null = null;
 const realtimeConnections = new Map<string, RealtimeConnection>();
 const pendingRealtimeProjects = new Map<string, string>();
 const projectReconciliationGenerations = new Map<string, number>();
@@ -132,6 +140,8 @@ export function resetWorkspaceData(): void {
   projectReconciliationGenerations.clear();
   taskRequestGenerations.clear();
   workspaceRealtimeRevision = 0;
+  loadedWorkspaceRequestKey = null;
+  loadedWorkspaceBootstrapRequest = null;
   fullRealtimeReconciliationScheduler.cancel();
   projectRealtimeReconciliationScheduler.cancel();
   const store = useWorkspaceDataStore.getState();
@@ -202,11 +212,19 @@ async function readJson(
 
 async function requestWorkspace(
   selector: string | null,
+  bootstrapRequest: WorkspaceBootstrapRequest,
   signal: AbortSignal,
 ): Promise<WorkspaceBootstrap | WorkspaceRequired> {
-  const query = selector === null ? "" : `?workspace=${encodeURIComponent(selector)}`;
+  const parameters = new URLSearchParams({ scope: bootstrapRequest.scope });
+  if (selector !== null) parameters.set("workspace", selector);
+  if (bootstrapRequest.includeProjectTasks) parameters.set("tasks", "1");
+  if (bootstrapRequest.includeTaskSkills) parameters.set("skills", "1");
+  if (bootstrapRequest.projectSelector !== null) {
+    parameters.set("project", bootstrapRequest.projectSelector);
+  }
+  if (bootstrapRequest.viewSelector !== null) parameters.set("view", bootstrapRequest.viewSelector);
   const result = await readJson(
-    await fetch(`/api/workspace${query}`, { cache: "no-store", signal }),
+    await fetch(`/api/workspace?${parameters.toString()}`, { cache: "no-store", signal }),
   );
   if (isApiFailure(result)) throw new Error(result.error);
   return result;
@@ -218,6 +236,7 @@ export function useWorkspaceData(): WorkspaceDataState & {
 } {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const routeWorkspaceSlug = pathname.match(/^\/w\/([^/]+)/)?.[1] ?? null;
   const selectedWorkspaceId = useWorkspaceStore((store) => store.selectedWorkspaceId);
   const setSelectedWorkspaceId = useWorkspaceStore((store) => store.setSelectedWorkspaceId);
@@ -226,6 +245,13 @@ export function useWorkspaceData(): WorkspaceDataState & {
   const error = useWorkspaceDataStore((store) => store.error);
   const loading = useWorkspaceDataStore((store) => store.loading);
   const workspaceSelector = routeWorkspaceSlug ?? selectedWorkspaceId;
+  const queryProject = searchParams.get("project");
+  const queryView = searchParams.get("view");
+  const bootstrapRequest = useMemo(
+    () => workspaceBootstrapRequestForRoute(pathname, { project: queryProject, view: queryView }),
+    [pathname, queryProject, queryView],
+  );
+  const requestKey = workspaceBootstrapRequestKey(workspaceSelector, bootstrapRequest);
 
   const load = useCallback(
     async (force: boolean): Promise<void> => {
@@ -235,14 +261,28 @@ export function useWorkspaceData(): WorkspaceDataState & {
         (workspaceSelector === null ||
           current.data.workspace.id === workspaceSelector ||
           current.data.workspace.slug === workspaceSelector);
-      if (!force && matchesCurrentWorkspace) return;
+      if (!force && matchesCurrentWorkspace) {
+        if (loadedWorkspaceRequestKey === requestKey) return;
+        if (
+          current.data !== null &&
+          workspaceBootstrapRequestCovers(
+            loadedWorkspaceBootstrapRequest,
+            bootstrapRequest,
+            current.data,
+          )
+        ) {
+          loadedWorkspaceRequestKey = requestKey;
+          loadedWorkspaceBootstrapRequest = bootstrapRequest;
+          return;
+        }
+      }
 
       // Existing content remains mounted during background synchronization.
       if (current.data === null) {
         current.replace({ data: null, error: null, loading: true, requiresWorkspace: false });
       }
-      const request = workspaceRequestCoordinator.request(workspaceSelector, (signal) =>
-        requestWorkspace(workspaceSelector, signal),
+      const request = workspaceRequestCoordinator.request(requestKey, (signal) =>
+        requestWorkspace(workspaceSelector, bootstrapRequest, signal),
       );
       const requestRevision = workspaceRealtimeRevision;
       try {
@@ -265,6 +305,8 @@ export function useWorkspaceData(): WorkspaceDataState & {
           return;
         }
         setSelectedWorkspaceId(result.workspace.id);
+        loadedWorkspaceRequestKey = requestKey;
+        loadedWorkspaceBootstrapRequest = bootstrapRequest;
         const latest = useWorkspaceDataStore.getState();
         if (latest.data !== result || latest.error !== null || latest.loading) {
           latest.replace({ data: result, error: null, loading: false, requiresWorkspace: false });
@@ -288,7 +330,7 @@ export function useWorkspaceData(): WorkspaceDataState & {
         });
       }
     },
-    [setSelectedWorkspaceId, workspaceSelector],
+    [bootstrapRequest, requestKey, setSelectedWorkspaceId, workspaceSelector],
   );
 
   const refresh = useCallback(async (): Promise<void> => load(true), [load]);
@@ -424,6 +466,13 @@ function handleWorkspaceRealtimeChange(event: MessageEvent<string>): void {
     updateWorkspaceData((data) => applyWorkspaceMemberRealtimeChange(data, change));
     return;
   }
+  if (
+    change.projectId !== null &&
+    change.taskId !== null &&
+    !activePayloadIncludesProjectTasks(change.workspaceId, change.projectId)
+  ) {
+    return;
+  }
   if (change.mutationKind === "updated" && change.projectId !== null && change.taskId !== null) {
     invalidateProjectReconciliation(change.projectId);
     const taskGeneration = invalidateTaskRequest(change.taskId);
@@ -442,6 +491,15 @@ function handleWorkspaceRealtimeChange(event: MessageEvent<string>): void {
     return;
   }
   scheduleFullWorkspaceReconciliation();
+}
+
+function activePayloadIncludesProjectTasks(workspaceId: string, projectId: string): boolean {
+  const data = useWorkspaceDataStore.getState().data;
+  return (
+    data?.workspace.id === workspaceId &&
+    loadedWorkspaceBootstrapRequest?.includeProjectTasks === true &&
+    data.projectData.some((project) => project.projectId === projectId)
+  );
 }
 
 function updateRealtimeMemberRole(change: WorkspaceRealtimeChange): void {

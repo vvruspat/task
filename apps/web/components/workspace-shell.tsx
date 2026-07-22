@@ -1,6 +1,15 @@
 "use client";
 
-import { Avatar, Badge, Button, DropdownMenu, IconButton } from "@radix-ui/themes";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  DropdownMenu,
+  IconButton,
+  Skeleton,
+  Text,
+} from "@radix-ui/themes";
 import {
   Bell,
   Bot,
@@ -180,7 +189,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
     router.replace("/login");
     router.refresh();
   };
-  if (workspaceState.loading && workspaceData === null) return null;
+  if (workspaceState.loading && workspaceData === null) return <WorkspaceShellSkeleton />;
   if (workspaceState.requiresWorkspace) {
     return <WorkspaceOnboarding refresh={workspaceState.refresh} />;
   }
@@ -460,6 +469,39 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
           }}
         />
       )}
+    </main>
+  );
+}
+
+function WorkspaceShellSkeleton(): ReactNode {
+  const { t } = useI18n();
+  return (
+    <main aria-busy="true" aria-live="polite" className="workspace" role="status">
+      <aside className="sidebar">
+        <div className="brand">
+          <Skeleton height="36px" width="180px" />
+        </div>
+        <nav aria-label={t("nav.breadcrumbs")}>
+          {navigation.map(({ page }) => (
+            <Skeleton height="32px" key={page} width="100%" />
+          ))}
+        </nav>
+        <Skeleton height="40px" width="100%" />
+      </aside>
+      <section className="main">
+        <header className="topbar">
+          <Skeleton height="24px" width="220px" />
+          <Skeleton height="28px" width="96px" />
+        </header>
+        <div className="route-content">
+          <Card className="panel">
+            <Text color="gray">{t("workspace.loading")}</Text>
+            <Skeleton height="28px" width="45%" />
+            <Skeleton height="16px" width="80%" />
+            <Skeleton height="180px" width="100%" />
+          </Card>
+        </div>
+      </section>
     </main>
   );
 }
