@@ -21,6 +21,7 @@ import {
   IntegrationResourceReferenceEntity,
   IntegrationSecretEntity,
   IntegrationSubscriptionEntity,
+  IntegrationWebhookReceiptEntity,
   InviteEntity,
   NotificationReadStateEntity,
   PasswordCredentialEntity,
@@ -74,6 +75,7 @@ import { CreateWorkspaceIntegrationsTable1783297920000 } from "./persistence/mig
 import { CreateIntegrationEventOutbox1783297980000 } from "./persistence/migrations/1783297980000-create-integration-event-outbox.js";
 import { CreateIntegrationConnections1783298040000 } from "./persistence/migrations/1783298040000-create-integration-connections.js";
 import { CreateIntegrationResources1783298100000 } from "./persistence/migrations/1783298100000-create-integration-resources.js";
+import { CreateIntegrationWebhookReceipts1783298160000 } from "./persistence/migrations/1783298160000-create-integration-webhook-receipts.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -108,6 +110,7 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     IntegrationResourceLinkEntity,
     IntegrationResourceReferenceEntity,
     IntegrationSubscriptionEntity,
+    IntegrationWebhookReceiptEntity,
     ProjectEntity,
     SavedViewEntity,
     StatusEntity,
@@ -165,6 +168,7 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     CreateIntegrationEventOutbox1783297980000,
     CreateIntegrationConnections1783298040000,
     CreateIntegrationResources1783298100000,
+    CreateIntegrationWebhookReceipts1783298160000,
   ]);
 });
 

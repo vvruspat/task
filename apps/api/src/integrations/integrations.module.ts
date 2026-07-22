@@ -11,6 +11,8 @@ import { DatabaseIntegrationSecretProvider } from "./database-integration-secret
 import { GoogleDriveClient } from "./google-drive.client.js";
 import { GoogleDriveAccessService } from "./google-drive-access.service.js";
 import { GoogleDriveAttachmentExportService } from "./google-drive-attachment-export.service.js";
+import { GoogleDriveChangeProcessor } from "./google-drive-change.processor.js";
+import { GoogleDriveChangesClient } from "./google-drive-changes.client.js";
 import { GoogleDriveOAuthClient } from "./google-drive-oauth.client.js";
 import {
   GoogleDriveOAuthCallbackController,
@@ -20,6 +22,10 @@ import { GoogleDriveOAuthService } from "./google-drive-oauth.service.js";
 import { GoogleDriveReferenceService } from "./google-drive-reference.service.js";
 import { GoogleDriveRootService } from "./google-drive-root.service.js";
 import { GoogleDriveTaskFolderService } from "./google-drive-task-folder.service.js";
+import { GoogleDriveWatchService } from "./google-drive-watch.service.js";
+import { GoogleDriveWatchWorker } from "./google-drive-watch.worker.js";
+import { GoogleDriveWebhookController } from "./google-drive-webhook.controller.js";
+import { GoogleDriveWebhookService } from "./google-drive-webhook.service.js";
 import { IntegrationEventDispatcher } from "./integration-event-dispatcher.js";
 import { IntegrationOutboxPublisher } from "./integration-outbox.publisher.js";
 import { IntegrationOutboxWorker } from "./integration-outbox.worker.js";
@@ -36,6 +42,9 @@ import {
 } from "./telegram-connect.controller.js";
 import { TelegramConnectService } from "./telegram-connect.service.js";
 import { TypeOrmGoogleDriveAttachmentExportStore } from "./typeorm-google-drive-attachment-export.store.js";
+import { TypeOrmGoogleDriveChangeStore } from "./typeorm-google-drive-change.store.js";
+import { TypeOrmGoogleDriveWatchStore } from "./typeorm-google-drive-watch.store.js";
+import { TypeOrmGoogleDriveWebhookStore } from "./typeorm-google-drive-webhook.store.js";
 import { TypeOrmIntegrationOutboxStore } from "./typeorm-integration-outbox.store.js";
 import { TypeOrmWorkspaceIntegrationsStore } from "./typeorm-workspace-integrations.store.js";
 
@@ -52,12 +61,14 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
     googleDriveTaskFolders: GoogleDriveTaskFolderService,
     googleDriveAttachmentExports: GoogleDriveAttachmentExportService,
     googleDriveReferences: GoogleDriveReferenceService,
+    googleDriveWatches: GoogleDriveWatchService,
   ): IntegrationPluginRegistry => {
     const plugins: readonly IntegrationPlugin[] = [
       createGoogleDriveIntegrationPlugin(async (event, context) => {
         await googleDriveTaskFolders.handleDomainEvent(event, context);
         await googleDriveAttachmentExports.handleDomainEvent(event, context);
         await googleDriveReferences.handleDomainEvent(event, context);
+        await googleDriveWatches.handleDomainEvent(event, context);
       }),
       telegramIntegrationPlugin,
     ];
@@ -67,6 +78,7 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
     GoogleDriveTaskFolderService,
     GoogleDriveAttachmentExportService,
     GoogleDriveReferenceService,
+    GoogleDriveWatchService,
   ],
 };
 
@@ -84,6 +96,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
   controllers: [
     GoogleDriveOAuthCallbackController,
     GoogleDriveOAuthController,
+    GoogleDriveWebhookController,
     IntegrationsController,
     TelegramConnectController,
     TelegramInternalConnectController,
@@ -95,17 +108,25 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     integrationsServiceProvider,
     TypeOrmIntegrationOutboxStore,
     TypeOrmGoogleDriveAttachmentExportStore,
+    TypeOrmGoogleDriveChangeStore,
+    TypeOrmGoogleDriveWatchStore,
+    TypeOrmGoogleDriveWebhookStore,
     IntegrationsConfigProvider,
     attachmentContentProvider,
     DatabaseIntegrationSecretProvider,
     GoogleDriveAccessService,
     GoogleDriveAttachmentExportService,
+    GoogleDriveChangeProcessor,
+    GoogleDriveChangesClient,
     GoogleDriveOAuthClient,
     GoogleDriveOAuthService,
     GoogleDriveReferenceService,
     GoogleDriveClient,
     GoogleDriveRootService,
     GoogleDriveTaskFolderService,
+    GoogleDriveWatchService,
+    GoogleDriveWatchWorker,
+    GoogleDriveWebhookService,
     IntegrationEventDispatcher,
     IntegrationOutboxPublisher,
     IntegrationOutboxWorker,

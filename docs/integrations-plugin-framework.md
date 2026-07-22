@@ -31,7 +31,8 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 - [x] Add the workspace Integrations settings route and installation status cards.
 - [x] Add secret-provider and external-connection contracts.
 - [x] Add transactional domain-event outbox records and a retryable integration worker.
-- [ ] Add verified webhook receipts, deduplication, health, and delivery audit.
+- [x] Add verified webhook receipts, deduplication, and delivery audit.
+- [ ] Add integration health aggregation and operator-facing diagnostics.
 - [x] Add external resources, resource links, references, and renewable subscriptions.
 - [ ] Replace static agent tools with a workspace-aware tool-provider registry.
 - [ ] Add a controlled MCP adapter that preserves permissions, confirmations, and audit.
@@ -43,8 +44,8 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 - [x] Create and retain task/subtask folder mappings using stable Drive IDs.
 - [x] Discover Drive URLs in task descriptions and comments with reference tracking.
 - [x] Export new file attachments to the managed task folder idempotently.
-- [ ] Create, renew, and stop Drive change channels.
-- [ ] Normalize Drive changes into task activity and subscriber notifications.
+- [x] Create, renew, and stop Drive change channels.
+- [x] Normalize Drive changes into task activity and subscriber notifications.
 - [ ] Expose read/search agent tools before enabling mutating tools.
 
 ### Telegram plugin
@@ -150,6 +151,34 @@ Reconciliation locks the source row, reactivates links that reappear, and marks 
 task descriptions without deleting their history. A reference becomes active immediately when its
 Drive ID already exists in the integration resource catalog; otherwise it remains unresolved for a
 later Drive metadata/watch pass.
+
+## Drive change watches and notifications
+
+After a managed root is selected, the plugin gets a durable Drive changes cursor and creates one
+`changes.watch` channel for the connection. The callback token is encrypted through the integration
+secret provider before the remote watch request starts, so the initial `sync` delivery can be
+authenticated even if it arrives before Google returns the channel response. Configure the public
+HTTPS endpoint with `GOOGLE_DRIVE_WEBHOOK_URL`; without it, managed folders and exports continue to
+work but no watch is created.
+
+Channels request a six-day lifetime and renew after 80 percent of the provider-returned lifetime.
+Renewal creates and activates a uniquely identified replacement before stopping the old channel,
+allowing a safe overlap. If replacement activation is still in progress, the old channel stays
+active and renewal is retried. Subscription rows retain the Drive cursor, channel/resource IDs,
+expiration, last event, and bounded error state.
+
+The public webhook validates every required `X-Goog-*` header, compares the encrypted callback
+token in constant time, and verifies the channel resource ID. The token is never written to webhook
+audit data. A unique `(plugin_key, provider_event_id)` receipt plus an atomic `processing` claim
+deduplicates simultaneous and retried deliveries. `sync` and future unknown resource states are
+recorded and ignored safely; `change` deliveries read the Drive changes feed because notification
+headers do not contain file changes themselves.
+
+Each feed page updates the durable cursor only after its linked resources and task activity have
+been persisted. Activity IDs are deterministic, making replay and overlapping channels idempotent.
+Changes to managed folders, exported attachments, and resolved task/comment references update the
+external resource snapshot and emit an actorless task event. The existing notification feed then
+delivers it as `task_changed` to users subscribed to that issue or subissue.
 
 ## Telegram workspace connection
 

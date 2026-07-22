@@ -2960,8 +2960,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.module.ts": {
-    "mtime": 1784733123.3698394,
-    "ast_hash": "c8c19b4a87830840befdd31cc301395c",
+    "mtime": 1784734777.4123147,
+    "ast_hash": "733957daaf639d87d6228eb2c21bc523",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.test.ts": {
@@ -3050,8 +3050,8 @@
     "semantic_hash": ""
   },
   "docs/integrations-plugin-framework.md": {
-    "mtime": 1784733208.3333783,
-    "ast_hash": "4707bf26afd7248260c230de5033ceef",
+    "mtime": 1784734719.9450667,
+    "ast_hash": "71aee110969e91d9f25cc85585b37283",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {
@@ -3140,13 +3140,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.config.test.ts": {
-    "mtime": 1784731677.6280048,
-    "ast_hash": "59424e71e5755064c0a402bf6d039591",
+    "mtime": 1784734528.451452,
+    "ast_hash": "5a938ddbffb9c73dba2744ae1f5f5a2e",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.config.ts": {
-    "mtime": 1784731259.0294235,
-    "ast_hash": "aa6fb42dcbf9822d62e06e0ff569aa39",
+    "mtime": 1784734777.4131534,
+    "ast_hash": "9a7790bd2af049cafa004c952baca0d4",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/typeorm-integration-outbox.store.test.ts": {
@@ -3255,13 +3255,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive.client.test.ts": {
-    "mtime": 1784732289.6155357,
-    "ast_hash": "4cf6eed78aa73a80400d93545759e144",
+    "mtime": 1784734734.9271472,
+    "ast_hash": "7d10baeab6bcdf1f5b8502ba8f4a5905",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive.client.ts": {
-    "mtime": 1784732107.1591313,
-    "ast_hash": "5319f350f951fd0ca3b3bc521f7a24a3",
+    "mtime": 1784734584.5415657,
+    "ast_hash": "74c1b7f9ed181e9e5c018e8daa2bceb0",
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/integrations/google-drive/picker-session/route.ts": {
@@ -3305,8 +3305,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-task-folder.service.ts": {
-    "mtime": 1784732475.2959523,
-    "ast_hash": "95be3036e5ee816575a753bd2ba9a557",
+    "mtime": 1784734621.1446729,
+    "ast_hash": "c329d2a8a61c0e243944c9778e9333f1",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-url.test.ts": {
@@ -3352,6 +3352,36 @@
   "apps/web/app/api/workspace/integrations/telegram/connect-token/route.ts": {
     "mtime": 1784732773.8914928,
     "ast_hash": "996b376f745ad82711cadccbcc1a0a23",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/attachment-content.provider.test.ts": {
+    "mtime": 1784734777.3906846,
+    "ast_hash": "c486ec6e2de0508bb1d6b4351cb1d0cd",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/attachment-content.provider.ts": {
+    "mtime": 1784734556.6347253,
+    "ast_hash": "a8cdd7570fc354440baf0c723c2fd641",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-attachment-export.contracts.ts": {
+    "mtime": 1784734614.865881,
+    "ast_hash": "5af4de8a98a67b52ccca3b16912d534c",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-attachment-export.service.test.ts": {
+    "mtime": 1784734777.4020743,
+    "ast_hash": "4016b2060003250d67499c083193719e",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-attachment-export.service.ts": {
+    "mtime": 1784734784.9099705,
+    "ast_hash": "941a7f09cc6beaffafb3b283aaa28684",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-google-drive-attachment-export.store.ts": {
+    "mtime": 1784734777.3925877,
+    "ast_hash": "0965a16ff08661acda4f6754cd93d920",
     "semantic_hash": ""
   }
 }

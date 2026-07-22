@@ -10,6 +10,7 @@ test("integration secret encryption key is optional until a connection stores cr
     attachmentContent: { maxBytes: 26_214_400, storageRoot: null },
     googleDrive: null,
     googleDrivePicker: null,
+    googleDriveWebhook: null,
     secretEncryptionKey: null,
   });
 });
@@ -20,6 +21,7 @@ test("integration secret encryption key requires exactly 32 canonical base64 byt
     attachmentContent: { maxBytes: 26_214_400, storageRoot: null },
     googleDrive: null,
     googleDrivePicker: null,
+    googleDriveWebhook: null,
     secretEncryptionKey: Buffer.alloc(32, 7),
   });
   assert.throws(
@@ -37,6 +39,7 @@ test("attachment content storage requires a bounded absolute root", () => {
     attachmentContent: { maxBytes: 26_214_400, storageRoot: "/srv/task/files" },
     googleDrive: null,
     googleDrivePicker: null,
+    googleDriveWebhook: null,
     secretEncryptionKey: null,
   });
   assert.throws(
@@ -47,6 +50,25 @@ test("attachment content storage requires a bounded absolute root", () => {
     () => parseIntegrationsConfig({ ATTACHMENT_STORAGE_ROOT: "/" }),
     InvalidIntegrationsEnvironmentError,
   );
+});
+
+test("Google Drive webhook configuration requires a public HTTPS callback URL", () => {
+  assert.deepEqual(
+    parseIntegrationsConfig({
+      GOOGLE_DRIVE_WEBHOOK_URL: "https://task.example.com/api/integrations/webhooks/google-drive",
+    }).googleDriveWebhook,
+    { callbackUrl: "https://task.example.com/api/integrations/webhooks/google-drive" },
+  );
+  for (const callbackUrl of [
+    "http://task.example.com/hooks/drive",
+    "https://user:password@task.example.com/hooks/drive",
+    "https://task.example.com/hooks/drive?secret=value",
+  ]) {
+    assert.throws(
+      () => parseIntegrationsConfig({ GOOGLE_DRIVE_WEBHOOK_URL: callbackUrl }),
+      InvalidIntegrationsEnvironmentError,
+    );
+  }
 });
 
 test("Google Drive Picker configuration requires a project number and developer key", () => {

@@ -465,6 +465,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/integrations/webhooks/google-drive": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Receive a Google Drive change-channel notification */
+    post: operations["GoogleDriveWebhookController_receive"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/integrations": {
     parameters: {
       query?: never;
@@ -3961,6 +3978,52 @@ export interface operations {
       };
       /** @description Google Drive is unavailable. */
       502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GoogleDriveWebhookController_receive: {
+    parameters: {
+      query?: never;
+      header: {
+        "X-Goog-Resource-URI": string;
+        "X-Goog-Resource-State": string;
+        "X-Goog-Resource-ID": string;
+        "X-Goog-Message-Number": string;
+        "X-Goog-Channel-Token": string;
+        "X-Goog-Channel-ID": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The notification was accepted or already processed. */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Required Google Drive headers are malformed. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description The channel, token, or resource does not match. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description The change feed could not be processed. */
+      503: {
         headers: {
           [name: string]: unknown;
         };

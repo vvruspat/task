@@ -1725,6 +1725,77 @@
         "tags": ["integrations"]
       }
     },
+    "/integrations/webhooks/google-drive": {
+      "post": {
+        "operationId": "GoogleDriveWebhookController_receive",
+        "parameters": [
+          {
+            "name": "X-Goog-Resource-URI",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Goog-Resource-State",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Goog-Resource-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Goog-Message-Number",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Goog-Channel-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Goog-Channel-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The notification was accepted or already processed."
+          },
+          "400": {
+            "description": "Required Google Drive headers are malformed."
+          },
+          "403": {
+            "description": "The channel, token, or resource does not match."
+          },
+          "503": {
+            "description": "The change feed could not be processed."
+          }
+        },
+        "summary": "Receive a Google Drive change-channel notification",
+        "tags": ["integrations"]
+      }
+    },
     "/workspaces/{workspaceId}/integrations": {
       "get": {
         "operationId": "IntegrationsController_listCatalog",

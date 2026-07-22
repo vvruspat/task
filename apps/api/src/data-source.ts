@@ -19,6 +19,7 @@ import {
   IntegrationResourceReferenceEntity,
   IntegrationSecretEntity,
   IntegrationSubscriptionEntity,
+  IntegrationWebhookReceiptEntity,
   InviteEntity,
   NotificationReadStateEntity,
   PasswordCredentialEntity,
@@ -72,6 +73,7 @@ import { CreateWorkspaceIntegrationsTable1783297920000 } from "./persistence/mig
 import { CreateIntegrationEventOutbox1783297980000 } from "./persistence/migrations/1783297980000-create-integration-event-outbox.js";
 import { CreateIntegrationConnections1783298040000 } from "./persistence/migrations/1783298040000-create-integration-connections.js";
 import { CreateIntegrationResources1783298100000 } from "./persistence/migrations/1783298100000-create-integration-resources.js";
+import { CreateIntegrationWebhookReceipts1783298160000 } from "./persistence/migrations/1783298160000-create-integration-webhook-receipts.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -89,6 +91,7 @@ const apiEntities = [
   IntegrationResourceLinkEntity,
   IntegrationResourceReferenceEntity,
   IntegrationSubscriptionEntity,
+  IntegrationWebhookReceiptEntity,
   ProjectEntity,
   SavedViewEntity,
   StatusEntity,
@@ -146,6 +149,7 @@ const apiMigrations = [
   CreateIntegrationEventOutbox1783297980000,
   CreateIntegrationConnections1783298040000,
   CreateIntegrationResources1783298100000,
+  CreateIntegrationWebhookReceipts1783298160000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

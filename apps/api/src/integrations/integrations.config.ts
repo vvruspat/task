@@ -10,6 +10,7 @@ export type IntegrationsEnvironment = {
   GOOGLE_DRIVE_PICKER_API_KEY?: string;
   GOOGLE_DRIVE_PICKER_APP_ID?: string;
   GOOGLE_DRIVE_REDIRECT_URI?: string;
+  GOOGLE_DRIVE_WEBHOOK_URL?: string;
   INTEGRATION_SECRET_ENCRYPTION_KEY?: string;
 };
 
@@ -29,10 +30,15 @@ export type GoogleDrivePickerConfig = {
   developerKey: string;
 };
 
+export type GoogleDriveWebhookConfig = {
+  callbackUrl: string;
+};
+
 export type IntegrationsConfig = {
   attachmentContent: AttachmentContentConfig;
   googleDrive: GoogleDriveOAuthConfig | null;
   googleDrivePicker: GoogleDrivePickerConfig | null;
+  googleDriveWebhook: GoogleDriveWebhookConfig | null;
   secretEncryptionKey: Buffer | null;
 };
 
@@ -47,9 +53,16 @@ export function parseIntegrationsConfig(environment: IntegrationsEnvironment): I
   const attachmentContent = parseAttachmentContentConfig(environment);
   const googleDrive = parseGoogleDriveOAuthConfig(environment);
   const googleDrivePicker = parseGoogleDrivePickerConfig(environment);
+  const googleDriveWebhook = parseGoogleDriveWebhookConfig(environment);
   const encodedKey = environment.INTEGRATION_SECRET_ENCRYPTION_KEY;
   if (encodedKey === undefined)
-    return { attachmentContent, googleDrive, googleDrivePicker, secretEncryptionKey: null };
+    return {
+      attachmentContent,
+      googleDrive,
+      googleDrivePicker,
+      googleDriveWebhook,
+      secretEncryptionKey: null,
+    };
   if (encodedKey.trim() !== encodedKey || encodedKey.length === 0) {
     throw new InvalidIntegrationsEnvironmentError(
       "INTEGRATION_SECRET_ENCRYPTION_KEY",
@@ -63,7 +76,13 @@ export function parseIntegrationsConfig(environment: IntegrationsEnvironment): I
       "must be a canonical base64-encoded 32-byte key",
     );
   }
-  return { attachmentContent, googleDrive, googleDrivePicker, secretEncryptionKey: key };
+  return {
+    attachmentContent,
+    googleDrive,
+    googleDrivePicker,
+    googleDriveWebhook,
+    secretEncryptionKey: key,
+  };
 }
 
 function parseAttachmentContentConfig(
@@ -108,6 +127,36 @@ function parseGoogleDrivePickerConfig(
     );
   }
   return { appId, developerKey };
+}
+
+function parseGoogleDriveWebhookConfig(
+  environment: IntegrationsEnvironment,
+): GoogleDriveWebhookConfig | null {
+  const callbackUrl = environment.GOOGLE_DRIVE_WEBHOOK_URL;
+  if (callbackUrl === undefined) return null;
+  assertTrimmedValue("GOOGLE_DRIVE_WEBHOOK_URL", callbackUrl);
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(callbackUrl);
+  } catch {
+    throw new InvalidIntegrationsEnvironmentError(
+      "GOOGLE_DRIVE_WEBHOOK_URL",
+      "must be an absolute HTTPS URL",
+    );
+  }
+  if (
+    parsedUrl.protocol !== "https:" ||
+    parsedUrl.username.length > 0 ||
+    parsedUrl.password.length > 0 ||
+    parsedUrl.search.length > 0 ||
+    parsedUrl.hash.length > 0
+  ) {
+    throw new InvalidIntegrationsEnvironmentError(
+      "GOOGLE_DRIVE_WEBHOOK_URL",
+      "must be an absolute HTTPS URL without credentials, query, or fragment",
+    );
+  }
+  return { callbackUrl: parsedUrl.toString() };
 }
 
 @Injectable()

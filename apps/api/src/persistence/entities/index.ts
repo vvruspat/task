@@ -16,6 +16,7 @@ export { IntegrationResourceLinkEntity } from "./integration-resource-link.entit
 export { IntegrationResourceReferenceEntity } from "./integration-resource-reference.entity.js";
 export { IntegrationSecretEntity } from "./integration-secret.entity.js";
 export { IntegrationSubscriptionEntity } from "./integration-subscription.entity.js";
+export { IntegrationWebhookReceiptEntity } from "./integration-webhook-receipt.entity.js";
 export { InviteEntity } from "./invite.entity.js";
 export { NotificationReadStateEntity } from "./notification-read-state.entity.js";
 export { PasswordCredentialEntity } from "./password-credential.entity.js";
