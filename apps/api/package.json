@@ -6,13 +6,15 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "dev": "npm run build && node --env-file-if-exists=.env --watch dist/main.js",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "node --env-file-if-exists=.env dist/main.js",
     "test": "npm run build && node --test \"dist/**/*.test.js\"",
     "generate:openapi": "npm run build && node dist/generate-openapi.js && biome format --write openapi/openapi.json",
-    "migration:run": "npm run build && node dist/run-migrations.js"
+    "migration:run": "npm run build && node --env-file-if-exists=.env dist/run-migrations.js"
   },
   "dependencies": {
     "@fastify/static": "^8.3.0",

@@ -27,6 +27,7 @@ test("saved view create payload is normalized and de-duplicates display fields",
     name: "  Release board ",
     description: "",
     projectId,
+    visibility: "workspace",
     layout: "board",
     settings,
   });
@@ -34,6 +35,7 @@ test("saved view create payload is normalized and de-duplicates display fields",
     name: "Release board",
     description: null,
     projectId,
+    visibility: "workspace",
     layout: "board",
     settings: {
       ...settings,
@@ -47,6 +49,7 @@ test("saved view create payload accepts a template matrix", () => {
   const templateId = "55555555-5555-4555-8555-555555555555";
   const result = new ParseCreateSavedViewBodyPipe().transform({
     name: "  Songs matrix ",
+    visibility: "private",
     layout: "matrix",
     settings: {
       ...settings,
@@ -55,6 +58,7 @@ test("saved view create payload accepts a template matrix", () => {
   });
 
   assert.equal(result.layout, "matrix");
+  assert.equal(result.visibility, "private");
   assert.deepEqual(result.settings.filters, [
     { field: "template", operator: "is", value: templateId },
   ]);
@@ -64,13 +68,20 @@ test("saved view pipes reject malformed settings and empty updates", () => {
   const createPipe = new ParseCreateSavedViewBodyPipe();
   const updatePipe = new ParseUpdateSavedViewBodyPipe();
   assert.throws(
-    () => createPipe.transform({ name: "Board", layout: "calendar", settings }),
+    () =>
+      createPipe.transform({
+        name: "Board",
+        visibility: "private",
+        layout: "calendar",
+        settings,
+      }),
     BadRequestException,
   );
   assert.throws(
     () =>
       createPipe.transform({
         name: "Board",
+        visibility: "private",
         layout: "board",
         settings: {
           ...settings,
@@ -83,6 +94,7 @@ test("saved view pipes reject malformed settings and empty updates", () => {
     () =>
       createPipe.transform({
         name: "Board",
+        visibility: "private",
         layout: "board",
         settings: { ...settings, grouping: "owner" },
       }),
@@ -92,4 +104,8 @@ test("saved view pipes reject malformed settings and empty updates", () => {
   assert.deepEqual(updatePipe.transform({ projectId: null }), {
     projectId: null,
   });
+  assert.deepEqual(updatePipe.transform({ visibility: "workspace" }), {
+    visibility: "workspace",
+  });
+  assert.throws(() => updatePipe.transform({ visibility: "organization" }), BadRequestException);
 });

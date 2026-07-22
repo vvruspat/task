@@ -14,6 +14,8 @@ import {
   ApiTrustedCurrentUser,
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
+import { PublishWorkspaceMemberChange } from "../realtime/workspace-change.decorator.js";
+import { WorkspaceRoles } from "./workspace-roles.decorator.js";
 import type {
   CreateWorkspaceInput,
   UpdateWorkspaceInput,
@@ -73,6 +75,7 @@ export class WorkspacesController {
   }
 
   @Patch(":workspaceId")
+  @WorkspaceRoles("owner", "admin")
   @ApiOperation({ summary: "Update one workspace" })
   @ApiParam({ format: "uuid", name: "workspaceId" })
   @ApiBody({ type: UpdateWorkspaceDto })
@@ -89,6 +92,7 @@ export class WorkspacesController {
   }
 
   @Delete(":workspaceId")
+  @WorkspaceRoles("owner")
   @ApiOperation({ summary: "Permanently delete a workspace and its data" })
   @ApiParam({ format: "uuid", name: "workspaceId" })
   @ApiOkResponse({ type: WorkspaceSummaryDto })
@@ -114,6 +118,8 @@ export class WorkspacesController {
   }
 
   @Patch(":workspaceId/members/:memberId/role")
+  @WorkspaceRoles("owner", "admin")
+  @PublishWorkspaceMemberChange("member_role_changed")
   @ApiOperation({ summary: "Update one workspace member role" })
   @ApiParam({ format: "uuid", name: "workspaceId" })
   @ApiParam({ format: "uuid", name: "memberId" })
@@ -131,5 +137,24 @@ export class WorkspacesController {
     @Body(new ParseUpdateWorkspaceMemberRoleBodyPipe()) input: UpdateWorkspaceMemberRoleInput,
   ): Promise<WorkspaceMemberDto> {
     return this.workspacesService.updateMemberRole(workspaceId, memberId, userId, input);
+  }
+
+  @Delete(":workspaceId/members/:memberId")
+  @WorkspaceRoles("owner", "admin", "member", "guest")
+  @PublishWorkspaceMemberChange("member_removed")
+  @ApiOperation({ summary: "Remove a workspace member or leave the workspace" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "memberId" })
+  @ApiOkResponse({ type: WorkspaceMemberDto })
+  @ApiForbiddenResponse({
+    description: "Current user cannot remove this member or the owner tried to leave.",
+  })
+  @ApiNotFoundResponse({ description: "Workspace member was not found." })
+  removeMember(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("memberId", uuidV4Pipe) memberId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<WorkspaceMemberDto> {
+    return this.workspacesService.removeMember(workspaceId, memberId, userId);
   }
 }

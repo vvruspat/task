@@ -6,6 +6,7 @@ const draft: SavedViewDraft = {
   name: "Album matrix",
   description: null,
   projectId: null,
+  visibility: "workspace",
   layout: "matrix",
   settings: {
     grouping: "status",

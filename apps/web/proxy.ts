@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { authenticatedUserIdHeader, resolveSession, sessionCookieName } from "./lib/auth";
-
-const publicPaths = new Set(["/login", "/register"]);
+import { isPublicRequest } from "./lib/public-route";
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
   const pathname = request.nextUrl.pathname;
@@ -9,7 +8,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(new URL("/agent", request.url));
   }
   const session = await resolveSession(request);
-  const isPublic = publicPaths.has(pathname) || pathname.startsWith("/api/auth/");
+  const isPublic = isPublicRequest(pathname, request.method);
 
   if (session === null) {
     if (isPublic) return NextResponse.next();
@@ -25,7 +24,9 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     return response;
   }
 
-  if (publicPaths.has(pathname)) return NextResponse.redirect(new URL("/agent", request.url));
+  if (pathname === "/login" || pathname === "/register") {
+    return NextResponse.redirect(new URL("/agent", request.url));
+  }
 
   const headers = new Headers(request.headers);
   headers.delete(authenticatedUserIdHeader);

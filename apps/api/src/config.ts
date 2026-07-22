@@ -1,4 +1,6 @@
 export type ApiEnvironment = {
+  BREVO_API_KEY?: string;
+  BREVO_TEMPLATE_ID?: string;
   DATABASE_URL?: string;
   OPENROUTER_API_KEY?: string;
   OPENROUTER_APP_TITLE?: string;
@@ -8,6 +10,7 @@ export type ApiEnvironment = {
   PORT?: string;
   TELEGRAM_BOT_SHARED_SECRET?: string;
   TELEGRAM_BOT_TOKEN?: string;
+  WEB_APP_URL?: string;
 };
 
 export type ApiDatabaseConfig = {
@@ -17,9 +20,16 @@ export type ApiDatabaseConfig = {
 export type ApiConfig = {
   botAuth: ApiBotAuthConfig | null;
   database: ApiDatabaseConfig | null;
+  email: ApiEmailConfig | null;
   openRouter: ApiOpenRouterConfig | null;
   port: number;
   telegramMiniApp: ApiTelegramMiniAppConfig | null;
+};
+
+export type ApiEmailConfig = {
+  apiKey: string;
+  templateId: number;
+  webAppUrl: string;
 };
 
 export type ApiBotAuthConfig = {
@@ -56,10 +66,75 @@ export function parseApiConfig(environment: ApiEnvironment): ApiConfig {
   return {
     botAuth: parseBotAuthConfig(environment.TELEGRAM_BOT_SHARED_SECRET),
     database: parseDatabaseConfig(environment.DATABASE_URL),
+    email: parseEmailConfig(environment),
     openRouter: parseOpenRouterConfig(environment),
     port: parsePort(environment.PORT),
     telegramMiniApp: parseTelegramMiniAppConfig(environment.TELEGRAM_BOT_TOKEN),
   };
+}
+
+function parseEmailConfig(environment: ApiEnvironment): ApiEmailConfig | null {
+  const apiKey = environment.BREVO_API_KEY;
+  const templateId = environment.BREVO_TEMPLATE_ID;
+  const webAppUrl = environment.WEB_APP_URL;
+
+  if (apiKey === undefined && templateId === undefined && webAppUrl === undefined) {
+    return null;
+  }
+
+  if (apiKey === undefined || !isTrimmedNonEmpty(apiKey)) {
+    throw new InvalidApiEnvironmentError(
+      "BREVO_API_KEY",
+      apiKey ?? "",
+      "must be configured for email invitations",
+    );
+  }
+  if (templateId === undefined || !/^\d+$/u.test(templateId) || Number(templateId) <= 0) {
+    throw new InvalidApiEnvironmentError(
+      "BREVO_TEMPLATE_ID",
+      templateId ?? "",
+      "must be a positive integer for email invitations",
+    );
+  }
+  if (webAppUrl === undefined) {
+    throw new InvalidApiEnvironmentError(
+      "WEB_APP_URL",
+      "",
+      "must be configured for email invitations",
+    );
+  }
+
+  let parsedWebAppUrl: URL;
+  try {
+    parsedWebAppUrl = new URL(webAppUrl);
+  } catch {
+    throw new InvalidApiEnvironmentError("WEB_APP_URL", webAppUrl, "must be an absolute URL");
+  }
+  if (
+    webAppUrl.trim() !== webAppUrl ||
+    (parsedWebAppUrl.protocol !== "https:" &&
+      !(parsedWebAppUrl.protocol === "http:" && isLoopbackHost(parsedWebAppUrl.hostname)))
+  ) {
+    throw new InvalidApiEnvironmentError(
+      "WEB_APP_URL",
+      webAppUrl,
+      "must use HTTPS, or HTTP for a loopback host",
+    );
+  }
+
+  return {
+    apiKey,
+    templateId: Number(templateId),
+    webAppUrl: webAppUrl.replace(/\/$/u, ""),
+  };
+}
+
+function isTrimmedNonEmpty(value: string): boolean {
+  return value.length > 0 && value.trim() === value;
+}
+
+function isLoopbackHost(hostname: string): boolean {
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
 }
 
 export function loadApiConfig(environment: ApiEnvironment = process.env): ApiConfig {
@@ -293,6 +368,7 @@ function parseOptionalOpenRouterSiteUrl(value: string | undefined): string | nul
 
 function formatInvalidValue(variableName: keyof ApiEnvironment, value: string): string {
   if (
+    variableName === "BREVO_API_KEY" ||
     variableName === "DATABASE_URL" ||
     variableName === "OPENROUTER_API_KEY" ||
     variableName === "TELEGRAM_BOT_TOKEN" ||

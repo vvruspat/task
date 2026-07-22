@@ -48,13 +48,19 @@ body {
   gap: 4px;
 }
 .brand-home {
+  width: 100%;
   min-width: 0;
   flex: 1;
+  padding: 0;
   display: flex;
   gap: 12px;
   align-items: center;
+  border: 0;
+  background: transparent;
   color: inherit;
+  cursor: pointer;
   text-decoration: none;
+  text-align: left;
 }
 .status-color-input {
   width: 34px;
@@ -101,6 +107,16 @@ body {
 .brand-mark {
   width: 32px;
   height: 32px;
+  flex: 0 0 32px;
+}
+.brand-copy {
+  min-width: 0;
+  flex: 1;
+}
+.brand-copy strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .brand strong,
 .profile strong {
@@ -193,9 +209,35 @@ nav {
 }
 .profile {
   margin-top: auto;
+  width: 100%;
+  height: auto;
+  min-height: 52px;
+  padding: 8px;
   display: flex;
   gap: 12px;
   align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+}
+.profile.rt-Button {
+  background: transparent;
+}
+.profile > .rt-Avatar {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+}
+.profile-copy {
+  min-width: 0;
+  flex: 1;
+}
+.profile strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile > svg:last-child {
+  flex: 0 0 auto;
 }
 .sidebar-compact .sidebar {
   padding: 16px 12px;
@@ -207,13 +249,13 @@ nav {
 .sidebar-compact .brand-home {
   flex: 0 0 auto;
 }
-.sidebar-compact .brand-home > span:not(.brand-mark),
+.sidebar-compact .brand-copy,
 .sidebar-compact .brand > .rt-IconButton,
 .sidebar-compact .nav-item > span,
 .sidebar-compact .nav-parent > a > span,
 .sidebar-compact .nav-parent > .rt-IconButton,
 .sidebar-compact .nav-subitem,
-.sidebar-compact .profile > span {
+.sidebar-compact .profile-copy {
   display: none;
 }
 .sidebar-compact .sidebar nav {

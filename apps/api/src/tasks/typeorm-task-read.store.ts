@@ -18,6 +18,7 @@ import {
 import { selectDefaultTaskStatusId } from "./default-task-status.js";
 import type { ParsedIssueIdentifier } from "./issue-identifier.js";
 import { reserveProjectTaskNumbers } from "./project-task-number.js";
+import { taskAssignmentActivityPayload } from "./task-assignment-notification.js";
 import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
@@ -247,6 +248,7 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
         archivedAt: IsNull(),
       });
       if (tasks.length !== input.taskIds.length) return { status: "invalid_task" };
+      const previousAssigneeByTaskId = new Map(tasks.map((task) => [task.id, task.assigneeUserId]));
       for (const task of tasks) {
         if (normalizedStatusId !== undefined) task.statusId = normalizedStatusId;
         if (input.assigneeUserId !== undefined) task.assigneeUserId = input.assigneeUserId;
@@ -266,7 +268,16 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
           eventType: "task.bulk_updated",
           entityType: "task",
           entityId: task.id,
-          payload: { projectId, fields: getBulkUpdatedTaskFields(input) },
+          payload: {
+            projectId,
+            fields: getBulkUpdatedTaskFields(input),
+            ...(input.assigneeUserId === undefined
+              ? {}
+              : taskAssignmentActivityPayload(
+                  previousAssigneeByTaskId.get(task.id) ?? null,
+                  input.assigneeUserId,
+                )),
+          },
         }),
       );
       await manager.getRepository(ActivityEventEntity).save(events);
@@ -400,6 +411,7 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
           entityType: "task",
           entityId: createdTask.id,
           payload: {
+            ...taskAssignmentActivityPayload(null, createdTask.assigneeUserId),
             projectId,
             title: createdTask.title,
           },
@@ -757,6 +769,7 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     }
 
     const savedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
+      const previousAssigneeUserId = task.assigneeUserId;
       task.assigneeUserId = input.assigneeUserId;
 
       const updatedTask = await manager.getRepository(TaskEntity).save(task);
@@ -767,7 +780,7 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
         entityType: "task",
         entityId: updatedTask.id,
         payload: {
-          assigneeUserId: input.assigneeUserId,
+          ...taskAssignmentActivityPayload(previousAssigneeUserId, input.assigneeUserId),
           projectId,
         },
       });

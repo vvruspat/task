@@ -45,6 +45,23 @@ When API DTOs change, regenerate and check the OpenAPI/API client contract:
 npm run check:generated
 ```
 
+## Email Invitations
+
+Workspace owners and admins can invite people from the workspace settings screen. Configure the
+API with `BREVO_API_KEY`, `BREVO_TEMPLATE_ID`, and the public `WEB_APP_URL`; see
+`apps/api/.env.example`. The active Brevo template must define its sender and subject and use the
+`username`, `workspace_name`, and `link` parameters. The recipient must accept the one-time link
+while the current application user has the invited email address.
+
+The Brevo Developer CLI manages OAuth applications, while this server-to-server delivery path uses
+a Brevo API key as recommended for direct integrations. You can verify the active CLI account and
+the current OAuth scope catalog without exposing credentials:
+
+```bash
+brevo whoami --json
+brevo app available-scopes --json
+```
+
 ## Project State
 
 `graphify-out/` is committed project state. After code or docs changes, update it before committing:

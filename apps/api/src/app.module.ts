@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { APP_GUARD } from "@nestjs/core";
 import { ActivityModule } from "./activity/activity.module.js";
 import { AgentModule } from "./agent/agent.module.js";
 import { AppController } from "./app.controller.js";
@@ -8,6 +9,7 @@ import { AuthModule } from "./auth/auth.module.js";
 import { CommentsModule } from "./comments/comments.module.js";
 import { ConfirmationsModule } from "./confirmations/confirmations.module.js";
 import { DashboardModule } from "./dashboard/dashboard.module.js";
+import { InvitationsModule } from "./invitations/invitations.module.js";
 import { NotificationsModule } from "./notifications/notifications.module.js";
 import { ProjectMatrixModule } from "./project-matrix/project-matrix.module.js";
 import { ProjectsModule } from "./projects/projects.module.js";
@@ -18,6 +20,7 @@ import { TaskSkillsModule } from "./task-skills/task-skills.module.js";
 import { TasksModule } from "./tasks/tasks.module.js";
 import { TelegramModule } from "./telegram/telegram.module.js";
 import { ViewsModule } from "./views/views.module.js";
+import { WorkspaceRolesGuard } from "./workspaces/workspace-roles.guard.js";
 import { WorkspacesModule } from "./workspaces/workspaces.module.js";
 
 @Module({
@@ -30,6 +33,7 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
     SearchModule,
     ProjectMatrixModule,
     NotificationsModule,
+    InvitationsModule,
     RealtimeModule,
     TasksModule,
     TaskSkillsModule,
@@ -42,6 +46,6 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
     ViewsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: WorkspaceRolesGuard }],
 })
 export class AppModule {}

@@ -4,6 +4,7 @@ import { selectAvailableWorkspaceScopedSlug } from "../common/workspace-slug.js"
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
+  TaskEntity,
   UserEntity,
   WorkspaceEntity,
   WorkspaceMemberEntity,
@@ -20,6 +21,7 @@ import type {
   WorkspaceDeleteResult,
   WorkspaceManagementStore,
   WorkspaceMemberManagementStore,
+  WorkspaceMemberRemovalResult,
   WorkspaceMemberRoleUpdateResult,
   WorkspaceReadStore,
 } from "./workspaces.store.js";
@@ -95,6 +97,18 @@ export class TypeOrmWorkspaceReadStore
 
       return [toWorkspaceSummary(workspace)];
     });
+  }
+
+  async getRoleForUser(
+    workspaceId: string,
+    userId: string,
+  ): Promise<WorkspaceMember["role"] | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await dataSource.getRepository(WorkspaceMemberEntity).findOneBy({
+      workspaceId,
+      userId,
+    });
+    return membership?.role ?? null;
   }
 
   async deleteWorkspace(workspaceId: string, userId: string): Promise<WorkspaceDeleteResult> {
@@ -195,10 +209,7 @@ export class TypeOrmWorkspaceReadStore
       return { status: "member_not_found" };
     }
 
-    if (
-      member.role === "owner" ||
-      (actor.role === "admin" && (member.role === "admin" || input.role === "admin"))
-    ) {
+    if (member.role === "owner") {
       return { status: "forbidden" };
     }
 
@@ -215,6 +226,37 @@ export class TypeOrmWorkspaceReadStore
     }
 
     return { member: toWorkspaceMember(updatedMember, user), status: "updated" };
+  }
+
+  async removeMember(
+    workspaceId: string,
+    memberId: string,
+    userId: string,
+  ): Promise<WorkspaceMemberRemovalResult> {
+    const dataSource = await this.getInitializedDataSource();
+    return dataSource.transaction(async (manager): Promise<WorkspaceMemberRemovalResult> => {
+      const memberRepository = manager.getRepository(WorkspaceMemberEntity);
+      const actor = await memberRepository.findOneBy({ workspaceId, userId });
+      if (actor === null) return { status: "forbidden" };
+
+      const member = await memberRepository.findOneBy({ id: memberId, workspaceId });
+      if (member === null) return { status: "member_not_found" };
+      if (member.role === "owner") return { status: "forbidden" };
+
+      const removingSelf = actor.id === member.id;
+      const canRemoveOther = memberRoleManagers.has(actor.role);
+      if (!removingSelf && !canRemoveOther) return { status: "forbidden" };
+
+      const user = await manager.getRepository(UserEntity).findOneBy({ id: member.userId });
+      if (user === null) return { status: "member_not_found" };
+
+      const removedMember = toWorkspaceMember(member, user);
+      await manager
+        .getRepository(TaskEntity)
+        .update({ assigneeUserId: member.userId, workspaceId }, { assigneeUserId: null });
+      await memberRepository.remove(member);
+      return { member: removedMember, status: "removed" };
+    });
   }
 
   private async findWorkspaceForMember(

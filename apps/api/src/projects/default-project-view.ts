@@ -8,6 +8,7 @@ export function buildDefaultProjectView(
     name: projectTitle,
     description: null,
     projectId,
+    visibility: "private",
     layout: "board",
     settings: {
       grouping: "status",

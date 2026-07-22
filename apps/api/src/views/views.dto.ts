@@ -11,6 +11,7 @@ import type {
   SavedViewLayout,
   SavedViewOrdering,
   SavedViewSettings,
+  SavedViewVisibility,
   UpdateSavedViewInput,
 } from "./views.contracts.js";
 import {
@@ -20,6 +21,7 @@ import {
   savedViewGroupings,
   savedViewLayouts,
   savedViewOrderings,
+  savedViewVisibilities,
 } from "./views.contracts.js";
 
 const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -89,6 +91,9 @@ export class CreateSavedViewDto implements CreateSavedViewInput {
   @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
   readonly projectId?: string | null;
 
+  @ApiProperty({ enum: savedViewVisibilities })
+  readonly visibility: SavedViewVisibility = "private";
+
   @ApiProperty({ enum: savedViewLayouts })
   readonly layout: SavedViewLayout = "list";
 
@@ -105,6 +110,9 @@ export class UpdateSavedViewDto implements UpdateSavedViewInput {
 
   @ApiPropertyOptional({ format: "uuid", nullable: true, type: String })
   readonly projectId?: string | null;
+
+  @ApiPropertyOptional({ enum: savedViewVisibilities })
+  readonly visibility?: SavedViewVisibility;
 
   @ApiPropertyOptional({ enum: savedViewLayouts })
   readonly layout?: SavedViewLayout;
@@ -128,6 +136,10 @@ export class SavedViewDto implements SavedView {
   readonly name: string;
   @ApiPropertyOptional({ nullable: true, type: String })
   readonly description: string | null;
+  @ApiProperty({ enum: savedViewVisibilities })
+  readonly visibility: SavedViewVisibility;
+  @ApiProperty()
+  readonly system: boolean;
   @ApiProperty({ enum: savedViewLayouts })
   readonly layout: SavedViewLayout;
   @ApiProperty({ type: SavedViewSettingsDto })
@@ -145,6 +157,8 @@ export class SavedViewDto implements SavedView {
     this.projectId = view.projectId;
     this.name = view.name;
     this.description = view.description;
+    this.visibility = view.visibility;
+    this.system = view.system;
     this.layout = view.layout;
     this.settings = new SavedViewSettingsDto(view.settings);
     this.createdAt = view.createdAt;
@@ -159,6 +173,7 @@ export class ParseCreateSavedViewBodyPipe implements PipeTransform<unknown, Crea
       name: readName(record["name"]),
       description: readNullableText(record["description"]),
       projectId: readNullableUuid(record["projectId"]),
+      visibility: readEnum(record["visibility"], savedViewVisibilities, "visibility"),
       layout: readEnum(record["layout"], savedViewLayouts, "layout"),
       settings: parseSettings(record["settings"]),
     };
@@ -173,6 +188,8 @@ export class ParseUpdateSavedViewBodyPipe implements PipeTransform<unknown, Upda
     if (record["description"] !== undefined)
       input.description = readNullableText(record["description"]);
     if (record["projectId"] !== undefined) input.projectId = readNullableUuid(record["projectId"]);
+    if (record["visibility"] !== undefined)
+      input.visibility = readEnum(record["visibility"], savedViewVisibilities, "visibility");
     if (record["layout"] !== undefined)
       input.layout = readEnum(record["layout"], savedViewLayouts, "layout");
     if (record["settings"] !== undefined) input.settings = parseSettings(record["settings"]);

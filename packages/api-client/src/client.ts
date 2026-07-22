@@ -54,6 +54,9 @@ export type VerifyTelegramMiniAppInitDataInput =
   components["schemas"]["VerifyTelegramMiniAppInitDataDto"];
 export type LinkedTelegramIdentity = components["schemas"]["LinkedTelegramIdentityDto"];
 export type TelegramIdentityLinkStatus = components["schemas"]["TelegramIdentityLinkStatusDto"];
+export type WorkspaceInvitation = components["schemas"]["WorkspaceInvitationDto"];
+export type InvitationPreview = components["schemas"]["InvitationPreviewDto"];
+export type AcceptInvitationResult = components["schemas"]["AcceptInvitationResultDto"];
 
 type CreateProjectOperation = operations["ProjectsController_createProject"];
 type ArchiveProjectOperation = operations["ProjectsController_archiveProject"];
@@ -87,7 +90,9 @@ type ReorderWorkspaceStatusesOperation = operations["StatusesController_reorderS
 type CreateWorkspaceOperation = operations["WorkspacesController_createWorkspace"];
 type DeleteWorkspaceOperation = operations["WorkspacesController_deleteWorkspace"];
 type UpdateWorkspaceMemberRoleOperation = operations["WorkspacesController_updateMemberRole"];
+type RemoveWorkspaceMemberOperation = operations["WorkspacesController_removeMember"];
 type UpdateWorkspaceOperation = operations["WorkspacesController_updateWorkspace"];
+type CreateWorkspaceInvitationOperation = operations["WorkspaceInvitationsController_create"];
 type CreateSavedViewOperation = operations["ViewsController_create"];
 type UpdateSavedViewOperation = operations["ViewsController_update"];
 type ListAgentChatsOperation = operations["AgentChatsController_list"];
@@ -157,8 +162,12 @@ export type DeleteWorkspaceResponse =
   DeleteWorkspaceOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateWorkspaceMemberRoleResponse =
   UpdateWorkspaceMemberRoleOperation["responses"]["200"]["content"]["application/json"];
+export type RemoveWorkspaceMemberResponse =
+  RemoveWorkspaceMemberOperation["responses"]["200"]["content"]["application/json"];
 export type UpdateWorkspaceResponse =
   UpdateWorkspaceOperation["responses"]["200"]["content"]["application/json"];
+export type CreateWorkspaceInvitationInput =
+  CreateWorkspaceInvitationOperation["requestBody"]["content"]["application/json"];
 export type CreateSavedViewInput =
   CreateSavedViewOperation["requestBody"]["content"]["application/json"];
 export type UpdateSavedViewInput =
@@ -321,8 +330,14 @@ export type UpdateWorkspaceMemberRoleRequestInput = WorkspaceScopedInput & {
   memberId: string;
   body: UpdateWorkspaceMemberRoleInput;
 };
+export type WorkspaceMemberScopedInput = WorkspaceScopedInput & { memberId: string };
 export type CreateWorkspaceRequestInput = { body: CreateWorkspaceInput };
 export type UpdateWorkspaceRequestInput = WorkspaceScopedInput & { body: UpdateWorkspaceInput };
+export type CreateWorkspaceInvitationRequestInput = WorkspaceScopedInput & {
+  body: CreateWorkspaceInvitationInput;
+};
+export type WorkspaceInvitationScopedInput = WorkspaceScopedInput & { invitationId: string };
+export type InvitationTokenInput = { token: string };
 export type SavedViewScopedInput = WorkspaceScopedInput & { viewId: string };
 export type CreateSavedViewRequestInput = WorkspaceScopedInput & { body: CreateSavedViewInput };
 export type UpdateSavedViewRequestInput = SavedViewScopedInput & { body: UpdateSavedViewInput };
@@ -344,6 +359,9 @@ export type TaskApiClient = {
   createWorkspaceStatus(
     input: CreateWorkspaceStatusRequestInput,
   ): Promise<CreateWorkspaceStatusResponse>;
+  createWorkspaceInvitation(
+    input: CreateWorkspaceInvitationRequestInput,
+  ): Promise<WorkspaceInvitation>;
   createSavedView(input: CreateSavedViewRequestInput): Promise<SavedView>;
   cloneTaskSkill(input: CloneTaskSkillRequestInput): Promise<CloneTaskSkillResponse>;
   getHealth(): Promise<HealthResponse>;
@@ -353,6 +371,7 @@ export type TaskApiClient = {
   getDashboardOverview(input: WorkspaceScopedInput): Promise<DashboardOverview>;
   getTelegramIdentityLinkStatus(): Promise<TelegramIdentityLinkStatus>;
   getWorkspace(input: WorkspaceScopedInput): Promise<WorkspaceDetail>;
+  getInvitationPreview(input: InvitationTokenInput): Promise<InvitationPreview>;
   getProjectMatrix(input: GetProjectMatrixRequestInput): Promise<ProjectMatrix>;
   listPendingConfirmationRequests(
     input: WorkspaceScopedInput,
@@ -384,11 +403,15 @@ export type TaskApiClient = {
   listSavedViews(input: WorkspaceScopedInput): Promise<SavedView[]>;
   listStatuses(input: ProjectScopedInput): Promise<WorkspaceStatus[]>;
   listWorkspaceMembers(input: WorkspaceScopedInput): Promise<WorkspaceMember[]>;
+  listWorkspaceInvitations(input: WorkspaceScopedInput): Promise<WorkspaceInvitation[]>;
+  removeWorkspaceMember(input: WorkspaceMemberScopedInput): Promise<RemoveWorkspaceMemberResponse>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
   listWorkspaces(): Promise<WorkspaceSummary[]>;
   createWorkspace(input: CreateWorkspaceRequestInput): Promise<CreateWorkspaceResponse>;
   deleteWorkspace(input: WorkspaceScopedInput): Promise<DeleteWorkspaceResponse>;
+  acceptInvitation(input: InvitationTokenInput): Promise<AcceptInvitationResult>;
+  revokeWorkspaceInvitation(input: WorkspaceInvitationScopedInput): Promise<WorkspaceInvitation>;
   deleteWorkspaceStatus(input: WorkspaceStatusScopedInput): Promise<WorkspaceStatus>;
   reorderWorkspaceStatuses(
     input: ReorderWorkspaceStatusesRequestInput,
@@ -672,6 +695,26 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         requiresTrustedUserId: false,
         trustedUserId: null,
       }),
+    getInvitationPreview: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/invitations/${encodePathSegment(input.token)}`,
+        invitationPreviewParser,
+        { method: "GET", requiresTrustedUserId: false, trustedUserId: null },
+      ),
+    acceptInvitation: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/invitations/${encodePathSegment(input.token)}/accept`,
+        acceptInvitationResultParser,
+        {
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     getDashboardOverview: (input) =>
       request(
         options.fetch,
@@ -944,6 +987,39 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         workspaceMemberArrayParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
+    listWorkspaceInvitations: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/invitations`,
+        workspaceInvitationArrayParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    createWorkspaceInvitation: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/invitations`,
+        workspaceInvitationParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    revokeWorkspaceInvitation: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/invitations/${encodePathSegment(input.invitationId)}`,
+        workspaceInvitationParser,
+        {
+          method: "DELETE",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     updateWorkspaceMemberRole: (input) =>
       request(
         options.fetch,
@@ -953,6 +1029,18 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         {
           body: input.body,
           method: "PATCH",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    removeWorkspaceMember: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/members/${encodePathSegment(input.memberId)}`,
+        workspaceMemberParser,
+        {
+          method: "DELETE",
           requiresTrustedUserId: true,
           trustedUserId: options.trustedUserId,
         },
@@ -1256,6 +1344,22 @@ const workspaceMemberParser: ResponseParser<WorkspaceMember> = {
   isValid: isWorkspaceMember,
   label: "workspace member",
 };
+const workspaceInvitationParser: ResponseParser<WorkspaceInvitation> = {
+  isValid: isWorkspaceInvitation,
+  label: "workspace invitation",
+};
+const workspaceInvitationArrayParser: ResponseParser<WorkspaceInvitation[]> = {
+  isValid: (value): value is WorkspaceInvitation[] => isArrayOf(value, isWorkspaceInvitation),
+  label: "workspace invitation list",
+};
+const invitationPreviewParser: ResponseParser<InvitationPreview> = {
+  isValid: isInvitationPreview,
+  label: "invitation preview",
+};
+const acceptInvitationResultParser: ResponseParser<AcceptInvitationResult> = {
+  isValid: isAcceptInvitationResult,
+  label: "accepted invitation",
+};
 const workspaceStatusParser: ResponseParser<WorkspaceStatus> = {
   isValid: isWorkspaceStatus,
   label: "workspace status",
@@ -1432,7 +1536,7 @@ function isNotificationItem(value: unknown): value is NotificationFeed["items"][
   return (
     isJsonObject(value) &&
     hasString(value, "id") &&
-    (kind === "mention" || kind === "task_changed") &&
+    (kind === "mention" || kind === "task_assigned" || kind === "task_changed") &&
     hasString(value, "workspaceId") &&
     hasString(value, "taskId") &&
     hasString(value, "projectId") &&
@@ -1573,6 +1677,9 @@ function isSavedView(value: unknown): value is SavedView {
     hasNullableString(value, "projectId") &&
     hasString(value, "name") &&
     hasNullableString(value, "description") &&
+    (readProperty(value, "visibility") === "private" ||
+      readProperty(value, "visibility") === "workspace") &&
+    typeof readProperty(value, "system") === "boolean" &&
     (readProperty(value, "layout") === "list" ||
       readProperty(value, "layout") === "board" ||
       readProperty(value, "layout") === "matrix") &&
@@ -2024,6 +2131,51 @@ function isWorkspaceMember(value: unknown): value is WorkspaceMember {
     hasOptionalNullableString(value, "avatarUrl") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")
+  );
+}
+
+function isWorkspaceInvitation(value: unknown): value is WorkspaceInvitation {
+  const role = isJsonObject(value) ? readProperty(value, "role") : undefined;
+  const status = isJsonObject(value) ? readProperty(value, "status") : undefined;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "email") &&
+    isInvitationRole(role) &&
+    isInvitationStatus(status) &&
+    hasString(value, "expiresAt") &&
+    hasString(value, "createdAt")
+  );
+}
+
+function isInvitationPreview(value: unknown): value is InvitationPreview {
+  const role = isJsonObject(value) ? readProperty(value, "role") : undefined;
+  const status = isJsonObject(value) ? readProperty(value, "status") : undefined;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "workspaceName") &&
+    hasString(value, "email") &&
+    isInvitationRole(role) &&
+    isInvitationStatus(status) &&
+    hasString(value, "expiresAt")
+  );
+}
+
+function isInvitationRole(value: unknown): value is WorkspaceInvitation["role"] {
+  return value === "admin" || value === "member" || value === "guest";
+}
+
+function isInvitationStatus(value: unknown): value is WorkspaceInvitation["status"] {
+  return value === "pending" || value === "expired" || value === "used" || value === "revoked";
+}
+
+function isAcceptInvitationResult(value: unknown): value is AcceptInvitationResult {
+  return (
+    isJsonObject(value) &&
+    isWorkspaceSummary(readProperty(value, "workspace")) &&
+    isWorkspaceMember(readProperty(value, "member"))
   );
 }
 

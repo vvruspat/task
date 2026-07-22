@@ -241,10 +241,12 @@ export type InviteRecord = {
   id: string;
   workspaceId: string;
   invitedUserId: string | null;
+  email: string;
   tokenHash: string;
   role: WorkspaceMemberRole;
   expiresAt: Date;
   usedAt: Date | null;
+  revokedAt: Date | null;
   createdByUserId: string;
   createdAt: Date;
 };

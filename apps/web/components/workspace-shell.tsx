@@ -28,12 +28,19 @@ import { useEffect, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import type { MessageKey } from "../lib/i18n/messages";
 import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
-import { useWorkspaceData, workspaceRealtimeEvent } from "../lib/use-workspace-data";
+import {
+  notifyWorkspaceDataChanged,
+  useWorkspaceData,
+  workspaceRealtimeEvent,
+} from "../lib/use-workspace-data";
 import { buildWorkspaceBreadcrumbs } from "../lib/workspace-breadcrumbs";
+import { canLeaveWorkspace, canManageWorkspaceSettings } from "../lib/workspace-contracts";
 import { useWorkspaceStore } from "../lib/workspace-store";
 import { workspaceViewHref } from "../lib/workspace-url";
 import { AgentDrawer } from "./agent-chat";
 import { CreateDialog } from "./create-dialog";
+import { WorkspaceCreateDialog } from "./workspace-create-dialog";
+import { WorkspaceLeaveDialog } from "./workspace-leave-dialog";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
 type NavItem = {
@@ -54,12 +61,17 @@ const sidebarCompactStorageKey = "task:sidebar-compact";
 export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
   const { t } = useI18n();
   const [sidebarCompact, setSidebarCompact] = useState(false);
+  const [workspaceCreateOpen, setWorkspaceCreateOpen] = useState(false);
+  const [workspaceLeaveOpen, setWorkspaceLeaveOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const workspaceState = useWorkspaceData();
   const workspaceData = workspaceState.data;
   const workspace = workspaceData?.workspace;
+  const currentMember = workspaceData?.currentMember;
+  const canManageSettings =
+    currentMember !== undefined && canManageWorkspaceSettings(currentMember.role);
   const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
   const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
   const setSelectedWorkspaceId = useWorkspaceStore((state) => state.setSelectedWorkspaceId);
@@ -125,6 +137,8 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   };
   const logout = async (): Promise<void> => {
     await fetch("/api/auth/logout", { method: "POST" });
+    setSelectedWorkspaceId(null);
+    setSelectedProjectId(null);
     router.replace("/login");
     router.refresh();
   };
@@ -147,28 +161,29 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
           {sidebarCompact ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
         </IconButton>
         <div className="brand">
-          <Link
-            className="brand-home"
-            href={projectHref("/agent", selectedProject?.id)}
-            title={sidebarCompact ? (workspace?.name ?? "tAsk") : undefined}
-          >
-            <span className="brand-mark">{workspace?.name.slice(0, 2).toUpperCase() ?? "TA"}</span>
-            <span>
-              <strong>{workspace?.name ?? "tAsk"}</strong>
-              <small>{t("common.workspace")}</small>
-            </span>
-          </Link>
-          {workspace !== undefined && (
+          {workspace === undefined ? (
+            <Link className="brand-home" href="/agent" title={t("common.appName")}>
+              <span className="brand-mark">{t("common.appName").slice(0, 2).toUpperCase()}</span>
+              <span className="brand-copy">
+                <strong>{t("common.appName")}</strong>
+                <small>{t("common.workspace")}</small>
+              </span>
+            </Link>
+          ) : (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
-                <IconButton
-                  size="1"
-                  variant="ghost"
-                  color="gray"
+                <button
+                  className="brand-home"
+                  type="button"
                   aria-label={t("nav.workspaceMenu")}
+                  title={workspace.name}
                 >
-                  <MoreHorizontal size={16} />
-                </IconButton>
+                  <span className="brand-mark">{workspace.name.slice(0, 2).toUpperCase()}</span>
+                  <span className="brand-copy">
+                    <strong>{workspace.name}</strong>
+                    <small>{t("common.workspace")}</small>
+                  </span>
+                </button>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content align="start">
                 <DropdownMenu.Sub>
@@ -190,18 +205,35 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                         {item.id === workspace.id && <Check size={14} />}
                       </DropdownMenu.Item>
                     ))}
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Item onSelect={() => setWorkspaceCreateOpen(true)}>
+                      <Plus size={14} /> {t("workspace.createNew")}
+                    </DropdownMenu.Item>
                   </DropdownMenu.SubContent>
                 </DropdownMenu.Sub>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item onSelect={() => router.push("/settings")}>
-                  {t("common.settings")}
-                </DropdownMenu.Item>
+                {canManageSettings && (
+                  <>
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Item onSelect={() => router.push("/settings")}>
+                      {t("common.settings")}
+                    </DropdownMenu.Item>
+                  </>
+                )}
+                {currentMember !== undefined && canLeaveWorkspace(currentMember.role) && (
+                  <>
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Item color="red" onSelect={() => setWorkspaceLeaveOpen(true)}>
+                      <LogOut size={14} /> {t("workspace.leave")}
+                    </DropdownMenu.Item>
+                  </>
+                )}
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           )}
         </div>
         <nav>
           {navigation.map(({ href, label: labelKey, icon: Icon }) => {
+            if (href === "/settings" && !canManageSettings) return null;
             const label = t(labelKey);
             if (href === "/views")
               return (
@@ -286,26 +318,29 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
         </nav>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
-            <button
+            <Button
               className="profile"
               type="button"
-              title={
-                sidebarCompact
-                  ? (workspace?.members.at(0)?.displayName ?? t("nav.user"))
-                  : undefined
-              }
+              size="2"
+              variant="ghost"
+              color="gray"
+              title={sidebarCompact ? (currentMember?.displayName ?? t("nav.user")) : undefined}
             >
               <Avatar
-                fallback={workspace?.members.at(0)?.displayName.slice(0, 1) ?? "?"}
+                fallback={currentMember?.displayName.slice(0, 1) ?? "?"}
                 size="2"
                 color="indigo"
               />
-              <span>
-                <strong>{workspace?.members.at(0)?.displayName ?? t("nav.user")}</strong>
-                <small>{workspace?.members.at(0)?.role ?? t("nav.disconnected")}</small>
+              <span className="profile-copy">
+                <strong>{currentMember?.displayName ?? t("nav.user")}</strong>
+                <small>
+                  {currentMember === undefined
+                    ? t("nav.disconnected")
+                    : t(`workspace.role.${currentMember.role}`)}
+                </small>
               </span>
               <MoreHorizontal size={14} />
-            </button>
+            </Button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content align="end">
             <DropdownMenu.Item onSelect={() => router.push("/settings/profile")}>
@@ -341,6 +376,32 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
       </section>
       <AgentDrawer />
       <CreateDialog />
+      <WorkspaceCreateDialog
+        open={workspaceCreateOpen}
+        onOpenChange={setWorkspaceCreateOpen}
+        onCreated={(workspaceId) =>
+          changeWorkspace(workspaceId, router, setSelectedWorkspaceId, setSelectedProjectId)
+        }
+      />
+      {workspace !== undefined && currentMember !== undefined && (
+        <WorkspaceLeaveDialog
+          memberId={currentMember.id}
+          open={workspaceLeaveOpen}
+          workspaceId={workspace.id}
+          workspaceName={workspace.name}
+          onOpenChange={setWorkspaceLeaveOpen}
+          onLeft={() => {
+            const nextWorkspace = workspaceData?.availableWorkspaces.find(
+              (item) => item.id !== workspace.id,
+            );
+            setSelectedWorkspaceId(nextWorkspace?.id ?? null);
+            setSelectedProjectId(null);
+            router.replace("/agent");
+            notifyWorkspaceDataChanged();
+            router.refresh();
+          }}
+        />
+      )}
     </main>
   );
 }

@@ -1,3 +1,5 @@
+import type { SavedView } from "@task/api-client";
+
 export type WorkspaceBreadcrumb = {
   href?: string;
   label: string;
@@ -5,7 +7,7 @@ export type WorkspaceBreadcrumb = {
 
 export type WorkspaceBreadcrumbData = {
   projects: ReadonlyArray<{ id: string; key: string; slug: string; title: string }>;
-  views: ReadonlyArray<{ name: string; slug: string }>;
+  views: ReadonlyArray<Pick<SavedView, "layout" | "name" | "projectId" | "slug">>;
   workspace: { name: string; slug: string };
 };
 
@@ -61,10 +63,11 @@ export function buildWorkspaceBreadcrumbs(
     const decodedIdentifier = decodeSegment(issueIdentifier).toUpperCase();
     const projectKey = decodedIdentifier.split("-")[0];
     const project = data?.projects.find((item) => item.key === projectKey);
-    const projectHref =
-      data !== null && project !== undefined
-        ? workspaceProjectBreadcrumbHref(data.workspace.slug, project.slug)
-        : "/projects";
+    const projectView =
+      project === undefined
+        ? undefined
+        : data?.views.find((view) => view.projectId === project.id && view.layout === "board");
+    const projectHref = projectBreadcrumbHref(data, project, projectView);
     return [
       workspaceCrumb,
       { href: projectHref, label: project?.title ?? t("common.project") },
@@ -87,8 +90,16 @@ export function buildWorkspaceBreadcrumbs(
   ];
 }
 
-function workspaceProjectBreadcrumbHref(workspaceSlug: string, projectSlug: string): string {
-  return `/w/${encodeURIComponent(workspaceSlug)}/project/${encodeURIComponent(projectSlug)}`;
+function projectBreadcrumbHref(
+  data: WorkspaceBreadcrumbData | null,
+  project: WorkspaceBreadcrumbData["projects"][number] | undefined,
+  projectView: WorkspaceBreadcrumbData["views"][number] | undefined,
+): string {
+  if (data === null || project === undefined) return "/projects";
+  if (projectView !== undefined) {
+    return `/w/${encodeURIComponent(data.workspace.slug)}/view/${encodeURIComponent(projectView.slug)}`;
+  }
+  return `/kanban?project=${encodeURIComponent(project.id)}`;
 }
 
 function decodeSegment(value: string): string {

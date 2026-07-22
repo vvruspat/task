@@ -9,12 +9,14 @@ import type {
   TaskSummary,
   TaskTablePage,
   WorkspaceDetail,
+  WorkspaceMember,
   WorkspaceStatus,
   WorkspaceSummary,
 } from "@task/api-client";
 
 export type WorkspaceBootstrap = {
   availableWorkspaces: WorkspaceSummary[];
+  currentMember: WorkspaceMember;
   myTasks: MyTasksPage;
   projects: ProjectSummary[];
   statuses: WorkspaceStatus[];
@@ -55,4 +57,25 @@ export function isWorkspaceRequired(value: unknown): value is WorkspaceRequired 
     "requiresWorkspace" in value &&
     value.requiresWorkspace === true
   );
+}
+
+export function findCurrentWorkspaceMember(
+  workspace: WorkspaceDetail,
+  userId: string,
+): WorkspaceMember | null {
+  return workspace.members.find((member) => member.userId === userId) ?? null;
+}
+
+export function canManageWorkspaceSettings(role: WorkspaceMember["role"]): boolean {
+  return role === "owner" || role === "admin";
+}
+
+export function canManageWorkspaceMember(actor: WorkspaceMember, member: WorkspaceMember): boolean {
+  return (
+    canManageWorkspaceSettings(actor.role) && actor.id !== member.id && member.role !== "owner"
+  );
+}
+
+export function canLeaveWorkspace(role: WorkspaceMember["role"]): boolean {
+  return role !== "owner";
 }

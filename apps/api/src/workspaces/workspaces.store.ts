@@ -9,6 +9,7 @@ import type {
 
 export type WorkspaceReadStore = {
   listForUser(userId: string): Promise<WorkspaceSummary[]>;
+  getRoleForUser(workspaceId: string, userId: string): Promise<WorkspaceMember["role"] | null>;
   getForUser(workspaceId: string, userId: string): Promise<WorkspaceDetail | null>;
   listMembersForUser(workspaceId: string, userId: string): Promise<WorkspaceMember[] | null>;
 };
@@ -17,7 +18,16 @@ export type WorkspaceMemberRoleUpdateResult =
   | { status: "forbidden" | "member_not_found" }
   | { member: WorkspaceMember; status: "updated" };
 
+export type WorkspaceMemberRemovalResult =
+  | { status: "forbidden" | "member_not_found" }
+  | { member: WorkspaceMember; status: "removed" };
+
 export type WorkspaceMemberManagementStore = {
+  removeMember(
+    workspaceId: string,
+    memberId: string,
+    userId: string,
+  ): Promise<WorkspaceMemberRemovalResult>;
   updateMemberRole(
     workspaceId: string,
     memberId: string,

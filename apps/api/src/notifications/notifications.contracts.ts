@@ -1,4 +1,4 @@
-export type NotificationKind = "mention" | "task_changed";
+export type NotificationKind = "mention" | "task_assigned" | "task_changed";
 
 export type NotificationItem = {
   id: string;

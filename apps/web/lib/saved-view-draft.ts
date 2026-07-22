@@ -2,7 +2,7 @@ import type { SavedView } from "@task/api-client";
 
 export type SavedViewDraft = Pick<
   SavedView,
-  "name" | "description" | "projectId" | "layout" | "settings"
+  "name" | "description" | "projectId" | "visibility" | "layout" | "settings"
 >;
 
 export function changeSavedViewLayout(

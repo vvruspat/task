@@ -20,7 +20,9 @@ function isNotificationItem(value: unknown): boolean {
   return (
     isRecord(value) &&
     typeof value["id"] === "string" &&
-    (value["kind"] === "mention" || value["kind"] === "task_changed") &&
+    (value["kind"] === "mention" ||
+      value["kind"] === "task_assigned" ||
+      value["kind"] === "task_changed") &&
     typeof value["taskId"] === "string" &&
     typeof value["projectKey"] === "string" &&
     typeof value["taskNumber"] === "number" &&

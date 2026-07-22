@@ -9,6 +9,7 @@ test("new projects receive a project-scoped board view", () => {
 
   assert.equal(view.name, "Album release");
   assert.equal(view.projectId, projectId);
+  assert.equal(view.visibility, "private");
   assert.equal(view.layout, "board");
   assert.equal(view.settings.grouping, "status");
   assert.equal(view.settings.subGrouping, "parent_task");

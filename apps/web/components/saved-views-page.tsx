@@ -29,6 +29,7 @@ import {
   Grid3X3,
   Layers3,
   List,
+  LockKeyhole,
   MessageSquare,
   MoreHorizontal,
   Search,
@@ -36,6 +37,7 @@ import {
   SlidersHorizontal,
   Trash2,
   UserRound,
+  Users,
   Workflow,
   X,
 } from "lucide-react";
@@ -124,6 +126,13 @@ const orderingOptions: ReadonlyArray<{
   { value: "created_at", label: "views.created" },
   { value: "updated_at", label: "views.updated" },
   { value: "due_at", label: "workspace.dueDate" },
+];
+const visibilityOptions: ReadonlyArray<{
+  value: SavedView["visibility"];
+  label: MessageKey;
+}> = [
+  { value: "private", label: "views.visibility.private" },
+  { value: "workspace", label: "views.visibility.workspace" },
 ];
 const propertyLabels: Record<DisplayProperty, MessageKey> = {
   status: "common.status",
@@ -368,7 +377,13 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
     }
   };
 
-  const hasChanges = selected !== undefined && draft !== null && !viewDraftEquals(draft, selected);
+  const canManageSelected =
+    selected !== undefined && selected.userId === data.currentMember.userId && !selected.system;
+  const hasChanges =
+    canManageSelected &&
+    selected !== undefined &&
+    draft !== null &&
+    !viewDraftEquals(draft, selected);
 
   return (
     <div className="views-page">
@@ -377,8 +392,18 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
       ) : (
         <section className="view-editor">
           <div className="view-editor-head">
-            <ViewIdentityEditor key={selected.id} draft={draft} setDraft={setDraft} />
+            <ViewIdentityEditor
+              key={selected.id}
+              draft={draft}
+              editable={canManageSelected}
+              setDraft={setDraft}
+            />
             <div className="view-actions">
+              {!canManageSelected && selected.visibility === "workspace" && (
+                <Badge color="gray" variant="soft">
+                  <Users size={13} /> {t("views.readOnlyShared")}
+                </Badge>
+              )}
               {hasChanges && (
                 <Button
                   disabled={saving || draft.name.trim().length === 0}
@@ -387,18 +412,20 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
                   {saving ? t("common.saving") : t("common.save")}
                 </Button>
               )}
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger>
-                  <IconButton variant="ghost" color="gray" aria-label={t("views.actions")}>
-                    <MoreHorizontal size={17} />
-                  </IconButton>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content align="end">
-                  <DropdownMenu.Item color="red" onSelect={() => void deleteView()}>
-                    <Trash2 size={14} /> {t("views.delete")}
-                  </DropdownMenu.Item>
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
+              {canManageSelected && (
+                <DropdownMenu.Root>
+                  <DropdownMenu.Trigger>
+                    <IconButton variant="ghost" color="gray" aria-label={t("views.actions")}>
+                      <MoreHorizontal size={17} />
+                    </IconButton>
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content align="end">
+                    <DropdownMenu.Item color="red" onSelect={() => void deleteView()}>
+                      <Trash2 size={14} /> {t("views.delete")}
+                    </DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Root>
+              )}
             </div>
           </div>
           {mutationError !== null && (
@@ -406,7 +433,12 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
               {mutationError}
             </Text>
           )}
-          <ViewToolbar data={data} draft={draft} setDraft={setDraft} />
+          <ViewToolbar
+            data={data}
+            draft={draft}
+            canManageView={canManageSelected}
+            setDraft={setDraft}
+          />
           <ViewContent
             data={data}
             draft={draft}
@@ -431,9 +463,11 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
 
 function ViewIdentityEditor({
   draft,
+  editable,
   setDraft,
 }: Readonly<{
   draft: ViewDraft;
+  editable: boolean;
   setDraft: (draft: ViewDraft) => void;
 }>): ReactNode {
   const { t } = useI18n();
@@ -441,7 +475,7 @@ function ViewIdentityEditor({
   const [editingDescription, setEditingDescription] = useState(false);
   return (
     <div className="view-identity">
-      {editingTitle ? (
+      {editable && editingTitle ? (
         <TextField.Root
           autoFocus
           value={draft.name}
@@ -452,14 +486,16 @@ function ViewIdentityEditor({
           }}
           onChange={(event) => setDraft({ ...draft, name: event.target.value })}
         />
-      ) : (
+      ) : editable ? (
         <h1>
           <button type="button" onClick={() => setEditingTitle(true)}>
             {draft.name}
           </button>
         </h1>
+      ) : (
+        <h1>{draft.name}</h1>
       )}
-      {editingDescription ? (
+      {editable && editingDescription ? (
         <TextArea
           autoFocus
           value={draft.description ?? ""}
@@ -469,7 +505,7 @@ function ViewIdentityEditor({
           onBlur={() => setEditingDescription(false)}
           onChange={(event) => setDraft({ ...draft, description: event.target.value || null })}
         />
-      ) : (
+      ) : editable ? (
         <button
           className={draft.description === null ? "view-description empty" : "view-description"}
           type="button"
@@ -477,6 +513,8 @@ function ViewIdentityEditor({
         >
           {draft.description ?? t("views.addDescription")}
         </button>
+      ) : draft.description === null ? null : (
+        <Text color="gray">{draft.description}</Text>
       )}
     </div>
   );
@@ -499,10 +537,12 @@ function ViewsEmpty({ onCreate }: Readonly<{ onCreate: () => void }>): ReactNode
 function ViewToolbar({
   data,
   draft,
+  canManageView,
   setDraft,
 }: Readonly<{
   data: WorkspaceBootstrap;
   draft: ViewDraft;
+  canManageView: boolean;
   setDraft: (draft: ViewDraft) => void;
 }>): ReactNode {
   const { t } = useI18n();
@@ -551,7 +591,7 @@ function ViewToolbar({
         </div>
         <div className="view-toolbar-actions">
           <ViewFiltersPopover data={data} onAdd={addFilter} />
-          <ViewSettingsPopover draft={draft} setDraft={setDraft} />
+          <ViewSettingsPopover draft={draft} canManageView={canManageView} setDraft={setDraft} />
         </div>
       </div>
       {filters.length > 0 && (
@@ -768,9 +808,11 @@ function FilterEditor({
 
 function ViewSettingsPopover({
   draft,
+  canManageView,
   setDraft,
 }: Readonly<{
   draft: ViewDraft;
+  canManageView: boolean;
   setDraft: (draft: ViewDraft) => void;
 }>): ReactNode {
   const { t } = useI18n();
@@ -785,6 +827,15 @@ function ViewSettingsPopover({
         </IconButton>
       </Popover.Trigger>
       <Popover.Content className="view-settings-popover" align="end">
+        {canManageView && (
+          <SettingSelect
+            label="views.visibility"
+            value={draft.visibility}
+            options={visibilityOptions}
+            onChange={(visibility) => setDraft({ ...draft, visibility })}
+          />
+        )}
+        {canManageView && <div className="settings-divider" />}
         <div className="settings-layout-toggle">
           <Button
             size="1"
@@ -1921,6 +1972,7 @@ function CreateViewDialog({
   const { t } = useI18n();
   const [name, setName] = useState(() => t("views.newName"));
   const [layout, setLayout] = useState<SavedView["layout"]>("board");
+  const [visibility, setVisibility] = useState<SavedView["visibility"]>("private");
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Content maxWidth="480px">
@@ -1937,6 +1989,25 @@ function CreateViewDialog({
               value={name}
               onChange={(event) => setName(event.target.value)}
             />
+          </div>
+          <div className="create-view-field">
+            <Text size="2">{t("views.visibility")}</Text>
+            <Select.Root
+              value={visibility}
+              onValueChange={(value) => {
+                if (value === "private" || value === "workspace") setVisibility(value);
+              }}
+            >
+              <Select.Trigger aria-label={t("views.visibility")} />
+              <Select.Content>
+                <Select.Item value="private">
+                  <LockKeyhole size={14} /> {t("views.visibility.private")}
+                </Select.Item>
+                <Select.Item value="workspace">
+                  <Users size={14} /> {t("views.visibility.workspace")}
+                </Select.Item>
+              </Select.Content>
+            </Select.Root>
           </div>
           <div className="create-view-field">
             <Text size="2">{t("views.type")}</Text>
@@ -1970,6 +2041,7 @@ function CreateViewDialog({
                 name: name.trim(),
                 description: null,
                 projectId: null,
+                visibility,
                 layout,
                 settings: {
                   ...defaultSettings,
@@ -2328,6 +2400,7 @@ function toDraft(view: SavedView): ViewDraft {
     name: view.name,
     description: view.description ?? null,
     projectId: view.projectId ?? null,
+    visibility: view.visibility,
     layout: view.layout,
     settings: {
       ...view.settings,
@@ -2342,6 +2415,7 @@ function viewDraftEquals(draft: ViewDraft, view: SavedView): boolean {
     draft.name === view.name &&
     (draft.description ?? null) === (view.description ?? null) &&
     (draft.projectId ?? null) === (view.projectId ?? null) &&
+    draft.visibility === view.visibility &&
     draft.layout === view.layout &&
     draft.settings.grouping === settings.grouping &&
     draft.settings.subGrouping === settings.subGrouping &&
@@ -2378,6 +2452,10 @@ function isSavedView(value: unknown): value is SavedView {
     typeof value.slug === "string" &&
     "name" in value &&
     typeof value.name === "string" &&
+    "visibility" in value &&
+    (value.visibility === "private" || value.visibility === "workspace") &&
+    "system" in value &&
+    typeof value.system === "boolean" &&
     "settings" in value &&
     typeof value.settings === "object" &&
     value.settings !== null

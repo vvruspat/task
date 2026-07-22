@@ -2,12 +2,17 @@
 
 import type { TaskSummary, WorkspaceStatus } from "@task/api-client";
 import { produce } from "immer";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { create } from "zustand";
 import type { ApiFailure, WorkspaceBootstrap, WorkspaceRequired } from "./workspace-contracts";
 import { isApiFailure, isWorkspaceRequired } from "./workspace-contracts";
-import { parseWorkspaceRealtimeChange, type WorkspaceRealtimeChange } from "./workspace-realtime";
+import {
+  applyWorkspaceMemberRealtimeChange,
+  findFallbackWorkspaceId,
+  parseWorkspaceRealtimeChange,
+  type WorkspaceRealtimeChange,
+} from "./workspace-realtime";
 import { useWorkspaceStore } from "./workspace-store";
 
 type WorkspaceDataState = {
@@ -23,6 +28,7 @@ type WorkspaceDataStore = WorkspaceDataState & {
 };
 
 const workspaceRefreshEvent = "task:workspace-data-refresh";
+const workspaceMembershipRemovedEvent = "task:workspace-membership-removed";
 export const workspaceRealtimeEvent = "task:workspace-realtime-event";
 let pendingRequest: {
   selector: string | null;
@@ -101,6 +107,7 @@ function isWorkspaceBootstrap(value: unknown): value is WorkspaceBootstrap {
   if (typeof value !== "object" || value === null) return false;
   return (
     "workspace" in value &&
+    "currentMember" in value &&
     "availableWorkspaces" in value &&
     "myTasks" in value &&
     "projects" in value &&
@@ -111,6 +118,8 @@ function isWorkspaceBootstrap(value: unknown): value is WorkspaceBootstrap {
     "views" in value &&
     "projectData" in value &&
     Array.isArray(value.projects) &&
+    typeof value.currentMember === "object" &&
+    value.currentMember !== null &&
     Array.isArray(value.availableWorkspaces) &&
     Array.isArray(value.statuses) &&
     Array.isArray(value.taskSkills) &&
@@ -152,9 +161,11 @@ export function useWorkspaceData(): WorkspaceDataState & {
   refresh: () => Promise<void>;
 } {
   const pathname = usePathname();
+  const router = useRouter();
   const routeWorkspaceSlug = pathname.match(/^\/w\/([^/]+)/)?.[1] ?? null;
   const selectedWorkspaceId = useWorkspaceStore((store) => store.selectedWorkspaceId);
   const setSelectedWorkspaceId = useWorkspaceStore((store) => store.setSelectedWorkspaceId);
+  const setSelectedProjectId = useWorkspaceStore((store) => store.setSelectedProjectId);
   const data = useWorkspaceDataStore((store) => store.data);
   const error = useWorkspaceDataStore((store) => store.error);
   const loading = useWorkspaceDataStore((store) => store.loading);
@@ -223,6 +234,35 @@ export function useWorkspaceData(): WorkspaceDataState & {
     return retainRealtimeConnection(workspaceId);
   }, [data?.workspace.id]);
 
+  useEffect(() => {
+    const handleMembershipRemoved = (event: Event): void => {
+      if (!(event instanceof CustomEvent)) return;
+      const change: unknown = event.detail;
+      if (!isCurrentMembershipRemoval(change)) return;
+      const current = useWorkspaceDataStore.getState().data;
+      if (
+        current === null ||
+        current.workspace.id !== change.workspaceId ||
+        current.currentMember.id !== change.memberId
+      ) {
+        return;
+      }
+      const fallbackWorkspaceId = findFallbackWorkspaceId(current, change.workspaceId);
+      setSelectedWorkspaceId(fallbackWorkspaceId);
+      setSelectedProjectId(null);
+      useWorkspaceDataStore.getState().replace({
+        data: null,
+        error: null,
+        loading: fallbackWorkspaceId !== null,
+        requiresWorkspace: fallbackWorkspaceId === null,
+      });
+      router.replace("/agent");
+    };
+    window.addEventListener(workspaceMembershipRemovedEvent, handleMembershipRemoved);
+    return () =>
+      window.removeEventListener(workspaceMembershipRemovedEvent, handleMembershipRemoved);
+  }, [router, setSelectedProjectId, setSelectedWorkspaceId]);
+
   const requiresWorkspace = useWorkspaceDataStore((store) => store.requiresWorkspace);
   return { data, error, loading, refresh, requiresWorkspace };
 }
@@ -237,6 +277,8 @@ function retainRealtimeConnection(workspaceId: string): () => void {
     `/api/workspace/events?workspaceId=${encodeURIComponent(workspaceId)}`,
   );
   source.addEventListener("workspace.changed", handleWorkspaceRealtimeChange);
+  source.addEventListener("workspace.member_role_changed", handleWorkspaceRealtimeChange);
+  source.addEventListener("workspace.member_removed", handleWorkspaceRealtimeChange);
   realtimeConnections.set(workspaceId, { references: 1, source });
   return () => releaseRealtimeConnection(workspaceId);
 }
@@ -256,6 +298,23 @@ function handleWorkspaceRealtimeChange(event: MessageEvent<string>): void {
   window.dispatchEvent(
     new CustomEvent<WorkspaceRealtimeChange>(workspaceRealtimeEvent, { detail: change }),
   );
+  if (change.kind === "member_role_changed") {
+    updateRealtimeMemberRole(change);
+    return;
+  }
+  if (change.kind === "member_removed") {
+    const current = useWorkspaceDataStore.getState().data;
+    if (current?.currentMember.id === change.memberId) {
+      window.dispatchEvent(
+        new CustomEvent<WorkspaceRealtimeChange>(workspaceMembershipRemovedEvent, {
+          detail: change,
+        }),
+      );
+      return;
+    }
+    updateWorkspaceData((data) => applyWorkspaceMemberRealtimeChange(data, change));
+    return;
+  }
   if (change.projectId !== null && change.taskId !== null) {
     void refreshRealtimeTask(change);
   }
@@ -264,6 +323,26 @@ function handleWorkspaceRealtimeChange(event: MessageEvent<string>): void {
     realtimeRefreshTimer = null;
     notifyWorkspaceDataChanged();
   }, 250);
+}
+
+function updateRealtimeMemberRole(change: WorkspaceRealtimeChange): void {
+  updateWorkspaceData((data) => applyWorkspaceMemberRealtimeChange(data, change));
+}
+
+function isCurrentMembershipRemoval(value: unknown): value is WorkspaceRealtimeChange & {
+  kind: "member_removed";
+  memberId: string;
+} {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "kind" in value &&
+    value.kind === "member_removed" &&
+    "workspaceId" in value &&
+    typeof value.workspaceId === "string" &&
+    "memberId" in value &&
+    typeof value.memberId === "string"
+  );
 }
 
 async function refreshRealtimeTask(change: WorkspaceRealtimeChange): Promise<void> {

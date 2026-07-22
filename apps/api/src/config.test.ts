@@ -32,6 +32,57 @@ test("parseApiConfig leaves OpenRouter config unset when agent runtime env is ab
   assert.equal(config.openRouter, null);
 });
 
+test("parseApiConfig leaves email config unset when Brevo env is absent", () => {
+  assert.equal(parseApiConfig({}).email, null);
+});
+
+test("parseApiConfig accepts complete Brevo email settings", () => {
+  assert.deepEqual(
+    parseApiConfig({
+      BREVO_API_KEY: "brevo-secret",
+      BREVO_TEMPLATE_ID: "6",
+      WEB_APP_URL: "http://localhost:3001/",
+    }).email,
+    {
+      apiKey: "brevo-secret",
+      templateId: 6,
+      webAppUrl: "http://localhost:3001",
+    },
+  );
+});
+
+test("parseApiConfig rejects partial Brevo email settings and redacts the key", () => {
+  assert.throws(
+    () => parseApiConfig({ BREVO_API_KEY: "brevo-secret" }),
+    InvalidApiEnvironmentError,
+  );
+  assert.throws(
+    () =>
+      parseApiConfig({
+        BREVO_API_KEY: " brevo-secret ",
+        BREVO_TEMPLATE_ID: "6",
+        WEB_APP_URL: "https://task.example",
+      }),
+    (error: unknown) => {
+      assert.ok(error instanceof InvalidApiEnvironmentError);
+      assert.doesNotMatch(error.message, /brevo-secret/u);
+      return true;
+    },
+  );
+});
+
+test("parseApiConfig rejects an invalid Brevo template ID", () => {
+  assert.throws(
+    () =>
+      parseApiConfig({
+        BREVO_API_KEY: "brevo-secret",
+        BREVO_TEMPLATE_ID: "0",
+        WEB_APP_URL: "https://task.example",
+      }),
+    InvalidApiEnvironmentError,
+  );
+});
+
 test("parseApiConfig accepts a valid TELEGRAM_BOT_SHARED_SECRET", () => {
   const config = parseApiConfig({ TELEGRAM_BOT_SHARED_SECRET: "bot-secret" });
 

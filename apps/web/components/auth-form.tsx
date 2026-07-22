@@ -2,9 +2,11 @@
 
 import { Box, Button, Card, Flex, Heading, Text, TextField, Link as UiLink } from "@task/ui";
 import Link from "next/link";
-import { type FormEvent, type ReactNode, useState } from "react";
+import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import type { MessageKey } from "../lib/i18n/messages";
+import { authPageHref, invitationEmail, postAuthPath } from "../lib/invite-auth";
+import { useWorkspaceStore } from "../lib/workspace-store";
 
 type AuthFormProps = { mode: "login" | "register" };
 
@@ -12,7 +14,14 @@ export function AuthForm({ mode }: AuthFormProps): ReactNode {
   const { t } = useI18n();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
+  const [next, setNext] = useState("/agent");
   const register = mode === "register";
+
+  useEffect(() => {
+    setEmail(invitationEmail(window.location.search));
+    setNext(postAuthPath(window.location.search, window.sessionStorage));
+  }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
@@ -35,8 +44,10 @@ export function AuthForm({ mode }: AuthFormProps): ReactNode {
         setError(t(readErrorKey(responseBody)));
         return;
       }
-      const next = new URLSearchParams(window.location.search).get("next");
-      window.location.assign(next?.startsWith("/") && !next.startsWith("//") ? next : "/agent");
+      const workspaceStore = useWorkspaceStore.getState();
+      workspaceStore.setSelectedWorkspaceId(null);
+      workspaceStore.setSelectedProjectId(null);
+      window.location.assign(postAuthPath(window.location.search, window.sessionStorage));
     } catch {
       setError(t("auth.unreachable"));
     } finally {
@@ -84,6 +95,9 @@ export function AuthForm({ mode }: AuthFormProps): ReactNode {
                     autoComplete="email"
                     required
                     maxLength={320}
+                    readOnly={next.startsWith("/invite/")}
+                    value={email}
+                    onChange={(event) => setEmail(event.currentTarget.value)}
                   />
                 </label>
                 <label htmlFor="password">
@@ -117,7 +131,12 @@ export function AuthForm({ mode }: AuthFormProps): ReactNode {
             <Text align="center" color="gray" size="2">
               {register ? `${t("auth.haveAccount")} ` : `${t("auth.needAccount")} `}
               <UiLink asChild>
-                <Link href={register ? "/login" : "/register"}>
+                <Link
+                  href={authPageHref(register ? "login" : "register", {
+                    email,
+                    next,
+                  })}
+                >
                   {register ? t("auth.login") : t("auth.register")}
                 </Link>
               </UiLink>

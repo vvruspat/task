@@ -25,6 +25,10 @@ export class WorkspacesService {
     return workspaces.map((workspace) => new WorkspaceSummaryDto(workspace));
   }
 
+  getMemberRole(workspaceId: string, userId: string): Promise<WorkspaceMemberDto["role"] | null> {
+    return this.readStore.getRoleForUser(workspaceId, userId);
+  }
+
   async createWorkspace(userId: string, input: CreateWorkspaceInput): Promise<WorkspaceDetailDto> {
     if (this.workspaceManagementStore === undefined) {
       throw new NotFoundException("Current user was not found.");
@@ -120,6 +124,30 @@ export class WorkspacesService {
 
     if (result.status === "forbidden") {
       throw new ForbiddenException("Current user cannot update this workspace member role.");
+    }
+
+    if (!("member" in result)) {
+      throw new NotFoundException("Workspace member was not found.");
+    }
+
+    return new WorkspaceMemberDto(result.member);
+  }
+
+  async removeMember(
+    workspaceId: string,
+    memberId: string,
+    userId: string,
+  ): Promise<WorkspaceMemberDto> {
+    if (this.managementStore === undefined) {
+      throw new NotFoundException("Workspace member was not found.");
+    }
+
+    const result = await this.managementStore.removeMember(workspaceId, memberId, userId);
+    if (result.status === "member_not_found") {
+      throw new NotFoundException("Workspace member was not found.");
+    }
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot remove this workspace member.");
     }
 
     if (!("member" in result)) {

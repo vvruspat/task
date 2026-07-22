@@ -208,6 +208,23 @@ export interface paths {
     patch: operations["WorkspacesController_updateMemberRole"];
     trace?: never;
   };
+  "/workspaces/{workspaceId}/members/{memberId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Remove a workspace member or leave the workspace */
+    delete: operations["WorkspacesController_removeMember"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/dashboard": {
     parameters: {
       query?: never;
@@ -375,6 +392,75 @@ export interface paths {
     put: operations["TaskSubscriptionsController_subscribe"];
     post?: never;
     delete: operations["TaskSubscriptionsController_unsubscribe"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/invitations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List invitations for a workspace */
+    get: operations["WorkspaceInvitationsController_list"];
+    put?: never;
+    /** Invite a workspace member by email */
+    post: operations["WorkspaceInvitationsController_create"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/invitations/{invitationId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Revoke a workspace invitation */
+    delete: operations["WorkspaceInvitationsController_revoke"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/invitations/{token}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Preview an invitation from its one-time token */
+    get: operations["InvitationsController_preview"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/invitations/{token}/accept": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Accept an invitation as the current user */
+    post: operations["InvitationsController_accept"];
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
@@ -1476,7 +1562,7 @@ export interface components {
       /** Format: uuid */
       id: string;
       /** @enum {string} */
-      kind: "mention" | "task_changed";
+      kind: "mention" | "task_assigned" | "task_changed";
       /** Format: uuid */
       workspaceId: string;
       /** Format: uuid */
@@ -1506,16 +1592,64 @@ export interface components {
     TaskSubscriptionDto: {
       subscribed: boolean;
     };
+    WorkspaceInvitationDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      /** Format: email */
+      email: string;
+      /** @enum {string} */
+      role: "admin" | "member" | "guest";
+      /** @enum {string} */
+      status: "pending" | "expired" | "used" | "revoked";
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    CreateWorkspaceInvitationDto: {
+      /**
+       * Format: email
+       * @example teammate@example.com
+       */
+      email: string;
+      /** @enum {string} */
+      role: "admin" | "member" | "guest";
+    };
+    InvitationPreviewDto: {
+      /** Format: uuid */
+      workspaceId: string;
+      workspaceName: string;
+      /** Format: email */
+      email: string;
+      /** @enum {string} */
+      role: "admin" | "member" | "guest";
+      /** @enum {string} */
+      status: "pending" | "expired" | "used" | "revoked";
+      /** Format: date-time */
+      expiresAt: string;
+    };
+    AcceptInvitationResultDto: {
+      workspace: components["schemas"]["WorkspaceSummaryDto"];
+      member: components["schemas"]["WorkspaceMemberDto"];
+    };
     WorkspaceRealtimeEventDto: {
       id: string;
       /** @enum {string} */
-      kind: "connected" | "changed" | "heartbeat";
+      kind: "connected" | "changed" | "heartbeat" | "member_removed" | "member_role_changed";
       /** Format: uuid */
       workspaceId: string;
       /** Format: uuid */
       projectId: string | null;
       /** Format: uuid */
       taskId: string | null;
+      /** Format: uuid */
+      memberId: string | null;
+      /** Format: uuid */
+      memberUserId: string | null;
+      /** @enum {string|null} */
+      memberRole: "owner" | "admin" | "member" | "guest" | null;
       /** Format: date-time */
       occurredAt: string;
     };
@@ -2238,6 +2372,9 @@ export interface components {
       name: string;
       description?: string | null;
       /** @enum {string} */
+      visibility: "private" | "workspace";
+      system: boolean;
+      /** @enum {string} */
       layout: "list" | "board" | "matrix";
       settings: components["schemas"]["SavedViewSettingsDto"];
       /** Format: date-time */
@@ -2252,6 +2389,8 @@ export interface components {
       /** Format: uuid */
       projectId?: string | null;
       /** @enum {string} */
+      visibility: "private" | "workspace";
+      /** @enum {string} */
       layout: "list" | "board" | "matrix";
       settings: components["schemas"]["SavedViewSettingsDto"];
     };
@@ -2260,6 +2399,8 @@ export interface components {
       description?: string | null;
       /** Format: uuid */
       projectId?: string | null;
+      /** @enum {string} */
+      visibility?: "private" | "workspace";
       /** @enum {string} */
       layout?: "list" | "board" | "matrix";
       settings?: components["schemas"]["SavedViewSettingsDto"];
@@ -2622,7 +2763,11 @@ export interface operations {
           "application/json": components["schemas"]["WorkspaceSummaryDto"];
         };
       };
-      /** @description Only the workspace owner can delete it. */
+      /**
+       * @description Only the workspace owner can delete it.
+       *
+       *     Current workspace role cannot access this endpoint.
+       */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2671,7 +2816,11 @@ export interface operations {
         };
         content?: never;
       };
-      /** @description Current user cannot update this workspace. */
+      /**
+       * @description Current user cannot update this workspace.
+       *
+       *     Current workspace role cannot access this endpoint.
+       */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2752,7 +2901,11 @@ export interface operations {
         };
         content?: never;
       };
-      /** @description Current user cannot update this workspace member role. */
+      /**
+       * @description Current user cannot update this workspace member role.
+       *
+       *     Current workspace role cannot access this endpoint.
+       */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2760,6 +2913,49 @@ export interface operations {
         content?: never;
       };
       /** @description Workspace member is missing or not visible to the current user. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WorkspacesController_removeMember: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        memberId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceMemberDto"];
+        };
+      };
+      /**
+       * @description Current user cannot remove this member or the owner tried to leave.
+       *
+       *     Current workspace role cannot access this endpoint.
+       */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace member was not found. */
       404: {
         headers: {
           [name: string]: unknown;
@@ -3287,6 +3483,191 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["TaskSubscriptionDto"];
         };
+      };
+    };
+  };
+  WorkspaceInvitationsController_list: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceInvitationDto"][];
+        };
+      };
+      /** @description Current user cannot view invitations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WorkspaceInvitationsController_create: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWorkspaceInvitationDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceInvitationDto"];
+        };
+      };
+      /** @description Invitation payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot invite members. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description The user is already a member or already invited. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  WorkspaceInvitationsController_revoke: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        invitationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceInvitationDto"];
+        };
+      };
+      /** @description Current workspace role cannot access this endpoint. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  InvitationsController_preview: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        token: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InvitationPreviewDto"];
+        };
+      };
+      /** @description Invitation was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  InvitationsController_accept: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        token: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AcceptInvitationResultDto"];
+        };
+      };
+      /** @description Invitation belongs to another email address. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invitation was already used. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invitation expired or was revoked. */
+      410: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
