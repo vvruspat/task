@@ -31,12 +31,12 @@ import {
   type WorkspaceRealtimeConnectionLifecycle,
   type WorkspaceRealtimeConnectionStatus,
 } from "./workspace-realtime";
+import { useWorkspaceSelectionStore } from "./workspace-selection-store";
 import {
   resolveWorkspaceServerSnapshot,
   type WorkspaceServerSnapshot,
 } from "./workspace-server-snapshot";
 import { WorkspaceServerSnapshotContext } from "./workspace-server-snapshot-context";
-import { useWorkspaceStore } from "./workspace-store";
 import {
   applyWorkspaceProjectReconciliation,
   applyWorkspaceTaskUpdate,
@@ -51,11 +51,19 @@ type WorkspaceDataState = {
   requiresWorkspace: boolean;
 };
 
-type WorkspaceDataStore = WorkspaceDataState & {
+type WorkspaceDataResult = WorkspaceDataState & {
   connectionStatus: WorkspaceRealtimeConnectionStatus;
+  refresh: () => Promise<void>;
+};
+
+type WorkspaceDataStore = WorkspaceDataState & {
   replace: (state: WorkspaceDataState) => void;
-  setConnectionStatus: (status: WorkspaceRealtimeConnectionStatus) => void;
   update: (updater: (data: WorkspaceBootstrap) => WorkspaceBootstrap) => void;
+};
+
+type WorkspaceConnectionStore = {
+  status: WorkspaceRealtimeConnectionStatus;
+  setStatus: (status: WorkspaceRealtimeConnectionStatus) => void;
 };
 
 type RealtimeConnection = {
@@ -75,6 +83,7 @@ let loadedWorkspaceRequestKey: string | null = null;
 let loadedWorkspaceBootstrapRequest: WorkspaceBootstrapRequest | null = null;
 let latestWorkspaceClientMutationAt = 0;
 const appliedWorkspaceServerSnapshots = new Set<string>();
+let activeWorkspaceRefresh: (() => Promise<void>) | null = null;
 const realtimeConnections = new Map<string, RealtimeConnection>();
 const pendingRealtimeProjects = new Map<string, string>();
 const projectReconciliationGenerations = new Map<string, number>();
@@ -130,11 +139,13 @@ const useWorkspaceDataStore = create<WorkspaceDataStore>()((set) => ({
   error: null,
   loading: true,
   requiresWorkspace: false,
-  connectionStatus: "idle",
   replace: (state): void => set(state),
-  setConnectionStatus: (connectionStatus): void => set({ connectionStatus }),
   update: (updater): void =>
     set((state) => (state.data === null ? state : { ...state, data: updater(state.data) })),
+}));
+const useWorkspaceConnectionStore = create<WorkspaceConnectionStore>()((set) => ({
+  setStatus: (status): void => set({ status }),
+  status: "idle",
 }));
 
 export function notifyWorkspaceDataChanged(): void {
@@ -151,6 +162,7 @@ export function resetWorkspaceData(): void {
   loadedWorkspaceBootstrapRequest = null;
   latestWorkspaceClientMutationAt = 0;
   appliedWorkspaceServerSnapshots.clear();
+  activeWorkspaceRefresh = null;
   fullRealtimeReconciliationScheduler.cancel();
   projectRealtimeReconciliationScheduler.cancel();
   const store = useWorkspaceDataStore.getState();
@@ -160,7 +172,7 @@ export function resetWorkspaceData(): void {
     loading: true,
     requiresWorkspace: false,
   });
-  store.setConnectionStatus("idle");
+  useWorkspaceConnectionStore.getState().setStatus("idle");
 }
 
 export function updateWorkspaceData(
@@ -265,21 +277,18 @@ async function requestWorkspace(
   return result;
 }
 
-export function useWorkspaceData(): WorkspaceDataState & {
-  connectionStatus: WorkspaceRealtimeConnectionStatus;
-  refresh: () => Promise<void>;
-} {
+export function useWorkspaceDataController(): WorkspaceDataResult {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const serverSnapshot = useContext(WorkspaceServerSnapshotContext);
   const routeWorkspaceSlug = pathname.match(/^\/w\/([^/]+)/)?.[1] ?? null;
-  const selectedWorkspaceId = useWorkspaceStore((store) => store.selectedWorkspaceId);
-  const setSelectedWorkspaceId = useWorkspaceStore((store) => store.setSelectedWorkspaceId);
-  const setSelectedProjectId = useWorkspaceStore((store) => store.setSelectedProjectId);
-  const storedData = useWorkspaceDataStore((store) => store.data);
-  const storedError = useWorkspaceDataStore((store) => store.error);
-  const storedLoading = useWorkspaceDataStore((store) => store.loading);
+  const selectedWorkspaceId = useWorkspaceSelectionStore((store) => store.selectedWorkspaceId);
+  const setSelectedWorkspaceId = useWorkspaceSelectionStore(
+    (store) => store.setSelectedWorkspaceId,
+  );
+  const setSelectedProjectId = useWorkspaceSelectionStore((store) => store.setSelectedProjectId);
+  const state = useWorkspaceDataState();
+  const data = state.data;
   const workspaceSelector = routeWorkspaceSlug ?? selectedWorkspaceId;
   const queryProject = searchParams.get("project");
   const queryView = searchParams.get("view");
@@ -288,18 +297,6 @@ export function useWorkspaceData(): WorkspaceDataState & {
     [pathname, queryProject, queryView],
   );
   const requestKey = workspaceBootstrapRequestKey(workspaceSelector, bootstrapRequest);
-  const initialSnapshotState =
-    serverSnapshot === null || appliedWorkspaceServerSnapshots.has(serverSnapshot.id)
-      ? null
-      : resolveWorkspaceServerSnapshot(
-          storedData,
-          loadedWorkspaceBootstrapRequest,
-          serverSnapshot,
-          latestWorkspaceClientMutationAt,
-        );
-  const data = initialSnapshotState?.data ?? storedData;
-  const error = initialSnapshotState === null ? storedError : null;
-  const loading = initialSnapshotState === null ? storedLoading : false;
 
   const load = useCallback(
     async (force: boolean): Promise<void> => {
@@ -349,7 +346,7 @@ export function useWorkspaceData(): WorkspaceDataState & {
             loading: false,
             requiresWorkspace: true,
           });
-          store.setConnectionStatus("idle");
+          useWorkspaceConnectionStore.getState().setStatus("idle");
           return;
         }
         setSelectedWorkspaceId(result.workspace.id);
@@ -359,9 +356,11 @@ export function useWorkspaceData(): WorkspaceDataState & {
         if (latest.data !== result || latest.error !== null || latest.loading) {
           latest.replace({ data: result, error: null, loading: false, requiresWorkspace: false });
         }
-        latest.setConnectionStatus(
-          realtimeConnections.get(result.workspace.id)?.lifecycle.status ?? "connecting",
-        );
+        useWorkspaceConnectionStore
+          .getState()
+          .setStatus(
+            realtimeConnections.get(result.workspace.id)?.lifecycle.status ?? "connecting",
+          );
       } catch (error: unknown) {
         if (!workspaceRequestCoordinator.isLatest(request) || request.signal.aborted) return;
         const latest = useWorkspaceDataStore.getState();
@@ -382,6 +381,12 @@ export function useWorkspaceData(): WorkspaceDataState & {
   );
 
   const refresh = useCallback(async (): Promise<void> => load(true), [load]);
+  useEffect(() => {
+    activeWorkspaceRefresh = refresh;
+    return () => {
+      if (activeWorkspaceRefresh === refresh) activeWorkspaceRefresh = null;
+    };
+  }, [refresh]);
   useEffect(() => {
     void load(false);
     const handleRefresh = (): void => void load(true);
@@ -421,9 +426,9 @@ export function useWorkspaceData(): WorkspaceDataState & {
         loading: fallbackWorkspaceId !== null,
         requiresWorkspace: fallbackWorkspaceId === null,
       });
-      useWorkspaceDataStore
+      useWorkspaceConnectionStore
         .getState()
-        .setConnectionStatus(fallbackWorkspaceId === null ? "idle" : "connecting");
+        .setStatus(fallbackWorkspaceId === null ? "idle" : "connecting");
       router.replace(
         fallbackWorkspace === undefined
           ? "/agent"
@@ -435,10 +440,42 @@ export function useWorkspaceData(): WorkspaceDataState & {
       window.removeEventListener(workspaceMembershipRemovedEvent, handleMembershipRemoved);
   }, [router, setSelectedProjectId, setSelectedWorkspaceId]);
 
+  return { ...state, refresh };
+}
+
+export function useWorkspaceData(): WorkspaceDataResult {
+  const state = useWorkspaceDataState();
+  const refresh = useCallback(async (): Promise<void> => {
+    await activeWorkspaceRefresh?.();
+  }, []);
+  return { ...state, refresh };
+}
+
+function useWorkspaceDataState(): WorkspaceDataState & {
+  connectionStatus: WorkspaceRealtimeConnectionStatus;
+} {
+  const serverSnapshot = useContext(WorkspaceServerSnapshotContext);
+  const storedData = useWorkspaceDataStore((store) => store.data);
+  const storedError = useWorkspaceDataStore((store) => store.error);
+  const storedLoading = useWorkspaceDataStore((store) => store.loading);
   const storedRequiresWorkspace = useWorkspaceDataStore((store) => store.requiresWorkspace);
-  const requiresWorkspace = initialSnapshotState?.requiresWorkspace ?? storedRequiresWorkspace;
-  const connectionStatus = useWorkspaceDataStore((store) => store.connectionStatus);
-  return { connectionStatus, data, error, loading, refresh, requiresWorkspace };
+  const connectionStatus = useWorkspaceConnectionStore((store) => store.status);
+  const initialSnapshotState =
+    serverSnapshot === null || appliedWorkspaceServerSnapshots.has(serverSnapshot.id)
+      ? null
+      : resolveWorkspaceServerSnapshot(
+          storedData,
+          loadedWorkspaceBootstrapRequest,
+          serverSnapshot,
+          latestWorkspaceClientMutationAt,
+        );
+  return {
+    connectionStatus,
+    data: initialSnapshotState?.data ?? storedData,
+    error: initialSnapshotState === null ? storedError : null,
+    loading: initialSnapshotState === null ? storedLoading : false,
+    requiresWorkspace: initialSnapshotState?.requiresWorkspace ?? storedRequiresWorkspace,
+  };
 }
 
 function retainRealtimeConnection(workspaceId: string): () => void {
@@ -479,7 +516,9 @@ function setActiveRealtimeConnectionStatus(
   status: WorkspaceRealtimeConnectionStatus,
 ): void {
   const store = useWorkspaceDataStore.getState();
-  if (store.data?.workspace.id === workspaceId) store.setConnectionStatus(status);
+  if (store.data?.workspace.id === workspaceId) {
+    useWorkspaceConnectionStore.getState().setStatus(status);
+  }
 }
 
 function releaseRealtimeConnection(workspaceId: string): void {

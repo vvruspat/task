@@ -16,7 +16,7 @@ import {
   type ProjectData,
   type WorkspaceBootstrap,
 } from "../lib/workspace-contracts";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
 import { workspaceProjectHref } from "../lib/workspace-url";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { ProjectDangerZone } from "./project-danger-zone";
@@ -63,7 +63,7 @@ export function WorkspaceView({
   const { t } = useI18n();
   const { data, error, loading, refresh, requiresWorkspace } = useWorkspaceData();
   const searchParams = useSearchParams();
-  const setCreateOpen = useWorkspaceStore((state) => state.setCreateOpen);
+  const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateOpen);
   if (loading)
     return (
       <Card className="panel">

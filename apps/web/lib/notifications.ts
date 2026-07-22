@@ -1,7 +1,5 @@
 import type { NotificationFeed, TaskSubscription } from "@task/api-client";
 
-export const notificationsReadEvent = "task:notifications-read";
-
 export function isNotificationFeed(value: unknown): value is NotificationFeed {
   return (
     isRecord(value) &&

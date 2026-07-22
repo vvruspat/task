@@ -1,56 +1,23 @@
 "use client";
 
 import { Avatar, Badge, Box, Flex, Heading, Text } from "@radix-ui/themes";
-import type { NotificationFeed, NotificationItem } from "@task/api-client";
+import type { NotificationItem } from "@task/api-client";
 import { AtSign, Bell, CircleDot, UserCheck } from "lucide-react";
 import Link from "next/link";
 import type { ReactElement, ReactNode } from "react";
-import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
-import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
 import { formatActivityTime } from "../lib/task-activity";
-import { useWorkspaceData, workspaceRealtimeEvent } from "../lib/use-workspace-data";
+import { useNotificationFeed } from "../lib/use-notifications";
+import { useWorkspaceData } from "../lib/use-workspace-data";
 import { workspaceIssueHref } from "../lib/workspace-url";
 
 export function NotificationsPage(): ReactNode {
   const { locale, t } = useI18n();
   const workspace = useWorkspaceData().data?.workspace;
-  const [feed, setFeed] = useState<NotificationFeed | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const load = useCallback(
-    async (markRead: boolean): Promise<void> => {
-      if (workspace === undefined) return;
-      try {
-        const response = await fetch(
-          `/api/workspace/notifications?workspaceId=${encodeURIComponent(workspace.id)}`,
-          {
-            cache: "no-store",
-            method: markRead ? "POST" : "GET",
-          },
-        );
-        const value: unknown = await response.json();
-        if (!response.ok || !isNotificationFeed(value))
-          throw new Error(readError(value, t("notifications.loadError")));
-        setFeed(value);
-        setError(null);
-        if (markRead) window.dispatchEvent(new Event(notificationsReadEvent));
-      } catch (loadError: unknown) {
-        setError(loadError instanceof Error ? loadError.message : t("notifications.loadError"));
-      }
-    },
-    [t, workspace],
-  );
-
-  useEffect(() => {
-    void load(true);
-  }, [load]);
-  useEffect(() => {
-    const reload = (): void => {
-      void load(false);
-    };
-    window.addEventListener(workspaceRealtimeEvent, reload);
-    return () => window.removeEventListener(workspaceRealtimeEvent, reload);
-  }, [load]);
+  const notificationState = useNotificationFeed();
+  const matchesWorkspace = notificationState.workspaceId === (workspace?.id ?? null);
+  const error = matchesWorkspace ? notificationState.error : null;
+  const feed = matchesWorkspace ? notificationState.feed : null;
 
   return (
     <Box className="notifications-page">
@@ -136,13 +103,4 @@ function notificationIcon(item: NotificationItem): ReactElement {
   if (item.kind === "mention") return <AtSign size={15} />;
   if (item.kind === "task_assigned") return <UserCheck size={15} />;
   return <CircleDot size={15} />;
-}
-
-function readError(value: unknown, fallback: string): string {
-  return typeof value === "object" &&
-    value !== null &&
-    "error" in value &&
-    typeof value.error === "string"
-    ? value.error
-    : fallback;
 }

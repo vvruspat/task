@@ -66,7 +66,7 @@ import {
   useWorkspaceData,
 } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
 import { workspaceIssueHref, workspacePageHref, workspaceViewHref } from "../lib/workspace-url";
 import { TaskDetailsContent } from "./task-details-content";
 import { TaskStatusIndicator } from "./task-status-indicator";
@@ -183,8 +183,8 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
   const queryViewId = searchParams.get("view");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [draft, setDraft] = useState<ViewDraft | null>(null);
-  const createOpen = useWorkspaceStore((state) => state.createViewOpen);
-  const setCreateOpen = useWorkspaceStore((state) => state.setCreateViewOpen);
+  const createOpen = useWorkspaceOverlayStore((state) => state.createViewOpen);
+  const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateViewOpen);
   const [saving, setSaving] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
   const [taskOverrides, setTaskOverrides] = useState<Record<string, TaskBoardOverride>>({});
