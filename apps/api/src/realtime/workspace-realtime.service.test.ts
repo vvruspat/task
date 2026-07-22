@@ -3,8 +3,10 @@ import test from "node:test";
 import { Reflector } from "@nestjs/core";
 import { filter, firstValueFrom } from "rxjs";
 import { WorkspacesController } from "../workspaces/workspaces.controller.js";
+import { workspaceMutationKindForMethod } from "./realtime.contracts.js";
 import { WorkspaceRealtimeEventDto } from "./realtime.dto.js";
 import { workspaceMemberChangeMetadataKey } from "./workspace-change.decorator.js";
+import { readWorkspaceTaskResultId } from "./workspace-change.interceptor.js";
 import { WorkspaceRealtimeService } from "./workspace-realtime.service.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -25,12 +27,34 @@ test("WorkspaceRealtimeService publishes scoped task changes to active subscribe
   const messagePromise = firstValueFrom(
     service.subscribe(workspaceId).pipe(filter((message) => message.type === "workspace.changed")),
   );
-  service.publishChange({ workspaceId, projectId, taskId });
+  service.publishChange({ mutationKind: "updated", workspaceId, projectId, taskId });
   const message = await messagePromise;
   assert.ok(message.data instanceof WorkspaceRealtimeEventDto);
   assert.equal(message.data.kind, "changed");
   assert.equal(message.data.projectId, projectId);
   assert.equal(message.data.taskId, taskId);
+  assert.equal(message.data.mutationKind, "updated");
+});
+
+test("workspace mutation kinds preserve create, update, and delete intent", () => {
+  assert.equal(workspaceMutationKindForMethod("POST"), "created");
+  assert.equal(workspaceMutationKindForMethod("patch"), "updated");
+  assert.equal(workspaceMutationKindForMethod("PUT"), "updated");
+  assert.equal(workspaceMutationKindForMethod("DELETE"), "deleted");
+});
+
+test("created task responses contribute their generated id to realtime events", () => {
+  assert.equal(
+    readWorkspaceTaskResultId({
+      id: taskId,
+      workspaceId,
+      projectId,
+      number: 42,
+      position: "1000",
+    }),
+    taskId,
+  );
+  assert.equal(readWorkspaceTaskResultId({ id: projectId, workspaceId, position: "1000" }), null);
 });
 
 test("WorkspaceRealtimeService publishes member role changes", async () => {

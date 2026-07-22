@@ -19,6 +19,7 @@ export class WorkspaceRealtimeService {
     this.getSubject(input.workspaceId).next(
       this.createEvent({
         kind: "changed",
+        mutationKind: input.mutationKind,
         workspaceId: input.workspaceId,
         ...(input.projectId === undefined ? {} : { projectId: input.projectId }),
         ...(input.taskId === undefined ? {} : { taskId: input.taskId }),
@@ -61,6 +62,7 @@ export class WorkspaceRealtimeService {
     memberId?: string | null;
     memberUserId?: string | null;
     memberRole?: WorkspaceRealtimeEvent["memberRole"];
+    mutationKind?: WorkspaceRealtimeEvent["mutationKind"];
   }): WorkspaceRealtimeEvent {
     this.sequence += 1;
     return {
@@ -72,6 +74,7 @@ export class WorkspaceRealtimeService {
       memberId: input.memberId ?? null,
       memberUserId: input.memberUserId ?? null,
       memberRole: input.memberRole ?? null,
+      mutationKind: input.mutationKind ?? null,
       occurredAt: new Date(),
     };
   }

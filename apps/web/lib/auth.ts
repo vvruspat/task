@@ -11,6 +11,7 @@ export type AuthErrorCode =
 
 export const sessionCookieName = "task_session";
 export const authenticatedUserIdHeader = "x-task-authenticated-user-id";
+export const workspaceRequestPathHeader = "x-task-workspace-request-path";
 
 export function apiBaseUrl(): string {
   return process.env["TASK_API_BASE_URL"] ?? "http://localhost:3000";

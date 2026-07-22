@@ -66,8 +66,8 @@ import {
   useWorkspaceData,
 } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
-import { useWorkspaceStore } from "../lib/workspace-store";
-import { workspaceIssueHref, workspaceViewHref } from "../lib/workspace-url";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
+import { workspaceIssueHref, workspacePageHref, workspaceViewHref } from "../lib/workspace-url";
 import { TaskDetailsContent } from "./task-details-content";
 import { TaskStatusIndicator } from "./task-status-indicator";
 
@@ -183,8 +183,8 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
   const queryViewId = searchParams.get("view");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [draft, setDraft] = useState<ViewDraft | null>(null);
-  const createOpen = useWorkspaceStore((state) => state.createViewOpen);
-  const setCreateOpen = useWorkspaceStore((state) => state.setCreateViewOpen);
+  const createOpen = useWorkspaceOverlayStore((state) => state.createViewOpen);
+  const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateViewOpen);
   const [saving, setSaving] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
   const [taskOverrides, setTaskOverrides] = useState<Record<string, TaskBoardOverride>>({});
@@ -297,9 +297,14 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
       views: current.views.filter((view) => view.id !== selected.id),
     }));
     const nextView = data.views.find((view) => view.id !== selected.id);
+    const queryProject = data.projects.find(
+      (project) => project.id === queryProjectId || project.slug === queryProjectId,
+    );
     router.replace(
       nextView === undefined
-        ? viewsUrl(queryProjectId)
+        ? workspacePageHref(data.workspace.slug, "views", {
+            projectSlug: queryProject?.slug ?? null,
+          })
         : workspaceViewHref(data.workspace.slug, nextView.slug),
     );
     setSaving(false);
@@ -2438,9 +2443,6 @@ function viewDraftEquals(draft: ViewDraft, view: SavedView): boolean {
       );
     })
   );
-}
-function viewsUrl(projectId: string | null): string {
-  return projectId === null ? "/views" : `/views?project=${encodeURIComponent(projectId)}`;
 }
 function isSavedView(value: unknown): value is SavedView {
   return (

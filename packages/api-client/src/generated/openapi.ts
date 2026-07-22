@@ -1650,6 +1650,8 @@ export interface components {
       memberUserId: string | null;
       /** @enum {string|null} */
       memberRole: "owner" | "admin" | "member" | "guest" | null;
+      /** @enum {string|null} */
+      mutationKind: "created" | "deleted" | "updated" | null;
       /** Format: date-time */
       occurredAt: string;
     };

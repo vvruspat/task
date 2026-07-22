@@ -6,13 +6,15 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
+import { workspacePageHref } from "../lib/workspace-url";
 
 type ProjectDangerZoneProps = {
   projectId: string;
   projectTitle: string;
   refresh: () => Promise<void>;
   workspaceId: string;
+  workspaceSlug: string;
 };
 
 export function ProjectDangerZone({
@@ -20,10 +22,11 @@ export function ProjectDangerZone({
   projectTitle,
   refresh,
   workspaceId,
+  workspaceSlug,
 }: Readonly<ProjectDangerZoneProps>): ReactNode {
   const { t } = useI18n();
   const router = useRouter();
-  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
+  const setSelectedProjectId = useWorkspaceSelectionStore((state) => state.setSelectedProjectId);
   const [open, setOpen] = useState(false);
   const [confirmation, setConfirmation] = useState("");
   const [busy, setBusy] = useState(false);
@@ -45,7 +48,7 @@ export function ProjectDangerZone({
     }
     setSelectedProjectId(null);
     setOpen(false);
-    router.replace("/projects");
+    router.replace(workspacePageHref(workspaceSlug, "projects"));
     await refresh();
     router.refresh();
   }

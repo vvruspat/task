@@ -16,7 +16,7 @@ import {
   Workflow,
   X,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
@@ -24,8 +24,14 @@ import type { MessageKey } from "../lib/i18n/messages";
 import { isTaskSummary } from "../lib/task-summary";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
-import { useWorkspaceStore } from "../lib/workspace-store";
-import { workspaceIssueHref } from "../lib/workspace-url";
+import {
+  collectWorkspaceTaskLabels,
+  isWorkspaceCreateContext,
+  type WorkspaceCreateContext,
+} from "../lib/workspace-create-context";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
+import { resolveWorkspaceRouteProject, workspaceIssueHref } from "../lib/workspace-url";
 import { TaskStatusIndicator } from "./task-status-indicator";
 
 type CreateKind = "project" | "skill" | "task";
@@ -35,12 +41,25 @@ const defaultStatusValue = "default";
 
 export function CreateDialog(): ReactNode {
   const { t } = useI18n();
+  const pathname = usePathname();
   const router = useRouter();
-  const open = useWorkspaceStore((state) => state.createOpen);
-  const setOpen = useWorkspaceStore((state) => state.setCreateOpen);
-  const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
-  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
+  const searchParams = useSearchParams();
+  const open = useWorkspaceOverlayStore((state) => state.createOpen);
+  const setOpen = useWorkspaceOverlayStore((state) => state.setCreateOpen);
+  const storedProjectId = useWorkspaceSelectionStore((state) => state.selectedProjectId);
+  const setSelectedProjectId = useWorkspaceSelectionStore((state) => state.setSelectedProjectId);
   const { data, refresh } = useWorkspaceData();
+  const workspaceId = data?.workspace.id ?? null;
+  const selectedProjectId =
+    data === null
+      ? storedProjectId
+      : (resolveWorkspaceRouteProject(
+          pathname,
+          searchParams.get("project"),
+          storedProjectId,
+          data.projects,
+          data.views,
+        )?.id ?? null);
   const [kind, setKind] = useState<CreateKind>("task");
   const [projectValue, setProjectValue] = useState(noProjectValue);
   const [statusValue, setStatusValue] = useState(defaultStatusValue);
@@ -51,9 +70,19 @@ export function CreateDialog(): ReactNode {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [contextError, setContextError] = useState<string | null>(null);
+  const [createContext, setCreateContext] = useState<WorkspaceCreateContext | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const workspaceLabels = useMemo(() => collectWorkspaceLabels(data), [data]);
-  const statusOptions = useMemo(() => getStatusOptions(data, projectValue), [data, projectValue]);
+  const workspaceLabels = useMemo(
+    () =>
+      createContext?.labels ??
+      collectWorkspaceTaskLabels(data?.projectData.flatMap((project) => project.tasks) ?? []),
+    [createContext, data],
+  );
+  const statusOptions = useMemo(
+    () => getStatusOptions(data, projectValue, createContext),
+    [createContext, data, projectValue],
+  );
   const resolvedStatusValue = statusOptions.some((status) => status.id === statusValue)
     ? statusValue
     : getDefaultStatusFromOptions(statusOptions);
@@ -66,9 +95,38 @@ export function CreateDialog(): ReactNode {
       data?.projects.some((project) => project.id === selectedProjectId) === true;
     const nextProjectValue = storedProjectExists ? selectedProjectId : noProjectValue;
     setProjectValue(nextProjectValue);
-    setStatusValue(getDefaultStatusValue(data, nextProjectValue));
+    setStatusValue(getDefaultStatusValue(data, nextProjectValue, null));
     setError(null);
   }, [data, open, selectedProjectId]);
+
+  useEffect(() => {
+    if (!open || workspaceId === null) {
+      setCreateContext(null);
+      setContextError(null);
+      return;
+    }
+    const controller = new AbortController();
+    setContextError(null);
+    void loadWorkspaceCreateContext(workspaceId, controller.signal, t("create.contextError"))
+      .then(setCreateContext)
+      .catch((loadError: unknown) => {
+        if (!controller.signal.aborted) {
+          setContextError(
+            loadError instanceof Error ? loadError.message : t("create.contextError"),
+          );
+        }
+      });
+    return () => controller.abort();
+  }, [open, t, workspaceId]);
+
+  useEffect(() => {
+    if (!open || createContext === null) return;
+    setStatusValue((current) =>
+      createContext.statuses.some((status) => status.id === current)
+        ? current
+        : getDefaultStatusValue(data, projectValue, createContext),
+    );
+  }, [createContext, data, open, projectValue]);
 
   const submit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -196,7 +254,16 @@ export function CreateDialog(): ReactNode {
               value={description}
               onChange={(event) => setDescription(event.target.value)}
             />
-            {error !== null && <p className="form-error">{error}</p>}
+            {contextError !== null && (
+              <p className="form-error" role="alert">
+                {contextError}
+              </p>
+            )}
+            {error !== null && (
+              <p className="form-error" role="alert">
+                {error}
+              </p>
+            )}
             {kind === "task" && (
               <div className="create-property-row">
                 <Select.Root value={resolvedStatusValue} onValueChange={setStatusValue}>
@@ -229,7 +296,7 @@ export function CreateDialog(): ReactNode {
                   value={projectValue}
                   onValueChange={(value) => {
                     setProjectValue(value);
-                    setStatusValue(getDefaultStatusValue(data, value));
+                    setStatusValue(getDefaultStatusValue(data, value, createContext));
                   }}
                 >
                   <Select.Trigger className="create-project-trigger" variant="soft" />
@@ -334,41 +401,29 @@ export function CreateDialog(): ReactNode {
   );
 }
 
-function collectWorkspaceLabels(data: ReturnType<typeof useWorkspaceData>["data"]): string[] {
-  if (data === null) return [];
-  const labels = data.projectData.flatMap((project) =>
-    project.tasks.flatMap((task) => {
-      const value = task.metadata["labels"];
-      return Array.isArray(value)
-        ? value.filter((label): label is string => typeof label === "string")
-        : [];
-    }),
-  );
-  const unique = new Map<string, string>();
-  for (const label of labels) {
-    const key = label.toLocaleLowerCase("ru");
-    if (!unique.has(key)) unique.set(key, label);
-  }
-  return [...unique.values()].sort((left, right) => left.localeCompare(right, "ru"));
-}
-
 function getStatusOptions(
   data: WorkspaceBootstrap | null,
   projectValue: string,
+  createContext: WorkspaceCreateContext | null,
 ): WorkspaceBootstrap["statuses"] {
   if (data === null) return [];
   const projectId =
     projectValue === noProjectValue
-      ? data.projectData.find((project) => project.projectless)?.projectId
+      ? (createContext?.projectlessProjectId ??
+        data.projectData.find((project) => project.projectless)?.projectId)
       : projectValue;
   if (projectId === undefined) return [];
-  return data.statuses
+  return (createContext?.statuses ?? data.statuses)
     .filter((status) => status.projectId === projectId)
     .sort((left, right) => Number(left.position) - Number(right.position));
 }
 
-function getDefaultStatusValue(data: WorkspaceBootstrap | null, projectValue: string): string {
-  return getDefaultStatusFromOptions(getStatusOptions(data, projectValue));
+function getDefaultStatusValue(
+  data: WorkspaceBootstrap | null,
+  projectValue: string,
+  createContext: WorkspaceCreateContext | null,
+): string {
+  return getDefaultStatusFromOptions(getStatusOptions(data, projectValue, createContext));
 }
 
 function getDefaultStatusFromOptions(statuses: WorkspaceBootstrap["statuses"]): string {
@@ -422,6 +477,21 @@ function readCreateError(value: unknown, fallback: string): string {
     typeof value.error === "string"
     ? value.error
     : fallback;
+}
+
+async function loadWorkspaceCreateContext(
+  workspaceId: string,
+  signal: AbortSignal,
+  fallbackError: string,
+): Promise<WorkspaceCreateContext> {
+  const response = await fetch(
+    `/api/workspace/create-context?workspaceId=${encodeURIComponent(workspaceId)}`,
+    { cache: "no-store", signal },
+  );
+  const value: unknown = await response.json();
+  if (!response.ok) throw new Error(readCreateError(value, fallbackError));
+  if (!isWorkspaceCreateContext(value)) throw new Error(fallbackError);
+  return value;
 }
 
 function readCreatedTask(value: unknown): (TaskSummary & { projectKey: string }) | null {

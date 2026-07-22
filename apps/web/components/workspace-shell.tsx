@@ -1,6 +1,15 @@
 "use client";
 
-import { Avatar, Badge, Button, DropdownMenu, IconButton } from "@radix-ui/themes";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  DropdownMenu,
+  IconButton,
+  Skeleton,
+  Text,
+} from "@radix-ui/themes";
 import {
   Bell,
   Bot,
@@ -21,43 +30,68 @@ import {
   UserRound,
   Workflow,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import type { MessageKey } from "../lib/i18n/messages";
-import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
+import {
+  resetNotificationData,
+  useNotificationsController,
+  useNotificationUnreadCount,
+} from "../lib/use-notifications";
 import {
   notifyWorkspaceDataChanged,
   resetWorkspaceData,
-  useWorkspaceData,
-  workspaceRealtimeEvent,
+  useWorkspaceDataController,
 } from "../lib/use-workspace-data";
 import { buildWorkspaceBreadcrumbs } from "../lib/workspace-breadcrumbs";
 import { canLeaveWorkspace, canManageWorkspaceSettings } from "../lib/workspace-contracts";
-import { useWorkspaceStore } from "../lib/workspace-store";
-import { workspaceViewHref } from "../lib/workspace-url";
-import { AgentDrawer } from "./agent-chat";
-import { CreateDialog } from "./create-dialog";
-import { WorkspaceCreateDialog } from "./workspace-create-dialog";
-import { WorkspaceLeaveDialog } from "./workspace-leave-dialog";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
+import type { WorkspaceRealtimeConnectionStatus } from "../lib/workspace-realtime";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
+import {
+  canonicalWorkspaceRoute,
+  resolveWorkspaceRouteProject,
+  type WorkspacePage,
+  workspacePageFromPath,
+  workspacePageHref,
+  workspacePageSupportsProject,
+  workspaceViewHref,
+} from "../lib/workspace-url";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
 type NavItem = {
-  href: string;
+  page: WorkspacePage;
   label: MessageKey;
   icon: LucideIcon;
 };
 const navigation: NavItem[] = [
-  { href: "/agent", label: "nav.agent", icon: Bot },
-  { href: "/projects", label: "nav.projects", icon: FolderKanban },
-  { href: "/views", label: "nav.savedViews", icon: Layers3 },
-  { href: "/templates", label: "nav.templates", icon: Workflow },
-  { href: "/notifications", label: "nav.notifications", icon: Bell },
-  { href: "/settings", label: "common.settings", icon: Settings },
+  { page: "agent", label: "nav.agent", icon: Bot },
+  { page: "projects", label: "nav.projects", icon: FolderKanban },
+  { page: "views", label: "nav.savedViews", icon: Layers3 },
+  { page: "templates", label: "nav.templates", icon: Workflow },
+  { page: "notifications", label: "nav.notifications", icon: Bell },
+  { page: "settings", label: "common.settings", icon: Settings },
 ];
 const sidebarCompactStorageKey = "task:sidebar-compact";
+const AgentDrawer = dynamic(() => import("./agent-chat").then((module) => module.AgentDrawer), {
+  ssr: false,
+});
+const CreateDialog = dynamic(
+  () => import("./create-dialog").then((module) => module.CreateDialog),
+  { ssr: false },
+);
+const WorkspaceCreateDialog = dynamic(
+  () => import("./workspace-create-dialog").then((module) => module.WorkspaceCreateDialog),
+  { ssr: false },
+);
+const WorkspaceLeaveDialog = dynamic(
+  () => import("./workspace-leave-dialog").then((module) => module.WorkspaceLeaveDialog),
+  { ssr: false },
+);
 
 export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
   const { t } = useI18n();
@@ -67,26 +101,52 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const workspaceState = useWorkspaceData();
+  const workspaceState = useWorkspaceDataController();
   const workspaceData = workspaceState.data;
   const workspace = workspaceData?.workspace;
   const currentMember = workspaceData?.currentMember;
   const canManageSettings =
     currentMember !== undefined && canManageWorkspaceSettings(currentMember.role);
-  const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
-  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
-  const setSelectedWorkspaceId = useWorkspaceStore((state) => state.setSelectedWorkspaceId);
-  const selectedProject = getSelectedProject(
-    pathname,
-    searchParams.get("project"),
-    selectedProjectId,
-    workspaceData?.projects,
+  const selectedProjectId = useWorkspaceSelectionStore((state) => state.selectedProjectId);
+  const setSelectedProjectId = useWorkspaceSelectionStore((state) => state.setSelectedProjectId);
+  const setSelectedWorkspaceId = useWorkspaceSelectionStore(
+    (state) => state.setSelectedWorkspaceId,
   );
-  const setAgentOpen = useWorkspaceStore((state) => state.setAgentOpen);
-  const setCreateOpen = useWorkspaceStore((state) => state.setCreateOpen);
-  const setCreateViewOpen = useWorkspaceStore((state) => state.setCreateViewOpen);
-  const notificationUnreadCount = useWorkspaceStore((state) => state.notificationUnreadCount);
-  const setNotificationUnreadCount = useWorkspaceStore((state) => state.setNotificationUnreadCount);
+  const selectedProject =
+    workspaceData === null
+      ? undefined
+      : resolveWorkspaceRouteProject(
+          pathname,
+          searchParams.get("project"),
+          selectedProjectId,
+          workspaceData.projects,
+          workspaceData.views,
+        );
+  const canonicalHref =
+    workspaceData === null
+      ? null
+      : canonicalWorkspaceRoute(
+          pathname,
+          {
+            project: searchParams.get("project"),
+            skill: searchParams.get("skill"),
+            view: searchParams.get("view"),
+          },
+          workspaceData,
+          selectedProjectId,
+        );
+  const activePage = workspacePageFromPath(pathname);
+  const setAgentOpen = useWorkspaceOverlayStore((state) => state.setAgentOpen);
+  const agentOpen = useWorkspaceOverlayStore((state) => state.agentOpen);
+  const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateOpen);
+  const createOpen = useWorkspaceOverlayStore((state) => state.createOpen);
+  const setCreateViewOpen = useWorkspaceOverlayStore((state) => state.setCreateViewOpen);
+  const notificationUnreadCount = useNotificationUnreadCount(workspace?.id ?? null);
+  useNotificationsController(
+    workspace?.id ?? null,
+    activePage === "notifications",
+    t("notifications.loadError"),
+  );
   const routeViewSlug = pathname.match(/^\/w\/[^/]+\/view\/([^/]+)$/)?.[1];
   const selectedViewId =
     searchParams.get("view") ?? (pathname === "/views" ? workspaceData?.views.at(0)?.id : null);
@@ -95,9 +155,18 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
     setSidebarCompact(window.localStorage.getItem(sidebarCompactStorageKey) === "true");
   }, []);
   useEffect(() => {
-    if (selectedProject !== undefined && selectedProject.id !== selectedProjectId)
+    const routeProjectId = selectedProject?.id ?? null;
+    if (pathname.startsWith("/w/") && routeProjectId !== selectedProjectId) {
+      setSelectedProjectId(routeProjectId);
+      return;
+    }
+    if (selectedProject !== undefined && selectedProject.id !== selectedProjectId) {
       setSelectedProjectId(selectedProject.id);
-  }, [selectedProject, selectedProjectId, setSelectedProjectId]);
+    }
+  }, [pathname, selectedProject, selectedProjectId, setSelectedProjectId]);
+  useEffect(() => {
+    if (canonicalHref !== null) router.replace(canonicalHref);
+  }, [canonicalHref, router]);
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
@@ -108,27 +177,6 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [setAgentOpen]);
-  useEffect(() => {
-    if (workspace === undefined) return;
-    const load = (): void => {
-      void fetch(`/api/workspace/notifications?workspaceId=${encodeURIComponent(workspace.id)}`, {
-        cache: "no-store",
-      })
-        .then(async (response): Promise<unknown> => response.json())
-        .then((value) => {
-          if (isNotificationFeed(value)) setNotificationUnreadCount(value.unreadCount);
-        })
-        .catch(() => undefined);
-    };
-    const markRead = (): void => setNotificationUnreadCount(0);
-    load();
-    window.addEventListener(workspaceRealtimeEvent, load);
-    window.addEventListener(notificationsReadEvent, markRead);
-    return () => {
-      window.removeEventListener(workspaceRealtimeEvent, load);
-      window.removeEventListener(notificationsReadEvent, markRead);
-    };
-  }, [setNotificationUnreadCount, workspace]);
   const toggleSidebar = (): void => {
     setSidebarCompact((current) => {
       const next = !current;
@@ -139,12 +187,13 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   const logout = async (): Promise<void> => {
     await fetch("/api/auth/logout", { method: "POST" });
     resetWorkspaceData();
+    resetNotificationData();
     setSelectedWorkspaceId(null);
     setSelectedProjectId(null);
     router.replace("/login");
     router.refresh();
   };
-  if (workspaceState.loading && workspaceData === null) return null;
+  if (workspaceState.loading && workspaceData === null) return <WorkspaceShellSkeleton />;
   if (workspaceState.requiresWorkspace) {
     return <WorkspaceOnboarding refresh={workspaceState.refresh} />;
   }
@@ -196,7 +245,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                         key={item.id}
                         onSelect={() =>
                           changeWorkspace(
-                            item.id,
+                            item,
                             router,
                             setSelectedWorkspaceId,
                             setSelectedProjectId,
@@ -216,7 +265,9 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                 {canManageSettings && (
                   <>
                     <DropdownMenu.Separator />
-                    <DropdownMenu.Item onSelect={() => router.push("/settings")}>
+                    <DropdownMenu.Item
+                      onSelect={() => router.push(workspacePageHref(workspace.slug, "settings"))}
+                    >
                       {t("common.settings")}
                     </DropdownMenu.Item>
                   </>
@@ -234,23 +285,28 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
           )}
         </div>
         <nav>
-          {navigation.map(({ href, label: labelKey, icon: Icon }) => {
-            if (href === "/settings" && !canManageSettings) return null;
+          {navigation.map(({ page, label: labelKey, icon: Icon }) => {
+            if (page === "settings" && !canManageSettings) return null;
             const label = t(labelKey);
-            if (href === "/views")
+            const href =
+              workspace === undefined
+                ? `/${page}`
+                : workspacePageHref(workspace.slug, page, {
+                    projectSlug: workspacePageSupportsProject(page)
+                      ? (selectedProject?.slug ?? null)
+                      : null,
+                  });
+            if (page === "views")
               return (
-                <div className="nav-section" key={href}>
+                <div className="nav-section" key={page}>
                   <div
                     className={
-                      pathname === href || routeViewSlug !== undefined
+                      activePage === page || routeViewSlug !== undefined
                         ? "nav-item nav-parent active"
                         : "nav-item nav-parent"
                     }
                   >
-                    <Link
-                      href={projectHref(href, selectedProject?.id)}
-                      title={sidebarCompact ? label : undefined}
-                    >
+                    <Link href={href} title={sidebarCompact ? label : undefined}>
                       <Icon size={16} />
                       <span>{label}</span>
                     </Link>
@@ -261,7 +317,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                       aria-label={t("views.create")}
                       onClick={() => {
                         setCreateViewOpen(true);
-                        router.push(projectHref("/views", selectedProject?.id));
+                        router.push(href);
                       }}
                     >
                       <Plus size={13} />
@@ -272,11 +328,11 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                       key={view.id}
                       href={
                         workspace === undefined
-                          ? savedViewHref(view.id, selectedProject?.id)
+                          ? `/views?view=${encodeURIComponent(view.id)}`
                           : workspaceViewHref(workspace.slug, view.slug)
                       }
                       className={
-                        (pathname === "/views" && selectedViewId === view.id) ||
+                        (activePage === "views" && selectedViewId === view.id) ||
                         routeViewSlug === view.slug
                           ? "nav-subitem active"
                           : "nav-subitem"
@@ -297,11 +353,11 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             return (
               <Link
                 key={href}
-                href={projectHref(href, selectedProject?.id)}
+                href={href}
                 title={sidebarCompact ? label : undefined}
                 className={
-                  pathname === href ||
-                  (href === "/projects" &&
+                  activePage === page ||
+                  (page === "projects" &&
                     (pathname.startsWith("/projects/") || /^\/w\/[^/]+\/project\//.test(pathname)))
                     ? "nav-item active"
                     : "nav-item"
@@ -309,7 +365,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
               >
                 <Icon size={16} />
                 <span>{label}</span>
-                {href === "/notifications" && notificationUnreadCount > 0 && (
+                {page === "notifications" && notificationUnreadCount > 0 && (
                   <Badge color="red" size="1">
                     {notificationUnreadCount > 99 ? "99+" : notificationUnreadCount}
                   </Badge>
@@ -345,7 +401,15 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             </Button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content align="end">
-            <DropdownMenu.Item onSelect={() => router.push("/settings/profile")}>
+            <DropdownMenu.Item
+              onSelect={() =>
+                router.push(
+                  workspace === undefined
+                    ? "/settings/profile"
+                    : workspacePageHref(workspace.slug, "settings/profile"),
+                )
+              }
+            >
               <UserRound size={14} /> {t("nav.profile")}
             </DropdownMenu.Item>
             <DropdownMenu.Item color="red" onSelect={() => void logout()}>
@@ -369,6 +433,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             ))}
           </nav>
           <div>
+            <WorkspaceRealtimeStatusBadge status={workspaceState.connectionStatus} />
             <Button size="1" onClick={() => setCreateOpen(true)}>
               <Plus size={14} /> {t("common.create")}
             </Button>
@@ -376,19 +441,21 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
         </header>
         <div className="route-content">{children}</div>
       </section>
-      <AgentDrawer />
-      <CreateDialog />
-      <WorkspaceCreateDialog
-        open={workspaceCreateOpen}
-        onOpenChange={setWorkspaceCreateOpen}
-        onCreated={(workspaceId) =>
-          changeWorkspace(workspaceId, router, setSelectedWorkspaceId, setSelectedProjectId)
-        }
-      />
-      {workspace !== undefined && currentMember !== undefined && (
+      {agentOpen && <AgentDrawer />}
+      {createOpen && <CreateDialog />}
+      {workspaceCreateOpen && (
+        <WorkspaceCreateDialog
+          open
+          onOpenChange={setWorkspaceCreateOpen}
+          onCreated={(createdWorkspace) =>
+            changeWorkspace(createdWorkspace, router, setSelectedWorkspaceId, setSelectedProjectId)
+          }
+        />
+      )}
+      {workspaceLeaveOpen && workspace !== undefined && currentMember !== undefined && (
         <WorkspaceLeaveDialog
           memberId={currentMember.id}
-          open={workspaceLeaveOpen}
+          open
           workspaceId={workspace.id}
           workspaceName={workspace.name}
           onOpenChange={setWorkspaceLeaveOpen}
@@ -398,7 +465,11 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             );
             setSelectedWorkspaceId(nextWorkspace?.id ?? null);
             setSelectedProjectId(null);
-            router.replace("/agent");
+            router.replace(
+              nextWorkspace === undefined
+                ? "/agent"
+                : workspacePageHref(nextWorkspace.slug, "agent"),
+            );
             notifyWorkspaceDataChanged();
             router.refresh();
           }}
@@ -408,47 +479,84 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   );
 }
 
-type ProjectOption = { id: string; key: string; slug: string; title: string };
-function getSelectedProject(
-  pathname: string,
-  queryProjectId: string | null,
-  storedProjectId: string | null,
-  projects: readonly ProjectOption[] | undefined,
-): ProjectOption | undefined {
-  if (projects === undefined) return undefined;
-  const detailProjectId = pathname.match(/^\/projects\/([^/]+)$/)?.[1];
-  const detailProjectSlug = pathname.match(/^\/w\/[^/]+\/project\/([^/]+)$/)?.[1];
-  const detailProjectBySlug = projects.find((project) => project.slug === detailProjectSlug)?.id;
-  const issueProjectKey = pathname
-    .match(/^(?:\/w\/[^/]+)?\/issue\/([a-z][a-z0-9]{1,7})-\d+/i)?.[1]
-    ?.toUpperCase();
-  const issueProjectId = projects.find((project) => project.key === issueProjectKey)?.id;
-  const selectedProjectId =
-    detailProjectId ??
-    detailProjectBySlug ??
-    queryProjectId ??
-    issueProjectId ??
-    storedProjectId ??
-    projects[0]?.id;
-  return projects.find((project) => project.id === selectedProjectId);
+export function WorkspaceShellSkeleton(): ReactNode {
+  const { t } = useI18n();
+  return (
+    <main aria-busy="true" aria-live="polite" className="workspace" role="status">
+      <aside className="sidebar">
+        <div className="brand">
+          <Skeleton height="36px" width="180px" />
+        </div>
+        <nav aria-label={t("nav.breadcrumbs")}>
+          {navigation.map(({ page }) => (
+            <Skeleton height="32px" key={page} width="100%" />
+          ))}
+        </nav>
+        <Skeleton height="40px" width="100%" />
+      </aside>
+      <section className="main">
+        <header className="topbar">
+          <Skeleton height="24px" width="220px" />
+          <Skeleton height="28px" width="96px" />
+        </header>
+        <div className="route-content">
+          <Card className="panel">
+            <Text color="gray">{t("workspace.loading")}</Text>
+            <Skeleton height="28px" width="45%" />
+            <Skeleton height="16px" width="80%" />
+            <Skeleton height="180px" width="100%" />
+          </Card>
+        </div>
+      </section>
+    </main>
+  );
 }
-function projectHref(pathname: string, projectId: string | undefined): string {
-  return projectId === undefined
-    ? pathname
-    : `${pathname}?project=${encodeURIComponent(projectId)}`;
+
+export function WorkspaceRouteSkeleton(): ReactNode {
+  const { t } = useI18n();
+  return (
+    <Card aria-busy="true" aria-live="polite" className="panel" role="status">
+      <Text color="gray">{t("workspace.loading")}</Text>
+      <Skeleton height="28px" width="45%" />
+      <Skeleton height="16px" width="80%" />
+      <Skeleton height="180px" width="100%" />
+    </Card>
+  );
 }
-function savedViewHref(viewId: string, projectId: string | undefined): string {
-  const parameters = new URLSearchParams({ view: viewId });
-  if (projectId !== undefined) parameters.set("project", projectId);
-  return `/views?${parameters.toString()}`;
+
+function WorkspaceRealtimeStatusBadge({
+  status,
+}: Readonly<{ status: WorkspaceRealtimeConnectionStatus }>): ReactNode {
+  const { t } = useI18n();
+  if (status === "idle" || status === "live") return null;
+  if (status === "offline") {
+    return (
+      <Badge aria-live="polite" color="red" role="status" variant="soft">
+        {t("workspace.realtimeOffline")}
+      </Badge>
+    );
+  }
+  return (
+    <Badge
+      aria-live="polite"
+      color={status === "connecting" ? "gray" : "amber"}
+      role="status"
+      variant="soft"
+    >
+      {t(
+        status === "connecting" ? "workspace.realtimeConnecting" : "workspace.realtimeReconnecting",
+      )}
+    </Badge>
+  );
 }
+
 function changeWorkspace(
-  workspaceId: string,
+  workspace: Readonly<{ id: string; slug: string }>,
   router: ReturnType<typeof useRouter>,
   setSelectedWorkspaceId: (workspaceId: string | null) => void,
   setSelectedProjectId: (projectId: string | null) => void,
 ): void {
-  setSelectedWorkspaceId(workspaceId);
+  setSelectedWorkspaceId(workspace.id);
   setSelectedProjectId(null);
-  router.push("/agent");
+  router.push(workspacePageHref(workspace.slug, "agent"));
 }

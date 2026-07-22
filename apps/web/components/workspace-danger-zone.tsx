@@ -7,21 +7,26 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import { notifyWorkspaceDataChanged } from "../lib/use-workspace-data";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
+import { workspacePageHref } from "../lib/workspace-url";
 
 type WorkspaceDangerZoneProps = {
   workspaceId: string;
   workspaceName: string;
+  fallbackWorkspaceSlug: string | null;
 };
 
 export function WorkspaceDangerZone({
   workspaceId,
   workspaceName,
+  fallbackWorkspaceSlug,
 }: Readonly<WorkspaceDangerZoneProps>): ReactNode {
   const { t } = useI18n();
   const router = useRouter();
-  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
-  const setSelectedWorkspaceId = useWorkspaceStore((state) => state.setSelectedWorkspaceId);
+  const setSelectedProjectId = useWorkspaceSelectionStore((state) => state.setSelectedProjectId);
+  const setSelectedWorkspaceId = useWorkspaceSelectionStore(
+    (state) => state.setSelectedWorkspaceId,
+  );
   const [open, setOpen] = useState(false);
   const [confirmation, setConfirmation] = useState("");
   const [busy, setBusy] = useState(false);
@@ -46,7 +51,9 @@ export function WorkspaceDangerZone({
     setSelectedProjectId(null);
     setSelectedWorkspaceId(null);
     setOpen(false);
-    router.replace("/agent");
+    router.replace(
+      fallbackWorkspaceSlug === null ? "/agent" : workspacePageHref(fallbackWorkspaceSlug, "agent"),
+    );
     notifyWorkspaceDataChanged();
     router.refresh();
   }

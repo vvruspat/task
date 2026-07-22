@@ -1,4 +1,5 @@
 import { IssuePage } from "../../../../../../../components/issue-page";
+import { WorkspaceRouteSnapshot } from "../../../../../../../components/workspace-route-snapshot";
 
 export default async function Page({
   params,
@@ -7,6 +8,8 @@ export default async function Page({
 }>) {
   const { workspaceSlug, identifier, slug } = await params;
   return (
-    <IssuePage workspaceSlug={workspaceSlug} identifier={identifier} slug={slug?.at(0) ?? null} />
+    <WorkspaceRouteSnapshot workspaceSelector={workspaceSlug}>
+      <IssuePage workspaceSlug={workspaceSlug} identifier={identifier} slug={slug?.at(0) ?? null} />
+    </WorkspaceRouteSnapshot>
   );
 }

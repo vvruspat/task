@@ -45,11 +45,13 @@ export function IssuePage({
   const [state, setState] = useState<IssueState>({ status: "loading" });
 
   useEffect(() => {
+    const resolvedWorkspaceSlug = workspaceSlug ?? data?.workspace.slug;
+    if (resolvedWorkspaceSlug === undefined) return;
     const controller = new AbortController();
+    const workspaceQuery = `?workspace=${encodeURIComponent(resolvedWorkspaceSlug)}`;
+    setState({ status: "loading" });
     async function load(): Promise<void> {
       try {
-        const workspaceQuery =
-          workspaceSlug === undefined ? "" : `?workspace=${encodeURIComponent(workspaceSlug)}`;
         const response = await fetch(
           `/api/issues/${encodeURIComponent(identifier)}${workspaceQuery}`,
           {
@@ -77,7 +79,7 @@ export function IssuePage({
     }
     void load();
     return () => controller.abort();
-  }, [identifier, workspaceSlug, t]);
+  }, [data?.workspace.slug, identifier, workspaceSlug, t]);
 
   const project = useMemo(() => {
     if (state.status !== "ready") return undefined;

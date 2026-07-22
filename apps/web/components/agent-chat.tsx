@@ -32,6 +32,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   createContext,
   type ReactNode,
@@ -43,7 +44,9 @@ import {
 } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import { notifyWorkspaceDataChanged, useWorkspaceData } from "../lib/use-workspace-data";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
+import { resolveWorkspaceRouteProject } from "../lib/workspace-url";
 
 type AgentStreamEvent =
   | { type: "text-delta"; delta: string }
@@ -86,8 +89,8 @@ export function AgentPage(): ReactNode {
 
 export function AgentDrawer(): ReactNode {
   const { t } = useI18n();
-  const open = useWorkspaceStore((state) => state.agentOpen);
-  const setOpen = useWorkspaceStore((state) => state.setAgentOpen);
+  const open = useWorkspaceOverlayStore((state) => state.agentOpen);
+  const setOpen = useWorkspaceOverlayStore((state) => state.setAgentOpen);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
@@ -103,7 +106,21 @@ export function AgentDrawer(): ReactNode {
 
 function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): ReactNode {
   const { t } = useI18n();
-  const workspaceId = useWorkspaceData().data?.workspace.id ?? null;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const data = useWorkspaceData().data;
+  const workspaceId = data?.workspace.id ?? null;
+  const storedProjectId = useWorkspaceSelectionStore((state) => state.selectedProjectId);
+  const projectId =
+    data === null
+      ? null
+      : (resolveWorkspaceRouteProject(
+          pathname,
+          searchParams.get("project"),
+          storedProjectId,
+          data.projects,
+          data.views,
+        )?.id ?? null);
   const [chats, setChats] = useState<AgentChatSummary[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [chat, setChat] = useState<AgentChatDetail | null>(null);
@@ -357,6 +374,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
           <AgentConversation
             key={chat?.id ?? "new-chat"}
             chat={chat}
+            projectId={projectId}
             workspaceId={workspaceId}
             onTurnDone={handleTurnDone}
           />
@@ -368,15 +386,16 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
 
 function AgentConversation({
   chat,
+  projectId,
   workspaceId,
   onTurnDone,
 }: Readonly<{
   chat: AgentChatDetail | null;
+  projectId: string | null;
   workspaceId: string | null;
   onTurnDone: (chat: { id: string; title: string }) => void;
 }>): ReactNode {
   const { t } = useI18n();
-  const projectId = useWorkspaceStore((state) => state.selectedProjectId);
   const [activities, setActivities] = useState<AgentActivity[]>([]);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [completedAt, setCompletedAt] = useState<number | null>(null);
