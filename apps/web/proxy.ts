@@ -1,5 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { authenticatedUserIdHeader, resolveSession, sessionCookieName } from "./lib/auth";
+import {
+  authenticatedUserIdHeader,
+  resolveSession,
+  sessionCookieName,
+  workspaceRequestPathHeader,
+} from "./lib/auth";
 import { isPublicRequest } from "./lib/public-route";
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
@@ -30,7 +35,9 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
   const headers = new Headers(request.headers);
   headers.delete(authenticatedUserIdHeader);
+  headers.delete(workspaceRequestPathHeader);
   headers.set(authenticatedUserIdHeader, session.user.id);
+  headers.set(workspaceRequestPathHeader, `${request.nextUrl.pathname}${request.nextUrl.search}`);
   return NextResponse.next({ request: { headers } });
 }
 

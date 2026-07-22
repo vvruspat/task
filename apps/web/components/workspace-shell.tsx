@@ -473,7 +473,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   );
 }
 
-function WorkspaceShellSkeleton(): ReactNode {
+export function WorkspaceShellSkeleton(): ReactNode {
   const { t } = useI18n();
   return (
     <main aria-busy="true" aria-live="polite" className="workspace" role="status">
@@ -503,6 +503,18 @@ function WorkspaceShellSkeleton(): ReactNode {
         </div>
       </section>
     </main>
+  );
+}
+
+export function WorkspaceRouteSkeleton(): ReactNode {
+  const { t } = useI18n();
+  return (
+    <Card aria-busy="true" aria-live="polite" className="panel" role="status">
+      <Text color="gray">{t("workspace.loading")}</Text>
+      <Skeleton height="28px" width="45%" />
+      <Skeleton height="16px" width="80%" />
+      <Skeleton height="180px" width="100%" />
+    </Card>
   );
 }
 
