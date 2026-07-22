@@ -25,6 +25,7 @@ const routeLabels: Readonly<Partial<Record<WorkspacePage, MessageKey>>> = {
   notifications: "nav.notifications",
   projects: "nav.projects",
   settings: "common.settings",
+  "settings/integrations": "integrations.title",
   "settings/profile": "profile.title",
   "settings/telegram": "workspace.telegramTitle",
   templates: "nav.templates",

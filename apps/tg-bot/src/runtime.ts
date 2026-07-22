@@ -54,6 +54,7 @@ export function createTelegramBotRuntime(
     processUpdate(update: unknown) {
       return processTelegramUpdate(update, {
         backendClient,
+        botUsername: options.config.botUsername,
         replySender,
       });
     },

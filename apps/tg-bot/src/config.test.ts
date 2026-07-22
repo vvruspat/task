@@ -13,6 +13,7 @@ test("parseTelegramBotConfig accepts required Telegram bot settings", () => {
 
   assert.deepEqual(config, {
     botToken: "123456:telegram-token",
+    botUsername: null,
     backendBotSharedSecret: "bot-secret",
     backendBaseUrl: "https://api.example.test",
     webhookSecret: null,
@@ -28,11 +29,24 @@ test("parseTelegramBotConfig accepts an explicit webhook secret", () => {
 
   assert.deepEqual(config, {
     botToken: "123456:telegram-token",
+    botUsername: null,
     backendBotSharedSecret: "bot-secret",
     backendBaseUrl: "https://api.example.test",
     webhookSecret: "webhook-secret",
     port: 3001,
   });
+});
+
+test("parseTelegramBotConfig accepts a bot username for group mentions", () => {
+  const config = parseTelegramBotConfig({
+    ...validEnvironment,
+    TELEGRAM_BOT_USERNAME: "task_agent_bot",
+  });
+  assert.equal(config.botUsername, "task_agent_bot");
+  assert.throws(
+    () => parseTelegramBotConfig({ ...validEnvironment, TELEGRAM_BOT_USERNAME: "@taskbot" }),
+    InvalidTelegramBotEnvironmentError,
+  );
 });
 
 test("parseTelegramBotConfig accepts an explicit webhook server port", () => {

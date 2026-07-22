@@ -1,11 +1,13 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
-import type { DataSource } from "typeorm";
+import { type DataSource, In } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
+  IntegrationConnectionEntity,
   TelegramChatEntity,
   TelegramIdentityEntity,
   UserEntity,
+  WorkspaceIntegrationEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type {
@@ -56,6 +58,26 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
     });
 
     if (chat === null) {
+      return {
+        status: "telegram_chat_unlinked",
+        userId: identity.userId,
+      };
+    }
+
+    const connections = await dataSource.getRepository(IntegrationConnectionEntity).findBy({
+      providerAccountId: input.telegramChatId,
+      status: "connected",
+    });
+    const integration =
+      connections.length === 0
+        ? null
+        : await dataSource.getRepository(WorkspaceIntegrationEntity).findOneBy({
+            id: In(connections.map((connection) => connection.workspaceIntegrationId)),
+            pluginKey: "telegram",
+            status: "connected",
+            workspaceId: chat.workspaceId,
+          });
+    if (integration === null) {
       return {
         status: "telegram_chat_unlinked",
         userId: identity.userId,

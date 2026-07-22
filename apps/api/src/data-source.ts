@@ -10,6 +10,15 @@ import {
   AuthSessionEntity,
   CommentEntity,
   ConfirmationRequestEntity,
+  IntegrationConnectionEntity,
+  IntegrationEventDeliveryEntity,
+  IntegrationExternalResourceEntity,
+  IntegrationOAuthStateEntity,
+  IntegrationOutboxEventEntity,
+  IntegrationResourceLinkEntity,
+  IntegrationResourceReferenceEntity,
+  IntegrationSecretEntity,
+  IntegrationSubscriptionEntity,
   InviteEntity,
   NotificationReadStateEntity,
   PasswordCredentialEntity,
@@ -24,6 +33,7 @@ import {
   TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
+  WorkspaceIntegrationEntity,
   WorkspaceMemberEntity,
 } from "./persistence/entities/index.js";
 import { CreateCorePersistenceTables1783296000000 } from "./persistence/migrations/1783296000000-create-core-persistence-tables.js";
@@ -58,6 +68,10 @@ import { AddEmailPasswordAuth1783297680000 } from "./persistence/migrations/1783
 import { AddUserLocale1783297740000 } from "./persistence/migrations/1783297740000-add-user-locale.js";
 import { AddEmailInvitations1783297800000 } from "./persistence/migrations/1783297800000-add-email-invitations.js";
 import { AddSavedViewVisibility1783297860000 } from "./persistence/migrations/1783297860000-add-saved-view-visibility.js";
+import { CreateWorkspaceIntegrationsTable1783297920000 } from "./persistence/migrations/1783297920000-create-workspace-integrations-table.js";
+import { CreateIntegrationEventOutbox1783297980000 } from "./persistence/migrations/1783297980000-create-integration-event-outbox.js";
+import { CreateIntegrationConnections1783298040000 } from "./persistence/migrations/1783298040000-create-integration-connections.js";
+import { CreateIntegrationResources1783298100000 } from "./persistence/migrations/1783298100000-create-integration-resources.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -65,6 +79,16 @@ const apiEntities = [
   PasswordCredentialEntity,
   AuthSessionEntity,
   WorkspaceMemberEntity,
+  WorkspaceIntegrationEntity,
+  IntegrationOutboxEventEntity,
+  IntegrationEventDeliveryEntity,
+  IntegrationConnectionEntity,
+  IntegrationOAuthStateEntity,
+  IntegrationSecretEntity,
+  IntegrationExternalResourceEntity,
+  IntegrationResourceLinkEntity,
+  IntegrationResourceReferenceEntity,
+  IntegrationSubscriptionEntity,
   ProjectEntity,
   SavedViewEntity,
   StatusEntity,
@@ -118,6 +142,10 @@ const apiMigrations = [
   AddUserLocale1783297740000,
   AddEmailInvitations1783297800000,
   AddSavedViewVisibility1783297860000,
+  CreateWorkspaceIntegrationsTable1783297920000,
+  CreateIntegrationEventOutbox1783297980000,
+  CreateIntegrationConnections1783298040000,
+  CreateIntegrationResources1783298100000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

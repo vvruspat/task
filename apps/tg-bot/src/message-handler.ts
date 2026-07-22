@@ -61,6 +61,34 @@ export async function handleTelegramUpdate(
     throw error;
   }
 
+  const connectToken = readTelegramConnectToken(message.text);
+  if (connectToken !== null) {
+    try {
+      await options.backendClient.completeTelegramChatConnection({
+        body: {
+          telegramChatId: message.chat.telegramChatId,
+          telegramId: message.sender.telegramId,
+          title: message.chat.title,
+          token: connectToken,
+        },
+      });
+      return createReply(
+        message.chat.telegramChatId,
+        message.messageId,
+        "Чат подключён к workspace tAsk.",
+      );
+    } catch (error: unknown) {
+      if (error instanceof TelegramBackendClientError) {
+        return createReply(
+          message.chat.telegramChatId,
+          message.messageId,
+          "Не удалось подключить чат. Проверь токен и привязку Telegram к аккаунту tAsk.",
+        );
+      }
+      throw error;
+    }
+  }
+
   let context: TelegramContextResolutionResponse;
 
   try {
@@ -111,6 +139,12 @@ export async function handleTelegramUpdate(
     message,
     context: readResolvedContext(context),
   };
+}
+
+export function readTelegramConnectToken(text: string | null): string | null {
+  if (text === null) return null;
+  const match = /^\/connect(?:@[A-Za-z0-9_]{5,32})?\s+([A-Za-z0-9_-]{43})\s*$/u.exec(text);
+  return match?.[1] ?? null;
 }
 
 function createReply(

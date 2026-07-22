@@ -67,6 +67,30 @@ test("TelegramBackendClient posts Telegram context with bot shared secret", asyn
   });
 });
 
+test("TelegramBackendClient completes Telegram chat connections with bot shared secret", async () => {
+  const fetch = new RecordingTelegramBackendFetch({
+    integrationId: "11111111-1111-4111-8111-111111111111",
+    status: "connected",
+    telegramChatId: "-100987654321",
+    workspaceId: "33333333-3333-4333-8333-333333333333",
+  });
+  const client = createTelegramBackendClient({
+    baseUrl: "https://api.example.test/",
+    botSharedSecret: "bot-secret",
+    fetch: fetch.call,
+  });
+  const body = {
+    telegramChatId: "-100987654321",
+    telegramId: "123456789",
+    title: "Album Team",
+    token: "a".repeat(43),
+  };
+
+  assert.equal((await client.completeTelegramChatConnection({ body })).status, "connected");
+  assert.equal(fetch.lastInput, "https://api.example.test/internal/integrations/telegram/connect");
+  assert.equal(fetch.lastInit?.body, JSON.stringify(body));
+});
+
 test("TelegramBackendClient posts Telegram agent runs with bot shared secret", async () => {
   const fetch = new RecordingTelegramBackendFetch({
     agentRunId: "11111111-1111-4111-8111-111111111111",

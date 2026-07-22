@@ -15,6 +15,7 @@ import {
   type TelegramReplySender,
   type TelegramSendMessageResult,
 } from "./telegram-sender.js";
+import type { TelegramMessageContext } from "./telegram-update.js";
 import {
   parseTelegramConfirmationCallbackContext,
   type TelegramConfirmationCallbackContext,
@@ -23,6 +24,7 @@ import {
 
 export type TelegramUpdateProcessorOptions = {
   backendClient: TelegramBackendClient;
+  botUsername?: string | null;
   replySender: TelegramReplySender;
 };
 
@@ -81,6 +83,21 @@ export async function processTelegramUpdate(
     );
   }
 
+  if (!isTelegramAgentInvocation(action.message, options.botUsername ?? null)) {
+    const instruction =
+      options.botUsername === null || options.botUsername === undefined
+        ? "используй /task"
+        : `упомяни @${options.botUsername} или используй /task`;
+    return sendReply(
+      createReply(
+        action.message.chat.telegramChatId,
+        action.message.messageId,
+        `Чтобы вызвать агента в групповом чате, ${instruction}.`,
+      ),
+      options.replySender,
+    );
+  }
+
   try {
     const agentRun = await options.backendClient.createTelegramAgentRun({
       body: {
@@ -118,6 +135,36 @@ export async function processTelegramUpdate(
 
     throw error;
   }
+}
+
+export function isTelegramAgentInvocation(
+  message: TelegramMessageContext,
+  botUsername: string | null,
+): boolean {
+  if (message.chat.type === "private") return true;
+  if (message.text === null) return false;
+  for (const entity of message.entities) {
+    const entityText = message.text.slice(entity.offset, entity.offset + entity.length);
+    if (entity.type === "bot_command" && isTaskCommand(entityText, botUsername)) return true;
+    if (
+      entity.type === "mention" &&
+      botUsername !== null &&
+      entityText.toLowerCase() === `@${botUsername.toLowerCase()}`
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isTaskCommand(value: string, botUsername: string | null): boolean {
+  const match = /^\/task(?:@([A-Za-z0-9_]{5,32}))?$/u.exec(value);
+  if (match === null) return false;
+  const addressedUsername = match[1];
+  return (
+    addressedUsername === undefined ||
+    (botUsername !== null && addressedUsername.toLowerCase() === botUsername.toLowerCase())
+  );
 }
 
 async function sendReply(

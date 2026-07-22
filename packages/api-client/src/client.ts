@@ -55,6 +55,17 @@ export type VerifyTelegramMiniAppInitDataInput =
 export type LinkedTelegramIdentity = components["schemas"]["LinkedTelegramIdentityDto"];
 export type TelegramIdentityLinkStatus = components["schemas"]["TelegramIdentityLinkStatusDto"];
 export type WorkspaceInvitation = components["schemas"]["WorkspaceInvitationDto"];
+export type IntegrationCatalogItem = components["schemas"]["IntegrationCatalogItemDto"];
+export type WorkspaceIntegration = components["schemas"]["WorkspaceIntegrationDto"];
+export type CompleteGoogleDriveOAuthInput = components["schemas"]["CompleteGoogleDriveOAuthDto"];
+export type GoogleDriveOAuthCompletion = components["schemas"]["GoogleDriveOAuthCompletionDto"];
+export type GoogleDriveAuthorizationStart =
+  components["schemas"]["GoogleDriveAuthorizationStartDto"];
+export type GoogleDrivePickerSession = components["schemas"]["GoogleDrivePickerSessionDto"];
+export type SelectGoogleDriveRootFolderInput =
+  components["schemas"]["SelectGoogleDriveRootFolderDto"];
+export type GoogleDriveRootFolder = components["schemas"]["GoogleDriveRootFolderDto"];
+export type TelegramConnectToken = components["schemas"]["TelegramConnectTokenDto"];
 export type InvitationPreview = components["schemas"]["InvitationPreviewDto"];
 export type AcceptInvitationResult = components["schemas"]["AcceptInvitationResultDto"];
 
@@ -96,6 +107,15 @@ type CreateWorkspaceInvitationOperation = operations["WorkspaceInvitationsContro
 type CreateSavedViewOperation = operations["ViewsController_create"];
 type UpdateSavedViewOperation = operations["ViewsController_update"];
 type ListAgentChatsOperation = operations["AgentChatsController_list"];
+type InstallWorkspaceIntegrationOperation = operations["IntegrationsController_install"];
+type UninstallWorkspaceIntegrationOperation = operations["IntegrationsController_uninstall"];
+type StartGoogleDriveOAuthOperation = operations["GoogleDriveOAuthController_start"];
+type CompleteGoogleDriveOAuthOperation = operations["GoogleDriveOAuthCallbackController_complete"];
+type CreateGoogleDrivePickerSessionOperation =
+  operations["GoogleDriveOAuthController_createPickerSession"];
+type SelectGoogleDriveRootFolderOperation =
+  operations["GoogleDriveOAuthController_selectRootFolder"];
+type CreateTelegramConnectTokenOperation = operations["TelegramConnectController_createToken"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -341,6 +361,38 @@ export type InvitationTokenInput = { token: string };
 export type SavedViewScopedInput = WorkspaceScopedInput & { viewId: string };
 export type CreateSavedViewRequestInput = WorkspaceScopedInput & { body: CreateSavedViewInput };
 export type UpdateSavedViewRequestInput = SavedViewScopedInput & { body: UpdateSavedViewInput };
+export type InstallWorkspaceIntegrationRequestInput = WorkspaceScopedInput & {
+  pluginKey: string;
+};
+export type UninstallWorkspaceIntegrationRequestInput = WorkspaceScopedInput & {
+  integrationId: string;
+};
+export type InstallWorkspaceIntegrationResponse =
+  InstallWorkspaceIntegrationOperation["responses"]["201"]["content"]["application/json"];
+export type UninstallWorkspaceIntegrationResponse =
+  UninstallWorkspaceIntegrationOperation["responses"]["200"]["content"]["application/json"];
+export type StartGoogleDriveOAuthRequestInput = WorkspaceScopedInput & { integrationId: string };
+export type StartGoogleDriveOAuthResponse =
+  StartGoogleDriveOAuthOperation["responses"]["201"]["content"]["application/json"];
+export type CompleteGoogleDriveOAuthRequestInput = { body: CompleteGoogleDriveOAuthInput };
+export type CompleteGoogleDriveOAuthResponse =
+  CompleteGoogleDriveOAuthOperation["responses"]["201"]["content"]["application/json"];
+export type CreateGoogleDrivePickerSessionRequestInput = WorkspaceScopedInput & {
+  integrationId: string;
+};
+export type CreateGoogleDrivePickerSessionResponse =
+  CreateGoogleDrivePickerSessionOperation["responses"]["200"]["content"]["application/json"];
+export type SelectGoogleDriveRootFolderRequestInput = WorkspaceScopedInput & {
+  body: SelectGoogleDriveRootFolderInput;
+  integrationId: string;
+};
+export type SelectGoogleDriveRootFolderResponse =
+  SelectGoogleDriveRootFolderOperation["responses"]["200"]["content"]["application/json"];
+export type CreateTelegramConnectTokenRequestInput = WorkspaceScopedInput & {
+  integrationId: string;
+};
+export type CreateTelegramConnectTokenResponse =
+  CreateTelegramConnectTokenOperation["responses"]["200"]["content"]["application/json"];
 
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
@@ -404,6 +456,28 @@ export type TaskApiClient = {
   listStatuses(input: ProjectScopedInput): Promise<WorkspaceStatus[]>;
   listWorkspaceMembers(input: WorkspaceScopedInput): Promise<WorkspaceMember[]>;
   listWorkspaceInvitations(input: WorkspaceScopedInput): Promise<WorkspaceInvitation[]>;
+  listWorkspaceIntegrations(input: WorkspaceScopedInput): Promise<IntegrationCatalogItem[]>;
+  installWorkspaceIntegration(
+    input: InstallWorkspaceIntegrationRequestInput,
+  ): Promise<InstallWorkspaceIntegrationResponse>;
+  uninstallWorkspaceIntegration(
+    input: UninstallWorkspaceIntegrationRequestInput,
+  ): Promise<UninstallWorkspaceIntegrationResponse>;
+  startGoogleDriveOAuth(
+    input: StartGoogleDriveOAuthRequestInput,
+  ): Promise<StartGoogleDriveOAuthResponse>;
+  completeGoogleDriveOAuth(
+    input: CompleteGoogleDriveOAuthRequestInput,
+  ): Promise<CompleteGoogleDriveOAuthResponse>;
+  createGoogleDrivePickerSession(
+    input: CreateGoogleDrivePickerSessionRequestInput,
+  ): Promise<CreateGoogleDrivePickerSessionResponse>;
+  selectGoogleDriveRootFolder(
+    input: SelectGoogleDriveRootFolderRequestInput,
+  ): Promise<SelectGoogleDriveRootFolderResponse>;
+  createTelegramConnectToken(
+    input: CreateTelegramConnectTokenRequestInput,
+  ): Promise<CreateTelegramConnectTokenResponse>;
   removeWorkspaceMember(input: WorkspaceMemberScopedInput): Promise<RemoveWorkspaceMemberResponse>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
@@ -995,6 +1069,80 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         workspaceInvitationArrayParser,
         { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
+    listWorkspaceIntegrations: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations`,
+        integrationCatalogItemArrayParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    installWorkspaceIntegration: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.pluginKey)}/install`,
+        workspaceIntegrationParser,
+        { method: "POST", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    uninstallWorkspaceIntegration: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}`,
+        workspaceIntegrationParser,
+        { method: "DELETE", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    startGoogleDriveOAuth: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/connect`,
+        googleDriveAuthorizationStartParser,
+        { method: "POST", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    completeGoogleDriveOAuth: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        "/integrations/oauth/google-drive/callback",
+        googleDriveOAuthCompletionParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    createGoogleDrivePickerSession: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/google-drive/picker-session`,
+        googleDrivePickerSessionParser,
+        { method: "POST", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    selectGoogleDriveRootFolder: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/google-drive/root-folder`,
+        googleDriveRootFolderParser,
+        {
+          body: input.body,
+          method: "PUT",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    createTelegramConnectToken: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/telegram/connect-token`,
+        telegramConnectTokenParser,
+        { method: "POST", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
     createWorkspaceInvitation: (input) =>
       request(
         options.fetch,
@@ -1351,6 +1499,34 @@ const workspaceInvitationParser: ResponseParser<WorkspaceInvitation> = {
 const workspaceInvitationArrayParser: ResponseParser<WorkspaceInvitation[]> = {
   isValid: (value): value is WorkspaceInvitation[] => isArrayOf(value, isWorkspaceInvitation),
   label: "workspace invitation list",
+};
+const workspaceIntegrationParser: ResponseParser<WorkspaceIntegration> = {
+  isValid: isWorkspaceIntegration,
+  label: "workspace integration",
+};
+const integrationCatalogItemArrayParser: ResponseParser<IntegrationCatalogItem[]> = {
+  isValid: (value): value is IntegrationCatalogItem[] => isArrayOf(value, isIntegrationCatalogItem),
+  label: "workspace integration catalog",
+};
+const googleDriveAuthorizationStartParser: ResponseParser<GoogleDriveAuthorizationStart> = {
+  isValid: isGoogleDriveAuthorizationStart,
+  label: "Google Drive authorization start",
+};
+const googleDriveOAuthCompletionParser: ResponseParser<GoogleDriveOAuthCompletion> = {
+  isValid: isGoogleDriveOAuthCompletion,
+  label: "Google Drive OAuth completion",
+};
+const googleDrivePickerSessionParser: ResponseParser<GoogleDrivePickerSession> = {
+  isValid: isGoogleDrivePickerSession,
+  label: "Google Drive Picker session",
+};
+const googleDriveRootFolderParser: ResponseParser<GoogleDriveRootFolder> = {
+  isValid: isGoogleDriveRootFolder,
+  label: "Google Drive root folder",
+};
+const telegramConnectTokenParser: ResponseParser<TelegramConnectToken> = {
+  isValid: isTelegramConnectToken,
+  label: "Telegram connect token",
 };
 const invitationPreviewParser: ResponseParser<InvitationPreview> = {
   isValid: isInvitationPreview,
@@ -2149,6 +2325,109 @@ function isWorkspaceInvitation(value: unknown): value is WorkspaceInvitation {
   );
 }
 
+function isWorkspaceIntegration(value: unknown): value is WorkspaceIntegration {
+  const status = isJsonObject(value) ? readProperty(value, "status") : undefined;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "workspaceId") &&
+    hasString(value, "pluginKey") &&
+    hasString(value, "pluginVersion") &&
+    isWorkspaceIntegrationStatus(status) &&
+    isJsonObject(readProperty(value, "config")) &&
+    hasString(value, "installedByUserId") &&
+    hasNullableString(value, "connectedByUserId") &&
+    hasNullableString(value, "connectedAt") &&
+    hasNullableString(value, "disconnectedAt") &&
+    hasNullableString(value, "lastError") &&
+    hasString(value, "createdAt") &&
+    hasString(value, "updatedAt")
+  );
+}
+
+function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogItem {
+  const authKind = isJsonObject(value) ? readProperty(value, "authKind") : undefined;
+  const installation = isJsonObject(value) ? readProperty(value, "installation") : undefined;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "pluginKey") &&
+    hasString(value, "pluginVersion") &&
+    hasString(value, "name") &&
+    hasString(value, "description") &&
+    hasString(value, "iconKey") &&
+    isIntegrationAuthKind(authKind) &&
+    isArrayOf(readProperty(value, "requiredScopes"), isString) &&
+    isArrayOf(readProperty(value, "capabilityKinds"), isIntegrationCapabilityKind) &&
+    (installation === null || isWorkspaceIntegration(installation))
+  );
+}
+
+function isGoogleDriveAuthorizationStart(value: unknown): value is GoogleDriveAuthorizationStart {
+  return isJsonObject(value) && hasString(value, "authorizationUrl");
+}
+
+function isGoogleDriveOAuthCompletion(value: unknown): value is GoogleDriveOAuthCompletion {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "integrationId") &&
+    readProperty(value, "pluginKey") === "google-drive" &&
+    readProperty(value, "status") === "connected" &&
+    hasString(value, "workspaceId")
+  );
+}
+
+function isGoogleDrivePickerSession(value: unknown): value is GoogleDrivePickerSession {
+  return (
+    isJsonObject(value) &&
+    hasNonEmptyString(value, "accessToken") &&
+    hasNonEmptyString(value, "appId") &&
+    hasNonEmptyString(value, "developerKey") &&
+    hasString(value, "expiresAt")
+  );
+}
+
+function isGoogleDriveRootFolder(value: unknown): value is GoogleDriveRootFolder {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "externalResourceId") &&
+    hasNonEmptyString(value, "name") &&
+    hasNonEmptyString(value, "providerResourceId") &&
+    hasNullableString(value, "webUrl")
+  );
+}
+
+function isTelegramConnectToken(value: unknown): value is TelegramConnectToken {
+  return (
+    isJsonObject(value) && hasNonEmptyString(value, "command") && hasString(value, "expiresAt")
+  );
+}
+
+function isWorkspaceIntegrationStatus(value: unknown): boolean {
+  return (
+    value === "authorizing" ||
+    value === "connected" ||
+    value === "disconnected" ||
+    value === "error"
+  );
+}
+
+function isIntegrationAuthKind(value: unknown): value is IntegrationCatalogItem["authKind"] {
+  return value === "app_installation" || value === "bot_token" || value === "oauth2";
+}
+
+function isIntegrationCapabilityKind(
+  value: unknown,
+): value is IntegrationCatalogItem["capabilityKinds"][number] {
+  return (
+    value === "agent_tool_provider" ||
+    value === "attachment_exporter" ||
+    value === "conversation_ingress" ||
+    value === "domain_event_consumer" ||
+    value === "resource_provider" ||
+    value === "webhook_handler"
+  );
+}
+
 function isInvitationPreview(value: unknown): value is InvitationPreview {
   const role = isJsonObject(value) ? readProperty(value, "role") : undefined;
   const status = isJsonObject(value) ? readProperty(value, "status") : undefined;
@@ -2230,6 +2509,11 @@ function isTaskAttachmentTargetType(value: unknown): boolean {
 
 function hasString(value: JsonObject, key: string): boolean {
   return typeof readProperty(value, key) === "string";
+}
+
+function hasNonEmptyString(value: JsonObject, key: string): boolean {
+  const property = readProperty(value, key);
+  return typeof property === "string" && property.length > 0;
 }
 
 function hasOptionalNullableString(value: JsonObject, key: string): boolean {

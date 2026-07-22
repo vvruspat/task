@@ -18,7 +18,8 @@ const telegramUpdate = {
       type: "supergroup",
       title: "Album Team",
     },
-    text: "создай задачу записать бас",
+    text: "/task создай задачу записать бас",
+    entities: [{ type: "bot_command", offset: 0, length: 5 }],
   },
 };
 
@@ -140,7 +141,7 @@ test("createTelegramBotRuntimeFromEnvironment records resolved updates through a
       telegramId: "123456789",
       telegramChatId: "-100987654321",
       sourceMessageId: "20",
-      inputText: "создай задачу записать бас",
+      inputText: "/task создай задачу записать бас",
       attachments: [],
     }),
   });

@@ -12,6 +12,7 @@ export type WorkspacePage =
   | "projects"
   | "settings"
   | "settings/profile"
+  | "settings/integrations"
   | "settings/telegram"
   | "templates"
   | "views";
@@ -46,6 +47,7 @@ const legacyWorkspacePages: Readonly<Record<string, WorkspacePage>> = {
   "/projects": "projects",
   "/settings": "settings",
   "/settings/profile": "settings/profile",
+  "/settings/integrations": "settings/integrations",
   "/settings/telegram": "settings/telegram",
   "/table": "views",
   "/templates": "templates",
@@ -214,6 +216,7 @@ function isWorkspacePage(value: string): value is WorkspacePage {
     value === "projects" ||
     value === "settings" ||
     value === "settings/profile" ||
+    value === "settings/integrations" ||
     value === "settings/telegram" ||
     value === "templates" ||
     value === "views"

@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  type CompleteTelegramChatConnectionRequest,
   type HandleTelegramConfirmationCallbackRequest,
   type ResolveTelegramContextRequest,
   type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
   TelegramBackendClientError,
+  type TelegramChatConnectionResponse,
   type TelegramConfirmationCallbackResponse,
   type TelegramContextResolutionResponse,
 } from "./backend-client.js";
@@ -133,10 +135,47 @@ test("handleTelegramUpdate replies for backend client failures", async () => {
   });
 });
 
+test("handleTelegramUpdate connects an unlinked chat with a one-time command", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    { status: "telegram_chat_unlinked", userId: "11111111-1111-4111-8111-111111111111" },
+    {
+      integrationId: "22222222-2222-4222-8222-222222222222",
+      status: "connected",
+      telegramChatId: "-100987654321",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+    },
+  );
+  const token = "a".repeat(43);
+  const action = await handleTelegramUpdate(
+    { ...telegramUpdate, message: { ...telegramUpdate.message, text: `/connect ${token}` } },
+    { backendClient },
+  );
+
+  assert.deepEqual(action, {
+    kind: "reply",
+    replyToMessageId: "20",
+    telegramChatId: "-100987654321",
+    text: "Чат подключён к workspace tAsk.",
+  });
+  assert.deepEqual(backendClient.lastConnectionRequest, {
+    body: {
+      telegramChatId: "-100987654321",
+      telegramId: "123456789",
+      title: "Album Team",
+      token,
+    },
+  });
+  assert.equal(backendClient.lastRequest, null);
+});
+
 class RecordingTelegramBackendClient implements TelegramBackendClient {
   lastRequest: ResolveTelegramContextRequest | null = null;
+  lastConnectionRequest: CompleteTelegramChatConnectionRequest | null = null;
 
-  constructor(private readonly response: TelegramContextResolutionResponse) {}
+  constructor(
+    private readonly response: TelegramContextResolutionResponse,
+    private readonly connectionResponse: TelegramChatConnectionResponse | null = null,
+  ) {}
 
   async resolveTelegramContext(
     request: ResolveTelegramContextRequest,
@@ -155,6 +194,16 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
   ): Promise<TelegramConfirmationCallbackResponse> {
     throw new TelegramBackendClientError("Unexpected confirmation callback request.");
   }
+
+  async completeTelegramChatConnection(
+    request: CompleteTelegramChatConnectionRequest,
+  ): Promise<TelegramChatConnectionResponse> {
+    this.lastConnectionRequest = request;
+    if (this.connectionResponse === null) {
+      throw new TelegramBackendClientError("Unexpected Telegram connection request.");
+    }
+    return this.connectionResponse;
+  }
 }
 
 class FailingTelegramBackendClient implements TelegramBackendClient {
@@ -167,6 +216,10 @@ class FailingTelegramBackendClient implements TelegramBackendClient {
   }
 
   async handleTelegramConfirmationCallback(): Promise<TelegramConfirmationCallbackResponse> {
+    throw new TelegramBackendClientError("Backend unavailable.");
+  }
+
+  async completeTelegramChatConnection(): Promise<TelegramChatConnectionResponse> {
     throw new TelegramBackendClientError("Backend unavailable.");
   }
 }

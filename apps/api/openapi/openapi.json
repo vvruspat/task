@@ -1476,6 +1476,524 @@
         "tags": ["notifications"]
       }
     },
+    "/integrations/oauth/google-drive/callback": {
+      "post": {
+        "operationId": "GoogleDriveOAuthCallbackController_complete",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteGoogleDriveOAuthDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleDriveOAuthCompletionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "OAuth state or callback payload is invalid."
+          },
+          "403": {
+            "description": "The initiating user no longer manages the workspace."
+          },
+          "502": {
+            "description": "Google rejected the authorization."
+          }
+        },
+        "summary": "Complete a Google Drive OAuth connection",
+        "tags": ["integrations"]
+      }
+    },
+    "/workspaces/{workspaceId}/integrations/{integrationId}/connect": {
+      "post": {
+        "operationId": "GoogleDriveOAuthController_start",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleDriveAuthorizationStartDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot connect integrations."
+          },
+          "404": {
+            "description": "Google Drive workspace integration was not found."
+          },
+          "409": {
+            "description": "Google Drive is already connected."
+          },
+          "503": {
+            "description": "Google Drive OAuth or encryption is not configured."
+          }
+        },
+        "summary": "Start a workspace Google Drive OAuth connection",
+        "tags": ["integrations"]
+      }
+    },
+    "/workspaces/{workspaceId}/integrations/{integrationId}/google-drive/picker-session": {
+      "post": {
+        "operationId": "GoogleDriveOAuthController_createPickerSession",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleDrivePickerSessionDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot configure integrations."
+          },
+          "404": {
+            "description": "Google Drive workspace integration was not found."
+          },
+          "409": {
+            "description": "Google Drive is not connected."
+          },
+          "502": {
+            "description": "Google credentials could not be refreshed."
+          },
+          "503": {
+            "description": "Google Picker is not configured."
+          }
+        },
+        "summary": "Create a short-lived Google Drive Picker session",
+        "tags": ["integrations"]
+      }
+    },
+    "/workspaces/{workspaceId}/integrations/{integrationId}/google-drive/root-folder": {
+      "put": {
+        "operationId": "GoogleDriveOAuthController_selectRootFolder",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelectGoogleDriveRootFolderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleDriveRootFolderDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Selected Drive item is not a writable folder."
+          },
+          "403": {
+            "description": "Current user cannot configure integrations."
+          },
+          "404": {
+            "description": "Google Drive workspace integration was not found."
+          },
+          "409": {
+            "description": "Google Drive is not connected."
+          },
+          "502": {
+            "description": "Google Drive is unavailable."
+          }
+        },
+        "summary": "Select the managed Google Drive workspace root folder",
+        "tags": ["integrations"]
+      }
+    },
+    "/workspaces/{workspaceId}/integrations": {
+      "get": {
+        "operationId": "IntegrationsController_listCatalog",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationCatalogItemDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot manage integrations."
+          }
+        },
+        "summary": "List available plugins and workspace installation states",
+        "tags": ["workspace integrations"]
+      }
+    },
+    "/workspaces/{workspaceId}/integrations/{pluginKey}/install": {
+      "post": {
+        "operationId": "IntegrationsController_install",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "pluginKey",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceIntegrationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot install integrations."
+          },
+          "404": {
+            "description": "Integration plugin was not found."
+          }
+        },
+        "summary": "Install an available plugin in a workspace",
+        "tags": ["workspace integrations"]
+      }
+    },
+    "/workspaces/{workspaceId}/integrations/{integrationId}": {
+      "delete": {
+        "operationId": "IntegrationsController_uninstall",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceIntegrationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot uninstall integrations."
+          },
+          "404": {
+            "description": "Workspace integration was not found."
+          },
+          "409": {
+            "description": "Connected integration must be disconnected first."
+          }
+        },
+        "summary": "Uninstall a disconnected workspace plugin",
+        "tags": ["workspace integrations"]
+      }
+    },
+    "/workspaces/{workspaceId}/integrations/{integrationId}/telegram/connect-token": {
+      "post": {
+        "operationId": "TelegramConnectController_createToken",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramConnectTokenDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot connect integrations."
+          },
+          "404": {
+            "description": "Telegram workspace integration was not found."
+          },
+          "409": {
+            "description": "Telegram is already connected."
+          }
+        },
+        "summary": "Create a one-time Telegram workspace chat connect command",
+        "tags": ["integrations"]
+      }
+    },
+    "/internal/integrations/telegram/connect": {
+      "post": {
+        "operationId": "TelegramInternalConnectController_complete",
+        "parameters": [
+          {
+            "name": "x-task-bot-secret",
+            "in": "header",
+            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteTelegramChatConnectionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramChatConnectionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram connect token or payload is invalid."
+          },
+          "401": {
+            "description": "Telegram bot shared secret is missing or invalid."
+          },
+          "403": {
+            "description": "Telegram identity does not own the token."
+          },
+          "409": {
+            "description": "Telegram chat or integration is already connected."
+          }
+        },
+        "summary": "Connect a Telegram chat using a one-time workspace token",
+        "tags": ["integrations"]
+      }
+    },
     "/workspaces/{workspaceId}/invitations": {
       "get": {
         "operationId": "WorkspaceInvitationsController_list",
@@ -6225,6 +6743,295 @@
           }
         },
         "required": ["subscribed"]
+      },
+      "CompleteGoogleDriveOAuthDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": ["code", "state"]
+      },
+      "GoogleDriveOAuthCompletionDto": {
+        "type": "object",
+        "properties": {
+          "integrationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pluginKey": {
+            "type": "string",
+            "enum": ["google-drive"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["connected"]
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": ["integrationId", "pluginKey", "status", "workspaceId"]
+      },
+      "GoogleDriveAuthorizationStartDto": {
+        "type": "object",
+        "properties": {
+          "authorizationUrl": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["authorizationUrl"]
+      },
+      "GoogleDrivePickerSessionDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Short-lived drive.file token. Never persist or log this value."
+          },
+          "appId": {
+            "type": "string"
+          },
+          "developerKey": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["accessToken", "appId", "developerKey", "expiresAt"]
+      },
+      "SelectGoogleDriveRootFolderDto": {
+        "type": "object",
+        "properties": {
+          "folderId": {
+            "type": "string",
+            "maxLength": 1024,
+            "pattern": "^[A-Za-z0-9_-]{10,1024}$"
+          }
+        },
+        "required": ["folderId"]
+      },
+      "GoogleDriveRootFolderDto": {
+        "type": "object",
+        "properties": {
+          "externalResourceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "providerResourceId": {
+            "type": "string"
+          },
+          "webUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "required": ["externalResourceId", "name", "providerResourceId", "webUrl"]
+      },
+      "WorkspaceIntegrationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pluginKey": {
+            "type": "string"
+          },
+          "pluginVersion": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["authorizing", "connected", "disconnected", "error"]
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "installedByUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "connectedByUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "connectedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "disconnectedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastError": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "pluginKey",
+          "pluginVersion",
+          "status",
+          "config",
+          "installedByUserId",
+          "connectedByUserId",
+          "connectedAt",
+          "disconnectedAt",
+          "lastError",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "IntegrationCatalogItemDto": {
+        "type": "object",
+        "properties": {
+          "pluginKey": {
+            "type": "string"
+          },
+          "pluginVersion": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "iconKey": {
+            "type": "string"
+          },
+          "authKind": {
+            "type": "string",
+            "enum": ["app_installation", "bot_token", "oauth2"]
+          },
+          "requiredScopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "capabilityKinds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "agent_tool_provider",
+                "attachment_exporter",
+                "conversation_ingress",
+                "domain_event_consumer",
+                "resource_provider",
+                "webhook_handler"
+              ]
+            }
+          },
+          "installation": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WorkspaceIntegrationDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "pluginKey",
+          "pluginVersion",
+          "name",
+          "description",
+          "iconKey",
+          "authKind",
+          "requiredScopes",
+          "capabilityKinds",
+          "installation"
+        ]
+      },
+      "TelegramConnectTokenDto": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Command to send in the Telegram chat that should be connected."
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["command", "expiresAt"]
+      },
+      "CompleteTelegramChatConnectionDto": {
+        "type": "object",
+        "properties": {
+          "telegramChatId": {
+            "type": "string"
+          },
+          "telegramId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "minLength": 43,
+            "maxLength": 43
+          }
+        },
+        "required": ["telegramChatId", "telegramId", "title", "token"]
+      },
+      "TelegramChatConnectionDto": {
+        "type": "object",
+        "properties": {
+          "integrationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["connected"]
+          },
+          "telegramChatId": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": ["integrationId", "status", "telegramChatId", "workspaceId"]
       },
       "WorkspaceInvitationDto": {
         "type": "object",

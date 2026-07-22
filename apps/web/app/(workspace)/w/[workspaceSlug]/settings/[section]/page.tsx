@@ -13,6 +13,7 @@ export default async function CanonicalWorkspaceSettingsPage({
   let content: ReactNode;
   if (section === "profile") content = <ProfileSettings />;
   else if (section === "telegram") content = <WorkspaceView kind="telegram" />;
+  else if (section === "integrations") content = <WorkspaceView kind="integrations" />;
   else notFound();
   return (
     <WorkspaceRouteSnapshot workspaceSelector={workspaceSlug}>{content}</WorkspaceRouteSnapshot>

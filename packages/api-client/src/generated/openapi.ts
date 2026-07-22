@@ -397,6 +397,159 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/integrations/oauth/google-drive/callback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Complete a Google Drive OAuth connection */
+    post: operations["GoogleDriveOAuthCallbackController_complete"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/connect": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Start a workspace Google Drive OAuth connection */
+    post: operations["GoogleDriveOAuthController_start"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/google-drive/picker-session": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create a short-lived Google Drive Picker session */
+    post: operations["GoogleDriveOAuthController_createPickerSession"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/google-drive/root-folder": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Select the managed Google Drive workspace root folder */
+    put: operations["GoogleDriveOAuthController_selectRootFolder"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List available plugins and workspace installation states */
+    get: operations["IntegrationsController_listCatalog"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{pluginKey}/install": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Install an available plugin in a workspace */
+    post: operations["IntegrationsController_install"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Uninstall a disconnected workspace plugin */
+    delete: operations["IntegrationsController_uninstall"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/telegram/connect-token": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create a one-time Telegram workspace chat connect command */
+    post: operations["TelegramConnectController_createToken"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/internal/integrations/telegram/connect": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Connect a Telegram chat using a one-time workspace token */
+    post: operations["TelegramInternalConnectController_complete"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/invitations": {
     parameters: {
       query?: never;
@@ -1591,6 +1744,109 @@ export interface components {
     };
     TaskSubscriptionDto: {
       subscribed: boolean;
+    };
+    CompleteGoogleDriveOAuthDto: {
+      code: string;
+      state: string;
+    };
+    GoogleDriveOAuthCompletionDto: {
+      /** Format: uuid */
+      integrationId: string;
+      /** @enum {string} */
+      pluginKey: "google-drive";
+      /** @enum {string} */
+      status: "connected";
+      /** Format: uuid */
+      workspaceId: string;
+    };
+    GoogleDriveAuthorizationStartDto: {
+      /** Format: uri */
+      authorizationUrl: string;
+    };
+    GoogleDrivePickerSessionDto: {
+      /** @description Short-lived drive.file token. Never persist or log this value. */
+      accessToken: string;
+      appId: string;
+      developerKey: string;
+      /** Format: date-time */
+      expiresAt: string;
+    };
+    SelectGoogleDriveRootFolderDto: {
+      folderId: string;
+    };
+    GoogleDriveRootFolderDto: {
+      /** Format: uuid */
+      externalResourceId: string;
+      name: string;
+      providerResourceId: string;
+      /** Format: uri */
+      webUrl: string | null;
+    };
+    WorkspaceIntegrationDto: {
+      /** Format: uuid */
+      id: string;
+      /** Format: uuid */
+      workspaceId: string;
+      pluginKey: string;
+      pluginVersion: string;
+      /** @enum {string} */
+      status: "authorizing" | "connected" | "disconnected" | "error";
+      config: {
+        [key: string]: unknown;
+      };
+      /** Format: uuid */
+      installedByUserId: string;
+      /** Format: uuid */
+      connectedByUserId: string | null;
+      /** Format: date-time */
+      connectedAt: string | null;
+      /** Format: date-time */
+      disconnectedAt: string | null;
+      lastError: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    IntegrationCatalogItemDto: {
+      pluginKey: string;
+      pluginVersion: string;
+      name: string;
+      description: string;
+      iconKey: string;
+      /** @enum {string} */
+      authKind: "app_installation" | "bot_token" | "oauth2";
+      requiredScopes: string[];
+      capabilityKinds: (
+        | "agent_tool_provider"
+        | "attachment_exporter"
+        | "conversation_ingress"
+        | "domain_event_consumer"
+        | "resource_provider"
+        | "webhook_handler"
+      )[];
+      installation: components["schemas"]["WorkspaceIntegrationDto"] | null;
+    };
+    TelegramConnectTokenDto: {
+      /** @description Command to send in the Telegram chat that should be connected. */
+      command: string;
+      /** Format: date-time */
+      expiresAt: string;
+    };
+    CompleteTelegramChatConnectionDto: {
+      telegramChatId: string;
+      telegramId: string;
+      title: string | null;
+      token: string;
+    };
+    TelegramChatConnectionDto: {
+      /** Format: uuid */
+      integrationId: string;
+      /** @enum {string} */
+      status: "connected";
+      telegramChatId: string;
+      /** Format: uuid */
+      workspaceId: string;
     };
     WorkspaceInvitationDto: {
       /** Format: uuid */
@@ -3485,6 +3741,446 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["TaskSubscriptionDto"];
         };
+      };
+    };
+  };
+  GoogleDriveOAuthCallbackController_complete: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CompleteGoogleDriveOAuthDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GoogleDriveOAuthCompletionDto"];
+        };
+      };
+      /** @description OAuth state or callback payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description The initiating user no longer manages the workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google rejected the authorization. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GoogleDriveOAuthController_start: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GoogleDriveAuthorizationStartDto"];
+        };
+      };
+      /** @description Current user cannot connect integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive workspace integration was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive is already connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive OAuth or encryption is not configured. */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GoogleDriveOAuthController_createPickerSession: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GoogleDrivePickerSessionDto"];
+        };
+      };
+      /** @description Current user cannot configure integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive workspace integration was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive is not connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google credentials could not be refreshed. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Picker is not configured. */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GoogleDriveOAuthController_selectRootFolder: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SelectGoogleDriveRootFolderDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GoogleDriveRootFolderDto"];
+        };
+      };
+      /** @description Selected Drive item is not a writable folder. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot configure integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive workspace integration was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive is not connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive is unavailable. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  IntegrationsController_listCatalog: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IntegrationCatalogItemDto"][];
+        };
+      };
+      /** @description Current user cannot manage integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  IntegrationsController_install: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        pluginKey: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceIntegrationDto"];
+        };
+      };
+      /** @description Current user cannot install integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Integration plugin was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  IntegrationsController_uninstall: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceIntegrationDto"];
+        };
+      };
+      /** @description Current user cannot uninstall integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Workspace integration was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Connected integration must be disconnected first. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramConnectController_createToken: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramConnectTokenDto"];
+        };
+      };
+      /** @description Current user cannot connect integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram workspace integration was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram is already connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramInternalConnectController_complete: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
+        "x-task-bot-secret": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CompleteTelegramChatConnectionDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramChatConnectionDto"];
+        };
+      };
+      /** @description Telegram connect token or payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram bot shared secret is missing or invalid. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram identity does not own the token. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram chat or integration is already connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };

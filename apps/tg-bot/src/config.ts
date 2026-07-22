@@ -1,5 +1,6 @@
 export type TelegramBotEnvironment = {
   TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_BOT_USERNAME?: string;
   TASK_API_BOT_SHARED_SECRET?: string;
   TASK_API_BASE_URL?: string;
   TELEGRAM_WEBHOOK_SECRET?: string;
@@ -8,6 +9,7 @@ export type TelegramBotEnvironment = {
 
 export type TelegramBotConfig = {
   botToken: string;
+  botUsername: string | null;
   backendBotSharedSecret: string;
   backendBaseUrl: string;
   webhookSecret: string | null;
@@ -30,6 +32,7 @@ export class InvalidTelegramBotEnvironmentError extends Error {
 export function parseTelegramBotConfig(environment: TelegramBotEnvironment): TelegramBotConfig {
   return {
     botToken: parseRequiredSecret("TELEGRAM_BOT_TOKEN", environment.TELEGRAM_BOT_TOKEN),
+    botUsername: parseBotUsername(environment.TELEGRAM_BOT_USERNAME),
     backendBotSharedSecret: parseRequiredSecret(
       "TASK_API_BOT_SHARED_SECRET",
       environment.TASK_API_BOT_SHARED_SECRET,
@@ -41,6 +44,18 @@ export function parseTelegramBotConfig(environment: TelegramBotEnvironment): Tel
     ),
     port: parsePort(environment.TELEGRAM_BOT_PORT),
   };
+}
+
+function parseBotUsername(value: string | undefined): string | null {
+  if (value === undefined) return null;
+  if (!/^[A-Za-z0-9_]{5,32}$/u.test(value)) {
+    throw new InvalidTelegramBotEnvironmentError(
+      "TELEGRAM_BOT_USERNAME",
+      value,
+      "must be a Telegram username without @",
+    );
+  }
+  return value;
 }
 
 export function loadTelegramBotConfig(

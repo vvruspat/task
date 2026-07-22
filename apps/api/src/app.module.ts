@@ -9,6 +9,7 @@ import { AuthModule } from "./auth/auth.module.js";
 import { CommentsModule } from "./comments/comments.module.js";
 import { ConfirmationsModule } from "./confirmations/confirmations.module.js";
 import { DashboardModule } from "./dashboard/dashboard.module.js";
+import { IntegrationsModule } from "./integrations/integrations.module.js";
 import { InvitationsModule } from "./invitations/invitations.module.js";
 import { NotificationsModule } from "./notifications/notifications.module.js";
 import { ProjectMatrixModule } from "./project-matrix/project-matrix.module.js";
@@ -33,6 +34,7 @@ import { WorkspacesModule } from "./workspaces/workspaces.module.js";
     SearchModule,
     ProjectMatrixModule,
     NotificationsModule,
+    IntegrationsModule,
     InvitationsModule,
     RealtimeModule,
     TasksModule,
