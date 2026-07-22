@@ -5,6 +5,7 @@ import { produce } from "immer";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { create } from "zustand";
+import { LatestRequestCoordinator } from "./latest-request";
 import type { ApiFailure, WorkspaceBootstrap, WorkspaceRequired } from "./workspace-contracts";
 import { isApiFailure, isWorkspaceRequired } from "./workspace-contracts";
 import {
@@ -30,10 +31,10 @@ type WorkspaceDataStore = WorkspaceDataState & {
 const workspaceRefreshEvent = "task:workspace-data-refresh";
 const workspaceMembershipRemovedEvent = "task:workspace-membership-removed";
 export const workspaceRealtimeEvent = "task:workspace-realtime-event";
-let pendingRequest: {
-  selector: string | null;
-  promise: Promise<WorkspaceBootstrap | WorkspaceRequired>;
-} | null = null;
+const workspaceRequestCoordinator = new LatestRequestCoordinator<
+  string | null,
+  WorkspaceBootstrap | WorkspaceRequired
+>();
 const realtimeConnections = new Map<string, { references: number; source: EventSource }>();
 let realtimeRefreshTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -49,6 +50,20 @@ const useWorkspaceDataStore = create<WorkspaceDataStore>()((set) => ({
 
 export function notifyWorkspaceDataChanged(): void {
   window.dispatchEvent(new Event(workspaceRefreshEvent));
+}
+
+export function resetWorkspaceData(): void {
+  workspaceRequestCoordinator.cancel();
+  if (realtimeRefreshTimer !== null) {
+    clearTimeout(realtimeRefreshTimer);
+    realtimeRefreshTimer = null;
+  }
+  useWorkspaceDataStore.getState().replace({
+    data: null,
+    error: null,
+    loading: true,
+    requiresWorkspace: false,
+  });
 }
 
 export function updateWorkspaceData(
@@ -140,21 +155,14 @@ async function readJson(
 
 async function requestWorkspace(
   selector: string | null,
+  signal: AbortSignal,
 ): Promise<WorkspaceBootstrap | WorkspaceRequired> {
-  if (pendingRequest !== null && pendingRequest.selector === selector)
-    return pendingRequest.promise;
   const query = selector === null ? "" : `?workspace=${encodeURIComponent(selector)}`;
-  const promise = (async (): Promise<WorkspaceBootstrap | WorkspaceRequired> => {
-    const result = await readJson(await fetch(`/api/workspace${query}`, { cache: "no-store" }));
-    if (isApiFailure(result)) throw new Error(result.error);
-    return result;
-  })();
-  pendingRequest = { selector, promise };
-  try {
-    return await promise;
-  } finally {
-    if (pendingRequest?.promise === promise) pendingRequest = null;
-  }
+  const result = await readJson(
+    await fetch(`/api/workspace${query}`, { cache: "no-store", signal }),
+  );
+  if (isApiFailure(result)) throw new Error(result.error);
+  return result;
 }
 
 export function useWorkspaceData(): WorkspaceDataState & {
@@ -185,8 +193,12 @@ export function useWorkspaceData(): WorkspaceDataState & {
       if (current.data === null) {
         current.replace({ data: null, error: null, loading: true, requiresWorkspace: false });
       }
+      const request = workspaceRequestCoordinator.request(workspaceSelector, (signal) =>
+        requestWorkspace(workspaceSelector, signal),
+      );
       try {
-        const result = await requestWorkspace(workspaceSelector);
+        const result = await request.promise;
+        if (!workspaceRequestCoordinator.isLatest(request)) return;
         if (isWorkspaceRequired(result)) {
           setSelectedWorkspaceId(null);
           useWorkspaceDataStore.getState().replace({
@@ -203,6 +215,7 @@ export function useWorkspaceData(): WorkspaceDataState & {
           latest.replace({ data: result, error: null, loading: false, requiresWorkspace: false });
         }
       } catch (error: unknown) {
+        if (!workspaceRequestCoordinator.isLatest(request) || request.signal.aborted) return;
         const latest = useWorkspaceDataStore.getState();
         latest.replace({
           data: latest.data,
@@ -248,6 +261,7 @@ export function useWorkspaceData(): WorkspaceDataState & {
         return;
       }
       const fallbackWorkspaceId = findFallbackWorkspaceId(current, change.workspaceId);
+      workspaceRequestCoordinator.cancel();
       setSelectedWorkspaceId(fallbackWorkspaceId);
       setSelectedProjectId(null);
       useWorkspaceDataStore.getState().replace({
