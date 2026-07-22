@@ -2,17 +2,18 @@ import type { WorkspaceDetail } from "@task/api-client";
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
 import { readAuthenticatedUserId } from "../../../lib/auth";
-import { isUnprojectedIssueProject } from "../../../lib/system-project";
+import {
+  loadWorkspaceSnapshotData,
+  WorkspaceSnapshotLoadError,
+} from "../../../lib/server-workspace-snapshot";
+import type { WorkspaceBootstrapRequest } from "../../../lib/workspace-bootstrap";
 import type {
   ApiFailure,
-  ProjectData,
   WorkspaceBootstrap,
   WorkspaceRequired,
 } from "../../../lib/workspace-contracts";
-import { findCurrentWorkspaceMember } from "../../../lib/workspace-contracts";
 
 const apiBaseUrl = readEnvironment("TASK_API_BASE_URL") ?? "http://localhost:3000";
-
 export async function GET(
   request: Request,
 ): Promise<NextResponse<WorkspaceBootstrap | WorkspaceRequired | ApiFailure>> {
@@ -20,87 +21,62 @@ export async function GET(
   if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
     return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   }
-
-  const api = createTaskApiClient({ baseUrl: apiBaseUrl, fetch, trustedUserId });
+  const startedAt = performance.now();
   try {
-    const workspaces = await api.listWorkspaces();
-    if (workspaces.length === 0) {
-      return NextResponse.json({ requiresWorkspace: true });
+    const url = new URL(request.url);
+    const bootstrapRequest = readWorkspaceBootstrapRequest(url.searchParams);
+    if (bootstrapRequest === null) {
+      return NextResponse.json({ error: "Invalid workspace payload scope." }, { status: 400 });
     }
-    const selector = new URL(request.url).searchParams.get("workspace");
-    const workspace =
-      selector === null
-        ? workspaces.at(0)
-        : workspaces.find((candidate) => candidate.id === selector || candidate.slug === selector);
-    if (workspace === undefined)
-      return NextResponse.json(
-        { error: "No workspace is visible for the configured user." },
-        { status: 404 },
-      );
-    const workspaceId = workspace.id;
-    const [detail, myTasks, allProjects, taskSkills, confirmations, agentRuns, allViews] =
-      await Promise.all([
-        api.getWorkspace({ workspaceId }),
-        api.listMyTasks({ workspaceId }),
-        api.listProjects({ workspaceId }),
-        api.listTaskSkills({ workspaceId }),
-        api.listPendingConfirmationRequests({ workspaceId }),
-        api.listAgentRuns({ workspaceId }),
-        api.listSavedViews({ workspaceId }),
-      ]);
-    const projects = allProjects.filter((project) => !isUnprojectedIssueProject(project));
-    const systemProjectIds = new Set(
-      allProjects.filter(isUnprojectedIssueProject).map((project) => project.id),
-    );
-    const views = allViews.filter(
-      (view) =>
-        view.projectId === null ||
-        view.projectId === undefined ||
-        !systemProjectIds.has(view.projectId),
-    );
-    const projectData = await Promise.all(
-      allProjects.map(
-        async (project): Promise<ProjectData> => ({
-          projectId: project.id,
-          projectKey: project.key,
-          projectTitle: isUnprojectedIssueProject(project) ? "Без проекта" : project.title,
-          projectless: isUnprojectedIssueProject(project),
-          tasks: await api.listTasks({ workspaceId, projectId: project.id }),
-          table: await api.listTaskTable({ workspaceId, projectId: project.id }),
-          matrix: await api.getProjectMatrix({ workspaceId, projectId: project.id }),
-        }),
-      ),
-    );
-    const statuses = (
-      await Promise.all(
-        allProjects.map((project) => api.listStatuses({ workspaceId, projectId: project.id })),
-      )
-    ).flat();
-    const currentMember = findCurrentWorkspaceMember(detail, trustedUserId);
-    if (currentMember === null) {
-      return NextResponse.json(
-        { error: "Current workspace membership was not found." },
-        { status: 403 },
-      );
-    }
-    return NextResponse.json({
-      availableWorkspaces: workspaces,
-      currentMember,
-      workspace: detail,
-      myTasks,
-      projects,
-      statuses,
-      taskSkills,
-      confirmations,
-      agentRuns,
-      views,
-      projectData,
+    const payload = await loadWorkspaceSnapshotData({
+      request: bootstrapRequest,
+      trustedUserId,
+      workspaceSelector: url.searchParams.get("workspace"),
     });
+    return measuredWorkspaceResponse(payload, bootstrapRequest.scope, startedAt);
   } catch (error: unknown) {
-    const message =
-      error instanceof TaskApiClientError ? error.message : "Unable to load workspace data.";
-    return NextResponse.json({ error: message }, { status: 502 });
+    const message = error instanceof Error ? error.message : "Unable to load workspace data.";
+    return NextResponse.json(
+      { error: message },
+      { status: error instanceof WorkspaceSnapshotLoadError ? error.status : 502 },
+    );
   }
+}
+
+function readWorkspaceBootstrapRequest(
+  parameters: URLSearchParams,
+): WorkspaceBootstrapRequest | null {
+  const scope = parameters.get("scope") ?? "shell";
+  const tasks = parameters.get("tasks");
+  const skills = parameters.get("skills");
+  if (
+    (scope !== "shell" && scope !== "project" && scope !== "templates" && scope !== "view") ||
+    (tasks !== null && tasks !== "1") ||
+    (skills !== null && skills !== "1")
+  ) {
+    return null;
+  }
+  return {
+    includeProjectTasks: scope === "view" || tasks === "1",
+    includeTaskSkills: scope === "templates" || scope === "view" || skills === "1",
+    projectSelector: parameters.get("project"),
+    scope,
+    viewSelector: parameters.get("view"),
+  };
+}
+
+function measuredWorkspaceResponse(
+  payload: WorkspaceBootstrap | WorkspaceRequired,
+  scope: WorkspaceBootstrapRequest["scope"],
+  startedAt: number,
+): NextResponse<WorkspaceBootstrap | WorkspaceRequired> {
+  const response = NextResponse.json(payload);
+  const durationMs = Math.max(0, performance.now() - startedAt);
+  const payloadBytes = new TextEncoder().encode(JSON.stringify(payload)).byteLength;
+  response.headers.set("server-timing", `workspace-bootstrap;dur=${durationMs.toFixed(1)}`);
+  response.headers.set("x-workspace-bootstrap-scope", scope);
+  response.headers.set("x-workspace-payload-bytes", String(payloadBytes));
+  return response;
 }
 
 export async function POST(request: Request): Promise<NextResponse<WorkspaceDetail | ApiFailure>> {
