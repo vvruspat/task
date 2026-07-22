@@ -25,6 +25,7 @@ import type {
 )
 @Index("idx_integration_subscriptions_renewal", ["status", "renewAfter"])
 @Index("idx_integration_subscriptions_resource", ["externalResourceId"])
+@Index("idx_integration_subscriptions_connection_status", ["connectionId", "status"])
 export class IntegrationSubscriptionEntity implements IntegrationSubscription {
   @PrimaryGeneratedColumn("uuid")
   id: string = randomUUID();

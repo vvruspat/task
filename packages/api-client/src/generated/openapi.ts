@@ -1880,6 +1880,41 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
+    WorkspaceIntegrationConnectionHealthDto: {
+      /** @enum {string} */
+      status: "connected" | "disconnected" | "error" | "missing";
+      lastError: string | null;
+    };
+    WorkspaceIntegrationSubscriptionHealthDto: {
+      activeCount: number;
+      renewingCount: number;
+      expiredCount: number;
+      errorCount: number;
+      stoppedCount: number;
+    };
+    WorkspaceIntegrationDeliveryHealthDto: {
+      pendingCount: number;
+      processingCount: number;
+      succeededCount: number;
+      deadCount: number;
+    };
+    WorkspaceIntegrationWebhookHealthDto: {
+      receivedCount: number;
+      processingCount: number;
+      processedCount: number;
+      ignoredCount: number;
+      failedCount: number;
+    };
+    WorkspaceIntegrationHealthDto: {
+      /** @enum {string} */
+      status: "healthy" | "degraded" | "error" | "inactive";
+      /** Format: date-time */
+      checkedAt: string;
+      connection: components["schemas"]["WorkspaceIntegrationConnectionHealthDto"];
+      subscriptions: components["schemas"]["WorkspaceIntegrationSubscriptionHealthDto"];
+      deliveries: components["schemas"]["WorkspaceIntegrationDeliveryHealthDto"];
+      webhooks: components["schemas"]["WorkspaceIntegrationWebhookHealthDto"];
+    };
     IntegrationCatalogItemDto: {
       pluginKey: string;
       pluginVersion: string;
@@ -1898,6 +1933,7 @@ export interface components {
         | "webhook_handler"
       )[];
       installation: components["schemas"]["WorkspaceIntegrationDto"] | null;
+      health: components["schemas"]["WorkspaceIntegrationHealthDto"] | null;
     };
     TelegramConnectTokenDto: {
       /** @description Command to send in the Telegram chat that should be connected. */

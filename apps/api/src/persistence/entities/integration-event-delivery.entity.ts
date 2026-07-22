@@ -25,6 +25,7 @@ import type {
 )
 @Index("idx_integration_event_deliveries_claim", ["status", "availableAt", "lockedAt"])
 @Index("idx_integration_event_deliveries_workspace_integration", ["workspaceIntegrationId"])
+@Index("idx_integration_event_deliveries_installation_status", ["workspaceIntegrationId", "status"])
 export class IntegrationEventDeliveryEntity implements IntegrationEventDelivery {
   @PrimaryGeneratedColumn("uuid")
   id: string = randomUUID();

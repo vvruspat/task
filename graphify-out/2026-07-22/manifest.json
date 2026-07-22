@@ -195,8 +195,8 @@
     "semantic_hash": ""
   },
   "apps/api/package.json": {
-    "mtime": 1784727470.1629224,
-    "ast_hash": "01c14acf8a5b66081ab261344711d2b3",
+    "mtime": 1784742237.5295565,
+    "ast_hash": "23efbe2e9d16d94d7d1128dd92c8683a",
     "semantic_hash": ""
   },
   "apps/api/tsconfig.json": {
@@ -220,13 +220,13 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/package.json": {
-    "mtime": 1784533008.7651963,
-    "ast_hash": "48a2c883bab0a5767d86307eaf5d4e49",
+    "mtime": 1784742242.5494108,
+    "ast_hash": "966c469b813f80aecf8ffbc83d73cd87",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/index.ts": {
-    "mtime": 1784533008.766811,
-    "ast_hash": "eca3ce28f4280ecd8d01b371693ac977",
+    "mtime": 1784742278.9113262,
+    "ast_hash": "c8667608f1758bfe01d181bdac4590c4",
     "semantic_hash": ""
   },
   "apps/tg-bot/tsconfig.json": {
@@ -245,7 +245,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1784741750.3316808,
+    "mtime": 1784742597.3100016,
     "ast_hash": "e55dee96fec839379e82dc5ef5a6ac0f",
     "semantic_hash": ""
   },
@@ -980,8 +980,8 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/telegram-update.ts": {
-    "mtime": 1784533008.7677667,
-    "ast_hash": "0663df7671a14cd2b35849291dfbb96c",
+    "mtime": 1784742242.5506659,
+    "ast_hash": "ea94247ad4c15f2b1465a478a595c625",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram.contracts.ts": {
@@ -1045,13 +1045,13 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/message-handler.test.ts": {
-    "mtime": 1784733024.1684382,
-    "ast_hash": "a5e9a7b76a4cdd1182340b80a798ada6",
+    "mtime": 1784742259.1953895,
+    "ast_hash": "ad5b8b225097f99785b8a5c61941c51a",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/message-handler.ts": {
-    "mtime": 1784732823.6503134,
-    "ast_hash": "50ab7fcd0fc488b860e9f5cb719543b1",
+    "mtime": 1784742259.194805,
+    "ast_hash": "510b1f920a03e2c5f8563eb781739bad",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/telegram-sender.test.ts": {
@@ -1070,8 +1070,8 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/update-processor.ts": {
-    "mtime": 1784733024.2015474,
-    "ast_hash": "8bc7fea6ba3f3ad1ce53f7173431934f",
+    "mtime": 1784742386.4223464,
+    "ast_hash": "26ce71ad2c3180794f5f9585b83e8a6c",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/runtime.test.ts": {
@@ -1080,28 +1080,28 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/runtime.ts": {
-    "mtime": 1784732943.1730607,
-    "ast_hash": "a473289ca1f02416344e2d6a72583214",
+    "mtime": 1784742376.121169,
+    "ast_hash": "2e16f5891ba2c9011cea7614f94687c3",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/webhook-handler.test.ts": {
-    "mtime": 1784533008.7681003,
-    "ast_hash": "3e972cb8513030d4cbcd455ecf126dba",
+    "mtime": 1784742376.128882,
+    "ast_hash": "b609ca55b26256624bbef02eb366e559",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/webhook-handler.ts": {
-    "mtime": 1784533008.7681746,
-    "ast_hash": "558111bce5049283aec077b234f000f8",
+    "mtime": 1784742376.1294115,
+    "ast_hash": "af7881e2821626d789dc30b792520365",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/webhook-http-adapter.test.ts": {
-    "mtime": 1784533008.7682917,
-    "ast_hash": "5c96f6740fecd1c86ad7d1add55dc303",
+    "mtime": 1784742376.1309657,
+    "ast_hash": "21c64060c8a3f5feee4a945c17f59b9e",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/webhook-http-adapter.ts": {
-    "mtime": 1784533008.7683697,
-    "ast_hash": "dabe4d2fc8447358d6c17ea262bb84c4",
+    "mtime": 1784742308.2782686,
+    "ast_hash": "4a1c6a452f5bbbe5cbf05cdfb7ed4655",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/main.ts": {
@@ -1110,13 +1110,13 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/webhook-server.test.ts": {
-    "mtime": 1784533008.7684844,
-    "ast_hash": "c8cd7b6e8abb8995fd06c2c0f0315c51",
+    "mtime": 1784742376.1335819,
+    "ast_hash": "af0fffe50a5a981a7e1801baf483447a",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/webhook-server.ts": {
-    "mtime": 1784533008.7686062,
-    "ast_hash": "1502c2a785fe4203a8d0030c9f402c8f",
+    "mtime": 1784742368.0416656,
+    "ast_hash": "9bf88fbd381363366fb29747482d3422",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.contracts.ts": {
@@ -1290,8 +1290,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1784705257.0201397,
-    "ast_hash": "398dfb580bf04f7731128e67951281bf",
+    "mtime": 1784742509.3337913,
+    "ast_hash": "0064f2b37e507cb0accf53736acdc3ec",
     "semantic_hash": ""
   },
   "docs/implementation-roadmap.md": {
@@ -2935,13 +2935,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-plugin.registry.test.ts": {
-    "mtime": 1784738869.127527,
-    "ast_hash": "69d922ec78ecce6ab53a89ed2640b323",
+    "mtime": 1784742376.1127346,
+    "ast_hash": "e38066a4580d3bfeba04ee132839db8d",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-plugin.registry.ts": {
-    "mtime": 1784738875.6262863,
-    "ast_hash": "5f67f81cda6f939d8b7cf7f0a19de675",
+    "mtime": 1784742155.1818545,
+    "ast_hash": "f5dff9d35de447cdf98ec6cae9cf6b32",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.contracts.ts": {
@@ -2960,13 +2960,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.module.ts": {
-    "mtime": 1784739254.0627553,
-    "ast_hash": "d3d4250aaeec090a2211767f90fc7478",
+    "mtime": 1784742237.530383,
+    "ast_hash": "669285201fb0d50915b8bff9bee8941e",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.test.ts": {
-    "mtime": 1784728027.200181,
-    "ast_hash": "08a50d69ee4626d705c799914949e39e",
+    "mtime": 1784742462.1700718,
+    "ast_hash": "a199d32bbf15c006407eacf7519512ec",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.ts": {
@@ -2982,11 +2982,6 @@
   "apps/api/src/integrations/plugins/google-drive.integration-plugin.ts": {
     "mtime": 1784738351.9534266,
     "ast_hash": "13929d8c8d3270e509528f6788de00c7",
-    "semantic_hash": ""
-  },
-  "apps/api/src/integrations/plugins/telegram.integration-plugin.ts": {
-    "mtime": 1784727498.823801,
-    "ast_hash": "5a8ebd08ecacb12444c411b05eaaa454",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/typeorm-workspace-integrations.store.ts": {
@@ -3040,8 +3035,8 @@
     "semantic_hash": ""
   },
   "packages/integration-sdk/src/index.ts": {
-    "mtime": 1784738801.691791,
-    "ast_hash": "50dc4baec4ec9ae9995536daf8b13677",
+    "mtime": 1784742155.1787484,
+    "ast_hash": "98c4e0e82d37b48d1ffc56812c90efc2",
     "semantic_hash": ""
   },
   "packages/integration-sdk/tsconfig.json": {
@@ -3050,8 +3045,8 @@
     "semantic_hash": ""
   },
   "docs/integrations-plugin-framework.md": {
-    "mtime": 1784741710.1264834,
-    "ast_hash": "865c84090e52895a5d1764d014ee7f01",
+    "mtime": 1784742509.3341703,
+    "ast_hash": "fdd287314964980c6ac411214bcbcb75",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {
@@ -3535,8 +3530,8 @@
     "semantic_hash": ""
   },
   "docs/integration-plugin-authoring.md": {
-    "mtime": 1784741710.1259074,
-    "ast_hash": "8b102a30a44708bcce0136a8b9cb6b92",
+    "mtime": 1784742509.3346534,
+    "ast_hash": "e99469c8d9caccb38ce60ce97c2278f1",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-mcp-tools.contracts.ts": {
@@ -3617,6 +3612,46 @@
   "apps/mcp-server/src/integration-mcp-tools.ts": {
     "mtime": 1784741770.9648616,
     "ast_hash": "948068de5928a63832cb32cae2c7e15c",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/package.json": {
+    "mtime": 1784742376.096482,
+    "ast_hash": "749cea4c3e3a7a9cfab3c1cd57ba8d7d",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/src/index.ts": {
+    "mtime": 1784742443.7054865,
+    "ast_hash": "5a42427dd2ef76521da888143a9a30ff",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/src/telegram-conversation-ingress.ts": {
+    "mtime": 1784742220.7174678,
+    "ast_hash": "918b2fea344bd8a234226dac122579d7",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/src/telegram-integration-plugin.test.ts": {
+    "mtime": 1784742567.7950678,
+    "ast_hash": "daadf216f5e730f740ceb81fd21c1c2a",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/src/telegram-integration-plugin.ts": {
+    "mtime": 1784742419.2037697,
+    "ast_hash": "60cc125fdd6c0ab0d81e6ad3b46e2255",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/src/telegram-update.ts": {
+    "mtime": 1784742376.1280282,
+    "ast_hash": "5774668d055fd0e46bb0c0cb7831c477",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/src/telegram-webhook.ts": {
+    "mtime": 1784742220.717813,
+    "ast_hash": "eceb7f6866bc73ea31ffa56b946ef07e",
+    "semantic_hash": ""
+  },
+  "packages/integration-telegram/tsconfig.json": {
+    "mtime": 1784742407.125022,
+    "ast_hash": "7e837c61e88e853d0bab17ba611bcdde",
     "semantic_hash": ""
   }
 }

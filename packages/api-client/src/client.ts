@@ -2348,6 +2348,7 @@ function isWorkspaceIntegration(value: unknown): value is WorkspaceIntegration {
 function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogItem {
   const authKind = isJsonObject(value) ? readProperty(value, "authKind") : undefined;
   const installation = isJsonObject(value) ? readProperty(value, "installation") : undefined;
+  const health = isJsonObject(value) ? readProperty(value, "health") : undefined;
   return (
     isJsonObject(value) &&
     hasString(value, "pluginKey") &&
@@ -2358,8 +2359,50 @@ function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogIt
     isIntegrationAuthKind(authKind) &&
     isArrayOf(readProperty(value, "requiredScopes"), isString) &&
     isArrayOf(readProperty(value, "capabilityKinds"), isIntegrationCapabilityKind) &&
-    (installation === null || isWorkspaceIntegration(installation))
+    (installation === null || isWorkspaceIntegration(installation)) &&
+    (health === null || isWorkspaceIntegrationHealth(health))
   );
+}
+
+function isWorkspaceIntegrationHealth(
+  value: unknown,
+): value is IntegrationCatalogItem["health"] & JsonObject {
+  if (!isJsonObject(value)) return false;
+  const connection = readProperty(value, "connection");
+  const subscriptions = readProperty(value, "subscriptions");
+  const deliveries = readProperty(value, "deliveries");
+  const webhooks = readProperty(value, "webhooks");
+  return (
+    isWorkspaceIntegrationHealthStatus(readProperty(value, "status")) &&
+    hasString(value, "checkedAt") &&
+    isJsonObject(connection) &&
+    isIntegrationConnectionHealthStatus(readProperty(connection, "status")) &&
+    hasNullableString(connection, "lastError") &&
+    hasNonNegativeIntegerProperties(subscriptions, [
+      "activeCount",
+      "renewingCount",
+      "expiredCount",
+      "errorCount",
+      "stoppedCount",
+    ]) &&
+    hasNonNegativeIntegerProperties(deliveries, [
+      "pendingCount",
+      "processingCount",
+      "succeededCount",
+      "deadCount",
+    ]) &&
+    hasNonNegativeIntegerProperties(webhooks, [
+      "receivedCount",
+      "processingCount",
+      "processedCount",
+      "ignoredCount",
+      "failedCount",
+    ])
+  );
+}
+
+function hasNonNegativeIntegerProperties(value: unknown, keys: readonly string[]): boolean {
+  return isJsonObject(value) && keys.every((key) => isNonNegativeInteger(readProperty(value, key)));
 }
 
 function isGoogleDriveAuthorizationStart(value: unknown): value is GoogleDriveAuthorizationStart {
@@ -2408,6 +2451,16 @@ function isWorkspaceIntegrationStatus(value: unknown): boolean {
     value === "connected" ||
     value === "disconnected" ||
     value === "error"
+  );
+}
+
+function isWorkspaceIntegrationHealthStatus(value: unknown): boolean {
+  return value === "healthy" || value === "degraded" || value === "error" || value === "inactive";
+}
+
+function isIntegrationConnectionHealthStatus(value: unknown): boolean {
+  return (
+    value === "connected" || value === "disconnected" || value === "error" || value === "missing"
   );
 }
 

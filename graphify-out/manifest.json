@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1784742597.3100016,
-    "ast_hash": "e55dee96fec839379e82dc5ef5a6ac0f",
+    "mtime": 1784743144.8178644,
+    "ast_hash": "9bac9bbe0bba284957d184262cbe31dd",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1784741751.747441,
-    "ast_hash": "f88269a8b4edcf4d03ce075ea56ec2d5",
+    "mtime": 1784743145.7985356,
+    "ast_hash": "1b8f72dc129710006e34322224d816b5",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
@@ -1190,13 +1190,13 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/client.test.ts": {
-    "mtime": 1784732733.3173203,
-    "ast_hash": "ec55dea6f0ec80fa21c9e92c27969031",
+    "mtime": 1784742967.3226166,
+    "ast_hash": "6e32b1fdea226df840e5a4edeb6c2b9a",
     "semantic_hash": ""
   },
   "packages/api-client/src/client.ts": {
-    "mtime": 1784733024.3115246,
-    "ast_hash": "2ed5772d5cdee2323bcc99f6ad135d6d",
+    "mtime": 1784743031.8097649,
+    "ast_hash": "a1069096d9128dfbcad30ff4c60843f6",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent-runs.controller.ts": {
@@ -1635,7 +1635,7 @@
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
-    "mtime": 1784741869.551181,
+    "mtime": 1784743156.1619928,
     "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
@@ -2570,8 +2570,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/messages.ts": {
-    "mtime": 1784732796.7795196,
-    "ast_hash": "baff66ac3cb1ddce82516a1bd508015c",
+    "mtime": 1784742981.1681783,
+    "ast_hash": "0a695907b974fbe4ce0a6a48024b2ca0",
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/ui-copy.test.ts": {
@@ -2945,8 +2945,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.contracts.ts": {
-    "mtime": 1784727643.76137,
-    "ast_hash": "bd1132526f8003b1807cc5336668e3e5",
+    "mtime": 1784743031.750467,
+    "ast_hash": "0897a7d75c3db9bdb96dbf6dbb57178b",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.controller.ts": {
@@ -2955,8 +2955,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.dto.ts": {
-    "mtime": 1784727643.7641785,
-    "ast_hash": "ef98f5afee105adf8044231f35ae0e75",
+    "mtime": 1784743031.7669508,
+    "ast_hash": "ebb15d90f3fa9728b2b463dce81d426f",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.module.ts": {
@@ -2965,18 +2965,18 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.test.ts": {
-    "mtime": 1784742462.1700718,
-    "ast_hash": "a199d32bbf15c006407eacf7519512ec",
+    "mtime": 1784742885.0099597,
+    "ast_hash": "d4c4625d486d9c481a426d365cbd4be8",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.ts": {
-    "mtime": 1784728027.199321,
-    "ast_hash": "6674ec5ed280297d010fcacd208af8ae",
+    "mtime": 1784743031.7523818,
+    "ast_hash": "e0f741338cfc6fad6344dac2ecdacb9c",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.store.ts": {
-    "mtime": 1784728027.1982703,
-    "ast_hash": "39d65b4e91d05568e409a0c5f6f66c48",
+    "mtime": 1784742805.980958,
+    "ast_hash": "d71f0f83626be7e34e1939e7a3260663",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/plugins/google-drive.integration-plugin.ts": {
@@ -2985,8 +2985,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/typeorm-workspace-integrations.store.ts": {
-    "mtime": 1784728027.1989517,
-    "ast_hash": "37bc2c58ae72d6e1b2e269045d6197f8",
+    "mtime": 1784742856.5408654,
+    "ast_hash": "75903f9fe6f5537e587b3cbb2334aedf",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/workspace-integration.entity.ts": {
@@ -3015,18 +3015,18 @@
     "semantic_hash": ""
   },
   "apps/web/components/workspace-integrations.tsx": {
-    "mtime": 1784733224.2287521,
-    "ast_hash": "83e1947a832362d8a0933b43bc8a7df8",
+    "mtime": 1784743031.7573605,
+    "ast_hash": "bce709a0ebeed7a18bfbd6dc61d97962",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-integrations.test.ts": {
-    "mtime": 1784733076.409391,
-    "ast_hash": "a81d61444e45755d66489eaec828392f",
+    "mtime": 1784742953.6785295,
+    "ast_hash": "ea33041de7f35579753cfe2deca1b598",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-integrations.ts": {
-    "mtime": 1784733046.818717,
-    "ast_hash": "97e3f78d069d1d8366819b5a22f18a94",
+    "mtime": 1784742945.4416292,
+    "ast_hash": "8c7a2b1858bd784552ceb44437a050b1",
     "semantic_hash": ""
   },
   "packages/integration-sdk/package.json": {
@@ -3045,8 +3045,8 @@
     "semantic_hash": ""
   },
   "docs/integrations-plugin-framework.md": {
-    "mtime": 1784742509.3341703,
-    "ast_hash": "fdd287314964980c6ac411214bcbcb75",
+    "mtime": 1784742986.194238,
+    "ast_hash": "da66a4f6f7b2d893f28594a0050f630d",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {
@@ -3160,8 +3160,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/integration-event-delivery.entity.ts": {
-    "mtime": 1784728962.7765949,
-    "ast_hash": "19ad0caf19673ce9f7747db60dd99c9a",
+    "mtime": 1784743091.8427153,
+    "ast_hash": "b2f452058aab039475adad62755ae437",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/integration-oauth-state.entity.ts": {
@@ -3215,8 +3215,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/integration-resource-entities.test.ts": {
-    "mtime": 1784730330.923295,
-    "ast_hash": "6e03a163b72e96ca875734c0883d2f22",
+    "mtime": 1784743187.1556451,
+    "ast_hash": "b90681fbbff1414f8405a05e9d233a90",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/integration-resource-link.entity.ts": {
@@ -3230,8 +3230,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/integration-subscription.entity.ts": {
-    "mtime": 1784730252.5201495,
-    "ast_hash": "0e300846878f460d327cec77a134d21a",
+    "mtime": 1784743072.8147554,
+    "ast_hash": "9caf07676739b87455f3fa65ee3ca66b",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783298100000-create-integration-resources.ts": {
@@ -3485,8 +3485,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/integration-webhook-receipt.entity.ts": {
-    "mtime": 1784737449.3684678,
-    "ast_hash": "ed5900199371a5aa3fcfb7239c3fdc30",
+    "mtime": 1784743091.8426907,
+    "ast_hash": "971c619993c5b46fc287bee5ad9b59c2",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783298160000-create-integration-webhook-receipts.ts": {
@@ -3530,8 +3530,8 @@
     "semantic_hash": ""
   },
   "docs/integration-plugin-authoring.md": {
-    "mtime": 1784742509.3346534,
-    "ast_hash": "e99469c8d9caccb38ce60ce97c2278f1",
+    "mtime": 1784743087.4779794,
+    "ast_hash": "f9a70edba43a9f077011617204102f42",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-mcp-tools.contracts.ts": {
@@ -3652,6 +3652,16 @@
   "packages/integration-telegram/tsconfig.json": {
     "mtime": 1784742407.125022,
     "ast_hash": "7e837c61e88e853d0bab17ba611bcdde",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/migrations/1783298280000-add-integration-health-indexes.ts": {
+    "mtime": 1784743072.8190546,
+    "ast_hash": "22437bca1bc261d81d8cccfe84406f44",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/migrations/add-integration-health-indexes.test.ts": {
+    "mtime": 1784743091.8426955,
+    "ast_hash": "4dca114e62fb74d626af66f996485d60",
     "semantic_hash": ""
   }
 }

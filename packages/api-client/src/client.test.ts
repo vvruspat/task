@@ -1534,6 +1534,7 @@ function integrationCatalogItem(
       "agent_tool_provider",
     ],
     description: "Google Drive integration",
+    health: null,
     iconKey: "google-drive",
     installation,
     name: "Google Drive",

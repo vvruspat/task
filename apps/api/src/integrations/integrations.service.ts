@@ -5,8 +5,12 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import type { IntegrationPluginRegistry } from "./integration-plugin.registry.js";
+import type { WorkspaceIntegrationHealth } from "./integrations.contracts.js";
 import { IntegrationCatalogItemDto, WorkspaceIntegrationDto } from "./integrations.dto.js";
-import type { WorkspaceIntegrationsStore } from "./integrations.store.js";
+import type {
+  WorkspaceIntegrationOperationalSnapshot,
+  WorkspaceIntegrationsStore,
+} from "./integrations.store.js";
 
 @Injectable()
 export class IntegrationsService {
@@ -16,22 +20,22 @@ export class IntegrationsService {
   ) {}
 
   async listCatalog(workspaceId: string, userId: string): Promise<IntegrationCatalogItemDto[]> {
-    const installations = await this.store.listForManager(workspaceId, userId);
-    if (installations === null) {
+    const snapshots = await this.store.listForManager(workspaceId, userId);
+    if (snapshots === null) {
       throw new ForbiddenException("Current user cannot manage workspace integrations.");
     }
-    const installationByPluginKey = new Map(
-      installations.map((installation) => [installation.pluginKey, installation]),
+    const snapshotByPluginKey = new Map(
+      snapshots.map((snapshot) => [snapshot.integration.pluginKey, snapshot]),
     );
-    return this.registry
-      .list()
-      .map(
-        (plugin) =>
-          new IntegrationCatalogItemDto(
-            plugin,
-            installationByPluginKey.get(plugin.manifest.pluginKey) ?? null,
-          ),
+    const checkedAt = new Date();
+    return this.registry.list().map((plugin) => {
+      const snapshot = snapshotByPluginKey.get(plugin.manifest.pluginKey) ?? null;
+      return new IntegrationCatalogItemDto(
+        plugin,
+        snapshot?.integration ?? null,
+        snapshot === null ? null : evaluateIntegrationHealth(snapshot, checkedAt),
       );
+    });
   }
 
   async install(
@@ -70,4 +74,47 @@ export class IntegrationsService {
     }
     return new WorkspaceIntegrationDto(result.integration);
   }
+}
+
+export function evaluateIntegrationHealth(
+  snapshot: WorkspaceIntegrationOperationalSnapshot,
+  checkedAt: Date,
+): WorkspaceIntegrationHealth {
+  const connection: WorkspaceIntegrationHealth["connection"] = snapshot.connection ?? {
+    lastError: null,
+    status: "missing",
+  };
+  const hasPipelineFailure =
+    snapshot.subscriptions.expiredCount > 0 ||
+    snapshot.subscriptions.errorCount > 0 ||
+    snapshot.deliveries.deadCount > 0 ||
+    snapshot.webhooks.failedCount > 0;
+
+  let status: WorkspaceIntegrationHealth["status"];
+  if (
+    snapshot.integration.status === "authorizing" ||
+    snapshot.integration.status === "disconnected"
+  ) {
+    status = "inactive";
+  } else if (
+    snapshot.integration.status === "error" ||
+    connection.status === "missing" ||
+    connection.status === "disconnected" ||
+    connection.status === "error"
+  ) {
+    status = "error";
+  } else if (hasPipelineFailure) {
+    status = "degraded";
+  } else {
+    status = "healthy";
+  }
+
+  return {
+    checkedAt,
+    connection,
+    deliveries: snapshot.deliveries,
+    status,
+    subscriptions: snapshot.subscriptions,
+    webhooks: snapshot.webhooks,
+  };
 }

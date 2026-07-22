@@ -16,6 +16,13 @@ const capabilityKinds = new Set([
   "webhook_handler",
 ]);
 const integrationStatuses = new Set(["authorizing", "connected", "disconnected", "error"]);
+const integrationHealthStatuses = new Set(["healthy", "degraded", "error", "inactive"]);
+const integrationConnectionHealthStatuses = new Set([
+  "connected",
+  "disconnected",
+  "error",
+  "missing",
+]);
 
 export function isWorkspaceIntegration(value: unknown): value is WorkspaceIntegration {
   return (
@@ -89,7 +96,40 @@ function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogIt
     isStringArray(value["requiredScopes"]) &&
     Array.isArray(value["capabilityKinds"]) &&
     value["capabilityKinds"].every((kind) => isKnownString(kind, capabilityKinds)) &&
-    (value["installation"] === null || isWorkspaceIntegration(value["installation"]))
+    (value["installation"] === null || isWorkspaceIntegration(value["installation"])) &&
+    (value["health"] === null || isWorkspaceIntegrationHealth(value["health"]))
+  );
+}
+
+function isWorkspaceIntegrationHealth(value: unknown): boolean {
+  if (!isObject(value)) return false;
+  const connection = value["connection"];
+  return (
+    isKnownString(value["status"], integrationHealthStatuses) &&
+    hasString(value, "checkedAt") &&
+    isObject(connection) &&
+    isKnownString(connection["status"], integrationConnectionHealthStatuses) &&
+    hasNullableString(connection, "lastError") &&
+    hasNonNegativeIntegerProperties(value["subscriptions"], [
+      "activeCount",
+      "renewingCount",
+      "expiredCount",
+      "errorCount",
+      "stoppedCount",
+    ]) &&
+    hasNonNegativeIntegerProperties(value["deliveries"], [
+      "pendingCount",
+      "processingCount",
+      "succeededCount",
+      "deadCount",
+    ]) &&
+    hasNonNegativeIntegerProperties(value["webhooks"], [
+      "receivedCount",
+      "processingCount",
+      "processedCount",
+      "ignoredCount",
+      "failedCount",
+    ])
   );
 }
 
@@ -112,6 +152,14 @@ function hasNullableString(value: Record<string, unknown>, key: string): boolean
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
+}
+
+function hasNonNegativeIntegerProperties(value: unknown, keys: readonly string[]): boolean {
+  if (!isObject(value)) return false;
+  return keys.every((key) => {
+    const property = value[key];
+    return typeof property === "number" && Number.isSafeInteger(property) && property >= 0;
+  });
 }
 
 function isKnownString(value: unknown, values: ReadonlySet<string>): value is string {

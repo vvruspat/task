@@ -23,6 +23,7 @@ import type {
 })
 @Index("idx_integration_webhook_receipts_status_received", ["status", "receivedAt"])
 @Index("idx_integration_webhook_receipts_subscription", ["subscriptionId", "receivedAt"])
+@Index("idx_integration_webhook_receipts_installation_status", ["workspaceIntegrationId", "status"])
 export class IntegrationWebhookReceiptEntity implements IntegrationWebhookReceipt {
   @PrimaryGeneratedColumn("uuid")
   id: string = randomUUID();

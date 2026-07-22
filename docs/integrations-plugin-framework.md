@@ -32,7 +32,7 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 - [x] Add secret-provider and external-connection contracts.
 - [x] Add transactional domain-event outbox records and a retryable integration worker.
 - [x] Add verified webhook receipts, deduplication, and delivery audit.
-- [ ] Add integration health aggregation and operator-facing diagnostics.
+- [x] Add integration health aggregation and operator-facing diagnostics.
 - [x] Add external resources, resource links, references, and renewable subscriptions.
 - [x] Replace static agent tools with a workspace-aware tool-provider registry.
 - [x] Add a controlled MCP adapter for read-only tools that preserves permissions and audit.
@@ -77,6 +77,14 @@ Failures use bounded exponential backoff and move to `dead` after eight attempts
 cannot complete a delivery reclaimed by another process because completion requires the active
 lock token. Non-activity events, such as `integration.connected.v1`, use
 `IntegrationOutboxPublisher.publishUsingManager` inside the owning domain transaction.
+
+The guarded workspace catalog also returns one provider-neutral health snapshot per installation.
+It checks the active connection and aggregates every bounded subscription, delivery, and webhook
+status without loading their payloads. A connected installation is healthy when its connection is
+active and no subscription, dead delivery, or failed webhook requires attention; pipeline failures
+degrade it, while a missing or failed connection is an error. Workspace settings expose the same
+counts to owners and administrators, so a new plugin receives operational diagnostics without a
+provider-specific settings endpoint.
 
 ## External resource model
 

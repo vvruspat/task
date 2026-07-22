@@ -121,6 +121,20 @@ and `tg-bot` constructs the configured handler implementation with the webhook s
 username. HTTP transport adapters pass headers and payload through unchanged; they do not duplicate
 Telegram verification or update parsing.
 
+## Operational health
+
+Plugins do not implement a separate health endpoint. The framework derives installation health from
+the standard persistence contract: installation and connection state, renewable subscription state,
+outbox delivery state, and verified webhook receipt state. Keep these records accurate and move work
+through their declared bounded statuses; the workspace catalog will then expose `healthy`,
+`degraded`, `error`, or `inactive` together with per-status counts automatically. Provider-specific
+payloads and secrets are never part of the health response.
+
+An active connection with subscription errors, expired watches, dead deliveries, or failed webhook
+receipts is degraded. A connected installation whose external connection is missing, disconnected,
+or failed is an error. Owners and administrators see these diagnostics in workspace settings, so
+handlers should clear recoverable error states when a retry succeeds.
+
 ## Google Drive reference implementation
 
 The Google Drive provider is the first implementation. Its `search` tool uses a bounded Drive

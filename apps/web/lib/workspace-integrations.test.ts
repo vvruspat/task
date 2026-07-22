@@ -25,6 +25,32 @@ const integration = {
   workspaceId: "33333333-3333-4333-8333-333333333333",
 };
 
+const health = {
+  checkedAt: "2026-07-22T10:01:00.000Z",
+  connection: { lastError: null, status: "connected" },
+  deliveries: {
+    deadCount: 0,
+    pendingCount: 1,
+    processingCount: 0,
+    succeededCount: 12,
+  },
+  status: "healthy",
+  subscriptions: {
+    activeCount: 1,
+    errorCount: 0,
+    expiredCount: 0,
+    renewingCount: 0,
+    stoppedCount: 0,
+  },
+  webhooks: {
+    failedCount: 0,
+    ignoredCount: 1,
+    processedCount: 8,
+    processingCount: 0,
+    receivedCount: 0,
+  },
+};
+
 test("workspace integration guards accept generated catalog responses", () => {
   assert.equal(isWorkspaceIntegration(integration), true);
   assert.equal(
@@ -33,6 +59,7 @@ test("workspace integration guards accept generated catalog responses", () => {
         authKind: "oauth2",
         capabilityKinds: ["resource_provider", "webhook_handler"],
         description: "Drive files and folders",
+        health,
         iconKey: "google-drive",
         installation: integration,
         name: "Google Drive",
@@ -63,10 +90,28 @@ test("workspace integration guards reject unknown enum values and malformed conf
         authKind: "password",
         capabilityKinds: [],
         description: "Invalid",
+        health: null,
         iconKey: "invalid",
         installation: null,
         name: "Invalid",
         pluginKey: "invalid",
+        pluginVersion: "0.1.0",
+        requiredScopes: [],
+      },
+    ]),
+    false,
+  );
+  assert.equal(
+    isIntegrationCatalog([
+      {
+        authKind: "oauth2",
+        capabilityKinds: [],
+        description: "Invalid health",
+        health: { ...health, deliveries: { ...health.deliveries, deadCount: -1 } },
+        iconKey: "invalid-health",
+        installation: integration,
+        name: "Invalid health",
+        pluginKey: "invalid-health",
         pluginVersion: "0.1.0",
         requiredScopes: [],
       },

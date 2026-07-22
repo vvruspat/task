@@ -7,8 +7,14 @@ import {
 import type {
   IntegrationCatalogItem,
   WorkspaceIntegration,
+  WorkspaceIntegrationConnectionHealth,
+  WorkspaceIntegrationDeliveryHealth,
+  WorkspaceIntegrationHealth,
   WorkspaceIntegrationStatus,
+  WorkspaceIntegrationSubscriptionHealth,
+  WorkspaceIntegrationWebhookHealth,
 } from "./integrations.contracts.js";
+import { workspaceIntegrationHealthStatuses } from "./integrations.contracts.js";
 
 const workspaceIntegrationStatuses = [
   "authorizing",
@@ -53,6 +59,90 @@ export class WorkspaceIntegrationDto implements WorkspaceIntegration {
   }
 }
 
+export class WorkspaceIntegrationConnectionHealthDto
+  implements WorkspaceIntegrationConnectionHealth
+{
+  @ApiProperty({ enum: ["connected", "disconnected", "error", "missing"] })
+  readonly status: WorkspaceIntegrationConnectionHealth["status"];
+  @ApiProperty({ nullable: true, type: String }) readonly lastError: string | null;
+
+  constructor(value: WorkspaceIntegrationConnectionHealth) {
+    this.status = value.status;
+    this.lastError = value.lastError;
+  }
+}
+
+export class WorkspaceIntegrationSubscriptionHealthDto
+  implements WorkspaceIntegrationSubscriptionHealth
+{
+  @ApiProperty({ minimum: 0 }) readonly activeCount: number;
+  @ApiProperty({ minimum: 0 }) readonly renewingCount: number;
+  @ApiProperty({ minimum: 0 }) readonly expiredCount: number;
+  @ApiProperty({ minimum: 0 }) readonly errorCount: number;
+  @ApiProperty({ minimum: 0 }) readonly stoppedCount: number;
+
+  constructor(value: WorkspaceIntegrationSubscriptionHealth) {
+    this.activeCount = value.activeCount;
+    this.renewingCount = value.renewingCount;
+    this.expiredCount = value.expiredCount;
+    this.errorCount = value.errorCount;
+    this.stoppedCount = value.stoppedCount;
+  }
+}
+
+export class WorkspaceIntegrationDeliveryHealthDto implements WorkspaceIntegrationDeliveryHealth {
+  @ApiProperty({ minimum: 0 }) readonly pendingCount: number;
+  @ApiProperty({ minimum: 0 }) readonly processingCount: number;
+  @ApiProperty({ minimum: 0 }) readonly succeededCount: number;
+  @ApiProperty({ minimum: 0 }) readonly deadCount: number;
+
+  constructor(value: WorkspaceIntegrationDeliveryHealth) {
+    this.pendingCount = value.pendingCount;
+    this.processingCount = value.processingCount;
+    this.succeededCount = value.succeededCount;
+    this.deadCount = value.deadCount;
+  }
+}
+
+export class WorkspaceIntegrationWebhookHealthDto implements WorkspaceIntegrationWebhookHealth {
+  @ApiProperty({ minimum: 0 }) readonly receivedCount: number;
+  @ApiProperty({ minimum: 0 }) readonly processingCount: number;
+  @ApiProperty({ minimum: 0 }) readonly processedCount: number;
+  @ApiProperty({ minimum: 0 }) readonly ignoredCount: number;
+  @ApiProperty({ minimum: 0 }) readonly failedCount: number;
+
+  constructor(value: WorkspaceIntegrationWebhookHealth) {
+    this.receivedCount = value.receivedCount;
+    this.processingCount = value.processingCount;
+    this.processedCount = value.processedCount;
+    this.ignoredCount = value.ignoredCount;
+    this.failedCount = value.failedCount;
+  }
+}
+
+export class WorkspaceIntegrationHealthDto implements WorkspaceIntegrationHealth {
+  @ApiProperty({ enum: workspaceIntegrationHealthStatuses })
+  readonly status: WorkspaceIntegrationHealth["status"];
+  @ApiProperty({ format: "date-time" }) readonly checkedAt: Date;
+  @ApiProperty({ type: WorkspaceIntegrationConnectionHealthDto })
+  readonly connection: WorkspaceIntegrationConnectionHealthDto;
+  @ApiProperty({ type: WorkspaceIntegrationSubscriptionHealthDto })
+  readonly subscriptions: WorkspaceIntegrationSubscriptionHealthDto;
+  @ApiProperty({ type: WorkspaceIntegrationDeliveryHealthDto })
+  readonly deliveries: WorkspaceIntegrationDeliveryHealthDto;
+  @ApiProperty({ type: WorkspaceIntegrationWebhookHealthDto })
+  readonly webhooks: WorkspaceIntegrationWebhookHealthDto;
+
+  constructor(value: WorkspaceIntegrationHealth) {
+    this.status = value.status;
+    this.checkedAt = value.checkedAt;
+    this.connection = new WorkspaceIntegrationConnectionHealthDto(value.connection);
+    this.subscriptions = new WorkspaceIntegrationSubscriptionHealthDto(value.subscriptions);
+    this.deliveries = new WorkspaceIntegrationDeliveryHealthDto(value.deliveries);
+    this.webhooks = new WorkspaceIntegrationWebhookHealthDto(value.webhooks);
+  }
+}
+
 export class IntegrationCatalogItemDto implements IntegrationCatalogItem {
   @ApiProperty() readonly pluginKey: string;
   @ApiProperty() readonly pluginVersion: string;
@@ -66,8 +156,14 @@ export class IntegrationCatalogItemDto implements IntegrationCatalogItem {
   readonly capabilityKinds: IntegrationCatalogItem["capabilityKinds"];
   @ApiProperty({ nullable: true, type: WorkspaceIntegrationDto })
   readonly installation: WorkspaceIntegrationDto | null;
+  @ApiProperty({ nullable: true, type: WorkspaceIntegrationHealthDto })
+  readonly health: WorkspaceIntegrationHealthDto | null;
 
-  constructor(plugin: IntegrationPlugin, installation: WorkspaceIntegration | null) {
+  constructor(
+    plugin: IntegrationPlugin,
+    installation: WorkspaceIntegration | null,
+    health: WorkspaceIntegrationHealth | null,
+  ) {
     const { manifest } = plugin;
     this.pluginKey = manifest.pluginKey;
     this.pluginVersion = manifest.pluginVersion;
@@ -78,5 +174,6 @@ export class IntegrationCatalogItemDto implements IntegrationCatalogItem {
     this.requiredScopes = [...manifest.auth.scopes];
     this.capabilityKinds = manifest.capabilities.map((capability) => capability.kind);
     this.installation = installation === null ? null : new WorkspaceIntegrationDto(installation);
+    this.health = health === null ? null : new WorkspaceIntegrationHealthDto(health);
   }
 }

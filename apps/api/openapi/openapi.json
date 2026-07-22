@@ -7139,6 +7139,126 @@
           "updatedAt"
         ]
       },
+      "WorkspaceIntegrationConnectionHealthDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["connected", "disconnected", "error", "missing"]
+          },
+          "lastError": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["status", "lastError"]
+      },
+      "WorkspaceIntegrationSubscriptionHealthDto": {
+        "type": "object",
+        "properties": {
+          "activeCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "renewingCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "expiredCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "errorCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "stoppedCount": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["activeCount", "renewingCount", "expiredCount", "errorCount", "stoppedCount"]
+      },
+      "WorkspaceIntegrationDeliveryHealthDto": {
+        "type": "object",
+        "properties": {
+          "pendingCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "processingCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "succeededCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "deadCount": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["pendingCount", "processingCount", "succeededCount", "deadCount"]
+      },
+      "WorkspaceIntegrationWebhookHealthDto": {
+        "type": "object",
+        "properties": {
+          "receivedCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "processingCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "processedCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "ignoredCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "failedCount": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "receivedCount",
+          "processingCount",
+          "processedCount",
+          "ignoredCount",
+          "failedCount"
+        ]
+      },
+      "WorkspaceIntegrationHealthDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["healthy", "degraded", "error", "inactive"]
+          },
+          "checkedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "connection": {
+            "$ref": "#/components/schemas/WorkspaceIntegrationConnectionHealthDto"
+          },
+          "subscriptions": {
+            "$ref": "#/components/schemas/WorkspaceIntegrationSubscriptionHealthDto"
+          },
+          "deliveries": {
+            "$ref": "#/components/schemas/WorkspaceIntegrationDeliveryHealthDto"
+          },
+          "webhooks": {
+            "$ref": "#/components/schemas/WorkspaceIntegrationWebhookHealthDto"
+          }
+        },
+        "required": ["status", "checkedAt", "connection", "subscriptions", "deliveries", "webhooks"]
+      },
       "IntegrationCatalogItemDto": {
         "type": "object",
         "properties": {
@@ -7189,6 +7309,15 @@
                 "$ref": "#/components/schemas/WorkspaceIntegrationDto"
               }
             ]
+          },
+          "health": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WorkspaceIntegrationHealthDto"
+              }
+            ]
           }
         },
         "required": [
@@ -7200,7 +7329,8 @@
           "authKind",
           "requiredScopes",
           "capabilityKinds",
-          "installation"
+          "installation",
+          "health"
         ]
       },
       "TelegramConnectTokenDto": {

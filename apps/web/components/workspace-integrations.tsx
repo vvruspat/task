@@ -246,6 +246,9 @@ export function WorkspaceIntegrations({
         const canConfigureGoogleDrive = item.pluginKey === "google-drive" && connected;
         const rootFolder =
           item.installation === null ? null : readGoogleDriveRootFolderConfig(item.installation);
+        const health = item.health;
+        const subscriptionIssues =
+          health === null ? 0 : health.subscriptions.expiredCount + health.subscriptions.errorCount;
         const pending = pendingPluginKey === item.pluginKey;
         return (
           <Card key={item.pluginKey}>
@@ -264,6 +267,38 @@ export function WorkspaceIntegrations({
                 <Text color="gray" size="2">
                   {item.description}
                 </Text>
+                {health !== null && (
+                  <Flex align="center" gap="2" wrap="wrap">
+                    <Badge
+                      color={
+                        health.status === "healthy"
+                          ? "green"
+                          : health.status === "degraded"
+                            ? "amber"
+                            : health.status === "error"
+                              ? "red"
+                              : "gray"
+                      }
+                    >
+                      {health.status === "healthy"
+                        ? t("integrations.healthHealthy")
+                        : health.status === "degraded"
+                          ? t("integrations.healthDegraded")
+                          : health.status === "error"
+                            ? t("integrations.healthError")
+                            : t("integrations.healthInactive")}
+                    </Badge>
+                    <Text color="gray" size="1">
+                      {t("integrations.healthDiagnostics", {
+                        activeSubscriptions: health.subscriptions.activeCount,
+                        deadDeliveries: health.deliveries.deadCount,
+                        failedWebhooks: health.webhooks.failedCount,
+                        pendingDeliveries: health.deliveries.pendingCount,
+                        subscriptionIssues,
+                      })}
+                    </Text>
+                  </Flex>
+                )}
                 {canConfigureGoogleDrive && (
                   <Text color="gray" size="2">
                     {rootFolder === null
