@@ -1625,8 +1625,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/workspace-shell.tsx": {
-    "mtime": 1784701025.8628318,
-    "ast_hash": "43f59cf40cb323dbc84569cd12930092",
+    "mtime": 1784701357.764444,
+    "ast_hash": "513e55445ecbf8943913cc6c01b5fd0e",
     "semantic_hash": ""
   },
   "apps/web/components/workspace-view.tsx": {
@@ -1640,7 +1640,7 @@
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
-    "mtime": 1784697769.4933815,
+    "mtime": 1784701377.0331967,
     "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
@@ -1670,8 +1670,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/use-workspace-data.ts": {
-    "mtime": 1784701025.862441,
-    "ast_hash": "2ddb90a12b326633ba14ad1804f9e9b5",
+    "mtime": 1784701344.910862,
+    "ast_hash": "3c8723eb32770ea62f217f6497d6ba39",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-contracts.ts": {
@@ -2160,13 +2160,13 @@
     "semantic_hash": ""
   },
   "apps/web/lib/use-workspace-data.test.ts": {
-    "mtime": 1784697769.490544,
-    "ast_hash": "42e1b4a8047163d9e15594d3dc2858fd",
+    "mtime": 1784701325.0498097,
+    "ast_hash": "58c067143ce2bfe99c5c5e7793f7ab83",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-realtime.ts": {
-    "mtime": 1784697769.4928014,
-    "ast_hash": "02804c0b9a79f1f2c97043f3c352c0b9",
+    "mtime": 1784701325.0491776,
+    "ast_hash": "6589cbac979a63de491c4b995be711e0",
     "semantic_hash": ""
   },
   "apps/web/lib/saved-view-draft.test.ts": {
@@ -2575,8 +2575,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/messages.ts": {
-    "mtime": 1784697769.4854946,
-    "ast_hash": "df69851a95054892f2921301d1d2e267",
+    "mtime": 1784701325.0505743,
+    "ast_hash": "bbce07c6cf5c3f23ce9dd8348e1f8f3f",
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/ui-copy.test.ts": {

@@ -1,5 +1,22 @@
 import type { WorkspaceBootstrap } from "./workspace-contracts";
 
+export type WorkspaceRealtimeConnectionStatus =
+  | "connecting"
+  | "idle"
+  | "live"
+  | "offline"
+  | "reconnecting";
+
+export type WorkspaceRealtimeConnectionLifecycle = Readonly<{
+  hasConnected: boolean;
+  status: WorkspaceRealtimeConnectionStatus;
+}>;
+
+export type WorkspaceRealtimeOpenTransition = Readonly<{
+  lifecycle: WorkspaceRealtimeConnectionLifecycle;
+  reconnected: boolean;
+}>;
+
 export type WorkspaceRealtimeChange = {
   id: string;
   kind: "changed" | "member_removed" | "member_role_changed";
@@ -11,6 +28,29 @@ export type WorkspaceRealtimeChange = {
   memberRole: "admin" | "guest" | "member" | "owner" | null;
   occurredAt: string;
 };
+
+export function createWorkspaceRealtimeConnectionLifecycle(): WorkspaceRealtimeConnectionLifecycle {
+  return { hasConnected: false, status: "connecting" };
+}
+
+export function markWorkspaceRealtimeConnected(
+  lifecycle: WorkspaceRealtimeConnectionLifecycle,
+): WorkspaceRealtimeOpenTransition {
+  return {
+    lifecycle: { hasConnected: true, status: "live" },
+    reconnected: lifecycle.hasConnected,
+  };
+}
+
+export function markWorkspaceRealtimeInterrupted(
+  lifecycle: WorkspaceRealtimeConnectionLifecycle,
+  online: boolean,
+): WorkspaceRealtimeConnectionLifecycle {
+  return {
+    ...lifecycle,
+    status: online ? "reconnecting" : "offline",
+  };
+}
 
 export function parseWorkspaceRealtimeChange(value: string): WorkspaceRealtimeChange | null {
   try {
