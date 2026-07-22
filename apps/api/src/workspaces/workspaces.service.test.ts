@@ -59,6 +59,12 @@ test("WorkspacesService maps visible workspaces to DTOs", async () => {
   assert.equal(response[0]?.slug, workspaceSummary.slug);
 });
 
+test("WorkspacesService resolves the current workspace role for guards", async () => {
+  const service = new WorkspacesService(createReadStore({ role: "admin" }));
+
+  assert.equal(await service.getMemberRole(workspaceId, userId), "admin");
+});
+
 test("WorkspacesService returns workspace detail with member DTOs", async () => {
   const service = new WorkspacesService(createReadStore({ workspace: workspaceDetail }));
 
@@ -176,13 +182,35 @@ test("WorkspacesService returns updated member role and preserves management err
   );
 });
 
+test("WorkspacesService removes members and preserves permission errors", async () => {
+  const removableMember: WorkspaceMember = { ...workspaceMember, role: "member" };
+  const service = new WorkspacesService(
+    createReadStore({}),
+    createManagementStore({ removedMember: removableMember }),
+  );
+
+  const response = await service.removeMember(workspaceId, removableMember.id, userId);
+  assert.equal(response.id, removableMember.id);
+
+  const forbiddenService = new WorkspacesService(
+    createReadStore({}),
+    createManagementStore({ removalResult: "forbidden" }),
+  );
+  await assert.rejects(
+    () => forbiddenService.removeMember(workspaceId, removableMember.id, userId),
+    ForbiddenException,
+  );
+});
+
 function createReadStore(options: {
   workspaces?: WorkspaceSummary[];
   workspace?: WorkspaceDetail | null;
   members?: WorkspaceMember[] | null;
+  role?: WorkspaceMember["role"] | null;
 }): WorkspaceReadStore {
   return {
     listForUser: async (): Promise<WorkspaceSummary[]> => options.workspaces ?? [],
+    getRoleForUser: async (): Promise<WorkspaceMember["role"] | null> => options.role ?? null,
     getForUser: async (): Promise<WorkspaceDetail | null> => options.workspace ?? null,
     listMembersForUser: async (): Promise<WorkspaceMember[] | null> => options.members ?? null,
   };
@@ -190,9 +218,16 @@ function createReadStore(options: {
 
 function createManagementStore(options: {
   member?: WorkspaceMember;
+  removedMember?: WorkspaceMember;
+  removalResult?: "forbidden" | "member_not_found";
   result?: "forbidden" | "member_not_found";
 }): WorkspaceMemberManagementStore {
   return {
+    removeMember: async () => {
+      if (options.removalResult !== undefined) return { status: options.removalResult };
+      if (options.removedMember === undefined) return { status: "member_not_found" };
+      return { member: options.removedMember, status: "removed" };
+    },
     updateMemberRole: async (
       _workspaceId: string,
       _memberId: string,

@@ -73,6 +73,7 @@ function createReadStore(options: {
 }): WorkspaceReadStore {
   return {
     listForUser: async (): Promise<WorkspaceSummary[]> => options.workspaces ?? [],
+    getRoleForUser: async (): Promise<WorkspaceMember["role"] | null> => null,
     getForUser: async (): Promise<WorkspaceDetail | null> => options.workspace ?? null,
     listMembersForUser: async (): Promise<WorkspaceMember[] | null> => options.members ?? null,
   };

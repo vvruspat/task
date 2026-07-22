@@ -11,6 +11,7 @@ import { useI18n } from "../lib/i18n/i18n";
 import type { MessageKey } from "../lib/i18n/messages";
 import { updateWorkspaceData, useWorkspaceData } from "../lib/use-workspace-data";
 import {
+  canManageWorkspaceSettings,
   isApiFailure,
   type ProjectData,
   type WorkspaceBootstrap,
@@ -22,6 +23,8 @@ import { ProjectDangerZone } from "./project-danger-zone";
 import { ProjectStatusesManager } from "./project-statuses-manager";
 import { TaskStatusIndicator } from "./task-status-indicator";
 import { WorkspaceDangerZone } from "./workspace-danger-zone";
+import { WorkspaceInvitations } from "./workspace-invitations";
+import { WorkspaceMembersManager } from "./workspace-members-manager";
 import { WorkspaceNameEditor } from "./workspace-name-editor";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
@@ -122,8 +125,18 @@ function renderView(
   if (kind === "templates") return <Templates data={data} />;
   if (kind === "confirmations") return <Confirmations data={data} refresh={refresh} />;
   if (kind === "history") return <History data={data} />;
-  if (kind === "settings") return <Settings data={data} />;
+  if (kind === "settings") {
+    return canManageWorkspaceSettings(data.currentMember.role) ? (
+      <Settings data={data} />
+    ) : (
+      <WorkspaceSettingsRestricted />
+    );
+  }
   return <Telegram data={data} />;
+}
+function WorkspaceSettingsRestricted(): ReactNode {
+  const { t } = useI18n();
+  return <Empty text={t("workspace.settingsRestricted")} />;
 }
 function findProjectData(data: WorkspaceBootstrap, projectId?: string): ProjectData | undefined {
   return data.projectData.find((item) => item.projectId === projectId) ?? data.projectData[0];
@@ -396,15 +409,6 @@ function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
   return (
     <section className="settings">
       <Card className="panel">
-        <PanelTitle title={t("profile.title")} />
-        <Text color="gray" size="2">
-          {t("profile.subtitle")}
-        </Text>
-        <Button asChild size="1" variant="soft">
-          <Link href="/settings/profile">{t("nav.profile")}</Link>
-        </Button>
-      </Card>
-      <Card className="panel">
         <PanelTitle title={t("common.workspace")} />
         <WorkspaceNameEditor name={data.workspace.name} workspaceId={data.workspace.id} />
         <div className="settings-description-field">
@@ -433,15 +437,15 @@ function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
       </Card>
       <Card className="panel">
         <PanelTitle title={t("workspace.members")} />
-        {data.workspace.members.map((member) => (
-          <div className="person" key={member.id}>
-            <span className="avatar">{member.displayName.slice(0, 1)}</span>
-            <span>
-              <strong>{member.displayName}</strong>
-              <small>{workspaceMemberRoleLabel(member.role, t)}</small>
-            </span>
-          </div>
-        ))}
+        <WorkspaceMembersManager
+          currentMember={data.currentMember}
+          members={data.workspace.members}
+          workspaceId={data.workspace.id}
+        />
+      </Card>
+      <Card className="panel">
+        <PanelTitle title={t("invitations.title")} />
+        <WorkspaceInvitations workspaceId={data.workspace.id} />
       </Card>
       <WorkspaceDangerZone workspaceId={data.workspace.id} workspaceName={data.workspace.name} />
     </section>
@@ -468,15 +472,6 @@ function Empty({ text }: Readonly<{ text: string }>): ReactNode {
 }
 function PanelTitle({ title }: Readonly<{ title: string }>): ReactNode {
   return <h2 className="panel-title">{title}</h2>;
-}
-function workspaceMemberRoleLabel(
-  role: WorkspaceBootstrap["workspace"]["members"][number]["role"],
-  t: ReturnType<typeof useI18n>["t"],
-): string {
-  if (role === "owner") return t("workspace.role.owner");
-  if (role === "admin") return t("workspace.role.admin");
-  if (role === "guest") return t("workspace.role.guest");
-  return t("workspace.role.member");
 }
 function formatDate(value: string | null | undefined, locale: "en" | "ru"): string {
   return value === null || value === undefined

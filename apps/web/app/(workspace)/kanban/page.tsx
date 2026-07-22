@@ -1,4 +1,5 @@
-import { redirect } from "next/navigation";
+import { WorkspaceView } from "../../../components/workspace-view";
+
 export default function Page() {
-  redirect("/views");
+  return <WorkspaceView kind="kanban" />;
 }

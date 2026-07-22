@@ -58,6 +58,8 @@ import { EnforceRequiredWorkflowStatuses1783297560000 } from "./persistence/migr
 import { LightenBacklogStatusColor1783297620000 } from "./persistence/migrations/1783297620000-lighten-backlog-status-color.js";
 import { AddEmailPasswordAuth1783297680000 } from "./persistence/migrations/1783297680000-add-email-password-auth.js";
 import { AddUserLocale1783297740000 } from "./persistence/migrations/1783297740000-add-user-locale.js";
+import { AddEmailInvitations1783297800000 } from "./persistence/migrations/1783297800000-add-email-invitations.js";
+import { AddSavedViewVisibility1783297860000 } from "./persistence/migrations/1783297860000-add-saved-view-visibility.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -133,6 +135,8 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     LightenBacklogStatusColor1783297620000,
     AddEmailPasswordAuth1783297680000,
     AddUserLocale1783297740000,
+    AddEmailInvitations1783297800000,
+    AddSavedViewVisibility1783297860000,
   ]);
 });
 

@@ -2,9 +2,9 @@
 
 import { Avatar, Badge, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import type { NotificationFeed, NotificationItem } from "@task/api-client";
-import { AtSign, Bell, CircleDot } from "lucide-react";
+import { AtSign, Bell, CircleDot, UserCheck } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
@@ -106,10 +106,7 @@ function NotificationRow({
       className={item.read ? "notification-row" : "notification-row unread"}
       href={workspaceIssueHref(workspaceSlug, item.projectKey, item.taskNumber, item.taskTitle)}
     >
-      <Avatar
-        fallback={item.kind === "mention" ? <AtSign size={15} /> : <CircleDot size={15} />}
-        size="2"
-      />
+      <Avatar fallback={notificationIcon(item)} size="2" />
       <Flex className="notification-copy" direction="column" gap="1">
         <Text size="2">
           <strong>{actor}</strong> {notificationMessage(item, t)}
@@ -127,11 +124,18 @@ function NotificationRow({
 
 function notificationMessage(item: NotificationItem, t: ReturnType<typeof useI18n>["t"]): string {
   if (item.kind === "mention") return t("notifications.mentioned");
+  if (item.kind === "task_assigned") return t("notifications.assignedToYou");
   if (item.eventType === "task.status_changed") return t("notifications.statusChanged");
   if (item.eventType === "task.assignee_changed") return t("notifications.assigneeChanged");
   if (item.eventType === "comment.created") return t("notifications.commented");
   if (item.eventType === "attachment.created") return t("notifications.attached");
   return t("notifications.taskChanged");
+}
+
+function notificationIcon(item: NotificationItem): ReactElement {
+  if (item.kind === "mention") return <AtSign size={15} />;
+  if (item.kind === "task_assigned") return <UserCheck size={15} />;
+  return <CircleDot size={15} />;
 }
 
 function readError(value: unknown, fallback: string): string {

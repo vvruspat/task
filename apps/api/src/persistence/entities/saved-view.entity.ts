@@ -7,11 +7,16 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type { SavedViewLayout, SavedViewSettings } from "../../views/views.contracts.js";
+import type {
+  SavedViewLayout,
+  SavedViewSettings,
+  SavedViewVisibility,
+} from "../../views/views.contracts.js";
 
 @Entity({ name: "saved_views" })
 @Index("idx_saved_views_workspace_id_user_id", ["workspaceId", "userId"])
 @Index("idx_saved_views_project_id", ["projectId"])
+@Index("idx_saved_views_workspace_id_visibility", ["workspaceId", "visibility"])
 @Index("uq_saved_views_workspace_user_system_key", ["workspaceId", "userId", "systemKey"], {
   unique: true,
 })
@@ -42,6 +47,9 @@ export class SavedViewEntity {
 
   @Column({ nullable: true, type: "text" })
   description: string | null = null;
+
+  @Column({ default: "private", type: "text" })
+  visibility: SavedViewVisibility = "private";
 
   @Column({ type: "text" })
   layout: SavedViewLayout = "list";

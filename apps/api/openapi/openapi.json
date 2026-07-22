@@ -421,7 +421,7 @@
             "description": "Workspace payload is invalid."
           },
           "403": {
-            "description": "Current user cannot update this workspace."
+            "description": "Current user cannot update this workspace.\n\nCurrent workspace role cannot access this endpoint."
           },
           "404": {
             "description": "Workspace was not found."
@@ -465,7 +465,7 @@
             }
           },
           "403": {
-            "description": "Only the workspace owner can delete it."
+            "description": "Only the workspace owner can delete it.\n\nCurrent workspace role cannot access this endpoint."
           },
           "404": {
             "description": "Workspace was not found."
@@ -579,13 +579,68 @@
             "description": "Workspace member role payload is invalid."
           },
           "403": {
-            "description": "Current user cannot update this workspace member role."
+            "description": "Current user cannot update this workspace member role.\n\nCurrent workspace role cannot access this endpoint."
           },
           "404": {
             "description": "Workspace member is missing or not visible to the current user."
           }
         },
         "summary": "Update one workspace member role",
+        "tags": ["workspaces"]
+      }
+    },
+    "/workspaces/{workspaceId}/members/{memberId}": {
+      "delete": {
+        "operationId": "WorkspacesController_removeMember",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceMemberDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot remove this member or the owner tried to leave.\n\nCurrent workspace role cannot access this endpoint."
+          },
+          "404": {
+            "description": "Workspace member was not found."
+          }
+        },
+        "summary": "Remove a workspace member or leave the workspace",
         "tags": ["workspaces"]
       }
     },
@@ -1419,6 +1474,241 @@
           }
         },
         "tags": ["notifications"]
+      }
+    },
+    "/workspaces/{workspaceId}/invitations": {
+      "get": {
+        "operationId": "WorkspaceInvitationsController_list",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceInvitationDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot view invitations."
+          }
+        },
+        "summary": "List invitations for a workspace",
+        "tags": ["workspace invitations"]
+      },
+      "post": {
+        "operationId": "WorkspaceInvitationsController_create",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceInvitationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceInvitationDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invitation payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot invite members."
+          },
+          "409": {
+            "description": "The user is already a member or already invited."
+          }
+        },
+        "summary": "Invite a workspace member by email",
+        "tags": ["workspace invitations"]
+      }
+    },
+    "/workspaces/{workspaceId}/invitations/{invitationId}": {
+      "delete": {
+        "operationId": "WorkspaceInvitationsController_revoke",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "invitationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceInvitationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current workspace role cannot access this endpoint."
+          }
+        },
+        "summary": "Revoke a workspace invitation",
+        "tags": ["workspace invitations"]
+      }
+    },
+    "/invitations/{token}": {
+      "get": {
+        "operationId": "InvitationsController_preview",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationPreviewDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invitation was not found."
+          }
+        },
+        "summary": "Preview an invitation from its one-time token",
+        "tags": ["workspace invitations"]
+      }
+    },
+    "/invitations/{token}/accept": {
+      "post": {
+        "operationId": "InvitationsController_accept",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptInvitationResultDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invitation belongs to another email address."
+          },
+          "409": {
+            "description": "Invitation was already used."
+          },
+          "410": {
+            "description": "Invitation expired or was revoked."
+          }
+        },
+        "summary": "Accept an invitation as the current user",
+        "tags": ["workspace invitations"]
       }
     },
     "/workspaces/{workspaceId}/events": {
@@ -5843,7 +6133,7 @@
           },
           "kind": {
             "type": "string",
-            "enum": ["mention", "task_changed"]
+            "enum": ["mention", "task_assigned", "task_changed"]
           },
           "workspaceId": {
             "type": "string",
@@ -5936,6 +6226,96 @@
         },
         "required": ["subscribed"]
       },
+      "WorkspaceInvitationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member", "guest"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "expired", "used", "revoked"]
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "workspaceId", "email", "role", "status", "expiresAt", "createdAt"]
+      },
+      "CreateWorkspaceInvitationDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "teammate@example.com",
+            "format": "email"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member", "guest"]
+          }
+        },
+        "required": ["email", "role"]
+      },
+      "InvitationPreviewDto": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member", "guest"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "expired", "used", "revoked"]
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["workspaceId", "workspaceName", "email", "role", "status", "expiresAt"]
+      },
+      "AcceptInvitationResultDto": {
+        "type": "object",
+        "properties": {
+          "workspace": {
+            "$ref": "#/components/schemas/WorkspaceSummaryDto"
+          },
+          "member": {
+            "$ref": "#/components/schemas/WorkspaceMemberDto"
+          }
+        },
+        "required": ["workspace", "member"]
+      },
       "WorkspaceRealtimeEventDto": {
         "type": "object",
         "properties": {
@@ -5944,7 +6324,7 @@
           },
           "kind": {
             "type": "string",
-            "enum": ["connected", "changed", "heartbeat"]
+            "enum": ["connected", "changed", "heartbeat", "member_removed", "member_role_changed"]
           },
           "workspaceId": {
             "type": "string",
@@ -5960,12 +6340,37 @@
             "format": "uuid",
             "nullable": true
           },
+          "memberId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "memberUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "memberRole": {
+            "type": "string",
+            "enum": ["owner", "admin", "member", "guest"],
+            "nullable": true
+          },
           "occurredAt": {
             "format": "date-time",
             "type": "string"
           }
         },
-        "required": ["id", "kind", "workspaceId", "projectId", "taskId", "occurredAt"]
+        "required": [
+          "id",
+          "kind",
+          "workspaceId",
+          "projectId",
+          "taskId",
+          "memberId",
+          "memberUserId",
+          "memberRole",
+          "occurredAt"
+        ]
       },
       "TaskTablePageDto": {
         "type": "object",
@@ -7917,6 +8322,13 @@
             "type": "string",
             "nullable": true
           },
+          "visibility": {
+            "type": "string",
+            "enum": ["private", "workspace"]
+          },
+          "system": {
+            "type": "boolean"
+          },
           "layout": {
             "type": "string",
             "enum": ["list", "board", "matrix"]
@@ -7939,6 +8351,8 @@
           "userId",
           "slug",
           "name",
+          "visibility",
+          "system",
           "layout",
           "settings",
           "createdAt",
@@ -7962,6 +8376,10 @@
             "format": "uuid",
             "nullable": true
           },
+          "visibility": {
+            "type": "string",
+            "enum": ["private", "workspace"]
+          },
           "layout": {
             "type": "string",
             "enum": ["list", "board", "matrix"]
@@ -7970,7 +8388,7 @@
             "$ref": "#/components/schemas/SavedViewSettingsDto"
           }
         },
-        "required": ["name", "layout", "settings"]
+        "required": ["name", "visibility", "layout", "settings"]
       },
       "UpdateSavedViewDto": {
         "type": "object",
@@ -7987,6 +8405,10 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "visibility": {
+            "type": "string",
+            "enum": ["private", "workspace"]
           },
           "layout": {
             "type": "string",

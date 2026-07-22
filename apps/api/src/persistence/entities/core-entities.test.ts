@@ -83,6 +83,16 @@ test("transactionally created entities receive UUIDs before saves", () => {
   assert.match(new WorkspaceEntity().id, uuidPattern);
   assert.match(new WorkspaceMemberEntity().id, uuidPattern);
   assert.match(new AuthSessionEntity().id, uuidPattern);
+  assert.match(new InviteEntity().id, uuidPattern);
+});
+
+test("new invitations receive their actual creation time before saves", () => {
+  const beforeCreation = Date.now();
+  const invitation = new InviteEntity();
+  const afterCreation = Date.now();
+
+  assert.ok(invitation.createdAt.getTime() >= beforeCreation);
+  assert.ok(invitation.createdAt.getTime() <= afterCreation);
 });
 
 test("invite columns, role check, uniqueness, and indexes metadata are registered", () => {

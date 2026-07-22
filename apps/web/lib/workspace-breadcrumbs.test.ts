@@ -18,7 +18,14 @@ const data: WorkspaceBreadcrumbData = {
       title: "Альбом",
     },
   ],
-  views: [{ name: "Альбом мечты", slug: "album-dream" }],
+  views: [
+    {
+      layout: "board",
+      name: "Альбом мечты",
+      projectId: "project-id",
+      slug: "album-dream",
+    },
+  ],
 };
 
 test("builds route breadcrumbs without a global project selector", () => {
@@ -33,7 +40,18 @@ test("builds route breadcrumbs without a global project selector", () => {
   ]);
   assert.deepEqual(buildWorkspaceBreadcrumbs("/w/product-workspace/issue/AM-1/song", data, t), [
     { href: "/agent", label: "Product Workspace" },
-    { href: "/w/product-workspace/project/album", label: "Альбом" },
+    { href: "/w/product-workspace/view/album-dream", label: "Альбом" },
     { label: "AM-1" },
   ]);
+});
+
+test("falls back to the filtered kanban when the project view is unavailable", () => {
+  assert.deepEqual(
+    buildWorkspaceBreadcrumbs("/w/product-workspace/issue/AM-1/song", { ...data, views: [] }, t),
+    [
+      { href: "/agent", label: "Product Workspace" },
+      { href: "/kanban?project=project-id", label: "Альбом" },
+      { label: "AM-1" },
+    ],
+  );
 });

@@ -2,6 +2,7 @@ import { Injectable, type MessageEvent } from "@nestjs/common";
 import { interval, map, merge, type Observable, of, Subject } from "rxjs";
 import type {
   PublishWorkspaceChangeInput,
+  PublishWorkspaceMemberChangeInput,
   WorkspaceRealtimeEvent,
   WorkspaceRealtimeEventKind,
 } from "./realtime.contracts.js";
@@ -16,15 +17,30 @@ export class WorkspaceRealtimeService {
 
   publishChange(input: PublishWorkspaceChangeInput): void {
     this.getSubject(input.workspaceId).next(
-      this.createEvent("changed", input.workspaceId, input.projectId, input.taskId),
+      this.createEvent({
+        kind: "changed",
+        workspaceId: input.workspaceId,
+        ...(input.projectId === undefined ? {} : { projectId: input.projectId }),
+        ...(input.taskId === undefined ? {} : { taskId: input.taskId }),
+      }),
     );
   }
 
+  publishMemberRoleChanged(input: PublishWorkspaceMemberChangeInput): void {
+    this.getSubject(input.workspaceId).next(
+      this.createEvent({ kind: "member_role_changed", ...input }),
+    );
+  }
+
+  publishMemberRemoved(input: PublishWorkspaceMemberChangeInput): void {
+    this.getSubject(input.workspaceId).next(this.createEvent({ kind: "member_removed", ...input }));
+  }
+
   subscribe(workspaceId: string): Observable<MessageEvent> {
-    const connected = of(this.toMessageEvent(this.createEvent("connected", workspaceId)));
+    const connected = of(this.toMessageEvent(this.createEvent({ kind: "connected", workspaceId })));
     const changes = this.getSubject(workspaceId).pipe(map((event) => this.toMessageEvent(event)));
     const heartbeat = interval(heartbeatIntervalMs).pipe(
-      map(() => this.toMessageEvent(this.createEvent("heartbeat", workspaceId))),
+      map(() => this.toMessageEvent(this.createEvent({ kind: "heartbeat", workspaceId }))),
     );
     return merge(connected, changes, heartbeat);
   }
@@ -37,19 +53,25 @@ export class WorkspaceRealtimeService {
     return created;
   }
 
-  private createEvent(
-    kind: WorkspaceRealtimeEventKind,
-    workspaceId: string,
-    projectId: string | null | undefined = null,
-    taskId: string | null | undefined = null,
-  ): WorkspaceRealtimeEvent {
+  private createEvent(input: {
+    kind: WorkspaceRealtimeEventKind;
+    workspaceId: string;
+    projectId?: string | null;
+    taskId?: string | null;
+    memberId?: string | null;
+    memberUserId?: string | null;
+    memberRole?: WorkspaceRealtimeEvent["memberRole"];
+  }): WorkspaceRealtimeEvent {
     this.sequence += 1;
     return {
       id: `${Date.now()}-${this.sequence}`,
-      kind,
-      workspaceId,
-      projectId: projectId ?? null,
-      taskId: taskId ?? null,
+      kind: input.kind,
+      workspaceId: input.workspaceId,
+      projectId: input.projectId ?? null,
+      taskId: input.taskId ?? null,
+      memberId: input.memberId ?? null,
+      memberUserId: input.memberUserId ?? null,
+      memberRole: input.memberRole ?? null,
       occurredAt: new Date(),
     };
   }

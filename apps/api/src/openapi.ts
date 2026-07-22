@@ -17,6 +17,12 @@ import {
 } from "./auth/auth.dto.js";
 import { CreateTaskCommentDto, TaskCommentDto } from "./comments/comments.dto.js";
 import {
+  AcceptInvitationResultDto,
+  CreateWorkspaceInvitationDto,
+  InvitationPreviewDto,
+  WorkspaceInvitationDto,
+} from "./invitations/invitations.dto.js";
+import {
   ProjectMatrixCellDto,
   ProjectMatrixDto,
   ProjectMatrixStageDto,
@@ -87,6 +93,10 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
       WorkspaceMemberDto,
       WorkspaceDetailDto,
       UpdateWorkspaceDto,
+      CreateWorkspaceInvitationDto,
+      WorkspaceInvitationDto,
+      InvitationPreviewDto,
+      AcceptInvitationResultDto,
       CreateProjectDto,
       UpdateProjectDto,
       ProjectSummaryDto,

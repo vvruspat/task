@@ -29,10 +29,11 @@ export class TypeOrmViewsStore implements SavedViewsStore {
     const dataSource = await this.getInitializedDataSource();
     if (!(await this.hasMembership(dataSource, workspaceId, userId))) return null;
     await this.ensureMyIssuesView(dataSource, workspaceId, userId);
-    const views = await dataSource.getRepository(SavedViewEntity).find({
-      where: { workspaceId, userId },
+    const workspaceViews = await dataSource.getRepository(SavedViewEntity).find({
+      where: { workspaceId },
       order: { updatedAt: "DESC", createdAt: "ASC" },
     });
+    const views = workspaceViews.filter((view) => isSavedViewVisibleToUser(view, userId));
     views.sort((left, right) => {
       if (left.systemKey === myIssuesSystemKey) return -1;
       if (right.systemKey === myIssuesSystemKey) return 1;
@@ -70,6 +71,7 @@ export class TypeOrmViewsStore implements SavedViewsStore {
           projectId: input.projectId ?? null,
           name: input.name,
           description: input.description ?? null,
+          visibility: input.visibility,
           layout: input.layout,
           settings: input.settings,
         }),
@@ -102,6 +104,9 @@ export class TypeOrmViewsStore implements SavedViewsStore {
     if (input.name !== undefined) view.name = input.name;
     if (input.description !== undefined) view.description = input.description;
     if (input.projectId !== undefined) view.projectId = input.projectId;
+    if (input.visibility !== undefined && view.systemKey === null) {
+      view.visibility = input.visibility;
+    }
     if (input.layout !== undefined) view.layout = input.layout;
     if (input.settings !== undefined) view.settings = input.settings;
     return { status: "ok", view: toSavedView(await repository.save(view)) };
@@ -181,6 +186,7 @@ export class TypeOrmViewsStore implements SavedViewsStore {
           projectId: null,
           name: "My issues",
           description: "Issues assigned to you",
+          visibility: "private",
           layout: "list",
           settings: {
             grouping: "status",
@@ -211,6 +217,13 @@ export class TypeOrmViewsStore implements SavedViewsStore {
   }
 }
 
+export function isSavedViewVisibleToUser(
+  view: Pick<SavedViewEntity, "userId" | "visibility">,
+  userId: string,
+): boolean {
+  return view.userId === userId || view.visibility === "workspace";
+}
+
 function toSavedView(view: SavedViewEntity): SavedView {
   const storedFilters = view.settings.filters ?? [];
   const projectFilter: SavedViewFilter | null =
@@ -233,6 +246,8 @@ function toSavedView(view: SavedViewEntity): SavedView {
     projectId: null,
     name: view.name,
     description: view.description,
+    visibility: view.visibility,
+    system: view.systemKey !== null,
     layout: view.layout,
     settings: { ...view.settings, filters },
     createdAt: view.createdAt,

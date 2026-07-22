@@ -1,6 +1,9 @@
 export const savedViewLayouts = ["list", "board", "matrix"] as const;
 export type SavedViewLayout = (typeof savedViewLayouts)[number];
 
+export const savedViewVisibilities = ["private", "workspace"] as const;
+export type SavedViewVisibility = (typeof savedViewVisibilities)[number];
+
 export const savedViewGroupings = ["none", "status", "project", "parent_task"] as const;
 export type SavedViewGrouping = (typeof savedViewGroupings)[number];
 
@@ -72,6 +75,8 @@ export type SavedView = {
   projectId: string | null;
   name: string;
   description: string | null;
+  visibility: SavedViewVisibility;
+  system: boolean;
   layout: SavedViewLayout;
   settings: SavedViewSettings;
   createdAt: Date;
@@ -82,6 +87,7 @@ export type CreateSavedViewInput = {
   name: string;
   description?: string | null;
   projectId?: string | null;
+  visibility: SavedViewVisibility;
   layout: SavedViewLayout;
   settings: SavedViewSettings;
 };
@@ -90,6 +96,7 @@ export type UpdateSavedViewInput = {
   name?: string;
   description?: string | null;
   projectId?: string | null;
+  visibility?: SavedViewVisibility;
   layout?: SavedViewLayout;
   settings?: SavedViewSettings;
 };

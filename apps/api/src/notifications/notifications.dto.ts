@@ -8,7 +8,8 @@ import type {
 
 export class NotificationItemDto implements NotificationItem {
   @ApiProperty({ format: "uuid" }) readonly id: string;
-  @ApiProperty({ enum: ["mention", "task_changed"] }) readonly kind: NotificationKind;
+  @ApiProperty({ enum: ["mention", "task_assigned", "task_changed"] })
+  readonly kind: NotificationKind;
   @ApiProperty({ format: "uuid" }) readonly workspaceId: string;
   @ApiProperty({ format: "uuid" }) readonly taskId: string;
   @ApiProperty({ format: "uuid" }) readonly projectId: string;

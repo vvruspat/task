@@ -9,6 +9,7 @@ import type {
   WorkspaceBootstrap,
   WorkspaceRequired,
 } from "../../../lib/workspace-contracts";
+import { findCurrentWorkspaceMember } from "../../../lib/workspace-contracts";
 
 const apiBaseUrl = readEnvironment("TASK_API_BASE_URL") ?? "http://localhost:3000";
 
@@ -75,8 +76,16 @@ export async function GET(
         allProjects.map((project) => api.listStatuses({ workspaceId, projectId: project.id })),
       )
     ).flat();
+    const currentMember = findCurrentWorkspaceMember(detail, trustedUserId);
+    if (currentMember === null) {
+      return NextResponse.json(
+        { error: "Current workspace membership was not found." },
+        { status: 403 },
+      );
+    }
     return NextResponse.json({
       availableWorkspaces: workspaces,
+      currentMember,
       workspace: detail,
       myTasks,
       projects,

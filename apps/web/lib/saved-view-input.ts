@@ -4,6 +4,7 @@ export function isCreateSavedViewInput(value: unknown): value is CreateSavedView
   return (
     isRecord(value) &&
     isName(value["name"]) &&
+    isVisibility(value["visibility"]) &&
     isLayout(value["layout"]) &&
     isSettings(value["settings"]) &&
     isOptionalNullableString(value["description"]) &&
@@ -13,7 +14,7 @@ export function isCreateSavedViewInput(value: unknown): value is CreateSavedView
 
 export function isUpdateSavedViewInput(value: unknown): value is UpdateSavedViewInput {
   if (!isRecord(value)) return false;
-  const hasField = ["name", "description", "projectId", "layout", "settings"].some(
+  const hasField = ["name", "description", "projectId", "visibility", "layout", "settings"].some(
     (key) => key in value,
   );
   return (
@@ -21,6 +22,7 @@ export function isUpdateSavedViewInput(value: unknown): value is UpdateSavedView
     (value["name"] === undefined || isName(value["name"])) &&
     isOptionalNullableString(value["description"]) &&
     isOptionalNullableString(value["projectId"]) &&
+    (value["visibility"] === undefined || isVisibility(value["visibility"])) &&
     (value["layout"] === undefined || isLayout(value["layout"])) &&
     (value["settings"] === undefined || isSettings(value["settings"]))
   );
@@ -47,6 +49,9 @@ function isName(value: unknown): boolean {
 }
 function isLayout(value: unknown): boolean {
   return value === "list" || value === "board" || value === "matrix";
+}
+function isVisibility(value: unknown): boolean {
+  return value === "private" || value === "workspace";
 }
 function isGrouping(value: unknown): boolean {
   return value === "none" || value === "status" || value === "project" || value === "parent_task";

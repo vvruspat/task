@@ -1,6 +1,7 @@
 import { createTaskApiClient, type TaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
 import { readAuthenticatedUserId } from "./auth";
+import { readBackendErrorMessage } from "./backend-error";
 
 type ServerTaskApiResult =
   | { api: TaskApiClient; response?: never }
@@ -43,6 +44,9 @@ export function readTaskRequestScope(request: Request): TaskRequestScope | null 
 
 export function taskApiErrorResponse(error: unknown, fallback: string): NextResponse {
   const status = error instanceof TaskApiClientError ? (error.status ?? 502) : 502;
-  const message = error instanceof TaskApiClientError ? error.message : fallback;
+  const message =
+    error instanceof TaskApiClientError
+      ? (readBackendErrorMessage(error.responseBody) ?? error.message)
+      : fallback;
   return NextResponse.json({ error: message }, { status });
 }

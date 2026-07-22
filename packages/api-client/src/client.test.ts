@@ -42,6 +42,48 @@ test("createTaskApiClient sends trusted user context for workspace requests", as
   assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
 });
 
+test("createTaskApiClient manages email invitations and keeps previews public", async () => {
+  const token = "a".repeat(43);
+  const fetcher = new RecordingFetch(
+    sequence([
+      invitationPreview(),
+      [workspaceInvitation()],
+      workspaceInvitation(),
+      { ...workspaceInvitationRecord(), status: "revoked" },
+      { workspace: workspaceSummary(), member: { ...workspaceMemberRecord(), role: "member" } },
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await client.getInvitationPreview({ token });
+  await client.listWorkspaceInvitations({ workspaceId });
+  await client.createWorkspaceInvitation({
+    body: { email: "teammate@example.com", role: "member" },
+    workspaceId,
+  });
+  await client.revokeWorkspaceInvitation({ invitationId: taskId, workspaceId });
+  await client.acceptInvitation({ token });
+
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method, call.init.headers["x-task-user-id"]]),
+    [
+      [`https://task.example/invitations/${token}`, "GET", undefined],
+      [`https://task.example/workspaces/${workspaceId}/invitations`, "GET", trustedUserId],
+      [`https://task.example/workspaces/${workspaceId}/invitations`, "POST", trustedUserId],
+      [
+        `https://task.example/workspaces/${workspaceId}/invitations/${taskId}`,
+        "DELETE",
+        trustedUserId,
+      ],
+      [`https://task.example/invitations/${token}/accept`, "POST", trustedUserId],
+    ],
+  );
+});
+
 test("createTaskApiClient exposes Settings and Telegram link endpoints with trusted context", async () => {
   const fetcher = new RecordingFetch(
     sequence([
@@ -633,6 +675,7 @@ test("createTaskApiClient manages workspace statuses and member roles", async ()
       workspaceStatus(),
       [workspaceStatus()],
       workspaceMember(),
+      workspaceMember(),
     ]),
   );
   const client = createTaskApiClient({
@@ -656,6 +699,7 @@ test("createTaskApiClient manages workspace statuses and member roles", async ()
     workspaceId,
   });
   await client.updateWorkspaceMemberRole({ body: { role: "guest" }, memberId, workspaceId });
+  await client.removeWorkspaceMember({ memberId, workspaceId });
 
   assert.deepEqual(
     fetcher.calls.map((call) => [call.url, call.init.method, call.init.body]),
@@ -685,6 +729,7 @@ test("createTaskApiClient manages workspace statuses and member roles", async ()
         "PATCH",
         JSON.stringify({ role: "guest" }),
       ],
+      [`https://task.example/workspaces/${workspaceId}/members/${memberId}`, "DELETE", undefined],
     ],
   );
 });
@@ -1261,6 +1306,20 @@ function workspaceSummary(): unknown {
 }
 
 function workspaceMember(): unknown {
+  return workspaceMemberRecord();
+}
+
+function workspaceMemberRecord(): {
+  avatarUrl: null;
+  createdAt: string;
+  displayName: string;
+  email: null;
+  id: string;
+  role: string;
+  updatedAt: string;
+  userId: string;
+  workspaceId: string;
+} {
   return {
     id: "11111111-1111-4111-8111-111111111111",
     workspaceId,
@@ -1271,6 +1330,41 @@ function workspaceMember(): unknown {
     avatarUrl: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
+function workspaceInvitation(): unknown {
+  return workspaceInvitationRecord();
+}
+
+function workspaceInvitationRecord(): {
+  createdAt: string;
+  email: string;
+  expiresAt: string;
+  id: string;
+  role: string;
+  status: string;
+  workspaceId: string;
+} {
+  return {
+    createdAt: "2026-07-21T10:00:00.000Z",
+    email: "teammate@example.com",
+    expiresAt: "2026-07-28T10:00:00.000Z",
+    id: taskId,
+    role: "member",
+    status: "pending",
+    workspaceId,
+  };
+}
+
+function invitationPreview(): unknown {
+  return {
+    email: "teammate@example.com",
+    expiresAt: "2026-07-28T10:00:00.000Z",
+    role: "member",
+    status: "pending",
+    workspaceId,
+    workspaceName: "Studio",
   };
 }
 

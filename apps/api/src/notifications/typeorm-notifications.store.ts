@@ -233,12 +233,13 @@ function taskIdForEvent(event: ActivityEventEntity): string | null {
 }
 
 export function notificationKindForEvent(
-  event: Pick<ActivityEventEntity, "actorUserId" | "createdAt">,
+  event: Pick<ActivityEventEntity, "actorUserId" | "createdAt" | "eventType" | "payload">,
   currentUserId: string,
   isMention: boolean,
   subscribedAt: Date | undefined,
 ): NotificationKind | null {
   if (isMention) return "mention";
+  if (isNewAssignmentForUser(event, currentUserId)) return "task_assigned";
   if (
     event.actorUserId === currentUserId ||
     subscribedAt === undefined ||
@@ -247,4 +248,25 @@ export function notificationKindForEvent(
     return null;
   }
   return "task_changed";
+}
+
+function isNewAssignmentForUser(
+  event: Pick<ActivityEventEntity, "actorUserId" | "eventType" | "payload">,
+  currentUserId: string,
+): boolean {
+  if (event.actorUserId === currentUserId) return false;
+  if (
+    event.eventType !== "task.created" &&
+    event.eventType !== "task.assignee_updated" &&
+    event.eventType !== "task.bulk_updated"
+  ) {
+    return false;
+  }
+  const assigneeUserId = event.payload["assigneeUserId"];
+  if (assigneeUserId !== currentUserId) return false;
+  if (event.eventType === "task.created") return true;
+  return (
+    "previousAssigneeUserId" in event.payload &&
+    event.payload["previousAssigneeUserId"] !== currentUserId
+  );
 }

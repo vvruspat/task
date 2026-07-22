@@ -3,6 +3,7 @@
 import { Box, Button, Card, Flex, Heading, Text, TextField } from "@task/ui";
 import { type FormEvent, type ReactNode, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
+import { readWorkspaceCreateError } from "../lib/workspace-create";
 
 export function WorkspaceOnboarding({ refresh }: { refresh: () => Promise<void> }): ReactNode {
   const { t } = useI18n();
@@ -22,7 +23,7 @@ export function WorkspaceOnboarding({ refresh }: { refresh: () => Promise<void> 
       });
       const body: unknown = await response.json().catch((): null => null);
       if (!response.ok) {
-        setError(readError(body, t("workspace.createError")));
+        setError(readWorkspaceCreateError(body, t("workspace.createError")));
         return;
       }
       await refresh();
@@ -74,13 +75,4 @@ export function WorkspaceOnboarding({ refresh }: { refresh: () => Promise<void> 
       </Box>
     </Flex>
   );
-}
-
-function readError(value: unknown, fallback: string): string {
-  return typeof value === "object" &&
-    value !== null &&
-    "error" in value &&
-    typeof value.error === "string"
-    ? value.error
-    : fallback;
 }

@@ -15,6 +15,7 @@ import {
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
 import { selectDefaultTaskStatusId } from "../tasks/default-task-status.js";
 import { reserveProjectTaskNumbers } from "../tasks/project-task-number.js";
+import { taskAssignmentActivityPayload } from "../tasks/task-assignment-notification.js";
 import type { TaskDetail } from "../tasks/tasks.contracts.js";
 import type {
   CloneTaskSkillInput,
@@ -716,7 +717,8 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
           });
         });
         const savedSubtasks = await taskRepository.save(subtaskEntities);
-        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+        const activityRepository = manager.getRepository(ActivityEventEntity);
+        const activityEvent = activityRepository.create({
           workspaceId,
           actorUserId: userId,
           eventType: "task_skill.applied",
@@ -732,7 +734,26 @@ export class TypeOrmTaskSkillsReadStore implements TaskSkillsReadStore {
           },
         });
 
-        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+        const assignedSubtaskEvents = savedSubtasks.flatMap((subtask) =>
+          subtask.assigneeUserId === null
+            ? []
+            : [
+                activityRepository.create({
+                  workspaceId,
+                  actorUserId: userId,
+                  eventType: "task.created",
+                  entityType: "task",
+                  entityId: subtask.id,
+                  payload: {
+                    ...taskAssignmentActivityPayload(null, subtask.assigneeUserId),
+                    projectId: input.projectId,
+                    title: subtask.title,
+                  },
+                }),
+              ],
+        );
+
+        await activityRepository.save([activityEvent, ...assignedSubtaskEvents]);
 
         return {
           workspaceId,
