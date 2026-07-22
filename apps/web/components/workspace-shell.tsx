@@ -30,6 +30,7 @@ import {
   UserRound,
   Workflow,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
@@ -60,10 +61,6 @@ import {
   workspacePageSupportsProject,
   workspaceViewHref,
 } from "../lib/workspace-url";
-import { AgentDrawer } from "./agent-chat";
-import { CreateDialog } from "./create-dialog";
-import { WorkspaceCreateDialog } from "./workspace-create-dialog";
-import { WorkspaceLeaveDialog } from "./workspace-leave-dialog";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
 type NavItem = {
@@ -80,6 +77,21 @@ const navigation: NavItem[] = [
   { page: "settings", label: "common.settings", icon: Settings },
 ];
 const sidebarCompactStorageKey = "task:sidebar-compact";
+const AgentDrawer = dynamic(() => import("./agent-chat").then((module) => module.AgentDrawer), {
+  ssr: false,
+});
+const CreateDialog = dynamic(
+  () => import("./create-dialog").then((module) => module.CreateDialog),
+  { ssr: false },
+);
+const WorkspaceCreateDialog = dynamic(
+  () => import("./workspace-create-dialog").then((module) => module.WorkspaceCreateDialog),
+  { ssr: false },
+);
+const WorkspaceLeaveDialog = dynamic(
+  () => import("./workspace-leave-dialog").then((module) => module.WorkspaceLeaveDialog),
+  { ssr: false },
+);
 
 export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
   const { t } = useI18n();
@@ -125,7 +137,9 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
         );
   const activePage = workspacePageFromPath(pathname);
   const setAgentOpen = useWorkspaceOverlayStore((state) => state.setAgentOpen);
+  const agentOpen = useWorkspaceOverlayStore((state) => state.agentOpen);
   const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateOpen);
+  const createOpen = useWorkspaceOverlayStore((state) => state.createOpen);
   const setCreateViewOpen = useWorkspaceOverlayStore((state) => state.setCreateViewOpen);
   const notificationUnreadCount = useNotificationUnreadCount(workspace?.id ?? null);
   useNotificationsController(
@@ -427,19 +441,21 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
         </header>
         <div className="route-content">{children}</div>
       </section>
-      <AgentDrawer />
-      <CreateDialog />
-      <WorkspaceCreateDialog
-        open={workspaceCreateOpen}
-        onOpenChange={setWorkspaceCreateOpen}
-        onCreated={(createdWorkspace) =>
-          changeWorkspace(createdWorkspace, router, setSelectedWorkspaceId, setSelectedProjectId)
-        }
-      />
-      {workspace !== undefined && currentMember !== undefined && (
+      {agentOpen && <AgentDrawer />}
+      {createOpen && <CreateDialog />}
+      {workspaceCreateOpen && (
+        <WorkspaceCreateDialog
+          open
+          onOpenChange={setWorkspaceCreateOpen}
+          onCreated={(createdWorkspace) =>
+            changeWorkspace(createdWorkspace, router, setSelectedWorkspaceId, setSelectedProjectId)
+          }
+        />
+      )}
+      {workspaceLeaveOpen && workspace !== undefined && currentMember !== undefined && (
         <WorkspaceLeaveDialog
           memberId={currentMember.id}
-          open={workspaceLeaveOpen}
+          open
           workspaceId={workspace.id}
           workspaceName={workspace.name}
           onOpenChange={setWorkspaceLeaveOpen}

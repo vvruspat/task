@@ -1625,8 +1625,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/workspace-shell.tsx": {
-    "mtime": 1784705457.5328887,
-    "ast_hash": "286cbe2c6953dc9bf1e94e4241def87b",
+    "mtime": 1784705588.5464227,
+    "ast_hash": "72e1b75cb3af58f6e3ff24f1466fe9e3",
     "semantic_hash": ""
   },
   "apps/web/components/workspace-view.tsx": {
@@ -2260,8 +2260,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/notifications-page.tsx": {
-    "mtime": 1784705469.084367,
-    "ast_hash": "4730e7dfa8102463efe62bc81839c4eb",
+    "mtime": 1784705588.5466502,
+    "ast_hash": "70e018176b371d370e53c2e7765b59c7",
     "semantic_hash": ""
   },
   "apps/web/lib/notifications.ts": {
@@ -2920,8 +2920,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/use-notifications.ts": {
-    "mtime": 1784705413.1688714,
-    "ast_hash": "6ede9180a0e29825dc33f75f27cd86f3",
+    "mtime": 1784705588.5461512,
+    "ast_hash": "4e54641ae688c8d51c4ee5747c513839",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-overlay-store.ts": {
