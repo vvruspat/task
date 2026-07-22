@@ -9,6 +9,7 @@ test("parseTaskMcpConfig accepts a backend base URL", () => {
 
   assert.deepEqual(config, {
     backendBaseUrl: "https://api.example.test",
+    integrationContext: null,
     name: "task-mcp-server",
     version: "0.0.0",
   });
@@ -23,9 +24,44 @@ test("parseTaskMcpConfig accepts explicit server metadata", () => {
 
   assert.deepEqual(config, {
     backendBaseUrl: "http://localhost:3000",
+    integrationContext: null,
     name: "task-local",
     version: "1.2.3",
   });
+});
+
+test("parseTaskMcpConfig accepts a server-owned integration scope", () => {
+  assert.deepEqual(
+    parseTaskMcpConfig({
+      TASK_API_BASE_URL: "http://localhost:3000",
+      TASK_MCP_USER_ID: "11111111-1111-4111-8111-111111111111",
+      TASK_MCP_WORKSPACE_ID: "22222222-2222-4222-8222-222222222222",
+    }).integrationContext,
+    {
+      userId: "11111111-1111-4111-8111-111111111111",
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+    },
+  );
+});
+
+test("parseTaskMcpConfig rejects partial or malformed integration scope", () => {
+  assert.throws(
+    () =>
+      parseTaskMcpConfig({
+        TASK_API_BASE_URL: "http://localhost:3000",
+        TASK_MCP_USER_ID: "11111111-1111-4111-8111-111111111111",
+      }),
+    InvalidTaskMcpEnvironmentError,
+  );
+  assert.throws(
+    () =>
+      parseTaskMcpConfig({
+        TASK_API_BASE_URL: "http://localhost:3000",
+        TASK_MCP_USER_ID: "not-a-user",
+        TASK_MCP_WORKSPACE_ID: "22222222-2222-4222-8222-222222222222",
+      }),
+    InvalidTaskMcpEnvironmentError,
+  );
 });
 
 test("parseTaskMcpConfig rejects invalid backend base URLs", () => {

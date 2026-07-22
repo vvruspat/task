@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import type {
+  IntegrationWebhookRequest,
+  IntegrationWebhookVerificationResult,
+} from "@task/integration-sdk";
+import { createTelegramWebhookHandler } from "@task/integration-telegram";
 import type { TelegramBotRuntime } from "./runtime.js";
 import type { TelegramUpdateProcessorResult } from "./update-processor.js";
 import {
@@ -26,11 +31,10 @@ test("handleTelegramWebhookRequest accepts requests with matching Telegram secre
   assert.deepEqual(
     await handleTelegramWebhookRequest(
       {
+        headers: { "x-telegram-bot-api-secret-token": "webhook-secret" },
         update: telegramUpdate,
-        secretTokenHeader: "webhook-secret",
       },
       {
-        config: { webhookSecret: "webhook-secret" },
         runtime,
       },
     ),
@@ -48,11 +52,10 @@ test("handleTelegramWebhookRequest rejects missing or mismatched Telegram secret
   assert.deepEqual(
     await handleTelegramWebhookRequest(
       {
+        headers: {},
         update: telegramUpdate,
-        secretTokenHeader: null,
       },
       {
-        config: { webhookSecret: "webhook-secret" },
         runtime,
       },
     ),
@@ -61,11 +64,10 @@ test("handleTelegramWebhookRequest rejects missing or mismatched Telegram secret
   assert.deepEqual(
     await handleTelegramWebhookRequest(
       {
+        headers: { "x-telegram-bot-api-secret-token": "wrong-secret" },
         update: telegramUpdate,
-        secretTokenHeader: "wrong-secret",
       },
       {
-        config: { webhookSecret: "webhook-secret" },
         runtime,
       },
     ),
@@ -75,15 +77,14 @@ test("handleTelegramWebhookRequest rejects missing or mismatched Telegram secret
 });
 
 test("handleTelegramWebhookRequest accepts requests without a configured webhook secret", async () => {
-  const runtime = new RecordingTelegramBotRuntime(replySentResult);
+  const runtime = new RecordingTelegramBotRuntime(replySentResult, null);
 
   const result = await handleTelegramWebhookRequest(
     {
+      headers: {},
       update: telegramUpdate,
-      secretTokenHeader: null,
     },
     {
-      config: { webhookSecret: null },
       runtime,
     },
   );
@@ -97,11 +98,10 @@ test("handleTelegramWebhookRequest wraps runtime failures in typed results", asy
 
   const result = await handleTelegramWebhookRequest(
     {
+      headers: { "x-telegram-bot-api-secret-token": "webhook-secret" },
       update: telegramUpdate,
-      secretTokenHeader: "webhook-secret",
     },
     {
-      config: { webhookSecret: "webhook-secret" },
       runtime: new FailingTelegramBotRuntime(runtimeError),
     },
   );
@@ -121,12 +121,19 @@ test("telegram webhook secret header name follows Telegram Bot API", () => {
 class RecordingTelegramBotRuntime implements TelegramBotRuntime {
   lastUpdate: unknown | null = null;
 
-  constructor(private readonly result: TelegramUpdateProcessorResult) {}
+  constructor(
+    private readonly result: TelegramUpdateProcessorResult,
+    private readonly webhookSecret: string | null = "webhook-secret",
+  ) {}
 
   async processUpdate(update: unknown): Promise<TelegramUpdateProcessorResult> {
     this.lastUpdate = update;
 
     return this.result;
+  }
+
+  verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult> {
+    return createTelegramWebhookHandler(this.webhookSecret).verify(request);
   }
 }
 
@@ -135,5 +142,9 @@ class FailingTelegramBotRuntime implements TelegramBotRuntime {
 
   async processUpdate(): Promise<TelegramUpdateProcessorResult> {
     throw this.error;
+  }
+
+  verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult> {
+    return createTelegramWebhookHandler("webhook-secret").verify(request);
   }
 }

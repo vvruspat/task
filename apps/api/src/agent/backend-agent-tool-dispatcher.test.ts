@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import type { IntegrationAgentToolDefinition } from "@task/integration-sdk";
 import { ProjectDetailDto } from "../projects/projects.dto.js";
 import type { TaskSkillSummary } from "../task-skills/task-skills.contracts.js";
 import {
@@ -86,6 +87,77 @@ test("BackendAgentToolOperationDispatcher creates a reusable task template", asy
           ],
         },
       },
+    },
+  ]);
+});
+
+test("BackendAgentToolOperationDispatcher routes workspace integration tools", async () => {
+  const calls: unknown[] = [];
+  const definitions: readonly IntegrationAgentToolDefinition[] = [
+    {
+      description: "Search Drive files.",
+      inputSchema: {
+        additionalProperties: false,
+        properties: { query: { type: "string" } },
+        required: ["query"],
+        type: "object",
+      },
+      name: "gdrive_search",
+      readOnly: true,
+    },
+  ];
+  const dispatcher = new BackendAgentToolOperationDispatcher(
+    {
+      async createProject() {
+        throw new Error("Unexpected project call.");
+      },
+    },
+    {
+      async addTaskSubtasks() {
+        throw new Error("Unexpected subtask call.");
+      },
+      async createTask() {
+        throw new Error("Unexpected task call.");
+      },
+    },
+    emptyTaskSkillsService(),
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    {
+      async listTools(actualWorkspaceId, actualUserId) {
+        calls.push({ actualUserId, actualWorkspaceId, kind: "list" });
+        return definitions;
+      },
+      async executeTool(call, actualWorkspaceId, actualUserId) {
+        calls.push({ actualUserId, actualWorkspaceId, call, kind: "execute" });
+        return { files: [], kind: "google_drive_search_results" };
+      },
+    },
+  );
+  const context = { workspaceId, userId };
+
+  assert.deepEqual(await dispatcher.listToolDefinitions(context), definitions);
+  const result = await dispatcher.dispatchToolCall(
+    {
+      arguments: { query: "brief" },
+      callId: "call-drive-search",
+      toolName: "gdrive_search",
+    },
+    context,
+  );
+
+  assert.equal(result.status, "success");
+  assert.deepEqual(result.result, { files: [], kind: "google_drive_search_results" });
+  assert.deepEqual(calls, [
+    { actualUserId: userId, actualWorkspaceId: workspaceId, kind: "list" },
+    {
+      actualUserId: userId,
+      actualWorkspaceId: workspaceId,
+      call: { arguments: { query: "brief" }, name: "gdrive_search" },
+      kind: "execute",
     },
   ]);
 });

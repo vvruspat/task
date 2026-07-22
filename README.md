@@ -23,6 +23,8 @@ apps/mcp-server   MCP tool server
 packages/api-client
 packages/config
 packages/domain
+packages/integration-sdk
+packages/integration-telegram
 packages/ui
 ```
 

@@ -12,6 +12,17 @@ import {
   AuthSessionEntity,
   CommentEntity,
   ConfirmationRequestEntity,
+  IntegrationConnectionEntity,
+  IntegrationEventDeliveryEntity,
+  IntegrationExternalResourceEntity,
+  IntegrationMcpToolCallEntity,
+  IntegrationOAuthStateEntity,
+  IntegrationOutboxEventEntity,
+  IntegrationResourceLinkEntity,
+  IntegrationResourceReferenceEntity,
+  IntegrationSecretEntity,
+  IntegrationSubscriptionEntity,
+  IntegrationWebhookReceiptEntity,
   InviteEntity,
   NotificationReadStateEntity,
   PasswordCredentialEntity,
@@ -26,6 +37,7 @@ import {
   TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
+  WorkspaceIntegrationEntity,
   WorkspaceMemberEntity,
 } from "./persistence/entities/index.js";
 import { CreateCorePersistenceTables1783296000000 } from "./persistence/migrations/1783296000000-create-core-persistence-tables.js";
@@ -60,6 +72,12 @@ import { AddEmailPasswordAuth1783297680000 } from "./persistence/migrations/1783
 import { AddUserLocale1783297740000 } from "./persistence/migrations/1783297740000-add-user-locale.js";
 import { AddEmailInvitations1783297800000 } from "./persistence/migrations/1783297800000-add-email-invitations.js";
 import { AddSavedViewVisibility1783297860000 } from "./persistence/migrations/1783297860000-add-saved-view-visibility.js";
+import { CreateWorkspaceIntegrationsTable1783297920000 } from "./persistence/migrations/1783297920000-create-workspace-integrations-table.js";
+import { CreateIntegrationEventOutbox1783297980000 } from "./persistence/migrations/1783297980000-create-integration-event-outbox.js";
+import { CreateIntegrationConnections1783298040000 } from "./persistence/migrations/1783298040000-create-integration-connections.js";
+import { CreateIntegrationResources1783298100000 } from "./persistence/migrations/1783298100000-create-integration-resources.js";
+import { CreateIntegrationWebhookReceipts1783298160000 } from "./persistence/migrations/1783298160000-create-integration-webhook-receipts.js";
+import { CreateIntegrationMcpToolCalls1783298220000 } from "./persistence/migrations/1783298220000-create-integration-mcp-tool-calls.js";
 
 const databaseUrl = "postgresql://task_user:task_password@localhost:5432/task_db";
 
@@ -84,6 +102,18 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     PasswordCredentialEntity,
     AuthSessionEntity,
     WorkspaceMemberEntity,
+    WorkspaceIntegrationEntity,
+    IntegrationOutboxEventEntity,
+    IntegrationEventDeliveryEntity,
+    IntegrationConnectionEntity,
+    IntegrationOAuthStateEntity,
+    IntegrationSecretEntity,
+    IntegrationExternalResourceEntity,
+    IntegrationMcpToolCallEntity,
+    IntegrationResourceLinkEntity,
+    IntegrationResourceReferenceEntity,
+    IntegrationSubscriptionEntity,
+    IntegrationWebhookReceiptEntity,
     ProjectEntity,
     SavedViewEntity,
     StatusEntity,
@@ -137,6 +167,12 @@ test("createTypeOrmDataSourceOptions builds a PostgreSQL shell without schema sy
     AddUserLocale1783297740000,
     AddEmailInvitations1783297800000,
     AddSavedViewVisibility1783297860000,
+    CreateWorkspaceIntegrationsTable1783297920000,
+    CreateIntegrationEventOutbox1783297980000,
+    CreateIntegrationConnections1783298040000,
+    CreateIntegrationResources1783298100000,
+    CreateIntegrationWebhookReceipts1783298160000,
+    CreateIntegrationMcpToolCalls1783298220000,
   ]);
 });
 

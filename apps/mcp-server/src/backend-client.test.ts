@@ -5,6 +5,8 @@ import {
   type ConfirmationRequestSummaryResponse,
   type CreateConfirmationRequestInput,
   createTaskBackendClient,
+  type IntegrationMcpToolDefinitionResponse,
+  type IntegrationMcpToolExecutionResponse,
   type ProjectDetailResponse,
   type ProjectSummaryResponse,
   type TaskAttachmentResponse,
@@ -69,6 +71,23 @@ const workspaceStatus: WorkspaceStatusResponse = {
   isDone: false,
   createdAt: timestamp,
   updatedAt: timestamp,
+};
+
+const integrationMcpToolDefinition: IntegrationMcpToolDefinitionResponse = {
+  description: "Search connected Google Drive files.",
+  inputSchema: {
+    additionalProperties: false,
+    properties: { query: { minLength: 1, type: "string" } },
+    required: ["query"],
+    type: "object",
+  },
+  name: "gdrive_search",
+  readOnly: true,
+};
+
+const integrationMcpToolExecution: IntegrationMcpToolExecutionResponse = {
+  name: "gdrive_search",
+  result: { files: [], kind: "google_drive_search_results" },
 };
 
 const taskSkillSummary: TaskSkillSummaryResponse = {
@@ -311,6 +330,40 @@ test("listWorkspaceMembers gets typed workspace members with trusted user contex
   assert.equal(fetchCalls[0]?.init.method, "GET");
   assert.equal(fetchCalls[0]?.init.headers["x-task-user-id"], userId);
   assert.deepEqual(response, [workspaceMember]);
+});
+
+test("integration MCP tools use trusted scoped backend endpoints", async () => {
+  const listCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const executeCalls: { input: string; init: TaskBackendFetchInit }[] = [];
+  const client = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: createJsonFetch(listCalls, [integrationMcpToolDefinition]),
+  });
+
+  assert.deepEqual(await client.listIntegrationMcpTools({ workspaceId, userId }), [
+    integrationMcpToolDefinition,
+  ]);
+  assert.equal(
+    listCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/integration-tools`,
+  );
+  assert.equal(listCalls[0]?.init.headers["x-task-user-id"], userId);
+
+  const executeClient = createTaskBackendClient({
+    baseUrl: "https://api.task.local/",
+    fetch: createJsonFetch(executeCalls, integrationMcpToolExecution),
+  });
+  const body = { arguments: { query: "brief" }, name: "gdrive_search" };
+  assert.deepEqual(
+    await executeClient.executeIntegrationMcpTool({ body, userId, workspaceId }),
+    integrationMcpToolExecution,
+  );
+  assert.equal(
+    executeCalls[0]?.input,
+    `https://api.task.local/workspaces/${workspaceId}/integration-tools/execute`,
+  );
+  assert.equal(executeCalls[0]?.init.headers["x-task-user-id"], userId);
+  assert.deepEqual(readJsonBody(executeCalls[0]?.init), body);
 });
 
 test("listTaskSkills gets typed task skill summaries with trusted user context", async () => {

@@ -167,6 +167,20 @@ confirmation.commit
 confirmation.cancel
 ```
 
+### Workspace integration tools
+
+Connected plugins contribute qualified, workspace-aware names such as:
+
+```text
+gdrive_search
+gdrive_get
+```
+
+The standalone MCP process exposes these tools only when it is scoped with server-owned
+`TASK_MCP_WORKSPACE_ID` and `TASK_MCP_USER_ID`. Those identifiers are not tool inputs. Provider calls
+return through the backend permission boundary and durable MCP audit; only read-only plugin tools are
+currently eligible.
+
 ## Fuzzy resolution
 
 The agent needs deterministic helper tools for fuzzy matching. LLM text similarity alone is not enough.

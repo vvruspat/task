@@ -6,6 +6,8 @@ import { loadApiConfig } from "../config.js";
 import { ConfirmationsModule } from "../confirmations/confirmations.module.js";
 import { ConfirmationsService } from "../confirmations/confirmations.service.js";
 import { DatabaseModule } from "../database/database.module.js";
+import { IntegrationAgentToolsService } from "../integrations/integration-agent-tools.service.js";
+import { IntegrationsModule } from "../integrations/integrations.module.js";
 import { ProjectsModule } from "../projects/projects.module.js";
 import { ProjectsService } from "../projects/projects.service.js";
 import { RealtimeModule } from "../realtime/realtime.module.js";
@@ -58,6 +60,7 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
     attachmentsService: AttachmentsService,
     searchService: SearchService,
     realtimeService: WorkspaceRealtimeService,
+    integrationToolsService: IntegrationAgentToolsService,
   ): BackendAgentToolOperationDispatcher =>
     new BackendAgentToolOperationDispatcher(
       projectsService,
@@ -68,6 +71,7 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
       attachmentsService,
       searchService,
       realtimeService,
+      integrationToolsService,
     ),
   inject: [
     ProjectsService,
@@ -78,6 +82,7 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
     AttachmentsService,
     SearchService,
     WorkspaceRealtimeService,
+    IntegrationAgentToolsService,
   ],
 };
 
@@ -95,6 +100,7 @@ const agentServiceProvider: Provider<AgentService> = {
   imports: [
     AttachmentsModule,
     DatabaseModule,
+    IntegrationsModule,
     ConfirmationsModule,
     ProjectsModule,
     RealtimeModule,

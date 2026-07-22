@@ -4,6 +4,8 @@ type ResolveTelegramContextOperation = operations["TelegramController_resolveCon
 type CreateTelegramAgentRunOperation = operations["AgentController_createTelegramRun"];
 type HandleTelegramConfirmationCallbackOperation =
   operations["TelegramController_handleConfirmationCallback"];
+type CompleteTelegramChatConnectionOperation =
+  operations["TelegramInternalConnectController_complete"];
 
 export type ResolveTelegramContextInput =
   ResolveTelegramContextOperation["requestBody"]["content"]["application/json"];
@@ -17,6 +19,10 @@ export type TelegramConfirmationCallbackInput =
   HandleTelegramConfirmationCallbackOperation["requestBody"]["content"]["application/json"];
 export type TelegramConfirmationCallbackResponse =
   HandleTelegramConfirmationCallbackOperation["responses"]["200"]["content"]["application/json"];
+export type CompleteTelegramChatConnectionInput =
+  CompleteTelegramChatConnectionOperation["requestBody"]["content"]["application/json"];
+export type TelegramChatConnectionResponse =
+  CompleteTelegramChatConnectionOperation["responses"]["200"]["content"]["application/json"];
 
 export type TelegramBackendFetchInit = {
   method: "POST";
@@ -60,6 +66,10 @@ export type HandleTelegramConfirmationCallbackRequest = {
   body: TelegramConfirmationCallbackInput;
 };
 
+export type CompleteTelegramChatConnectionRequest = {
+  body: CompleteTelegramChatConnectionInput;
+};
+
 export type TelegramBackendClient = {
   resolveTelegramContext(
     request: ResolveTelegramContextRequest,
@@ -70,6 +80,9 @@ export type TelegramBackendClient = {
   handleTelegramConfirmationCallback(
     request: HandleTelegramConfirmationCallbackRequest,
   ): Promise<TelegramConfirmationCallbackResponse>;
+  completeTelegramChatConnection(
+    request: CompleteTelegramChatConnectionRequest,
+  ): Promise<TelegramChatConnectionResponse>;
 };
 
 export class TelegramBackendClientError extends Error {
@@ -113,6 +126,15 @@ export function createTelegramBackendClient(
         readTelegramConfirmationCallbackResponse,
       );
     },
+    completeTelegramChatConnection(request: CompleteTelegramChatConnectionRequest) {
+      return postJson(
+        fetchImplementation,
+        `${baseUrl}/internal/integrations/telegram/connect`,
+        options.botSharedSecret,
+        request.body,
+        readTelegramChatConnectionResponse,
+      );
+    },
   };
 }
 
@@ -123,7 +145,8 @@ async function postJson<ResponseBody>(
   body:
     | ResolveTelegramContextInput
     | CreateTelegramAgentRunInput
-    | TelegramConfirmationCallbackInput,
+    | TelegramConfirmationCallbackInput
+    | CompleteTelegramChatConnectionInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(url, {
@@ -205,6 +228,19 @@ function readTelegramConfirmationCallbackResponse(
     confirmationRequestId: readString(record, "confirmationRequestId"),
     action: readConfirmationCallbackAction(record, "action"),
     status: readConfirmationCallbackStatus(record, "status"),
+  };
+}
+
+function readTelegramChatConnectionResponse(value: unknown): TelegramChatConnectionResponse {
+  const record = readRecord(value, "Telegram chat connection response");
+  if (record["status"] !== "connected") {
+    throw new TelegramBackendClientError("Telegram chat connection status is invalid.");
+  }
+  return {
+    integrationId: readString(record, "integrationId"),
+    status: "connected",
+    telegramChatId: readString(record, "telegramChatId"),
+    workspaceId: readString(record, "workspaceId"),
   };
 }
 

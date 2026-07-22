@@ -17,19 +17,24 @@ import {
   type WorkspaceBootstrap,
 } from "../lib/workspace-contracts";
 import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
-import { workspaceProjectHref } from "../lib/workspace-url";
+import { workspacePageHref, workspaceProjectHref } from "../lib/workspace-url";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { ProjectDangerZone } from "./project-danger-zone";
 import { ProjectStatusesManager } from "./project-statuses-manager";
 import { TaskStatusIndicator } from "./task-status-indicator";
 import { WorkspaceDangerZone } from "./workspace-danger-zone";
+import { WorkspaceIntegrations } from "./workspace-integrations";
 import { WorkspaceInvitations } from "./workspace-invitations";
 import { WorkspaceMembersManager } from "./workspace-members-manager";
 import { WorkspaceNameEditor } from "./workspace-name-editor";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
-export type ViewKind = "projects" | "project" | "kanban" | "settings" | "telegram";
+export type ViewKind = "integrations" | "kanban" | "project" | "projects" | "settings" | "telegram";
 const copy: Record<ViewKind, { title: MessageKey; subtitle: MessageKey }> = {
+  integrations: {
+    title: "integrations.title",
+    subtitle: "integrations.subtitle",
+  },
   projects: { title: "workspace.projectsTitle", subtitle: "workspace.projectsSubtitle" },
   project: { title: "workspace.projectTitle", subtitle: "workspace.projectSubtitle" },
   kanban: { title: "workspace.kanbanTitle", subtitle: "workspace.kanbanSubtitle" },
@@ -111,6 +116,13 @@ function renderView(
   if (kind === "settings") {
     return canManageWorkspaceSettings(data.currentMember.role) ? (
       <Settings data={data} />
+    ) : (
+      <WorkspaceSettingsRestricted />
+    );
+  }
+  if (kind === "integrations") {
+    return canManageWorkspaceSettings(data.currentMember.role) ? (
+      <WorkspaceIntegrations workspaceId={data.workspace.id} />
     ) : (
       <WorkspaceSettingsRestricted />
     );
@@ -300,6 +312,17 @@ function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
       <Card className="panel">
         <PanelTitle title={t("invitations.title")} />
         <WorkspaceInvitations workspaceId={data.workspace.id} />
+      </Card>
+      <Card className="panel">
+        <PanelTitle title={t("integrations.title")} />
+        <Flex direction="column" gap="3" align="start">
+          <Text color="gray">{t("integrations.settingsDescription")}</Text>
+          <Button asChild size="1" variant="soft">
+            <Link href={workspacePageHref(data.workspace.slug, "settings/integrations")}>
+              {t("integrations.manage")}
+            </Link>
+          </Button>
+        </Flex>
       </Card>
       <WorkspaceDangerZone
         fallbackWorkspaceSlug={

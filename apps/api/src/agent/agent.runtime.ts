@@ -1,4 +1,8 @@
 import { Injectable } from "@nestjs/common";
+import type {
+  IntegrationAgentToolDefinition,
+  IntegrationAgentToolInputSchema,
+} from "@task/integration-sdk";
 import type { ApiOpenRouterConfig } from "../config.js";
 import type { AgentRunStatus } from "../persistence/types/core-persistence.types.js";
 import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
@@ -12,6 +16,15 @@ export const agentRuntimeNotConnectedResponse =
   "Request recorded. Agent execution is not connected yet.";
 export const agentRuntimeToken = Symbol("AgentRuntime");
 export const openRouterChatCompletionsEndpoint = "https://openrouter.ai/api/v1/chat/completions";
+
+type OpenRouterAgentToolDefinition = {
+  function: {
+    description: string;
+    name: string;
+    parameters: IntegrationAgentToolInputSchema;
+  };
+  type: "function";
+};
 
 const openRouterAgentTools = [
   {
@@ -252,7 +265,19 @@ const openRouterAgentTools = [
       },
     },
   },
-] as const;
+] as const satisfies readonly OpenRouterAgentToolDefinition[];
+
+const coreMutationToolNames = new Set([
+  "project_create",
+  "task_add_link_attachment",
+  "task_add_subtasks",
+  "task_create",
+  "task_set_assignee",
+  "task_set_due_date",
+  "task_set_status",
+  "task_skill_create",
+  "task_update",
+]);
 
 const agentSystemPrompt = [
   "You are tAsk's backend task agent.",
@@ -275,6 +300,7 @@ const agentSystemPrompt = [
   "When an existing task is referenced by a URL, UUID, issue identifier such as ZNA-26, or title, call task_lookup first with that reference, then use the returned projectId and taskId in the requested mutation tool. If task_lookup returns task_candidates, choose only when the candidates and user context make the intended task clear, call task_lookup again with the chosen taskId, and otherwise ask the user to clarify. Never invent UUIDs.",
   "Resolve assignees by passing the user's human-readable name or email to task_set_assignee; never invent a user id.",
   "Resolve statuses by passing the user's human-readable status name to task_set_status; never invent a status id.",
+  "Connected workspace integrations may add namespaced tools. Use their read-only search/get tools when the user asks about external resources.",
   "Reply briefly and accurately.",
 ].join(" ");
 
@@ -451,6 +477,13 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
     model: string,
   ): Promise<AgentRuntimeResult> {
     try {
+      const integrationToolDefinitions =
+        (await this.toolDispatcher.listToolDefinitions?.(request.context)) ?? [];
+      const availableAgentTools = mergeAgentToolDefinitions(integrationToolDefinitions);
+      const mutationToolNames = new Set([
+        ...coreMutationToolNames,
+        ...integrationToolDefinitions.filter((tool) => !tool.readOnly).map((tool) => tool.name),
+      ]);
       const messages: OpenRouterConversationMessage[] = [
         { role: "system", content: agentSystemPrompt },
         { role: "user", content: request.input.inputText },
@@ -477,10 +510,10 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           body: JSON.stringify({
             model,
             messages,
-            tools: openRouterAgentTools,
+            tools: availableAgentTools,
             tool_choice:
               mutationRequired &&
-              !hasMutationToolCall(allToolCalls) &&
+              !hasMutationToolCall(allToolCalls, mutationToolNames) &&
               !taskLookupNeedsClarification(allToolCalls)
                 ? "required"
                 : "auto",
@@ -528,7 +561,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         if (parsedToolCalls.toolCalls.length === 0) {
           if (
             mutationRequired &&
-            !hasMutationToolCall(allToolCalls) &&
+            !hasMutationToolCall(allToolCalls, mutationToolNames) &&
             !taskLookupNeedsClarification(allToolCalls)
           ) {
             return {
@@ -722,7 +755,29 @@ function describeToolCall(call: AgentToolOperationCall): string {
   if (["task_add_link_attachment", "task.add_link_attachment"].includes(call.toolName)) {
     return "Прикрепляю ссылку";
   }
+  if (call.toolName.endsWith("_search")) return "Ищу во внешнем сервисе";
+  if (call.toolName.endsWith("_get")) return "Получаю данные из внешнего сервиса";
   return "Выполняю действие";
+}
+
+export function mergeAgentToolDefinitions(
+  integrationTools: readonly IntegrationAgentToolDefinition[],
+): readonly OpenRouterAgentToolDefinition[] {
+  const tools: OpenRouterAgentToolDefinition[] = [...openRouterAgentTools];
+  const names = new Set(tools.map((tool) => tool.function.name));
+  for (const tool of integrationTools) {
+    if (names.has(tool.name)) throw new Error(`Duplicate agent tool definition ${tool.name}.`);
+    tools.push({
+      function: {
+        description: tool.description,
+        name: tool.name,
+        parameters: tool.inputSchema,
+      },
+      type: "function",
+    });
+    names.add(tool.name);
+  }
+  return tools;
 }
 
 function readToolArgumentLabel(
@@ -1091,8 +1146,11 @@ function looksLikeMutationRequest(inputText: string): boolean {
   );
 }
 
-function hasMutationToolCall(toolCalls: AgentRuntimeToolCall[]): boolean {
-  return toolCalls.some((toolCall) => toolCall.toolName !== "task_lookup");
+function hasMutationToolCall(
+  toolCalls: AgentRuntimeToolCall[],
+  mutationToolNames: ReadonlySet<string>,
+): boolean {
+  return toolCalls.some((toolCall) => mutationToolNames.has(toolCall.toolName));
 }
 
 function taskLookupNeedsClarification(toolCalls: AgentRuntimeToolCall[]): boolean {

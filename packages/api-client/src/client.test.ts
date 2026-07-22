@@ -116,6 +116,138 @@ test("createTaskApiClient exposes Settings and Telegram link endpoints with trus
   assert.equal(fetcher.calls[3]?.init.body, JSON.stringify({ initData: "query=value" }));
 });
 
+test("createTaskApiClient manages workspace integration installations", async () => {
+  const installation = workspaceIntegrationRecord();
+  const fetcher = new RecordingFetch(
+    sequence([
+      [integrationCatalogItem(null)],
+      installation,
+      { authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth?state=state" },
+      {
+        integrationId: installation.id,
+        pluginKey: "google-drive",
+        status: "connected",
+        workspaceId,
+      },
+      {
+        accessToken: "short-lived-access-token",
+        appId: "123456789012",
+        developerKey: "picker-key",
+        expiresAt: "2026-07-22T13:00:00.000Z",
+      },
+      {
+        externalResourceId: taskId,
+        name: "tAsk workspace",
+        providerResourceId: "google-drive-folder-id",
+        webUrl: "https://drive.google.com/drive/folders/google-drive-folder-id",
+      },
+      {
+        command: `/connect ${"a".repeat(43)}`,
+        expiresAt: "2026-07-22T13:00:00.000Z",
+      },
+      installation,
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.listWorkspaceIntegrations({ workspaceId }), [
+    integrationCatalogItem(null),
+  ]);
+  assert.deepEqual(
+    await client.installWorkspaceIntegration({ pluginKey: "google-drive", workspaceId }),
+    installation,
+  );
+  assert.deepEqual(
+    await client.startGoogleDriveOAuth({
+      integrationId: installation.id,
+      workspaceId,
+    }),
+    { authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth?state=state" },
+  );
+  assert.deepEqual(
+    await client.completeGoogleDriveOAuth({ body: { code: "code", state: "state" } }),
+    {
+      integrationId: installation.id,
+      pluginKey: "google-drive",
+      status: "connected",
+      workspaceId,
+    },
+  );
+  assert.deepEqual(
+    await client.createGoogleDrivePickerSession({
+      integrationId: installation.id,
+      workspaceId,
+    }),
+    {
+      accessToken: "short-lived-access-token",
+      appId: "123456789012",
+      developerKey: "picker-key",
+      expiresAt: "2026-07-22T13:00:00.000Z",
+    },
+  );
+  assert.deepEqual(
+    await client.selectGoogleDriveRootFolder({
+      body: { folderId: "google-drive-folder-id" },
+      integrationId: installation.id,
+      workspaceId,
+    }),
+    {
+      externalResourceId: taskId,
+      name: "tAsk workspace",
+      providerResourceId: "google-drive-folder-id",
+      webUrl: "https://drive.google.com/drive/folders/google-drive-folder-id",
+    },
+  );
+  assert.deepEqual(
+    await client.createTelegramConnectToken({
+      integrationId: installation.id,
+      workspaceId,
+    }),
+    {
+      command: `/connect ${"a".repeat(43)}`,
+      expiresAt: "2026-07-22T13:00:00.000Z",
+    },
+  );
+  assert.deepEqual(
+    await client.uninstallWorkspaceIntegration({
+      integrationId: installation.id,
+      workspaceId,
+    }),
+    installation,
+  );
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method]),
+    [
+      [`https://task.example/workspaces/${workspaceId}/integrations`, "GET"],
+      [`https://task.example/workspaces/${workspaceId}/integrations/google-drive/install`, "POST"],
+      [
+        `https://task.example/workspaces/${workspaceId}/integrations/${installation.id}/connect`,
+        "POST",
+      ],
+      ["https://task.example/integrations/oauth/google-drive/callback", "POST"],
+      [
+        `https://task.example/workspaces/${workspaceId}/integrations/${installation.id}/google-drive/picker-session`,
+        "POST",
+      ],
+      [
+        `https://task.example/workspaces/${workspaceId}/integrations/${installation.id}/google-drive/root-folder`,
+        "PUT",
+      ],
+      [
+        `https://task.example/workspaces/${workspaceId}/integrations/${installation.id}/telegram/connect-token`,
+        "POST",
+      ],
+      [`https://task.example/workspaces/${workspaceId}/integrations/${installation.id}`, "DELETE"],
+    ],
+  );
+  assert.equal(fetcher.calls[3]?.init.body, JSON.stringify({ code: "code", state: "state" }));
+  assert.equal(fetcher.calls[5]?.init.body, JSON.stringify({ folderId: "google-drive-folder-id" }));
+});
+
 test("createTaskApiClient patches workspace Markdown descriptions", async () => {
   const updated = {
     ...workspaceDetailRecord(),
@@ -1354,6 +1486,61 @@ function workspaceInvitationRecord(): {
     role: "member",
     status: "pending",
     workspaceId,
+  };
+}
+
+function workspaceIntegrationRecord(): {
+  config: Record<string, unknown>;
+  connectedAt: null;
+  connectedByUserId: null;
+  createdAt: string;
+  disconnectedAt: null;
+  id: string;
+  installedByUserId: string;
+  lastError: null;
+  pluginKey: string;
+  pluginVersion: string;
+  status: string;
+  updatedAt: string;
+  workspaceId: string;
+} {
+  return {
+    config: {},
+    connectedAt: null,
+    connectedByUserId: null,
+    createdAt: "2026-07-22T10:00:00.000Z",
+    disconnectedAt: null,
+    id: "44444444-4444-4444-8444-444444444444",
+    installedByUserId: trustedUserId,
+    lastError: null,
+    pluginKey: "google-drive",
+    pluginVersion: "0.1.0",
+    status: "disconnected",
+    updatedAt: "2026-07-22T10:00:00.000Z",
+    workspaceId,
+  };
+}
+
+function integrationCatalogItem(
+  installation: ReturnType<typeof workspaceIntegrationRecord> | null,
+): Record<string, unknown> {
+  return {
+    authKind: "oauth2",
+    capabilityKinds: [
+      "domain_event_consumer",
+      "resource_provider",
+      "attachment_exporter",
+      "webhook_handler",
+      "agent_tool_provider",
+    ],
+    description: "Google Drive integration",
+    health: null,
+    iconKey: "google-drive",
+    installation,
+    name: "Google Drive",
+    pluginKey: "google-drive",
+    pluginVersion: "0.1.0",
+    requiredScopes: ["https://www.googleapis.com/auth/drive.file"],
   };
 }
 

@@ -2,10 +2,18 @@ export type TaskMcpEnvironment = {
   TASK_API_BASE_URL?: string;
   TASK_MCP_SERVER_NAME?: string;
   TASK_MCP_SERVER_VERSION?: string;
+  TASK_MCP_USER_ID?: string;
+  TASK_MCP_WORKSPACE_ID?: string;
+};
+
+export type TaskMcpIntegrationContext = {
+  userId: string;
+  workspaceId: string;
 };
 
 export type TaskMcpConfig = {
   backendBaseUrl: string;
+  integrationContext: TaskMcpIntegrationContext | null;
   name: string;
   version: string;
 };
@@ -25,6 +33,7 @@ const defaultServerVersion = "0.0.0";
 export function parseTaskMcpConfig(environment: TaskMcpEnvironment): TaskMcpConfig {
   return {
     backendBaseUrl: parseBackendBaseUrl(environment.TASK_API_BASE_URL),
+    integrationContext: parseIntegrationContext(environment),
     name: parseOptionalNonEmptyString(
       "TASK_MCP_SERVER_NAME",
       environment.TASK_MCP_SERVER_NAME,
@@ -36,6 +45,31 @@ export function parseTaskMcpConfig(environment: TaskMcpEnvironment): TaskMcpConf
       defaultServerVersion,
     ),
   };
+}
+
+function parseIntegrationContext(
+  environment: TaskMcpEnvironment,
+): TaskMcpIntegrationContext | null {
+  const userId = environment.TASK_MCP_USER_ID;
+  const workspaceId = environment.TASK_MCP_WORKSPACE_ID;
+  if (userId === undefined && workspaceId === undefined) return null;
+  return {
+    userId: parseUuid("TASK_MCP_USER_ID", userId),
+    workspaceId: parseUuid("TASK_MCP_WORKSPACE_ID", workspaceId),
+  };
+}
+
+function parseUuid(
+  variableName: "TASK_MCP_USER_ID" | "TASK_MCP_WORKSPACE_ID",
+  value: string | undefined,
+): string {
+  if (
+    value === undefined ||
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(value)
+  ) {
+    throw new InvalidTaskMcpEnvironmentError(variableName, value, "must be a UUID v4");
+  }
+  return value;
 }
 
 export function loadTaskMcpConfig(environment: TaskMcpEnvironment = process.env): TaskMcpConfig {

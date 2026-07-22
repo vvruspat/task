@@ -1,3 +1,8 @@
+import type {
+  TelegramConfirmationCallbackContext,
+  TelegramConversationEvent,
+} from "@task/integration-telegram";
+import { createTelegramConversationIngress } from "@task/integration-telegram";
 import {
   type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
@@ -5,7 +10,7 @@ import {
   type TelegramConfirmationCallbackResponse,
 } from "./backend-client.js";
 import {
-  handleTelegramUpdate,
+  handleTelegramMessage,
   type TelegramInlineKeyboardMarkup,
   type TelegramReplyAction,
   type TelegramResolvedMessageAction,
@@ -15,14 +20,12 @@ import {
   type TelegramReplySender,
   type TelegramSendMessageResult,
 } from "./telegram-sender.js";
-import {
-  parseTelegramConfirmationCallbackContext,
-  type TelegramConfirmationCallbackContext,
-  TelegramUpdateParseError,
-} from "./telegram-update.js";
+
+export { isTelegramAgentInvocation } from "@task/integration-telegram";
 
 export type TelegramUpdateProcessorOptions = {
   backendClient: TelegramBackendClient;
+  botUsername?: string | null;
   replySender: TelegramReplySender;
 };
 
@@ -56,13 +59,32 @@ export async function processTelegramUpdate(
   update: unknown,
   options: TelegramUpdateProcessorOptions,
 ): Promise<TelegramUpdateProcessorResult> {
-  const callbackResult = await processTelegramConfirmationCallback(update, options);
+  const ingress = createTelegramConversationIngress(options.botUsername ?? null);
+  return processTelegramConversationEvent(await ingress.normalize(update), options);
+}
 
-  if (callbackResult !== null) {
-    return callbackResult;
+export async function processTelegramConversationEvent(
+  event: TelegramConversationEvent,
+  options: TelegramUpdateProcessorOptions,
+): Promise<TelegramUpdateProcessorResult> {
+  if (event.kind === "invalid") {
+    return sendReply(
+      createReply(
+        event.replyTarget?.telegramChatId ?? null,
+        event.replyTarget?.messageId ?? null,
+        event.source === "confirmation"
+          ? "Не смог обработать подтверждение."
+          : "Не смог прочитать сообщение Telegram.",
+      ),
+      options.replySender,
+    );
   }
 
-  const action = await handleTelegramUpdate(update, {
+  if (event.kind === "confirmation") {
+    return processTelegramConfirmationCallback(event.callback, options);
+  }
+
+  const action = await handleTelegramMessage(event.message, {
     backendClient: options.backendClient,
   });
 
@@ -76,6 +98,21 @@ export async function processTelegramUpdate(
         action.message.chat.telegramChatId,
         action.message.messageId,
         "Пока я принимаю только текстовые команды для агента tAsk.",
+      ),
+      options.replySender,
+    );
+  }
+
+  if (!event.invokesAgent) {
+    const instruction =
+      options.botUsername === null || options.botUsername === undefined
+        ? "используй /task"
+        : `упомяни @${options.botUsername} или используй /task`;
+    return sendReply(
+      createReply(
+        action.message.chat.telegramChatId,
+        action.message.messageId,
+        `Чтобы вызвать агента в групповом чате, ${instruction}.`,
       ),
       options.replySender,
     );
@@ -132,34 +169,9 @@ async function sendReply(
 }
 
 async function processTelegramConfirmationCallback(
-  update: unknown,
+  callback: TelegramConfirmationCallbackContext,
   options: TelegramUpdateProcessorOptions,
-): Promise<TelegramConfirmationCallbackReplySentAction | TelegramReplySentAction | null> {
-  let callback: TelegramConfirmationCallbackContext;
-
-  try {
-    callback = parseTelegramConfirmationCallbackContext(update);
-  } catch (error) {
-    if (error instanceof TelegramUpdateParseError) {
-      const replyTarget = readTelegramCallbackReplyTarget(update);
-
-      if (replyTarget !== null) {
-        return sendReply(
-          createReply(
-            replyTarget.telegramChatId,
-            replyTarget.messageId,
-            "Не смог обработать подтверждение.",
-          ),
-          options.replySender,
-        );
-      }
-
-      return null;
-    }
-
-    throw error;
-  }
-
+): Promise<TelegramConfirmationCallbackReplySentAction | TelegramReplySentAction> {
   try {
     const backendResult = await options.backendClient.handleTelegramConfirmationCallback({
       body: {
@@ -197,64 +209,6 @@ async function processTelegramConfirmationCallback(
   }
 }
 
-function readTelegramCallbackReplyTarget(update: unknown): TelegramCallbackReplyTarget | null {
-  if (!isUnknownRecord(update)) {
-    return null;
-  }
-
-  const callbackQuery = readProperty(update, "callback_query");
-
-  if (!isUnknownRecord(callbackQuery)) {
-    return null;
-  }
-
-  const message = readProperty(callbackQuery, "message");
-
-  if (!isUnknownRecord(message)) {
-    return null;
-  }
-
-  const chat = readProperty(message, "chat");
-
-  if (!isUnknownRecord(chat)) {
-    return null;
-  }
-
-  const messageId = readTelegramIntegerString(readProperty(message, "message_id"));
-  const telegramChatId = readTelegramIntegerString(readProperty(chat, "id"));
-
-  if (messageId === null || telegramChatId === null) {
-    return null;
-  }
-
-  return { messageId, telegramChatId };
-}
-
-function readProperty(record: Record<string, unknown>, propertyName: string): unknown {
-  return record[propertyName];
-}
-
-function readTelegramIntegerString(value: unknown): string | null {
-  if (typeof value === "number" && Number.isInteger(value)) {
-    return String(value);
-  }
-
-  if (typeof value === "string" && /^-?\d+$/.test(value)) {
-    return value;
-  }
-
-  return null;
-}
-
-function isUnknownRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-type TelegramCallbackReplyTarget = {
-  telegramChatId: string;
-  messageId: string;
-};
-
 function createAgentRunInlineKeyboard(
   agentRun: TelegramAgentRunIntakeResponse,
 ): TelegramInlineKeyboardMarkup | undefined {
@@ -272,8 +226,8 @@ function createAgentRunInlineKeyboard(
 }
 
 function createReply(
-  telegramChatId: string,
-  replyToMessageId: string,
+  telegramChatId: string | null,
+  replyToMessageId: string | null,
   text: string,
   inlineKeyboard?: TelegramInlineKeyboardMarkup,
 ): TelegramReplyAction {

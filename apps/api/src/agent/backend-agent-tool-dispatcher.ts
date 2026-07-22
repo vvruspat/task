@@ -1,5 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import type { IntegrationAgentToolDefinition } from "@task/integration-sdk";
 import type { AttachmentsService } from "../attachments/attachments.service.js";
+import type { IntegrationAgentToolsService } from "../integrations/integration-agent-tools.service.js";
 import type { ProjectsService } from "../projects/projects.service.js";
 import type { WorkspaceRealtimeService } from "../realtime/workspace-realtime.service.js";
 import type { SearchService } from "../search/search.service.js";
@@ -38,6 +40,7 @@ type AgentStatusesService = Pick<StatusesService, "listStatuses">;
 type AgentAttachmentsService = Pick<AttachmentsService, "createTaskLinkAttachment">;
 type AgentSearchService = Pick<SearchService, "search">;
 type AgentRealtimeService = Pick<WorkspaceRealtimeService, "publishChange">;
+type AgentIntegrationToolsService = Pick<IntegrationAgentToolsService, "executeTool" | "listTools">;
 
 type AgentProjectTaskInput = {
   title: string;
@@ -127,7 +130,16 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     private readonly attachmentsService?: AgentAttachmentsService,
     private readonly searchService?: AgentSearchService,
     private readonly realtimeService?: AgentRealtimeService,
+    private readonly integrationToolsService?: AgentIntegrationToolsService,
   ) {}
+
+  async listToolDefinitions(
+    context: TelegramAgentRuntimeContext,
+  ): Promise<readonly IntegrationAgentToolDefinition[]> {
+    return this.integrationToolsService === undefined
+      ? []
+      : await this.integrationToolsService.listTools(context.workspaceId, context.userId);
+  }
 
   async dispatchToolCall(
     call: AgentToolOperationCall,
@@ -445,6 +457,14 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         url: attachment.url,
         workspaceId: attachment.workspaceId,
       };
+    }
+
+    if (this.integrationToolsService !== undefined) {
+      return await this.integrationToolsService.executeTool(
+        { arguments: call.arguments, name: call.toolName },
+        context.workspaceId,
+        context.userId,
+      );
     }
 
     throw new BadRequestException(`Unsupported agent tool: ${call.toolName}`);

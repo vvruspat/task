@@ -1,14 +1,17 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type { IntegrationAgentToolDefinition } from "@task/integration-sdk";
 import * as z from "zod/v4";
 import { type AttachmentToolHandlers, createAttachmentToolHandlers } from "./attachment-tools.js";
-import type { TaskBackendClient } from "./backend-client.js";
+import type { TaskBackendClient, TaskBackendIntegrationClient } from "./backend-client.js";
 import { type CommentToolHandlers, createCommentToolHandlers } from "./comment-tools.js";
+import type { TaskMcpIntegrationContext } from "./config.js";
 import {
   type ConfirmationToolHandlers,
   createConfirmationToolHandlers,
 } from "./confirmation-tools.js";
+import { registerIntegrationMcpTools } from "./integration-mcp-tools.js";
 import { createProjectToolHandlers, type ProjectToolHandlers } from "./project-tools.js";
 import { createStatusToolHandlers, type StatusToolHandlers } from "./status-tools.js";
 import { createSummaryToolHandlers, type SummaryToolHandlers } from "./summary-tools.js";
@@ -448,6 +451,11 @@ export type TaskSkillToolRegistrar = TaskMcpToolRegistrar;
 
 export type TaskMcpServerOptions = {
   backendClient: TaskBackendClient;
+  integration?: {
+    backendClient: TaskBackendIntegrationClient;
+    context: TaskMcpIntegrationContext;
+    tools: readonly IntegrationAgentToolDefinition[];
+  };
   name?: string;
   version?: string;
 };
@@ -467,6 +475,14 @@ export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
   registerSummaryTools(server, createSummaryToolHandlers(options.backendClient));
   registerTaskSkillApplyTools(server, createTaskSkillToolHandlers(options.backendClient));
   registerConfirmationTools(server, createConfirmationToolHandlers(options.backendClient));
+  if (options.integration !== undefined) {
+    registerIntegrationMcpTools(
+      server,
+      options.integration.backendClient,
+      options.integration.context,
+      options.integration.tools,
+    );
+  }
 
   return server;
 }

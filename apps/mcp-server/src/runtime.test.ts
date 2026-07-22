@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   ApplyTaskSkillResponse,
   PreviewTaskSkillApplyResponse,
@@ -71,24 +72,84 @@ test("runTaskMcpServerFromEnvironment wires configured backend client into the s
   assert.deepEqual(JSON.parse(readTextResult(result)), applyResponse);
 });
 
+test("runTaskMcpServerFromEnvironment discovers scoped integration tools", async () => {
+  const fetchCalls: FetchCall[] = [];
+  const connectCalls: McpServer[] = [];
+  const fetch: TaskBackendFetch = async (input, init): Promise<TaskBackendFetchResponse> => {
+    fetchCalls.push({ input, init });
+    const responseBody: unknown =
+      init.method === "GET"
+        ? [
+            {
+              description: "Search connected Google Drive files.",
+              inputSchema: {
+                additionalProperties: false,
+                properties: {
+                  query: { maxLength: 200, minLength: 1, type: "string" },
+                },
+                required: ["query"],
+                type: "object",
+              },
+              name: "gdrive_search",
+              readOnly: true,
+            },
+          ]
+        : { name: "gdrive_search", result: { files: [] } };
+    return {
+      json: async (): Promise<unknown> => responseBody,
+      ok: true,
+      status: 200,
+      statusText: "OK",
+    };
+  };
+
+  await runTaskMcpServerFromEnvironment({
+    connect: async (server): Promise<void> => {
+      connectCalls.push(server);
+    },
+    environment: {
+      TASK_API_BASE_URL: "https://api.example.test/",
+      TASK_MCP_USER_ID: userId,
+      TASK_MCP_WORKSPACE_ID: workspaceId,
+    },
+    fetch,
+  });
+
+  const server = connectCalls[0];
+  assert.ok(server !== undefined);
+  const result = await readRegisteredTool(server, "gdrive_search").handler({ query: "brief" });
+
+  assert.deepEqual(fetchCalls, [
+    {
+      input: `https://api.example.test/workspaces/${workspaceId}/integration-tools`,
+      init: {
+        headers: { accept: "application/json", "x-task-user-id": userId },
+        method: "GET",
+      },
+    },
+    {
+      input: `https://api.example.test/workspaces/${workspaceId}/integration-tools/execute`,
+      init: {
+        body: JSON.stringify({ arguments: { query: "brief" }, name: "gdrive_search" }),
+        headers: {
+          accept: "application/json",
+          "content-type": "application/json",
+          "x-task-user-id": userId,
+        },
+        method: "POST",
+      },
+    },
+  ]);
+  assert.deepEqual(result.structuredContent, { files: [] });
+});
+
 type FetchCall = {
   input: string;
   init: TaskBackendFetchInit;
 };
 
 type RegisteredServerTool = {
-  handler(input: {
-    workspaceId: string;
-    taskSkillId: string;
-    userId: string;
-    projectId: string;
-    rootTaskTitle: string;
-  }): Promise<{
-    content: Array<{
-      type: "text";
-      text: string;
-    }>;
-  }>;
+  handler(input: Record<string, unknown>): Promise<CallToolResult>;
 };
 
 type RegisteredServerToolCollection = {
@@ -146,7 +207,7 @@ function isUnknownRecord(input: unknown): input is Record<string, unknown> {
   return typeof input === "object" && input !== null && !Array.isArray(input);
 }
 
-function readTextResult(result: { content: Array<{ type: string; text?: string }> }): string {
+function readTextResult(result: CallToolResult): string {
   const content = result.content[0];
 
   if (content?.type !== "text" || typeof content.text !== "string") {

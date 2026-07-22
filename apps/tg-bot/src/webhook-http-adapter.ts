@@ -3,7 +3,6 @@ import {
   handleTelegramWebhookRequest,
   type TelegramWebhookAcceptedResult,
   type TelegramWebhookFailedResult,
-  telegramWebhookSecretHeaderName,
 } from "./webhook-handler.js";
 
 export type TelegramWebhookHttpHeaderValue = string | readonly string[] | undefined;
@@ -57,8 +56,8 @@ export async function handleTelegramWebhookHttpRequest(
 
   const result = await handleTelegramWebhookRequest(
     {
+      headers: request.headers,
       update: request.body,
-      secretTokenHeader: readTelegramWebhookSecretHeader(request.headers),
     },
     options,
   );
@@ -83,32 +82,4 @@ export async function handleTelegramWebhookHttpRequest(
     body: { status: "accepted" },
     result,
   };
-}
-
-function readTelegramWebhookSecretHeader(headers: TelegramWebhookHttpHeaders): string | null {
-  const matchingValues: TelegramWebhookHttpHeaderValue[] = [];
-
-  for (const [name, value] of Object.entries(headers)) {
-    if (name.toLowerCase() === telegramWebhookSecretHeaderName) {
-      matchingValues.push(value);
-    }
-  }
-
-  if (matchingValues.length !== 1) {
-    return null;
-  }
-
-  return readSingleHeaderValue(matchingValues[0]);
-}
-
-function readSingleHeaderValue(value: TelegramWebhookHttpHeaderValue): string | null {
-  if (typeof value === "string") {
-    return value;
-  }
-
-  if (value === undefined || value.length !== 1) {
-    return null;
-  }
-
-  return value[0] ?? null;
 }

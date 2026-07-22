@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import type {
+  IntegrationWebhookRequest,
+  IntegrationWebhookVerificationResult,
+} from "@task/integration-sdk";
+import { createTelegramWebhookHandler } from "@task/integration-telegram";
 import type { TelegramBotRuntime } from "./runtime.js";
 import type { TelegramUpdateProcessorResult } from "./update-processor.js";
 import { handleTelegramWebhookHttpRequest } from "./webhook-http-adapter.js";
@@ -28,7 +33,6 @@ test("handleTelegramWebhookHttpRequest accepts POST requests with matching secre
       body: telegramUpdate,
     },
     {
-      config: { webhookSecret: "webhook-secret" },
       runtime,
     },
   );
@@ -41,7 +45,6 @@ test("handleTelegramWebhookHttpRequest accepts POST requests with matching secre
 test("handleTelegramWebhookHttpRequest rejects missing, mismatched, and duplicated secret headers", async () => {
   const runtime = new RecordingTelegramBotRuntime(replySentResult);
   const options = {
-    config: { webhookSecret: "webhook-secret" },
     runtime,
   };
 
@@ -107,7 +110,6 @@ test("handleTelegramWebhookHttpRequest rejects non-POST methods before runtime p
         body: telegramUpdate,
       },
       {
-        config: { webhookSecret: "webhook-secret" },
         runtime,
       },
     ),
@@ -129,7 +131,6 @@ test("handleTelegramWebhookHttpRequest maps runtime failures to retryable HTTP f
       body: telegramUpdate,
     },
     {
-      config: { webhookSecret: "webhook-secret" },
       runtime: new FailingTelegramBotRuntime(new Error("Runtime failed.")),
     },
   );
@@ -152,6 +153,10 @@ class RecordingTelegramBotRuntime implements TelegramBotRuntime {
 
     return this.result;
   }
+
+  verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult> {
+    return createTelegramWebhookHandler("webhook-secret").verify(request);
+  }
 }
 
 class FailingTelegramBotRuntime implements TelegramBotRuntime {
@@ -159,5 +164,9 @@ class FailingTelegramBotRuntime implements TelegramBotRuntime {
 
   async processUpdate(): Promise<TelegramUpdateProcessorResult> {
     throw this.error;
+  }
+
+  verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult> {
+    return createTelegramWebhookHandler("webhook-secret").verify(request);
   }
 }

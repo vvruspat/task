@@ -1,18 +1,20 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type {
+  CompleteTelegramChatConnectionRequest,
   CreateTelegramAgentRunRequest,
   HandleTelegramConfirmationCallbackRequest,
   ResolveTelegramContextRequest,
   TelegramAgentRunIntakeResponse,
   TelegramBackendClient,
+  TelegramChatConnectionResponse,
   TelegramConfirmationCallbackResponse,
   TelegramContextResolutionResponse,
 } from "./backend-client.js";
 import { TelegramBackendClientError } from "./backend-client.js";
 import type { TelegramReplyAction } from "./message-handler.js";
 import type { TelegramReplySender, TelegramSendMessageResult } from "./telegram-sender.js";
-import { processTelegramUpdate } from "./update-processor.js";
+import { isTelegramAgentInvocation, processTelegramUpdate } from "./update-processor.js";
 
 const telegramUpdate = {
   update_id: 10,
@@ -28,7 +30,8 @@ const telegramUpdate = {
       type: "supergroup",
       title: "Album Team",
     },
-    text: "создай задачу записать бас",
+    text: "/task создай задачу записать бас",
+    entities: [{ type: "bot_command", offset: 0, length: 5 }],
     document: {
       file_id: "document-file-id",
       file_unique_id: "document-unique-id",
@@ -58,6 +61,27 @@ const telegramConfirmationCallbackUpdate = {
     data: "task:confirmation:11111111-1111-4111-8111-111111111111:confirm",
   },
 };
+
+test("Telegram group invocation matches only the configured bot mention", () => {
+  const message = {
+    attachments: [],
+    chat: { telegramChatId: "-100987654321", title: "Team", type: "supergroup" },
+    entities: [{ length: 15, offset: 0, type: "mention", url: null }],
+    messageId: "20",
+    replyToMessageId: null,
+    sender: {
+      firstName: null,
+      isBot: false,
+      lastName: null,
+      telegramId: "123456789",
+      username: "alex",
+    },
+    text: "@task_agent_bot help",
+    updateId: "10",
+  };
+  assert.equal(isTelegramAgentInvocation(message, "task_agent_bot"), true);
+  assert.equal(isTelegramAgentInvocation(message, "another_bot"), false);
+});
 
 test("processTelegramUpdate sends reply actions through the reply sender", async () => {
   const replySender = new RecordingTelegramReplySender({ messageId: "45" });
@@ -126,7 +150,7 @@ test("processTelegramUpdate records resolved commands and replies with agent res
       telegramId: "123456789",
       telegramChatId: "-100987654321",
       sourceMessageId: "20",
-      inputText: "создай задачу записать бас",
+      inputText: "/task создай задачу записать бас",
       attachments: [
         {
           kind: "document",
@@ -150,6 +174,32 @@ test("processTelegramUpdate records resolved commands and replies with agent res
     assert.deepEqual(result.agentRun, agentRunResponse);
     assert.deepEqual(result.sentMessage, { messageId: "45" });
   }
+});
+
+test("processTelegramUpdate requires an explicit bot invocation in group chats", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    {
+      status: "resolved",
+      userId: "22222222-2222-4222-8222-222222222222",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      defaultProjectId: null,
+    },
+    agentRunResponse,
+  );
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+  const update = {
+    ...telegramUpdate,
+    message: { ...telegramUpdate.message, entities: [], text: "обычное сообщение" },
+  };
+
+  const result = await processTelegramUpdate(update, { backendClient, replySender });
+
+  assert.equal(result.kind, "reply_sent");
+  assert.equal(backendClient.lastAgentRunRequest, null);
+  assert.equal(
+    replySender.lastAction?.text,
+    "Чтобы вызвать агента в групповом чате, используй /task.",
+  );
 });
 
 test("processTelegramUpdate attaches confirmation buttons for waiting agent runs", async () => {
@@ -363,6 +413,12 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
     }
 
     return this.confirmationCallbackResponse;
+  }
+
+  async completeTelegramChatConnection(
+    _request: CompleteTelegramChatConnectionRequest,
+  ): Promise<TelegramChatConnectionResponse> {
+    throw new TelegramBackendClientError("Unexpected Telegram connection request.");
   }
 }
 
