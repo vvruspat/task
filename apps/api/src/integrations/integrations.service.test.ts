@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { ConflictException, ForbiddenException, NotFoundException } from "@nestjs/common";
+import { telegramIntegrationPlugin } from "@task/integration-telegram";
 import { IntegrationPluginRegistry } from "./integration-plugin.registry.js";
 import type { WorkspaceIntegration } from "./integrations.contracts.js";
 import { IntegrationsService } from "./integrations.service.js";
@@ -10,7 +11,6 @@ import type {
   WorkspaceIntegrationsStore,
 } from "./integrations.store.js";
 import { googleDriveIntegrationPlugin } from "./plugins/google-drive.integration-plugin.js";
-import { telegramIntegrationPlugin } from "./plugins/telegram.integration-plugin.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const userId = "22222222-2222-4222-8222-222222222222";

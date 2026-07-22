@@ -51,7 +51,7 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 ### Telegram plugin
 
 - [x] Represent workspace Telegram chat connections as integration connections.
-- [ ] Move webhook verification and update normalization behind conversation ingress.
+- [x] Move webhook verification and update normalization behind conversation ingress.
 - [x] Preserve Telegram identity linking and workspace membership checks.
 - [x] Trigger the workspace agent only for supported mentions/messages.
 - [x] Preserve durable confirmation callback handling and audit.
@@ -227,3 +227,12 @@ Private chats may invoke the agent directly. Group chats require `/task` or an e
 username configured in `TELEGRAM_BOT_USERNAME`; mentioning another user no longer starts an agent
 run. Existing durable confirmation callbacks continue through the same resolved workspace/user
 context.
+
+The Telegram manifest and provider implementation now live in the first-party
+`@task/integration-telegram` package. The SDK `webhook` handler owns case-insensitive header parsing
+and constant-time secret verification before any update is processed. Its `conversationIngress`
+handler then performs the only external-payload parse, bounds strings and arrays, normalizes message
+or confirmation events, and decides whether a group message addresses the configured bot. The bot
+runtime consumes this typed event; HTTP and Node adapters no longer inspect Telegram secrets or raw
+update shapes themselves. Malformed confirmation callbacks retain only a safe reply target so the
+user receives an error without calling the backend.

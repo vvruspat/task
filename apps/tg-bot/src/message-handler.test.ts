@@ -11,7 +11,8 @@ import {
   type TelegramConfirmationCallbackResponse,
   type TelegramContextResolutionResponse,
 } from "./backend-client.js";
-import { handleTelegramUpdate } from "./message-handler.js";
+import { handleTelegramMessage } from "./message-handler.js";
+import { parseTelegramMessageContext } from "./telegram-update.js";
 
 const telegramUpdate = {
   update_id: 10,
@@ -39,7 +40,9 @@ test("handleTelegramUpdate resolves Telegram context with stable identifiers", a
     defaultProjectId: null,
   });
 
-  const action = await handleTelegramUpdate(telegramUpdate, { backendClient });
+  const action = await handleTelegramMessage(parseTelegramMessageContext(telegramUpdate), {
+    backendClient,
+  });
 
   assert.equal(action.kind, "resolved");
   assert.deepEqual(backendClient.lastRequest, {
@@ -61,7 +64,7 @@ test("handleTelegramUpdate resolves Telegram context with stable identifiers", a
 });
 
 test("handleTelegramUpdate replies when the Telegram user is unlinked", async () => {
-  const action = await handleTelegramUpdate(telegramUpdate, {
+  const action = await handleTelegramMessage(parseTelegramMessageContext(telegramUpdate), {
     backendClient: new RecordingTelegramBackendClient({ status: "telegram_user_unlinked" }),
   });
 
@@ -74,7 +77,7 @@ test("handleTelegramUpdate replies when the Telegram user is unlinked", async ()
 });
 
 test("handleTelegramUpdate replies when the Telegram chat is unlinked", async () => {
-  const action = await handleTelegramUpdate(telegramUpdate, {
+  const action = await handleTelegramMessage(parseTelegramMessageContext(telegramUpdate), {
     backendClient: new RecordingTelegramBackendClient({
       status: "telegram_chat_unlinked",
       userId: "22222222-2222-4222-8222-222222222222",
@@ -90,7 +93,7 @@ test("handleTelegramUpdate replies when the Telegram chat is unlinked", async ()
 });
 
 test("handleTelegramUpdate replies when the user is outside the chat workspace", async () => {
-  const action = await handleTelegramUpdate(telegramUpdate, {
+  const action = await handleTelegramMessage(parseTelegramMessageContext(telegramUpdate), {
     backendClient: new RecordingTelegramBackendClient({
       status: "user_not_in_chat_workspace",
       userId: "22222222-2222-4222-8222-222222222222",
@@ -106,24 +109,8 @@ test("handleTelegramUpdate replies when the user is outside the chat workspace",
   });
 });
 
-test("handleTelegramUpdate replies for malformed Telegram updates", async () => {
-  const action = await handleTelegramUpdate(
-    { update_id: 10 },
-    {
-      backendClient: new RecordingTelegramBackendClient({ status: "telegram_user_unlinked" }),
-    },
-  );
-
-  assert.deepEqual(action, {
-    kind: "reply",
-    telegramChatId: null,
-    replyToMessageId: null,
-    text: "Не смог прочитать сообщение Telegram.",
-  });
-});
-
 test("handleTelegramUpdate replies for backend client failures", async () => {
-  const action = await handleTelegramUpdate(telegramUpdate, {
+  const action = await handleTelegramMessage(parseTelegramMessageContext(telegramUpdate), {
     backendClient: new FailingTelegramBackendClient(),
   });
 
@@ -146,8 +133,11 @@ test("handleTelegramUpdate connects an unlinked chat with a one-time command", a
     },
   );
   const token = "a".repeat(43);
-  const action = await handleTelegramUpdate(
-    { ...telegramUpdate, message: { ...telegramUpdate.message, text: `/connect ${token}` } },
+  const action = await handleTelegramMessage(
+    parseTelegramMessageContext({
+      ...telegramUpdate,
+      message: { ...telegramUpdate.message, text: `/connect ${token}` },
+    }),
     { backendClient },
   );
 

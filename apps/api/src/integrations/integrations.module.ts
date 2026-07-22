@@ -1,5 +1,6 @@
 import { Module, type Provider } from "@nestjs/common";
 import type { IntegrationPlugin } from "@task/integration-sdk";
+import { telegramIntegrationPlugin } from "@task/integration-telegram";
 import { BotSharedSecretGuard } from "../auth/bot-shared-secret.guard.js";
 import { DatabaseModule } from "../database/database.module.js";
 import {
@@ -39,7 +40,6 @@ import { IntegrationsController } from "./integrations.controller.js";
 import { IntegrationsService } from "./integrations.service.js";
 import type { WorkspaceIntegrationsStore } from "./integrations.store.js";
 import { createGoogleDriveIntegrationPlugin } from "./plugins/google-drive.integration-plugin.js";
-import { telegramIntegrationPlugin } from "./plugins/telegram.integration-plugin.js";
 import {
   TelegramConnectController,
   TelegramInternalConnectController,

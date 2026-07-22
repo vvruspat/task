@@ -100,6 +100,27 @@ provider metadata, or unbounded content to the model.
 This lifecycle keeps tool discovery and execution workspace-scoped even if a model copies a tool
 name from another conversation.
 
+## Webhook and conversation ingress handlers
+
+Plugins that receive public callbacks can provide `handlers.webhook` only when the manifest declares
+`webhook_handler`. Its `verify` method receives raw headers and an unknown payload, authenticates the
+provider request, and returns either `unauthorized` or the accepted payload. Header names, duplicate
+values, signatures, timestamps, and replay material remain provider responsibilities. Compare shared
+secrets in constant time and never include them in normalized events or audit data.
+
+A plugin can provide `handlers.conversationIngress` only with the `conversation_ingress` capability.
+`normalize` receives the authenticated unknown payload and returns the plugin's typed event contract.
+This is the single parsing boundary: bound strings and collections, normalize stable provider IDs,
+classify supported messages or callbacks, and reject or safely represent malformed input before app
+code can call backend services. Provider-specific event types live with the first-party plugin, while
+the SDK keeps the handler generic so future chat providers can define their own normalized event
+union.
+
+`@task/integration-telegram` is the reference implementation. The API registry imports its manifest,
+and `tg-bot` constructs the configured handler implementation with the webhook secret and bot
+username. HTTP transport adapters pass headers and payload through unchanged; they do not duplicate
+Telegram verification or update parsing.
+
 ## Google Drive reference implementation
 
 The Google Drive provider is the first implementation. Its `search` tool uses a bounded Drive

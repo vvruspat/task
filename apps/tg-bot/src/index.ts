@@ -26,7 +26,7 @@ export {
 } from "./config.js";
 
 export {
-  handleTelegramUpdate,
+  handleTelegramMessage,
   type TelegramInlineKeyboardButton,
   type TelegramInlineKeyboardMarkup,
   type TelegramMessageHandlerAction,
@@ -70,6 +70,7 @@ export {
 } from "./telegram-update.js";
 
 export {
+  processTelegramConversationEvent,
   processTelegramUpdate,
   type TelegramReplySentAction,
   type TelegramUpdateProcessorOptions,

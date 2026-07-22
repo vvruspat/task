@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { defineIntegrationPlugin } from "@task/integration-sdk";
+import { telegramIntegrationPlugin } from "@task/integration-telegram";
 import { IntegrationPluginRegistry } from "./integration-plugin.registry.js";
 import {
   createGoogleDriveIntegrationPlugin,
   googleDriveIntegrationPlugin,
 } from "./plugins/google-drive.integration-plugin.js";
-import { telegramIntegrationPlugin } from "./plugins/telegram.integration-plugin.js";
 
 test("integration registry exposes first-party plugins in display order", () => {
   const registry = new IntegrationPluginRegistry([
@@ -57,6 +57,40 @@ test("integration registry rejects duplicate agent tool namespaces", () => {
   assert.throws(
     () => new IntegrationPluginRegistry([googleDriveIntegrationPlugin, duplicateNamespace]),
     /Duplicate integration agent tool namespace gdrive/u,
+  );
+});
+
+test("integration registry requires declared ingress and webhook capabilities", () => {
+  const baseManifest = {
+    ...telegramIntegrationPlugin.manifest,
+    capabilities: [],
+    pluginKey: "invalid-handlers",
+  };
+  assert.throws(
+    () =>
+      new IntegrationPluginRegistry([
+        defineIntegrationPlugin(baseManifest, {
+          conversationIngress: {
+            async normalize(payload): Promise<unknown> {
+              return payload;
+            },
+          },
+        }),
+      ]),
+    /conversationIngress without declaring conversation_ingress/u,
+  );
+  assert.throws(
+    () =>
+      new IntegrationPluginRegistry([
+        defineIntegrationPlugin(baseManifest, {
+          webhook: {
+            async verify(request) {
+              return { payload: request.payload, status: "accepted" };
+            },
+          },
+        }),
+      ]),
+    /webhook without declaring webhook_handler/u,
   );
 });
 

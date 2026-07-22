@@ -77,6 +77,24 @@ function validatePlugin(plugin: IntegrationPlugin): void {
     }
   }
   validateAgentTools(plugin);
+  validateHandlerCapability(plugin, "conversationIngress", "conversation_ingress");
+  validateHandlerCapability(plugin, "handleDomainEvent", "domain_event_consumer");
+  validateHandlerCapability(plugin, "webhook", "webhook_handler");
+}
+
+function validateHandlerCapability(
+  plugin: IntegrationPlugin,
+  handlerName: "conversationIngress" | "handleDomainEvent" | "webhook",
+  capabilityKind: "conversation_ingress" | "domain_event_consumer" | "webhook_handler",
+): void {
+  if (
+    plugin.handlers?.[handlerName] !== undefined &&
+    !plugin.manifest.capabilities.some((capability) => capability.kind === capabilityKind)
+  ) {
+    throw new Error(
+      `Integration plugin ${plugin.manifest.pluginKey} provides ${handlerName} without declaring ${capabilityKind}.`,
+    );
+  }
 }
 
 function validateAgentTools(plugin: IntegrationPlugin): void {

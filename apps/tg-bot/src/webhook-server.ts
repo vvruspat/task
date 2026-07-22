@@ -5,7 +5,7 @@ import {
   type Server,
   type ServerResponse,
 } from "node:http";
-import { loadTelegramBotConfig, type TelegramBotConfig } from "./config.js";
+import { loadTelegramBotConfig } from "./config.js";
 import {
   type CreateTelegramBotRuntimeFromEnvironmentOptions,
   type CreateTelegramBotRuntimeOptions,
@@ -19,7 +19,6 @@ import {
 } from "./webhook-http-adapter.js";
 
 export type TelegramWebhookServerOptions = {
-  config: Pick<TelegramBotConfig, "port" | "webhookSecret">;
   runtime: TelegramBotRuntime;
   maxBodyBytes?: number;
 };
@@ -58,7 +57,6 @@ export async function runTelegramWebhookServerFromEnvironment(
 
   const runtime = createTelegramBotRuntime(runtimeOptions);
   const serverOptions: TelegramWebhookServerOptions = {
-    config,
     runtime,
   };
 
@@ -90,7 +88,6 @@ export async function handleTelegramWebhookNodeRequest(
           body: null,
         },
         {
-          config: { webhookSecret: options.config.webhookSecret },
           runtime: options.runtime,
         },
       );
@@ -106,7 +103,6 @@ export async function handleTelegramWebhookNodeRequest(
         body: await readJsonBody(request, options.maxBodyBytes ?? defaultMaxBodyBytes),
       },
       {
-        config: { webhookSecret: options.config.webhookSecret },
         runtime: options.runtime,
       },
     );

@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import type { Server } from "node:http";
 import test from "node:test";
+import type {
+  IntegrationWebhookRequest,
+  IntegrationWebhookVerificationResult,
+} from "@task/integration-sdk";
+import { createTelegramWebhookHandler } from "@task/integration-telegram";
 import type { TelegramBotRuntime } from "./runtime.js";
 import type { TelegramUpdateProcessorResult } from "./update-processor.js";
 import { createTelegramWebhookServer } from "./webhook-server.js";
@@ -20,7 +25,6 @@ const replySentResult: TelegramUpdateProcessorResult = {
 test("createTelegramWebhookServer handles authorized Telegram webhook requests", async () => {
   const runtime = new RecordingTelegramBotRuntime(replySentResult);
   const server = createTelegramWebhookServer({
-    config: { port: 0, webhookSecret: "webhook-secret" },
     runtime,
   });
 
@@ -47,7 +51,6 @@ test("createTelegramWebhookServer handles authorized Telegram webhook requests",
 test("createTelegramWebhookServer rejects non-POST requests before runtime processing", async () => {
   const runtime = new RecordingTelegramBotRuntime(replySentResult);
   const server = createTelegramWebhookServer({
-    config: { port: 0, webhookSecret: "webhook-secret" },
     runtime,
   });
 
@@ -72,7 +75,6 @@ test("createTelegramWebhookServer rejects non-POST requests before runtime proce
 test("createTelegramWebhookServer rejects malformed JSON bodies", async () => {
   const runtime = new RecordingTelegramBotRuntime(replySentResult);
   const server = createTelegramWebhookServer({
-    config: { port: 0, webhookSecret: "webhook-secret" },
     runtime,
   });
 
@@ -99,7 +101,6 @@ test("createTelegramWebhookServer rejects malformed JSON bodies", async () => {
 test("createTelegramWebhookServer rejects oversized JSON bodies", async () => {
   const runtime = new RecordingTelegramBotRuntime(replySentResult);
   const server = createTelegramWebhookServer({
-    config: { port: 0, webhookSecret: "webhook-secret" },
     runtime,
     maxBodyBytes: 8,
   });
@@ -133,6 +134,10 @@ class RecordingTelegramBotRuntime implements TelegramBotRuntime {
     this.lastUpdate = update;
 
     return this.result;
+  }
+
+  verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult> {
+    return createTelegramWebhookHandler("webhook-secret").verify(request);
   }
 }
 

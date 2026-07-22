@@ -5,7 +5,9 @@
   "description": "Telegram bot application for tAsk.",
   "type": "module",
   "dependencies": {
-    "@task/api-client": "0.0.0"
+    "@task/api-client": "0.0.0",
+    "@task/integration-sdk": "0.0.0",
+    "@task/integration-telegram": "0.0.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

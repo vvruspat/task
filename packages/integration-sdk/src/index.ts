@@ -106,9 +106,34 @@ export type IntegrationAgentToolProvider = {
   ): Promise<Record<string, unknown>>;
 };
 
+export type IntegrationWebhookHeaderValue = string | readonly string[] | undefined;
+
+export type IntegrationWebhookRequest = {
+  headers: Readonly<Record<string, IntegrationWebhookHeaderValue>>;
+  payload: unknown;
+};
+
+export type IntegrationWebhookVerificationResult<Payload = unknown> =
+  | { status: "accepted"; payload: Payload }
+  | { status: "unauthorized" };
+
+/** Provider-owned authentication boundary for public webhook requests. */
+export type IntegrationWebhookHandler<Payload = unknown> = {
+  verify(
+    request: IntegrationWebhookRequest,
+  ): Promise<IntegrationWebhookVerificationResult<Payload>>;
+};
+
+/** Converts one authenticated provider payload into a bounded provider-specific event. */
+export type IntegrationConversationIngressHandler<Event = unknown> = {
+  normalize(payload: unknown): Promise<Event>;
+};
+
 export type IntegrationPluginHandlers = {
   agentTools?: IntegrationAgentToolProvider;
+  conversationIngress?: IntegrationConversationIngressHandler;
   handleDomainEvent?: IntegrationDomainEventHandler;
+  webhook?: IntegrationWebhookHandler;
 };
 
 export type IntegrationSecretReference = string;

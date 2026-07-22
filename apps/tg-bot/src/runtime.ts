@@ -1,3 +1,8 @@
+import type {
+  IntegrationWebhookRequest,
+  IntegrationWebhookVerificationResult,
+} from "@task/integration-sdk";
+import { createTelegramIntegrationPlugin } from "@task/integration-telegram";
 import { createTelegramBackendClient, type TelegramBackendFetch } from "./backend-client.js";
 import {
   loadTelegramBotConfig,
@@ -5,10 +10,14 @@ import {
   type TelegramBotEnvironment,
 } from "./config.js";
 import { createTelegramReplySender, type TelegramBotApiFetch } from "./telegram-sender.js";
-import { processTelegramUpdate, type TelegramUpdateProcessorResult } from "./update-processor.js";
+import {
+  processTelegramConversationEvent,
+  type TelegramUpdateProcessorResult,
+} from "./update-processor.js";
 
 export type TelegramBotRuntime = {
   processUpdate(update: unknown): Promise<TelegramUpdateProcessorResult>;
+  verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult>;
 };
 
 export type CreateTelegramBotRuntimeOptions = {
@@ -49,14 +58,22 @@ export function createTelegramBotRuntime(
           fetch: options.telegramFetch,
         },
   );
+  const plugin = createTelegramIntegrationPlugin({
+    botUsername: options.config.botUsername,
+    webhookSecret: options.config.webhookSecret,
+  });
 
   return {
-    processUpdate(update: unknown) {
-      return processTelegramUpdate(update, {
+    async processUpdate(update: unknown): Promise<TelegramUpdateProcessorResult> {
+      const event = await plugin.handlers.conversationIngress.normalize(update);
+      return processTelegramConversationEvent(event, {
         backendClient,
         botUsername: options.config.botUsername,
         replySender,
       });
+    },
+    verifyWebhook(request: IntegrationWebhookRequest) {
+      return plugin.handlers.webhook.verify(request);
     },
   };
 }

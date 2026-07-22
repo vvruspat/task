@@ -60,8 +60,8 @@
     "semantic_hash": ""
   },
   "docs/agent-mcp-design.md": {
-    "mtime": 1784533008.7807133,
-    "ast_hash": "8d2fe5e6bd449507723ab2d782b055bf",
+    "mtime": 1784741710.1275003,
+    "ast_hash": "3990fb900681afadce5f2d4d1ea1090f",
     "semantic_hash": ""
   },
   "docs/data-model.md": {
@@ -205,13 +205,13 @@
     "semantic_hash": ""
   },
   "apps/mcp-server/package.json": {
-    "mtime": 1784533008.7602537,
-    "ast_hash": "219bd328d0c906251f4f5a00a8202f9c",
+    "mtime": 1784741314.5470455,
+    "ast_hash": "a97e5efa76d9a7025c51b26c290461d3",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/index.ts": {
-    "mtime": 1784533008.7625642,
-    "ast_hash": "663649f2c3417b304339bf0eba74947f",
+    "mtime": 1784741633.8808901,
+    "ast_hash": "57e4d746cd4ae6dbb201404733a5bea8",
     "semantic_hash": ""
   },
   "apps/mcp-server/tsconfig.json": {
@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1784738091.9570107,
-    "ast_hash": "5493b6aa6bfbb0a584b50a22d8df0bd8",
+    "mtime": 1784741750.3316808,
+    "ast_hash": "e55dee96fec839379e82dc5ef5a6ac0f",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -305,13 +305,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/data-source.test.ts": {
-    "mtime": 1784737098.1378248,
-    "ast_hash": "b4dae498defde9f4ec5343cdf87ae5d6",
+    "mtime": 1784739320.3073246,
+    "ast_hash": "a6ac62a6008768760c38546eef0a40cf",
     "semantic_hash": ""
   },
   "apps/api/src/data-source.ts": {
-    "mtime": 1784737098.1372917,
-    "ast_hash": "6eadfb882900c31f22414554db034943",
+    "mtime": 1784739254.0623453,
+    "ast_hash": "be8ffc3cceb7950c248b210680fbe078",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/core-entities.test.ts": {
@@ -320,8 +320,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/index.ts": {
-    "mtime": 1784737098.1365285,
-    "ast_hash": "6c987c8176ff6f73b230cd9993946872",
+    "mtime": 1784739254.0617044,
+    "ast_hash": "8a55493e1968fff73070fa6499e131db",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/status.entity.ts": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1784738093.0435605,
-    "ast_hash": "e290fdd4e5772ca88bb22162d6de37d2",
+    "mtime": 1784741751.747441,
+    "ast_hash": "f88269a8b4edcf4d03ce075ea56ec2d5",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
@@ -860,13 +860,13 @@
     "semantic_hash": ""
   },
   "apps/mcp-server/src/backend-client.test.ts": {
-    "mtime": 1784533008.7611754,
-    "ast_hash": "4b1859aa3f1d9d55546c29d9243e8b6f",
+    "mtime": 1784741280.4932754,
+    "ast_hash": "516eb08a296c4db5693b140e3c787425",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/backend-client.ts": {
-    "mtime": 1784533008.761582,
-    "ast_hash": "6b9b0f122aa8a40bf17fa07862ea56df",
+    "mtime": 1784741511.857719,
+    "ast_hash": "3b7beffb45c3ca1437fa84bb86c01183",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/task-skill-tools.test.ts": {
@@ -880,23 +880,23 @@
     "semantic_hash": ""
   },
   "apps/mcp-server/src/mcp-server.test.ts": {
-    "mtime": 1784533008.7628813,
+    "mtime": 1784741535.5325,
     "ast_hash": "12b0e253b42d66969ca23502cb2c57c8",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/mcp-server.ts": {
-    "mtime": 1784533008.7630076,
-    "ast_hash": "fb6c5e24182742a24904e429028b5b70",
+    "mtime": 1784741511.8585892,
+    "ast_hash": "1748e36e91c11df8aa29f7a7ed245485",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/config.test.ts": {
-    "mtime": 1784533008.7619753,
-    "ast_hash": "850228f8a96c634284336c2750b4c177",
+    "mtime": 1784741314.5466468,
+    "ast_hash": "2ae6f53361f5af61ee2e6c2326e5e24c",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/config.ts": {
-    "mtime": 1784533008.7620642,
-    "ast_hash": "52f18502b6b611ef584ee1f531b3f79c",
+    "mtime": 1784741407.2454188,
+    "ast_hash": "909994d6b607294d187ba88ce0d462ed",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/main.ts": {
@@ -905,13 +905,13 @@
     "semantic_hash": ""
   },
   "apps/mcp-server/src/runtime.test.ts": {
-    "mtime": 1784533008.763411,
-    "ast_hash": "5efedad57b659640c5848bcf6396dca9",
+    "mtime": 1784741628.4703114,
+    "ast_hash": "3cde1983f0f866ae2902ae05c143b3e7",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/runtime.ts": {
-    "mtime": 1784533008.7634888,
-    "ast_hash": "26831d0614f0dec7f0c09eda000dc50a",
+    "mtime": 1784741511.8589418,
+    "ast_hash": "2df370f151ac631b3c4109f6579303be",
     "semantic_hash": ""
   },
   "apps/mcp-server/src/project-tools.test.ts": {
@@ -1635,7 +1635,7 @@
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
-    "mtime": 1784738046.5877223,
+    "mtime": 1784741869.551181,
     "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
@@ -2960,8 +2960,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.module.ts": {
-    "mtime": 1784738635.0040264,
-    "ast_hash": "d8f73f5806accf47b899195f1e2a091b",
+    "mtime": 1784739254.0627553,
+    "ast_hash": "d3d4250aaeec090a2211767f90fc7478",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.test.ts": {
@@ -3050,8 +3050,8 @@
     "semantic_hash": ""
   },
   "docs/integrations-plugin-framework.md": {
-    "mtime": 1784738745.2898245,
-    "ast_hash": "6db2ff75cffcbcb524d3a450d26a44fa",
+    "mtime": 1784741710.1264834,
+    "ast_hash": "865c84090e52895a5d1764d014ee7f01",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {
@@ -3520,8 +3520,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-agent-tools.service.ts": {
-    "mtime": 1784738580.6513662,
-    "ast_hash": "63872006c8db0eaeb315f100211c9838",
+    "mtime": 1784739254.0610666,
+    "ast_hash": "e70cb02e4a9de1e409fca08cfc569081",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-agent-tools.store.ts": {
@@ -3535,8 +3535,88 @@
     "semantic_hash": ""
   },
   "docs/integration-plugin-authoring.md": {
-    "mtime": 1784738762.3718731,
-    "ast_hash": "8bbe03e8955c149ae3958fb8bd0e85e7",
+    "mtime": 1784741710.1259074,
+    "ast_hash": "8b102a30a44708bcce0136a8b9cb6b92",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-mcp-tools.contracts.ts": {
+    "mtime": 1784739333.0214741,
+    "ast_hash": "dc5f5e294e42a95c46d0803b537b0838",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-mcp-tools.controller.test.ts": {
+    "mtime": 1784741669.9450386,
+    "ast_hash": "f1856f8eff666a1c1572ad6e056ddd91",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-mcp-tools.controller.ts": {
+    "mtime": 1784739406.798312,
+    "ast_hash": "3314fbc9d22894e5adb5cbee4361b6ee",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-mcp-tools.dto.test.ts": {
+    "mtime": 1784739320.3081048,
+    "ast_hash": "a7e1b1f1aed5c07791bd558718c56e14",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-mcp-tools.dto.ts": {
+    "mtime": 1784739354.0542436,
+    "ast_hash": "4f7be96ebbe235e8b8a32a8c675b7b2c",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-mcp-tools.service.test.ts": {
+    "mtime": 1784739333.3601356,
+    "ast_hash": "21033cfeffd138d1ff0aa6cdbd9cc212",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-mcp-tools.service.ts": {
+    "mtime": 1784739333.3581052,
+    "ast_hash": "fac20bfb928edb91f7d4e79b7baebf4b",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-tool-json.test.ts": {
+    "mtime": 1784739320.307759,
+    "ast_hash": "0a056fca9c5628107d696e0f10c4a0c0",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/integration-tool-json.ts": {
+    "mtime": 1784739333.0221806,
+    "ast_hash": "ffdc33a19e8e74c521d22afb6a9fcc60",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-integration-mcp-tool-call.store.ts": {
+    "mtime": 1784739349.3029952,
+    "ast_hash": "d3bbfa850a97dea2fdfd7755d7b6329f",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/entities/integration-mcp-tool-call.entity.test.ts": {
+    "mtime": 1784739333.0233502,
+    "ast_hash": "f4292cb57e2412a5947824dc37fee8a7",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/entities/integration-mcp-tool-call.entity.ts": {
+    "mtime": 1784739244.6440396,
+    "ast_hash": "2217461ab377073e55bee35adf16352e",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/migrations/1783298220000-create-integration-mcp-tool-calls.ts": {
+    "mtime": 1784739244.644747,
+    "ast_hash": "e60d6f10d44b3f30271cee7949e05ea7",
+    "semantic_hash": ""
+  },
+  "apps/api/src/persistence/migrations/create-integration-mcp-tool-calls.test.ts": {
+    "mtime": 1784739320.3089414,
+    "ast_hash": "8b5931bde36bf048593b934346cd9c48",
+    "semantic_hash": ""
+  },
+  "apps/mcp-server/src/integration-mcp-tools.test.ts": {
+    "mtime": 1784741770.9653676,
+    "ast_hash": "09d0d1e23fdef0fa8a8d9d17c87af4b3",
+    "semantic_hash": ""
+  },
+  "apps/mcp-server/src/integration-mcp-tools.ts": {
+    "mtime": 1784741770.9648616,
+    "ast_hash": "948068de5928a63832cb32cae2c7e15c",
     "semantic_hash": ""
   }
 }

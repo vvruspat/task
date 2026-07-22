@@ -3,11 +3,7 @@ import {
   TelegramBackendClientError,
   type TelegramContextResolutionResponse,
 } from "./backend-client.js";
-import {
-  parseTelegramMessageContext,
-  type TelegramMessageContext,
-  TelegramUpdateParseError,
-} from "./telegram-update.js";
+import type { TelegramMessageContext } from "./telegram-update.js";
 
 export type TelegramMessageHandlerOptions = {
   backendClient: TelegramBackendClient;
@@ -45,22 +41,10 @@ export type TelegramResolvedContext = TelegramContextResolutionResponse & {
 
 export type TelegramMessageHandlerAction = TelegramReplyAction | TelegramResolvedMessageAction;
 
-export async function handleTelegramUpdate(
-  update: unknown,
+export async function handleTelegramMessage(
+  message: TelegramMessageContext,
   options: TelegramMessageHandlerOptions,
 ): Promise<TelegramMessageHandlerAction> {
-  let message: TelegramMessageContext;
-
-  try {
-    message = parseTelegramMessageContext(update);
-  } catch (error) {
-    if (error instanceof TelegramUpdateParseError) {
-      return createReply(null, null, "Не смог прочитать сообщение Telegram.");
-    }
-
-    throw error;
-  }
-
   const connectToken = readTelegramConnectToken(message.text);
   if (connectToken !== null) {
     try {
