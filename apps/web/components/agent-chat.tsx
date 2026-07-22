@@ -32,6 +32,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   createContext,
   type ReactNode,
@@ -44,6 +45,7 @@ import {
 import { useI18n } from "../lib/i18n/i18n";
 import { notifyWorkspaceDataChanged, useWorkspaceData } from "../lib/use-workspace-data";
 import { useWorkspaceStore } from "../lib/workspace-store";
+import { resolveWorkspaceRouteProject } from "../lib/workspace-url";
 
 type AgentStreamEvent =
   | { type: "text-delta"; delta: string }
@@ -103,7 +105,21 @@ export function AgentDrawer(): ReactNode {
 
 function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): ReactNode {
   const { t } = useI18n();
-  const workspaceId = useWorkspaceData().data?.workspace.id ?? null;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const data = useWorkspaceData().data;
+  const workspaceId = data?.workspace.id ?? null;
+  const storedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
+  const projectId =
+    data === null
+      ? null
+      : (resolveWorkspaceRouteProject(
+          pathname,
+          searchParams.get("project"),
+          storedProjectId,
+          data.projects,
+          data.views,
+        )?.id ?? null);
   const [chats, setChats] = useState<AgentChatSummary[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [chat, setChat] = useState<AgentChatDetail | null>(null);
@@ -357,6 +373,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
           <AgentConversation
             key={chat?.id ?? "new-chat"}
             chat={chat}
+            projectId={projectId}
             workspaceId={workspaceId}
             onTurnDone={handleTurnDone}
           />
@@ -368,15 +385,16 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
 
 function AgentConversation({
   chat,
+  projectId,
   workspaceId,
   onTurnDone,
 }: Readonly<{
   chat: AgentChatDetail | null;
+  projectId: string | null;
   workspaceId: string | null;
   onTurnDone: (chat: { id: string; title: string }) => void;
 }>): ReactNode {
   const { t } = useI18n();
-  const projectId = useWorkspaceStore((state) => state.selectedProjectId);
   const [activities, setActivities] = useState<AgentActivity[]>([]);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [completedAt, setCompletedAt] = useState<number | null>(null);

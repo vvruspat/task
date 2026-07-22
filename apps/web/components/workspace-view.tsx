@@ -85,7 +85,10 @@ export function WorkspaceView({
   const selectedProjectId =
     projectId ??
     data.projects.find((project) => project.slug === projectSlug)?.id ??
-    searchParams.get("project") ??
+    data.projects.find((project) => {
+      const queryProject = searchParams.get("project");
+      return project.id === queryProject || project.slug === queryProject;
+    })?.id ??
     undefined;
   const title =
     kind === "project" && selectedProjectId !== undefined
@@ -139,7 +142,9 @@ function WorkspaceSettingsRestricted(): ReactNode {
   return <Empty text={t("workspace.settingsRestricted")} />;
 }
 function findProjectData(data: WorkspaceBootstrap, projectId?: string): ProjectData | undefined {
-  return data.projectData.find((item) => item.projectId === projectId) ?? data.projectData[0];
+  return projectId === undefined
+    ? undefined
+    : data.projectData.find((item) => item.projectId === projectId);
 }
 function Projects({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
   const { locale, t } = useI18n();
@@ -218,6 +223,7 @@ function ProjectDetail({
       {projectSummary !== undefined && (
         <ProjectDangerZone
           workspaceId={data.workspace.id}
+          workspaceSlug={data.workspace.slug}
           projectId={project.projectId}
           projectTitle={projectSummary.title}
           refresh={refresh}
@@ -447,7 +453,14 @@ function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
         <PanelTitle title={t("invitations.title")} />
         <WorkspaceInvitations workspaceId={data.workspace.id} />
       </Card>
-      <WorkspaceDangerZone workspaceId={data.workspace.id} workspaceName={data.workspace.name} />
+      <WorkspaceDangerZone
+        fallbackWorkspaceSlug={
+          data.availableWorkspaces.find((workspace) => workspace.id !== data.workspace.id)?.slug ??
+          null
+        }
+        workspaceId={data.workspace.id}
+        workspaceName={data.workspace.name}
+      />
     </section>
   );
 }

@@ -16,7 +16,7 @@ import {
   Workflow,
   X,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
@@ -25,7 +25,7 @@ import { isTaskSummary } from "../lib/task-summary";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
 import { useWorkspaceStore } from "../lib/workspace-store";
-import { workspaceIssueHref } from "../lib/workspace-url";
+import { resolveWorkspaceRouteProject, workspaceIssueHref } from "../lib/workspace-url";
 import { TaskStatusIndicator } from "./task-status-indicator";
 
 type CreateKind = "project" | "skill" | "task";
@@ -35,12 +35,24 @@ const defaultStatusValue = "default";
 
 export function CreateDialog(): ReactNode {
   const { t } = useI18n();
+  const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const open = useWorkspaceStore((state) => state.createOpen);
   const setOpen = useWorkspaceStore((state) => state.setCreateOpen);
-  const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
+  const storedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
   const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
   const { data, refresh } = useWorkspaceData();
+  const selectedProjectId =
+    data === null
+      ? storedProjectId
+      : (resolveWorkspaceRouteProject(
+          pathname,
+          searchParams.get("project"),
+          storedProjectId,
+          data.projects,
+          data.views,
+        )?.id ?? null);
   const [kind, setKind] = useState<CreateKind>("task");
   const [projectValue, setProjectValue] = useState(noProjectValue);
   const [statusValue, setStatusValue] = useState(defaultStatusValue);

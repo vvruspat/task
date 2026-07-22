@@ -41,7 +41,7 @@ import {
   Workflow,
   X,
 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { FormEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { localizeWorkspaceError } from "../lib/i18n/errors";
@@ -60,15 +60,27 @@ import {
 } from "../lib/task-skill-input";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import { useWorkspaceStore } from "../lib/workspace-store";
+import { resolveWorkspaceRouteProject } from "../lib/workspace-url";
 
 type Feedback = { color: "green" | "red"; message: string } | null;
 
 export function TemplatesPage(): ReactNode {
   const { t } = useI18n();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const requestedSkillId = searchParams.get("skill");
   const { data, error, loading, refresh } = useWorkspaceData();
-  const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
+  const storedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
+  const selectedProjectId =
+    data === null
+      ? storedProjectId
+      : (resolveWorkspaceRouteProject(
+          pathname,
+          searchParams.get("project"),
+          storedProjectId,
+          data.projects,
+          data.views,
+        )?.id ?? null);
   const [query, setQuery] = useState("");
   const [selectedSkillId, setSelectedSkillId] = useState<string | null>(null);
   const [detail, setDetail] = useState<TaskSkillDetail | null>(null);
