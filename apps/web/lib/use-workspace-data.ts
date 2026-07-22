@@ -6,7 +6,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { create } from "zustand";
 import { LatestRequestCoordinator } from "./latest-request";
-import type { ApiFailure, WorkspaceBootstrap, WorkspaceRequired } from "./workspace-contracts";
+import { ReconciliationScheduler } from "./reconciliation-scheduler";
+import type {
+  ApiFailure,
+  WorkspaceBootstrap,
+  WorkspaceProjectReconciliation,
+  WorkspaceRequired,
+} from "./workspace-contracts";
 import { isApiFailure, isWorkspaceRequired } from "./workspace-contracts";
 import {
   applyWorkspaceMemberRealtimeChange,
@@ -20,6 +26,11 @@ import {
   type WorkspaceRealtimeConnectionStatus,
 } from "./workspace-realtime";
 import { useWorkspaceStore } from "./workspace-store";
+import {
+  applyWorkspaceProjectReconciliation,
+  applyWorkspaceTaskUpdate,
+  workspaceTaskUpdateRequiresProjectReconciliation,
+} from "./workspace-task-cache";
 
 type WorkspaceDataState = {
   data: WorkspaceBootstrap | null;
@@ -49,7 +60,54 @@ const workspaceRequestCoordinator = new LatestRequestCoordinator<
   WorkspaceBootstrap | WorkspaceRequired
 >();
 const realtimeConnections = new Map<string, RealtimeConnection>();
-let realtimeRefreshTimer: ReturnType<typeof setTimeout> | null = null;
+const pendingRealtimeProjects = new Map<string, string>();
+const projectReconciliationGenerations = new Map<string, number>();
+const taskRequestGenerations = new Map<string, number>();
+let workspaceRealtimeRevision = 0;
+const reconciliationClock = {
+  clearTimer: (timer: ReturnType<typeof setTimeout>): void => clearTimeout(timer),
+  now: (): number => Date.now(),
+  setTimer: (callback: () => void, delayMs: number): ReturnType<typeof setTimeout> =>
+    setTimeout(callback, delayMs),
+};
+const fullRealtimeReconciliationScheduler = new ReconciliationScheduler({
+  clock: reconciliationClock,
+  delayMs: 1_000,
+  maxWaitMs: 5_000,
+  run: reconcileFullWorkspace,
+});
+const projectRealtimeReconciliationScheduler = new ReconciliationScheduler({
+  clock: reconciliationClock,
+  delayMs: 250,
+  maxWaitMs: 1_000,
+  run: () => void reconcilePendingProjects(),
+});
+
+function reconcileFullWorkspace(): void {
+  pendingRealtimeProjects.clear();
+  projectRealtimeReconciliationScheduler.cancel();
+  notifyWorkspaceDataChanged();
+}
+
+function scheduleFullWorkspaceReconciliation(): void {
+  pendingRealtimeProjects.clear();
+  projectRealtimeReconciliationScheduler.cancel();
+  fullRealtimeReconciliationScheduler.schedule();
+}
+
+function scheduleProjectReconciliation(workspaceId: string, projectId: string): void {
+  pendingRealtimeProjects.set(projectId, workspaceId);
+  projectRealtimeReconciliationScheduler.schedule();
+}
+
+async function reconcilePendingProjects(): Promise<void> {
+  const projects = [...pendingRealtimeProjects.entries()];
+  pendingRealtimeProjects.clear();
+  const results = await Promise.all(
+    projects.map(([projectId, workspaceId]) => refreshRealtimeProject(workspaceId, projectId)),
+  );
+  if (results.some((result) => !result)) scheduleFullWorkspaceReconciliation();
+}
 
 const useWorkspaceDataStore = create<WorkspaceDataStore>()((set) => ({
   data: null,
@@ -69,10 +127,12 @@ export function notifyWorkspaceDataChanged(): void {
 
 export function resetWorkspaceData(): void {
   workspaceRequestCoordinator.cancel();
-  if (realtimeRefreshTimer !== null) {
-    clearTimeout(realtimeRefreshTimer);
-    realtimeRefreshTimer = null;
-  }
+  pendingRealtimeProjects.clear();
+  projectReconciliationGenerations.clear();
+  taskRequestGenerations.clear();
+  workspaceRealtimeRevision = 0;
+  fullRealtimeReconciliationScheduler.cancel();
+  projectRealtimeReconciliationScheduler.cancel();
   const store = useWorkspaceDataStore.getState();
   store.replace({
     data: null,
@@ -90,28 +150,7 @@ export function updateWorkspaceData(
 }
 
 export function updateWorkspaceTask(task: TaskSummary): void {
-  updateWorkspaceData((data) =>
-    produce(data, (draft) => {
-      const projectData = draft.projectData.find((item) => item.projectId === task.projectId);
-      if (projectData !== undefined) {
-        replaceTask(projectData.tasks, task);
-        replaceTask(projectData.table.items, task);
-        replaceTask(projectData.matrix.columns, task);
-        for (const cell of projectData.matrix.cells) replaceTask(cell.tasks, task);
-      }
-      const myTask = draft.myTasks.items.find((item) => item.id === task.id);
-      if (myTask !== undefined) {
-        const status = draft.statuses.find((item) => item.id === task.statusId);
-        myTask.title = task.title;
-        myTask.dueAt = task.dueAt ?? null;
-        myTask.statusId = task.statusId ?? null;
-        myTask.statusName = status?.name ?? null;
-        myTask.statusColor = status?.color ?? null;
-        myTask.position = task.position;
-        myTask.updatedAt = task.updatedAt;
-      }
-    }),
-  );
+  updateWorkspaceData((data) => applyWorkspaceTaskUpdate(data, task));
 }
 
 export function updateProjectStatuses(projectId: string, statuses: WorkspaceStatus[]): void {
@@ -123,16 +162,6 @@ export function updateProjectStatuses(projectId: string, statuses: WorkspaceStat
       ];
     }),
   );
-}
-
-function replaceTask(tasks: TaskSummary[], task: TaskSummary): void {
-  const index = tasks.findIndex((item) => item.id === task.id);
-  if (index < 0) return;
-  const current = tasks[index];
-  tasks[index] =
-    task.commentCount === undefined && current?.commentCount !== undefined
-      ? { ...task, commentCount: current.commentCount }
-      : task;
 }
 
 function isWorkspaceBootstrap(value: unknown): value is WorkspaceBootstrap {
@@ -214,9 +243,14 @@ export function useWorkspaceData(): WorkspaceDataState & {
       const request = workspaceRequestCoordinator.request(workspaceSelector, (signal) =>
         requestWorkspace(workspaceSelector, signal),
       );
+      const requestRevision = workspaceRealtimeRevision;
       try {
         const result = await request.promise;
         if (!workspaceRequestCoordinator.isLatest(request)) return;
+        if (requestRevision !== workspaceRealtimeRevision) {
+          scheduleFullWorkspaceReconciliation();
+          return;
+        }
         if (isWorkspaceRequired(result)) {
           setSelectedWorkspaceId(null);
           const store = useWorkspaceDataStore.getState();
@@ -327,7 +361,7 @@ function retainRealtimeConnection(workspaceId: string): () => void {
     const transition = markWorkspaceRealtimeConnected(connection.lifecycle);
     connection.lifecycle = transition.lifecycle;
     setActiveRealtimeConnectionStatus(workspaceId, transition.lifecycle.status);
-    if (transition.reconnected) notifyWorkspaceDataChanged();
+    if (transition.reconnected) reconcileFullWorkspace();
   });
   source.addEventListener("error", () => {
     connection.lifecycle = markWorkspaceRealtimeInterrupted(connection.lifecycle, navigator.onLine);
@@ -361,6 +395,7 @@ function releaseRealtimeConnection(workspaceId: string): void {
 function handleWorkspaceRealtimeChange(event: MessageEvent<string>): void {
   const change = parseWorkspaceRealtimeChange(event.data);
   if (change === null) return;
+  workspaceRealtimeRevision += 1;
   window.dispatchEvent(
     new CustomEvent<WorkspaceRealtimeChange>(workspaceRealtimeEvent, { detail: change }),
   );
@@ -381,14 +416,24 @@ function handleWorkspaceRealtimeChange(event: MessageEvent<string>): void {
     updateWorkspaceData((data) => applyWorkspaceMemberRealtimeChange(data, change));
     return;
   }
-  if (change.projectId !== null && change.taskId !== null) {
-    void refreshRealtimeTask(change);
+  if (change.mutationKind === "updated" && change.projectId !== null && change.taskId !== null) {
+    invalidateProjectReconciliation(change.projectId);
+    const taskGeneration = invalidateTaskRequest(change.taskId);
+    void refreshRealtimeTask(change, taskGeneration).then((updated) => {
+      if (!updated) scheduleFullWorkspaceReconciliation();
+    });
+    return;
   }
-  if (realtimeRefreshTimer !== null) clearTimeout(realtimeRefreshTimer);
-  realtimeRefreshTimer = setTimeout(() => {
-    realtimeRefreshTimer = null;
-    notifyWorkspaceDataChanged();
-  }, 250);
+  if (
+    (change.mutationKind === "created" || change.mutationKind === "deleted") &&
+    change.projectId !== null &&
+    change.taskId !== null
+  ) {
+    invalidateProjectReconciliation(change.projectId);
+    scheduleProjectReconciliation(change.workspaceId, change.projectId);
+    return;
+  }
+  scheduleFullWorkspaceReconciliation();
 }
 
 function updateRealtimeMemberRole(change: WorkspaceRealtimeChange): void {
@@ -411,8 +456,12 @@ function isCurrentMembershipRemoval(value: unknown): value is WorkspaceRealtimeC
   );
 }
 
-async function refreshRealtimeTask(change: WorkspaceRealtimeChange): Promise<void> {
-  if (change.projectId === null || change.taskId === null) return;
+async function refreshRealtimeTask(
+  change: WorkspaceRealtimeChange,
+  requestGeneration: number,
+): Promise<boolean> {
+  if (change.projectId === null || change.taskId === null) return false;
+  if (useWorkspaceDataStore.getState().data?.workspace.id !== change.workspaceId) return true;
   const query = new URLSearchParams({
     projectId: change.projectId,
     workspaceId: change.workspaceId,
@@ -422,10 +471,74 @@ async function refreshRealtimeTask(change: WorkspaceRealtimeChange): Promise<voi
       cache: "no-store",
     });
     const value: unknown = await response.json();
-    if (response.ok && isTaskSummaryValue(value)) updateWorkspaceTask(value);
+    if (taskRequestGenerations.get(change.taskId) !== requestGeneration) return true;
+    if (!response.ok || !isTaskSummaryValue(value)) return false;
+    if (useWorkspaceDataStore.getState().data?.workspace.id !== change.workspaceId) return true;
+    taskRequestGenerations.delete(change.taskId);
+    const current = useWorkspaceDataStore.getState().data;
+    if (current !== null && workspaceTaskUpdateRequiresProjectReconciliation(current, value)) {
+      scheduleProjectReconciliation(change.workspaceId, change.projectId);
+    }
+    updateWorkspaceTask(value);
+    return true;
   } catch {
-    // The debounced full workspace refresh below remains the consistency fallback.
+    return taskRequestGenerations.get(change.taskId) !== requestGeneration;
   }
+}
+
+async function refreshRealtimeProject(workspaceId: string, projectId: string): Promise<boolean> {
+  const current = useWorkspaceDataStore.getState().data;
+  if (current === null || current.workspace.id !== workspaceId) return true;
+  const requestGeneration = projectReconciliationGenerations.get(projectId) ?? 0;
+  const query = new URLSearchParams({ workspaceId });
+  try {
+    const response = await fetch(`/api/workspace/projects/${projectId}?${query}`, {
+      cache: "no-store",
+    });
+    const value: unknown = await response.json();
+    if (!response.ok || !isWorkspaceProjectReconciliation(value) || value.projectId !== projectId) {
+      return false;
+    }
+    if ((projectReconciliationGenerations.get(projectId) ?? 0) !== requestGeneration) return true;
+    if (useWorkspaceDataStore.getState().data?.workspace.id !== workspaceId) return true;
+    updateWorkspaceData((data) => applyWorkspaceProjectReconciliation(data, value));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function invalidateProjectReconciliation(projectId: string): void {
+  projectReconciliationGenerations.set(
+    projectId,
+    (projectReconciliationGenerations.get(projectId) ?? 0) + 1,
+  );
+}
+
+function invalidateTaskRequest(taskId: string): number {
+  const generation = (taskRequestGenerations.get(taskId) ?? 0) + 1;
+  taskRequestGenerations.set(taskId, generation);
+  return generation;
+}
+
+function isWorkspaceProjectReconciliation(value: unknown): value is WorkspaceProjectReconciliation {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "projectId" in value &&
+    typeof value.projectId === "string" &&
+    "tasks" in value &&
+    Array.isArray(value.tasks) &&
+    "table" in value &&
+    typeof value.table === "object" &&
+    value.table !== null &&
+    "matrix" in value &&
+    typeof value.matrix === "object" &&
+    value.matrix !== null &&
+    "myTasks" in value &&
+    typeof value.myTasks === "object" &&
+    value.myTasks !== null
+  );
 }
 
 function isTaskSummaryValue(value: unknown): value is TaskSummary {

@@ -86,6 +86,7 @@ test("parseWorkspaceRealtimeChange validates task-scoped SSE payloads", () => {
         workspaceId: "11111111-1111-4111-8111-111111111111",
         projectId: "22222222-2222-4222-8222-222222222222",
         taskId: "33333333-3333-4333-8333-333333333333",
+        mutationKind: "updated",
         occurredAt: "2026-07-19T18:00:00.000Z",
       }),
     ),
@@ -98,11 +99,26 @@ test("parseWorkspaceRealtimeChange validates task-scoped SSE payloads", () => {
       memberId: null,
       memberUserId: null,
       memberRole: null,
+      mutationKind: "updated",
       occurredAt,
     },
   );
   assert.equal(parseWorkspaceRealtimeChange("{}"), null);
   assert.equal(parseWorkspaceRealtimeChange("not json"), null);
+  assert.equal(
+    parseWorkspaceRealtimeChange(
+      JSON.stringify({
+        id: "1-2",
+        kind: "changed",
+        workspaceId,
+        projectId: null,
+        taskId: null,
+        mutationKind: "renamed",
+        occurredAt,
+      }),
+    ),
+    null,
+  );
 });
 
 test("parseWorkspaceRealtimeChange validates member role and removal payloads", () => {
@@ -127,6 +143,7 @@ test("parseWorkspaceRealtimeChange validates member role and removal payloads", 
       memberId: currentMemberId,
       memberUserId: "55555555-5555-4555-8555-555555555555",
       memberRole: "admin",
+      mutationKind: null,
       occurredAt,
     },
   );
@@ -156,6 +173,7 @@ test("applyWorkspaceMemberRealtimeChange updates the current role immediately", 
     memberId: currentMemberId,
     memberUserId: "55555555-5555-4555-8555-555555555555",
     memberRole: "admin",
+    mutationKind: null,
     occurredAt,
   });
 
@@ -173,6 +191,7 @@ test("applyWorkspaceMemberRealtimeChange removes another member from the visible
     memberId: otherMemberId,
     memberUserId: "66666666-6666-4666-8666-666666666666",
     memberRole: "guest",
+    mutationKind: null,
     occurredAt,
   });
 

@@ -768,6 +768,7 @@ test("BackendAgentToolOperationDispatcher updates task fields, status, due date,
   const attachmentId = "aaaaaaaa-0000-4000-8000-000000000002";
   const mutationCalls: string[] = [];
   const realtimeChanges: Array<{
+    mutationKind: "created" | "deleted" | "updated";
     workspaceId: string;
     projectId?: string | null;
     taskId?: string | null;
@@ -945,10 +946,10 @@ test("BackendAgentToolOperationDispatcher updates task fields, status, due date,
   assert.equal(attachment.result?.["kind"], "task_link_attachment_added");
   assert.deepEqual(mutationCalls, ["update", "status", "due", "attachment"]);
   assert.deepEqual(realtimeChanges, [
-    { workspaceId, projectId, taskId },
-    { workspaceId, projectId, taskId },
-    { workspaceId, projectId, taskId },
-    { workspaceId, projectId, taskId },
+    { mutationKind: "updated", workspaceId, projectId, taskId },
+    { mutationKind: "updated", workspaceId, projectId, taskId },
+    { mutationKind: "updated", workspaceId, projectId, taskId },
+    { mutationKind: "updated", workspaceId, projectId, taskId },
   ]);
 });
 

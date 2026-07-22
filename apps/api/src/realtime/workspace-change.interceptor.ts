@@ -9,6 +9,7 @@ import { Reflector } from "@nestjs/core";
 import type { Observable } from "rxjs";
 import { tap } from "rxjs";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
+import { workspaceMutationKindForMethod } from "./realtime.contracts.js";
 import {
   type WorkspaceMemberChangeKind,
   workspaceMemberChangeMetadataKey,
@@ -37,7 +38,9 @@ export class WorkspaceChangeInterceptor implements NestInterceptor {
       return next.handle();
     }
     const projectId = readRouteParam(request.params, "projectId");
-    const taskId = readRouteParam(request.params, "taskId");
+    const routeTaskId = readRouteParam(request.params, "taskId");
+    let responseTaskId: string | null = null;
+    const mutationKind = workspaceMutationKindForMethod(request.method);
     const memberChangeKind = this.reflector.getAllAndOverride<WorkspaceMemberChangeKind>(
       workspaceMemberChangeMetadataKey,
       [context.getHandler(), context.getClass()],
@@ -45,7 +48,10 @@ export class WorkspaceChangeInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap({
         next: (value) => {
-          if (memberChangeKind === undefined) return;
+          if (memberChangeKind === undefined) {
+            responseTaskId = readWorkspaceTaskResultId(value);
+            return;
+          }
           const member = parseWorkspaceMemberResult(value);
           if (member === null) return;
           const input = {
@@ -59,12 +65,33 @@ export class WorkspaceChangeInterceptor implements NestInterceptor {
         },
         complete: () => {
           if (memberChangeKind === undefined) {
-            this.realtime.publishChange({ workspaceId, projectId, taskId });
+            this.realtime.publishChange({
+              mutationKind,
+              workspaceId,
+              projectId,
+              taskId: routeTaskId ?? responseTaskId,
+            });
           }
         },
       }),
     );
   }
+}
+
+export function readWorkspaceTaskResultId(value: unknown): string | null {
+  if (typeof value !== "object" || value === null) return null;
+  const id = "id" in value ? value.id : undefined;
+  const workspaceId = "workspaceId" in value ? value.workspaceId : undefined;
+  const projectId = "projectId" in value ? value.projectId : undefined;
+  const number = "number" in value ? value.number : undefined;
+  const position = "position" in value ? value.position : undefined;
+  return typeof id === "string" &&
+    typeof workspaceId === "string" &&
+    typeof projectId === "string" &&
+    typeof number === "number" &&
+    typeof position === "string"
+    ? id
+    : null;
 }
 
 function parseWorkspaceMemberResult(
