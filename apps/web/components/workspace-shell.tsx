@@ -36,6 +36,7 @@ import {
 } from "../lib/use-workspace-data";
 import { buildWorkspaceBreadcrumbs } from "../lib/workspace-breadcrumbs";
 import { canLeaveWorkspace, canManageWorkspaceSettings } from "../lib/workspace-contracts";
+import type { WorkspaceRealtimeConnectionStatus } from "../lib/workspace-realtime";
 import { useWorkspaceStore } from "../lib/workspace-store";
 import { workspaceViewHref } from "../lib/workspace-url";
 import { AgentDrawer } from "./agent-chat";
@@ -369,6 +370,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
             ))}
           </nav>
           <div>
+            <WorkspaceRealtimeStatusBadge status={workspaceState.connectionStatus} />
             <Button size="1" onClick={() => setCreateOpen(true)}>
               <Plus size={14} /> {t("common.create")}
             </Button>
@@ -405,6 +407,32 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
         />
       )}
     </main>
+  );
+}
+
+function WorkspaceRealtimeStatusBadge({
+  status,
+}: Readonly<{ status: WorkspaceRealtimeConnectionStatus }>): ReactNode {
+  const { t } = useI18n();
+  if (status === "idle" || status === "live") return null;
+  if (status === "offline") {
+    return (
+      <Badge aria-live="polite" color="red" role="status" variant="soft">
+        {t("workspace.realtimeOffline")}
+      </Badge>
+    );
+  }
+  return (
+    <Badge
+      aria-live="polite"
+      color={status === "connecting" ? "gray" : "amber"}
+      role="status"
+      variant="soft"
+    >
+      {t(
+        status === "connecting" ? "workspace.realtimeConnecting" : "workspace.realtimeReconnecting",
+      )}
+    </Badge>
   );
 }
 

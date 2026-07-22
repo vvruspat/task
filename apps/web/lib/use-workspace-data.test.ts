@@ -3,7 +3,10 @@ import test from "node:test";
 import type { WorkspaceBootstrap } from "./workspace-contracts.ts";
 import {
   applyWorkspaceMemberRealtimeChange,
+  createWorkspaceRealtimeConnectionLifecycle,
   findFallbackWorkspaceId,
+  markWorkspaceRealtimeConnected,
+  markWorkspaceRealtimeInterrupted,
   parseWorkspaceRealtimeChange,
 } from "./workspace-realtime.ts";
 
@@ -189,4 +192,27 @@ test("findFallbackWorkspaceId selects another workspace after removal", () => {
     ),
     null,
   );
+});
+
+test("workspace realtime lifecycle distinguishes initial connect from reconnect", () => {
+  const initial = createWorkspaceRealtimeConnectionLifecycle();
+  assert.deepEqual(initial, { hasConnected: false, status: "connecting" });
+
+  const connected = markWorkspaceRealtimeConnected(initial);
+  assert.equal(connected.reconnected, false);
+  assert.deepEqual(connected.lifecycle, { hasConnected: true, status: "live" });
+
+  const interrupted = markWorkspaceRealtimeInterrupted(connected.lifecycle, true);
+  assert.deepEqual(interrupted, { hasConnected: true, status: "reconnecting" });
+  const reconnected = markWorkspaceRealtimeConnected(interrupted);
+  assert.equal(reconnected.reconnected, true);
+  assert.deepEqual(reconnected.lifecycle, { hasConnected: true, status: "live" });
+});
+
+test("workspace realtime lifecycle reports offline browser state", () => {
+  const lifecycle = markWorkspaceRealtimeInterrupted(
+    createWorkspaceRealtimeConnectionLifecycle(),
+    false,
+  );
+  assert.deepEqual(lifecycle, { hasConnected: false, status: "offline" });
 });
