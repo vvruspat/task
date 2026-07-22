@@ -1,8 +1,8 @@
 "use client";
 
-import { Badge, Button, Card, Flex, Table, Text } from "@radix-ui/themes";
+import { Badge, Button, Card, Flex, Text } from "@radix-ui/themes";
 import { MarkdownContent } from "@task/ui";
-import { Bot, MoreHorizontal, Plus, Workflow } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
@@ -28,26 +28,11 @@ import { WorkspaceMembersManager } from "./workspace-members-manager";
 import { WorkspaceNameEditor } from "./workspace-name-editor";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
-export type ViewKind =
-  | "projects"
-  | "project"
-  | "kanban"
-  | "matrix"
-  | "table"
-  | "templates"
-  | "confirmations"
-  | "history"
-  | "settings"
-  | "telegram";
+export type ViewKind = "projects" | "project" | "kanban" | "settings" | "telegram";
 const copy: Record<ViewKind, { title: MessageKey; subtitle: MessageKey }> = {
   projects: { title: "workspace.projectsTitle", subtitle: "workspace.projectsSubtitle" },
   project: { title: "workspace.projectTitle", subtitle: "workspace.projectSubtitle" },
   kanban: { title: "workspace.kanbanTitle", subtitle: "workspace.kanbanSubtitle" },
-  matrix: { title: "workspace.matrixTitle", subtitle: "workspace.matrixSubtitle" },
-  table: { title: "workspace.tableTitle", subtitle: "workspace.tableSubtitle" },
-  templates: { title: "templates.title", subtitle: "workspace.templatesSubtitle" },
-  confirmations: { title: "nav.confirmations", subtitle: "workspace.confirmationsSubtitle" },
-  history: { title: "nav.agentHistory", subtitle: "workspace.historySubtitle" },
   settings: { title: "common.settings", subtitle: "workspace.settingsSubtitle" },
   telegram: {
     title: "workspace.telegramTitle",
@@ -102,7 +87,7 @@ export function WorkspaceView({
           <h1>{title}</h1>
           <p>{t(copy[kind].subtitle)}</p>
         </div>
-        {["projects", "templates"].includes(kind) && (
+        {kind === "projects" && (
           <Button size="1" onClick={() => setCreateOpen(true)}>
             <Plus size={14} /> {t("common.create")}
           </Button>
@@ -123,11 +108,6 @@ function renderView(
   if (kind === "projects") return <Projects data={data} />;
   if (kind === "project") return <ProjectDetail data={data} project={project} refresh={refresh} />;
   if (kind === "kanban") return <Kanban data={data} project={project} />;
-  if (kind === "matrix") return <Matrix project={project} />;
-  if (kind === "table") return <TaskTable project={project} />;
-  if (kind === "templates") return <Templates data={data} />;
-  if (kind === "confirmations") return <Confirmations data={data} refresh={refresh} />;
-  if (kind === "history") return <History data={data} />;
   if (kind === "settings") {
     return canManageWorkspaceSettings(data.currentMember.role) ? (
       <Settings data={data} />
@@ -278,138 +258,6 @@ function KanbanColumn({
     </section>
   );
 }
-function Matrix({ project }: Readonly<{ project: ProjectData | undefined }>): ReactNode {
-  const { t } = useI18n();
-  if (project === undefined) return <Empty text={t("workspace.selectProjectMatrix")} />;
-  return (
-    <Card className="panel matrix">
-      <div className="matrix-grid matrix-head">
-        <span>{t("workspace.stage")}</span>
-        {project.matrix.columns.map((column) => (
-          <span key={column.id}>{column.title}</span>
-        ))}
-      </div>
-      {project.matrix.stages.map((stage) => (
-        <div className="matrix-grid" key={stage.position}>
-          <strong>{stage.name}</strong>
-          {project.matrix.columns.map((column) => {
-            const cell = project.matrix.cells.find(
-              (item) => item.columnTaskId === column.id && item.stageId === stage.id,
-            );
-            return (
-              <span className="matrix-cell active" key={column.id}>
-                {cell?.tasks.map((task) => task.title).join(", ") ?? ""}
-              </span>
-            );
-          })}
-        </div>
-      ))}
-    </Card>
-  );
-}
-function TaskTable({ project }: Readonly<{ project: ProjectData | undefined }>): ReactNode {
-  const { locale, t } = useI18n();
-  if (project === undefined) return <Empty text={t("workspace.selectProjectTable")} />;
-  return (
-    <Card className="table-card">
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>{t("common.task")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{t("workspace.dueDate")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{t("common.description")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell />
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {project.table.items.map((task) => (
-            <Table.Row key={task.id}>
-              <Table.RowHeaderCell>{task.title}</Table.RowHeaderCell>
-              <Table.Cell>{formatDate(task.dueAt ?? null, locale)}</Table.Cell>
-              <Table.Cell>{task.description ?? "—"}</Table.Cell>
-              <Table.Cell>
-                <MoreHorizontal size={16} />
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
-    </Card>
-  );
-}
-function Templates({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
-  const { t } = useI18n();
-  return (
-    <div className="template-grid">
-      {data.taskSkills.map((skill) => (
-        <Card className="template-card" key={skill.id}>
-          <Workflow size={22} />
-          <h2>{skill.name}</h2>
-          <p>{skill.description ?? t("common.noDescription")}</p>
-          <small>{skill.aliases.join(", ") || t("workspace.noAliases")}</small>
-        </Card>
-      ))}
-    </div>
-  );
-}
-function Confirmations({
-  data,
-  refresh,
-}: Readonly<{ data: WorkspaceBootstrap; refresh: () => Promise<void> }>): ReactNode {
-  const { locale, t } = useI18n();
-  return (
-    <div className="stacked">
-      {data.confirmations.map((confirmation) => (
-        <Card className="confirmation" key={confirmation.id}>
-          <div>
-            <span className="agent-icon">
-              <Bot size={18} />
-            </span>
-            <strong>{confirmation.kind}</strong>
-            <p>{t("workspace.expires", { date: formatDate(confirmation.expiresAt, locale) })}</p>
-          </div>
-          <div>
-            <Button
-              variant="soft"
-              color="gray"
-              size="1"
-              onClick={() =>
-                void updateConfirmation(data.workspace.id, confirmation.id, "cancel", refresh)
-              }
-            >
-              {t("workspace.reject")}
-            </Button>
-            <Button
-              size="1"
-              onClick={() =>
-                void updateConfirmation(data.workspace.id, confirmation.id, "confirm", refresh)
-              }
-            >
-              {t("common.confirm")}
-            </Button>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-}
-function History({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
-  const { locale, t } = useI18n();
-  return (
-    <Card className="panel timeline">
-      {data.agentRuns.map((run) => (
-        <div key={run.id}>
-          <span className="timeline-dot" />
-          <strong>{run.inputText}</strong>
-          <small>
-            {run.source} · {run.status} · {formatDate(run.createdAt, locale)}
-          </small>
-          <p>{run.finalResponse ?? run.error ?? t("workspace.running")}</p>
-        </div>
-      ))}
-    </Card>
-  );
-}
 function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
   const { t } = useI18n();
   return (
@@ -508,17 +356,4 @@ async function saveMarkdownDescription(
     throw new Error(isApiFailure(body) ? body.error : fallback);
   }
   onSaved();
-}
-async function updateConfirmation(
-  workspaceId: string,
-  confirmationId: string,
-  action: "cancel" | "confirm",
-  refresh: () => Promise<void>,
-): Promise<void> {
-  await fetch(`/api/workspace/confirmations/${confirmationId}`, {
-    method: "PATCH",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ workspaceId, action }),
-  });
-  await refresh();
 }
