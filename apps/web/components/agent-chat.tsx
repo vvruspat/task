@@ -44,7 +44,8 @@ import {
 } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import { notifyWorkspaceDataChanged, useWorkspaceData } from "../lib/use-workspace-data";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
 import { resolveWorkspaceRouteProject } from "../lib/workspace-url";
 
 type AgentStreamEvent =
@@ -88,8 +89,8 @@ export function AgentPage(): ReactNode {
 
 export function AgentDrawer(): ReactNode {
   const { t } = useI18n();
-  const open = useWorkspaceStore((state) => state.agentOpen);
-  const setOpen = useWorkspaceStore((state) => state.setAgentOpen);
+  const open = useWorkspaceOverlayStore((state) => state.agentOpen);
+  const setOpen = useWorkspaceOverlayStore((state) => state.setAgentOpen);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
@@ -109,7 +110,7 @@ function AgentChatSystem({ onClose }: Readonly<{ onClose?: () => void }>): React
   const searchParams = useSearchParams();
   const data = useWorkspaceData().data;
   const workspaceId = data?.workspace.id ?? null;
-  const storedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
+  const storedProjectId = useWorkspaceSelectionStore((state) => state.selectedProjectId);
   const projectId =
     data === null
       ? null

@@ -30,23 +30,28 @@ import {
   UserRound,
   Workflow,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import type { MessageKey } from "../lib/i18n/messages";
-import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
+import {
+  resetNotificationData,
+  useNotificationsController,
+  useNotificationUnreadCount,
+} from "../lib/use-notifications";
 import {
   notifyWorkspaceDataChanged,
   resetWorkspaceData,
-  useWorkspaceData,
-  workspaceRealtimeEvent,
+  useWorkspaceDataController,
 } from "../lib/use-workspace-data";
 import { buildWorkspaceBreadcrumbs } from "../lib/workspace-breadcrumbs";
 import { canLeaveWorkspace, canManageWorkspaceSettings } from "../lib/workspace-contracts";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
 import type { WorkspaceRealtimeConnectionStatus } from "../lib/workspace-realtime";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
 import {
   canonicalWorkspaceRoute,
   resolveWorkspaceRouteProject,
@@ -56,10 +61,6 @@ import {
   workspacePageSupportsProject,
   workspaceViewHref,
 } from "../lib/workspace-url";
-import { AgentDrawer } from "./agent-chat";
-import { CreateDialog } from "./create-dialog";
-import { WorkspaceCreateDialog } from "./workspace-create-dialog";
-import { WorkspaceLeaveDialog } from "./workspace-leave-dialog";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
 type NavItem = {
@@ -76,6 +77,21 @@ const navigation: NavItem[] = [
   { page: "settings", label: "common.settings", icon: Settings },
 ];
 const sidebarCompactStorageKey = "task:sidebar-compact";
+const AgentDrawer = dynamic(() => import("./agent-chat").then((module) => module.AgentDrawer), {
+  ssr: false,
+});
+const CreateDialog = dynamic(
+  () => import("./create-dialog").then((module) => module.CreateDialog),
+  { ssr: false },
+);
+const WorkspaceCreateDialog = dynamic(
+  () => import("./workspace-create-dialog").then((module) => module.WorkspaceCreateDialog),
+  { ssr: false },
+);
+const WorkspaceLeaveDialog = dynamic(
+  () => import("./workspace-leave-dialog").then((module) => module.WorkspaceLeaveDialog),
+  { ssr: false },
+);
 
 export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
   const { t } = useI18n();
@@ -85,15 +101,17 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const workspaceState = useWorkspaceData();
+  const workspaceState = useWorkspaceDataController();
   const workspaceData = workspaceState.data;
   const workspace = workspaceData?.workspace;
   const currentMember = workspaceData?.currentMember;
   const canManageSettings =
     currentMember !== undefined && canManageWorkspaceSettings(currentMember.role);
-  const selectedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
-  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
-  const setSelectedWorkspaceId = useWorkspaceStore((state) => state.setSelectedWorkspaceId);
+  const selectedProjectId = useWorkspaceSelectionStore((state) => state.selectedProjectId);
+  const setSelectedProjectId = useWorkspaceSelectionStore((state) => state.setSelectedProjectId);
+  const setSelectedWorkspaceId = useWorkspaceSelectionStore(
+    (state) => state.setSelectedWorkspaceId,
+  );
   const selectedProject =
     workspaceData === null
       ? undefined
@@ -118,11 +136,17 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
           selectedProjectId,
         );
   const activePage = workspacePageFromPath(pathname);
-  const setAgentOpen = useWorkspaceStore((state) => state.setAgentOpen);
-  const setCreateOpen = useWorkspaceStore((state) => state.setCreateOpen);
-  const setCreateViewOpen = useWorkspaceStore((state) => state.setCreateViewOpen);
-  const notificationUnreadCount = useWorkspaceStore((state) => state.notificationUnreadCount);
-  const setNotificationUnreadCount = useWorkspaceStore((state) => state.setNotificationUnreadCount);
+  const setAgentOpen = useWorkspaceOverlayStore((state) => state.setAgentOpen);
+  const agentOpen = useWorkspaceOverlayStore((state) => state.agentOpen);
+  const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateOpen);
+  const createOpen = useWorkspaceOverlayStore((state) => state.createOpen);
+  const setCreateViewOpen = useWorkspaceOverlayStore((state) => state.setCreateViewOpen);
+  const notificationUnreadCount = useNotificationUnreadCount(workspace?.id ?? null);
+  useNotificationsController(
+    workspace?.id ?? null,
+    activePage === "notifications",
+    t("notifications.loadError"),
+  );
   const routeViewSlug = pathname.match(/^\/w\/[^/]+\/view\/([^/]+)$/)?.[1];
   const selectedViewId =
     searchParams.get("view") ?? (pathname === "/views" ? workspaceData?.views.at(0)?.id : null);
@@ -153,27 +177,6 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [setAgentOpen]);
-  useEffect(() => {
-    if (workspace === undefined) return;
-    const load = (): void => {
-      void fetch(`/api/workspace/notifications?workspaceId=${encodeURIComponent(workspace.id)}`, {
-        cache: "no-store",
-      })
-        .then(async (response): Promise<unknown> => response.json())
-        .then((value) => {
-          if (isNotificationFeed(value)) setNotificationUnreadCount(value.unreadCount);
-        })
-        .catch(() => undefined);
-    };
-    const markRead = (): void => setNotificationUnreadCount(0);
-    load();
-    window.addEventListener(workspaceRealtimeEvent, load);
-    window.addEventListener(notificationsReadEvent, markRead);
-    return () => {
-      window.removeEventListener(workspaceRealtimeEvent, load);
-      window.removeEventListener(notificationsReadEvent, markRead);
-    };
-  }, [setNotificationUnreadCount, workspace]);
   const toggleSidebar = (): void => {
     setSidebarCompact((current) => {
       const next = !current;
@@ -184,6 +187,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   const logout = async (): Promise<void> => {
     await fetch("/api/auth/logout", { method: "POST" });
     resetWorkspaceData();
+    resetNotificationData();
     setSelectedWorkspaceId(null);
     setSelectedProjectId(null);
     router.replace("/login");
@@ -437,19 +441,21 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
         </header>
         <div className="route-content">{children}</div>
       </section>
-      <AgentDrawer />
-      <CreateDialog />
-      <WorkspaceCreateDialog
-        open={workspaceCreateOpen}
-        onOpenChange={setWorkspaceCreateOpen}
-        onCreated={(createdWorkspace) =>
-          changeWorkspace(createdWorkspace, router, setSelectedWorkspaceId, setSelectedProjectId)
-        }
-      />
-      {workspace !== undefined && currentMember !== undefined && (
+      {agentOpen && <AgentDrawer />}
+      {createOpen && <CreateDialog />}
+      {workspaceCreateOpen && (
+        <WorkspaceCreateDialog
+          open
+          onOpenChange={setWorkspaceCreateOpen}
+          onCreated={(createdWorkspace) =>
+            changeWorkspace(createdWorkspace, router, setSelectedWorkspaceId, setSelectedProjectId)
+          }
+        />
+      )}
+      {workspaceLeaveOpen && workspace !== undefined && currentMember !== undefined && (
         <WorkspaceLeaveDialog
           memberId={currentMember.id}
-          open={workspaceLeaveOpen}
+          open
           workspaceId={workspace.id}
           workspaceName={workspace.name}
           onOpenChange={setWorkspaceLeaveOpen}
@@ -473,7 +479,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   );
 }
 
-function WorkspaceShellSkeleton(): ReactNode {
+export function WorkspaceShellSkeleton(): ReactNode {
   const { t } = useI18n();
   return (
     <main aria-busy="true" aria-live="polite" className="workspace" role="status">
@@ -503,6 +509,18 @@ function WorkspaceShellSkeleton(): ReactNode {
         </div>
       </section>
     </main>
+  );
+}
+
+export function WorkspaceRouteSkeleton(): ReactNode {
+  const { t } = useI18n();
+  return (
+    <Card aria-busy="true" aria-live="polite" className="panel" role="status">
+      <Text color="gray">{t("workspace.loading")}</Text>
+      <Skeleton height="28px" width="45%" />
+      <Skeleton height="16px" width="80%" />
+      <Skeleton height="180px" width="100%" />
+    </Card>
   );
 }
 

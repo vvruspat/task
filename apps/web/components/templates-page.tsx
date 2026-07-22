@@ -59,7 +59,7 @@ import {
   splitTaskSkillList,
 } from "../lib/task-skill-input";
 import { useWorkspaceData } from "../lib/use-workspace-data";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
 import { resolveWorkspaceRouteProject } from "../lib/workspace-url";
 
 type Feedback = { color: "green" | "red"; message: string } | null;
@@ -70,7 +70,7 @@ export function TemplatesPage(): ReactNode {
   const searchParams = useSearchParams();
   const requestedSkillId = searchParams.get("skill");
   const { data, error, loading, refresh } = useWorkspaceData();
-  const storedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
+  const storedProjectId = useWorkspaceSelectionStore((state) => state.selectedProjectId);
   const selectedProjectId =
     data === null
       ? storedProjectId

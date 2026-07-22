@@ -14,7 +14,7 @@ import {
 } from "../lib/invite-auth";
 import { isApiFailure } from "../lib/workspace-contracts";
 import { isAcceptInvitationResult, isInvitationPreview } from "../lib/workspace-invitations";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
 import { workspacePageHref } from "../lib/workspace-url";
 
 export function InvitationAcceptance({ token }: Readonly<{ token: string }>): ReactNode {
@@ -22,8 +22,10 @@ export function InvitationAcceptance({ token }: Readonly<{ token: string }>): Re
   const [preview, setPreview] = useState<InvitationPreview | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const setSelectedWorkspaceId = useWorkspaceStore((state) => state.setSelectedWorkspaceId);
-  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
+  const setSelectedWorkspaceId = useWorkspaceSelectionStore(
+    (state) => state.setSelectedWorkspaceId,
+  );
+  const setSelectedProjectId = useWorkspaceSelectionStore((state) => state.setSelectedProjectId);
 
   useEffect(() => {
     const next = invitationPath(token);

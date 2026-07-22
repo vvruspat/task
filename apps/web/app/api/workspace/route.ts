@@ -1,22 +1,19 @@
-import type { ProjectSummary, SavedView, WorkspaceDetail, WorkspaceStatus } from "@task/api-client";
+import type { WorkspaceDetail } from "@task/api-client";
 import { createTaskApiClient, TaskApiClientError } from "@task/api-client";
 import { NextResponse } from "next/server";
 import { readAuthenticatedUserId } from "../../../lib/auth";
-import { isUnprojectedIssueProject } from "../../../lib/system-project";
-import { mapWithConcurrency, type WorkspaceBootstrapScope } from "../../../lib/workspace-bootstrap";
+import {
+  loadWorkspaceSnapshotData,
+  WorkspaceSnapshotLoadError,
+} from "../../../lib/server-workspace-snapshot";
+import type { WorkspaceBootstrapRequest } from "../../../lib/workspace-bootstrap";
 import type {
   ApiFailure,
-  ProjectData,
   WorkspaceBootstrap,
   WorkspaceRequired,
 } from "../../../lib/workspace-contracts";
-import { findCurrentWorkspaceMember } from "../../../lib/workspace-contracts";
 
 const apiBaseUrl = readEnvironment("TASK_API_BASE_URL") ?? "http://localhost:3000";
-const projectLoadConcurrency = 4;
-type WorkspaceApiClient = ReturnType<typeof createTaskApiClient>;
-type LoadedProjectData = { projectData: ProjectData; statuses: WorkspaceStatus[] };
-
 export async function GET(
   request: Request,
 ): Promise<NextResponse<WorkspaceBootstrap | WorkspaceRequired | ApiFailure>> {
@@ -24,162 +21,55 @@ export async function GET(
   if (trustedUserId === undefined || trustedUserId.trim().length === 0) {
     return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
   }
-
-  const api = createTaskApiClient({ baseUrl: apiBaseUrl, fetch, trustedUserId });
   const startedAt = performance.now();
   try {
     const url = new URL(request.url);
-    const scope = readWorkspaceBootstrapScope(url.searchParams.get("scope"));
-    if (scope === null) {
+    const bootstrapRequest = readWorkspaceBootstrapRequest(url.searchParams);
+    if (bootstrapRequest === null) {
       return NextResponse.json({ error: "Invalid workspace payload scope." }, { status: 400 });
     }
-    const tasksParameter = url.searchParams.get("tasks");
-    if (tasksParameter !== null && tasksParameter !== "1") {
-      return NextResponse.json({ error: "Invalid workspace tasks option." }, { status: 400 });
-    }
-    const skillsParameter = url.searchParams.get("skills");
-    if (skillsParameter !== null && skillsParameter !== "1") {
-      return NextResponse.json({ error: "Invalid workspace skills option." }, { status: 400 });
-    }
-    const includeProjectTasks = scope === "view" || tasksParameter === "1";
-    const includeTaskSkills = scope === "templates" || scope === "view" || skillsParameter === "1";
-    const workspaces = await api.listWorkspaces();
-    if (workspaces.length === 0) {
-      return NextResponse.json({ requiresWorkspace: true });
-    }
-    const selector = url.searchParams.get("workspace");
-    const workspace =
-      selector === null
-        ? workspaces.at(0)
-        : workspaces.find((candidate) => candidate.id === selector || candidate.slug === selector);
-    if (workspace === undefined)
-      return NextResponse.json(
-        { error: "No workspace is visible for the configured user." },
-        { status: 404 },
-      );
-    const workspaceId = workspace.id;
-    const [detail, allProjects, allViews] = await Promise.all([
-      api.getWorkspace({ workspaceId }),
-      api.listProjects({ workspaceId }),
-      api.listSavedViews({ workspaceId }),
-    ]);
-    const projects = allProjects.filter((project) => !isUnprojectedIssueProject(project));
-    const systemProjectIds = new Set(
-      allProjects.filter(isUnprojectedIssueProject).map((project) => project.id),
-    );
-    const views = allViews.filter(
-      (view) =>
-        view.projectId === null ||
-        view.projectId === undefined ||
-        !systemProjectIds.has(view.projectId),
-    );
-    const scopedProjects = selectScopedProjects(
-      scope,
-      url.searchParams.get("project"),
-      url.searchParams.get("view"),
-      allProjects,
-      views,
-    );
-    if (scope === "project" && scopedProjects.length === 0) {
-      return NextResponse.json({ error: "The requested project is not visible." }, { status: 404 });
-    }
-    const [loadedProjects, taskSkills] = await Promise.all([
-      mapWithConcurrency(scopedProjects, projectLoadConcurrency, (project) =>
-        loadProjectData(api, workspaceId, project, includeProjectTasks),
-      ),
-      includeTaskSkills ? api.listTaskSkills({ workspaceId }) : Promise.resolve([]),
-    ]);
-    const projectData = loadedProjects.map((loaded) => loaded.projectData);
-    const statuses = loadedProjects.flatMap((loaded) => loaded.statuses);
-    const currentMember = findCurrentWorkspaceMember(detail, trustedUserId);
-    if (currentMember === null) {
-      return NextResponse.json(
-        { error: "Current workspace membership was not found." },
-        { status: 403 },
-      );
-    }
-    const payload: WorkspaceBootstrap = {
-      availableWorkspaces: workspaces,
-      currentMember,
-      workspace: detail,
-      myTasks: { items: [], page: 1, pageSize: 50, total: 0 },
-      projects,
-      statuses,
-      taskSkills,
-      confirmations: [],
-      agentRuns: [],
-      views,
-      projectData,
-    };
-    return measuredWorkspaceResponse(payload, scope, startedAt);
+    const payload = await loadWorkspaceSnapshotData({
+      request: bootstrapRequest,
+      trustedUserId,
+      workspaceSelector: url.searchParams.get("workspace"),
+    });
+    return measuredWorkspaceResponse(payload, bootstrapRequest.scope, startedAt);
   } catch (error: unknown) {
-    const message =
-      error instanceof TaskApiClientError ? error.message : "Unable to load workspace data.";
-    return NextResponse.json({ error: message }, { status: 502 });
+    const message = error instanceof Error ? error.message : "Unable to load workspace data.";
+    return NextResponse.json(
+      { error: message },
+      { status: error instanceof WorkspaceSnapshotLoadError ? error.status : 502 },
+    );
   }
 }
 
-async function loadProjectData(
-  api: WorkspaceApiClient,
-  workspaceId: string,
-  project: ProjectSummary,
-  includeTasks: boolean,
-): Promise<LoadedProjectData> {
-  const [tasks, statuses] = await Promise.all([
-    includeTasks ? api.listTasks({ workspaceId, projectId: project.id }) : Promise.resolve([]),
-    api.listStatuses({ workspaceId, projectId: project.id }),
-  ]);
+function readWorkspaceBootstrapRequest(
+  parameters: URLSearchParams,
+): WorkspaceBootstrapRequest | null {
+  const scope = parameters.get("scope") ?? "shell";
+  const tasks = parameters.get("tasks");
+  const skills = parameters.get("skills");
+  if (
+    (scope !== "shell" && scope !== "project" && scope !== "templates" && scope !== "view") ||
+    (tasks !== null && tasks !== "1") ||
+    (skills !== null && skills !== "1")
+  ) {
+    return null;
+  }
   return {
-    projectData: {
-      matrix: { cells: [], columns: [], stages: [] },
-      projectId: project.id,
-      projectKey: project.key,
-      projectTitle: isUnprojectedIssueProject(project) ? "Без проекта" : project.title,
-      projectless: isUnprojectedIssueProject(project),
-      table: { items: [], page: 1, pageSize: 50, total: 0 },
-      tasks,
-    },
-    statuses,
+    includeProjectTasks: scope === "view" || tasks === "1",
+    includeTaskSkills: scope === "templates" || scope === "view" || skills === "1",
+    projectSelector: parameters.get("project"),
+    scope,
+    viewSelector: parameters.get("view"),
   };
 }
 
-function selectScopedProjects(
-  scope: WorkspaceBootstrapScope,
-  projectSelector: string | null,
-  viewSelector: string | null,
-  projects: readonly ProjectSummary[],
-  views: readonly SavedView[],
-): ProjectSummary[] {
-  if (scope === "project") {
-    const project = projects.find(
-      (item) =>
-        item.id === projectSelector ||
-        item.slug === projectSelector ||
-        item.key === projectSelector,
-    );
-    return project === undefined ? [] : [project];
-  }
-  if (scope !== "view") return [];
-  const selectedView =
-    views.find((view) => view.id === viewSelector || view.slug === viewSelector) ?? views.at(0);
-  if (selectedView === undefined) return [];
-  return selectedView.projectId === null || selectedView.projectId === undefined
-    ? [...projects]
-    : projects.filter((project) => project.id === selectedView.projectId);
-}
-
-function readWorkspaceBootstrapScope(value: string | null): WorkspaceBootstrapScope | null {
-  if (value === null) return "shell";
-  return value === "shell" || value === "project" || value === "templates" || value === "view"
-    ? value
-    : null;
-}
-
 function measuredWorkspaceResponse(
-  payload: WorkspaceBootstrap,
-  scope: WorkspaceBootstrapScope,
+  payload: WorkspaceBootstrap | WorkspaceRequired,
+  scope: WorkspaceBootstrapRequest["scope"],
   startedAt: number,
-): NextResponse<WorkspaceBootstrap> {
+): NextResponse<WorkspaceBootstrap | WorkspaceRequired> {
   const response = NextResponse.json(payload);
   const durationMs = Math.max(0, performance.now() - startedAt);
   const payloadBytes = new TextEncoder().encode(JSON.stringify(payload)).byteLength;

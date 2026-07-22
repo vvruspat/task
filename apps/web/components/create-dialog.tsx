@@ -29,7 +29,8 @@ import {
   isWorkspaceCreateContext,
   type WorkspaceCreateContext,
 } from "../lib/workspace-create-context";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
 import { resolveWorkspaceRouteProject, workspaceIssueHref } from "../lib/workspace-url";
 import { TaskStatusIndicator } from "./task-status-indicator";
 
@@ -43,10 +44,10 @@ export function CreateDialog(): ReactNode {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const open = useWorkspaceStore((state) => state.createOpen);
-  const setOpen = useWorkspaceStore((state) => state.setCreateOpen);
-  const storedProjectId = useWorkspaceStore((state) => state.selectedProjectId);
-  const setSelectedProjectId = useWorkspaceStore((state) => state.setSelectedProjectId);
+  const open = useWorkspaceOverlayStore((state) => state.createOpen);
+  const setOpen = useWorkspaceOverlayStore((state) => state.setCreateOpen);
+  const storedProjectId = useWorkspaceSelectionStore((state) => state.selectedProjectId);
+  const setSelectedProjectId = useWorkspaceSelectionStore((state) => state.setSelectedProjectId);
   const { data, refresh } = useWorkspaceData();
   const workspaceId = data?.workspace.id ?? null;
   const selectedProjectId =
