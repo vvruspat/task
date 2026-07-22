@@ -1,16 +1,17 @@
 "use client";
 
+import type { WorkspaceSummary } from "@task/api-client";
 import { Button, Dialog, Flex, Text, TextField } from "@task/ui";
 import { type FormEvent, type ReactNode, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
-import { readCreatedWorkspaceId, readWorkspaceCreateError } from "../lib/workspace-create";
+import { readCreatedWorkspace, readWorkspaceCreateError } from "../lib/workspace-create";
 
 export function WorkspaceCreateDialog({
   onCreated,
   onOpenChange,
   open,
 }: Readonly<{
-  onCreated: (workspaceId: string) => void;
+  onCreated: (workspace: Pick<WorkspaceSummary, "id" | "slug">) => void;
   onOpenChange: (open: boolean) => void;
   open: boolean;
 }>): ReactNode {
@@ -36,14 +37,14 @@ export function WorkspaceCreateDialog({
         setError(readWorkspaceCreateError(body, t("workspace.createError")));
         return;
       }
-      const workspaceId = readCreatedWorkspaceId(body);
-      if (workspaceId === null) {
+      const workspace = readCreatedWorkspace(body);
+      if (workspace === null) {
         setError(t("workspace.createError"));
         return;
       }
       setName("");
       onOpenChange(false);
-      onCreated(workspaceId);
+      onCreated(workspace);
     } catch {
       setError(t("auth.unreachable"));
     } finally {

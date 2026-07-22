@@ -15,6 +15,7 @@ import {
 import { isApiFailure } from "../lib/workspace-contracts";
 import { isAcceptInvitationResult, isInvitationPreview } from "../lib/workspace-invitations";
 import { useWorkspaceStore } from "../lib/workspace-store";
+import { workspacePageHref } from "../lib/workspace-url";
 
 export function InvitationAcceptance({ token }: Readonly<{ token: string }>): ReactNode {
   const { t } = useI18n();
@@ -79,7 +80,7 @@ export function InvitationAcceptance({ token }: Readonly<{ token: string }>): Re
       selectAcceptedWorkspace(body, setSelectedWorkspaceId, setSelectedProjectId);
       clearInvitationToken(window.sessionStorage);
       setError(null);
-      window.location.assign("/agent");
+      window.location.assign(workspacePageHref(body.workspace.slug, "agent"));
     }
     setSubmitting(false);
   };

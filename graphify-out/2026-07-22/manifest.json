@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1784697769.415325,
-    "ast_hash": "b2120d3fc6fe8af19c111aec2593ce10",
+    "mtime": 1784702160.226912,
+    "ast_hash": "b49069ff25ef0c005ab62c414ce1a3bb",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1784697769.5320556,
-    "ast_hash": "0e14973bad1c19127b126d4444b8037e",
+    "mtime": 1784702160.977561,
+    "ast_hash": "1885f4cfdb0133ca94d09c5029db8747",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
@@ -1640,7 +1640,7 @@
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
-    "mtime": 1784701377.0331967,
+    "mtime": 1784702264.9697955,
     "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
@@ -1670,13 +1670,13 @@
     "semantic_hash": ""
   },
   "apps/web/lib/use-workspace-data.ts": {
-    "mtime": 1784701344.910862,
-    "ast_hash": "3c8723eb32770ea62f217f6497d6ba39",
+    "mtime": 1784702201.1416337,
+    "ast_hash": "af49547ee48b96f328f1d1c40157ba64",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-contracts.ts": {
-    "mtime": 1784697769.49163,
-    "ast_hash": "ee49ceafe668a18a292b1bbffe027d8d",
+    "mtime": 1784701987.3773878,
+    "ast_hash": "71be7cf288e325c4778adb2c2a31be51",
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/create/route.ts": {
@@ -1710,13 +1710,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.test.ts": {
-    "mtime": 1784697769.4195614,
-    "ast_hash": "170406bd0377909edcf27dd99ddeabf8",
+    "mtime": 1784701613.7254071,
+    "ast_hash": "3a07b3b89d684ec4b857d025abf39ebd",
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.ts": {
-    "mtime": 1784697769.4197295,
-    "ast_hash": "88f176e851c82d1330b6a36923fa415e",
+    "mtime": 1784701613.724978,
+    "ast_hash": "38eb86e14f1551b2892257d07728fee3",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/saved-view.entity.ts": {
@@ -1990,8 +1990,8 @@
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/projects/[projectId]/route.ts": {
-    "mtime": 1784697769.477128,
-    "ast_hash": "cfea5f18d7a3f1f94d45ae791c18d85f",
+    "mtime": 1784701987.377718,
+    "ast_hash": "412641bcdccd4b744e4a5c70d2f1044a",
     "semantic_hash": ""
   },
   "apps/web/components/markdown-description-editor.tsx": {
@@ -2120,13 +2120,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/realtime/realtime.contracts.ts": {
-    "mtime": 1784697769.4486866,
-    "ast_hash": "98617aa781fb7d5e53c7a9f2cfe6a173",
+    "mtime": 1784701613.7229817,
+    "ast_hash": "446b8d106871c55205851e9de191ad52",
     "semantic_hash": ""
   },
   "apps/api/src/realtime/realtime.dto.ts": {
-    "mtime": 1784697769.448895,
-    "ast_hash": "c06afccbce2cbf540a45534b3fa9ddf9",
+    "mtime": 1784701613.7243125,
+    "ast_hash": "5ce079546f14551547b02de58650edfe",
     "semantic_hash": ""
   },
   "apps/api/src/realtime/realtime.module.ts": {
@@ -2135,8 +2135,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/realtime/workspace-change.interceptor.ts": {
-    "mtime": 1784697769.4493494,
-    "ast_hash": "15a35497da8c93751b57900106b37a02",
+    "mtime": 1784702237.9335299,
+    "ast_hash": "ea02985ef9d6cbd34a76de8b7803301e",
     "semantic_hash": ""
   },
   "apps/api/src/realtime/workspace-realtime.controller.ts": {
@@ -2145,13 +2145,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/realtime/workspace-realtime.service.test.ts": {
-    "mtime": 1784697769.4497705,
-    "ast_hash": "71fcb953a895cd6367cf256ae73791cc",
+    "mtime": 1784702246.3451867,
+    "ast_hash": "5b7dbd9973f68fca04888efcdd416c09",
     "semantic_hash": ""
   },
   "apps/api/src/realtime/workspace-realtime.service.ts": {
-    "mtime": 1784697769.450061,
-    "ast_hash": "b7a81228a838a1bd89caec1ac0228b9b",
+    "mtime": 1784701613.7240648,
+    "ast_hash": "4295fc7136da0067376efef7a336d124",
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/events/route.ts": {
@@ -2160,13 +2160,13 @@
     "semantic_hash": ""
   },
   "apps/web/lib/use-workspace-data.test.ts": {
-    "mtime": 1784701325.0498097,
-    "ast_hash": "58c067143ce2bfe99c5c5e7793f7ab83",
+    "mtime": 1784702134.3635998,
+    "ast_hash": "19fc821a9aac8213d3a8366e497d3b86",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-realtime.ts": {
-    "mtime": 1784701325.0491776,
-    "ast_hash": "6589cbac979a63de491c4b995be711e0",
+    "mtime": 1784701671.41899,
+    "ast_hash": "91d5112e137d73b947c0ef402ba54866",
     "semantic_hash": ""
   },
   "apps/web/lib/saved-view-draft.test.ts": {
@@ -2812,6 +2812,26 @@
   "apps/web/lib/latest-request.ts": {
     "mtime": 1784701025.861802,
     "ast_hash": "65d82c6674590b934253659397f6af31",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/reconciliation-scheduler.test.ts": {
+    "mtime": 1784702153.0269732,
+    "ast_hash": "fb84b721bb3775343ffa297de9bb49e4",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/reconciliation-scheduler.ts": {
+    "mtime": 1784702153.0265737,
+    "ast_hash": "890d3cd4a5484a2d04e0ac52e3f5ff71",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/workspace-task-cache.test.ts": {
+    "mtime": 1784702153.0275464,
+    "ast_hash": "12e25bd6f932eaf685120e21fbfd7747",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/workspace-task-cache.ts": {
+    "mtime": 1784702153.0288594,
+    "ast_hash": "e835c0763d962ced97e1a953b0a61854",
     "semantic_hash": ""
   }
 }

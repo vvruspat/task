@@ -1,4 +1,11 @@
 import type { SavedView } from "@task/api-client";
+import type { MessageKey } from "./i18n/messages";
+import {
+  type WorkspacePage,
+  workspacePageFromPath,
+  workspacePageHref,
+  workspaceViewHref,
+} from "./workspace-url.ts";
 
 export type WorkspaceBreadcrumb = {
   href?: string;
@@ -11,19 +18,17 @@ export type WorkspaceBreadcrumbData = {
   workspace: { name: string; slug: string };
 };
 
-const routeLabels: Readonly<Record<string, MessageKey>> = {
-  "/agent": "nav.agent",
-  "/agent-history": "nav.agentHistory",
-  "/confirmations": "nav.confirmations",
-  "/notifications": "nav.notifications",
-  "/kanban": "nav.kanban",
-  "/matrix": "nav.matrix",
-  "/projects": "nav.projects",
-  "/settings": "common.settings",
-  "/settings/profile": "profile.title",
-  "/table": "nav.table",
-  "/templates": "nav.templates",
-  "/views": "nav.savedViews",
+const routeLabels: Readonly<Partial<Record<WorkspacePage, MessageKey>>> = {
+  agent: "nav.agent",
+  "agent-history": "nav.agentHistory",
+  kanban: "nav.kanban",
+  notifications: "nav.notifications",
+  projects: "nav.projects",
+  settings: "common.settings",
+  "settings/profile": "profile.title",
+  "settings/telegram": "workspace.telegramTitle",
+  templates: "nav.templates",
+  views: "nav.savedViews",
 };
 
 export function buildWorkspaceBreadcrumbs(
@@ -32,7 +37,7 @@ export function buildWorkspaceBreadcrumbs(
   t: (key: MessageKey) => string,
 ): WorkspaceBreadcrumb[] {
   const workspaceCrumb: WorkspaceBreadcrumb = {
-    href: "/agent",
+    href: data === null ? "/agent" : workspacePageHref(data.workspace.slug, "agent"),
     label: data?.workspace.name ?? "tAsk",
   };
   const viewSlug = pathname.match(/^\/w\/[^/]+\/view\/([^/]+)$/)?.[1];
@@ -40,7 +45,10 @@ export function buildWorkspaceBreadcrumbs(
     const view = data?.views.find((item) => item.slug === decodeSegment(viewSlug));
     return [
       workspaceCrumb,
-      { href: "/views", label: t("nav.savedViews") },
+      {
+        href: data === null ? "/views" : workspacePageHref(data.workspace.slug, "views"),
+        label: t("nav.savedViews"),
+      },
       { label: view?.name ?? t("views.view") },
     ];
   }
@@ -53,7 +61,10 @@ export function buildWorkspaceBreadcrumbs(
     );
     return [
       workspaceCrumb,
-      { href: "/projects", label: t("nav.projects") },
+      {
+        href: data === null ? "/projects" : workspacePageHref(data.workspace.slug, "projects"),
+        label: t("nav.projects"),
+      },
       { label: project?.title ?? t("common.project") },
     ];
   }
@@ -75,15 +86,19 @@ export function buildWorkspaceBreadcrumbs(
     ];
   }
 
-  if (pathname === "/settings/telegram") {
+  if (pathname === "/settings/telegram" || pathname.endsWith("/settings/telegram")) {
     return [
       workspaceCrumb,
-      { href: "/settings", label: t("common.settings") },
+      {
+        href: data === null ? "/settings" : workspacePageHref(data.workspace.slug, "settings"),
+        label: t("common.settings"),
+      },
       { label: "Telegram" },
     ];
   }
 
-  const routeLabel = routeLabels[pathname];
+  const page = workspacePageFromPath(pathname);
+  const routeLabel = page === null ? undefined : routeLabels[page];
   return [
     workspaceCrumb,
     { label: routeLabel === undefined ? t("common.workspace") : t(routeLabel) },
@@ -97,9 +112,9 @@ function projectBreadcrumbHref(
 ): string {
   if (data === null || project === undefined) return "/projects";
   if (projectView !== undefined) {
-    return `/w/${encodeURIComponent(data.workspace.slug)}/view/${encodeURIComponent(projectView.slug)}`;
+    return workspaceViewHref(data.workspace.slug, projectView.slug);
   }
-  return `/kanban?project=${encodeURIComponent(project.id)}`;
+  return workspacePageHref(data.workspace.slug, "kanban", { projectSlug: project.slug });
 }
 
 function decodeSegment(value: string): string {
@@ -109,5 +124,3 @@ function decodeSegment(value: string): string {
     return value;
   }
 }
-
-import type { MessageKey } from "./i18n/messages";

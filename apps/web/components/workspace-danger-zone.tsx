@@ -8,15 +8,18 @@ import { useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import { notifyWorkspaceDataChanged } from "../lib/use-workspace-data";
 import { useWorkspaceStore } from "../lib/workspace-store";
+import { workspacePageHref } from "../lib/workspace-url";
 
 type WorkspaceDangerZoneProps = {
   workspaceId: string;
   workspaceName: string;
+  fallbackWorkspaceSlug: string | null;
 };
 
 export function WorkspaceDangerZone({
   workspaceId,
   workspaceName,
+  fallbackWorkspaceSlug,
 }: Readonly<WorkspaceDangerZoneProps>): ReactNode {
   const { t } = useI18n();
   const router = useRouter();
@@ -46,7 +49,9 @@ export function WorkspaceDangerZone({
     setSelectedProjectId(null);
     setSelectedWorkspaceId(null);
     setOpen(false);
-    router.replace("/agent");
+    router.replace(
+      fallbackWorkspaceSlug === null ? "/agent" : workspacePageHref(fallbackWorkspaceSlug, "agent"),
+    );
     notifyWorkspaceDataChanged();
     router.refresh();
   }
