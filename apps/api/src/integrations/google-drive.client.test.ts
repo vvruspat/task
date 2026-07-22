@@ -5,6 +5,7 @@ import {
   GoogleDriveClient,
   googleDriveFolderMimeType,
   parseGeneratedGoogleDriveFileId,
+  parseGoogleDriveFile,
   parseGoogleDriveFolder,
 } from "./google-drive.client.js";
 
@@ -31,6 +32,76 @@ test("Google Drive folder metadata is runtime validated", () => {
       webViewLink: "https://drive.google.com/drive/folders/folder-id",
     },
   );
+});
+
+test("Google Drive file metadata is runtime validated", () => {
+  assert.deepEqual(
+    parseGoogleDriveFile({
+      appProperties: { tAskAttachmentId: "attachment-id" },
+      id: "file-id",
+      mimeType: "application/pdf",
+      modifiedTime: "2026-07-22T12:00:00.000Z",
+      name: "brief.pdf",
+      parents: ["folder-id"],
+      trashed: false,
+      version: "7",
+      webViewLink: "https://drive.google.com/file/d/file-id/view",
+    }),
+    {
+      appProperties: { tAskAttachmentId: "attachment-id" },
+      id: "file-id",
+      mimeType: "application/pdf",
+      modifiedAt: "2026-07-22T12:00:00.000Z",
+      name: "brief.pdf",
+      parentId: "folder-id",
+      version: "7",
+      webViewLink: "https://drive.google.com/file/d/file-id/view",
+    },
+  );
+  assert.throws(
+    () => parseGoogleDriveFile({ id: "file-id", mimeType: "application/pdf", name: "x" }),
+    GoogleDriveApiError,
+  );
+});
+
+test("Google Drive file upload treats a pre-generated ID conflict as an idempotent retry", async (context) => {
+  const originalFetch = globalThis.fetch;
+  context.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+  const requests: Array<{ body: RequestInit["body"]; method: string }> = [];
+  globalThis.fetch = async (input, init) => {
+    const method = init?.method ?? (input instanceof Request ? input.method : "GET");
+    requests.push({ body: init?.body, method });
+    if (method === "POST") return new Response(null, { status: 409 });
+    return Response.json({
+      appProperties: { tAskAttachmentId: "attachment-id" },
+      id: "generated_file_123",
+      mimeType: "text/plain",
+      name: "note.txt",
+      parents: ["task_folder_123"],
+      trashed: false,
+      webViewLink: "https://drive.google.com/file/d/generated_file_123/view",
+    });
+  };
+
+  const file = await new GoogleDriveClient().uploadFile("access-token", {
+    appProperties: { tAskAttachmentId: "attachment-id" },
+    bytes: new TextEncoder().encode("hello"),
+    fileId: "generated_file_123",
+    mimeType: "text/plain",
+    name: "note.txt",
+    parentId: "task_folder_123",
+  });
+
+  assert.equal(file.id, "generated_file_123");
+  assert.deepEqual(
+    requests.map((request) => request.method),
+    ["POST", "GET"],
+  );
+  const uploadBody = requests[0]?.body;
+  assert.ok(uploadBody instanceof Blob);
+  assert.match(await uploadBody.text(), /hello/u);
 });
 
 test("Google Drive folder creation treats a pre-generated ID conflict as an idempotent retry", async (context) => {

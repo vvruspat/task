@@ -7,6 +7,7 @@ import {
 
 test("integration secret encryption key is optional until a connection stores credentials", () => {
   assert.deepEqual(parseIntegrationsConfig({}), {
+    attachmentContent: { maxBytes: 26_214_400, storageRoot: null },
     googleDrive: null,
     googleDrivePicker: null,
     secretEncryptionKey: null,
@@ -16,6 +17,7 @@ test("integration secret encryption key is optional until a connection stores cr
 test("integration secret encryption key requires exactly 32 canonical base64 bytes", () => {
   const encoded = Buffer.alloc(32, 7).toString("base64");
   assert.deepEqual(parseIntegrationsConfig({ INTEGRATION_SECRET_ENCRYPTION_KEY: encoded }), {
+    attachmentContent: { maxBytes: 26_214_400, storageRoot: null },
     googleDrive: null,
     googleDrivePicker: null,
     secretEncryptionKey: Buffer.alloc(32, 7),
@@ -27,6 +29,23 @@ test("integration secret encryption key requires exactly 32 canonical base64 byt
   assert.throws(
     () => parseIntegrationsConfig({ INTEGRATION_SECRET_ENCRYPTION_KEY: ` ${encoded}` }),
     /\[redacted\]/u,
+  );
+});
+
+test("attachment content storage requires a bounded absolute root", () => {
+  assert.deepEqual(parseIntegrationsConfig({ ATTACHMENT_STORAGE_ROOT: "/srv/task/files" }), {
+    attachmentContent: { maxBytes: 26_214_400, storageRoot: "/srv/task/files" },
+    googleDrive: null,
+    googleDrivePicker: null,
+    secretEncryptionKey: null,
+  });
+  assert.throws(
+    () => parseIntegrationsConfig({ ATTACHMENT_STORAGE_ROOT: "relative/files" }),
+    InvalidIntegrationsEnvironmentError,
+  );
+  assert.throws(
+    () => parseIntegrationsConfig({ ATTACHMENT_STORAGE_ROOT: "/" }),
+    InvalidIntegrationsEnvironmentError,
   );
 });
 

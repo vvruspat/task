@@ -42,7 +42,7 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 - [x] Let an administrator select a workspace root folder.
 - [x] Create and retain task/subtask folder mappings using stable Drive IDs.
 - [x] Discover Drive URLs in task descriptions and comments with reference tracking.
-- [ ] Export new task attachments to the managed task folder idempotently.
+- [x] Export new file attachments to the managed task folder idempotently.
 - [ ] Create, renew, and stop Drive change channels.
 - [ ] Normalize Drive changes into task activity and subscriber notifications.
 - [ ] Expose read/search agent tools before enabling mutating tools.
@@ -122,6 +122,21 @@ stays in a reserved state until Drive returns validated metadata and then become
 Selecting or changing the workspace root emits a durable configuration event. Its handler
 idempotently backfills folders for existing active tasks, including their parent hierarchy. Existing
 task-folder mappings retain their Drive IDs when the root selection changes.
+
+## Drive attachment export
+
+The Drive handler consumes `attachment.created.v1` and exports file attachments into the managed
+folder of their task. Attachment bytes come through a typed content-provider boundary; the first
+provider resolves storage keys below the absolute `ATTACHMENT_STORAGE_ROOT`. It resolves real paths,
+rejects symlink and path escape, verifies declared size, and enforces a 25 MiB in-memory multipart
+upload limit. Link and Telegram-file attachments remain unchanged when no matching content provider
+exists.
+
+As with folders, the exporter asks Drive for a file ID and persists an unavailable external resource
+plus the attachment `export` link before uploading bytes. At-least-once retries reuse that ID and
+validate the existing file's attachment identity, parent, name, and MIME metadata instead of creating
+a duplicate. A successful upload activates the resource mapping. Root-folder selection also backfills
+existing file attachments after task folders have been provisioned.
 
 ## Drive reference discovery
 

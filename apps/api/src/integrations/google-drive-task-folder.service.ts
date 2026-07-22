@@ -35,7 +35,7 @@ type TaskFolderReservation = {
   status: "active" | "reserved";
 };
 
-type TaskFolderContext = {
+export type GoogleDriveTaskFolderContext = {
   access: GoogleDriveAccessGrant;
   actorUserId: string | null;
   installationId: string;
@@ -73,12 +73,19 @@ export class GoogleDriveTaskFolderService {
       event.workspaceId,
       handlerContext.installationId,
     );
-    await this.ensureTaskFolder(event.entity.id, {
+    await this.ensureFolderForTask(event.entity.id, {
       access,
       actorUserId: event.actorUserId,
       installationId: handlerContext.installationId,
       workspaceId: event.workspaceId,
     });
+  }
+
+  async ensureFolderForTask(
+    taskId: string,
+    context: GoogleDriveTaskFolderContext,
+  ): Promise<string | null> {
+    return this.ensureTaskFolder(taskId, context);
   }
 
   private async backfillTaskFolders(
@@ -96,18 +103,18 @@ export class GoogleDriveTaskFolderService {
       event.workspaceId,
       handlerContext.installationId,
     );
-    const context: TaskFolderContext = {
+    const context: GoogleDriveTaskFolderContext = {
       access,
       actorUserId: event.actorUserId,
       installationId: handlerContext.installationId,
       workspaceId: event.workspaceId,
     };
-    for (const task of tasks) await this.ensureTaskFolder(task.id, context);
+    for (const task of tasks) await this.ensureFolderForTask(task.id, context);
   }
 
   private async ensureTaskFolder(
     taskId: string,
-    context: TaskFolderContext,
+    context: GoogleDriveTaskFolderContext,
     ancestors = new Set<string>(),
   ): Promise<string | null> {
     if (ancestors.has(taskId)) throw new Error(`Task hierarchy contains a cycle at ${taskId}.`);

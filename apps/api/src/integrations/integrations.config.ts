@@ -1,12 +1,21 @@
+import { isAbsolute, normalize, parse as parsePath } from "node:path";
 import { Injectable } from "@nestjs/common";
 
+const defaultAttachmentExportMaxBytes = 25 * 1_024 * 1_024;
+
 export type IntegrationsEnvironment = {
+  ATTACHMENT_STORAGE_ROOT?: string;
   GOOGLE_DRIVE_CLIENT_ID?: string;
   GOOGLE_DRIVE_CLIENT_SECRET?: string;
   GOOGLE_DRIVE_PICKER_API_KEY?: string;
   GOOGLE_DRIVE_PICKER_APP_ID?: string;
   GOOGLE_DRIVE_REDIRECT_URI?: string;
   INTEGRATION_SECRET_ENCRYPTION_KEY?: string;
+};
+
+export type AttachmentContentConfig = {
+  maxBytes: number;
+  storageRoot: string | null;
 };
 
 export type GoogleDriveOAuthConfig = {
@@ -21,6 +30,7 @@ export type GoogleDrivePickerConfig = {
 };
 
 export type IntegrationsConfig = {
+  attachmentContent: AttachmentContentConfig;
   googleDrive: GoogleDriveOAuthConfig | null;
   googleDrivePicker: GoogleDrivePickerConfig | null;
   secretEncryptionKey: Buffer | null;
@@ -34,11 +44,12 @@ export class InvalidIntegrationsEnvironmentError extends Error {
 }
 
 export function parseIntegrationsConfig(environment: IntegrationsEnvironment): IntegrationsConfig {
+  const attachmentContent = parseAttachmentContentConfig(environment);
   const googleDrive = parseGoogleDriveOAuthConfig(environment);
   const googleDrivePicker = parseGoogleDrivePickerConfig(environment);
   const encodedKey = environment.INTEGRATION_SECRET_ENCRYPTION_KEY;
   if (encodedKey === undefined)
-    return { googleDrive, googleDrivePicker, secretEncryptionKey: null };
+    return { attachmentContent, googleDrive, googleDrivePicker, secretEncryptionKey: null };
   if (encodedKey.trim() !== encodedKey || encodedKey.length === 0) {
     throw new InvalidIntegrationsEnvironmentError(
       "INTEGRATION_SECRET_ENCRYPTION_KEY",
@@ -52,7 +63,31 @@ export function parseIntegrationsConfig(environment: IntegrationsEnvironment): I
       "must be a canonical base64-encoded 32-byte key",
     );
   }
-  return { googleDrive, googleDrivePicker, secretEncryptionKey: key };
+  return { attachmentContent, googleDrive, googleDrivePicker, secretEncryptionKey: key };
+}
+
+function parseAttachmentContentConfig(
+  environment: IntegrationsEnvironment,
+): AttachmentContentConfig {
+  const storageRoot = environment.ATTACHMENT_STORAGE_ROOT;
+  if (storageRoot === undefined) {
+    return { maxBytes: defaultAttachmentExportMaxBytes, storageRoot: null };
+  }
+  assertTrimmedValue("ATTACHMENT_STORAGE_ROOT", storageRoot);
+  if (!isAbsolute(storageRoot)) {
+    throw new InvalidIntegrationsEnvironmentError(
+      "ATTACHMENT_STORAGE_ROOT",
+      "must be an absolute path",
+    );
+  }
+  const normalizedRoot = normalize(storageRoot);
+  if (normalizedRoot === parsePath(normalizedRoot).root) {
+    throw new InvalidIntegrationsEnvironmentError(
+      "ATTACHMENT_STORAGE_ROOT",
+      "must not be a filesystem root",
+    );
+  }
+  return { maxBytes: defaultAttachmentExportMaxBytes, storageRoot: normalizedRoot };
 }
 
 function parseGoogleDrivePickerConfig(

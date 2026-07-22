@@ -1,11 +1,11 @@
 # Graph Report - tAsk  (2026-07-22)
 
 ## Corpus Check
-- 668 files · ~309,137 words
+- 668 files · ~309,136 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 5732 nodes · 13665 edges · 197 communities (182 shown, 15 thin omitted)
+- 5732 nodes · 13665 edges · 194 communities (179 shown, 15 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
@@ -190,7 +190,6 @@
 - [[_COMMUNITY_Community 177|Community 177]]
 - [[_COMMUNITY_Community 178|Community 178]]
 - [[_COMMUNITY_Community 179|Community 179]]
-- [[_COMMUNITY_Community 180|Community 180]]
 - [[_COMMUNITY_Community 181|Community 181]]
 - [[_COMMUNITY_Community 182|Community 182]]
 - [[_COMMUNITY_Task Service and Controllers|Task Service and Controllers]]
@@ -199,8 +198,6 @@
 - [[_COMMUNITY_Community 191|Community 191]]
 - [[_COMMUNITY_Community 192|Community 192]]
 - [[_COMMUNITY_Community 193|Community 193]]
-- [[_COMMUNITY_Community 195|Community 195]]
-- [[_COMMUNITY_Community 197|Community 197]]
 - [[_COMMUNITY_CSS Module Type Declarations|CSS Module Type Declarations]]
 - [[_COMMUNITY_Turbo Build Pipeline|Turbo Build Pipeline]]
 - [[_COMMUNITY_Turbo Test Pipeline|Turbo Test Pipeline]]
@@ -233,7 +230,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (197 total, 15 thin omitted)
+## Communities (194 total, 15 thin omitted)
 
 ### Community 0 - "Database Schema Reference"
 Cohesion: 0.11
@@ -409,7 +406,7 @@ Nodes (28): ConfirmationCallbackPayload, isSafeInteger(), isUnknownRecord(), par
 
 ### Community 48 - "Persistence Entities and Types"
 Cohesion: 0.04
-Nodes (65): commentWriteRoles, cyrillicToLatin, deriveWorkspaceScopedSlug(), selectAvailableWorkspaceScopedSlug(), activeTaskCountConditions, RawMyTask, ActivityEventEntity, AgentChatEntity (+57 more)
+Nodes (66): commentWriteRoles, cyrillicToLatin, deriveWorkspaceScopedSlug(), selectAvailableWorkspaceScopedSlug(), activeTaskCountConditions, RawMyTask, ApiDataSource, ActivityEventEntity (+58 more)
 
 ### Community 49 - "API Environment Configuration"
 Cohesion: 0.14
@@ -421,7 +418,7 @@ Nodes (18): NotificationFeed, NotificationItem, NotificationKind, TaskSubscripti
 
 ### Community 51 - "Database Schema Migrations"
 Cohesion: 0.02
-Nodes (99): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, CreateTasksTable1783296120000, createTasksTableSql (+91 more)
+Nodes (101): CreateCorePersistenceTables1783296000000, createCorePersistenceTablesSql, dropCorePersistenceTablesSql, executeMigrationQueries(), MigrationQueryExecutor, CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql (+93 more)
 
 ### Community 52 - "Task Skills API"
 Cohesion: 0.06
@@ -537,7 +534,7 @@ Nodes (28): readCreatedTask(), IssuePage(), IssueState, MarkdownDescriptionEdito
 
 ### Community 80 - "Telegram DTO Validation"
 Cohesion: 0.11
-Nodes (18): BulkUpdateTasksInput, MoveTaskInput, TaskTableSortDirection, TaskTableSortField, taskTableSortFields, UpdateTaskDueDateInput, UpdateTaskInput, UpdateTaskStatusInput (+10 more)
+Nodes (18): BulkUpdateTasksInput, MoveTaskInput, TaskTableSortDirection, TaskTableSortField, taskTableSortFields, UpdateTaskAssigneeInput, UpdateTaskDueDateInput, UpdateTaskInput (+10 more)
 
 ### Community 81 - "Search API"
 Cohesion: 0.07
@@ -568,8 +565,8 @@ Cohesion: 0.08
 Nodes (45): normalizeBaseUrl(), createTelegramBackendClient(), TelegramBotConfig, createTelegramBotRuntime(), createTelegramBotRuntimeFromEnvironment(), CreateTelegramBotRuntimeFromEnvironmentOptions, CreateTelegramBotRuntimeOptions, createTelegramReplySender() (+37 more)
 
 ### Community 88 - "Issue Detail Navigation"
-Cohesion: 0.13
-Nodes (14): GoogleDriveAuthorizationStart, GoogleDrivePickerSession, GoogleDriveRootFolder, SelectGoogleDriveRootFolderInput, GoogleDriveOAuthController, GoogleDriveAuthorizationStartDto, GoogleDrivePickerSessionDto, GoogleDriveRootFolderDto (+6 more)
+Cohesion: 0.12
+Nodes (16): GoogleDriveAuthorizationStart, GoogleDriveOAuthCompletion, GoogleDrivePickerSession, GoogleDriveRootFolder, SelectGoogleDriveRootFolderInput, GoogleDriveOAuthController, GoogleDriveAuthorizationStartDto, GoogleDriveOAuthCompletionDto (+8 more)
 
 ### Community 89 - "Telegram Backend Test Doubles"
 Cohesion: 0.12
@@ -660,8 +657,8 @@ Cohesion: 0.12
 Nodes (17): description, exports, files, import, main, name, private, scripts (+9 more)
 
 ### Community 112 - "Task Skill DTO Validation"
-Cohesion: 0.16
-Nodes (23): PreviewTaskSkillApplyOverrides, TaskSkillSubtaskDefinition, isUnknownRecord(), ParseCloneTaskSkillBodyPipe, parseCloneTaskSkillInput(), ParseCreateTaskSkillBodyPipe, parseCreateTaskSkillInput(), ParsePreviewTaskSkillApplyBodyPipe (+15 more)
+Cohesion: 0.13
+Nodes (28): PreviewTaskSkillApplyOverrides, TaskSkillApplyPreviewSubtask, TaskSkillApplyPreviewSubtaskSource, TaskSkillDefinition, TaskSkillSubtaskDefinition, TaskSkillVersionSummary, isUnknownRecord(), ParseCloneTaskSkillBodyPipe (+20 more)
 
 ### Community 113 - "Task DTO Validation"
 Cohesion: 0.11
@@ -745,7 +742,11 @@ Nodes (5): HealthResponse, HealthStatus, AppController, HealthResponseDto, AppSe
 
 ### Community 135 - "Telegram Mini App Verification"
 Cohesion: 0.05
-Nodes (43): accessError(), GoogleDriveAccessError, GoogleDriveAccessErrorCode, googleDriveAccessErrorCodes, GoogleDriveAccessGrant, GoogleDriveAccessService, GoogleDriveConnectionContext, CreateGoogleDriveFolderInput (+35 more)
+Nodes (36): ApiDataSourceProvider, IntegrationConnectionEntity, IntegrationOAuthStateEntity, buildGoogleDriveAuthorizationUrl(), GoogleDriveAccessTokenGrant, GoogleDriveOAuthClient, GoogleDriveOAuthError, GoogleDriveTokenGrant (+28 more)
+
+### Community 136 - "TypeORM Data Source Provider"
+Cohesion: 0.40
+Nodes (3): UpdateTaskStatusInput, ParseUpdateTaskStatusBodyPipe, UpdateTaskStatusDto
 
 ### Community 137 - "Workspace Creation Dialog"
 Cohesion: 0.21
@@ -776,32 +777,28 @@ Cohesion: 0.27
 Nodes (10): CreatePayload, CreateProjectPayload, CreateSkillPayload, CreateTaskPayload, isBasePayload(), isCreatePayload(), normalizeLabels(), nullableText() (+2 more)
 
 ### Community 144 - "Workspace Shell and Notifications"
-Cohesion: 0.10
-Nodes (16): TaskSkillSummary, TaskSkillSummaryDto, applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, cloneInput, createdAt (+8 more)
+Cohesion: 0.07
+Nodes (35): TaskSkillDetail, TaskSkillSummary, applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, cloneInput, createdAt (+27 more)
 
 ### Community 145 - "Telegram Identity Context Linking"
 Cohesion: 0.13
 Nodes (11): LinkTelegramIdentityInput, LinkTelegramIdentityResult, ResolveTelegramContextInput, TelegramIdentityLinkStatus, RecordingTelegramContextStore, ResolveTelegramContextDto, TelegramIdentityLinkStatusDto, input (+3 more)
 
 ### Community 147 - "Task Skill Application Flow"
-Cohesion: 0.14
-Nodes (14): CloneTaskSkillInput, CreateTaskSkillInput, UpdateTaskSkillDefinitionInput, UpdateTaskSkillMetadataInput, TaskSkillsController, uuidV4Pipe, CloneTaskSkillDto, CreateTaskSkillDto (+6 more)
+Cohesion: 0.12
+Nodes (16): CloneTaskSkillInput, CreateTaskSkillInput, UpdateTaskSkillDefinitionInput, UpdateTaskSkillMetadataInput, TaskSkillsController, uuidV4Pipe, CloneTaskSkillDto, CreateTaskSkillDto (+8 more)
 
 ### Community 148 - "Tasks Table Migration"
 Cohesion: 0.23
 Nodes (14): UpdateWorkspaceInput, UpdateWorkspaceMemberRoleInput, uuidV4Pipe, assignableWorkspaceMemberRoles, CreateWorkspaceDto, isAssignableWorkspaceMemberRole(), isUnknownRecord(), ParseCreateWorkspaceBodyPipe (+6 more)
 
 ### Community 149 - "Comment Timestamp Repair"
-Cohesion: 0.12
-Nodes (18): TaskSkillDetail, TaskSkillApplyForWorkspaceResult, TaskSkillApplyPreviewResult, TaskSkillArchiveResult, TaskSkillCloneResult, TaskSkillCreateResult, TaskSkillDefinitionUpdateResult, TaskSkillMetadataUpdateResult (+10 more)
+Cohesion: 0.14
+Nodes (11): TaskSkillApplyForWorkspaceResult, buildApplySubtasks(), isUnknownRecord(), readDefinitionSubtasks(), readTaskSkillDefinition(), readUnknownProperty(), taskSkillWriteRoles, toTaskSkillSummary() (+3 more)
 
 ### Community 150 - "Project Status Management"
 Cohesion: 0.14
 Nodes (14): GET(), ProjectCreateData, WorkspaceBootstrap, collectWorkspaceTaskLabels(), isWorkspaceCreateContext(), WorkspaceCreateContext, applyWorkspaceTaskUpdate(), findCurrentTask() (+6 more)
-
-### Community 151 - "Projects Table Migration"
-Cohesion: 0.09
-Nodes (16): ApiDataSource, ApiDataSourceProvider, IntegrationConnectionEntity, IntegrationOAuthStateEntity, ConsumedOAuthState, hashOAuthState(), IntegrationConnection, IntegrationConnectionStatus (+8 more)
 
 ### Community 152 - "Default Task Status Selection"
 Cohesion: 0.21
@@ -823,17 +820,13 @@ Nodes (9): compilerOptions, declarationMap, emitDeclarationOnly, outDir, rootDir
 Cohesion: 0.13
 Nodes (14): Architecture rules, Delivery tasks, Drive reference discovery, External resource model, Framework, Google Drive plugin, Google Drive root folder selection, Managed task folders (+6 more)
 
-### Community 157 - "Issue Identifier Parsing"
-Cohesion: 0.13
-Nodes (13): applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, cloneInput, createdAt, createInput, definitionUpdateInput (+5 more)
-
 ### Community 158 - "Community 158"
-Cohesion: 0.25
-Nodes (7): buildGoogleDriveTaskFolderName(), cleanFolderNamePart(), findLinkedTaskFolder(), GoogleDriveTaskFolderService, TaskFolderContext, TaskFolderReservation, toReservation()
+Cohesion: 0.08
+Nodes (27): accessError(), GoogleDriveAccessError, GoogleDriveAccessErrorCode, googleDriveAccessErrorCodes, GoogleDriveAccessGrant, GoogleDriveAccessService, GoogleDriveConnectionContext, CreateGoogleDriveFolderInput (+19 more)
 
 ### Community 159 - "Community 159"
-Cohesion: 0.23
-Nodes (6): PreviewTaskSkillApplyInput, TaskSkillApplyPreview, TaskSkillApplyResult, PreviewTaskSkillApplyDto, TaskSkillApplyPreviewDto, TaskSkillApplyResultDto
+Cohesion: 0.19
+Nodes (7): PreviewTaskSkillApplyInput, TaskSkillApplyPreview, TaskSkillApplyResult, ParsePreviewTaskSkillApplyBodyPipe, PreviewTaskSkillApplyDto, TaskSkillApplyPreviewDto, TaskSkillApplyResultDto
 
 ### Community 160 - "Community 160"
 Cohesion: 0.17
@@ -891,10 +884,6 @@ Nodes (3): CreateTaskInput, CreateTaskDto, ParseCreateTaskBodyPipe
 Cohesion: 0.40
 Nodes (3): backlogStatusNames, DefaultTaskStatusCandidate, selectDefaultTaskStatusId()
 
-### Community 175 - "Community 175"
-Cohesion: 0.40
-Nodes (3): UpdateTaskAssigneeInput, ParseUpdateTaskAssigneeBodyPipe, UpdateTaskAssigneeDto
-
 ### Community 181 - "Community 181"
 Cohesion: 0.43
 Nodes (5): buildTemplateMatrix(), normalizeTemplateMatrixTitle(), TemplateMatrix, TemplateMatrixRow, TemplateMatrixTask
@@ -908,8 +897,8 @@ Cohesion: 0.43
 Nodes (4): createAgentRunTablesSql, dropAgentRunTablesSql, addAgentRunSourceThreadIdSql, dropAgentRunSourceThreadIdSql
 
 ### Community 190 - "Community 190"
-Cohesion: 0.22
-Nodes (6): CompleteGoogleDriveOAuthInput, GoogleDriveOAuthCompletion, GoogleDriveOAuthCallbackController, CompleteGoogleDriveOAuthDto, GoogleDriveOAuthCompletionDto, GoogleDriveOAuthService
+Cohesion: 0.27
+Nodes (4): CompleteGoogleDriveOAuthInput, GoogleDriveOAuthCallbackController, CompleteGoogleDriveOAuthDto, GoogleDriveOAuthService
 
 ### Community 192 - "Community 192"
 Cohesion: 0.67
@@ -918,10 +907,6 @@ Nodes (3): readErrorBody(), readTrustedUserId(), request()
 ### Community 193 - "Community 193"
 Cohesion: 0.38
 Nodes (4): LinkedTelegramIdentity, LinkTelegramMiniAppIdentityInput, TelegramConfirmationCallbackAction, LinkedTelegramIdentityDto
-
-### Community 195 - "Community 195"
-Cohesion: 0.29
-Nodes (7): TaskSkillApplyPreviewSubtask, TaskSkillApplyPreviewSubtaskSource, TaskSkillDefinition, TaskSkillVersionSummary, TaskSkillApplyPreviewSubtaskDto, TaskSkillDefinitionDto, TaskSkillVersionSummaryDto
 
 ### Community 331 - "Turbo Build Pipeline"
 Cohesion: 0.67
