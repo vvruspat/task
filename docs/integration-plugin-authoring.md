@@ -124,9 +124,22 @@ Provider behavior follows the official Google Drive documentation for
   external responses, and retries.
 - Update the framework delivery checklist and run `graphify update .` with the implementation.
 
-## MCP status
+## Controlled MCP adapter
 
-The provider contract is designed to be reusable by a controlled MCP adapter, but that adapter is
-not implemented yet. Until it exists, do not expose plugin credentials through an independent MCP
-server. The adapter must preserve the same workspace discovery, permissions, confirmation, runtime
-validation, and audit path rather than calling provider APIs directly.
+The tAsk MCP server can expose connected providers when the process is scoped with both
+`TASK_MCP_WORKSPACE_ID` and `TASK_MCP_USER_ID`. These values are server-owned deployment context;
+they never appear in model-visible tool arguments. At startup the adapter asks the backend for the
+current workspace's connected read-only tools, validates their closed JSON schemas, converts them to
+runtime Zod schemas, and registers their qualified names directly with the MCP server. Restart the
+process after changing an integration connection so discovery can refresh.
+
+Every call returns to the backend integration service instead of calling a provider from the MCP
+process. The backend repeats membership, installation, connection, and plugin-version checks,
+executes through the provider contract, validates the bounded JSON result, and stores a durable row
+in `integration_mcp_tool_calls`. The adapter fails closed if the backend returns a malformed schema,
+an unexpected tool name, or an unauditable call.
+
+Only tools declared `readOnly: true` cross this bridge today. Mutating provider tools remain hidden
+until the confirmation policy can be preserved end to end. Do not create a plugin-owned MCP process
+or pass credentials, workspace IDs, user IDs, installation IDs, or secret references through tool
+arguments.

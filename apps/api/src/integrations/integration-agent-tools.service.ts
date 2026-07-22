@@ -1,4 +1,10 @@
-import { BadRequestException, ForbiddenException, Inject, Injectable } from "@nestjs/common";
+import {
+  BadGatewayException,
+  BadRequestException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+} from "@nestjs/common";
 import type {
   IntegrationAgentToolDefinition,
   IntegrationAgentToolExecutionContext,
@@ -9,7 +15,10 @@ import type {
   IntegrationAgentToolsStore,
 } from "./integration-agent-tools.store.js";
 import { IntegrationPluginRegistry } from "./integration-plugin.registry.js";
+import { isBoundedIntegrationToolJsonObject } from "./integration-tool-json.js";
 import { TypeOrmIntegrationAgentToolsStore } from "./typeorm-integration-agent-tools.store.js";
+
+const maxIntegrationToolResultBytes = 128 * 1_024;
 
 export type WorkspaceIntegrationAgentToolCall = {
   arguments: Readonly<Record<string, unknown>>;
@@ -68,10 +77,14 @@ export class IntegrationAgentToolsService {
           qualifyIntegrationAgentToolName(resolved.namespace, candidate.name) === call.name,
       );
       if (tool === undefined) continue;
-      return await resolved.provider.execute(
+      const result = await resolved.provider.execute(
         { arguments: call.arguments, name: tool.name },
         resolved.context,
       );
+      if (!isBoundedIntegrationToolJsonObject(result, maxIntegrationToolResultBytes)) {
+        throw new BadGatewayException("Integration tool returned an invalid or oversized result.");
+      }
+      return result;
     }
     throw new BadRequestException(`Unsupported workspace integration agent tool: ${call.name}`);
   }

@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { createTaskBackendClient, type TaskBackendFetch } from "./backend-client.js";
 import { loadTaskMcpConfig, type TaskMcpEnvironment } from "./config.js";
+import { parseIntegrationMcpToolDefinitions } from "./integration-mcp-tools.js";
 import { connectTaskMcpServerToStdio, createTaskMcpServer } from "./mcp-server.js";
 
 export type TaskMcpServerConnector = (server: McpServer) => Promise<void>;
@@ -27,8 +28,23 @@ export async function runTaskMcpServerFromEnvironment(
           fetch: options.fetch,
         },
   );
+  const integrationTools =
+    config.integrationContext === null
+      ? null
+      : parseIntegrationMcpToolDefinitions(
+          await backendClient.listIntegrationMcpTools(config.integrationContext),
+        );
   const server = createTaskMcpServer({
     backendClient,
+    ...(config.integrationContext === null || integrationTools === null
+      ? {}
+      : {
+          integration: {
+            backendClient,
+            context: config.integrationContext,
+            tools: integrationTools,
+          },
+        }),
     name: config.name,
     version: config.version,
   });

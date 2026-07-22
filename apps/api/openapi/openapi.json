@@ -1796,6 +1796,108 @@
         "tags": ["integrations"]
       }
     },
+    "/workspaces/{workspaceId}/integration-tools": {
+      "get": {
+        "operationId": "IntegrationMcpToolsController_listTools",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationMcpToolDefinitionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "List read-only tools from connected workspace integrations",
+        "tags": ["workspace integration tools"]
+      }
+    },
+    "/workspaces/{workspaceId}/integration-tools/execute": {
+      "post": {
+        "operationId": "IntegrationMcpToolsController_executeTool",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteIntegrationMcpToolDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationMcpToolExecutionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Tool name or arguments are invalid."
+          },
+          "403": {
+            "description": "Current user cannot use this workspace integration."
+          },
+          "503": {
+            "description": "Tool call audit is unavailable."
+          }
+        },
+        "summary": "Execute one audited read-only workspace integration tool",
+        "tags": ["workspace integration tools"]
+      }
+    },
     "/workspaces/{workspaceId}/integrations": {
       "get": {
         "operationId": "IntegrationsController_listCatalog",
@@ -6910,6 +7012,59 @@
           }
         },
         "required": ["externalResourceId", "name", "providerResourceId", "webUrl"]
+      },
+      "IntegrationMcpToolDefinitionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z][a-z0-9_]{0,63}$"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "readOnly": {
+            "type": "boolean",
+            "enum": [true]
+          },
+          "inputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["name", "description", "readOnly", "inputSchema"]
+      },
+      "ExecuteIntegrationMcpToolDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z][a-z0-9_]{0,63}$"
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["name", "arguments"]
+      },
+      "IntegrationMcpToolExecutionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z][a-z0-9_]{0,63}$"
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["name", "result"]
       },
       "WorkspaceIntegrationDto": {
         "type": "object",

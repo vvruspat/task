@@ -13,6 +13,7 @@ import {
   IntegrationConnectionEntity,
   IntegrationEventDeliveryEntity,
   IntegrationExternalResourceEntity,
+  IntegrationMcpToolCallEntity,
   IntegrationOAuthStateEntity,
   IntegrationOutboxEventEntity,
   IntegrationResourceLinkEntity,
@@ -74,6 +75,7 @@ import { CreateIntegrationEventOutbox1783297980000 } from "./persistence/migrati
 import { CreateIntegrationConnections1783298040000 } from "./persistence/migrations/1783298040000-create-integration-connections.js";
 import { CreateIntegrationResources1783298100000 } from "./persistence/migrations/1783298100000-create-integration-resources.js";
 import { CreateIntegrationWebhookReceipts1783298160000 } from "./persistence/migrations/1783298160000-create-integration-webhook-receipts.js";
+import { CreateIntegrationMcpToolCalls1783298220000 } from "./persistence/migrations/1783298220000-create-integration-mcp-tool-calls.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -88,6 +90,7 @@ const apiEntities = [
   IntegrationOAuthStateEntity,
   IntegrationSecretEntity,
   IntegrationExternalResourceEntity,
+  IntegrationMcpToolCallEntity,
   IntegrationResourceLinkEntity,
   IntegrationResourceReferenceEntity,
   IntegrationSubscriptionEntity,
@@ -150,6 +153,7 @@ const apiMigrations = [
   CreateIntegrationConnections1783298040000,
   CreateIntegrationResources1783298100000,
   CreateIntegrationWebhookReceipts1783298160000,
+  CreateIntegrationMcpToolCalls1783298220000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

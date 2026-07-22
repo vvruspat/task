@@ -67,6 +67,7 @@ export {
   type TaskBackendFetchInit,
   type TaskBackendFetchResponse,
   type TaskBackendGetHeaders,
+  type TaskBackendIntegrationClient,
   type TaskBackendPostHeaders,
   type TaskCommentResponse,
   type TaskDetailResponse,

@@ -35,7 +35,7 @@ Arbitrary third-party code loading and a public marketplace are explicitly out o
 - [ ] Add integration health aggregation and operator-facing diagnostics.
 - [x] Add external resources, resource links, references, and renewable subscriptions.
 - [x] Replace static agent tools with a workspace-aware tool-provider registry.
-- [ ] Add a controlled MCP adapter that preserves permissions, confirmations, and audit.
+- [x] Add a controlled MCP adapter for read-only tools that preserves permissions and audit.
 
 ### Google Drive plugin
 
@@ -116,8 +116,12 @@ name, arguments, result, status, and error through the existing tool-call audit 
 do not satisfy a user request that requires a mutation.
 
 See [Integration plugin authoring](./integration-plugin-authoring.md) for the contract and provider
-checklist. The controlled MCP adapter is still pending; plugins currently reach the backend agent
-runtime through this provider boundary rather than receiving an independent MCP process.
+checklist. A process scoped by server-owned workspace and user IDs now discovers the same read-only
+providers at startup and registers their qualified names with the tAsk MCP server. Calls return to a
+typed backend endpoint, repeat the normal permission and connection checks, validate bounded JSON,
+and persist separate `integration_mcp_tool_calls` audit rows. Mutating provider tools remain outside
+the bridge until confirmation can be preserved end to end; plugins never receive an independent MCP
+process or direct credential path.
 
 ## Google Drive root folder selection
 

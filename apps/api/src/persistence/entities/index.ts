@@ -10,6 +10,7 @@ export { ConfirmationRequestEntity } from "./confirmation-request.entity.js";
 export { IntegrationConnectionEntity } from "./integration-connection.entity.js";
 export { IntegrationEventDeliveryEntity } from "./integration-event-delivery.entity.js";
 export { IntegrationExternalResourceEntity } from "./integration-external-resource.entity.js";
+export { IntegrationMcpToolCallEntity } from "./integration-mcp-tool-call.entity.js";
 export { IntegrationOAuthStateEntity } from "./integration-oauth-state.entity.js";
 export { IntegrationOutboxEventEntity } from "./integration-outbox-event.entity.js";
 export { IntegrationResourceLinkEntity } from "./integration-resource-link.entity.js";

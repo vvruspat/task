@@ -45,6 +45,8 @@ type ArchiveTaskOperation = operations["TasksController_archiveTask"];
 type UpdateTaskStatusOperation = operations["TasksController_updateTaskStatus"];
 type UpdateTaskAssigneeOperation = operations["TasksController_updateTaskAssignee"];
 type UpdateTaskDueDateOperation = operations["TasksController_updateTaskDueDate"];
+type ListIntegrationMcpToolsOperation = operations["IntegrationMcpToolsController_listTools"];
+type ExecuteIntegrationMcpToolOperation = operations["IntegrationMcpToolsController_executeTool"];
 
 export type PreviewTaskSkillApplyInput =
   PreviewTaskSkillApplyOperation["requestBody"]["content"]["application/json"];
@@ -136,6 +138,12 @@ export type TaskDetailResponse =
   GetTaskOperation["responses"]["200"]["content"]["application/json"];
 export type ArchiveTaskResponse =
   ArchiveTaskOperation["responses"]["200"]["content"]["application/json"];
+export type IntegrationMcpToolDefinitionResponse =
+  ListIntegrationMcpToolsOperation["responses"]["200"]["content"]["application/json"][number];
+export type ExecuteIntegrationMcpToolInput =
+  ExecuteIntegrationMcpToolOperation["requestBody"]["content"]["application/json"];
+export type IntegrationMcpToolExecutionResponse =
+  ExecuteIntegrationMcpToolOperation["responses"]["200"]["content"]["application/json"];
 type TaskSkillApplyPreviewSubtaskResponse =
   components["schemas"]["TaskSkillApplyPreviewSubtaskDto"];
 
@@ -248,6 +256,17 @@ export type GetWorkspaceRequest = {
 export type ListWorkspaceMembersRequest = {
   workspaceId: string;
   userId: string;
+};
+
+export type ListIntegrationMcpToolsRequest = {
+  workspaceId: string;
+  userId: string;
+};
+
+export type ExecuteIntegrationMcpToolRequest = {
+  workspaceId: string;
+  userId: string;
+  body: ExecuteIntegrationMcpToolInput;
 };
 
 export type ListTaskSkillsRequest = {
@@ -498,6 +517,15 @@ export type TaskBackendClient = {
   applyTaskSkill(request: TaskSkillApplyRequest): Promise<ApplyTaskSkillResponse>;
 };
 
+export type TaskBackendIntegrationClient = {
+  listIntegrationMcpTools(
+    request: ListIntegrationMcpToolsRequest,
+  ): Promise<IntegrationMcpToolDefinitionResponse[]>;
+  executeIntegrationMcpTool(
+    request: ExecuteIntegrationMcpToolRequest,
+  ): Promise<IntegrationMcpToolExecutionResponse>;
+};
+
 export class TaskBackendClientError extends Error {
   readonly status: number;
   readonly responseBody: unknown;
@@ -510,7 +538,9 @@ export class TaskBackendClientError extends Error {
   }
 }
 
-export function createTaskBackendClient(options: TaskBackendClientOptions): TaskBackendClient {
+export function createTaskBackendClient(
+  options: TaskBackendClientOptions,
+): TaskBackendClient & TaskBackendIntegrationClient {
   const baseUrl = normalizeBaseUrl(options.baseUrl);
   const fetchImplementation = options.fetch ?? defaultFetch;
 
@@ -546,6 +576,23 @@ export function createTaskBackendClient(options: TaskBackendClientOptions): Task
         buildWorkspaceStatusesPath(request.workspaceId, request.projectId),
         request.userId,
         readWorkspaceStatusList,
+      ),
+    listIntegrationMcpTools: (request) =>
+      getJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceIntegrationToolsPath(request.workspaceId),
+        request.userId,
+        readIntegrationMcpToolDefinitionList,
+      ),
+    executeIntegrationMcpTool: (request) =>
+      postJson(
+        fetchImplementation,
+        baseUrl,
+        buildWorkspaceIntegrationToolExecutePath(request.workspaceId),
+        request.userId,
+        request.body,
+        readIntegrationMcpToolExecution,
       ),
     listPendingConfirmationRequests: (request) =>
       getJson(
@@ -879,7 +926,8 @@ async function postJson<ResponseBody>(
     | CreateTaskLinkAttachmentInput
     | CreateTaskFileAttachmentInput
     | CreateTaskTelegramFileAttachmentInput
-    | CreateConfirmationRequestInput,
+    | CreateConfirmationRequestInput
+    | ExecuteIntegrationMcpToolInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   return writeJson(fetchImplementation, baseUrl, path, userId, "POST", body, readResponse);
@@ -952,6 +1000,7 @@ async function writeJson<ResponseBody>(
     | CreateTaskFileAttachmentInput
     | CreateTaskTelegramFileAttachmentInput
     | CreateConfirmationRequestInput
+    | ExecuteIntegrationMcpToolInput
     | UpdateTaskStatusInput
     | UpdateTaskAssigneeInput
     | UpdateTaskDueDateInput
@@ -1060,6 +1109,14 @@ function buildWorkspacePath(workspaceId: string): string {
 
 function buildWorkspaceMembersPath(workspaceId: string): string {
   return `${buildWorkspacePath(workspaceId)}/members`;
+}
+
+function buildWorkspaceIntegrationToolsPath(workspaceId: string): string {
+  return `${buildWorkspacePath(workspaceId)}/integration-tools`;
+}
+
+function buildWorkspaceIntegrationToolExecutePath(workspaceId: string): string {
+  return `${buildWorkspaceIntegrationToolsPath(workspaceId)}/execute`;
 }
 
 function buildWorkspaceProjectsPath(workspaceId: string): string {
@@ -1201,6 +1258,39 @@ function readWorkspaceStatusList(value: unknown): WorkspaceStatusResponse[] {
   }
 
   return value.map(readWorkspaceStatus);
+}
+
+function readIntegrationMcpToolDefinitionList(
+  value: unknown,
+): IntegrationMcpToolDefinitionResponse[] {
+  if (!Array.isArray(value)) {
+    throw new Error("integration MCP tool definition list must be an array.");
+  }
+  return value.map(readIntegrationMcpToolDefinition);
+}
+
+function readIntegrationMcpToolDefinition(value: unknown): IntegrationMcpToolDefinitionResponse {
+  const record = readRecord(value, "integration MCP tool definition");
+  if (readProperty(record, "readOnly") !== true) {
+    throw new Error("integration MCP tool definition must be read-only.");
+  }
+  return {
+    description: readString(record, "description"),
+    inputSchema: readRecord(
+      readProperty(record, "inputSchema"),
+      "integration MCP tool input schema",
+    ),
+    name: readString(record, "name"),
+    readOnly: true,
+  };
+}
+
+function readIntegrationMcpToolExecution(value: unknown): IntegrationMcpToolExecutionResponse {
+  const record = readRecord(value, "integration MCP tool execution");
+  return {
+    name: readString(record, "name"),
+    result: readRecord(readProperty(record, "result"), "integration MCP tool result"),
+  };
 }
 
 function readTaskSkillSummaryList(value: unknown): TaskSkillSummaryResponse[] {

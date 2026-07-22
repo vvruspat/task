@@ -482,6 +482,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/integration-tools": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List read-only tools from connected workspace integrations */
+    get: operations["IntegrationMcpToolsController_listTools"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integration-tools/execute": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Execute one audited read-only workspace integration tool */
+    post: operations["IntegrationMcpToolsController_executeTool"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/integrations": {
     parameters: {
       query?: never;
@@ -1798,6 +1832,27 @@ export interface components {
       providerResourceId: string;
       /** Format: uri */
       webUrl: string | null;
+    };
+    IntegrationMcpToolDefinitionDto: {
+      name: string;
+      description: string;
+      /** @enum {boolean} */
+      readOnly: true;
+      inputSchema: {
+        [key: string]: unknown;
+      };
+    };
+    ExecuteIntegrationMcpToolDto: {
+      name: string;
+      arguments: {
+        [key: string]: unknown;
+      };
+    };
+    IntegrationMcpToolExecutionDto: {
+      name: string;
+      result: {
+        [key: string]: unknown;
+      };
     };
     WorkspaceIntegrationDto: {
       /** Format: uuid */
@@ -4023,6 +4078,79 @@ export interface operations {
         content?: never;
       };
       /** @description The change feed could not be processed. */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  IntegrationMcpToolsController_listTools: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IntegrationMcpToolDefinitionDto"][];
+        };
+      };
+    };
+  };
+  IntegrationMcpToolsController_executeTool: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ExecuteIntegrationMcpToolDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IntegrationMcpToolExecutionDto"];
+        };
+      };
+      /** @description Tool name or arguments are invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot use this workspace integration. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Tool call audit is unavailable. */
       503: {
         headers: {
           [name: string]: unknown;

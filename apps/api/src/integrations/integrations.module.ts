@@ -29,6 +29,8 @@ import { GoogleDriveWebhookController } from "./google-drive-webhook.controller.
 import { GoogleDriveWebhookService } from "./google-drive-webhook.service.js";
 import { IntegrationAgentToolsService } from "./integration-agent-tools.service.js";
 import { IntegrationEventDispatcher } from "./integration-event-dispatcher.js";
+import { IntegrationMcpToolsController } from "./integration-mcp-tools.controller.js";
+import { IntegrationMcpToolsService } from "./integration-mcp-tools.service.js";
 import { IntegrationOutboxPublisher } from "./integration-outbox.publisher.js";
 import { IntegrationOutboxWorker } from "./integration-outbox.worker.js";
 import { IntegrationPluginRegistry } from "./integration-plugin.registry.js";
@@ -48,6 +50,7 @@ import { TypeOrmGoogleDriveChangeStore } from "./typeorm-google-drive-change.sto
 import { TypeOrmGoogleDriveWatchStore } from "./typeorm-google-drive-watch.store.js";
 import { TypeOrmGoogleDriveWebhookStore } from "./typeorm-google-drive-webhook.store.js";
 import { TypeOrmIntegrationAgentToolsStore } from "./typeorm-integration-agent-tools.store.js";
+import { TypeOrmIntegrationMcpToolCallStore } from "./typeorm-integration-mcp-tool-call.store.js";
 import { TypeOrmIntegrationOutboxStore } from "./typeorm-integration-outbox.store.js";
 import { TypeOrmWorkspaceIntegrationsStore } from "./typeorm-workspace-integrations.store.js";
 
@@ -102,6 +105,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     GoogleDriveOAuthCallbackController,
     GoogleDriveOAuthController,
     GoogleDriveWebhookController,
+    IntegrationMcpToolsController,
     IntegrationsController,
     TelegramConnectController,
     TelegramInternalConnectController,
@@ -113,6 +117,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     integrationsServiceProvider,
     TypeOrmIntegrationOutboxStore,
     TypeOrmIntegrationAgentToolsStore,
+    TypeOrmIntegrationMcpToolCallStore,
     TypeOrmGoogleDriveAttachmentExportStore,
     TypeOrmGoogleDriveChangeStore,
     TypeOrmGoogleDriveWatchStore,
@@ -136,6 +141,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     GoogleDriveWebhookService,
     IntegrationEventDispatcher,
     IntegrationAgentToolsService,
+    IntegrationMcpToolsService,
     IntegrationOutboxPublisher,
     IntegrationOutboxWorker,
     TelegramConnectService,
