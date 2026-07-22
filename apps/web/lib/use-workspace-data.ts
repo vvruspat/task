@@ -3,7 +3,7 @@
 import type { TaskSummary, WorkspaceStatus } from "@task/api-client";
 import { produce } from "immer";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { create } from "zustand";
 import { LatestRequestCoordinator } from "./latest-request";
 import { ReconciliationScheduler } from "./reconciliation-scheduler";
@@ -31,6 +31,11 @@ import {
   type WorkspaceRealtimeConnectionLifecycle,
   type WorkspaceRealtimeConnectionStatus,
 } from "./workspace-realtime";
+import {
+  resolveWorkspaceServerSnapshot,
+  type WorkspaceServerSnapshot,
+} from "./workspace-server-snapshot";
+import { WorkspaceServerSnapshotContext } from "./workspace-server-snapshot-context";
 import { useWorkspaceStore } from "./workspace-store";
 import {
   applyWorkspaceProjectReconciliation,
@@ -68,6 +73,8 @@ const workspaceRequestCoordinator = new LatestRequestCoordinator<
 >();
 let loadedWorkspaceRequestKey: string | null = null;
 let loadedWorkspaceBootstrapRequest: WorkspaceBootstrapRequest | null = null;
+let latestWorkspaceClientMutationAt = 0;
+const appliedWorkspaceServerSnapshots = new Set<string>();
 const realtimeConnections = new Map<string, RealtimeConnection>();
 const pendingRealtimeProjects = new Map<string, string>();
 const projectReconciliationGenerations = new Map<string, number>();
@@ -142,6 +149,8 @@ export function resetWorkspaceData(): void {
   workspaceRealtimeRevision = 0;
   loadedWorkspaceRequestKey = null;
   loadedWorkspaceBootstrapRequest = null;
+  latestWorkspaceClientMutationAt = 0;
+  appliedWorkspaceServerSnapshots.clear();
   fullRealtimeReconciliationScheduler.cancel();
   projectRealtimeReconciliationScheduler.cancel();
   const store = useWorkspaceDataStore.getState();
@@ -157,7 +166,33 @@ export function resetWorkspaceData(): void {
 export function updateWorkspaceData(
   updater: (data: WorkspaceBootstrap) => WorkspaceBootstrap,
 ): void {
+  latestWorkspaceClientMutationAt = Date.now();
   useWorkspaceDataStore.getState().update(updater);
+}
+
+export function hydrateWorkspaceServerSnapshot(snapshot: WorkspaceServerSnapshot): void {
+  if (appliedWorkspaceServerSnapshots.has(snapshot.id)) return;
+  appliedWorkspaceServerSnapshots.add(snapshot.id);
+  if (appliedWorkspaceServerSnapshots.size > 20) {
+    const oldestSnapshotId = appliedWorkspaceServerSnapshots.values().next().value;
+    if (oldestSnapshotId !== undefined) appliedWorkspaceServerSnapshots.delete(oldestSnapshotId);
+  }
+  workspaceRequestCoordinator.cancel();
+  const store = useWorkspaceDataStore.getState();
+  const resolved = resolveWorkspaceServerSnapshot(
+    store.data,
+    loadedWorkspaceBootstrapRequest,
+    snapshot,
+    latestWorkspaceClientMutationAt,
+  );
+  store.replace({
+    data: resolved.data,
+    error: null,
+    loading: false,
+    requiresWorkspace: resolved.requiresWorkspace,
+  });
+  loadedWorkspaceRequestKey = snapshot.requestKey;
+  loadedWorkspaceBootstrapRequest = snapshot.request;
 }
 
 export function updateWorkspaceTask(task: TaskSummary): void {
@@ -237,13 +272,14 @@ export function useWorkspaceData(): WorkspaceDataState & {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const serverSnapshot = useContext(WorkspaceServerSnapshotContext);
   const routeWorkspaceSlug = pathname.match(/^\/w\/([^/]+)/)?.[1] ?? null;
   const selectedWorkspaceId = useWorkspaceStore((store) => store.selectedWorkspaceId);
   const setSelectedWorkspaceId = useWorkspaceStore((store) => store.setSelectedWorkspaceId);
   const setSelectedProjectId = useWorkspaceStore((store) => store.setSelectedProjectId);
-  const data = useWorkspaceDataStore((store) => store.data);
-  const error = useWorkspaceDataStore((store) => store.error);
-  const loading = useWorkspaceDataStore((store) => store.loading);
+  const storedData = useWorkspaceDataStore((store) => store.data);
+  const storedError = useWorkspaceDataStore((store) => store.error);
+  const storedLoading = useWorkspaceDataStore((store) => store.loading);
   const workspaceSelector = routeWorkspaceSlug ?? selectedWorkspaceId;
   const queryProject = searchParams.get("project");
   const queryView = searchParams.get("view");
@@ -252,6 +288,18 @@ export function useWorkspaceData(): WorkspaceDataState & {
     [pathname, queryProject, queryView],
   );
   const requestKey = workspaceBootstrapRequestKey(workspaceSelector, bootstrapRequest);
+  const initialSnapshotState =
+    serverSnapshot === null || appliedWorkspaceServerSnapshots.has(serverSnapshot.id)
+      ? null
+      : resolveWorkspaceServerSnapshot(
+          storedData,
+          loadedWorkspaceBootstrapRequest,
+          serverSnapshot,
+          latestWorkspaceClientMutationAt,
+        );
+  const data = initialSnapshotState?.data ?? storedData;
+  const error = initialSnapshotState === null ? storedError : null;
+  const loading = initialSnapshotState === null ? storedLoading : false;
 
   const load = useCallback(
     async (force: boolean): Promise<void> => {
@@ -387,7 +435,8 @@ export function useWorkspaceData(): WorkspaceDataState & {
       window.removeEventListener(workspaceMembershipRemovedEvent, handleMembershipRemoved);
   }, [router, setSelectedProjectId, setSelectedWorkspaceId]);
 
-  const requiresWorkspace = useWorkspaceDataStore((store) => store.requiresWorkspace);
+  const storedRequiresWorkspace = useWorkspaceDataStore((store) => store.requiresWorkspace);
+  const requiresWorkspace = initialSnapshotState?.requiresWorkspace ?? storedRequiresWorkspace;
   const connectionStatus = useWorkspaceDataStore((store) => store.connectionStatus);
   return { connectionStatus, data, error, loading, refresh, requiresWorkspace };
 }
@@ -445,6 +494,7 @@ function releaseRealtimeConnection(workspaceId: string): void {
 function handleWorkspaceRealtimeChange(event: MessageEvent<string>): void {
   const change = parseWorkspaceRealtimeChange(event.data);
   if (change === null) return;
+  latestWorkspaceClientMutationAt = Date.now();
   workspaceRealtimeRevision += 1;
   window.dispatchEvent(
     new CustomEvent<WorkspaceRealtimeChange>(workspaceRealtimeEvent, { detail: change }),
