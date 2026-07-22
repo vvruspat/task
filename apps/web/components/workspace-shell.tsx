@@ -30,6 +30,7 @@ import type { MessageKey } from "../lib/i18n/messages";
 import { isNotificationFeed, notificationsReadEvent } from "../lib/notifications";
 import {
   notifyWorkspaceDataChanged,
+  resetWorkspaceData,
   useWorkspaceData,
   workspaceRealtimeEvent,
 } from "../lib/use-workspace-data";
@@ -137,6 +138,7 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   };
   const logout = async (): Promise<void> => {
     await fetch("/api/auth/logout", { method: "POST" });
+    resetWorkspaceData();
     setSelectedWorkspaceId(null);
     setSelectedProjectId(null);
     router.replace("/login");

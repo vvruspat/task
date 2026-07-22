@@ -1625,8 +1625,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/workspace-shell.tsx": {
-    "mtime": 1784669709.4700768,
-    "ast_hash": "6c6561de25df3bf62316892597749bfe",
+    "mtime": 1784673776.531227,
+    "ast_hash": "5ba294a4aef24c35e7c6310687ab4deb",
     "semantic_hash": ""
   },
   "apps/web/components/workspace-view.tsx": {
@@ -2575,8 +2575,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/messages.ts": {
-    "mtime": 1784672398.8594744,
-    "ast_hash": "fd8109f0f0d3011d838809e16610bb1d",
+    "mtime": 1784673756.012472,
+    "ast_hash": "df69851a95054892f2921301d1d2e267",
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/ui-copy.test.ts": {
