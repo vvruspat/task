@@ -6355,6 +6355,11 @@
             "enum": ["owner", "admin", "member", "guest"],
             "nullable": true
           },
+          "mutationKind": {
+            "type": "string",
+            "enum": ["created", "deleted", "updated"],
+            "nullable": true
+          },
           "occurredAt": {
             "format": "date-time",
             "type": "string"
@@ -6369,6 +6374,7 @@
           "memberId",
           "memberUserId",
           "memberRole",
+          "mutationKind",
           "occurredAt"
         ]
       },

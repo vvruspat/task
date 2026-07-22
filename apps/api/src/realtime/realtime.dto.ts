@@ -28,6 +28,9 @@ export class WorkspaceRealtimeEventDto implements WorkspaceRealtimeEvent {
   @ApiProperty({ enum: ["owner", "admin", "member", "guest"], nullable: true })
   readonly memberRole: WorkspaceRealtimeEvent["memberRole"];
 
+  @ApiProperty({ enum: ["created", "deleted", "updated"], nullable: true })
+  readonly mutationKind: WorkspaceRealtimeEvent["mutationKind"];
+
   @ApiProperty({ format: "date-time" })
   readonly occurredAt: Date;
 
@@ -40,6 +43,7 @@ export class WorkspaceRealtimeEventDto implements WorkspaceRealtimeEvent {
     this.memberId = event.memberId;
     this.memberUserId = event.memberUserId;
     this.memberRole = event.memberRole;
+    this.mutationKind = event.mutationKind;
     this.occurredAt = event.occurredAt;
   }
 }

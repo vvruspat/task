@@ -136,6 +136,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     const result = await this.executeToolCall(call, context);
     if (isMutationToolName(call.toolName)) {
       this.realtimeService?.publishChange({
+        mutationKind: agentMutationKind(call.toolName),
         workspaceId: context.workspaceId,
         projectId: readResultIdentifier(result, "projectId"),
         taskId: readResultIdentifier(result, "taskId"),
@@ -719,6 +720,10 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
 
 function isMutationToolName(toolName: string): boolean {
   return toolName !== "task_lookup";
+}
+
+function agentMutationKind(toolName: string): "created" | "updated" {
+  return toolName.includes("create") || toolName.includes("add_subtasks") ? "created" : "updated";
 }
 
 function readResultIdentifier(result: Record<string, unknown>, key: string): string | null {
