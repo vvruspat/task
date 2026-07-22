@@ -10,9 +10,14 @@ import type { ApiFailure, WorkspaceBootstrap, WorkspaceRequired } from "./worksp
 import { isApiFailure, isWorkspaceRequired } from "./workspace-contracts";
 import {
   applyWorkspaceMemberRealtimeChange,
+  createWorkspaceRealtimeConnectionLifecycle,
   findFallbackWorkspaceId,
+  markWorkspaceRealtimeConnected,
+  markWorkspaceRealtimeInterrupted,
   parseWorkspaceRealtimeChange,
   type WorkspaceRealtimeChange,
+  type WorkspaceRealtimeConnectionLifecycle,
+  type WorkspaceRealtimeConnectionStatus,
 } from "./workspace-realtime";
 import { useWorkspaceStore } from "./workspace-store";
 
@@ -24,8 +29,16 @@ type WorkspaceDataState = {
 };
 
 type WorkspaceDataStore = WorkspaceDataState & {
+  connectionStatus: WorkspaceRealtimeConnectionStatus;
   replace: (state: WorkspaceDataState) => void;
+  setConnectionStatus: (status: WorkspaceRealtimeConnectionStatus) => void;
   update: (updater: (data: WorkspaceBootstrap) => WorkspaceBootstrap) => void;
+};
+
+type RealtimeConnection = {
+  lifecycle: WorkspaceRealtimeConnectionLifecycle;
+  references: number;
+  source: EventSource;
 };
 
 const workspaceRefreshEvent = "task:workspace-data-refresh";
@@ -35,7 +48,7 @@ const workspaceRequestCoordinator = new LatestRequestCoordinator<
   string | null,
   WorkspaceBootstrap | WorkspaceRequired
 >();
-const realtimeConnections = new Map<string, { references: number; source: EventSource }>();
+const realtimeConnections = new Map<string, RealtimeConnection>();
 let realtimeRefreshTimer: ReturnType<typeof setTimeout> | null = null;
 
 const useWorkspaceDataStore = create<WorkspaceDataStore>()((set) => ({
@@ -43,7 +56,9 @@ const useWorkspaceDataStore = create<WorkspaceDataStore>()((set) => ({
   error: null,
   loading: true,
   requiresWorkspace: false,
+  connectionStatus: "idle",
   replace: (state): void => set(state),
+  setConnectionStatus: (connectionStatus): void => set({ connectionStatus }),
   update: (updater): void =>
     set((state) => (state.data === null ? state : { ...state, data: updater(state.data) })),
 }));
@@ -58,12 +73,14 @@ export function resetWorkspaceData(): void {
     clearTimeout(realtimeRefreshTimer);
     realtimeRefreshTimer = null;
   }
-  useWorkspaceDataStore.getState().replace({
+  const store = useWorkspaceDataStore.getState();
+  store.replace({
     data: null,
     error: null,
     loading: true,
     requiresWorkspace: false,
   });
+  store.setConnectionStatus("idle");
 }
 
 export function updateWorkspaceData(
@@ -166,6 +183,7 @@ async function requestWorkspace(
 }
 
 export function useWorkspaceData(): WorkspaceDataState & {
+  connectionStatus: WorkspaceRealtimeConnectionStatus;
   refresh: () => Promise<void>;
 } {
   const pathname = usePathname();
@@ -201,12 +219,14 @@ export function useWorkspaceData(): WorkspaceDataState & {
         if (!workspaceRequestCoordinator.isLatest(request)) return;
         if (isWorkspaceRequired(result)) {
           setSelectedWorkspaceId(null);
-          useWorkspaceDataStore.getState().replace({
+          const store = useWorkspaceDataStore.getState();
+          store.replace({
             data: null,
             error: null,
             loading: false,
             requiresWorkspace: true,
           });
+          store.setConnectionStatus("idle");
           return;
         }
         setSelectedWorkspaceId(result.workspace.id);
@@ -214,6 +234,9 @@ export function useWorkspaceData(): WorkspaceDataState & {
         if (latest.data !== result || latest.error !== null || latest.loading) {
           latest.replace({ data: result, error: null, loading: false, requiresWorkspace: false });
         }
+        latest.setConnectionStatus(
+          realtimeConnections.get(result.workspace.id)?.lifecycle.status ?? "connecting",
+        );
       } catch (error: unknown) {
         if (!workspaceRequestCoordinator.isLatest(request) || request.signal.aborted) return;
         const latest = useWorkspaceDataStore.getState();
@@ -270,6 +293,9 @@ export function useWorkspaceData(): WorkspaceDataState & {
         loading: fallbackWorkspaceId !== null,
         requiresWorkspace: fallbackWorkspaceId === null,
       });
+      useWorkspaceDataStore
+        .getState()
+        .setConnectionStatus(fallbackWorkspaceId === null ? "idle" : "connecting");
       router.replace("/agent");
     };
     window.addEventListener(workspaceMembershipRemovedEvent, handleMembershipRemoved);
@@ -278,23 +304,49 @@ export function useWorkspaceData(): WorkspaceDataState & {
   }, [router, setSelectedProjectId, setSelectedWorkspaceId]);
 
   const requiresWorkspace = useWorkspaceDataStore((store) => store.requiresWorkspace);
-  return { data, error, loading, refresh, requiresWorkspace };
+  const connectionStatus = useWorkspaceDataStore((store) => store.connectionStatus);
+  return { connectionStatus, data, error, loading, refresh, requiresWorkspace };
 }
 
 function retainRealtimeConnection(workspaceId: string): () => void {
   const existing = realtimeConnections.get(workspaceId);
   if (existing !== undefined) {
     existing.references += 1;
+    setActiveRealtimeConnectionStatus(workspaceId, existing.lifecycle.status);
     return () => releaseRealtimeConnection(workspaceId);
   }
   const source = new EventSource(
     `/api/workspace/events?workspaceId=${encodeURIComponent(workspaceId)}`,
   );
+  const connection: RealtimeConnection = {
+    lifecycle: createWorkspaceRealtimeConnectionLifecycle(),
+    references: 1,
+    source,
+  };
+  source.addEventListener("open", () => {
+    const transition = markWorkspaceRealtimeConnected(connection.lifecycle);
+    connection.lifecycle = transition.lifecycle;
+    setActiveRealtimeConnectionStatus(workspaceId, transition.lifecycle.status);
+    if (transition.reconnected) notifyWorkspaceDataChanged();
+  });
+  source.addEventListener("error", () => {
+    connection.lifecycle = markWorkspaceRealtimeInterrupted(connection.lifecycle, navigator.onLine);
+    setActiveRealtimeConnectionStatus(workspaceId, connection.lifecycle.status);
+  });
   source.addEventListener("workspace.changed", handleWorkspaceRealtimeChange);
   source.addEventListener("workspace.member_role_changed", handleWorkspaceRealtimeChange);
   source.addEventListener("workspace.member_removed", handleWorkspaceRealtimeChange);
-  realtimeConnections.set(workspaceId, { references: 1, source });
+  realtimeConnections.set(workspaceId, connection);
+  setActiveRealtimeConnectionStatus(workspaceId, connection.lifecycle.status);
   return () => releaseRealtimeConnection(workspaceId);
+}
+
+function setActiveRealtimeConnectionStatus(
+  workspaceId: string,
+  status: WorkspaceRealtimeConnectionStatus,
+): void {
+  const store = useWorkspaceDataStore.getState();
+  if (store.data?.workspace.id === workspaceId) store.setConnectionStatus(status);
 }
 
 function releaseRealtimeConnection(workspaceId: string): void {
