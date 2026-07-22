@@ -6,7 +6,7 @@ import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import type { MessageKey } from "../lib/i18n/messages";
 import { authPageHref, invitationEmail, postAuthPath } from "../lib/invite-auth";
-import { useWorkspaceStore } from "../lib/workspace-store";
+import { useWorkspaceSelectionStore } from "../lib/workspace-selection-store";
 
 type AuthFormProps = { mode: "login" | "register" };
 
@@ -44,7 +44,7 @@ export function AuthForm({ mode }: AuthFormProps): ReactNode {
         setError(t(readErrorKey(responseBody)));
         return;
       }
-      const workspaceStore = useWorkspaceStore.getState();
+      const workspaceStore = useWorkspaceSelectionStore.getState();
       workspaceStore.setSelectedWorkspaceId(null);
       workspaceStore.setSelectedProjectId(null);
       window.location.assign(postAuthPath(window.location.search, window.sessionStorage));
