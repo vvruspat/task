@@ -26,6 +26,7 @@ export type WorkspaceRealtimeChange = {
   memberId: string | null;
   memberUserId: string | null;
   memberRole: "admin" | "guest" | "member" | "owner" | null;
+  mutationKind: "created" | "deleted" | "updated" | null;
   occurredAt: string;
 };
 
@@ -57,7 +58,11 @@ export function parseWorkspaceRealtimeChange(value: string): WorkspaceRealtimeCh
     const parsed: unknown = JSON.parse(value);
     if (!isRecord(parsed) || !hasRealtimeBase(parsed)) return null;
     if (parsed.kind === "changed") {
-      if (!hasNullableString(parsed, "projectId") || !hasNullableString(parsed, "taskId")) {
+      if (
+        !hasNullableString(parsed, "projectId") ||
+        !hasNullableString(parsed, "taskId") ||
+        !hasOptionalNullableMutationKind(parsed, "mutationKind")
+      ) {
         return null;
       }
       return {
@@ -67,6 +72,7 @@ export function parseWorkspaceRealtimeChange(value: string): WorkspaceRealtimeCh
         memberId: null,
         memberUserId: null,
         memberRole: null,
+        mutationKind: parsed.mutationKind ?? null,
       };
     }
     if (parsed.kind !== "member_removed" && parsed.kind !== "member_role_changed") {
@@ -86,6 +92,7 @@ export function parseWorkspaceRealtimeChange(value: string): WorkspaceRealtimeCh
       memberId: parsed.memberId,
       memberUserId: parsed.memberUserId,
       memberRole: parsed.memberRole,
+      mutationKind: null,
     };
   } catch {
     return null;
@@ -188,6 +195,21 @@ function hasWorkspaceMemberRole<K extends string>(
 ): value is Record<string, unknown> & Record<K, "admin" | "guest" | "member" | "owner"> {
   const role = value[key];
   return role === "owner" || role === "admin" || role === "member" || role === "guest";
+}
+
+function hasOptionalNullableMutationKind<K extends string>(
+  value: Record<string, unknown>,
+  key: K,
+): value is Record<string, unknown> &
+  Record<K, "created" | "deleted" | "updated" | null | undefined> {
+  const mutationKind = value[key];
+  return (
+    mutationKind === undefined ||
+    mutationKind === null ||
+    mutationKind === "created" ||
+    mutationKind === "deleted" ||
+    mutationKind === "updated"
+  );
 }
 
 function readKnownString(value: Record<string, unknown>, key: string): string {

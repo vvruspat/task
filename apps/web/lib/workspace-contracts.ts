@@ -38,6 +38,13 @@ export type ProjectData = {
   tasks: TaskSummary[];
 };
 
+export type WorkspaceProjectReconciliation = Pick<
+  ProjectData,
+  "matrix" | "projectId" | "table" | "tasks"
+> & {
+  myTasks: MyTasksPage;
+};
+
 export type ApiFailure = { error: string };
 export type WorkspaceRequired = { requiresWorkspace: true };
 
