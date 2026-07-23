@@ -1,5 +1,6 @@
 export {
   isTelegramAgentInvocation,
+  normalizeTelegramAgentInput,
   parseTelegramConfirmationCallbackContext,
   parseTelegramMessageContext,
   type TelegramAttachmentContext,

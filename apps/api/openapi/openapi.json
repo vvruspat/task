@@ -8553,6 +8553,11 @@
             "type": "string",
             "example": "-100987654321"
           },
+          "telegramThreadId": {
+            "type": "string",
+            "example": "17",
+            "nullable": true
+          },
           "sourceMessageId": {
             "type": "string",
             "nullable": true

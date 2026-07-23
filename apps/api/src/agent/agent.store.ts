@@ -13,6 +13,7 @@ export type TelegramAgentRunContextResult =
       status: "resolved";
       workspaceId: string;
       userId: string;
+      defaultProjectId?: string | null;
     }
   | {
       status: "telegram_user_unlinked";
@@ -63,6 +64,12 @@ export type FindTelegramAgentRunInput = {
   sourceMessageId: string;
 };
 
+export type ListTelegramConversationInput = {
+  workspaceId: string;
+  sourceThreadId: string;
+  limit: number;
+};
+
 export type AgentRunDetailRecord = {
   run: AgentRunRecord;
   toolCalls: AgentToolCallRecord[];
@@ -94,6 +101,7 @@ export type AgentRunStore = {
   ): Promise<AgentChatRecord | null>;
   deleteChat?(workspaceId: string, chatId: string, userId: string): Promise<AgentChatRecord | null>;
   findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunRecord | null>;
+  listTelegramConversation(input: ListTelegramConversationInput): Promise<AgentRunRecord[]>;
   createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunRecord>;
   createWebRun(input: PersistWebAgentRunInput): Promise<AgentRunRecord>;
   createWebChatTurn?(input: PersistWebChatTurnInput): Promise<PersistedWebChatTurn | null>;

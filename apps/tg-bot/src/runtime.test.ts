@@ -140,8 +140,9 @@ test("createTelegramBotRuntimeFromEnvironment records resolved updates through a
     body: JSON.stringify({
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramThreadId: null,
       sourceMessageId: "20",
-      inputText: "/task создай задачу записать бас",
+      inputText: "создай задачу записать бас",
       attachments: [],
     }),
   });

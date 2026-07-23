@@ -82,7 +82,10 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.equal(requestBody.tool_choice, "auto");
   assert.match(JSON.stringify(requestBody.messages), /Use the provided tools/);
   assert.match(JSON.stringify(requestBody.messages), /@task summarize today/);
+  assert.match(JSON.stringify(requestBody.tools), /project_list/);
+  assert.match(JSON.stringify(requestBody.tools), /project_get/);
   assert.match(JSON.stringify(requestBody.tools), /project_create/);
+  assert.match(JSON.stringify(requestBody.tools), /task_list/);
   assert.match(JSON.stringify(requestBody.tools), /task_skill_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_lookup/);
@@ -95,6 +98,88 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /independent root task/);
   assert.match(JSON.stringify(requestBody.messages), /named list or count of peer items/);
   assert.match(JSON.stringify(requestBody.messages), /new template and project items/);
+});
+
+test("OpenRouterAgentRuntime preserves shared conversation roles and selected project context", async () => {
+  const fetcher = new RecordingOpenRouterFetch(
+    jsonResponse(200, { choices: [{ message: { content: "Three tasks." } }] }),
+  );
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch);
+
+  await runtime.handleTelegramRequest({
+    ...request,
+    context: {
+      ...request.context,
+      projectId: "44444444-4444-4444-8444-444444444444",
+    },
+    conversation: [
+      { role: "user", content: "List projects" },
+      { role: "assistant", content: "Album" },
+      { role: "user", content: "How many tasks does it have?" },
+    ],
+  });
+
+  const body = parseRequestBody(getOnlyCall(fetcher).init.body);
+  assert.ok(isOpenRouterRequestBody(body));
+  assert.match(
+    JSON.stringify(body.messages),
+    /The selected project id is 44444444-4444-4444-8444-444444444444/u,
+  );
+  assert.match(
+    JSON.stringify(body.messages),
+    /List projects.*Album.*How many tasks does it have\?/u,
+  );
+});
+
+test("OpenRouterAgentRuntime routes project read questions to the read-only list tool", async () => {
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-project-list",
+                type: "function",
+                function: { name: "project_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "Two projects." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("project_list", {
+      kind: "project_list",
+      count: 2,
+      projects: [{ id: projectId, title: "Album" }],
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: {
+      ...request.input,
+      inputText: "What projects were created?",
+    },
+  });
+
+  const firstBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(firstBody));
+  assert.deepEqual(firstBody.tool_choice, {
+    type: "function",
+    function: { name: "project_list" },
+  });
+  assert.equal(result.finalResponse, "Two projects.");
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["project_list"],
+  );
 });
 
 test("OpenRouterAgentRuntime exposes connected workspace integration tools", async () => {

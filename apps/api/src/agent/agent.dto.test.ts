@@ -11,6 +11,7 @@ import {
 const validInput = {
   telegramId: "123456789",
   telegramChatId: "-100987654321",
+  telegramThreadId: "17",
   sourceMessageId: "  42  ",
   inputText: "  @task what is next?  ",
   attachments: [
@@ -37,6 +38,7 @@ test("parseCreateTelegramAgentRunInput validates and normalizes Telegram agent r
   assert.deepEqual(parseCreateTelegramAgentRunInput(validInput), {
     telegramId: "123456789",
     telegramChatId: "-100987654321",
+    telegramThreadId: "17",
     sourceMessageId: "42",
     inputText: "@task what is next?",
     attachments: [
@@ -67,6 +69,7 @@ test("parseCreateTelegramAgentRunInput validates and normalizes Telegram agent r
     {
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramThreadId: "17",
       sourceMessageId: null,
       inputText: "@task what is next?",
       attachments: [
@@ -93,6 +96,7 @@ test("parseCreateTelegramAgentRunInput validates and normalizes Telegram agent r
   assert.deepEqual(parseCreateTelegramAgentRunInput({ ...validInput, attachments: undefined }), {
     telegramId: "123456789",
     telegramChatId: "-100987654321",
+    telegramThreadId: "17",
     sourceMessageId: "42",
     inputText: "@task what is next?",
     attachments: [],
@@ -105,6 +109,7 @@ test("parseCreateTelegramAgentRunInput rejects malformed Telegram agent requests
     [],
     { ...validInput, telegramId: "username" },
     { ...validInput, telegramChatId: "chat" },
+    { ...validInput, telegramThreadId: "topic" },
     { ...validInput, sourceMessageId: 42 },
     { ...validInput, inputText: "" },
     { ...validInput, inputText: " ".repeat(8001) },

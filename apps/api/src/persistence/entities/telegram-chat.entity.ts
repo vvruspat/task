@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   Column,
   CreateDateColumn,
@@ -14,7 +15,7 @@ import type { TelegramChatRecord } from "../types/core-persistence.types.js";
 @Index("idx_telegram_chats_linked_by_user_id", ["linkedByUserId"])
 export class TelegramChatEntity implements TelegramChatRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";

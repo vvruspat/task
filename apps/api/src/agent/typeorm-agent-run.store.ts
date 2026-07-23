@@ -18,6 +18,7 @@ import type {
   AgentRunDetailRecord,
   AgentRunStore,
   FindTelegramAgentRunInput,
+  ListTelegramConversationInput,
   PersistedWebChatTurn,
   PersistTelegramAgentRunInput,
   PersistWebAgentRunInput,
@@ -66,6 +67,7 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
       status: "resolved",
       workspaceId: chat.workspaceId,
       userId: identity.userId,
+      defaultProjectId: chat.defaultProjectId,
     };
   }
 
@@ -215,6 +217,20 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
       sourceThreadId: input.sourceThreadId,
       sourceMessageId: input.sourceMessageId,
     });
+  }
+
+  async listTelegramConversation(input: ListTelegramConversationInput): Promise<AgentRunEntity[]> {
+    const dataSource = await this.getInitializedDataSource();
+    const runs = await dataSource.getRepository(AgentRunEntity).find({
+      order: { createdAt: "DESC" },
+      take: input.limit,
+      where: {
+        source: "telegram",
+        sourceThreadId: input.sourceThreadId,
+        workspaceId: input.workspaceId,
+      },
+    });
+    return runs.reverse();
   }
 
   async createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunEntity> {

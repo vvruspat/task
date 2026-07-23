@@ -5,7 +5,7 @@ import type {
 } from "@task/integration-sdk";
 import type { ApiOpenRouterConfig } from "../config.js";
 import type { AgentRunStatus } from "../persistence/types/core-persistence.types.js";
-import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
+import type { CreateTelegramAgentRunInput, WebAgentChatMessage } from "./agent.contracts.js";
 import {
   type AgentToolOperationCall,
   type AgentToolOperationDispatcher,
@@ -27,6 +27,50 @@ type OpenRouterAgentToolDefinition = {
 };
 
 const openRouterAgentTools = [
+  {
+    type: "function",
+    function: {
+      name: "project_list",
+      description:
+        "List the real active projects visible to the current user in the current workspace. Use this instead of guessing project names or ids.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {},
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "project_get",
+      description:
+        "Get one real project visible to the current user by its id. Use project_list first when the user supplied only a project name.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+        },
+        required: ["projectId"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "task_list",
+      description:
+        "List active tasks in a real project visible to the current user. Omit projectId only when the server supplied a selected project.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+        },
+      },
+    },
+  },
   {
     type: "function",
     function: {
@@ -282,9 +326,11 @@ const coreMutationToolNames = new Set([
 const agentSystemPrompt = [
   "You are tAsk's backend task agent.",
   "Use the provided tools for every project or task mutation.",
+  "Use project_list, project_get, task_list, and task_lookup for workspace reads. Never invent projects, tasks, ids, statuses, or assignees.",
   "Never claim that a project, task, or task template was created unless the corresponding tool succeeded in this response.",
   "The workspace and current user are supplied by the server and must not be invented.",
   "When the user message includes a selected project id, pass that exact id to task_create.",
+  "When a selected project id is supplied by the server, task_list may omit projectId.",
   "When the user asks to create a project with a named list or count of peer items (for example, a project with 8 songs), call project_create once with those items in its tasks array and set taskTypeHint to the singular item type. Every listed item is an independent root task, not a subtask.",
   "When the user asks to create a new task template, call task_skill_create and choose practical reusable subtasks from the user's goal when they did not specify them.",
   "When the user asks for a new template and project items based on it in the same request, call task_skill_create first, then pass the exact returned template id as taskSkillId to project_create so every root task receives the new template.",
@@ -303,6 +349,12 @@ const agentSystemPrompt = [
   "Connected workspace integrations may add namespaced tools. Use their read-only search/get tools when the user asks about external resources.",
   "Reply briefly and accurately.",
 ].join(" ");
+
+function formatAgentSystemPrompt(projectId: string | null | undefined): string {
+  return projectId === null || projectId === undefined
+    ? `${agentSystemPrompt} No project is selected in the current conversation.`
+    : `${agentSystemPrompt} The selected project id is ${projectId}.`;
+}
 
 const chatTitleSystemPrompt =
   "Create a concise title for this chat in the user's language. Return only the title, 2 to 7 words, without quotes, punctuation at the end, or commentary.";
@@ -335,12 +387,14 @@ export type AgentRuntimeToolCall = {
 export type TelegramAgentRuntimeContext = {
   workspaceId: string;
   userId: string;
+  projectId?: string | null;
   inputText?: string;
 };
 
 export type TelegramAgentRuntimeRequest = {
   input: CreateTelegramAgentRunInput;
   context: TelegramAgentRuntimeContext;
+  conversation?: readonly WebAgentChatMessage[];
   onProgress?: AgentRuntimeProgressReporter;
 };
 
@@ -485,12 +539,16 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         ...integrationToolDefinitions.filter((tool) => !tool.readOnly).map((tool) => tool.name),
       ]);
       const messages: OpenRouterConversationMessage[] = [
-        { role: "system", content: agentSystemPrompt },
-        { role: "user", content: request.input.inputText },
+        { role: "system", content: formatAgentSystemPrompt(request.context.projectId) },
+        ...(request.conversation ?? [{ role: "user" as const, content: request.input.inputText }]),
       ];
       const allToolCalls: AgentRuntimeToolCall[] = [];
       let tokenUsage: Record<string, unknown> | null = null;
       const mutationRequired = looksLikeMutationRequest(request.input.inputText);
+      const requiredReadTool = requestedCoreReadTool(
+        request.input.inputText,
+        request.context.projectId,
+      );
 
       for (let round = 0; round < maxOpenRouterToolRounds; round += 1) {
         const thinkingId = `thinking-${round + 1}`;
@@ -512,11 +570,17 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
             messages,
             tools: availableAgentTools,
             tool_choice:
-              mutationRequired &&
-              !hasMutationToolCall(allToolCalls, mutationToolNames) &&
-              !taskLookupNeedsClarification(allToolCalls)
-                ? "required"
-                : "auto",
+              requiredReadTool !== null &&
+              !allToolCalls.some((toolCall) => toolCall.toolName === requiredReadTool)
+                ? {
+                    type: "function",
+                    function: { name: requiredReadTool },
+                  }
+                : mutationRequired &&
+                    !hasMutationToolCall(allToolCalls, mutationToolNames) &&
+                    !taskLookupNeedsClarification(allToolCalls)
+                  ? "required"
+                  : "auto",
             stream: false,
           }),
         });
@@ -729,6 +793,9 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
 function describeToolCall(call: AgentToolOperationCall): string {
   const title = readToolArgumentLabel(call.arguments, "title");
   const name = readToolArgumentLabel(call.arguments, "name");
+  if (call.toolName === "project_list") return "Получаю список проектов";
+  if (call.toolName === "project_get") return "Получаю проект";
+  if (call.toolName === "task_list") return "Получаю задачи проекта";
   if (["task_skill_create", "task_skill.create"].includes(call.toolName)) {
     return `Создаю шаблон${name === null ? "" : ` «${name}»`}`;
   }
@@ -1141,9 +1208,74 @@ function toOpenRouterConversationToolCall(
 }
 
 function looksLikeMutationRequest(inputText: string): boolean {
-  return /(создай|создать|создайте|добавь|добавить|добавьте|назначь|назначить|измени|изменить|обнови|обновить|переименуй|переименовать|поставь|установи|прикрепи|удали|сними|create|add|assign|set|attach|archive|delete|update)/iu.test(
-    inputText,
-  );
+  const mutationVerbs = new Set([
+    "add",
+    "archive",
+    "assign",
+    "attach",
+    "create",
+    "delete",
+    "set",
+    "update",
+    "добавить",
+    "добавь",
+    "добавьте",
+    "изменить",
+    "измени",
+    "назначить",
+    "назначь",
+    "обнови",
+    "обновить",
+    "переименовать",
+    "переименуй",
+    "поставь",
+    "прикрепи",
+    "сними",
+    "создай",
+    "создайте",
+    "создать",
+    "удали",
+    "установи",
+  ]);
+  return inputText
+    .normalize("NFKC")
+    .toLocaleLowerCase()
+    .split(/[^\p{L}]+/u)
+    .some((token) => mutationVerbs.has(token));
+}
+
+function requestedCoreReadTool(
+  inputText: string,
+  projectId: string | null | undefined,
+): "project_list" | "task_list" | null {
+  const tokens = inputText
+    .normalize("NFKC")
+    .toLocaleLowerCase()
+    .split(/[^\p{L}]+/u)
+    .filter((token) => token.length > 0);
+  const tokenSet = new Set(tokens);
+  const asksForList = [
+    "list",
+    "show",
+    "what",
+    "which",
+    "какие",
+    "перечисли",
+    "покажи",
+    "сколько",
+  ].some((token) => tokenSet.has(token));
+  if (!asksForList) return null;
+  if (["projects", "проектов", "проекты"].some((token) => tokenSet.has(token))) {
+    return "project_list";
+  }
+  if (
+    projectId !== null &&
+    projectId !== undefined &&
+    ["issues", "tasks", "задач", "задачи"].some((token) => tokenSet.has(token))
+  ) {
+    return "task_list";
+  }
+  return null;
 }
 
 function hasMutationToolCall(
@@ -1398,7 +1530,7 @@ type OpenRouterConversationMessage =
   | {
       role: "assistant";
       content: string | null;
-      tool_calls: OpenRouterConversationToolCall[];
+      tool_calls?: OpenRouterConversationToolCall[];
     }
   | { role: "tool"; tool_call_id: string; content: string };
 

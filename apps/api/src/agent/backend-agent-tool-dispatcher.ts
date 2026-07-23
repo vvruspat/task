@@ -17,13 +17,15 @@ import type {
   AgentToolOperationDispatcher,
 } from "./agent-tool-dispatcher.js";
 
-type AgentProjectsService = Pick<ProjectsService, "createProject">;
+type AgentProjectsService = Pick<ProjectsService, "createProject"> &
+  Partial<Pick<ProjectsService, "getProject" | "listActiveProjects">>;
 type AgentTasksService = Pick<TasksService, "addTaskSubtasks" | "createTask"> &
   Partial<
     Pick<
       TasksService,
       | "getTaskById"
       | "getTaskByIdentifier"
+      | "listActiveTasks"
       | "updateTask"
       | "updateTaskAssignee"
       | "updateTaskDueDate"
@@ -169,6 +171,69 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     call: AgentToolOperationCall,
     context: TelegramAgentRuntimeContext,
   ): Promise<Record<string, unknown>> {
+    if (call.toolName === "project_list") {
+      const projects = await this.requireListActiveProjects()(context.workspaceId, context.userId);
+      return {
+        kind: "project_list",
+        count: projects.length,
+        projects: projects.map((project) => ({
+          id: project.id,
+          key: project.key,
+          slug: project.slug,
+          title: project.title,
+          description: project.description,
+          status: project.status,
+        })),
+      };
+    }
+
+    if (call.toolName === "project_get") {
+      const project = await this.requireGetProject()(
+        context.workspaceId,
+        readUuid(call.arguments, "projectId"),
+        context.userId,
+      );
+      return {
+        kind: "project_found",
+        id: project.id,
+        key: project.key,
+        slug: project.slug,
+        title: project.title,
+        description: project.description,
+        status: project.status,
+        workspaceId: project.workspaceId,
+      };
+    }
+
+    if (call.toolName === "task_list") {
+      const projectId = readOptionalUuid(call.arguments, "projectId") ?? context.projectId;
+      if (projectId === undefined || projectId === null) {
+        throw new BadRequestException(
+          "Agent tool task_list requires projectId when no project is selected.",
+        );
+      }
+      const tasks = await this.requireListActiveTasks()(
+        context.workspaceId,
+        projectId,
+        context.userId,
+      );
+      return {
+        kind: "task_list",
+        projectId,
+        count: tasks.length,
+        tasks: tasks.map((task) => ({
+          id: task.id,
+          number: task.number,
+          parentTaskId: task.parentTaskId,
+          title: task.title,
+          description: task.description,
+          statusId: task.statusId,
+          assigneeUserId: task.assigneeUserId,
+          dueAt: task.dueAt?.toISOString() ?? null,
+        })),
+      };
+    }
+
     if (call.toolName === "task_lookup") {
       const reference =
         readOptionalString(call.arguments, "reference") ??
@@ -477,6 +542,30 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     return method.bind(this.tasksService);
   }
 
+  private requireListActiveProjects(): ProjectsService["listActiveProjects"] {
+    const method = this.projectsService.listActiveProjects;
+    if (method === undefined) {
+      throw new BadRequestException("Agent project list service is unavailable.");
+    }
+    return method.bind(this.projectsService);
+  }
+
+  private requireGetProject(): ProjectsService["getProject"] {
+    const method = this.projectsService.getProject;
+    if (method === undefined) {
+      throw new BadRequestException("Agent project lookup service is unavailable.");
+    }
+    return method.bind(this.projectsService);
+  }
+
+  private requireListActiveTasks(): TasksService["listActiveTasks"] {
+    const method = this.tasksService.listActiveTasks;
+    if (method === undefined) {
+      throw new BadRequestException("Agent task list service is unavailable.");
+    }
+    return method.bind(this.tasksService);
+  }
+
   private requireGetTaskByIdentifier(): TasksService["getTaskByIdentifier"] {
     if (this.tasksService.getTaskByIdentifier === undefined) {
       throw new BadRequestException("Agent task lookup is unavailable.");
@@ -738,8 +827,10 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
   }
 }
 
+const readOnlyCoreToolNames = new Set(["project_get", "project_list", "task_list", "task_lookup"]);
+
 function isMutationToolName(toolName: string): boolean {
-  return toolName !== "task_lookup";
+  return !readOnlyCoreToolNames.has(toolName);
 }
 
 function agentMutationKind(toolName: string): "created" | "updated" {

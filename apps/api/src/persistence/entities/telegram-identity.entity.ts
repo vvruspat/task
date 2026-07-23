@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 import type { TelegramIdentityRecord } from "../types/core-persistence.types.js";
 
@@ -5,7 +6,7 @@ import type { TelegramIdentityRecord } from "../types/core-persistence.types.js"
 @Index("idx_telegram_identities_user_id", ["userId"])
 export class TelegramIdentityEntity implements TelegramIdentityRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "user_id", type: "uuid" })
   userId = "";

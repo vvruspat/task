@@ -68,6 +68,7 @@ test("Telegram group invocation matches only the configured bot mention", () => 
     chat: { telegramChatId: "-100987654321", title: "Team", type: "supergroup" },
     entities: [{ length: 15, offset: 0, type: "mention", url: null }],
     messageId: "20",
+    threadId: null,
     replyToMessageId: null,
     sender: {
       firstName: null,
@@ -149,8 +150,9 @@ test("processTelegramUpdate records resolved commands and replies with agent res
     body: {
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramThreadId: null,
       sourceMessageId: "20",
-      inputText: "/task создай задачу записать бас",
+      inputText: "создай задачу записать бас",
       attachments: [
         {
           kind: "document",
