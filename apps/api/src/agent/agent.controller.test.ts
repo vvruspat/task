@@ -20,6 +20,7 @@ import type {
   AgentRunDetailRecord,
   AgentRunStore,
   FindTelegramAgentRunInput,
+  ListTelegramConversationInput,
   PersistTelegramAgentRunInput,
   PersistWebAgentRunInput,
   TelegramAgentRunContextResult,
@@ -145,6 +146,12 @@ class RecordingAgentRunStore implements AgentRunStore {
     _input: FindTelegramAgentRunInput,
   ): Promise<PersistedAgentRun | null> {
     return null;
+  }
+
+  async listTelegramConversation(
+    _input: ListTelegramConversationInput,
+  ): Promise<PersistedAgentRun[]> {
+    return [];
   }
 
   async listForWorkspace(workspaceId: string, userId: string): Promise<PersistedAgentRun[]> {

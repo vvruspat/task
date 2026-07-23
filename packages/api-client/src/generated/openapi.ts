@@ -2362,6 +2362,8 @@ export interface components {
       telegramId: string;
       /** @example -100987654321 */
       telegramChatId: string;
+      /** @example 17 */
+      telegramThreadId?: string | null;
       sourceMessageId?: string | null;
       /** @example @task what is next for the album? */
       inputText: string;

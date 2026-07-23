@@ -84,6 +84,8 @@ test("transactionally created entities receive UUIDs before saves", () => {
   assert.match(new WorkspaceMemberEntity().id, uuidPattern);
   assert.match(new AuthSessionEntity().id, uuidPattern);
   assert.match(new InviteEntity().id, uuidPattern);
+  assert.match(new TelegramIdentityEntity().id, uuidPattern);
+  assert.match(new TelegramChatEntity().id, uuidPattern);
 });
 
 test("new invitations receive their actual creation time before saves", () => {

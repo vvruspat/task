@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import type { ConfirmationRequestSummaryDto } from "../confirmations/confirmations.dto.js";
 import type { ConfirmationsService } from "../confirmations/confirmations.service.js";
+import type { AgentRunRecord } from "../persistence/types/core-persistence.types.js";
 import type {
   AgentChatSummary,
   AgentRunDetail,
@@ -27,6 +28,8 @@ import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import type { AgentRunStore } from "./agent.store.js";
 
 const maxPendingConfirmationRequestsInIntakeResponse = 5;
+const telegramConversationRunLimit = 20;
+const telegramConversationCharacterBudget = 24_000;
 
 @Injectable()
 export class AgentService {
@@ -51,11 +54,16 @@ export class AgentService {
       throw new ForbiddenException("Telegram user is not a member of the chat workspace.");
     }
 
+    const sourceThreadId = telegramConversationThreadId(
+      input.telegramChatId,
+      input.telegramThreadId,
+    );
+
     if (input.sourceMessageId !== undefined && input.sourceMessageId !== null) {
       const existingRun = await this.agentRunStore.findTelegramRunBySource({
         workspaceId: context.workspaceId,
         userId: context.userId,
-        sourceThreadId: input.telegramChatId,
+        sourceThreadId,
         sourceMessageId: input.sourceMessageId,
       });
 
@@ -64,17 +72,24 @@ export class AgentService {
       }
     }
 
+    const conversationRuns = await this.agentRunStore.listTelegramConversation({
+      workspaceId: context.workspaceId,
+      sourceThreadId,
+      limit: telegramConversationRunLimit,
+    });
     const runtimeResult = await this.agentRuntime.handleTelegramRequest({
       input,
       context: {
         workspaceId: context.workspaceId,
         userId: context.userId,
+        projectId: context.defaultProjectId ?? null,
       },
+      conversation: telegramConversationMessages(conversationRuns, input.inputText),
     });
     const run = await this.agentRunStore.createTelegramRun({
       workspaceId: context.workspaceId,
       userId: context.userId,
-      sourceThreadId: input.telegramChatId,
+      sourceThreadId,
       sourceMessageId: input.sourceMessageId ?? null,
       inputText: input.inputText,
       runtimeResult,
@@ -97,10 +112,11 @@ export class AgentService {
       input: {
         telegramId: "web",
         telegramChatId: "web",
-        inputText: formatWebConversation(input.messages, input.projectId),
+        inputText: lastUserMessage.content,
         attachments: [],
       },
-      context: { workspaceId, userId },
+      context: { workspaceId, userId, projectId: input.projectId ?? null },
+      conversation: input.messages,
     });
     const run = await this.agentRunStore.createWebRun({
       workspaceId,
@@ -142,15 +158,15 @@ export class AgentService {
       })) ?? []),
       { role: "user", content: input.message },
     ];
-    const runtimeInput = formatWebConversation(messages, input.projectId);
     const runtimeResult = await this.agentRuntime.handleTelegramRequest({
       input: {
         telegramId: "web",
         telegramChatId: "web",
-        inputText: runtimeInput,
+        inputText: input.message,
         attachments: [],
       },
-      context: { workspaceId, userId },
+      context: { workspaceId, userId, projectId: input.projectId ?? null },
+      conversation: messages,
       ...(onProgress === undefined ? {} : { onProgress }),
     });
     const webRuntimeResult = {
@@ -330,18 +346,37 @@ export class AgentService {
   }
 }
 
-function formatWebConversation(
-  messages: WebAgentChatMessage[],
-  projectId: string | null | undefined,
+export function telegramConversationThreadId(
+  telegramChatId: string,
+  telegramThreadId: string | null | undefined,
 ): string {
-  const projectContext =
-    projectId === null || projectId === undefined
-      ? "No project is selected."
-      : `Selected project id: ${projectId}.`;
-  const conversation = messages
-    .map((message) => `${message.role === "user" ? "User" : "Assistant"}: ${message.content}`)
-    .join("\n");
-  return `${projectContext}\n\n${conversation}`;
+  return telegramThreadId === null || telegramThreadId === undefined
+    ? telegramChatId
+    : `${telegramChatId}:topic:${telegramThreadId}`;
+}
+
+function telegramConversationMessages(
+  runs: AgentRunRecord[],
+  inputText: string,
+): WebAgentChatMessage[] {
+  const messages: WebAgentChatMessage[] = [{ role: "user", content: inputText }];
+  let remainingCharacters = Math.max(0, telegramConversationCharacterBudget - inputText.length);
+  for (let index = runs.length - 1; index >= 0; index -= 1) {
+    const run = runs[index];
+    if (run === undefined) continue;
+    const response =
+      run.finalResponse === null || run.finalResponse.trim().length === 0
+        ? null
+        : run.finalResponse;
+    const turnCharacterCount = run.inputText.length + (response?.length ?? 0);
+    if (turnCharacterCount > remainingCharacters) break;
+    if (response !== null) {
+      messages.unshift({ role: "assistant", content: response });
+    }
+    messages.unshift({ role: "user", content: run.inputText });
+    remainingCharacters -= turnCharacterCount;
+  }
+  return messages;
 }
 
 function createFallbackChatTitle(message: string): string {

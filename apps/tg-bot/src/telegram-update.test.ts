@@ -30,6 +30,7 @@ test("parseTelegramMessageContext normalizes direct text messages", () => {
   assert.deepEqual(context, {
     updateId: "10",
     messageId: "20",
+    threadId: null,
     sender: {
       telegramId: "123456789",
       isBot: false,

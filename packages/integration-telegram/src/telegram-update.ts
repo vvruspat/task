@@ -44,6 +44,7 @@ export type TelegramAttachmentContext =
 export type TelegramMessageContext = {
   updateId: string;
   messageId: string;
+  threadId: string | null;
   sender: TelegramUserContext;
   chat: TelegramChatContext;
   text: string | null;
@@ -87,6 +88,7 @@ export function parseTelegramMessageContext(update: unknown): TelegramMessageCon
     chat,
     entities: readMessageEntities(message),
     messageId: readTelegramIntegerAsString(message, "message_id"),
+    threadId: readOptionalTelegramIntegerAsString(message, "message_thread_id"),
     replyToMessageId: readReplyToMessageId(message),
     sender,
     text: readOptionalText(message),
@@ -137,6 +139,31 @@ export function isTelegramAgentInvocation(
     }
   }
   return false;
+}
+
+export function normalizeTelegramAgentInput(
+  message: TelegramMessageContext,
+  botUsername: string | null,
+): string | null {
+  if (message.text === null) return null;
+  const removableRanges = message.entities
+    .filter((entity) => {
+      const entityText = message.text?.slice(entity.offset, entity.offset + entity.length) ?? "";
+      return (
+        (entity.type === "bot_command" && isTaskCommand(entityText, botUsername)) ||
+        (entity.type === "mention" &&
+          botUsername !== null &&
+          entityText.toLowerCase() === `@${botUsername.toLowerCase()}`)
+      );
+    })
+    .map((entity) => ({ start: entity.offset, end: entity.offset + entity.length }))
+    .sort((left, right) => right.start - left.start);
+  let normalized = message.text;
+  for (const range of removableRanges) {
+    normalized = `${normalized.slice(0, range.start)}${normalized.slice(range.end)}`;
+  }
+  normalized = normalized.trim();
+  return normalized.length === 0 ? null : normalized;
 }
 
 export function readTelegramCallbackReplyTarget(update: unknown): TelegramReplyTarget | null {
@@ -232,6 +259,18 @@ function readReplyToMessageId(message: Record<string, unknown>): string | null {
     readRecord(replyToMessage, "telegram reply message"),
     "message_id",
   );
+}
+
+function readOptionalTelegramIntegerAsString(
+  record: Record<string, unknown>,
+  key: string,
+): string | null {
+  const value = readProperty(record, key);
+  if (value === undefined || value === null) return null;
+  if (!isSafeInteger(value) || value < 0) {
+    throw new TelegramUpdateParseError(`${key} must be a non-negative safe integer.`);
+  }
+  return value.toString();
 }
 
 function readAttachments(message: Record<string, unknown>): TelegramAttachmentContext[] {

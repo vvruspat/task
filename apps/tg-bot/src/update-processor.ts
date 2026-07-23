@@ -2,7 +2,10 @@ import type {
   TelegramConfirmationCallbackContext,
   TelegramConversationEvent,
 } from "@task/integration-telegram";
-import { createTelegramConversationIngress } from "@task/integration-telegram";
+import {
+  createTelegramConversationIngress,
+  normalizeTelegramAgentInput,
+} from "@task/integration-telegram";
 import {
   type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
@@ -118,13 +121,26 @@ export async function processTelegramConversationEvent(
     );
   }
 
+  const inputText = normalizeTelegramAgentInput(action.message, options.botUsername ?? null);
+  if (inputText === null) {
+    return sendReply(
+      createReply(
+        action.message.chat.telegramChatId,
+        action.message.messageId,
+        "Напиши запрос после упоминания бота или команды /task.",
+      ),
+      options.replySender,
+    );
+  }
+
   try {
     const agentRun = await options.backendClient.createTelegramAgentRun({
       body: {
         telegramId: action.message.sender.telegramId,
         telegramChatId: action.message.chat.telegramChatId,
+        telegramThreadId: action.message.threadId,
         sourceMessageId: action.message.messageId,
-        inputText: action.message.text,
+        inputText,
         attachments: action.message.attachments,
       },
     });

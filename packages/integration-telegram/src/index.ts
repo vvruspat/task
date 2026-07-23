@@ -15,6 +15,7 @@ export {
 } from "./telegram-integration-plugin.js";
 export {
   isTelegramAgentInvocation,
+  normalizeTelegramAgentInput,
   parseTelegramConfirmationCallbackContext,
   parseTelegramMessageContext,
   type TelegramAttachmentContext,

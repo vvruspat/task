@@ -22,6 +22,7 @@ import type {
 
 const telegramUserIdPattern = /^\d+$/u;
 const telegramChatIdPattern = /^-?\d+$/u;
+const telegramThreadIdPattern = /^\d+$/u;
 const maxInputTextLength = 8000;
 const maxSourceMessageIdLength = 128;
 const maxAttachments = 10;
@@ -99,6 +100,9 @@ export class CreateTelegramAgentRunDto implements CreateTelegramAgentRunInput {
 
   @ApiProperty({ example: "-100987654321" })
   readonly telegramChatId: string = "";
+
+  @ApiPropertyOptional({ example: "17", nullable: true, type: String })
+  readonly telegramThreadId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String })
   readonly sourceMessageId?: string | null;
@@ -398,6 +402,11 @@ export function parseCreateTelegramAgentRunInput(value: unknown): CreateTelegram
   return {
     telegramId: readPatternString(value, "telegramId", telegramUserIdPattern),
     telegramChatId: readPatternString(value, "telegramChatId", telegramChatIdPattern),
+    telegramThreadId: readOptionalMatchingString(
+      value,
+      "telegramThreadId",
+      telegramThreadIdPattern,
+    ),
     sourceMessageId: readOptionalTrimmedString(value, "sourceMessageId", maxSourceMessageIdLength),
     inputText: readRequiredTrimmedString(value, "inputText", maxInputTextLength),
     attachments: readAttachments(value),
@@ -445,6 +454,19 @@ function readPatternString(
     throw new BadRequestException(`${propertyName} must be an integer string.`);
   }
 
+  return propertyValue;
+}
+
+function readOptionalMatchingString(
+  value: Record<string, unknown>,
+  propertyName: string,
+  pattern: RegExp,
+): string | null {
+  const propertyValue = value[propertyName];
+  if (propertyValue === undefined || propertyValue === null) return null;
+  if (typeof propertyValue !== "string" || !pattern.test(propertyValue)) {
+    throw new BadRequestException(`${propertyName} must be an integer string or null.`);
+  }
   return propertyValue;
 }
 

@@ -8,6 +8,7 @@ import type {
 export type CreateTelegramAgentRunInput = {
   telegramId: string;
   telegramChatId: string;
+  telegramThreadId?: string | null;
   sourceMessageId?: string | null;
   inputText: string;
   attachments: TelegramAgentRunAttachmentInput[];

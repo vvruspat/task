@@ -162,6 +162,94 @@ test("BackendAgentToolOperationDispatcher routes workspace integration tools", a
   ]);
 });
 
+test("BackendAgentToolOperationDispatcher exposes permission-checked project and task reads", async () => {
+  const realtimeChanges: unknown[] = [];
+  const project = new ProjectDetailDto({
+    id: projectId,
+    workspaceId,
+    key: "ALB",
+    slug: "album",
+    title: "Album",
+    description: "Record release",
+    status: "active",
+    position: null,
+    createdByUserId: userId,
+    archivedAt: null,
+    createdAt: now,
+    updatedAt: now,
+  });
+  const task = taskDetail("Record vocals", null);
+  const dispatcher = new BackendAgentToolOperationDispatcher(
+    {
+      async createProject() {
+        throw new Error("Unexpected project mutation.");
+      },
+      async listActiveProjects() {
+        return [project];
+      },
+      async getProject() {
+        return project;
+      },
+    },
+    {
+      async addTaskSubtasks() {
+        throw new Error("Unexpected subtask mutation.");
+      },
+      async createTask() {
+        throw new Error("Unexpected task mutation.");
+      },
+      async listActiveTasks() {
+        return [task];
+      },
+    },
+    emptyTaskSkillsService(),
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    {
+      publishChange(change) {
+        realtimeChanges.push(change);
+      },
+    },
+  );
+  const context = { workspaceId, userId, projectId };
+
+  const projectList = await dispatcher.dispatchToolCall(
+    { arguments: {}, callId: "call-project-list", toolName: "project_list" },
+    context,
+  );
+  const projectDetail = await dispatcher.dispatchToolCall(
+    {
+      arguments: { projectId },
+      callId: "call-project-get",
+      toolName: "project_get",
+    },
+    context,
+  );
+  const taskList = await dispatcher.dispatchToolCall(
+    { arguments: {}, callId: "call-task-list", toolName: "task_list" },
+    context,
+  );
+
+  assert.equal(projectList.result?.["count"], 1);
+  assert.deepEqual(projectList.result?.["projects"], [
+    {
+      id: projectId,
+      key: "ALB",
+      slug: "album",
+      title: "Album",
+      description: "Record release",
+      status: "active",
+    },
+  ]);
+  assert.equal(projectDetail.result?.["kind"], "project_found");
+  assert.equal(projectDetail.result?.["id"], projectId);
+  assert.equal(taskList.result?.["projectId"], projectId);
+  assert.equal(taskList.result?.["count"], 1);
+  assert.deepEqual(realtimeChanges, []);
+});
+
 test("BackendAgentToolOperationDispatcher creates a project through the service layer", async () => {
   const calls: unknown[] = [];
   const dispatcher = new BackendAgentToolOperationDispatcher(
