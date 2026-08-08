@@ -1,8 +1,10 @@
 "use client";
 
 import {
+  AlertDialog,
   Badge,
   Box,
+  Button,
   Card,
   Flex,
   Heading,
@@ -19,6 +21,7 @@ import {
   FolderKanban,
   GitBranch,
   Tags,
+  Trash2,
   UserRound,
   Workflow,
   X,
@@ -29,7 +32,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 import { issueIdentifier } from "../lib/issue-url";
 import { isTaskSummary } from "../lib/task-summary";
-import { updateWorkspaceTask } from "../lib/use-workspace-data";
+import { removeWorkspaceTask, updateWorkspaceTask } from "../lib/use-workspace-data";
 import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
 import { workspaceIssueHref } from "../lib/workspace-url";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
@@ -54,12 +57,14 @@ export function TaskDetailsContent({
   identifier,
   portalContainer,
   task,
+  onTaskDeleted,
   onTaskUpdated,
 }: Readonly<{
   data: WorkspaceBootstrap | null;
   identifier: string;
   portalContainer?: HTMLElement | null;
   task: TaskSummary;
+  onTaskDeleted?: (task: TaskSummary) => void;
   onTaskUpdated?: (task: TaskSummary) => void;
 }>): ReactNode {
   const { locale, t } = useI18n();
@@ -70,6 +75,8 @@ export function TaskDetailsContent({
   const [labelQuery, setLabelQuery] = useState("");
   const [labelsOpen, setLabelsOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -90,6 +97,7 @@ export function TaskDetailsContent({
   );
   const parentTask = projectTasks.find((item) => item.id === currentTask.parentTaskId);
   const subtasks = projectTasks.filter((item) => item.parentTaskId === currentTask.id);
+  const descendantCount = countTaskDescendants(projectTasks, currentTask.id);
   const workspaceLabels = useMemo(() => collectWorkspaceLabels(data, locale), [data, locale]);
   const selectedLabels = readTaskLabels(currentTask);
   const filteredLabels = workspaceLabels.filter((label) =>
@@ -162,6 +170,31 @@ export function TaskDetailsContent({
     setEditing(null);
     const nextDueAt = dueDate.length === 0 ? null : `${dueDate}T00:00:00.000Z`;
     if (nextDueAt !== currentTask.dueAt) await mutate({ dueAt: nextDueAt, operation: "due-date" });
+  };
+  const deleteTask = async (): Promise<void> => {
+    if (deleting) return;
+    setDeleting(true);
+    setMutationError(null);
+    try {
+      const query = new URLSearchParams({
+        projectId: currentTask.projectId,
+        workspaceId: currentTask.workspaceId,
+      });
+      const response = await fetch(`/api/workspace/tasks/${currentTask.id}?${query}`, {
+        method: "DELETE",
+      });
+      const body: unknown = await response.json();
+      if (!response.ok || !isTaskSummary(body)) {
+        throw new Error(readMutationError(body, t("task.deleteError")));
+      }
+      removeWorkspaceTask(currentTask.id);
+      setDeleteOpen(false);
+      onTaskDeleted?.(body);
+    } catch (error: unknown) {
+      setMutationError(error instanceof Error ? error.message : t("task.deleteError"));
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -442,6 +475,38 @@ export function TaskDetailsContent({
                 {mutationError}
               </Text>
             )}
+            <AlertDialog.Root
+              open={deleteOpen}
+              onOpenChange={(open) => {
+                if (!deleting) setDeleteOpen(open);
+              }}
+            >
+              <AlertDialog.Trigger>
+                <Button className="task-delete-action" color="red" variant="soft">
+                  <Trash2 size={14} /> {t("task.delete")}
+                </Button>
+              </AlertDialog.Trigger>
+              <AlertDialog.Content maxWidth="440px">
+                <AlertDialog.Title>
+                  {t("task.deleteConfirm", { name: currentTask.title })}
+                </AlertDialog.Title>
+                <AlertDialog.Description size="2">
+                  {descendantCount === 0
+                    ? t("task.deleteHint")
+                    : t("task.deleteWithSubtasksHint", { count: descendantCount })}
+                </AlertDialog.Description>
+                <Flex justify="end" gap="2" mt="4">
+                  <AlertDialog.Cancel>
+                    <Button color="gray" disabled={deleting} variant="soft">
+                      {t("common.cancel")}
+                    </Button>
+                  </AlertDialog.Cancel>
+                  <Button color="red" disabled={deleting} onClick={() => void deleteTask()}>
+                    {deleting ? t("task.deleting") : t("task.delete")}
+                  </Button>
+                </Flex>
+              </AlertDialog.Content>
+            </AlertDialog.Root>
           </Box>
         </Flex>
       </Card>
@@ -498,6 +563,20 @@ function sameLabel(left: string, right: string): boolean {
 
 function sameStrings(left: string[], right: string[]): boolean {
   return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function countTaskDescendants(tasks: readonly TaskSummary[], parentTaskId: string): number {
+  const hierarchyIds = new Set([parentTaskId]);
+  let previousSize = 0;
+  while (hierarchyIds.size !== previousSize) {
+    previousSize = hierarchyIds.size;
+    for (const task of tasks) {
+      if (typeof task.parentTaskId === "string" && hierarchyIds.has(task.parentTaskId)) {
+        hierarchyIds.add(task.id);
+      }
+    }
+  }
+  return hierarchyIds.size - 1;
 }
 
 function formatDateInput(value: string | null | undefined): string {

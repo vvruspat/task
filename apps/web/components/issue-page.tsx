@@ -9,7 +9,7 @@ import { useI18n } from "../lib/i18n/i18n";
 import { isCanonicalIssueRoute, issueHref, issueIdentifier } from "../lib/issue-url";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import { isApiFailure } from "../lib/workspace-contracts";
-import { workspaceIssueHref } from "../lib/workspace-url";
+import { workspaceIssueHref, workspaceProjectHref } from "../lib/workspace-url";
 import { TaskDetailsContent } from "./task-details-content";
 
 type IssueState =
@@ -133,6 +133,18 @@ export function IssuePage({
       data={data}
       identifier={readableIdentifier}
       task={task}
+      onTaskDeleted={() => {
+        if (data === null || project === undefined) {
+          router.back();
+          return;
+        }
+        const projectSummary = data.projects.find((item) => item.id === task.projectId);
+        if (projectSummary === undefined) {
+          router.back();
+          return;
+        }
+        router.replace(workspaceProjectHref(data.workspace.slug, projectSummary.slug));
+      }}
       onTaskUpdated={(updatedTask) => setState({ status: "ready", task: updatedTask })}
     />
   );

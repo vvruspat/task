@@ -39,6 +39,7 @@ import {
 import { WorkspaceServerSnapshotContext } from "./workspace-server-snapshot-context";
 import {
   applyWorkspaceProjectReconciliation,
+  applyWorkspaceTaskRemoval,
   applyWorkspaceTaskUpdate,
   workspaceTaskUpdateRequiresProjectReconciliation,
 } from "./workspace-task-cache";
@@ -209,6 +210,10 @@ export function hydrateWorkspaceServerSnapshot(snapshot: WorkspaceServerSnapshot
 
 export function updateWorkspaceTask(task: TaskSummary): void {
   updateWorkspaceData((data) => applyWorkspaceTaskUpdate(data, task));
+}
+
+export function removeWorkspaceTask(taskId: string): void {
+  updateWorkspaceData((data) => applyWorkspaceTaskRemoval(data, taskId));
 }
 
 export function updateProjectStatuses(projectId: string, statuses: WorkspaceStatus[]): void {

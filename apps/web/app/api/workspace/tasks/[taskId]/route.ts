@@ -185,6 +185,37 @@ export async function PATCH(
   }
 }
 
+export async function DELETE(
+  request: Request,
+  context: { params: Promise<{ taskId: string }> },
+): Promise<NextResponse> {
+  const trustedUserId = readAuthenticatedUserId(request);
+  if (trustedUserId === undefined || trustedUserId.trim().length === 0)
+    return NextResponse.json({ error: "Authentication is required." }, { status: 401 });
+
+  const url = new URL(request.url);
+  const workspaceId = url.searchParams.get("workspaceId");
+  const projectId = url.searchParams.get("projectId");
+  if (workspaceId === null || projectId === null)
+    return NextResponse.json({ error: "workspaceId and projectId are required." }, { status: 400 });
+
+  const { taskId } = await context.params;
+  const api = createTaskApiClient({
+    // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket access.
+    baseUrl: process.env["TASK_API_BASE_URL"] ?? "http://localhost:3000",
+    fetch,
+    trustedUserId,
+  });
+
+  try {
+    return NextResponse.json(await api.archiveTask({ projectId, taskId, workspaceId }));
+  } catch (error: unknown) {
+    const status = error instanceof TaskApiClientError ? (error.status ?? 502) : 502;
+    const message = error instanceof TaskApiClientError ? error.message : "Unable to delete task.";
+    return NextResponse.json({ error: message }, { status });
+  }
+}
+
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
