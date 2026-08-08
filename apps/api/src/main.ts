@@ -16,7 +16,7 @@ async function bootstrap(): Promise<void> {
 
   SwaggerModule.setup("openapi", app, document);
 
-  await app.listen(config.port);
+  await app.listen(config.port, "0.0.0.0");
 }
 
 await bootstrap();
