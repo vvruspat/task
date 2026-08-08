@@ -1,4 +1,5 @@
 import type { TelegramInlineKeyboardMarkup, TelegramReplyAction } from "./message-handler.js";
+import { formatTelegramMessage } from "./telegram-message-format.js";
 
 export type TelegramBotApiPostHeaders = {
   accept: string;
@@ -40,6 +41,7 @@ export type TelegramSendMessageResult = {
 type TelegramSendMessageBody = {
   chat_id: string;
   text: string;
+  parse_mode: "HTML";
   reply_parameters?: {
     message_id: number;
     allow_sending_without_reply: true;
@@ -108,7 +110,8 @@ function createSendMessageBody(action: TelegramReplyAction): TelegramSendMessage
 
   const body: TelegramSendMessageBody = {
     chat_id: action.telegramChatId,
-    text: action.text,
+    text: formatTelegramMessage(action.text),
+    parse_mode: "HTML",
   };
 
   if (action.replyToMessageId !== null) {

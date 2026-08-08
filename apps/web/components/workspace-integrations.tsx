@@ -2,7 +2,8 @@
 
 import type { IntegrationCatalogItem } from "@task/api-client";
 import { Badge, Button, Card, Flex, Text } from "@task/ui";
-import { FolderOpen, Plug, Unplug } from "lucide-react";
+import { ChevronRight, FolderOpen, Plug, Unplug } from "lucide-react";
+import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { selectGoogleDriveFolder } from "../lib/google-drive-picker";
 import { useI18n } from "../lib/i18n/i18n";
@@ -15,10 +16,12 @@ import {
   isWorkspaceIntegration,
   readGoogleDriveRootFolderConfig,
 } from "../lib/workspace-integrations";
+import { workspaceTelegramChatSettingsHref } from "../lib/workspace-url";
 
 export function WorkspaceIntegrations({
   workspaceId,
-}: Readonly<{ workspaceId: string }>): ReactNode {
+  workspaceSlug,
+}: Readonly<{ workspaceId: string; workspaceSlug: string }>): ReactNode {
   const { t } = useI18n();
   const [catalog, setCatalog] = useState<IntegrationCatalogItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -220,7 +223,10 @@ export function WorkspaceIntegrations({
           candidate.pluginKey === item.pluginKey && candidate.installation !== null
             ? {
                 ...candidate,
-                installation: { ...candidate.installation, status: "authorizing" },
+                installation:
+                  candidate.installation.status === "connected"
+                    ? candidate.installation
+                    : { ...candidate.installation, status: "authorizing" },
               }
             : candidate,
         ),
@@ -242,8 +248,12 @@ export function WorkspaceIntegrations({
         const installed = item.installation !== null;
         const connected = item.installation?.status === "connected";
         const canConnectGoogleDrive = item.pluginKey === "google-drive" && installed && !connected;
-        const canConnectTelegram = item.pluginKey === "telegram" && installed && !connected;
+        const canConnectTelegram = item.pluginKey === "telegram" && installed;
         const canConfigureGoogleDrive = item.pluginKey === "google-drive" && connected;
+        const telegramConnections =
+          item.pluginKey === "telegram"
+            ? item.connections.filter((connection) => connection.status === "connected")
+            : [];
         const rootFolder =
           item.installation === null ? null : readGoogleDriveRootFolderConfig(item.installation);
         const health = item.health;
@@ -306,6 +316,27 @@ export function WorkspaceIntegrations({
                       : t("integrations.rootFolderSelected", { name: rootFolder.name })}
                   </Text>
                 )}
+                {item.pluginKey === "telegram" && telegramConnections.length > 0 && (
+                  <Flex direction="column" gap="1">
+                    <Text color="gray" size="2">
+                      {t("integrations.telegramConnectedChats", {
+                        count: telegramConnections.length,
+                      })}
+                    </Text>
+                    <Flex direction="column" gap="1" align="start">
+                      {telegramConnections.map((connection) => (
+                        <Button asChild key={connection.id} size="1" variant="soft" color="gray">
+                          <Link
+                            href={workspaceTelegramChatSettingsHref(workspaceSlug, connection.id)}
+                          >
+                            {connection.displayName ?? connection.providerAccountId}
+                            <ChevronRight size={13} />
+                          </Link>
+                        </Button>
+                      ))}
+                    </Flex>
+                  </Flex>
+                )}
                 {canConnectTelegram && telegramConnectCommand !== null && (
                   <Flex direction="column" gap="1">
                     <Text color="gray" size="2">
@@ -337,7 +368,9 @@ export function WorkspaceIntegrations({
                   <Plug size={14} />
                   {pending
                     ? t("integrations.telegramPreparing")
-                    : t("integrations.telegramConnect")}
+                    : telegramConnections.length > 0
+                      ? t("integrations.telegramConnectAnother")
+                      : t("integrations.telegramConnect")}
                 </Button>
               ) : canConfigureGoogleDrive ? (
                 <Button

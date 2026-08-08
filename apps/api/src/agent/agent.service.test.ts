@@ -24,7 +24,8 @@ import { AgentService } from "./agent.service.js";
 import type {
   AgentRunDetailRecord,
   AgentRunStore,
-  FindTelegramAgentRunInput,
+  ClaimTelegramAgentRunInput,
+  ClaimTelegramAgentRunResult,
   ListTelegramConversationInput,
   PersistTelegramAgentRunInput,
   PersistWebAgentRunInput,
@@ -51,6 +52,7 @@ const input: CreateTelegramAgentRunInput = {
 test("AgentService returns a typed Telegram agent run intake response", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
@@ -87,6 +89,9 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
       workspaceId: "22222222-2222-4222-8222-222222222222",
       userId: "33333333-3333-4333-8333-333333333333",
       projectId: null,
+      telegramChatId: "-100987654321",
+      telegramThreadId: null,
+      telegramMessageId: "42",
     },
     conversation: [{ role: "user", content: "@task what is next?" }],
   });
@@ -109,37 +114,15 @@ test("AgentService returns a typed Telegram agent run intake response", async ()
   });
 });
 
-test("AgentService carries Telegram topic history and selected project into the shared runtime", async () => {
+test("AgentService carries Telegram topic identity and selected project into the shared runtime", async () => {
   const selectedProjectId = "44444444-4444-4444-8444-444444444444";
-  const previousRun: PersistedAgentRun = {
-    id: "55555555-5555-4555-8555-555555555555",
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
-    userId: "66666666-6666-4666-8666-666666666666",
-    source: "telegram",
-    sourceThreadId: "-100987654321:topic:17",
-    sourceMessageId: "40",
-    model: "openai/gpt-4.1-mini",
-    inputText: "Какие проекты у нас есть?",
-    normalizedIntent: { kind: "openrouter_chat_completion" },
-    finalResponse: "Есть проект Album.",
-    status: "completed",
-    tokenUsage: null,
-    cost: null,
-    error: null,
-    createdAt: new Date("2026-07-08T00:00:00.000Z"),
-    updatedAt: new Date("2026-07-08T00:00:01.000Z"),
-  };
-  const store = new RecordingAgentRunStore(
-    {
-      status: "resolved",
-      workspaceId: "22222222-2222-4222-8222-222222222222",
-      userId: "33333333-3333-4333-8333-333333333333",
-      defaultProjectId: selectedProjectId,
-    },
-    null,
-    [],
-    [previousRun],
-  );
+    userId: "33333333-3333-4333-8333-333333333333",
+    defaultProjectId: selectedProjectId,
+  });
   const runtime = new RecordingAgentRuntime();
   const service = new AgentService(store, runtime, createConfirmationsService());
   const topicInput: CreateTelegramAgentRunInput = {
@@ -151,30 +134,44 @@ test("AgentService carries Telegram topic history and selected project into the 
 
   await service.createTelegramRun(topicInput);
 
-  assert.deepEqual(store.lastConversationInput, {
-    workspaceId: "22222222-2222-4222-8222-222222222222",
-    sourceThreadId: "-100987654321:topic:17",
-    limit: 20,
-  });
+  assert.equal(store.lastConversationInput, null);
   assert.deepEqual(runtime.lastRequest, {
     input: topicInput,
     context: {
       workspaceId: "22222222-2222-4222-8222-222222222222",
       userId: "33333333-3333-4333-8333-333333333333",
       projectId: selectedProjectId,
+      telegramChatId: "-100987654321",
+      telegramThreadId: "17",
+      telegramMessageId: "42",
     },
-    conversation: [
-      { role: "user", content: "Какие проекты у нас есть?" },
-      { role: "assistant", content: "Есть проект Album." },
-      { role: "user", content: "А какие задачи в нём?" },
-    ],
+    conversation: [{ role: "user", content: "А какие задачи в нём?" }],
   });
   assert.equal(store.lastPersistInput?.sourceThreadId, "-100987654321:topic:17");
+});
+
+test("AgentService does not load Telegram conversation history when chat access is disabled", async () => {
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    conversationHistoryAccess: false,
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+  const runtime = new RecordingAgentRuntime();
+  const service = new AgentService(store, runtime, createConfirmationsService());
+
+  await service.createTelegramRun(input);
+
+  assert.equal(store.lastConversationInput, null);
+  assert.deepEqual(runtime.lastRequest?.conversation, [
+    { role: "user", content: "@task what is next?" },
+  ]);
 });
 
 test("AgentService passes runtime tool-call logs to persistence", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
@@ -246,6 +243,7 @@ test("AgentService returns an existing Telegram run without invoking runtime on 
   const store = new RecordingAgentRunStore(
     {
       status: "resolved",
+      conversationHistoryAccess: true,
       workspaceId: "22222222-2222-4222-8222-222222222222",
       userId: "33333333-3333-4333-8333-333333333333",
     },
@@ -268,12 +266,53 @@ test("AgentService returns an existing Telegram run without invoking runtime on 
       createdAt: "2026-07-08T00:01:00.000Z",
     },
   );
-  assert.deepEqual(store.lastFindInput, {
+  assert.deepEqual(store.lastClaimInput, {
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
     sourceThreadId: "-100987654321",
     sourceMessageId: "42",
+    inputText: "@task what is next?",
   });
+  assert.equal(runtime.lastRequest, null);
+  assert.equal(store.lastPersistInput, null);
+});
+
+test("AgentService returns an in-progress claim without starting a duplicate runtime", async () => {
+  const existingRun: PersistedAgentRun = {
+    id: "44444444-4444-4444-8444-444444444444",
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+    source: "telegram",
+    sourceThreadId: "-100987654321",
+    sourceMessageId: "42",
+    model: null,
+    inputText: "@task what is next?",
+    normalizedIntent: null,
+    finalResponse: null,
+    status: "running",
+    tokenUsage: null,
+    cost: null,
+    error: null,
+    createdAt: new Date("2026-07-08T00:01:00.000Z"),
+    updatedAt: new Date("2026-07-08T00:01:00.000Z"),
+  };
+  const store = new RecordingAgentRunStore(
+    {
+      status: "resolved",
+      conversationHistoryAccess: true,
+      workspaceId: "22222222-2222-4222-8222-222222222222",
+      userId: "33333333-3333-4333-8333-333333333333",
+    },
+    existingRun,
+  );
+  const runtime = new RecordingAgentRuntime();
+  const service = new AgentService(store, runtime, createConfirmationsService());
+
+  const response = await service.createTelegramRun(input);
+
+  assert.equal(response.status, "running");
+  assert.equal(response.agentRunId, existingRun.id);
+  assert.equal(response.responseText, agentRuntimeNotConnectedResponse);
   assert.equal(runtime.lastRequest, null);
   assert.equal(store.lastPersistInput, null);
 });
@@ -281,6 +320,7 @@ test("AgentService returns an existing Telegram run without invoking runtime on 
 test("AgentService includes pending confirmation requests for waiting Telegram runs", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
@@ -328,6 +368,7 @@ test("AgentService lists workspace agent runs as summary DTOs", async () => {
   const store = new RecordingAgentRunStore(
     {
       status: "resolved",
+      conversationHistoryAccess: true,
       workspaceId: "22222222-2222-4222-8222-222222222222",
       userId: "33333333-3333-4333-8333-333333333333",
     },
@@ -393,6 +434,7 @@ test("AgentService redacts sensitive strings in agent run summaries", async () =
   const store = new RecordingAgentRunStore(
     {
       status: "resolved",
+      conversationHistoryAccess: true,
       workspaceId: "22222222-2222-4222-8222-222222222222",
       userId: "33333333-3333-4333-8333-333333333333",
     },
@@ -441,6 +483,7 @@ test("AgentService hides agent runs for inaccessible workspaces", async () => {
   const store = new RecordingAgentRunStore(
     {
       status: "resolved",
+      conversationHistoryAccess: true,
       workspaceId: "22222222-2222-4222-8222-222222222222",
       userId: "33333333-3333-4333-8333-333333333333",
     },
@@ -466,6 +509,7 @@ test("AgentService hides agent runs for inaccessible workspaces", async () => {
 test("AgentService redacts every externally returned agent audit surface", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
@@ -512,6 +556,7 @@ test("AgentService hides missing or inaccessible agent run details", async () =>
   const service = new AgentService(
     new RecordingAgentRunStore({
       status: "resolved",
+      conversationHistoryAccess: true,
       workspaceId: "22222222-2222-4222-8222-222222222222",
       userId: "33333333-3333-4333-8333-333333333333",
     }),
@@ -562,7 +607,7 @@ test("AgentService rejects users outside the Telegram chat workspace", async () 
 
 class RecordingAgentRunStore implements AgentRunStore {
   lastContextInput: CreateTelegramAgentRunInput | null = null;
-  lastFindInput: FindTelegramAgentRunInput | null = null;
+  lastClaimInput: ClaimTelegramAgentRunInput | null = null;
   lastConversationInput: ListTelegramConversationInput | null = null;
   lastListInput: { workspaceId: string; userId: string } | null = null;
   lastPersistInput: PersistTelegramAgentRunInput | null = null;
@@ -583,12 +628,32 @@ class RecordingAgentRunStore implements AgentRunStore {
     return this.contextResult;
   }
 
-  async findTelegramRunBySource(
-    input: FindTelegramAgentRunInput,
-  ): Promise<PersistedAgentRun | null> {
-    this.lastFindInput = input;
-
-    return this.existingRun;
+  async claimTelegramRun(input: ClaimTelegramAgentRunInput): Promise<ClaimTelegramAgentRunResult> {
+    this.lastClaimInput = input;
+    if (this.existingRun !== null) {
+      return { status: "existing", run: this.existingRun };
+    }
+    return {
+      status: "claimed",
+      run: {
+        id: "11111111-1111-4111-8111-111111111111",
+        workspaceId: input.workspaceId,
+        userId: input.userId,
+        source: "telegram",
+        sourceThreadId: input.sourceThreadId,
+        sourceMessageId: input.sourceMessageId,
+        model: null,
+        inputText: input.inputText,
+        normalizedIntent: null,
+        finalResponse: null,
+        status: "running",
+        tokenUsage: null,
+        cost: null,
+        error: null,
+        createdAt: new Date("2026-07-08T00:00:00.000Z"),
+        updatedAt: new Date("2026-07-08T00:00:00.000Z"),
+      },
+    };
   }
 
   async listForWorkspace(workspaceId: string, userId: string): Promise<PersistedAgentRun[] | null> {

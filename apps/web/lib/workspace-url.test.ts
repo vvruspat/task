@@ -3,8 +3,10 @@ import test from "node:test";
 import {
   canonicalWorkspaceRoute,
   resolveWorkspaceRouteProject,
+  workspacePageFromPath,
   workspacePageHref,
   workspaceProjectHref,
+  workspaceTelegramChatSettingsHref,
 } from "./workspace-url.ts";
 
 const projects = [
@@ -24,6 +26,20 @@ test("workspace page URLs encode workspace and project identity", () => {
   assert.equal(
     workspaceProjectHref("product studio", "album release"),
     "/w/product%20studio/project/album%20release",
+  );
+});
+
+test("workspace settings subsections have canonical routes", () => {
+  assert.equal(
+    workspacePageHref("product studio", "settings/members"),
+    "/w/product%20studio/settings/members",
+  );
+  assert.equal(workspacePageFromPath("/w/product/settings/members"), "settings/members");
+  assert.equal(workspacePageFromPath("/settings/members"), "settings/members");
+  assert.equal(workspacePageFromPath("/settings/telegram"), null);
+  assert.equal(
+    workspaceTelegramChatSettingsHref("product studio", "chat connection"),
+    "/w/product%20studio/settings/integrations/telegram/chat%20connection",
   );
 });
 

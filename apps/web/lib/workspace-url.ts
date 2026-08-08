@@ -11,9 +11,9 @@ export type WorkspacePage =
   | "notifications"
   | "projects"
   | "settings"
+  | "settings/members"
   | "settings/profile"
   | "settings/integrations"
-  | "settings/telegram"
   | "templates"
   | "views";
 
@@ -46,9 +46,9 @@ const legacyWorkspacePages: Readonly<Record<string, WorkspacePage>> = {
   "/notifications": "notifications",
   "/projects": "projects",
   "/settings": "settings",
+  "/settings/members": "settings/members",
   "/settings/profile": "settings/profile",
   "/settings/integrations": "settings/integrations",
-  "/settings/telegram": "settings/telegram",
   "/table": "views",
   "/templates": "templates",
   "/views": "views",
@@ -198,6 +198,13 @@ export function workspaceViewHref(workspaceSlug: string, viewSlug: string): stri
   return `/w/${segment(workspaceSlug)}/view/${segment(viewSlug)}`;
 }
 
+export function workspaceTelegramChatSettingsHref(
+  workspaceSlug: string,
+  connectionId: string,
+): string {
+  return `/w/${segment(workspaceSlug)}/settings/integrations/telegram/${segment(connectionId)}`;
+}
+
 export function workspaceIssueHref(
   workspaceSlug: string,
   projectKey: string,
@@ -215,9 +222,9 @@ function isWorkspacePage(value: string): value is WorkspacePage {
     value === "notifications" ||
     value === "projects" ||
     value === "settings" ||
+    value === "settings/members" ||
     value === "settings/profile" ||
     value === "settings/integrations" ||
-    value === "settings/telegram" ||
     value === "templates" ||
     value === "views"
   );

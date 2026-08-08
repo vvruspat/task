@@ -74,6 +74,41 @@ const openRouterAgentTools = [
   {
     type: "function",
     function: {
+      name: "status_list",
+      description:
+        "List the exact statuses configured for a real project, including the id used by tasks and its human-readable name. Use this to map task statusId values before reporting task statuses.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          projectId: { type: "string", format: "uuid" },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "telegram_history_read",
+      description:
+        "Read recent text messages saved from the current Telegram chat and topic. Use this when the user's request depends on what people said earlier, references missing conversational context, or asks for a summary of the chat. If access is disabled, clearly tell the user to enable 'Доступ к истории переписки' in this chat's tAsk settings; only messages received after enabling can be read.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          limit: {
+            type: "integer",
+            minimum: 1,
+            maximum: 50,
+            description: "Maximum number of recent messages to return. Defaults to 30.",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
       name: "task_skill_create",
       description:
         "Create a reusable task template in the current workspace. Each subtask describes a step that will be created whenever the template is applied to a root task.",
@@ -157,7 +192,7 @@ const openRouterAgentTools = [
     function: {
       name: "task_create",
       description:
-        "Create a real task in a project. The backend automatically resolves and applies a matching task template. If the user is choosing from candidates previously offered by the agent, pass the chosen taskSkillId.",
+        "Create a real task in a project. The backend automatically checks matching task templates: it creates a plain task without subtasks when none match, applies the only match, and returns candidates without creating anything when several match. If the user is choosing from candidates previously offered by the agent, pass the chosen taskSkillId.",
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -326,11 +361,13 @@ const coreMutationToolNames = new Set([
 const agentSystemPrompt = [
   "You are tAsk's backend task agent.",
   "Use the provided tools for every project or task mutation.",
-  "Use project_list, project_get, task_list, and task_lookup for workspace reads. Never invent projects, tasks, ids, statuses, or assignees.",
+  "Use project_list, project_get, task_list, task_lookup, and status_list for workspace reads. Never invent projects, tasks, ids, statuses, or assignees.",
   "Never claim that a project, task, or task template was created unless the corresponding tool succeeded in this response.",
   "The workspace and current user are supplied by the server and must not be invented.",
+  "When the user names a project and no selected project id is supplied by the server, call project_list first and use the exact returned id. Never invent a project id from its name.",
   "When the user message includes a selected project id, pass that exact id to task_create.",
   "When a selected project id is supplied by the server, task_list may omit projectId.",
+  "Before reporting task statuses, call status_list for the same project and map every task statusId to the exact returned status name. Never invent placeholder labels such as Status A or Status B.",
   "When the user asks to create a project with a named list or count of peer items (for example, a project with 8 songs), call project_create once with those items in its tasks array and set taskTypeHint to the singular item type. Every listed item is an independent root task, not a subtask.",
   "When the user asks to create a new task template, call task_skill_create and choose practical reusable subtasks from the user's goal when they did not specify them.",
   "When the user asks for a new template and project items based on it in the same request, call task_skill_create first, then pass the exact returned template id as taskSkillId to project_create so every root task receives the new template.",
@@ -340,6 +377,7 @@ const agentSystemPrompt = [
   "For every root task request call task_create exactly once; the backend checks matching task templates before creating anything.",
   "If task_create reports task_skill_selection_required, ask the user to choose one candidate and do not claim that a task was created.",
   "When the conversation contains a user choice from task skill candidates, call task_create with the chosen candidate taskSkillId.",
+  "When task_create finds no matching template, accept the plain task it creates. Do not invent subtasks, create a new template, or call task_add_subtasks unless the user explicitly supplied those component steps.",
   "Continue calling tools until every requested project, task, and subtask has been created.",
   "After task_create returns an id, use that id with task_add_subtasks when subtasks were requested.",
   "For changes to an existing task, use task_update, task_set_status, task_set_assignee, task_set_due_date, or task_add_link_attachment as appropriate. Never claim that a task property changed unless the corresponding tool succeeded.",
@@ -347,6 +385,7 @@ const agentSystemPrompt = [
   "Resolve assignees by passing the user's human-readable name or email to task_set_assignee; never invent a user id.",
   "Resolve statuses by passing the user's human-readable status name to task_set_status; never invent a status id.",
   "Connected workspace integrations may add namespaced tools. Use their read-only search/get tools when the user asks about external resources.",
+  "In Telegram, when the request depends on earlier chat messages that are not present in the current request, call telegram_history_read. Never pretend to know the chat history without this tool. If it reports history_access_disabled, tell the user to open this Telegram chat's settings in tAsk and enable 'Доступ к истории переписки'; explain that only new messages received after enabling will be saved.",
   "Reply briefly and accurately.",
 ].join(" ");
 
@@ -363,6 +402,7 @@ const chatTitleSystemPrompt =
 // room for operational batches (for example, one project plus many tasks) and
 // the final assistant response while retaining a hard runaway guard.
 const maxOpenRouterToolRounds = 32;
+const maxMalformedToolCallRetries = 1;
 
 export type AgentRuntimeResult = {
   model: string | null;
@@ -389,6 +429,9 @@ export type TelegramAgentRuntimeContext = {
   userId: string;
   projectId?: string | null;
   inputText?: string;
+  telegramChatId?: string;
+  telegramThreadId?: string | null;
+  telegramMessageId?: string | null;
 };
 
 export type TelegramAgentRuntimeRequest = {
@@ -461,6 +504,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
     private readonly config: ApiOpenRouterConfig,
     private readonly fetcher: OpenRouterFetch = defaultOpenRouterFetch,
     private readonly toolDispatcher: AgentToolOperationDispatcher = new StaticAgentToolOperationDispatcher(),
+    private readonly webAppUrl: string | null = null,
   ) {}
 
   async handleTelegramRequest(request: TelegramAgentRuntimeRequest): Promise<AgentRuntimeResult> {
@@ -545,10 +589,13 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
       const allToolCalls: AgentRuntimeToolCall[] = [];
       let tokenUsage: Record<string, unknown> | null = null;
       const mutationRequired = looksLikeMutationRequest(request.input.inputText);
-      const requiredReadTool = requestedCoreReadTool(
+      const requiredReadTools = requestedCoreReadTools(
         request.input.inputText,
         request.context.projectId,
+        request.context.telegramChatId,
       );
+      let malformedToolCallRetries = 0;
+      let forcedToolName: string | null = null;
 
       for (let round = 0; round < maxOpenRouterToolRounds; round += 1) {
         const thinkingId = `thinking-${round + 1}`;
@@ -557,6 +604,12 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           label: round === 0 ? "Анализирую запрос" : "Планирую следующий шаг",
           state: "running",
         });
+        const currentForcedToolName = forcedToolName;
+        forcedToolName = null;
+        const requiredReadTool =
+          requiredReadTools.find(
+            (toolName) => !allToolCalls.some((toolCall) => toolCall.toolName === toolName),
+          ) ?? null;
         const response = await this.fetcher(openRouterChatCompletionsEndpoint, {
           method: "POST",
           headers: {
@@ -570,17 +623,21 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
             messages,
             tools: availableAgentTools,
             tool_choice:
-              requiredReadTool !== null &&
-              !allToolCalls.some((toolCall) => toolCall.toolName === requiredReadTool)
+              currentForcedToolName !== null
                 ? {
                     type: "function",
-                    function: { name: requiredReadTool },
+                    function: { name: currentForcedToolName },
                   }
-                : mutationRequired &&
-                    !hasMutationToolCall(allToolCalls, mutationToolNames) &&
-                    !taskLookupNeedsClarification(allToolCalls)
-                  ? "required"
-                  : "auto",
+                : requiredReadTool !== null
+                  ? {
+                      type: "function",
+                      function: { name: requiredReadTool },
+                    }
+                  : mutationRequired &&
+                      !hasMutationToolCall(allToolCalls, mutationToolNames) &&
+                      !taskLookupNeedsClarification(allToolCalls)
+                    ? "required"
+                    : "auto",
             stream: false,
           }),
         });
@@ -619,6 +676,15 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         const parsedToolCalls = readOpenRouterToolCalls(message);
 
         if (parsedToolCalls.status === "error") {
+          if (allToolCalls.length === 0 && malformedToolCallRetries < maxMalformedToolCallRetries) {
+            malformedToolCallRetries += 1;
+            messages.push({
+              role: "system",
+              content:
+                "The previous tool call was rejected because its function arguments were not valid strict JSON. Retry the same requested operation now with one valid JSON object for the function arguments.",
+            });
+            continue;
+          }
           return buildRuntimeFailure(model, parsedToolCalls.error, allToolCalls);
         }
 
@@ -659,7 +725,8 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
               source: "telegram",
             },
             finalResponse:
-              formatSuccessfulToolResponse(allToolCalls) ??
+              formatTelegramHistoryAccessResponse(allToolCalls) ??
+              formatSuccessfulToolResponse(allToolCalls, this.webAppUrl) ??
               content ??
               "No operation was performed.",
             status: "completed",
@@ -683,6 +750,26 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           dispatchedToolCalls.find((toolCall) => toolCall.status === "error") ?? null;
 
         if (failedToolCall !== null) {
+          appendOpenRouterToolExchange(
+            messages,
+            content,
+            parsedToolCalls.toolCalls,
+            dispatchedToolCalls,
+          );
+          const recoveryToolName = readRecoveryToolName(
+            failedToolCall,
+            allToolCalls,
+            mutationToolNames,
+          );
+          if (recoveryToolName !== null) {
+            forcedToolName = recoveryToolName;
+            messages.push({
+              role: "system",
+              content:
+                "The supplied project id was not found. Call project_list now, then use an exact project id returned by that tool for the requested operation.",
+            });
+            continue;
+          }
           return {
             model,
             normalizedIntent: {
@@ -715,28 +802,12 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           };
         }
 
-        messages.push({
-          role: "assistant",
+        appendOpenRouterToolExchange(
+          messages,
           content,
-          tool_calls: parsedToolCalls.toolCalls.map(toOpenRouterConversationToolCall),
-        });
-        for (let index = 0; index < parsedToolCalls.toolCalls.length; index += 1) {
-          const requestedToolCall = parsedToolCalls.toolCalls[index];
-          const dispatchedToolCall = dispatchedToolCalls[index];
-          if (requestedToolCall === undefined || dispatchedToolCall === undefined) {
-            continue;
-          }
-
-          messages.push({
-            role: "tool",
-            tool_call_id: requestedToolCall.callId,
-            content: JSON.stringify({
-              error: dispatchedToolCall.error,
-              result: dispatchedToolCall.result,
-              status: dispatchedToolCall.status,
-            }),
-          });
-        }
+          parsedToolCalls.toolCalls,
+          dispatchedToolCalls,
+        );
       }
 
       return buildRuntimeFailure(
@@ -796,6 +867,8 @@ function describeToolCall(call: AgentToolOperationCall): string {
   if (call.toolName === "project_list") return "Получаю список проектов";
   if (call.toolName === "project_get") return "Получаю проект";
   if (call.toolName === "task_list") return "Получаю задачи проекта";
+  if (call.toolName === "status_list") return "Получаю статусы проекта";
+  if (call.toolName === "telegram_history_read") return "Читаю историю Telegram-чата";
   if (["task_skill_create", "task_skill.create"].includes(call.toolName)) {
     return `Создаю шаблон${name === null ? "" : ` «${name}»`}`;
   }
@@ -869,7 +942,10 @@ function normalizeChatTitle(value: string): string | null {
   return concise.length <= 80 ? concise : concise.slice(0, 80).trimEnd();
 }
 
-function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string | null {
+function formatSuccessfulToolResponse(
+  toolCalls: AgentRuntimeToolCall[],
+  webAppUrl: string | null,
+): string | null {
   const successful = toolCalls.filter((toolCall) => toolCall.status === "success");
 
   if (successful.length === 0) {
@@ -901,6 +977,7 @@ function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string
       formatProjectArtifact(
         projectCall.result,
         taskSkillId === null ? null : (taskSkillNames.get(taskSkillId) ?? null),
+        webAppUrl,
       ),
     );
     if (taskSkillId !== null) summarizedTaskSkillIds.add(taskSkillId);
@@ -909,12 +986,12 @@ function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string
   for (const taskSkillCall of taskSkillCalls) {
     const id = readResultString(taskSkillCall.result, "id");
     if (id === null || !summarizedTaskSkillIds.has(id)) {
-      artifactSections.push(formatTaskSkillArtifact(taskSkillCall.result));
+      artifactSections.push(formatTaskSkillArtifact(taskSkillCall.result, webAppUrl));
     }
   }
 
   for (const taskCall of taskCreateCalls) {
-    artifactSections.push(formatTaskArtifact(taskCall.result, taskCall.arguments));
+    artifactSections.push(formatTaskArtifact(taskCall.result, taskCall.arguments, webAppUrl));
   }
 
   const parts = artifactSections.length === 0 ? [] : ["## Готово", ...artifactSections];
@@ -951,6 +1028,7 @@ function formatSuccessfulToolResponse(toolCalls: AgentRuntimeToolCall[]): string
 function formatProjectArtifact(
   result: Record<string, unknown> | null,
   taskSkillName: string | null,
+  webAppUrl: string | null,
 ): string {
   const id = readResultString(result, "id") ?? readResultString(result, "projectId");
   const title = readResultString(result, "title") ?? "Новый проект";
@@ -962,7 +1040,7 @@ function formatProjectArtifact(
       : id === null
         ? null
         : `/projects/${pathSegment(id)}`;
-  const projectLabel = markdownLink(title, projectHref);
+  const projectLabel = markdownLink(title, webAppHref(webAppUrl, projectHref));
   const taskCount = readResultNumber(result, "createdTaskCount") ?? 0;
   const subtaskCount = readResultNumber(result, "createdSubtaskCount") ?? 0;
   const taskSkillId = readResultString(result, "taskSkillId");
@@ -979,24 +1057,30 @@ function formatProjectArtifact(
   }
   if (taskSkillId !== null) {
     lines.push(
-      `**Шаблон:** ${markdownLink(taskSkillName ?? "Открыть шаблон", `/templates?skill=${queryValue(taskSkillId)}`)}`,
+      `**Шаблон:** ${markdownLink(
+        taskSkillName ?? "Открыть шаблон",
+        webAppHref(webAppUrl, `/templates?skill=${queryValue(taskSkillId)}`),
+      )}`,
     );
   }
   if (tasks.length > 0) {
     lines.push("#### Задачи");
     for (const task of tasks) {
-      lines.push(...formatTaskTree(task, projectKey));
+      lines.push(...formatTaskTree(task, projectKey, workspaceSlug, webAppUrl));
     }
   }
   return lines.join("\n");
 }
 
-function formatTaskSkillArtifact(result: Record<string, unknown> | null): string {
+function formatTaskSkillArtifact(
+  result: Record<string, unknown> | null,
+  webAppUrl: string | null,
+): string {
   const id = readResultString(result, "id");
   const name = readResultString(result, "name") ?? "Новый шаблон";
   const subtaskCount = readResultNumber(result, "subtaskCount") ?? 0;
   const lines = [
-    `### 🧩 ${markdownLink(name, id === null ? "/templates" : `/templates?skill=${queryValue(id)}`)}`,
+    `### 🧩 ${markdownLink(name, webAppHref(webAppUrl, id === null ? "/templates" : `/templates?skill=${queryValue(id)}`))}`,
     `Шаблон создан${subtaskCount > 0 ? `: **${subtaskCount} ${pluralize(subtaskCount, "подзадача", "подзадачи", "подзадач")}**` : ""}.`,
   ];
   const subtasks = readResultRecords(result, "subtasks");
@@ -1013,6 +1097,7 @@ function formatTaskSkillArtifact(result: Record<string, unknown> | null): string
 function formatTaskArtifact(
   result: Record<string, unknown> | null,
   argumentsValue: Record<string, unknown>,
+  webAppUrl: string | null,
 ): string {
   const title =
     readResultString(result, "title") ??
@@ -1020,24 +1105,38 @@ function formatTaskArtifact(
     "Новая задача";
   const projectId = readResultString(result, "projectId");
   const projectKey = readResultString(result, "projectKey");
+  const workspaceSlug = readResultString(result, "workspaceSlug");
   const number = readResultNumber(result, "number");
   const href =
-    taskHref(projectKey, number) ??
-    (projectId === null ? null : `/projects/${pathSegment(projectId)}`);
+    taskHref(projectKey, number, title, workspaceSlug, webAppUrl) ??
+    webAppHref(webAppUrl, projectId === null ? null : `/projects/${pathSegment(projectId)}`);
   const subtasks = readResultRecords(result, "subtasks");
-  const lines = [`### ✅ ${markdownLink(title, href)}`, "Задача создана."];
+  const lines = [
+    `### ✅ ${markdownLink(taskLabel(projectKey, number, title), href)}`,
+    "Задача создана.",
+  ];
   if (subtasks.length > 0) {
     lines.push("#### Подзадачи");
     for (const subtask of subtasks) {
       const subtaskTitle = readRecordString(subtask, "title") ?? "Подзадача";
       const subtaskNumber = readRecordNumber(subtask, "number");
-      lines.push(`- ${markdownLink(subtaskTitle, taskHref(projectKey, subtaskNumber))}`);
+      lines.push(
+        `- ${markdownLink(
+          taskLabel(projectKey, subtaskNumber, subtaskTitle),
+          taskHref(projectKey, subtaskNumber, subtaskTitle, workspaceSlug, webAppUrl),
+        )}`,
+      );
     }
   }
   return lines.join("\n");
 }
 
-function formatTaskTree(task: Record<string, unknown>, projectKey: string | null): string[] {
+function formatTaskTree(
+  task: Record<string, unknown>,
+  projectKey: string | null,
+  workspaceSlug: string | null,
+  webAppUrl: string | null,
+): string[] {
   const title = readRecordString(task, "title") ?? "Задача";
   const number = readRecordNumber(task, "number");
   const subtasks = readRecordArray(task, "subtasks").filter(isRecord);
@@ -1045,19 +1144,59 @@ function formatTaskTree(task: Record<string, unknown>, projectKey: string | null
     subtasks.length === 0
       ? ""
       : ` — ${subtasks.length} ${pluralize(subtasks.length, "подзадача", "подзадачи", "подзадач")}`;
-  const lines = [`- ${markdownLink(title, taskHref(projectKey, number))}${suffix}`];
+  const lines = [
+    `- ${markdownLink(
+      taskLabel(projectKey, number, title),
+      taskHref(projectKey, number, title, workspaceSlug, webAppUrl),
+    )}${suffix}`,
+  ];
   for (const subtask of subtasks) {
     const subtaskTitle = readRecordString(subtask, "title") ?? "Подзадача";
     const subtaskNumber = readRecordNumber(subtask, "number");
-    lines.push(`  - ${markdownLink(subtaskTitle, taskHref(projectKey, subtaskNumber))}`);
+    lines.push(
+      `  - ${markdownLink(
+        taskLabel(projectKey, subtaskNumber, subtaskTitle),
+        taskHref(projectKey, subtaskNumber, subtaskTitle, workspaceSlug, webAppUrl),
+      )}`,
+    );
   }
   return lines;
 }
 
-function taskHref(projectKey: string | null, number: number | null): string | null {
-  return projectKey === null || number === null
-    ? null
-    : `/issue/${pathSegment(`${projectKey}-${number}`)}`;
+function taskHref(
+  projectKey: string | null,
+  number: number | null,
+  title: string,
+  workspaceSlug: string | null,
+  webAppUrl: string | null,
+): string | null {
+  if (projectKey === null || number === null) return null;
+  const identifier = pathSegment(`${projectKey}-${number}`);
+  const titleSlug = pathSegment(issueTitleSlug(title));
+  const href =
+    workspaceSlug === null
+      ? `/issue/${identifier}/${titleSlug}`
+      : `/w/${pathSegment(workspaceSlug)}/issue/${identifier}/${titleSlug}`;
+  return webAppHref(webAppUrl, href);
+}
+
+function taskLabel(projectKey: string | null, number: number | null, title: string): string {
+  return projectKey === null || number === null ? title : `${projectKey}-${number} — ${title}`;
+}
+
+function issueTitleSlug(title: string): string {
+  const slug = title
+    .normalize("NFKC")
+    .toLocaleLowerCase("ru")
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/gu, "")
+    .slice(0, 80);
+  return slug.length === 0 ? "issue" : slug;
+}
+
+function webAppHref(webAppUrl: string | null, href: string | null): string | null {
+  if (href === null || webAppUrl === null) return href;
+  return `${webAppUrl.replace(/\/$/u, "")}${href}`;
 }
 
 function markdownLink(label: string, href: string | null): string {
@@ -1244,38 +1383,105 @@ function looksLikeMutationRequest(inputText: string): boolean {
     .some((token) => mutationVerbs.has(token));
 }
 
-function requestedCoreReadTool(
+type CoreReadToolName = "project_list" | "status_list" | "task_list" | "telegram_history_read";
+
+function requestedCoreReadTools(
   inputText: string,
   projectId: string | null | undefined,
-): "project_list" | "task_list" | null {
+  telegramChatId: string | undefined,
+): CoreReadToolName[] {
   const tokens = inputText
     .normalize("NFKC")
     .toLocaleLowerCase()
     .split(/[^\p{L}]+/u)
     .filter((token) => token.length > 0);
   const tokenSet = new Set(tokens);
+  if (
+    telegramChatId !== undefined &&
+    [
+      "above",
+      "conversation",
+      "discussed",
+      "earlier",
+      "history",
+      "such",
+      "previous",
+      "said",
+      "выше",
+      "история",
+      "обсуждали",
+      "переписка",
+      "переписке",
+      "предыдущие",
+      "раньше",
+      "такая",
+      "такие",
+      "таким",
+      "таких",
+      "такого",
+      "такое",
+      "такой",
+      "такую",
+    ].some((token) => tokenSet.has(token))
+  ) {
+    return ["telegram_history_read"];
+  }
   const asksForList = [
     "list",
     "show",
+    "table",
     "what",
     "which",
     "какие",
     "перечисли",
     "покажи",
     "сколько",
+    "таблица",
+    "таблицу",
+    "табличка",
+    "табличку",
   ].some((token) => tokenSet.has(token));
-  if (!asksForList) return null;
+  if (!asksForList) return [];
   if (["projects", "проектов", "проекты"].some((token) => tokenSet.has(token))) {
-    return "project_list";
+    return ["project_list"];
   }
-  if (
-    projectId !== null &&
-    projectId !== undefined &&
-    ["issues", "tasks", "задач", "задачи"].some((token) => tokenSet.has(token))
-  ) {
-    return "task_list";
-  }
-  return null;
+  if (projectId === null || projectId === undefined) return [];
+
+  const asksForTasks = [
+    "issue",
+    "issues",
+    "task",
+    "tasks",
+    "таск",
+    "таски",
+    "задач",
+    "задача",
+    "задачи",
+  ].some((token) => tokenSet.has(token));
+  const asksForStatuses = [
+    "status",
+    "statuses",
+    "статус",
+    "статуса",
+    "статусам",
+    "статусами",
+    "статусов",
+  ].some((token) => tokenSet.has(token));
+  const requiredTools: CoreReadToolName[] = [];
+  if (asksForTasks) requiredTools.push("task_list");
+  if (asksForStatuses) requiredTools.push("status_list");
+  return requiredTools;
+}
+
+function formatTelegramHistoryAccessResponse(toolCalls: AgentRuntimeToolCall[]): string | null {
+  const disabledCall = toolCalls.find(
+    (toolCall) =>
+      toolCall.status === "success" &&
+      readResultString(toolCall.result, "kind") === "telegram_chat_history_unavailable" &&
+      readResultString(toolCall.result, "reason") === "history_access_disabled",
+  );
+  if (disabledCall === undefined) return null;
+  return "Чтобы я мог прочитать предыдущие сообщения, открой настройки этого Telegram-чата в tAsk и включи «Доступ к истории переписки». После включения я начну сохранять новые текстовые сообщения; сообщения, отправленные раньше, будут недоступны.";
 }
 
 function hasMutationToolCall(
@@ -1283,6 +1489,49 @@ function hasMutationToolCall(
   mutationToolNames: ReadonlySet<string>,
 ): boolean {
   return toolCalls.some((toolCall) => mutationToolNames.has(toolCall.toolName));
+}
+
+function readRecoveryToolName(
+  failedToolCall: AgentRuntimeToolCall,
+  allToolCalls: AgentRuntimeToolCall[],
+  mutationToolNames: ReadonlySet<string>,
+): "project_list" | null {
+  if (
+    failedToolCall.error !== "Project was not found." ||
+    hasMutationToolCall(allToolCalls, mutationToolNames)
+  ) {
+    return null;
+  }
+  return "project_list";
+}
+
+function appendOpenRouterToolExchange(
+  messages: OpenRouterConversationMessage[],
+  content: string | null,
+  requestedToolCalls: AgentToolOperationCall[],
+  dispatchedToolCalls: AgentRuntimeToolCall[],
+): void {
+  messages.push({
+    role: "assistant",
+    content,
+    tool_calls: requestedToolCalls.map(toOpenRouterConversationToolCall),
+  });
+  for (let index = 0; index < requestedToolCalls.length; index += 1) {
+    const requestedToolCall = requestedToolCalls[index];
+    const dispatchedToolCall = dispatchedToolCalls[index];
+    if (requestedToolCall === undefined || dispatchedToolCall === undefined) {
+      continue;
+    }
+    messages.push({
+      role: "tool",
+      tool_call_id: requestedToolCall.callId,
+      content: JSON.stringify({
+        error: dispatchedToolCall.error,
+        result: dispatchedToolCall.result,
+        status: dispatchedToolCall.status,
+      }),
+    });
+  }
 }
 
 function taskLookupNeedsClarification(toolCalls: AgentRuntimeToolCall[]): boolean {

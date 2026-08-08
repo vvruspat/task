@@ -232,9 +232,24 @@ export type TelegramChatRecord = {
   telegramChatId: string;
   title: string | null;
   defaultProjectId: string | null;
+  historyAccessEnabled: boolean;
   linkedByUserId: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type TelegramChatMessageRecord = {
+  id: string;
+  telegramChatId: string;
+  telegramMessageId: string;
+  telegramThreadId: string | null;
+  replyToTelegramMessageId: string | null;
+  senderTelegramId: string;
+  senderDisplayName: string;
+  senderIsBot: boolean;
+  text: string;
+  sentAt: Date;
+  createdAt: Date;
 };
 
 export type InviteRecord = {

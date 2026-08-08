@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   type CompleteTelegramChatConnectionRequest,
   type HandleTelegramConfirmationCallbackRequest,
+  type RecordTelegramChatMessageResponse,
   type ResolveTelegramContextRequest,
   type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
@@ -194,6 +195,10 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
     }
     return this.connectionResponse;
   }
+
+  async recordTelegramChatMessage(): Promise<RecordTelegramChatMessageResponse> {
+    return { status: "history_access_disabled" };
+  }
 }
 
 class FailingTelegramBackendClient implements TelegramBackendClient {
@@ -210,6 +215,10 @@ class FailingTelegramBackendClient implements TelegramBackendClient {
   }
 
   async completeTelegramChatConnection(): Promise<TelegramChatConnectionResponse> {
+    throw new TelegramBackendClientError("Backend unavailable.");
+  }
+
+  async recordTelegramChatMessage(): Promise<RecordTelegramChatMessageResponse> {
     throw new TelegramBackendClientError("Backend unavailable.");
   }
 }

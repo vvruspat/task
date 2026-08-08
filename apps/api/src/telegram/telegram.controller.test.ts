@@ -15,6 +15,10 @@ import type {
 import type {
   LinkTelegramIdentityInput,
   LinkTelegramIdentityResult,
+  ReadTelegramChatHistoryInput,
+  ReadTelegramChatHistoryResult,
+  RecordTelegramChatMessageInput,
+  RecordTelegramChatMessageResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
   TelegramIdentityLinkStatus,
@@ -53,6 +57,28 @@ test("TelegramController forwards resolve context requests to the service", asyn
     },
   );
   assert.deepEqual(store.lastInput, input);
+});
+
+test("TelegramController forwards text messages to opt-in history storage", async () => {
+  const store = new RecordingTelegramContextStore({ status: "telegram_user_unlinked" });
+  const controller = new TelegramController(
+    new TelegramService(store, createMiniAppInitDataVerifier()),
+    new ConfirmationsService(new RecordingConfirmationRequestsStore()),
+  );
+  const input: RecordTelegramChatMessageInput = {
+    telegramChatId: "-100987654321",
+    telegramMessageId: "42",
+    telegramThreadId: "17",
+    replyToTelegramMessageId: null,
+    senderTelegramId: "123456789",
+    senderDisplayName: "Alex",
+    senderIsBot: false,
+    text: "Сообщение",
+    sentAt: null,
+  };
+
+  assert.deepEqual({ ...(await controller.recordChatMessage(input)) }, { status: "stored" });
+  assert.deepEqual(store.lastRecordInput, input);
 });
 
 test("TelegramController confirms callbacks after resolving Telegram context", async () => {
@@ -220,6 +246,7 @@ const confirmationRequest: ConfirmationRequestDetail = {
 class RecordingTelegramContextStore implements TelegramContextStore {
   lastInput: ResolveTelegramContextInput | null = null;
   lastLinkInput: LinkTelegramIdentityInput | null = null;
+  lastRecordInput: RecordTelegramChatMessageInput | null = null;
 
   constructor(
     private readonly resolution: TelegramContextResolution,
@@ -247,6 +274,19 @@ class RecordingTelegramContextStore implements TelegramContextStore {
     this.lastLinkInput = input;
 
     return this.linkResult ?? { status: "user_not_found" };
+  }
+
+  async recordChatMessage(
+    input: RecordTelegramChatMessageInput,
+  ): Promise<RecordTelegramChatMessageResult> {
+    this.lastRecordInput = input;
+    return { status: "stored" };
+  }
+
+  async readChatHistory(
+    _input: ReadTelegramChatHistoryInput,
+  ): Promise<ReadTelegramChatHistoryResult> {
+    return { status: "available", messages: [] };
   }
 }
 

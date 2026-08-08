@@ -3,6 +3,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiConflictResponse,
+  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -18,15 +19,19 @@ import {
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { ConfirmationsService } from "../confirmations/confirmations.service.js";
 import type {
+  RecordTelegramChatMessageInput,
   ResolveTelegramContextInput,
   TelegramConfirmationCallbackInput,
   VerifyTelegramMiniAppInitDataInput,
 } from "./telegram.contracts.js";
 import {
   LinkedTelegramIdentityDto,
+  ParseRecordTelegramChatMessageBodyPipe,
   ParseResolveTelegramContextBodyPipe,
   ParseTelegramConfirmationCallbackBodyPipe,
   ParseVerifyTelegramMiniAppInitDataBodyPipe,
+  RecordTelegramChatMessageDto,
+  RecordTelegramChatMessageResultDto,
   ResolveTelegramContextDto,
   TelegramConfirmationCallbackDto,
   TelegramConfirmationCallbackResultDto,
@@ -58,6 +63,18 @@ export class TelegramController {
     @Body(new ParseResolveTelegramContextBodyPipe()) input: ResolveTelegramContextInput,
   ): Promise<TelegramContextResolutionDto> {
     return this.telegramService.resolveContext(input);
+  }
+
+  @Post("history/messages")
+  @ApiOperation({ summary: "Store a Telegram text message when chat history access is enabled" })
+  @ApiBody({ type: RecordTelegramChatMessageDto })
+  @ApiCreatedResponse({ type: RecordTelegramChatMessageResultDto })
+  @ApiBadRequestResponse({ description: "Telegram chat message payload is invalid." })
+  @ApiUnauthorizedResponse({ description: "Telegram bot shared secret is missing or invalid." })
+  recordChatMessage(
+    @Body(new ParseRecordTelegramChatMessageBodyPipe()) input: RecordTelegramChatMessageInput,
+  ): Promise<RecordTelegramChatMessageResultDto> {
+    return this.telegramService.recordChatMessage(input);
   }
 
   @Post("confirmations/callback")

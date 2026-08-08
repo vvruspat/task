@@ -141,6 +141,16 @@ nav {
   gap: 4px;
   overflow-y: auto;
 }
+.sidebar nav {
+  --sidebar-nav-icon-size: 16px;
+}
+.nav-item > svg,
+.nav-parent > a > svg,
+.nav-subitem > svg {
+  width: var(--sidebar-nav-icon-size);
+  height: var(--sidebar-nav-icon-size);
+  flex: 0 0 var(--sidebar-nav-icon-size);
+}
 .nav-item {
   display: flex;
   align-items: center;
@@ -192,7 +202,8 @@ nav {
   border-radius: 4px;
   color: #60646c;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 500;
 }
 .nav-subitem span {
   overflow: hidden;
@@ -205,7 +216,6 @@ nav {
 .nav-subitem.active {
   background: #e6edfe;
   color: #3e63dd;
-  font-weight: 600;
 }
 .profile {
   margin-top: auto;

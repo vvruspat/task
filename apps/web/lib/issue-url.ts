@@ -16,3 +16,25 @@ export function issueHref(projectKey: string, number: number, title: string): st
   const identifier = issueIdentifier(projectKey, number);
   return `/issue/${identifier}/${encodeURIComponent(issueTitleSlug(title))}`;
 }
+
+export function isCanonicalIssueRoute(
+  identifier: string,
+  slug: string | null,
+  projectKey: string,
+  number: number,
+  title: string,
+): boolean {
+  return (
+    decodeIssueRouteSegment(identifier) === issueIdentifier(projectKey, number) &&
+    slug !== null &&
+    decodeIssueRouteSegment(slug) === issueTitleSlug(title)
+  );
+}
+
+function decodeIssueRouteSegment(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}

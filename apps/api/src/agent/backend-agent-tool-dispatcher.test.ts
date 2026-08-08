@@ -162,8 +162,134 @@ test("BackendAgentToolOperationDispatcher routes workspace integration tools", a
   ]);
 });
 
+test("BackendAgentToolOperationDispatcher reads Telegram history in the current topic", async () => {
+  const calls: unknown[] = [];
+  const dispatcher = new BackendAgentToolOperationDispatcher(
+    {
+      async createProject() {
+        throw new Error("Unexpected project call.");
+      },
+    },
+    {
+      async addTaskSubtasks() {
+        throw new Error("Unexpected subtask call.");
+      },
+      async createTask() {
+        throw new Error("Unexpected task call.");
+      },
+    },
+    emptyTaskSkillsService(),
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    {
+      async readChatHistory(input) {
+        calls.push(input);
+        return {
+          status: "available",
+          messages: [
+            {
+              telegramMessageId: "41",
+              replyToTelegramMessageId: null,
+              senderTelegramId: "999",
+              senderDisplayName: "Marina",
+              senderIsBot: false,
+              text: "Релиз переносим на пятницу",
+              sentAt: now,
+            },
+          ],
+        };
+      },
+    },
+  );
+
+  const result = await dispatcher.dispatchToolCall(
+    {
+      callId: "call-telegram-history",
+      toolName: "telegram_history_read",
+      arguments: { limit: 10 },
+    },
+    {
+      workspaceId,
+      userId,
+      telegramChatId: "-100987654321",
+      telegramThreadId: "17",
+      telegramMessageId: "42",
+    },
+  );
+
+  assert.deepEqual(calls, [
+    {
+      workspaceId,
+      telegramChatId: "-100987654321",
+      telegramThreadId: "17",
+      beforeTelegramMessageId: "42",
+      limit: 10,
+    },
+  ]);
+  assert.deepEqual(result.result, {
+    kind: "telegram_chat_history",
+    count: 1,
+    messages: [
+      {
+        telegramMessageId: "41",
+        replyToTelegramMessageId: null,
+        senderTelegramId: "999",
+        senderDisplayName: "Marina",
+        senderIsBot: false,
+        text: "Релиз переносим на пятницу",
+        sentAt: now.toISOString(),
+      },
+    ],
+  });
+});
+
+test("BackendAgentToolOperationDispatcher reports disabled Telegram history access", async () => {
+  const dispatcher = new BackendAgentToolOperationDispatcher(
+    {
+      async createProject() {
+        throw new Error("Unexpected project call.");
+      },
+    },
+    {
+      async addTaskSubtasks() {
+        throw new Error("Unexpected subtask call.");
+      },
+      async createTask() {
+        throw new Error("Unexpected task call.");
+      },
+    },
+    emptyTaskSkillsService(),
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    {
+      async readChatHistory() {
+        return { status: "history_access_disabled" };
+      },
+    },
+  );
+
+  const result = await dispatcher.dispatchToolCall(
+    { callId: "call-telegram-history", toolName: "telegram_history_read", arguments: {} },
+    { workspaceId, userId, telegramChatId: "-100987654321" },
+  );
+
+  assert.deepEqual(result.result, {
+    kind: "telegram_chat_history_unavailable",
+    reason: "history_access_disabled",
+  });
+});
+
 test("BackendAgentToolOperationDispatcher exposes permission-checked project and task reads", async () => {
   const realtimeChanges: unknown[] = [];
+  const statusId = "66666666-6666-4666-8666-666666666666";
   const project = new ProjectDetailDto({
     id: projectId,
     workspaceId,
@@ -204,7 +330,27 @@ test("BackendAgentToolOperationDispatcher exposes permission-checked project and
     },
     emptyTaskSkillsService(),
     undefined,
-    undefined,
+    {
+      async listStatuses(actualWorkspaceId, actualProjectId, actualUserId) {
+        assert.deepEqual(
+          { actualWorkspaceId, actualProjectId, actualUserId },
+          { actualWorkspaceId: workspaceId, actualProjectId: projectId, actualUserId: userId },
+        );
+        return [
+          {
+            id: statusId,
+            workspaceId,
+            projectId,
+            name: "In progress",
+            color: "#0EA5E9",
+            position: "3000",
+            isDone: false,
+            createdAt: now,
+            updatedAt: now,
+          },
+        ];
+      },
+    },
     undefined,
     undefined,
     {
@@ -231,6 +377,10 @@ test("BackendAgentToolOperationDispatcher exposes permission-checked project and
     { arguments: {}, callId: "call-task-list", toolName: "task_list" },
     context,
   );
+  const statusList = await dispatcher.dispatchToolCall(
+    { arguments: {}, callId: "call-status-list", toolName: "status_list" },
+    context,
+  );
 
   assert.equal(projectList.result?.["count"], 1);
   assert.deepEqual(projectList.result?.["projects"], [
@@ -247,6 +397,20 @@ test("BackendAgentToolOperationDispatcher exposes permission-checked project and
   assert.equal(projectDetail.result?.["id"], projectId);
   assert.equal(taskList.result?.["projectId"], projectId);
   assert.equal(taskList.result?.["count"], 1);
+  assert.deepEqual(statusList.result, {
+    kind: "status_list",
+    projectId,
+    count: 1,
+    statuses: [
+      {
+        id: statusId,
+        name: "In progress",
+        color: "#0EA5E9",
+        position: "3000",
+        isDone: false,
+      },
+    ],
+  });
   assert.deepEqual(realtimeChanges, []);
 });
 
@@ -333,6 +497,22 @@ test("BackendAgentToolOperationDispatcher creates a task in the selected project
       async createProject() {
         throw new Error("Unexpected project call.");
       },
+      async getProject() {
+        return new ProjectDetailDto({
+          id: projectId,
+          workspaceId,
+          key: "SMP",
+          slug: "soundtrack",
+          title: "Soundtrack",
+          description: null,
+          status: null,
+          position: null,
+          createdByUserId: userId,
+          archivedAt: null,
+          createdAt: now,
+          updatedAt: now,
+        });
+      },
     },
     {
       async addTaskSubtasks() {
@@ -363,6 +543,22 @@ test("BackendAgentToolOperationDispatcher creates a task in the selected project
       },
     },
     emptyTaskSkillsService(),
+    {
+      async getWorkspace() {
+        return new WorkspaceDetailDto({
+          id: workspaceId,
+          name: "tAsk Local",
+          slug: "task-local",
+          description: null,
+          members: [],
+          createdAt: now,
+          updatedAt: now,
+        });
+      },
+      async listMembers() {
+        return [];
+      },
+    },
   );
 
   const result = await dispatcher.dispatchToolCall(
@@ -379,6 +575,8 @@ test("BackendAgentToolOperationDispatcher creates a task in the selected project
     id: taskId,
     number: 1,
     projectId,
+    projectKey: "SMP",
+    workspaceSlug: "task-local",
     title: "Record vocals",
     workspaceId,
   });

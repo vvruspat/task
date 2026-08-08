@@ -15,9 +15,11 @@ import type {
 
 @Entity({ name: "integration_connections" })
 @Check("chk_integration_connections_status", `"status" IN ('connected', 'disconnected', 'error')`)
-@Index("uq_integration_connections_workspace_integration", ["workspaceIntegrationId"], {
-  unique: true,
-})
+@Index(
+  "uq_integration_connections_installation_provider_account",
+  ["workspaceIntegrationId", "providerAccountId"],
+  { unique: true },
+)
 @Index("idx_integration_connections_provider_account", ["providerAccountId"])
 export class IntegrationConnectionEntity implements IntegrationConnection {
   @PrimaryGeneratedColumn("uuid")

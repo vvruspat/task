@@ -7,13 +7,19 @@ import {
   IntegrationEventDeliveryEntity,
   IntegrationSubscriptionEntity,
   IntegrationWebhookReceiptEntity,
+  TelegramChatEntity,
   WorkspaceIntegrationEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
-import type { WorkspaceIntegration } from "./integrations.contracts.js";
+import type {
+  UpdateTelegramConnectionSettingsInput,
+  WorkspaceIntegration,
+  WorkspaceIntegrationConnection,
+} from "./integrations.contracts.js";
 import type {
   InstallWorkspaceIntegrationResult,
   UninstallWorkspaceIntegrationResult,
+  UpdateTelegramConnectionSettingsResult,
   WorkspaceIntegrationOperationalSnapshot,
   WorkspaceIntegrationsStore,
 } from "./integrations.store.js";
@@ -42,46 +48,54 @@ export class TypeOrmWorkspaceIntegrationsStore implements WorkspaceIntegrationsS
     if (integrations.length === 0) return [];
 
     const integrationIds = integrations.map((integration) => integration.id);
-    const [connections, subscriptionCounts, deliveryCounts, webhookCounts] = await Promise.all([
-      dataSource.getRepository(IntegrationConnectionEntity).find({
-        where: { workspaceIntegrationId: In(integrationIds) },
-      }),
-      dataSource
-        .getRepository(IntegrationSubscriptionEntity)
-        .createQueryBuilder("subscription")
-        .innerJoin(
-          IntegrationConnectionEntity,
-          "connection",
-          "connection.id = subscription.connectionId",
-        )
-        .select("connection.workspaceIntegrationId", "integrationId")
-        .addSelect("subscription.status", "status")
-        .addSelect("COUNT(*)", "count")
-        .where("connection.workspaceIntegrationId IN (:...integrationIds)", { integrationIds })
-        .groupBy("connection.workspaceIntegrationId")
-        .addGroupBy("subscription.status")
-        .getRawMany<IntegrationStatusCountRow>(),
-      countByInstallationAndStatus(
-        dataSource,
-        IntegrationEventDeliveryEntity,
-        "delivery",
-        integrationIds,
-      ),
-      countByInstallationAndStatus(
-        dataSource,
-        IntegrationWebhookReceiptEntity,
-        "webhook",
-        integrationIds,
-      ),
-    ]);
+    const [connections, telegramChats, subscriptionCounts, deliveryCounts, webhookCounts] =
+      await Promise.all([
+        dataSource.getRepository(IntegrationConnectionEntity).find({
+          order: { createdAt: "ASC" },
+          where: { workspaceIntegrationId: In(integrationIds) },
+        }),
+        dataSource.getRepository(TelegramChatEntity).find({ where: { workspaceId } }),
+        dataSource
+          .getRepository(IntegrationSubscriptionEntity)
+          .createQueryBuilder("subscription")
+          .innerJoin(
+            IntegrationConnectionEntity,
+            "connection",
+            "connection.id = subscription.connectionId",
+          )
+          .select("connection.workspaceIntegrationId", "integrationId")
+          .addSelect("subscription.status", "status")
+          .addSelect("COUNT(*)", "count")
+          .where("connection.workspaceIntegrationId IN (:...integrationIds)", { integrationIds })
+          .groupBy("connection.workspaceIntegrationId")
+          .addGroupBy("subscription.status")
+          .getRawMany<IntegrationStatusCountRow>(),
+        countByInstallationAndStatus(
+          dataSource,
+          IntegrationEventDeliveryEntity,
+          "delivery",
+          integrationIds,
+        ),
+        countByInstallationAndStatus(
+          dataSource,
+          IntegrationWebhookReceiptEntity,
+          "webhook",
+          integrationIds,
+        ),
+      ]);
 
-    const connectionByIntegrationId = new Map(
-      connections.map((connection) => [connection.workspaceIntegrationId, connection]),
+    const connectionsByIntegrationId = groupConnectionsByIntegrationId(connections);
+    const telegramChatsByProviderAccountId = new Map(
+      telegramChats.map((chat) => [chat.telegramChatId, chat]),
     );
     const snapshots = new Map(
       integrations.map((integration) => [
         integration.id,
-        createOperationalSnapshot(integration, connectionByIntegrationId.get(integration.id)),
+        createOperationalSnapshot(
+          integration,
+          connectionsByIntegrationId.get(integration.id) ?? [],
+          telegramChatsByProviderAccountId,
+        ),
       ]),
     );
     applySubscriptionCounts(snapshots, subscriptionCounts);
@@ -141,6 +155,44 @@ export class TypeOrmWorkspaceIntegrationsStore implements WorkspaceIntegrationsS
     });
   }
 
+  async updateTelegramConnectionSettings(
+    workspaceId: string,
+    integrationId: string,
+    connectionId: string,
+    userId: string,
+    input: UpdateTelegramConnectionSettingsInput,
+  ): Promise<UpdateTelegramConnectionSettingsResult> {
+    const dataSource = await this.getInitializedDataSource();
+    return await dataSource.transaction(async (manager) => {
+      if (!(await isWorkspaceManager(manager, workspaceId, userId))) {
+        return { status: "forbidden" };
+      }
+      const integration = await manager
+        .getRepository(WorkspaceIntegrationEntity)
+        .findOneBy({ id: integrationId, workspaceId });
+      if (integration === null || integration.pluginKey !== "telegram") {
+        return { status: "integration_not_found" };
+      }
+      const connection = await manager.getRepository(IntegrationConnectionEntity).findOneBy({
+        id: connectionId,
+        workspaceIntegrationId: integrationId,
+      });
+      if (connection === null) return { status: "connection_not_found" };
+      const chatRepository = manager.getRepository(TelegramChatEntity);
+      const chat = await chatRepository.findOneBy({
+        telegramChatId: connection.providerAccountId,
+        workspaceId,
+      });
+      if (chat === null) return { status: "connection_not_found" };
+      chat.historyAccessEnabled = input.conversationHistoryAccess;
+      await chatRepository.save(chat);
+      return {
+        status: "updated",
+        connection: mapWorkspaceIntegrationConnection(integration, connection, chat),
+      };
+    });
+  }
+
   private async getInitializedDataSource(): Promise<DataSource> {
     const dataSource = this.dataSourceProvider.getDataSource();
     if (dataSource === null) throw new ServiceUnavailableException("Database is not configured.");
@@ -175,13 +227,18 @@ async function countByInstallationAndStatus(
 
 function createOperationalSnapshot(
   integration: WorkspaceIntegration,
-  connection: IntegrationConnectionEntity | undefined,
+  connections: IntegrationConnectionEntity[],
+  telegramChatsByProviderAccountId: ReadonlyMap<string, TelegramChatEntity>,
 ): WorkspaceIntegrationOperationalSnapshot {
   return {
-    connection:
-      connection === undefined
-        ? null
-        : { lastError: connection.lastError, status: connection.status },
+    connection: summarizeIntegrationConnections(connections),
+    connections: connections.map((connection) =>
+      mapWorkspaceIntegrationConnection(
+        integration,
+        connection,
+        telegramChatsByProviderAccountId.get(connection.providerAccountId) ?? null,
+      ),
+    ),
     deliveries: {
       deadCount: 0,
       pendingCount: 0,
@@ -204,6 +261,57 @@ function createOperationalSnapshot(
       receivedCount: 0,
     },
   };
+}
+
+function mapWorkspaceIntegrationConnection(
+  integration: Pick<WorkspaceIntegration, "pluginKey">,
+  connection: IntegrationConnectionEntity,
+  telegramChat: TelegramChatEntity | null,
+): WorkspaceIntegrationConnection {
+  return {
+    connectedAt: connection.connectedAt,
+    displayName: connection.displayName,
+    id: connection.id,
+    lastError: connection.lastError,
+    providerAccountId: connection.providerAccountId,
+    status: connection.status,
+    telegramSettings:
+      integration.pluginKey === "telegram" && telegramChat !== null
+        ? { conversationHistoryAccess: telegramChat.historyAccessEnabled }
+        : null,
+  };
+}
+
+function groupConnectionsByIntegrationId(
+  connections: IntegrationConnectionEntity[],
+): Map<string, IntegrationConnectionEntity[]> {
+  const grouped = new Map<string, IntegrationConnectionEntity[]>();
+  for (const connection of connections) {
+    const current = grouped.get(connection.workspaceIntegrationId);
+    if (current === undefined) {
+      grouped.set(connection.workspaceIntegrationId, [connection]);
+    } else {
+      current.push(connection);
+    }
+  }
+  return grouped;
+}
+
+export function summarizeIntegrationConnections(
+  connections: readonly Pick<IntegrationConnectionEntity, "lastError" | "status">[],
+): WorkspaceIntegrationOperationalSnapshot["connection"] {
+  if (connections.length === 0) return null;
+  const error = connections.find((connection) => connection.status === "error");
+  if (error !== undefined) {
+    return { lastError: error.lastError, status: "error" };
+  }
+  const connected = connections.find((connection) => connection.status === "connected");
+  if (connected !== undefined) {
+    return { lastError: connected.lastError, status: "connected" };
+  }
+  const disconnected = connections[0];
+  if (disconnected === undefined) return null;
+  return { lastError: disconnected.lastError, status: "disconnected" };
 }
 
 function applySubscriptionCounts(

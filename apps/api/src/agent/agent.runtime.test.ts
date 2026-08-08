@@ -86,6 +86,8 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /project_get/);
   assert.match(JSON.stringify(requestBody.tools), /project_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_list/);
+  assert.match(JSON.stringify(requestBody.tools), /status_list/);
+  assert.match(JSON.stringify(requestBody.tools), /telegram_history_read/);
   assert.match(JSON.stringify(requestBody.tools), /task_skill_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_lookup/);
@@ -98,6 +100,116 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /independent root task/);
   assert.match(JSON.stringify(requestBody.messages), /named list or count of peer items/);
   assert.match(JSON.stringify(requestBody.messages), /new template and project items/);
+  assert.match(JSON.stringify(requestBody.messages), /Do not invent subtasks/u);
+  assert.match(JSON.stringify(requestBody.tools), /plain task without subtasks/u);
+  assert.match(JSON.stringify(requestBody.messages), /map every task statusId/u);
+  assert.match(JSON.stringify(requestBody.messages), /Доступ к истории переписки/u);
+});
+
+test("OpenRouterAgentRuntime asks to enable storage when Telegram history is disabled", async () => {
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-history",
+                type: "function",
+                function: { name: "telegram_history_read", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "I cannot see it." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("telegram_history_read", {
+      kind: "telegram_chat_history_unavailable",
+      reason: "history_access_disabled",
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: { ...request.input, inputText: "Что мы обсуждали выше?" },
+    context: {
+      ...request.context,
+      telegramChatId: "-100987654321",
+      telegramThreadId: "17",
+      telegramMessageId: "42",
+    },
+  });
+
+  const firstBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(firstBody));
+  assert.deepEqual(firstBody.tool_choice, {
+    type: "function",
+    function: { name: "telegram_history_read" },
+  });
+  assert.match(result.finalResponse ?? "", /включи «Доступ к истории переписки»/u);
+  assert.match(result.finalResponse ?? "", /новые текстовые сообщения/u);
+});
+
+test("OpenRouterAgentRuntime reads Telegram history for referential requests", async () => {
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-history",
+                type: "function",
+                function: { name: "telegram_history_read", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "Создам задачу для этой песни." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("telegram_history_read", {
+      kind: "telegram_chat_history",
+      count: 1,
+      messages: [
+        {
+          telegramMessageId: "40",
+          senderDisplayName: "Alexander",
+          senderIsBot: false,
+          text: "А что если сделать песню про железного голема?",
+          sentAt: "2026-08-08T16:04:00.000Z",
+        },
+      ],
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: { ...request.input, inputText: "Можешь сделать таску для такой песни?" },
+    context: {
+      ...request.context,
+      telegramChatId: "-100987654321",
+      telegramThreadId: "17",
+      telegramMessageId: "41",
+    },
+  });
+
+  const firstBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(firstBody));
+  assert.deepEqual(firstBody.tool_choice, {
+    type: "function",
+    function: { name: "telegram_history_read" },
+  });
+  assert.equal(result.finalResponse, "Создам задачу для этой песни.");
 });
 
 test("OpenRouterAgentRuntime preserves shared conversation roles and selected project context", async () => {
@@ -180,6 +292,90 @@ test("OpenRouterAgentRuntime routes project read questions to the read-only list
     dispatcher.calls.map((call) => call.toolName),
     ["project_list"],
   );
+});
+
+test("OpenRouterAgentRuntime requires task and status reads for a status table", async () => {
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const statusId = "55555555-5555-4555-8555-555555555555";
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-task-list",
+                type: "function",
+                function: { name: "task_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-status-list",
+                type: "function",
+                function: { name: "status_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        { message: { content: "| Задача | Статус |\n| --- | --- |\n| Песня | In progress |" } },
+      ],
+    }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("task_list", {
+      kind: "task_list",
+      projectId,
+      count: 1,
+      tasks: [{ id: "66666666-6666-4666-8666-666666666666", title: "Песня", statusId }],
+    }),
+    successfulToolCall("status_list", {
+      kind: "status_list",
+      projectId,
+      count: 1,
+      statuses: [{ id: statusId, name: "In progress", color: "#0EA5E9", isDone: false }],
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    context: { ...request.context, projectId },
+    input: { ...request.input, inputText: "Сделай таблицу задач и статусов" },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["task_list", "status_list"],
+  );
+  const taskReadBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
+  const statusReadBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(taskReadBody));
+  assert.ok(isOpenRouterRequestBody(statusReadBody));
+  assert.deepEqual(taskReadBody.tool_choice, {
+    type: "function",
+    function: { name: "task_list" },
+  });
+  assert.deepEqual(statusReadBody.tool_choice, {
+    type: "function",
+    function: { name: "status_list" },
+  });
+  assert.match(result.finalResponse ?? "", /In progress/u);
 });
 
 test("OpenRouterAgentRuntime exposes connected workspace integration tools", async () => {
@@ -305,8 +501,16 @@ test("OpenRouterAgentRuntime creates a template before a project that uses it", 
     finalResponse,
     new RegExp(`\\[Песня\\]\\(/templates\\?skill=${taskSkillId}\\)`, "u"),
   );
-  assert.match(finalResponse, /\[Песня 1\]\(\/issue\/ALBUM-1\)/u);
-  assert.match(finalResponse, /\[Аранжировка\]\(\/issue\/ALBUM-2\)/u);
+  assert.ok(
+    finalResponse.includes(
+      `[ALBUM-1 — Песня 1](/w/t-ask-local/issue/ALBUM-1/${encodeURIComponent("песня-1")})`,
+    ),
+  );
+  assert.ok(
+    finalResponse.includes(
+      `[ALBUM-2 — Аранжировка](/w/t-ask-local/issue/ALBUM-2/${encodeURIComponent("аранжировка")})`,
+    ),
+  );
   assert.doesNotMatch(finalResponse, /\bID:/u);
 });
 
@@ -650,13 +854,22 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
       },
       result: {
         taskId: "55555555-5555-4555-8555-555555555555",
+        projectKey: "SMP",
+        number: 42,
+        title: "Follow up with Marina",
+        workspaceSlug: "team",
       },
       status: "success",
       error: null,
       completedAt: new Date("2026-07-08T00:00:03.000Z"),
     },
   ]);
-  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+  const runtime = new OpenRouterAgentRuntime(
+    config,
+    fetcher.fetch,
+    dispatcher,
+    "https://task.example",
+  );
 
   assert.deepEqual(await runtime.handleTelegramRequest(request), {
     model: "openai/gpt-4.1-mini",
@@ -664,7 +877,8 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
       kind: "openrouter_chat_completion",
       source: "telegram",
     },
-    finalResponse: "## Готово\n\n### ✅ Follow up with Marina\nЗадача создана.",
+    finalResponse:
+      "## Готово\n\n### ✅ [SMP-42 — Follow up with Marina](https://task.example/w/team/issue/SMP-42/follow-up-with-marina)\nЗадача создана.",
     status: "completed",
     tokenUsage: {
       total_tokens: 24,
@@ -681,6 +895,10 @@ test("OpenRouterAgentRuntime parses assistant tool calls and dispatches typed op
         },
         result: {
           taskId: "55555555-5555-4555-8555-555555555555",
+          projectKey: "SMP",
+          number: 42,
+          title: "Follow up with Marina",
+          workspaceSlug: "team",
         },
         status: "success",
         error: null,
@@ -967,6 +1185,173 @@ test("OpenRouterAgentRuntime rejects malformed assistant tool call arguments", a
     cost: null,
     error: "OpenRouter assistant tool call function arguments must parse to an object.",
     toolCalls: [],
+  });
+});
+
+test("OpenRouterAgentRuntime retries one malformed tool call before dispatching mutations", async () => {
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-project-list-invalid",
+                type: "function",
+                function: { name: "project_list", arguments: '{"query":' },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-project-list-valid",
+                type: "function",
+                function: { name: "project_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "Found it." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("project_list", {
+      kind: "project_list",
+      count: 1,
+      projects: [{ id: projectId, title: "Camelot" }],
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: { ...request.input, inputText: "Покажи проекты" },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["project_list"],
+  );
+  assert.equal(fetcher.calls.length, 3);
+  const retryBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(retryBody));
+  assert.match(JSON.stringify(retryBody.messages), /valid strict JSON/u);
+});
+
+test("OpenRouterAgentRuntime resolves a named project after a guessed id fails", async () => {
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-task-list-invalid-project",
+                type: "function",
+                function: {
+                  name: "task_list",
+                  arguments: JSON.stringify({
+                    projectId: "55555555-5555-4555-8555-555555555555",
+                  }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-project-list",
+                type: "function",
+                function: { name: "project_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-task-create",
+                type: "function",
+                function: {
+                  name: "task_create",
+                  arguments: JSON.stringify({ projectId, title: "Восстание Камелота" }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, { choices: [{ message: { content: "Done." } }] }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    {
+      toolName: "task_list",
+      arguments: { projectId: "55555555-5555-4555-8555-555555555555" },
+      result: null,
+      status: "error",
+      error: "Project was not found.",
+      completedAt: new Date("2026-07-18T09:00:00.000Z"),
+    },
+    successfulToolCall("project_list", {
+      kind: "project_list",
+      count: 1,
+      projects: [{ id: projectId, title: "Съемка мюзикла про короля Артура" }],
+    }),
+    successfulToolCall("task_create", {
+      kind: "task_created",
+      projectId,
+      taskId: "66666666-6666-4666-8666-666666666666",
+      title: "Восстание Камелота",
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: {
+      ...request.input,
+      inputText: "Добавь задачу в проект Съемка мюзикла про короля Артура",
+    },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["task_list", "project_list", "task_create"],
+  );
+  const recoveryBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(recoveryBody));
+  assert.deepEqual(recoveryBody.tool_choice, {
+    type: "function",
+    function: { name: "project_list" },
   });
 });
 

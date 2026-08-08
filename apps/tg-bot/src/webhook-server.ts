@@ -20,7 +20,12 @@ import {
 
 export type TelegramWebhookServerOptions = {
   runtime: TelegramBotRuntime;
+  logger?: TelegramWebhookServerLogger;
   maxBodyBytes?: number;
+};
+
+export type TelegramWebhookServerLogger = {
+  error(error: unknown): void;
 };
 
 export type TelegramWebhookServerFromEnvironmentOptions =
@@ -107,6 +112,10 @@ export async function handleTelegramWebhookNodeRequest(
       },
     );
 
+    if (adapterResponse.statusCode === 500) {
+      (options.logger ?? console).error(adapterResponse.result.error);
+    }
+
     writeJsonResponse(response, adapterResponse.statusCode, adapterResponse.body);
   } catch (error) {
     if (error instanceof TelegramWebhookServerError) {
@@ -114,6 +123,7 @@ export async function handleTelegramWebhookNodeRequest(
       return;
     }
 
+    (options.logger ?? console).error(error);
     writeJsonResponse(response, 500, { status: "failed" });
   }
 }

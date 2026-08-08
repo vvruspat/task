@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  isTelegramAgentInvocation,
   normalizeTelegramAgentInput,
   parseTelegramMessageContext,
   TelegramUpdateParseError,
@@ -53,6 +54,35 @@ test("Telegram agent input strips the configured mention without touching other 
     normalizeTelegramAgentInput(message, "t_ask_me_bot"),
     "какие проекты у нас созданы?",
   );
+});
+
+test("Telegram group replies invoke only the configured bot", () => {
+  const update = {
+    update_id: 10,
+    message: {
+      message_id: 20,
+      from: { id: 123456789, is_bot: false, username: "alex" },
+      chat: { id: -100987654321, type: "supergroup", title: "Album Team" },
+      text: "а вот выше обсуждали которую",
+      entities: [],
+      reply_to_message: {
+        message_id: 19,
+        from: { id: 987654321, is_bot: true, username: "t_ask_me_bot" },
+      },
+    },
+  };
+  const message = parseTelegramMessageContext(update);
+
+  assert.equal(isTelegramAgentInvocation(message, "t_ask_me_bot"), true);
+  assert.equal(isTelegramAgentInvocation(message, "another_bot"), false);
+  assert.equal(message.replyToMessageId, "19");
+  assert.deepEqual(message.replyToSender, {
+    telegramId: "987654321",
+    isBot: true,
+    username: "t_ask_me_bot",
+    firstName: null,
+    lastName: null,
+  });
 });
 
 test("Telegram message parsing rejects malformed topic ids", () => {

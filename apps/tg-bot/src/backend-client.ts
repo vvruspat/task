@@ -6,6 +6,7 @@ type HandleTelegramConfirmationCallbackOperation =
   operations["TelegramController_handleConfirmationCallback"];
 type CompleteTelegramChatConnectionOperation =
   operations["TelegramInternalConnectController_complete"];
+type RecordTelegramChatMessageOperation = operations["TelegramController_recordChatMessage"];
 
 export type ResolveTelegramContextInput =
   ResolveTelegramContextOperation["requestBody"]["content"]["application/json"];
@@ -23,6 +24,10 @@ export type CompleteTelegramChatConnectionInput =
   CompleteTelegramChatConnectionOperation["requestBody"]["content"]["application/json"];
 export type TelegramChatConnectionResponse =
   CompleteTelegramChatConnectionOperation["responses"]["200"]["content"]["application/json"];
+export type RecordTelegramChatMessageInput =
+  RecordTelegramChatMessageOperation["requestBody"]["content"]["application/json"];
+export type RecordTelegramChatMessageResponse =
+  RecordTelegramChatMessageOperation["responses"]["201"]["content"]["application/json"];
 
 export type TelegramBackendFetchInit = {
   method: "POST";
@@ -70,6 +75,10 @@ export type CompleteTelegramChatConnectionRequest = {
   body: CompleteTelegramChatConnectionInput;
 };
 
+export type RecordTelegramChatMessageRequest = {
+  body: RecordTelegramChatMessageInput;
+};
+
 export type TelegramBackendClient = {
   resolveTelegramContext(
     request: ResolveTelegramContextRequest,
@@ -83,6 +92,9 @@ export type TelegramBackendClient = {
   completeTelegramChatConnection(
     request: CompleteTelegramChatConnectionRequest,
   ): Promise<TelegramChatConnectionResponse>;
+  recordTelegramChatMessage(
+    request: RecordTelegramChatMessageRequest,
+  ): Promise<RecordTelegramChatMessageResponse>;
 };
 
 export class TelegramBackendClientError extends Error {
@@ -135,6 +147,15 @@ export function createTelegramBackendClient(
         readTelegramChatConnectionResponse,
       );
     },
+    recordTelegramChatMessage(request: RecordTelegramChatMessageRequest) {
+      return postJson(
+        fetchImplementation,
+        `${baseUrl}/internal/telegram/history/messages`,
+        options.botSharedSecret,
+        request.body,
+        readRecordTelegramChatMessageResponse,
+      );
+    },
   };
 }
 
@@ -146,7 +167,8 @@ async function postJson<ResponseBody>(
     | ResolveTelegramContextInput
     | CreateTelegramAgentRunInput
     | TelegramConfirmationCallbackInput
-    | CompleteTelegramChatConnectionInput,
+    | CompleteTelegramChatConnectionInput
+    | RecordTelegramChatMessageInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
   const response = await fetchImplementation(url, {
@@ -242,6 +264,20 @@ function readTelegramChatConnectionResponse(value: unknown): TelegramChatConnect
     telegramChatId: readString(record, "telegramChatId"),
     workspaceId: readString(record, "workspaceId"),
   };
+}
+
+function readRecordTelegramChatMessageResponse(value: unknown): RecordTelegramChatMessageResponse {
+  const record = readRecord(value, "Telegram chat message record response");
+  const status = record["status"];
+  if (
+    status !== "stored" &&
+    status !== "duplicate" &&
+    status !== "history_access_disabled" &&
+    status !== "telegram_chat_unlinked"
+  ) {
+    throw new TelegramBackendClientError("Telegram chat message record status is invalid.");
+  }
+  return { status };
 }
 
 function readRecord(value: unknown, label: string): Record<string, unknown> {

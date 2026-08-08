@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
-import { issueHref, issueIdentifier, issueTitleSlug } from "../lib/issue-url";
+import { isCanonicalIssueRoute, issueHref, issueIdentifier } from "../lib/issue-url";
 import { useWorkspaceData } from "../lib/use-workspace-data";
 import { isApiFailure } from "../lib/workspace-contracts";
 import { workspaceIssueHref } from "../lib/workspace-url";
@@ -93,9 +93,9 @@ export function IssuePage({
 
   useEffect(() => {
     if (state.status !== "ready" || project === undefined) return;
-    const expectedIdentifier = issueIdentifier(project.key, state.task.number);
-    const expectedSlug = issueTitleSlug(state.task.title);
-    if (identifier !== expectedIdentifier || slug !== expectedSlug) {
+    if (
+      !isCanonicalIssueRoute(identifier, slug, project.key, state.task.number, state.task.title)
+    ) {
       router.replace(
         data === null
           ? issueHref(project.key, state.task.number, state.task.title)

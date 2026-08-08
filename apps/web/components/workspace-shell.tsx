@@ -14,6 +14,7 @@ import {
   Bell,
   Bot,
   Check,
+  ChevronDown,
   ChevronRight,
   Columns3,
   FolderKanban,
@@ -25,9 +26,12 @@ import {
   MoreHorizontal,
   PanelLeftClose,
   PanelLeftOpen,
+  Plug,
   Plus,
   Settings,
+  SlidersHorizontal,
   UserRound,
+  UsersRound,
   Workflow,
 } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -76,6 +80,11 @@ const navigation: NavItem[] = [
   { page: "notifications", label: "nav.notifications", icon: Bell },
   { page: "settings", label: "common.settings", icon: Settings },
 ];
+const settingsNavigation: NavItem[] = [
+  { page: "settings", label: "settings.general", icon: SlidersHorizontal },
+  { page: "settings/members", label: "workspace.members", icon: UsersRound },
+  { page: "settings/integrations", label: "integrations.title", icon: Plug },
+];
 const sidebarCompactStorageKey = "task:sidebar-compact";
 const AgentDrawer = dynamic(() => import("./agent-chat").then((module) => module.AgentDrawer), {
   ssr: false,
@@ -96,6 +105,7 @@ const WorkspaceLeaveDialog = dynamic(
 export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>): ReactNode {
   const { t } = useI18n();
   const [sidebarCompact, setSidebarCompact] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [workspaceCreateOpen, setWorkspaceCreateOpen] = useState(false);
   const [workspaceLeaveOpen, setWorkspaceLeaveOpen] = useState(false);
   const pathname = usePathname();
@@ -136,6 +146,11 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
           selectedProjectId,
         );
   const activePage = workspacePageFromPath(pathname);
+  const telegramChatSettingsActive = /^\/w\/[^/]+\/settings\/integrations\/telegram\/[^/]+$/u.test(
+    pathname,
+  );
+  const settingsActive =
+    (activePage?.startsWith("settings") ?? false) || telegramChatSettingsActive;
   const setAgentOpen = useWorkspaceOverlayStore((state) => state.setAgentOpen);
   const agentOpen = useWorkspaceOverlayStore((state) => state.agentOpen);
   const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateOpen);
@@ -154,6 +169,9 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
   useEffect(() => {
     setSidebarCompact(window.localStorage.getItem(sidebarCompactStorageKey) === "true");
   }, []);
+  useEffect(() => {
+    if (settingsActive) setSettingsOpen(true);
+  }, [settingsActive]);
   useEffect(() => {
     const routeProjectId = selectedProject?.id ?? null;
     if (pathname.startsWith("/w/") && routeProjectId !== selectedProjectId) {
@@ -348,6 +366,60 @@ export function WorkspaceShell({ children }: Readonly<{ children: ReactNode }>):
                       <span>{view.name}</span>
                     </Link>
                   ))}
+                </div>
+              );
+            if (page === "settings")
+              return (
+                <div className="nav-section" key={page}>
+                  <div
+                    className={
+                      settingsActive ? "nav-item nav-parent active" : "nav-item nav-parent"
+                    }
+                  >
+                    <Link href={href} title={sidebarCompact ? label : undefined}>
+                      <Icon size={16} />
+                      <span>{label}</span>
+                    </Link>
+                    <IconButton
+                      size="1"
+                      variant="ghost"
+                      color="gray"
+                      aria-expanded={settingsOpen}
+                      aria-label={
+                        settingsOpen ? t("settings.collapseSections") : t("settings.expandSections")
+                      }
+                      onClick={() => setSettingsOpen((current) => !current)}
+                    >
+                      {settingsOpen ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
+                    </IconButton>
+                  </div>
+                  {settingsOpen &&
+                    settingsNavigation.map(
+                      ({ page: settingsPage, label: settingsLabelKey, icon: SettingsIcon }) => {
+                        const settingsLabel = t(settingsLabelKey);
+                        const settingsHref =
+                          workspace === undefined
+                            ? `/${settingsPage}`
+                            : workspacePageHref(workspace.slug, settingsPage);
+                        return (
+                          <Link
+                            key={settingsPage}
+                            href={settingsHref}
+                            title={sidebarCompact ? settingsLabel : undefined}
+                            className={
+                              activePage === settingsPage ||
+                              (settingsPage === "settings/integrations" &&
+                                telegramChatSettingsActive)
+                                ? "nav-subitem active"
+                                : "nav-subitem"
+                            }
+                          >
+                            <SettingsIcon size={13} />
+                            <span>{settingsLabel}</span>
+                          </Link>
+                        );
+                      },
+                    )}
                 </div>
               );
             return (

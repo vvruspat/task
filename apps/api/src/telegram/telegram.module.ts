@@ -42,5 +42,6 @@ const telegramServiceProvider: Provider<TelegramService> = {
     telegramMiniAppInitDataVerifierProvider,
     telegramServiceProvider,
   ],
+  exports: [TelegramService],
 })
 export class TelegramModule {}

@@ -4,6 +4,7 @@ import type {
   IntegrationCatalogItem,
   TelegramConnectToken,
   WorkspaceIntegration,
+  WorkspaceIntegrationConnection,
 } from "@task/api-client";
 
 const authKinds = new Set(["app_installation", "bot_token", "oauth2"]);
@@ -23,6 +24,7 @@ const integrationConnectionHealthStatuses = new Set([
   "error",
   "missing",
 ]);
+const integrationConnectionStatuses = new Set(["connected", "disconnected", "error"]);
 
 export function isWorkspaceIntegration(value: unknown): value is WorkspaceIntegration {
   return (
@@ -97,7 +99,27 @@ function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogIt
     Array.isArray(value["capabilityKinds"]) &&
     value["capabilityKinds"].every((kind) => isKnownString(kind, capabilityKinds)) &&
     (value["installation"] === null || isWorkspaceIntegration(value["installation"])) &&
+    Array.isArray(value["connections"]) &&
+    value["connections"].every(isWorkspaceIntegrationConnection) &&
     (value["health"] === null || isWorkspaceIntegrationHealth(value["health"]))
+  );
+}
+
+export function isWorkspaceIntegrationConnection(
+  value: unknown,
+): value is WorkspaceIntegrationConnection {
+  const telegramSettings = isObject(value) ? value["telegramSettings"] : undefined;
+  return (
+    isObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "providerAccountId") &&
+    hasNullableString(value, "displayName") &&
+    isKnownString(value["status"], integrationConnectionStatuses) &&
+    hasString(value, "connectedAt") &&
+    hasNullableString(value, "lastError") &&
+    (telegramSettings === null ||
+      (isObject(telegramSettings) &&
+        typeof telegramSettings["conversationHistoryAccess"] === "boolean"))
   );
 }
 

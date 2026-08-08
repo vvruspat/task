@@ -137,6 +137,20 @@ skill.preview_apply
 skill.apply
 ```
 
+### Root task template preflight
+
+Before creating any root task through MCP, the model must search existing task skills with
+`skill.search`. The search query should describe the task type or workflow from the user's request,
+not only the task's unique title.
+
+- No suitable skills: call `task.create` and leave the task without subtasks. Do not invent steps.
+- Exactly one suitable skill: call `skill.apply` instead of `task.create`.
+- Several suitable skills: do not create anything yet; show the candidates and ask the user to
+  choose one, then call `skill.apply` with that skill.
+
+`task.add_subtasks` is only for component steps explicitly provided by the user. A missing template
+is never permission for the model to fabricate subtasks.
+
 ### Attachment tools
 
 ```text

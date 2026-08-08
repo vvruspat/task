@@ -30,7 +30,10 @@ const environment = {
 };
 
 test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients", async () => {
-  const backendFetch = new RecordingTelegramBackendFetch({ status: "telegram_user_unlinked" });
+  const backendFetch = new RecordingTelegramBackendFetch([
+    { status: "telegram_chat_unlinked" },
+    { status: "telegram_user_unlinked" },
+  ]);
   const telegramFetch = new RecordingTelegramBotApiFetch({
     ok: true,
     result: { message_id: 45 },
@@ -81,6 +84,7 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
     body: JSON.stringify({
       chat_id: "-100987654321",
       text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+      parse_mode: "HTML",
       reply_parameters: {
         message_id: 20,
         allow_sending_without_reply: true,
@@ -91,6 +95,7 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
 
 test("createTelegramBotRuntimeFromEnvironment records resolved updates through agent intake", async () => {
   const backendFetch = new RecordingTelegramBackendFetch([
+    { status: "stored" },
     {
       status: "resolved",
       userId: "22222222-2222-4222-8222-222222222222",
@@ -126,11 +131,12 @@ test("createTelegramBotRuntimeFromEnvironment records resolved updates through a
   assert.deepEqual(
     backendFetch.calls.map((call) => call.input),
     [
+      "https://api.example.test/internal/telegram/history/messages",
       "https://api.example.test/internal/telegram/context/resolve",
       "https://api.example.test/internal/agent/telegram/runs",
     ],
   );
-  assert.deepEqual(backendFetch.calls[1]?.init, {
+  assert.deepEqual(backendFetch.calls[2]?.init, {
     method: "POST",
     headers: {
       accept: "application/json",
@@ -159,6 +165,7 @@ test("createTelegramBotRuntimeFromEnvironment records resolved updates through a
     body: JSON.stringify({
       chat_id: "-100987654321",
       text: "Request recorded. Agent execution is not connected yet.",
+      parse_mode: "HTML",
       reply_parameters: {
         message_id: 20,
         allow_sending_without_reply: true,

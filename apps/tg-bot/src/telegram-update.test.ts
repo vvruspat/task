@@ -46,6 +46,7 @@ test("parseTelegramMessageContext normalizes direct text messages", () => {
     text: "создай задачу записать бас",
     entities: [{ type: "bot_command", offset: 0, length: 6, url: null }],
     replyToMessageId: null,
+    replyToSender: null,
     attachments: [],
   });
 });
@@ -69,6 +70,11 @@ test("parseTelegramMessageContext preserves group chat and mention entities", ()
       entities: [{ type: "mention", offset: 0, length: 5 }],
       reply_to_message: {
         message_id: 19,
+        from: {
+          id: 987654321,
+          is_bot: true,
+          username: "t_ask_me_bot",
+        },
       },
     },
   });
@@ -78,6 +84,13 @@ test("parseTelegramMessageContext preserves group chat and mention entities", ()
   assert.equal(context.chat.title, "Album Team");
   assert.deepEqual(context.entities, [{ type: "mention", offset: 0, length: 5, url: null }]);
   assert.equal(context.replyToMessageId, "19");
+  assert.deepEqual(context.replyToSender, {
+    telegramId: "987654321",
+    isBot: true,
+    username: "t_ask_me_bot",
+    firstName: null,
+    lastName: null,
+  });
 });
 
 test("parseTelegramMessageContext normalizes document and caption metadata", () => {

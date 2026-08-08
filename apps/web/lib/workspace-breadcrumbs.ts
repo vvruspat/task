@@ -26,8 +26,8 @@ const routeLabels: Readonly<Partial<Record<WorkspacePage, MessageKey>>> = {
   projects: "nav.projects",
   settings: "common.settings",
   "settings/integrations": "integrations.title",
+  "settings/members": "workspace.members",
   "settings/profile": "profile.title",
-  "settings/telegram": "workspace.telegramTitle",
   templates: "nav.templates",
   views: "nav.savedViews",
 };
@@ -87,19 +87,36 @@ export function buildWorkspaceBreadcrumbs(
     ];
   }
 
-  if (pathname === "/settings/telegram" || pathname.endsWith("/settings/telegram")) {
+  if (/^\/w\/[^/]+\/settings\/integrations\/telegram\/[^/]+$/u.test(pathname)) {
     return [
       workspaceCrumb,
       {
         href: data === null ? "/settings" : workspacePageHref(data.workspace.slug, "settings"),
         label: t("common.settings"),
       },
-      { label: "Telegram" },
+      {
+        href:
+          data === null
+            ? "/settings/integrations"
+            : workspacePageHref(data.workspace.slug, "settings/integrations"),
+        label: t("integrations.title"),
+      },
+      { label: t("integrations.telegramChatSettings") },
     ];
   }
 
   const page = workspacePageFromPath(pathname);
   const routeLabel = page === null ? undefined : routeLabels[page];
+  if (page?.startsWith("settings/") === true) {
+    return [
+      workspaceCrumb,
+      {
+        href: data === null ? "/settings" : workspacePageHref(data.workspace.slug, "settings"),
+        label: t("common.settings"),
+      },
+      { label: routeLabel === undefined ? t("common.workspace") : t(routeLabel) },
+    ];
+  }
   return [
     workspaceCrumb,
     { label: routeLabel === undefined ? t("common.workspace") : t(routeLabel) },

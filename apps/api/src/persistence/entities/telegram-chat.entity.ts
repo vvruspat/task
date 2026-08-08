@@ -29,6 +29,9 @@ export class TelegramChatEntity implements TelegramChatRecord {
   @Column({ name: "default_project_id", nullable: true, type: "uuid" })
   defaultProjectId: string | null = null;
 
+  @Column({ default: false, name: "history_access_enabled", type: "boolean" })
+  historyAccessEnabled = false;
+
   @Column({ name: "linked_by_user_id", type: "uuid" })
   linkedByUserId = "";
 

@@ -1,3 +1,4 @@
+import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import {
   type IntegrationPlugin,
@@ -6,7 +7,10 @@ import {
 } from "@task/integration-sdk";
 import type {
   IntegrationCatalogItem,
+  TelegramConnectionSettings,
+  UpdateTelegramConnectionSettingsInput,
   WorkspaceIntegration,
+  WorkspaceIntegrationConnection,
   WorkspaceIntegrationConnectionHealth,
   WorkspaceIntegrationDeliveryHealth,
   WorkspaceIntegrationHealth,
@@ -69,6 +73,63 @@ export class WorkspaceIntegrationConnectionHealthDto
   constructor(value: WorkspaceIntegrationConnectionHealth) {
     this.status = value.status;
     this.lastError = value.lastError;
+  }
+}
+
+export class TelegramConnectionSettingsDto implements TelegramConnectionSettings {
+  @ApiProperty()
+  readonly conversationHistoryAccess: boolean;
+
+  constructor(value: TelegramConnectionSettings) {
+    this.conversationHistoryAccess = value.conversationHistoryAccess;
+  }
+}
+
+export class WorkspaceIntegrationConnectionDto implements WorkspaceIntegrationConnection {
+  @ApiProperty({ format: "uuid" }) readonly id: string;
+  @ApiProperty() readonly providerAccountId: string;
+  @ApiProperty({ nullable: true, type: String }) readonly displayName: string | null;
+  @ApiProperty({ enum: ["connected", "disconnected", "error"] })
+  readonly status: WorkspaceIntegrationConnection["status"];
+  @ApiProperty({ format: "date-time" }) readonly connectedAt: Date;
+  @ApiProperty({ nullable: true, type: String }) readonly lastError: string | null;
+  @ApiProperty({ nullable: true, type: TelegramConnectionSettingsDto })
+  readonly telegramSettings: TelegramConnectionSettingsDto | null;
+
+  constructor(value: WorkspaceIntegrationConnection) {
+    this.id = value.id;
+    this.providerAccountId = value.providerAccountId;
+    this.displayName = value.displayName;
+    this.status = value.status;
+    this.connectedAt = value.connectedAt;
+    this.lastError = value.lastError;
+    this.telegramSettings =
+      value.telegramSettings === null
+        ? null
+        : new TelegramConnectionSettingsDto(value.telegramSettings);
+  }
+}
+
+export class UpdateTelegramConnectionSettingsDto implements UpdateTelegramConnectionSettingsInput {
+  @ApiProperty()
+  readonly conversationHistoryAccess: boolean = false;
+}
+
+export class ParseUpdateTelegramConnectionSettingsBodyPipe
+  implements PipeTransform<unknown, UpdateTelegramConnectionSettingsInput>
+{
+  transform(value: unknown): UpdateTelegramConnectionSettingsInput {
+    if (typeof value !== "object" || value === null || Array.isArray(value)) {
+      throw new BadRequestException("Telegram chat settings payload must be an object.");
+    }
+    if (!("conversationHistoryAccess" in value)) {
+      throw new BadRequestException("conversationHistoryAccess is required.");
+    }
+    const conversationHistoryAccess = value.conversationHistoryAccess;
+    if (typeof conversationHistoryAccess !== "boolean") {
+      throw new BadRequestException("conversationHistoryAccess must be a boolean.");
+    }
+    return { conversationHistoryAccess };
   }
 }
 
@@ -156,12 +217,15 @@ export class IntegrationCatalogItemDto implements IntegrationCatalogItem {
   readonly capabilityKinds: IntegrationCatalogItem["capabilityKinds"];
   @ApiProperty({ nullable: true, type: WorkspaceIntegrationDto })
   readonly installation: WorkspaceIntegrationDto | null;
+  @ApiProperty({ isArray: true, type: WorkspaceIntegrationConnectionDto })
+  readonly connections: WorkspaceIntegrationConnectionDto[];
   @ApiProperty({ nullable: true, type: WorkspaceIntegrationHealthDto })
   readonly health: WorkspaceIntegrationHealthDto | null;
 
   constructor(
     plugin: IntegrationPlugin,
     installation: WorkspaceIntegration | null,
+    connections: WorkspaceIntegrationConnection[],
     health: WorkspaceIntegrationHealth | null,
   ) {
     const { manifest } = plugin;
@@ -174,6 +238,9 @@ export class IntegrationCatalogItemDto implements IntegrationCatalogItem {
     this.requiredScopes = [...manifest.auth.scopes];
     this.capabilityKinds = manifest.capabilities.map((capability) => capability.kind);
     this.installation = installation === null ? null : new WorkspaceIntegrationDto(installation);
+    this.connections = connections.map(
+      (connection) => new WorkspaceIntegrationConnectionDto(connection),
+    );
     this.health = health === null ? null : new WorkspaceIntegrationHealthDto(health);
   }
 }

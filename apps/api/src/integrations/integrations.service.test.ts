@@ -8,6 +8,7 @@ import { IntegrationsService } from "./integrations.service.js";
 import type {
   InstallWorkspaceIntegrationResult,
   UninstallWorkspaceIntegrationResult,
+  UpdateTelegramConnectionSettingsResult,
   WorkspaceIntegrationOperationalSnapshot,
   WorkspaceIntegrationsStore,
 } from "./integrations.store.js";
@@ -22,6 +23,8 @@ class RecordingIntegrationsStore implements WorkspaceIntegrationsStore {
   installResult: InstallWorkspaceIntegrationResult | null = null;
   uninstallResult: UninstallWorkspaceIntegrationResult | null = null;
   installArguments: readonly string[] | null = null;
+  updateResult: UpdateTelegramConnectionSettingsResult | null = null;
+  updateArguments: readonly [string, string, string, string, boolean] | null = null;
 
   async listForManager(): Promise<WorkspaceIntegrationOperationalSnapshot[] | null> {
     return this.snapshots;
@@ -42,6 +45,36 @@ class RecordingIntegrationsStore implements WorkspaceIntegrationsStore {
       this.uninstallResult ?? {
         integration: createIntegration("google-drive"),
         status: "uninstalled",
+      }
+    );
+  }
+
+  async updateTelegramConnectionSettings(
+    receivedWorkspaceId: string,
+    receivedIntegrationId: string,
+    connectionId: string,
+    receivedUserId: string,
+    input: Readonly<{ conversationHistoryAccess: boolean }>,
+  ): Promise<UpdateTelegramConnectionSettingsResult> {
+    this.updateArguments = [
+      receivedWorkspaceId,
+      receivedIntegrationId,
+      connectionId,
+      receivedUserId,
+      input.conversationHistoryAccess,
+    ];
+    return (
+      this.updateResult ?? {
+        status: "updated",
+        connection: {
+          connectedAt: new Date("2026-07-22T12:30:00.000Z"),
+          displayName: "Production",
+          id: connectionId,
+          lastError: null,
+          providerAccountId: "-1001111111111",
+          status: "connected",
+          telegramSettings: input,
+        },
       }
     );
   }
@@ -67,7 +100,64 @@ test("integration catalog combines manifests with workspace installation state",
   assert.equal(catalog[0]?.installation, null);
   assert.equal(catalog[0]?.health, null);
   assert.equal(catalog[1]?.installation?.id, integrationId);
+  assert.deepEqual(catalog[1]?.connections, []);
   assert.equal(catalog[1]?.health?.status, "inactive");
+});
+
+test("integration catalog exposes every provider connection", async () => {
+  const store = new RecordingIntegrationsStore();
+  const snapshot = createSnapshot("telegram", "connected");
+  snapshot.connection = { lastError: null, status: "connected" };
+  snapshot.connections = [
+    {
+      connectedAt: new Date("2026-07-22T12:30:00.000Z"),
+      displayName: "Production",
+      id: "44444444-4444-4444-8444-444444444444",
+      lastError: null,
+      providerAccountId: "-1001111111111",
+      status: "connected",
+      telegramSettings: { conversationHistoryAccess: true },
+    },
+    {
+      connectedAt: new Date("2026-07-22T12:45:00.000Z"),
+      displayName: "Studio",
+      id: "55555555-5555-4555-8555-555555555555",
+      lastError: null,
+      providerAccountId: "-1002222222222",
+      status: "connected",
+      telegramSettings: { conversationHistoryAccess: false },
+    },
+  ];
+  store.snapshots = [snapshot];
+
+  const catalog = await createService(store).listCatalog(workspaceId, userId);
+
+  assert.deepEqual(
+    catalog[1]?.connections.map((connection) => connection.displayName),
+    ["Production", "Studio"],
+  );
+});
+
+test("Telegram connection settings are updated for a specific chat", async () => {
+  const store = new RecordingIntegrationsStore();
+  const connectionId = "44444444-4444-4444-8444-444444444444";
+
+  const connection = await createService(store).updateTelegramConnectionSettings(
+    workspaceId,
+    integrationId,
+    connectionId,
+    userId,
+    { conversationHistoryAccess: false },
+  );
+
+  assert.equal(connection.telegramSettings?.conversationHistoryAccess, false);
+  assert.deepEqual(store.updateArguments, [
+    workspaceId,
+    integrationId,
+    connectionId,
+    userId,
+    false,
+  ]);
 });
 
 test("integration health reports connected pipeline failures as degraded", async () => {
@@ -167,6 +257,7 @@ function createSnapshot(
 ): WorkspaceIntegrationOperationalSnapshot {
   return {
     connection: null,
+    connections: [],
     deliveries: {
       deadCount: 0,
       pendingCount: 0,

@@ -16,6 +16,22 @@ export type WorkspaceIntegrationConnectionHealth = {
   lastError: string | null;
 };
 
+export type TelegramConnectionSettings = {
+  conversationHistoryAccess: boolean;
+};
+
+export type WorkspaceIntegrationConnection = {
+  id: string;
+  providerAccountId: string;
+  displayName: string | null;
+  status: "connected" | "disconnected" | "error";
+  connectedAt: Date;
+  lastError: string | null;
+  telegramSettings: TelegramConnectionSettings | null;
+};
+
+export type UpdateTelegramConnectionSettingsInput = TelegramConnectionSettings;
+
 export type WorkspaceIntegrationSubscriptionHealth = {
   activeCount: number;
   renewingCount: number;
@@ -74,5 +90,6 @@ export type IntegrationCatalogItem = {
   requiredScopes: string[];
   capabilityKinds: IntegrationCapabilityKind[];
   installation: WorkspaceIntegration | null;
+  connections: WorkspaceIntegrationConnection[];
   health: WorkspaceIntegrationHealth | null;
 };

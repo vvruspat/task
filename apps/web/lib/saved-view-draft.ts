@@ -22,3 +22,20 @@ export function changeSavedViewLayout(
     },
   };
 }
+
+export function duplicateSavedViewDraft(
+  draft: SavedViewDraft,
+  name: string,
+  visibility: SavedView["visibility"],
+): SavedViewDraft {
+  return {
+    ...draft,
+    name,
+    visibility,
+    settings: {
+      ...draft.settings,
+      displayProperties: [...draft.settings.displayProperties],
+      filters: draft.settings.filters.map((filter) => ({ ...filter })),
+    },
+  };
+}

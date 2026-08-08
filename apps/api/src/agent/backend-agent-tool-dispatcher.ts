@@ -10,6 +10,7 @@ import type { TaskSkillSummaryDto } from "../task-skills/task-skills.dto.js";
 import type { TaskSkillsService } from "../task-skills/task-skills.service.js";
 import { parseIssueIdentifier } from "../tasks/issue-identifier.js";
 import type { TasksService } from "../tasks/tasks.service.js";
+import type { TelegramService } from "../telegram/telegram.service.js";
 import type { WorkspacesService } from "../workspaces/workspaces.service.js";
 import type { AgentRuntimeToolCall, TelegramAgentRuntimeContext } from "./agent.runtime.js";
 import type {
@@ -43,6 +44,7 @@ type AgentAttachmentsService = Pick<AttachmentsService, "createTaskLinkAttachmen
 type AgentSearchService = Pick<SearchService, "search">;
 type AgentRealtimeService = Pick<WorkspaceRealtimeService, "publishChange">;
 type AgentIntegrationToolsService = Pick<IntegrationAgentToolsService, "executeTool" | "listTools">;
+type AgentTelegramService = Pick<TelegramService, "readChatHistory">;
 
 type AgentProjectTaskInput = {
   title: string;
@@ -133,6 +135,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     private readonly searchService?: AgentSearchService,
     private readonly realtimeService?: AgentRealtimeService,
     private readonly integrationToolsService?: AgentIntegrationToolsService,
+    private readonly telegramService?: AgentTelegramService,
   ) {}
 
   async listToolDefinitions(
@@ -171,6 +174,44 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     call: AgentToolOperationCall,
     context: TelegramAgentRuntimeContext,
   ): Promise<Record<string, unknown>> {
+    if (call.toolName === "telegram_history_read") {
+      if (context.telegramChatId === undefined || this.telegramService === undefined) {
+        return {
+          kind: "telegram_chat_history_unavailable",
+          reason: "not_a_telegram_conversation",
+        };
+      }
+      const history = await this.telegramService.readChatHistory({
+        workspaceId: context.workspaceId,
+        telegramChatId: context.telegramChatId,
+        telegramThreadId: context.telegramThreadId ?? null,
+        beforeTelegramMessageId: context.telegramMessageId ?? null,
+        limit: readOptionalBoundedInteger(call.arguments, "limit", 1, 50) ?? 30,
+      });
+      if (history.status !== "available") {
+        return {
+          kind: "telegram_chat_history_unavailable",
+          reason:
+            history.status === "history_access_disabled"
+              ? "history_access_disabled"
+              : "telegram_chat_unlinked",
+        };
+      }
+      return {
+        kind: "telegram_chat_history",
+        count: history.messages.length,
+        messages: history.messages.map((message) => ({
+          telegramMessageId: message.telegramMessageId,
+          replyToTelegramMessageId: message.replyToTelegramMessageId,
+          senderTelegramId: message.senderTelegramId,
+          senderDisplayName: message.senderDisplayName,
+          senderIsBot: message.senderIsBot,
+          text: message.text,
+          sentAt: message.sentAt.toISOString(),
+        })),
+      };
+    }
+
     if (call.toolName === "project_list") {
       const projects = await this.requireListActiveProjects()(context.workspaceId, context.userId);
       return {
@@ -230,6 +271,32 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
           statusId: task.statusId,
           assigneeUserId: task.assigneeUserId,
           dueAt: task.dueAt?.toISOString() ?? null,
+        })),
+      };
+    }
+
+    if (call.toolName === "status_list") {
+      const projectId = readOptionalUuid(call.arguments, "projectId") ?? context.projectId;
+      if (projectId === undefined || projectId === null) {
+        throw new BadRequestException(
+          "Agent tool status_list requires projectId when no project is selected.",
+        );
+      }
+      const statuses = await this.requireStatusesService().listStatuses(
+        context.workspaceId,
+        projectId,
+        context.userId,
+      );
+      return {
+        kind: "status_list",
+        projectId,
+        count: statuses.length,
+        statuses: statuses.map((status) => ({
+          id: status.id,
+          name: status.name,
+          color: status.color,
+          position: status.position,
+          isDone: status.isDone,
         })),
       };
     }
@@ -323,6 +390,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
           })),
         };
       }
+      const linkContext = await this.getTaskLinkContext(projectId, context);
       const task = await this.tasksService.createTask(
         context.workspaceId,
         projectId,
@@ -334,6 +402,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         id: task.id,
         number: task.number,
         projectId: task.projectId,
+        ...linkContext,
         title: task.title,
         workspaceId: task.workspaceId,
       };
@@ -796,12 +865,28 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
     return { slug: workspace.slug };
   }
 
+  private async getTaskLinkContext(
+    projectId: string,
+    context: TelegramAgentRuntimeContext,
+  ): Promise<{ projectKey?: string; workspaceSlug?: string }> {
+    const project =
+      this.projectsService.getProject === undefined
+        ? null
+        : await this.projectsService.getProject(context.workspaceId, projectId, context.userId);
+    const workspace = await this.getWorkspaceLinkContext(context);
+    return {
+      ...(project === null ? {} : { projectKey: project.key }),
+      ...(workspace === null ? {} : { workspaceSlug: workspace.slug }),
+    };
+  }
+
   private async applyTaskSkill(
     taskSkillId: string,
     projectId: string,
     rootTaskTitle: string,
     context: TelegramAgentRuntimeContext,
   ): Promise<Record<string, unknown>> {
+    const linkContext = await this.getTaskLinkContext(projectId, context);
     const result = await this.taskSkillsService.applyTaskSkill(
       context.workspaceId,
       taskSkillId,
@@ -813,6 +898,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
       id: result.rootTask.id,
       number: result.rootTask.number,
       projectId: result.projectId,
+      ...linkContext,
       title: result.rootTask.title,
       workspaceId: result.workspaceId,
       taskSkillId: result.taskSkillId,
@@ -827,7 +913,14 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
   }
 }
 
-const readOnlyCoreToolNames = new Set(["project_get", "project_list", "task_list", "task_lookup"]);
+const readOnlyCoreToolNames = new Set([
+  "project_get",
+  "project_list",
+  "status_list",
+  "task_list",
+  "task_lookup",
+  "telegram_history_read",
+]);
 
 function isMutationToolName(toolName: string): boolean {
   return !readOnlyCoreToolNames.has(toolName);
@@ -1195,6 +1288,23 @@ function readOptionalString(value: Record<string, unknown>, key: string): string
     throw new BadRequestException(`Agent tool ${key} must be a non-empty string.`);
   }
   return candidate.trim();
+}
+
+function readOptionalBoundedInteger(
+  value: Record<string, unknown>,
+  key: string,
+  minimum: number,
+  maximum: number,
+): number | undefined {
+  const candidate = value[key];
+  if (candidate === undefined) return undefined;
+  if (typeof candidate !== "number" || !Number.isSafeInteger(candidate)) {
+    throw new BadRequestException(`Agent tool ${key} must be an integer.`);
+  }
+  if (candidate < minimum || candidate > maximum) {
+    throw new BadRequestException(`Agent tool ${key} must be between ${minimum} and ${maximum}.`);
+  }
+  return candidate;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

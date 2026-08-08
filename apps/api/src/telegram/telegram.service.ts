@@ -1,6 +1,9 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import type {
   LinkTelegramMiniAppIdentityInput,
+  ReadTelegramChatHistoryInput,
+  ReadTelegramChatHistoryResult,
+  RecordTelegramChatMessageInput,
   ResolveTelegramContextInput,
   TelegramContextResolution,
   TelegramIdentityLinkStatus,
@@ -8,6 +11,7 @@ import type {
 } from "./telegram.contracts.js";
 import {
   LinkedTelegramIdentityDto,
+  RecordTelegramChatMessageResultDto,
   TelegramContextResolutionDto,
   VerifiedTelegramMiniAppInitDataDto,
 } from "./telegram.dto.js";
@@ -25,6 +29,20 @@ export class TelegramService {
     const resolution = await this.telegramContextStore.resolveContext(input);
 
     return new TelegramContextResolutionDto(resolution);
+  }
+
+  async recordChatMessage(
+    input: RecordTelegramChatMessageInput,
+  ): Promise<RecordTelegramChatMessageResultDto> {
+    return new RecordTelegramChatMessageResultDto(
+      await this.telegramContextStore.recordChatMessage(input),
+    );
+  }
+
+  async readChatHistory(
+    input: ReadTelegramChatHistoryInput,
+  ): Promise<ReadTelegramChatHistoryResult> {
+    return this.telegramContextStore.readChatHistory(input);
   }
 
   verifyMiniAppInitData(

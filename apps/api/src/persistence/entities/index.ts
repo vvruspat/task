@@ -29,6 +29,7 @@ export { TaskSkillEntity } from "./task-skill.entity.js";
 export { TaskSkillVersionEntity } from "./task-skill-version.entity.js";
 export { TaskSubscriptionEntity } from "./task-subscription.entity.js";
 export { TelegramChatEntity } from "./telegram-chat.entity.js";
+export { TelegramChatMessageEntity } from "./telegram-chat-message.entity.js";
 export { TelegramIdentityEntity } from "./telegram-identity.entity.js";
 export { UserEntity } from "./user.entity.js";
 export { WorkspaceEntity } from "./workspace.entity.js";

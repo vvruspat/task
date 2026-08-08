@@ -50,6 +50,7 @@ export type TelegramMessageContext = {
   text: string | null;
   entities: TelegramMessageEntityContext[];
   replyToMessageId: string | null;
+  replyToSender: TelegramUserContext | null;
   attachments: TelegramAttachmentContext[];
 };
 
@@ -90,6 +91,7 @@ export function parseTelegramMessageContext(update: unknown): TelegramMessageCon
     messageId: readTelegramIntegerAsString(message, "message_id"),
     threadId: readOptionalTelegramIntegerAsString(message, "message_thread_id"),
     replyToMessageId: readReplyToMessageId(message),
+    replyToSender: readReplyToSender(message),
     sender,
     text: readOptionalText(message),
     updateId: readTelegramIntegerAsString(updateRecord, "update_id"),
@@ -126,6 +128,13 @@ export function isTelegramAgentInvocation(
   botUsername: string | null,
 ): boolean {
   if (message.chat.type === "private") return true;
+  if (
+    botUsername !== null &&
+    message.replyToSender?.isBot === true &&
+    message.replyToSender.username?.toLowerCase() === botUsername.toLowerCase()
+  ) {
+    return true;
+  }
   if (message.text === null) return false;
   for (const entity of message.entities) {
     const entityText = message.text.slice(entity.offset, entity.offset + entity.length);
@@ -259,6 +268,15 @@ function readReplyToMessageId(message: Record<string, unknown>): string | null {
     readRecord(replyToMessage, "telegram reply message"),
     "message_id",
   );
+}
+
+function readReplyToSender(message: Record<string, unknown>): TelegramUserContext | null {
+  const replyToMessage = readProperty(message, "reply_to_message");
+  if (replyToMessage === undefined || replyToMessage === null) return null;
+  const replyToMessageRecord = readRecord(replyToMessage, "telegram reply message");
+  const sender = readProperty(replyToMessageRecord, "from");
+  if (sender === undefined || sender === null) return null;
+  return readTelegramUser(sender);
 }
 
 function readOptionalTelegramIntegerAsString(

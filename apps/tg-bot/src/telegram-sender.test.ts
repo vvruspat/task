@@ -39,6 +39,7 @@ test("TelegramReplySender posts reply actions through Telegram sendMessage", asy
     body: JSON.stringify({
       chat_id: "-100987654321",
       text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+      parse_mode: "HTML",
       reply_parameters: {
         message_id: 20,
         allow_sending_without_reply: true,
@@ -72,6 +73,7 @@ test("TelegramReplySender sends non-threaded messages when reply message id is a
     body: JSON.stringify({
       chat_id: "123456789",
       text: "Не смог прочитать сообщение Telegram.",
+      parse_mode: "HTML",
     }),
   });
 });
@@ -99,6 +101,7 @@ test("TelegramReplySender serializes inline keyboard reply markup", async () => 
     body: JSON.stringify({
       chat_id: "-100987654321",
       text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+      parse_mode: "HTML",
       reply_parameters: {
         message_id: 20,
         allow_sending_without_reply: true,
