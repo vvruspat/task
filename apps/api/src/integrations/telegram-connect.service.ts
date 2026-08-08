@@ -52,9 +52,6 @@ export class TelegramConnectService {
       if (integration === null || integration.pluginKey !== telegramPluginKey) {
         throw new NotFoundException("Telegram workspace integration was not found.");
       }
-      if (integration.status === "connected") {
-        throw new ConflictException("Telegram is already connected.");
-      }
       await manager
         .getRepository(IntegrationOAuthStateEntity)
         .update(
@@ -71,7 +68,9 @@ export class TelegramConnectService {
         }),
       );
       integration.lastError = null;
-      integration.status = "authorizing";
+      if (integration.status !== "connected") {
+        integration.status = "authorizing";
+      }
       await integrationRepository.save(integration);
     });
     return new TelegramConnectTokenDto({ command: `/connect ${token}`, expiresAt });
@@ -115,10 +114,6 @@ export class TelegramConnectService {
         throw new BadRequestException("Telegram connect token is invalid or expired.");
       }
       await assertWorkspaceManager(manager, integration.workspaceId, identity.userId);
-      if (integration.status === "connected") {
-        throw new ConflictException("Telegram is already connected.");
-      }
-
       const chatRepository = manager.getRepository(TelegramChatEntity);
       const existingChat = await chatRepository.findOneBy({ telegramChatId: input.telegramChatId });
       if (existingChat !== null && existingChat.workspaceId !== integration.workspaceId) {
@@ -133,6 +128,7 @@ export class TelegramConnectService {
 
       const connectionRepository = manager.getRepository(IntegrationConnectionEntity);
       const existingConnection = await connectionRepository.findOneBy({
+        providerAccountId: input.telegramChatId,
         workspaceIntegrationId: integration.id,
       });
       const connection = existingConnection ?? connectionRepository.create();

@@ -14,6 +14,7 @@ export type TelegramAgentRunContextResult =
       workspaceId: string;
       userId: string;
       defaultProjectId?: string | null;
+      conversationHistoryAccess: boolean;
     }
   | {
       status: "telegram_user_unlinked";
@@ -33,6 +34,24 @@ export type PersistTelegramAgentRunInput = {
   inputText: string;
   runtimeResult: AgentRuntimeResult;
 };
+
+export type ClaimTelegramAgentRunInput = {
+  workspaceId: string;
+  userId: string;
+  sourceThreadId: string;
+  sourceMessageId: string;
+  inputText: string;
+};
+
+export type ClaimTelegramAgentRunResult =
+  | {
+      status: "claimed";
+      run: AgentRunRecord;
+    }
+  | {
+      status: "existing";
+      run: AgentRunRecord;
+    };
 
 export type PersistWebAgentRunInput = Omit<
   PersistTelegramAgentRunInput,
@@ -56,13 +75,6 @@ export type PersistedWebChatTurn = {
 };
 
 export type PersistAgentToolCallInput = AgentRuntimeToolCall;
-
-export type FindTelegramAgentRunInput = {
-  workspaceId: string;
-  userId: string;
-  sourceThreadId: string;
-  sourceMessageId: string;
-};
 
 export type ListTelegramConversationInput = {
   workspaceId: string;
@@ -100,7 +112,7 @@ export type AgentRunStore = {
     title: string,
   ): Promise<AgentChatRecord | null>;
   deleteChat?(workspaceId: string, chatId: string, userId: string): Promise<AgentChatRecord | null>;
-  findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunRecord | null>;
+  claimTelegramRun(input: ClaimTelegramAgentRunInput): Promise<ClaimTelegramAgentRunResult>;
   listTelegramConversation(input: ListTelegramConversationInput): Promise<AgentRunRecord[]>;
   createTelegramRun(input: PersistTelegramAgentRunInput): Promise<AgentRunRecord>;
   createWebRun(input: PersistWebAgentRunInput): Promise<AgentRunRecord>;

@@ -4,6 +4,10 @@ import test from "node:test";
 import type {
   LinkTelegramIdentityInput,
   LinkTelegramIdentityResult,
+  ReadTelegramChatHistoryInput,
+  ReadTelegramChatHistoryResult,
+  RecordTelegramChatMessageInput,
+  RecordTelegramChatMessageResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
   TelegramIdentityLinkStatus,
@@ -210,6 +214,18 @@ class RecordingTelegramContextStore implements TelegramContextStore {
     this.lastLinkInput = input;
 
     return this.linkResult ?? { status: "user_not_found" };
+  }
+
+  async recordChatMessage(
+    _input: RecordTelegramChatMessageInput,
+  ): Promise<RecordTelegramChatMessageResult> {
+    return { status: "stored" };
+  }
+
+  async readChatHistory(
+    _input: ReadTelegramChatHistoryInput,
+  ): Promise<ReadTelegramChatHistoryResult> {
+    return { status: "available", messages: [] };
   }
 }
 

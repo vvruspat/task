@@ -125,6 +125,34 @@ test("createTelegramWebhookServer rejects oversized JSON bodies", async () => {
   }
 });
 
+test("createTelegramWebhookServer logs webhook processing failures", async () => {
+  const runtime = new FailingTelegramBotRuntime();
+  const logger = new RecordingLogger();
+  const server = createTelegramWebhookServer({ logger, runtime });
+
+  const runningServer = await startServer(server);
+
+  try {
+    const response = await fetch(runningServer.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-telegram-bot-api-secret-token": "webhook-secret",
+      },
+      body: JSON.stringify(telegramUpdate),
+    });
+
+    assert.equal(response.status, 500);
+    assert.deepEqual(await response.json(), { status: "failed" });
+    assert.equal(logger.errors.length, 1);
+    const [loggedError] = logger.errors;
+    assert(loggedError instanceof Error);
+    assert.equal(loggedError.message, "Telegram webhook processing failed.");
+  } finally {
+    await closeServer(server);
+  }
+});
+
 class RecordingTelegramBotRuntime implements TelegramBotRuntime {
   lastUpdate: unknown | null = null;
 
@@ -138,6 +166,24 @@ class RecordingTelegramBotRuntime implements TelegramBotRuntime {
 
   verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult> {
     return createTelegramWebhookHandler("webhook-secret").verify(request);
+  }
+}
+
+class FailingTelegramBotRuntime implements TelegramBotRuntime {
+  async processUpdate(_update: unknown): Promise<TelegramUpdateProcessorResult> {
+    throw new Error("Backend unavailable.");
+  }
+
+  verifyWebhook(request: IntegrationWebhookRequest): Promise<IntegrationWebhookVerificationResult> {
+    return createTelegramWebhookHandler("webhook-secret").verify(request);
+  }
+}
+
+class RecordingLogger {
+  readonly errors: unknown[] = [];
+
+  error(error: unknown): void {
+    this.errors.push(error);
   }
 }
 

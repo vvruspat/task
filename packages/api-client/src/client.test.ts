@@ -248,6 +248,46 @@ test("createTaskApiClient manages workspace integration installations", async ()
   assert.equal(fetcher.calls[5]?.init.body, JSON.stringify({ folderId: "google-drive-folder-id" }));
 });
 
+test("createTaskApiClient updates one Telegram chat connection", async () => {
+  const integrationId = "44444444-4444-4444-8444-444444444444";
+  const connectionId = "55555555-5555-4555-8555-555555555555";
+  const connection = {
+    connectedAt: "2026-07-22T12:30:00.000Z",
+    displayName: "Production chat",
+    id: connectionId,
+    lastError: null,
+    providerAccountId: "-1001111111111",
+    status: "connected",
+    telegramSettings: { conversationHistoryAccess: false },
+  };
+  const fetcher = new RecordingFetch(single(connection));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(
+    await client.updateTelegramConnectionSettings({
+      body: { conversationHistoryAccess: false },
+      connectionId,
+      integrationId,
+      workspaceId,
+    }),
+    connection,
+  );
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method]),
+    [
+      [
+        `https://task.example/workspaces/${workspaceId}/integrations/${integrationId}/telegram/chats/${connectionId}/settings`,
+        "PATCH",
+      ],
+    ],
+  );
+  assert.equal(fetcher.calls[0]?.init.body, JSON.stringify({ conversationHistoryAccess: false }));
+});
+
 test("createTaskApiClient patches workspace Markdown descriptions", async () => {
   const updated = {
     ...workspaceDetailRecord(),
@@ -1534,6 +1574,7 @@ function integrationCatalogItem(
       "agent_tool_provider",
     ],
     description: "Google Drive integration",
+    connections: [],
     health: null,
     iconKey: "google-drive",
     installation,

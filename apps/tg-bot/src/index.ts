@@ -43,7 +43,7 @@ export {
   createTelegramBotRuntimeFromEnvironment,
   type TelegramBotRuntime,
 } from "./runtime.js";
-
+export { formatTelegramMessage } from "./telegram-message-format.js";
 export {
   createTelegramConfirmationInlineKeyboard,
   createTelegramReplySender,
@@ -73,6 +73,7 @@ export {
   processTelegramConversationEvent,
   processTelegramUpdate,
   type TelegramReplySentAction,
+  type TelegramUpdateProcessorLogger,
   type TelegramUpdateProcessorOptions,
   type TelegramUpdateProcessorResult,
 } from "./update-processor.js";

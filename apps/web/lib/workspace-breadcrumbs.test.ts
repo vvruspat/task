@@ -55,3 +55,24 @@ test("falls back to the filtered kanban when the project view is unavailable", (
     ],
   );
 });
+
+test("builds nested breadcrumbs for workspace settings sections", () => {
+  assert.deepEqual(buildWorkspaceBreadcrumbs("/w/product-workspace/settings/members", data, t), [
+    { href: "/w/product-workspace/agent", label: "Product Workspace" },
+    { href: "/w/product-workspace/settings", label: "Настройки" },
+    { label: "Участники" },
+  ]);
+  assert.deepEqual(
+    buildWorkspaceBreadcrumbs(
+      "/w/product-workspace/settings/integrations/telegram/connection-id",
+      data,
+      t,
+    ),
+    [
+      { href: "/w/product-workspace/agent", label: "Product Workspace" },
+      { href: "/w/product-workspace/settings", label: "Настройки" },
+      { href: "/w/product-workspace/settings/integrations", label: "Интеграции" },
+      { label: "Telegram-чат" },
+    ],
+  );
+});

@@ -1,5 +1,17 @@
-import { Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post } from "@nestjs/common";
 import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+} from "@nestjs/common";
+import {
+  ApiBadRequestResponse,
+  ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -14,7 +26,14 @@ import {
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
 import { WorkspaceRoles } from "../workspaces/workspace-roles.decorator.js";
-import { IntegrationCatalogItemDto, WorkspaceIntegrationDto } from "./integrations.dto.js";
+import type { UpdateTelegramConnectionSettingsInput } from "./integrations.contracts.js";
+import {
+  IntegrationCatalogItemDto,
+  ParseUpdateTelegramConnectionSettingsBodyPipe,
+  UpdateTelegramConnectionSettingsDto,
+  WorkspaceIntegrationConnectionDto,
+  WorkspaceIntegrationDto,
+} from "./integrations.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
 import { IntegrationsService } from "./integrations.service.js";
 
@@ -37,6 +56,33 @@ export class IntegrationsController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<IntegrationCatalogItemDto[]> {
     return this.integrationsService.listCatalog(workspaceId, userId);
+  }
+
+  @Patch(":integrationId/telegram/chats/:connectionId/settings")
+  @ApiOperation({ summary: "Update settings for a connected Telegram chat" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "integrationId" })
+  @ApiParam({ format: "uuid", name: "connectionId" })
+  @ApiBody({ type: UpdateTelegramConnectionSettingsDto })
+  @ApiOkResponse({ type: WorkspaceIntegrationConnectionDto })
+  @ApiBadRequestResponse({ description: "Telegram chat settings payload is invalid." })
+  @ApiForbiddenResponse({ description: "Current user cannot manage integrations." })
+  @ApiNotFoundResponse({ description: "Telegram integration or chat was not found." })
+  updateTelegramConnectionSettings(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("integrationId", uuidV4Pipe) integrationId: string,
+    @Param("connectionId", uuidV4Pipe) connectionId: string,
+    @TrustedCurrentUserId() userId: string,
+    @Body(new ParseUpdateTelegramConnectionSettingsBodyPipe())
+    input: UpdateTelegramConnectionSettingsInput,
+  ): Promise<WorkspaceIntegrationConnectionDto> {
+    return this.integrationsService.updateTelegramConnectionSettings(
+      workspaceId,
+      integrationId,
+      connectionId,
+      userId,
+      input,
+    );
   }
 
   @Post(":pluginKey/install")

@@ -533,6 +533,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/telegram/chats/{connectionId}/settings": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update settings for a connected Telegram chat */
+    patch: operations["IntegrationsController_updateTelegramConnectionSettings"];
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/integrations/{pluginKey}/install": {
     parameters: {
       query?: never;
@@ -1294,6 +1311,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/internal/telegram/history/messages": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Store a Telegram text message when chat history access is enabled */
+    post: operations["TelegramController_recordChatMessage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/internal/telegram/confirmations/callback": {
     parameters: {
       query?: never;
@@ -1880,6 +1914,21 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
+    TelegramConnectionSettingsDto: {
+      conversationHistoryAccess: boolean;
+    };
+    WorkspaceIntegrationConnectionDto: {
+      /** Format: uuid */
+      id: string;
+      providerAccountId: string;
+      displayName: string | null;
+      /** @enum {string} */
+      status: "connected" | "disconnected" | "error";
+      /** Format: date-time */
+      connectedAt: string;
+      lastError: string | null;
+      telegramSettings: components["schemas"]["TelegramConnectionSettingsDto"] | null;
+    };
     WorkspaceIntegrationConnectionHealthDto: {
       /** @enum {string} */
       status: "connected" | "disconnected" | "error" | "missing";
@@ -1933,7 +1982,11 @@ export interface components {
         | "webhook_handler"
       )[];
       installation: components["schemas"]["WorkspaceIntegrationDto"] | null;
+      connections: components["schemas"]["WorkspaceIntegrationConnectionDto"][];
       health: components["schemas"]["WorkspaceIntegrationHealthDto"] | null;
+    };
+    UpdateTelegramConnectionSettingsDto: {
+      conversationHistoryAccess: boolean;
     };
     TelegramConnectTokenDto: {
       /** @description Command to send in the Telegram chat that should be connected. */
@@ -2647,6 +2700,29 @@ export interface components {
       workspaceId?: string;
       /** Format: uuid */
       defaultProjectId?: string | null;
+    };
+    RecordTelegramChatMessageDto: {
+      /** @example -100987654321 */
+      telegramChatId: string;
+      /** @example 42 */
+      telegramMessageId: string;
+      /** @example 7 */
+      telegramThreadId?: string | null;
+      /** @example 41 */
+      replyToTelegramMessageId?: string | null;
+      /** @example 123456789 */
+      senderTelegramId: string;
+      /** @example Alexander Kolesov */
+      senderDisplayName: string;
+      /** @example false */
+      senderIsBot: boolean;
+      text: string;
+      /** Format: date-time */
+      sentAt?: string | null;
+    };
+    RecordTelegramChatMessageResultDto: {
+      /** @enum {string} */
+      status: "stored" | "duplicate" | "history_access_disabled" | "telegram_chat_unlinked";
     };
     TelegramConfirmationCallbackDto: {
       /** @example 123456789 */
@@ -4228,6 +4304,57 @@ export interface operations {
       };
     };
   };
+  IntegrationsController_updateTelegramConnectionSettings: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+        connectionId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTelegramConnectionSettingsDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WorkspaceIntegrationConnectionDto"];
+        };
+      };
+      /** @description Telegram chat settings payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot manage integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram integration or chat was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   IntegrationsController_install: {
     parameters: {
       query?: never;
@@ -4350,13 +4477,6 @@ export interface operations {
         };
         content?: never;
       };
-      /** @description Telegram is already connected. */
-      409: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
     };
   };
   TelegramInternalConnectController_complete: {
@@ -4404,7 +4524,7 @@ export interface operations {
         };
         content?: never;
       };
-      /** @description Telegram chat or integration is already connected. */
+      /** @description Telegram chat is connected to another workspace. */
       409: {
         headers: {
           [name: string]: unknown;
@@ -6597,6 +6717,46 @@ export interface operations {
         };
       };
       /** @description Telegram context payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram bot shared secret is missing or invalid. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramController_recordChatMessage: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
+        "x-task-bot-secret": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RecordTelegramChatMessageDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["RecordTelegramChatMessageResultDto"];
+        };
+      };
+      /** @description Telegram chat message payload is invalid. */
       400: {
         headers: {
           [name: string]: unknown;

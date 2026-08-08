@@ -5,6 +5,7 @@ import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   IntegrationConnectionEntity,
   TelegramChatEntity,
+  TelegramChatMessageEntity,
   TelegramIdentityEntity,
   UserEntity,
   WorkspaceIntegrationEntity,
@@ -13,6 +14,10 @@ import {
 import type {
   LinkTelegramIdentityInput,
   LinkTelegramIdentityResult,
+  ReadTelegramChatHistoryInput,
+  ReadTelegramChatHistoryResult,
+  RecordTelegramChatMessageInput,
+  RecordTelegramChatMessageResult,
   ResolveTelegramContextInput,
   TelegramContextResolution,
   TelegramIdentityLinkStatus,
@@ -102,6 +107,93 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
       userId: identity.userId,
       workspaceId: chat.workspaceId,
       defaultProjectId: chat.defaultProjectId,
+    };
+  }
+
+  async recordChatMessage(
+    input: RecordTelegramChatMessageInput,
+  ): Promise<RecordTelegramChatMessageResult> {
+    const dataSource = await this.getInitializedDataSource();
+
+    try {
+      return await dataSource.transaction(async (entityManager) => {
+        const chat = await entityManager.getRepository(TelegramChatEntity).findOne({
+          lock: { mode: "pessimistic_read" },
+          where: { telegramChatId: input.telegramChatId },
+        });
+        if (chat === null) return { status: "telegram_chat_unlinked" };
+        if (!chat.historyAccessEnabled) return { status: "history_access_disabled" };
+
+        const messageRepository = entityManager.getRepository(TelegramChatMessageEntity);
+        await messageRepository.save(
+          messageRepository.create({
+            telegramChatId: input.telegramChatId,
+            telegramMessageId: input.telegramMessageId,
+            telegramThreadId: input.telegramThreadId ?? null,
+            replyToTelegramMessageId: input.replyToTelegramMessageId ?? null,
+            senderTelegramId: input.senderTelegramId,
+            senderDisplayName: input.senderDisplayName,
+            senderIsBot: input.senderIsBot,
+            text: input.text,
+            sentAt:
+              input.sentAt === undefined || input.sentAt === null
+                ? new Date()
+                : new Date(input.sentAt),
+          }),
+        );
+        return { status: "stored" };
+      });
+    } catch (error: unknown) {
+      if (isUniqueConstraintViolation(error)) return { status: "duplicate" };
+      throw error;
+    }
+  }
+
+  async readChatHistory(
+    input: ReadTelegramChatHistoryInput,
+  ): Promise<ReadTelegramChatHistoryResult> {
+    const dataSource = await this.getInitializedDataSource();
+    const chat = await dataSource.getRepository(TelegramChatEntity).findOneBy({
+      telegramChatId: input.telegramChatId,
+      workspaceId: input.workspaceId,
+    });
+    if (chat === null) return { status: "telegram_chat_unlinked" };
+    if (!chat.historyAccessEnabled) return { status: "history_access_disabled" };
+
+    const query = dataSource
+      .getRepository(TelegramChatMessageEntity)
+      .createQueryBuilder("message")
+      .where('message."telegram_chat_id" = :telegramChatId', {
+        telegramChatId: input.telegramChatId,
+      });
+    if (input.telegramThreadId === null) {
+      query.andWhere('message."telegram_thread_id" IS NULL');
+    } else {
+      query.andWhere('message."telegram_thread_id" = :telegramThreadId', {
+        telegramThreadId: input.telegramThreadId,
+      });
+    }
+    if (input.beforeTelegramMessageId !== null) {
+      query.andWhere('message."telegram_message_id" < :beforeTelegramMessageId', {
+        beforeTelegramMessageId: input.beforeTelegramMessageId,
+      });
+    }
+    const messages = await query
+      .orderBy('message."telegram_message_id"', "DESC")
+      .take(input.limit)
+      .getMany();
+
+    return {
+      status: "available",
+      messages: messages.reverse().map((message) => ({
+        telegramMessageId: message.telegramMessageId,
+        replyToTelegramMessageId: message.replyToTelegramMessageId,
+        senderTelegramId: message.senderTelegramId,
+        senderDisplayName: message.senderDisplayName,
+        senderIsBot: message.senderIsBot,
+        text: message.text,
+        sentAt: message.sentAt,
+      })),
     };
   }
 

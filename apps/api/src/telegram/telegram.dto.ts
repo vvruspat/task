@@ -2,6 +2,8 @@ import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type {
   LinkedTelegramIdentity,
+  RecordTelegramChatMessageInput,
+  RecordTelegramChatMessageResult,
   ResolveTelegramContextInput,
   TelegramConfirmationCallbackInput,
   TelegramConfirmationCallbackResult,
@@ -15,6 +17,8 @@ const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[
 const telegramUserIdPattern = /^\d+$/u;
 const telegramChatIdPattern = /^-?\d+$/u;
 const maxInitDataLength = 8192;
+const maxTelegramMessageTextLength = 16_384;
+const maxTelegramSenderDisplayNameLength = 512;
 
 type TelegramMiniAppInitDataPayload = {
   initData?: unknown;
@@ -71,6 +75,54 @@ export class ParseTelegramConfirmationCallbackBodyPipe
 {
   transform(value: unknown): TelegramConfirmationCallbackInput {
     return parseTelegramConfirmationCallbackInput(value);
+  }
+}
+
+export class RecordTelegramChatMessageDto implements RecordTelegramChatMessageInput {
+  @ApiProperty({ example: "-100987654321" })
+  readonly telegramChatId: string = "";
+
+  @ApiProperty({ example: "42" })
+  readonly telegramMessageId: string = "";
+
+  @ApiPropertyOptional({ example: "7", nullable: true, type: String })
+  readonly telegramThreadId?: string | null;
+
+  @ApiPropertyOptional({ example: "41", nullable: true, type: String })
+  readonly replyToTelegramMessageId?: string | null;
+
+  @ApiProperty({ example: "123456789" })
+  readonly senderTelegramId: string = "";
+
+  @ApiProperty({ example: "Alexander Kolesov", maxLength: maxTelegramSenderDisplayNameLength })
+  readonly senderDisplayName: string = "";
+
+  @ApiProperty({ example: false })
+  readonly senderIsBot: boolean = false;
+
+  @ApiProperty({ maxLength: maxTelegramMessageTextLength })
+  readonly text: string = "";
+
+  @ApiPropertyOptional({ format: "date-time", nullable: true, type: String })
+  readonly sentAt?: string | null;
+}
+
+export class ParseRecordTelegramChatMessageBodyPipe
+  implements PipeTransform<unknown, RecordTelegramChatMessageInput>
+{
+  transform(value: unknown): RecordTelegramChatMessageInput {
+    return parseRecordTelegramChatMessageInput(value);
+  }
+}
+
+export class RecordTelegramChatMessageResultDto implements RecordTelegramChatMessageResult {
+  @ApiProperty({
+    enum: ["stored", "duplicate", "history_access_disabled", "telegram_chat_unlinked"],
+  })
+  readonly status: RecordTelegramChatMessageResult["status"];
+
+  constructor(result: RecordTelegramChatMessageResult) {
+    this.status = result.status;
   }
 }
 
@@ -218,6 +270,34 @@ function parseTelegramConfirmationCallbackInput(value: unknown): TelegramConfirm
   };
 }
 
+function parseRecordTelegramChatMessageInput(value: unknown): RecordTelegramChatMessageInput {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Telegram chat message payload must be an object.");
+  }
+  const senderDisplayName = readRequiredTrimmedString(
+    value,
+    "senderDisplayName",
+    maxTelegramSenderDisplayNameLength,
+  );
+  const text = readRequiredTrimmedString(value, "text", maxTelegramMessageTextLength);
+  const senderIsBot = value["senderIsBot"];
+  if (typeof senderIsBot !== "boolean") {
+    throw new BadRequestException("Telegram senderIsBot must be a boolean.");
+  }
+
+  return {
+    telegramChatId: readTelegramId(value, "telegramChatId", telegramChatIdPattern),
+    telegramMessageId: readTelegramId(value, "telegramMessageId", telegramUserIdPattern),
+    telegramThreadId: readOptionalTelegramId(value, "telegramThreadId"),
+    replyToTelegramMessageId: readOptionalTelegramId(value, "replyToTelegramMessageId"),
+    senderTelegramId: readTelegramId(value, "senderTelegramId", telegramUserIdPattern),
+    senderDisplayName,
+    senderIsBot,
+    text,
+    sentAt: readOptionalIsoDate(value, "sentAt"),
+  };
+}
+
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -261,4 +341,43 @@ function readConfirmationCallbackAction(
   }
 
   return propertyValue;
+}
+
+function readOptionalTelegramId(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | null {
+  const propertyValue = value[propertyName];
+  if (propertyValue === undefined || propertyValue === null) return null;
+  if (typeof propertyValue !== "string" || !telegramUserIdPattern.test(propertyValue)) {
+    throw new BadRequestException(`Telegram ${propertyName} must be an integer string or null.`);
+  }
+  return propertyValue;
+}
+
+function readRequiredTrimmedString(
+  value: Record<string, unknown>,
+  propertyName: string,
+  maxLength: number,
+): string {
+  const propertyValue = value[propertyName];
+  if (
+    typeof propertyValue !== "string" ||
+    propertyValue.trim().length === 0 ||
+    propertyValue.length > maxLength
+  ) {
+    throw new BadRequestException(
+      `Telegram ${propertyName} must be a non-empty string up to ${maxLength} characters.`,
+    );
+  }
+  return propertyValue.trim();
+}
+
+function readOptionalIsoDate(value: Record<string, unknown>, propertyName: string): string | null {
+  const propertyValue = value[propertyName];
+  if (propertyValue === undefined || propertyValue === null) return null;
+  if (typeof propertyValue !== "string" || !Number.isFinite(Date.parse(propertyValue))) {
+    throw new BadRequestException(`Telegram ${propertyName} must be an ISO date string or null.`);
+  }
+  return new Date(propertyValue).toISOString();
 }

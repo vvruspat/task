@@ -1,12 +1,21 @@
 import type {
+  UpdateTelegramConnectionSettingsInput,
   WorkspaceIntegration,
+  WorkspaceIntegrationConnection,
   WorkspaceIntegrationDeliveryHealth,
   WorkspaceIntegrationSubscriptionHealth,
   WorkspaceIntegrationWebhookHealth,
 } from "./integrations.contracts.js";
 
+export type UpdateTelegramConnectionSettingsResult =
+  | { status: "updated"; connection: WorkspaceIntegrationConnection }
+  | { status: "forbidden" }
+  | { status: "integration_not_found" }
+  | { status: "connection_not_found" };
+
 export type WorkspaceIntegrationOperationalSnapshot = {
   integration: WorkspaceIntegration;
+  connections: WorkspaceIntegrationConnection[];
   connection: {
     status: "connected" | "disconnected" | "error";
     lastError: string | null;
@@ -42,4 +51,11 @@ export type WorkspaceIntegrationsStore = {
     integrationId: string,
     userId: string,
   ): Promise<UninstallWorkspaceIntegrationResult>;
+  updateTelegramConnectionSettings(
+    workspaceId: string,
+    integrationId: string,
+    connectionId: string,
+    userId: string,
+    input: UpdateTelegramConnectionSettingsInput,
+  ): Promise<UpdateTelegramConnectionSettingsResult>;
 };

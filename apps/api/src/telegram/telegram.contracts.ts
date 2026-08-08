@@ -61,6 +61,52 @@ export type TelegramConfirmationCallbackResult = {
   status: "confirmed" | "cancelled";
 };
 
+export type RecordTelegramChatMessageInput = {
+  telegramChatId: string;
+  telegramMessageId: string;
+  telegramThreadId?: string | null;
+  replyToTelegramMessageId?: string | null;
+  senderTelegramId: string;
+  senderDisplayName: string;
+  senderIsBot: boolean;
+  text: string;
+  sentAt?: string | null;
+};
+
+export type RecordTelegramChatMessageResult = {
+  status: "stored" | "duplicate" | "history_access_disabled" | "telegram_chat_unlinked";
+};
+
+export type ReadTelegramChatHistoryInput = {
+  workspaceId: string;
+  telegramChatId: string;
+  telegramThreadId: string | null;
+  beforeTelegramMessageId: string | null;
+  limit: number;
+};
+
+export type TelegramChatHistoryMessage = {
+  telegramMessageId: string;
+  replyToTelegramMessageId: string | null;
+  senderTelegramId: string;
+  senderDisplayName: string;
+  senderIsBot: boolean;
+  text: string;
+  sentAt: Date;
+};
+
+export type ReadTelegramChatHistoryResult =
+  | {
+      status: "available";
+      messages: TelegramChatHistoryMessage[];
+    }
+  | {
+      status: "history_access_disabled";
+    }
+  | {
+      status: "telegram_chat_unlinked";
+    };
+
 export type TelegramContextResolution =
   | {
       status: "resolved";

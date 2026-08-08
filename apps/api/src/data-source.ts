@@ -32,6 +32,7 @@ import {
   TaskSkillVersionEntity,
   TaskSubscriptionEntity,
   TelegramChatEntity,
+  TelegramChatMessageEntity,
   TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
@@ -76,6 +77,10 @@ import { CreateIntegrationConnections1783298040000 } from "./persistence/migrati
 import { CreateIntegrationResources1783298100000 } from "./persistence/migrations/1783298100000-create-integration-resources.js";
 import { CreateIntegrationWebhookReceipts1783298160000 } from "./persistence/migrations/1783298160000-create-integration-webhook-receipts.js";
 import { CreateIntegrationMcpToolCalls1783298220000 } from "./persistence/migrations/1783298220000-create-integration-mcp-tool-calls.js";
+import { AddIntegrationHealthIndexes1783298280000 } from "./persistence/migrations/1783298280000-add-integration-health-indexes.js";
+import { AllowMultipleIntegrationConnections1783298340000 } from "./persistence/migrations/1783298340000-allow-multiple-integration-connections.js";
+import { AddTelegramChatHistoryAccess1783298400000 } from "./persistence/migrations/1783298400000-add-telegram-chat-history-access.js";
+import { CreateTelegramChatMessages1783298460000 } from "./persistence/migrations/1783298460000-create-telegram-chat-messages.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -111,6 +116,7 @@ const apiEntities = [
   ConfirmationRequestEntity,
   TelegramIdentityEntity,
   TelegramChatEntity,
+  TelegramChatMessageEntity,
   InviteEntity,
   TaskSubscriptionEntity,
   NotificationReadStateEntity,
@@ -154,6 +160,10 @@ const apiMigrations = [
   CreateIntegrationResources1783298100000,
   CreateIntegrationWebhookReceipts1783298160000,
   CreateIntegrationMcpToolCalls1783298220000,
+  AddIntegrationHealthIndexes1783298280000,
+  AllowMultipleIntegrationConnections1783298340000,
+  AddTelegramChatHistoryAccess1783298400000,
+  CreateTelegramChatMessages1783298460000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

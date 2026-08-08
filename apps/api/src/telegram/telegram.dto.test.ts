@@ -3,6 +3,7 @@ import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
 import {
   LinkedTelegramIdentityDto,
+  ParseRecordTelegramChatMessageBodyPipe,
   ParseResolveTelegramContextBodyPipe,
   ParseTelegramConfirmationCallbackBodyPipe,
   ParseVerifyTelegramMiniAppInitDataBodyPipe,
@@ -10,6 +11,52 @@ import {
   TelegramContextResolutionDto,
   VerifiedTelegramMiniAppInitDataDto,
 } from "./telegram.dto.js";
+
+test("ParseRecordTelegramChatMessageBodyPipe validates persisted Telegram text", () => {
+  const pipe = new ParseRecordTelegramChatMessageBodyPipe();
+
+  assert.deepEqual(
+    pipe.transform({
+      telegramChatId: "-100987654321",
+      telegramMessageId: "42",
+      telegramThreadId: "17",
+      replyToTelegramMessageId: null,
+      senderTelegramId: "123456789",
+      senderDisplayName: " Alex (@alex) ",
+      senderIsBot: false,
+      text: " Решили выпустить релиз в пятницу ",
+      sentAt: "2026-08-08T00:20:00Z",
+    }),
+    {
+      telegramChatId: "-100987654321",
+      telegramMessageId: "42",
+      telegramThreadId: "17",
+      replyToTelegramMessageId: null,
+      senderTelegramId: "123456789",
+      senderDisplayName: "Alex (@alex)",
+      senderIsBot: false,
+      text: "Решили выпустить релиз в пятницу",
+      sentAt: "2026-08-08T00:20:00.000Z",
+    },
+  );
+});
+
+test("ParseRecordTelegramChatMessageBodyPipe rejects empty text and malformed metadata", () => {
+  const pipe = new ParseRecordTelegramChatMessageBodyPipe();
+  const valid = {
+    telegramChatId: "-100987654321",
+    telegramMessageId: "42",
+    senderTelegramId: "123456789",
+    senderDisplayName: "Alex",
+    senderIsBot: false,
+    text: "Сообщение",
+  };
+
+  assert.throws(() => pipe.transform({ ...valid, text: " " }), BadRequestException);
+  assert.throws(() => pipe.transform({ ...valid, senderIsBot: "false" }), BadRequestException);
+  assert.throws(() => pipe.transform({ ...valid, sentAt: "not-a-date" }), BadRequestException);
+  assert.throws(() => pipe.transform({ ...valid, telegramThreadId: "topic" }), BadRequestException);
+});
 
 test("ParseResolveTelegramContextBodyPipe validates stable Telegram identifiers", () => {
   const pipe = new ParseResolveTelegramContextBodyPipe();

@@ -1944,6 +1944,83 @@
         "tags": ["workspace integrations"]
       }
     },
+    "/workspaces/{workspaceId}/integrations/{integrationId}/telegram/chats/{connectionId}/settings": {
+      "patch": {
+        "operationId": "IntegrationsController_updateTelegramConnectionSettings",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTelegramConnectionSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceIntegrationConnectionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram chat settings payload is invalid."
+          },
+          "403": {
+            "description": "Current user cannot manage integrations."
+          },
+          "404": {
+            "description": "Telegram integration or chat was not found."
+          }
+        },
+        "summary": "Update settings for a connected Telegram chat",
+        "tags": ["workspace integrations"]
+      }
+    },
     "/workspaces/{workspaceId}/integrations/{pluginKey}/install": {
       "post": {
         "operationId": "IntegrationsController_install",
@@ -2106,9 +2183,6 @@
           },
           "404": {
             "description": "Telegram workspace integration was not found."
-          },
-          "409": {
-            "description": "Telegram is already connected."
           }
         },
         "summary": "Create a one-time Telegram workspace chat connect command",
@@ -2160,7 +2234,7 @@
             "description": "Telegram identity does not own the token."
           },
           "409": {
-            "description": "Telegram chat or integration is already connected."
+            "description": "Telegram chat is connected to another workspace."
           }
         },
         "summary": "Connect a Telegram chat using a one-time workspace token",
@@ -5450,6 +5524,52 @@
         "tags": ["telegram"]
       }
     },
+    "/internal/telegram/history/messages": {
+      "post": {
+        "operationId": "TelegramController_recordChatMessage",
+        "parameters": [
+          {
+            "name": "x-task-bot-secret",
+            "in": "header",
+            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordTelegramChatMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordTelegramChatMessageResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram chat message payload is invalid."
+          },
+          "401": {
+            "description": "Telegram bot shared secret is missing or invalid."
+          }
+        },
+        "summary": "Store a Telegram text message when chat history access is enabled",
+        "tags": ["telegram"]
+      }
+    },
     "/internal/telegram/confirmations/callback": {
       "post": {
         "operationId": "TelegramController_handleConfirmationCallback",
@@ -7139,6 +7259,61 @@
           "updatedAt"
         ]
       },
+      "TelegramConnectionSettingsDto": {
+        "type": "object",
+        "properties": {
+          "conversationHistoryAccess": {
+            "type": "boolean"
+          }
+        },
+        "required": ["conversationHistoryAccess"]
+      },
+      "WorkspaceIntegrationConnectionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "providerAccountId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["connected", "disconnected", "error"]
+          },
+          "connectedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "lastError": {
+            "type": "string",
+            "nullable": true
+          },
+          "telegramSettings": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TelegramConnectionSettingsDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "providerAccountId",
+          "displayName",
+          "status",
+          "connectedAt",
+          "lastError",
+          "telegramSettings"
+        ]
+      },
       "WorkspaceIntegrationConnectionHealthDto": {
         "type": "object",
         "properties": {
@@ -7310,6 +7485,12 @@
               }
             ]
           },
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceIntegrationConnectionDto"
+            }
+          },
           "health": {
             "nullable": true,
             "type": "object",
@@ -7330,8 +7511,18 @@
           "requiredScopes",
           "capabilityKinds",
           "installation",
+          "connections",
           "health"
         ]
+      },
+      "UpdateTelegramConnectionSettingsDto": {
+        "type": "object",
+        "properties": {
+          "conversationHistoryAccess": {
+            "type": "boolean"
+          }
+        },
+        "required": ["conversationHistoryAccess"]
       },
       "TelegramConnectTokenDto": {
         "type": "object",
@@ -9286,6 +9477,69 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          }
+        },
+        "required": ["status"]
+      },
+      "RecordTelegramChatMessageDto": {
+        "type": "object",
+        "properties": {
+          "telegramChatId": {
+            "type": "string",
+            "example": "-100987654321"
+          },
+          "telegramMessageId": {
+            "type": "string",
+            "example": "42"
+          },
+          "telegramThreadId": {
+            "type": "string",
+            "example": "7",
+            "nullable": true
+          },
+          "replyToTelegramMessageId": {
+            "type": "string",
+            "example": "41",
+            "nullable": true
+          },
+          "senderTelegramId": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "senderDisplayName": {
+            "type": "string",
+            "example": "Alexander Kolesov",
+            "maxLength": 512
+          },
+          "senderIsBot": {
+            "type": "boolean",
+            "example": false
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "sentAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": [
+          "telegramChatId",
+          "telegramMessageId",
+          "senderTelegramId",
+          "senderDisplayName",
+          "senderIsBot",
+          "text"
+        ]
+      },
+      "RecordTelegramChatMessageResultDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["stored", "duplicate", "history_access_disabled", "telegram_chat_unlinked"]
           }
         },
         "required": ["status"]

@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   AddTaskSubtasksRequest,
@@ -50,6 +52,7 @@ import {
   registerTaskTools,
   registerWorkspaceTools,
   type TaskMcpToolRegistrar,
+  taskMcpServerInstructions,
 } from "./mcp-server.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
@@ -1408,6 +1411,10 @@ test("registerTaskTools registers task tools", async () => {
     ],
   );
   assert.equal(toolCalls[0]?.config.title, "Create task");
+  assert.match(toolCalls[0]?.config.description ?? "", /MUST call skill\.search/u);
+  assert.match(toolCalls[0]?.config.description ?? "", /zero suitable skills/u);
+  assert.match(toolCalls[0]?.config.description ?? "", /ask the user to choose/u);
+  assert.match(toolCalls[0]?.config.description ?? "", /Never invent subtasks/u);
   assert.equal(toolCalls[1]?.config.title, "Set task status");
   assert.equal(toolCalls[2]?.config.title, "Update task");
   assert.equal(toolCalls[3]?.config.title, "Add subtasks");
@@ -1754,6 +1761,8 @@ test("registerTaskSkillApplyTools registers preview and apply tools", async () =
     ],
   );
   assert.equal(toolCalls[0]?.config.title, "Search task skills");
+  assert.match(toolCalls[0]?.config.description ?? "", /mandatory preflight/u);
+  assert.match(toolCalls[0]?.config.description ?? "", /several means ask the user/u);
   assert.equal(toolCalls[1]?.config.title, "Get task skill");
   assert.equal(toolCalls[2]?.config.title, "Create task skill");
   assert.equal(toolCalls[3]?.config.title, "Clone task skill");
@@ -2004,6 +2013,28 @@ test("createTaskMcpServer returns an MCP server with task skill tools registered
   });
 
   assert.equal(server.isConnected(), false);
+  assert.match(taskMcpServerInstructions, /search for an existing suitable task skill/u);
+  assert.match(taskMcpServerInstructions, /create the task without subtasks/u);
+  assert.match(taskMcpServerInstructions, /ask the user to choose one/u);
+  assert.match(taskMcpServerInstructions, /Never invent subtasks/u);
+});
+
+test("createTaskMcpServer publishes root task template instructions to MCP clients", async () => {
+  const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+  const server = createTaskMcpServer({
+    backendClient: createBackendClientStub(),
+    name: "test-task-mcp",
+    version: "1.0.0",
+  });
+  const client = new Client({ name: "test-client", version: "1.0.0" });
+
+  await server.connect(serverTransport);
+  await client.connect(clientTransport);
+
+  assert.equal(client.getInstructions(), taskMcpServerInstructions);
+
+  await client.close();
+  await server.close();
 });
 
 type RegisteredToolCall = {

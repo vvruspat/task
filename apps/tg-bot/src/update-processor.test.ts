@@ -4,6 +4,8 @@ import type {
   CompleteTelegramChatConnectionRequest,
   CreateTelegramAgentRunRequest,
   HandleTelegramConfirmationCallbackRequest,
+  RecordTelegramChatMessageRequest,
+  RecordTelegramChatMessageResponse,
   ResolveTelegramContextRequest,
   TelegramAgentRunIntakeResponse,
   TelegramBackendClient,
@@ -70,6 +72,7 @@ test("Telegram group invocation matches only the configured bot mention", () => 
     messageId: "20",
     threadId: null,
     replyToMessageId: null,
+    replyToSender: null,
     sender: {
       firstName: null,
       isBot: false,
@@ -178,7 +181,35 @@ test("processTelegramUpdate records resolved commands and replies with agent res
   }
 });
 
-test("processTelegramUpdate requires an explicit bot invocation in group chats", async () => {
+test("processTelegramUpdate ignores a duplicate update while its agent run is active", async () => {
+  const runningAgentRunResponse: TelegramAgentRunIntakeResponse = {
+    ...agentRunResponse,
+    status: "running",
+  };
+  const backendClient = new RecordingTelegramBackendClient(
+    {
+      status: "resolved",
+      userId: "22222222-2222-4222-8222-222222222222",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      defaultProjectId: null,
+    },
+    runningAgentRunResponse,
+  );
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+
+  const result = await processTelegramUpdate(telegramUpdate, {
+    backendClient,
+    replySender,
+  });
+
+  assert.deepEqual(result, {
+    kind: "agent_run_in_progress",
+    agentRun: runningAgentRunResponse,
+  });
+  assert.equal(replySender.lastAction, null);
+});
+
+test("processTelegramUpdate stores ordinary group messages without replying", async () => {
   const backendClient = new RecordingTelegramBackendClient(
     {
       status: "resolved",
@@ -196,12 +227,79 @@ test("processTelegramUpdate requires an explicit bot invocation in group chats",
 
   const result = await processTelegramUpdate(update, { backendClient, replySender });
 
-  assert.equal(result.kind, "reply_sent");
+  assert.deepEqual(result, {
+    kind: "message_observed",
+    recording: { status: "history_access_disabled" },
+  });
   assert.equal(backendClient.lastAgentRunRequest, null);
-  assert.equal(
-    replySender.lastAction?.text,
-    "Чтобы вызвать агента в групповом чате, используй /task.",
+  assert.equal(replySender.lastAction, null);
+  assert.deepEqual(backendClient.lastRecordMessageRequest, {
+    body: {
+      telegramChatId: "-100987654321",
+      telegramMessageId: "20",
+      telegramThreadId: null,
+      replyToTelegramMessageId: null,
+      senderTelegramId: "123456789",
+      senderDisplayName: "@alex",
+      senderIsBot: false,
+      text: "обычное сообщение",
+      sentAt: null,
+    },
+  });
+});
+
+test("processTelegramUpdate does not block ordinary messages when history storage fails", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    {
+      status: "resolved",
+      userId: "22222222-2222-4222-8222-222222222222",
+      workspaceId: "33333333-3333-4333-8333-333333333333",
+      defaultProjectId: null,
+    },
+    agentRunResponse,
+    null,
+    null,
   );
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+  const logger = new RecordingTelegramUpdateProcessorLogger();
+  const update = {
+    ...telegramUpdate,
+    message: { ...telegramUpdate.message, entities: [], text: "обычное сообщение" },
+  };
+
+  const result = await processTelegramUpdate(update, { backendClient, logger, replySender });
+
+  assert.deepEqual(result, { kind: "message_observed", recording: null });
+  assert.equal(replySender.lastAction, null);
+  assert.equal(logger.errors.length, 1);
+  assert(logger.errors[0] instanceof TelegramBackendClientError);
+});
+
+test("processTelegramUpdate sends a generic reply for unexpected processing errors", async () => {
+  const backendClient = new CrashingTelegramBackendClient();
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+  const logger = new RecordingTelegramUpdateProcessorLogger();
+
+  const result = await processTelegramUpdate(telegramUpdate, {
+    backendClient,
+    logger,
+    replySender,
+  });
+
+  assert.deepEqual(result, {
+    kind: "reply_sent",
+    reply: {
+      kind: "reply",
+      telegramChatId: "-100987654321",
+      replyToMessageId: "20",
+      text: "Не удалось обработать запрос из-за внутренней ошибки. Попробуй ещё раз позже.",
+    },
+    sentMessage: { messageId: "45" },
+  });
+  assert.equal(logger.errors.length, 1);
+  const [loggedError] = logger.errors;
+  assert(loggedError instanceof Error);
+  assert.equal(loggedError.message, "Unexpected context failure.");
 });
 
 test("processTelegramUpdate attaches confirmation buttons for waiting agent runs", async () => {
@@ -378,11 +476,15 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
   lastRequest: ResolveTelegramContextRequest | null = null;
   lastAgentRunRequest: CreateTelegramAgentRunRequest | null = null;
   lastConfirmationCallbackRequest: HandleTelegramConfirmationCallbackRequest | null = null;
+  lastRecordMessageRequest: RecordTelegramChatMessageRequest | null = null;
 
   constructor(
     private readonly response: TelegramContextResolutionResponse,
     private readonly agentRunResponse: TelegramAgentRunIntakeResponse | null = null,
     private readonly confirmationCallbackResponse: TelegramConfirmationCallbackResponse | null = null,
+    private readonly recordMessageResponse: RecordTelegramChatMessageResponse | null = {
+      status: "history_access_disabled",
+    },
   ) {}
 
   async resolveTelegramContext(
@@ -422,6 +524,28 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
   ): Promise<TelegramChatConnectionResponse> {
     throw new TelegramBackendClientError("Unexpected Telegram connection request.");
   }
+
+  async recordTelegramChatMessage(
+    request: RecordTelegramChatMessageRequest,
+  ): Promise<RecordTelegramChatMessageResponse> {
+    this.lastRecordMessageRequest = request;
+    if (this.recordMessageResponse === null) {
+      throw new TelegramBackendClientError("Telegram history storage unavailable.");
+    }
+    return this.recordMessageResponse;
+  }
+}
+
+class CrashingTelegramBackendClient extends RecordingTelegramBackendClient {
+  constructor() {
+    super({ status: "telegram_user_unlinked" });
+  }
+
+  override async resolveTelegramContext(
+    _request: ResolveTelegramContextRequest,
+  ): Promise<TelegramContextResolutionResponse> {
+    throw new Error("Unexpected context failure.");
+  }
 }
 
 class RecordingTelegramReplySender implements TelegramReplySender {
@@ -433,5 +557,13 @@ class RecordingTelegramReplySender implements TelegramReplySender {
     this.lastAction = action;
 
     return this.result;
+  }
+}
+
+class RecordingTelegramUpdateProcessorLogger {
+  readonly errors: unknown[] = [];
+
+  error(error: unknown): void {
+    this.errors.push(error);
   }
 }

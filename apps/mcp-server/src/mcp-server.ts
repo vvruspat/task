@@ -460,11 +460,22 @@ export type TaskMcpServerOptions = {
   version?: string;
 };
 
+export const taskMcpServerInstructions = [
+  "Before creating any root task in a project, search for an existing suitable task skill with skill.search. Use the task type or workflow terms from the user's request as the query, not only the task's unique title.",
+  "If there are no suitable skills, call task.create and create the task without subtasks.",
+  "If exactly one skill is suitable, call skill.apply instead of task.create so the stored template creates the task tree.",
+  "If several skills are suitable, do not create anything yet: ask the user to choose one, then call skill.apply with the chosen taskSkillId.",
+  "Never invent subtasks or call task.add_subtasks merely because no suitable skill exists. Use task.add_subtasks only for component steps explicitly supplied by the user.",
+].join(" ");
+
 export function createTaskMcpServer(options: TaskMcpServerOptions): McpServer {
-  const server = new McpServer({
-    name: options.name ?? "task-mcp-server",
-    version: options.version ?? "0.0.0",
-  });
+  const server = new McpServer(
+    {
+      name: options.name ?? "task-mcp-server",
+      version: options.version ?? "0.0.0",
+    },
+    { instructions: taskMcpServerInstructions },
+  );
 
   registerWorkspaceTools(server, createWorkspaceToolHandlers(options.backendClient));
   registerStatusTools(server, createStatusToolHandlers(options.backendClient));
@@ -749,7 +760,8 @@ export function registerTaskTools(
     "task.create",
     {
       title: "Create task",
-      description: "Create a task in a visible project.",
+      description:
+        "Create a plain task in a visible project. Before creating a root task, you MUST call skill.search using the task type from the user's request. With zero suitable skills, call task.create without subtasks. With one suitable skill, call skill.apply instead. With several suitable skills, ask the user to choose and do not create anything yet. Never invent subtasks when no skill matches.",
       inputSchema: taskCreateInputSchema,
     },
     async (input) => toToolResult(await handlers.create(input)),
@@ -779,7 +791,8 @@ export function registerTaskTools(
     "task.add_subtasks",
     {
       title: "Add subtasks",
-      description: "Create one or more subtasks under an active task.",
+      description:
+        "Create one or more explicitly requested component steps under an active task. Never invent subtasks because skill.search found no suitable template; in that case leave the new task without subtasks. Use skill.apply for stored template steps.",
       inputSchema: taskAddSubtasksInputSchema,
     },
     async (input) => toToolResult(await handlers.addSubtasks(input)),
@@ -864,7 +877,8 @@ export function registerTaskSkillApplyTools(
     "skill.search",
     {
       title: "Search task skills",
-      description: "Search active task skills in a visible workspace by name or alias.",
+      description:
+        "Search active task skills by name or alias. This is the mandatory preflight before creating a root task: query with its task type or workflow, not its unique title. Zero suitable results means create a plain task without invented subtasks; one means use skill.apply; several means ask the user to choose before creating anything.",
       inputSchema: taskSkillSearchInputSchema,
     },
     async (input) => toToolResult(await handlers.search(input)),
@@ -944,7 +958,8 @@ export function registerTaskSkillApplyTools(
     "skill.apply",
     {
       title: "Apply task skill",
-      description: "Apply a task skill to a project and create the resulting task tree.",
+      description:
+        "Apply the single suitable task skill, or the skill explicitly chosen by the user, to a project and create the resulting task tree.",
       inputSchema: taskSkillApplyInputSchema,
     },
     async (input) => toToolResult(await handlers.apply(input)),

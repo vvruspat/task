@@ -20,6 +20,8 @@ import { TaskSkillsModule } from "../task-skills/task-skills.module.js";
 import { TaskSkillsService } from "../task-skills/task-skills.service.js";
 import { TasksModule } from "../tasks/tasks.module.js";
 import { TasksService } from "../tasks/tasks.service.js";
+import { TelegramModule } from "../telegram/telegram.module.js";
+import { TelegramService } from "../telegram/telegram.service.js";
 import { WorkspacesModule } from "../workspaces/workspaces.module.js";
 import { WorkspacesService } from "../workspaces/workspaces.service.js";
 import { AgentController } from "./agent.controller.js";
@@ -40,11 +42,17 @@ import { WebAgentController } from "./web-agent.controller.js";
 const agentRuntimeProvider: Provider<AgentRuntime> = {
   provide: agentRuntimeToken,
   useFactory: (toolDispatcher: BackendAgentToolOperationDispatcher): AgentRuntime => {
-    const openRouterConfig = loadApiConfig().openRouter;
+    const apiConfig = loadApiConfig();
+    const openRouterConfig = apiConfig.openRouter;
 
     return openRouterConfig === null
       ? new StubAgentRuntime()
-      : new OpenRouterAgentRuntime(openRouterConfig, undefined, toolDispatcher);
+      : new OpenRouterAgentRuntime(
+          openRouterConfig,
+          undefined,
+          toolDispatcher,
+          apiConfig.email?.webAppUrl ?? null,
+        );
   },
   inject: [BackendAgentToolOperationDispatcher],
 };
@@ -61,6 +69,7 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
     searchService: SearchService,
     realtimeService: WorkspaceRealtimeService,
     integrationToolsService: IntegrationAgentToolsService,
+    telegramService: TelegramService,
   ): BackendAgentToolOperationDispatcher =>
     new BackendAgentToolOperationDispatcher(
       projectsService,
@@ -72,6 +81,7 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
       searchService,
       realtimeService,
       integrationToolsService,
+      telegramService,
     ),
   inject: [
     ProjectsService,
@@ -83,6 +93,7 @@ const backendAgentToolOperationDispatcherProvider: Provider<BackendAgentToolOper
     SearchService,
     WorkspaceRealtimeService,
     IntegrationAgentToolsService,
+    TelegramService,
   ],
 };
 
@@ -108,6 +119,7 @@ const agentServiceProvider: Provider<AgentService> = {
     StatusesModule,
     TasksModule,
     TaskSkillsModule,
+    TelegramModule,
     WorkspacesModule,
   ],
   controllers: [AgentController, AgentChatsController, AgentRunsController, WebAgentController],

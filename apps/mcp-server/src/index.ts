@@ -143,6 +143,7 @@ export {
   type TaskMcpServerOptions,
   type TaskMcpToolRegistrar,
   type TaskSkillToolRegistrar,
+  taskMcpServerInstructions,
 } from "./mcp-server.js";
 export {
   createProjectToolHandlers,

@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   type CreateTelegramAgentRunInput,
   createTelegramBackendClient,
+  type RecordTelegramChatMessageInput,
   TelegramBackendClientError,
   type TelegramBackendFetch,
   type TelegramBackendFetchInit,
@@ -35,6 +36,17 @@ const confirmationCallbackRequestBody: TelegramConfirmationCallbackInput = {
   confirmationRequestId: "11111111-1111-4111-8111-111111111111",
   action: "confirm",
 };
+const recordMessageRequestBody: RecordTelegramChatMessageInput = {
+  telegramChatId: "-100987654321",
+  telegramMessageId: "42",
+  telegramThreadId: "7",
+  replyToTelegramMessageId: "41",
+  senderTelegramId: "123456789",
+  senderDisplayName: "Alex (@alex)",
+  senderIsBot: false,
+  text: "Решили выпустить релиз в пятницу",
+  sentAt: "2026-08-08T00:20:00.000Z",
+};
 
 test("TelegramBackendClient posts Telegram context with bot shared secret", async () => {
   const fetch = new RecordingTelegramBackendFetch({
@@ -65,6 +77,21 @@ test("TelegramBackendClient posts Telegram context with bot shared secret", asyn
     },
     body: JSON.stringify(requestBody),
   });
+});
+
+test("TelegramBackendClient records Telegram chat messages with bot shared secret", async () => {
+  const fetch = new RecordingTelegramBackendFetch({ status: "stored" });
+  const client = createTelegramBackendClient({
+    baseUrl: "https://api.example.test/",
+    botSharedSecret: "bot-secret",
+    fetch: fetch.call,
+  });
+
+  assert.deepEqual(await client.recordTelegramChatMessage({ body: recordMessageRequestBody }), {
+    status: "stored",
+  });
+  assert.equal(fetch.lastInput, "https://api.example.test/internal/telegram/history/messages");
+  assert.equal(fetch.lastInit?.body, JSON.stringify(recordMessageRequestBody));
 });
 
 test("TelegramBackendClient completes Telegram chat connections with bot shared secret", async () => {

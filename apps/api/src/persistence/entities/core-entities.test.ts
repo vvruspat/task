@@ -17,6 +17,7 @@ import {
   TaskSkillEntity,
   TaskSkillVersionEntity,
   TelegramChatEntity,
+  TelegramChatMessageEntity,
   TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
@@ -154,6 +155,10 @@ test("telegram chat columns and indexes metadata are registered", () => {
   const defaultProjectColumn = storage.columns.find(
     (column) => column.target === TelegramChatEntity && column.propertyName === "defaultProjectId",
   );
+  const historyAccessColumn = storage.columns.find(
+    (column) =>
+      column.target === TelegramChatEntity && column.propertyName === "historyAccessEnabled",
+  );
   const chatIndexes = storage.indices
     .filter((index) => index.target === TelegramChatEntity)
     .map((index) => index.name)
@@ -163,11 +168,42 @@ test("telegram chat columns and indexes metadata are registered", () => {
   assert.equal(telegramChatIdColumn?.options.unique, true);
   assert.equal(defaultProjectColumn?.options.type, "uuid");
   assert.equal(defaultProjectColumn?.options.nullable, true);
+  assert.equal(historyAccessColumn?.options.type, "boolean");
+  assert.equal(historyAccessColumn?.options.default, false);
   assert.deepEqual(chatIndexes, [
     "idx_telegram_chats_default_project_id",
     "idx_telegram_chats_linked_by_user_id",
     "idx_telegram_chats_workspace_id",
   ]);
+});
+
+test("telegram chat message columns and indexes metadata are registered", () => {
+  const storage = getMetadataArgsStorage();
+  const textColumn = storage.columns.find(
+    (column) => column.target === TelegramChatMessageEntity && column.propertyName === "text",
+  );
+  const threadColumn = storage.columns.find(
+    (column) =>
+      column.target === TelegramChatMessageEntity && column.propertyName === "telegramThreadId",
+  );
+  const indexes = storage.indices
+    .filter((index) => index.target === TelegramChatMessageEntity)
+    .map((index) => index.name)
+    .sort();
+
+  assert.equal(textColumn?.options.type, "text");
+  assert.equal(threadColumn?.options.type, "bigint");
+  assert.equal(threadColumn?.options.nullable, true);
+  assert.deepEqual(indexes, [
+    "idx_telegram_chat_messages_chat_thread_message",
+    "uq_telegram_chat_messages_chat_message",
+  ]);
+  const message = new TelegramChatMessageEntity();
+  assert.match(
+    message.id,
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u,
+  );
+  assert.equal(Object.hasOwn(message, "createdAt"), false);
 });
 
 test("confirmation request columns, status check, and indexes metadata are registered", () => {

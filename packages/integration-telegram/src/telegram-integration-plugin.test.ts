@@ -59,6 +59,26 @@ test("Telegram conversation ingress normalizes an addressed group message once",
   assert.equal(event.message.chat.telegramChatId, "-100987654321");
 });
 
+test("Telegram conversation ingress treats a reply to the configured bot as an invocation", async () => {
+  const event = await plugin.handlers.conversationIngress.normalize({
+    update_id: 11,
+    message: {
+      message_id: 21,
+      from: { id: 123456789, is_bot: false, username: "alex" },
+      chat: { id: -100987654321, type: "supergroup", title: "Album Team" },
+      text: "продолжай",
+      reply_to_message: {
+        message_id: 20,
+        from: { id: 987654321, is_bot: true, username: "task_agent_bot" },
+      },
+    },
+  });
+
+  assert.equal(event.kind, "message");
+  if (event.kind !== "message") return;
+  assert.equal(event.invokesAgent, true);
+});
+
 test("Telegram conversation ingress keeps a reply target for malformed callbacks", async () => {
   const event = await plugin.handlers.conversationIngress.normalize({
     update_id: 11,

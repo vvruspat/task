@@ -44,7 +44,6 @@ export class TelegramConnectController {
   @ApiOkResponse({ type: TelegramConnectTokenDto })
   @ApiForbiddenResponse({ description: "Current user cannot connect integrations." })
   @ApiNotFoundResponse({ description: "Telegram workspace integration was not found." })
-  @ApiConflictResponse({ description: "Telegram is already connected." })
   createToken(
     @Param("workspaceId", uuidV4Pipe) workspaceId: string,
     @Param("integrationId", uuidV4Pipe) integrationId: string,
@@ -67,7 +66,7 @@ export class TelegramInternalConnectController {
   @ApiOkResponse({ type: TelegramChatConnectionDto })
   @ApiBadRequestResponse({ description: "Telegram connect token or payload is invalid." })
   @ApiForbiddenResponse({ description: "Telegram identity does not own the token." })
-  @ApiConflictResponse({ description: "Telegram chat or integration is already connected." })
+  @ApiConflictResponse({ description: "Telegram chat is connected to another workspace." })
   @ApiUnauthorizedResponse({ description: "Telegram bot shared secret is missing or invalid." })
   complete(
     @Body(ParseCompleteTelegramChatConnectionPipe) input: CompleteTelegramChatConnectionInput,

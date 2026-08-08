@@ -17,7 +17,8 @@ import type { CreateTelegramAgentRunInput } from "./agent.contracts.js";
 import type {
   AgentRunDetailRecord,
   AgentRunStore,
-  FindTelegramAgentRunInput,
+  ClaimTelegramAgentRunInput,
+  ClaimTelegramAgentRunResult,
   ListTelegramConversationInput,
   PersistedWebChatTurn,
   PersistTelegramAgentRunInput,
@@ -68,6 +69,7 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
       workspaceId: chat.workspaceId,
       userId: identity.userId,
       defaultProjectId: chat.defaultProjectId,
+      conversationHistoryAccess: chat.historyAccessEnabled,
     };
   }
 
@@ -207,15 +209,40 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
     return { run, toolCalls, confirmationRequests };
   }
 
-  async findTelegramRunBySource(input: FindTelegramAgentRunInput): Promise<AgentRunEntity | null> {
+  async claimTelegramRun(input: ClaimTelegramAgentRunInput): Promise<ClaimTelegramAgentRunResult> {
     const dataSource = await this.getInitializedDataSource();
-
-    return dataSource.getRepository(AgentRunEntity).findOneBy({
-      workspaceId: input.workspaceId,
-      userId: input.userId,
-      source: "telegram",
-      sourceThreadId: input.sourceThreadId,
-      sourceMessageId: input.sourceMessageId,
+    return dataSource.transaction(async (entityManager): Promise<ClaimTelegramAgentRunResult> => {
+      const runRepository = entityManager.getRepository(AgentRunEntity);
+      const id = randomUUID();
+      const now = new Date();
+      await runRepository
+        .createQueryBuilder()
+        .insert()
+        .values({
+          id,
+          workspaceId: input.workspaceId,
+          userId: input.userId,
+          source: "telegram",
+          sourceThreadId: input.sourceThreadId,
+          sourceMessageId: input.sourceMessageId,
+          inputText: input.inputText,
+          status: "running",
+          createdAt: now,
+          updatedAt: now,
+        })
+        .orIgnore()
+        .execute();
+      const run = await runRepository.findOneByOrFail({
+        workspaceId: input.workspaceId,
+        userId: input.userId,
+        source: "telegram",
+        sourceThreadId: input.sourceThreadId,
+        sourceMessageId: input.sourceMessageId,
+      });
+      return {
+        status: run.id === id ? "claimed" : "existing",
+        run,
+      };
     });
   }
 
@@ -311,26 +338,38 @@ export class TypeOrmAgentRunStore implements AgentRunStore {
   ): Promise<AgentRunEntity> {
     const now = new Date();
     const runRepository = entityManager.getRepository(AgentRunEntity);
-    const run = await runRepository.save(
-      runRepository.create({
-        id: randomUUID(),
-        workspaceId: input.workspaceId,
-        userId: input.userId,
-        source,
-        sourceThreadId: input.sourceThreadId,
-        sourceMessageId: input.sourceMessageId,
-        model: input.runtimeResult.model,
-        inputText: input.inputText,
-        normalizedIntent: input.runtimeResult.normalizedIntent,
-        finalResponse: input.runtimeResult.finalResponse,
-        status: input.runtimeResult.status,
-        tokenUsage: input.runtimeResult.tokenUsage,
-        cost: input.runtimeResult.cost,
-        error: input.runtimeResult.error,
-        createdAt: now,
-        updatedAt: now,
-      }),
-    );
+    const claimedRun =
+      source === "telegram" && input.sourceThreadId !== null && input.sourceMessageId !== null
+        ? await runRepository.findOne({
+            lock: { mode: "pessimistic_write" },
+            where: {
+              workspaceId: input.workspaceId,
+              userId: input.userId,
+              source,
+              sourceThreadId: input.sourceThreadId,
+              sourceMessageId: input.sourceMessageId,
+            },
+          })
+        : null;
+    if (claimedRun !== null && claimedRun.status !== "running") {
+      return claimedRun;
+    }
+    const run = claimedRun ?? runRepository.create({ id: randomUUID(), createdAt: now });
+    run.workspaceId = input.workspaceId;
+    run.userId = input.userId;
+    run.source = source;
+    run.sourceThreadId = input.sourceThreadId;
+    run.sourceMessageId = input.sourceMessageId;
+    run.model = input.runtimeResult.model;
+    run.inputText = input.inputText;
+    run.normalizedIntent = input.runtimeResult.normalizedIntent;
+    run.finalResponse = input.runtimeResult.finalResponse;
+    run.status = input.runtimeResult.status;
+    run.tokenUsage = input.runtimeResult.tokenUsage;
+    run.cost = input.runtimeResult.cost;
+    run.error = input.runtimeResult.error;
+    run.updatedAt = now;
+    await runRepository.save(run);
 
     if (input.runtimeResult.toolCalls.length > 0) {
       const toolCallRepository = entityManager.getRepository(AgentToolCallEntity);

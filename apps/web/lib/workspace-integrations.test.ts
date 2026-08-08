@@ -58,6 +58,17 @@ test("workspace integration guards accept generated catalog responses", () => {
       {
         authKind: "oauth2",
         capabilityKinds: ["resource_provider", "webhook_handler"],
+        connections: [
+          {
+            connectedAt: "2026-07-22T10:00:00.000Z",
+            displayName: "Studio group",
+            id: "44444444-4444-4444-8444-444444444444",
+            lastError: null,
+            providerAccountId: "-1001234567890",
+            status: "connected",
+            telegramSettings: null,
+          },
+        ],
         description: "Drive files and folders",
         health,
         iconKey: "google-drive",
@@ -89,6 +100,7 @@ test("workspace integration guards reject unknown enum values and malformed conf
       {
         authKind: "password",
         capabilityKinds: [],
+        connections: [],
         description: "Invalid",
         health: null,
         iconKey: "invalid",
@@ -106,6 +118,7 @@ test("workspace integration guards reject unknown enum values and malformed conf
       {
         authKind: "oauth2",
         capabilityKinds: [],
+        connections: [],
         description: "Invalid health",
         health: { ...health, deliveries: { ...health.deliveries, deadCount: -1 } },
         iconKey: "invalid-health",

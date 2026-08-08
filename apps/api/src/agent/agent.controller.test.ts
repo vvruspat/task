@@ -19,7 +19,8 @@ import { AgentService } from "./agent.service.js";
 import type {
   AgentRunDetailRecord,
   AgentRunStore,
-  FindTelegramAgentRunInput,
+  ClaimTelegramAgentRunInput,
+  ClaimTelegramAgentRunResult,
   ListTelegramConversationInput,
   PersistTelegramAgentRunInput,
   PersistWebAgentRunInput,
@@ -30,6 +31,7 @@ import { AgentRunsController } from "./agent-runs.controller.js";
 test("AgentController forwards Telegram agent run requests to the service", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
@@ -73,6 +75,7 @@ test("AgentController forwards Telegram agent run requests to the service", asyn
 test("AgentRunsController forwards workspace agent run list requests to the service", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
@@ -110,6 +113,7 @@ test("AgentRunsController forwards workspace agent run list requests to the serv
 test("AgentRunsController forwards workspace-scoped agent run detail requests", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",
+    conversationHistoryAccess: true,
     workspaceId: "22222222-2222-4222-8222-222222222222",
     userId: "33333333-3333-4333-8333-333333333333",
   });
@@ -142,10 +146,28 @@ class RecordingAgentRunStore implements AgentRunStore {
     return this.contextResult;
   }
 
-  async findTelegramRunBySource(
-    _input: FindTelegramAgentRunInput,
-  ): Promise<PersistedAgentRun | null> {
-    return null;
+  async claimTelegramRun(input: ClaimTelegramAgentRunInput): Promise<ClaimTelegramAgentRunResult> {
+    return {
+      status: "claimed",
+      run: {
+        id: "11111111-1111-4111-8111-111111111111",
+        workspaceId: input.workspaceId,
+        userId: input.userId,
+        source: "telegram",
+        sourceThreadId: input.sourceThreadId,
+        sourceMessageId: input.sourceMessageId,
+        model: null,
+        inputText: input.inputText,
+        normalizedIntent: null,
+        finalResponse: null,
+        status: "running",
+        tokenUsage: null,
+        cost: null,
+        error: null,
+        createdAt: new Date("2026-07-08T00:00:00.000Z"),
+        updatedAt: new Date("2026-07-08T00:00:00.000Z"),
+      },
+    };
   }
 
   async listTelegramConversation(

@@ -57,6 +57,10 @@ export type TelegramIdentityLinkStatus = components["schemas"]["TelegramIdentity
 export type WorkspaceInvitation = components["schemas"]["WorkspaceInvitationDto"];
 export type IntegrationCatalogItem = components["schemas"]["IntegrationCatalogItemDto"];
 export type WorkspaceIntegration = components["schemas"]["WorkspaceIntegrationDto"];
+export type WorkspaceIntegrationConnection =
+  components["schemas"]["WorkspaceIntegrationConnectionDto"];
+export type UpdateTelegramConnectionSettingsInput =
+  components["schemas"]["UpdateTelegramConnectionSettingsDto"];
 export type CompleteGoogleDriveOAuthInput = components["schemas"]["CompleteGoogleDriveOAuthDto"];
 export type GoogleDriveOAuthCompletion = components["schemas"]["GoogleDriveOAuthCompletionDto"];
 export type GoogleDriveAuthorizationStart =
@@ -109,6 +113,8 @@ type UpdateSavedViewOperation = operations["ViewsController_update"];
 type ListAgentChatsOperation = operations["AgentChatsController_list"];
 type InstallWorkspaceIntegrationOperation = operations["IntegrationsController_install"];
 type UninstallWorkspaceIntegrationOperation = operations["IntegrationsController_uninstall"];
+type UpdateTelegramConnectionSettingsOperation =
+  operations["IntegrationsController_updateTelegramConnectionSettings"];
 type StartGoogleDriveOAuthOperation = operations["GoogleDriveOAuthController_start"];
 type CompleteGoogleDriveOAuthOperation = operations["GoogleDriveOAuthCallbackController_complete"];
 type CreateGoogleDrivePickerSessionOperation =
@@ -371,6 +377,13 @@ export type InstallWorkspaceIntegrationResponse =
   InstallWorkspaceIntegrationOperation["responses"]["201"]["content"]["application/json"];
 export type UninstallWorkspaceIntegrationResponse =
   UninstallWorkspaceIntegrationOperation["responses"]["200"]["content"]["application/json"];
+export type UpdateTelegramConnectionSettingsRequestInput = WorkspaceScopedInput & {
+  integrationId: string;
+  connectionId: string;
+  body: UpdateTelegramConnectionSettingsInput;
+};
+export type UpdateTelegramConnectionSettingsResponse =
+  UpdateTelegramConnectionSettingsOperation["responses"]["200"]["content"]["application/json"];
 export type StartGoogleDriveOAuthRequestInput = WorkspaceScopedInput & { integrationId: string };
 export type StartGoogleDriveOAuthResponse =
   StartGoogleDriveOAuthOperation["responses"]["201"]["content"]["application/json"];
@@ -463,6 +476,9 @@ export type TaskApiClient = {
   uninstallWorkspaceIntegration(
     input: UninstallWorkspaceIntegrationRequestInput,
   ): Promise<UninstallWorkspaceIntegrationResponse>;
+  updateTelegramConnectionSettings(
+    input: UpdateTelegramConnectionSettingsRequestInput,
+  ): Promise<UpdateTelegramConnectionSettingsResponse>;
   startGoogleDriveOAuth(
     input: StartGoogleDriveOAuthRequestInput,
   ): Promise<StartGoogleDriveOAuthResponse>;
@@ -1093,6 +1109,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         workspaceIntegrationParser,
         { method: "DELETE", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
+    updateTelegramConnectionSettings: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/telegram/chats/${encodePathSegment(input.connectionId)}/settings`,
+        workspaceIntegrationConnectionParser,
+        {
+          body: input.body,
+          method: "PATCH",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     startGoogleDriveOAuth: (input) =>
       request(
         options.fetch,
@@ -1503,6 +1532,10 @@ const workspaceInvitationArrayParser: ResponseParser<WorkspaceInvitation[]> = {
 const workspaceIntegrationParser: ResponseParser<WorkspaceIntegration> = {
   isValid: isWorkspaceIntegration,
   label: "workspace integration",
+};
+const workspaceIntegrationConnectionParser: ResponseParser<WorkspaceIntegrationConnection> = {
+  isValid: isWorkspaceIntegrationConnection,
+  label: "workspace integration connection",
 };
 const integrationCatalogItemArrayParser: ResponseParser<IntegrationCatalogItem[]> = {
   isValid: (value): value is IntegrationCatalogItem[] => isArrayOf(value, isIntegrationCatalogItem),
@@ -2348,6 +2381,7 @@ function isWorkspaceIntegration(value: unknown): value is WorkspaceIntegration {
 function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogItem {
   const authKind = isJsonObject(value) ? readProperty(value, "authKind") : undefined;
   const installation = isJsonObject(value) ? readProperty(value, "installation") : undefined;
+  const connections = isJsonObject(value) ? readProperty(value, "connections") : undefined;
   const health = isJsonObject(value) ? readProperty(value, "health") : undefined;
   return (
     isJsonObject(value) &&
@@ -2360,7 +2394,26 @@ function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogIt
     isArrayOf(readProperty(value, "requiredScopes"), isString) &&
     isArrayOf(readProperty(value, "capabilityKinds"), isIntegrationCapabilityKind) &&
     (installation === null || isWorkspaceIntegration(installation)) &&
+    isArrayOf(connections, isWorkspaceIntegrationConnection) &&
     (health === null || isWorkspaceIntegrationHealth(health))
+  );
+}
+
+function isWorkspaceIntegrationConnection(value: unknown): value is WorkspaceIntegrationConnection {
+  const telegramSettings = isJsonObject(value)
+    ? readProperty(value, "telegramSettings")
+    : undefined;
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "providerAccountId") &&
+    hasNullableString(value, "displayName") &&
+    isIntegrationConnectionStatus(readProperty(value, "status")) &&
+    hasString(value, "connectedAt") &&
+    hasNullableString(value, "lastError") &&
+    (telegramSettings === null ||
+      (isJsonObject(telegramSettings) &&
+        typeof readProperty(telegramSettings, "conversationHistoryAccess") === "boolean"))
   );
 }
 
@@ -2462,6 +2515,12 @@ function isIntegrationConnectionHealthStatus(value: unknown): boolean {
   return (
     value === "connected" || value === "disconnected" || value === "error" || value === "missing"
   );
+}
+
+function isIntegrationConnectionStatus(
+  value: unknown,
+): value is IntegrationCatalogItem["connections"][number]["status"] {
+  return value === "connected" || value === "disconnected" || value === "error";
 }
 
 function isIntegrationAuthKind(value: unknown): value is IntegrationCatalogItem["authKind"] {

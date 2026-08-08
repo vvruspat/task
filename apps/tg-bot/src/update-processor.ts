@@ -7,6 +7,7 @@ import {
   normalizeTelegramAgentInput,
 } from "@task/integration-telegram";
 import {
+  type RecordTelegramChatMessageResponse,
   type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
   TelegramBackendClientError,
@@ -14,6 +15,7 @@ import {
 } from "./backend-client.js";
 import {
   handleTelegramMessage,
+  readTelegramConnectToken,
   type TelegramInlineKeyboardMarkup,
   type TelegramReplyAction,
   type TelegramResolvedMessageAction,
@@ -29,7 +31,12 @@ export { isTelegramAgentInvocation } from "@task/integration-telegram";
 export type TelegramUpdateProcessorOptions = {
   backendClient: TelegramBackendClient;
   botUsername?: string | null;
+  logger?: TelegramUpdateProcessorLogger;
   replySender: TelegramReplySender;
+};
+
+export type TelegramUpdateProcessorLogger = {
+  error(error: unknown): void;
 };
 
 export type TelegramReplySentAction = {
@@ -45,6 +52,11 @@ export type TelegramAgentRunReplySentAction = {
   sentMessage: TelegramSendMessageResult;
 };
 
+export type TelegramAgentRunInProgressAction = {
+  kind: "agent_run_in_progress";
+  agentRun: TelegramAgentRunIntakeResponse;
+};
+
 export type TelegramConfirmationCallbackReplySentAction = {
   kind: "confirmation_callback_reply_sent";
   callback: TelegramConfirmationCallbackResponse;
@@ -52,10 +64,17 @@ export type TelegramConfirmationCallbackReplySentAction = {
   sentMessage: TelegramSendMessageResult;
 };
 
+export type TelegramMessageObservedAction = {
+  kind: "message_observed";
+  recording: RecordTelegramChatMessageResponse | null;
+};
+
 export type TelegramUpdateProcessorResult =
   | TelegramReplySentAction
   | TelegramAgentRunReplySentAction
+  | TelegramAgentRunInProgressAction
   | TelegramConfirmationCallbackReplySentAction
+  | TelegramMessageObservedAction
   | TelegramResolvedMessageAction;
 
 export async function processTelegramUpdate(
@@ -67,6 +86,20 @@ export async function processTelegramUpdate(
 }
 
 export async function processTelegramConversationEvent(
+  event: TelegramConversationEvent,
+  options: TelegramUpdateProcessorOptions,
+): Promise<TelegramUpdateProcessorResult> {
+  try {
+    return await processTelegramConversationEventUnsafe(event, options);
+  } catch (error: unknown) {
+    logTelegramProcessingError(error, options);
+    const fallbackReply = createUnexpectedErrorReply(event);
+    if (fallbackReply === null) throw error;
+    return sendReply(fallbackReply, options.replySender);
+  }
+}
+
+async function processTelegramConversationEventUnsafe(
   event: TelegramConversationEvent,
   options: TelegramUpdateProcessorOptions,
 ): Promise<TelegramUpdateProcessorResult> {
@@ -87,6 +120,11 @@ export async function processTelegramConversationEvent(
     return processTelegramConfirmationCallback(event.callback, options);
   }
 
+  const recording = await recordTelegramMessageSafely(event.message, options);
+  if (!event.invokesAgent && readTelegramConnectToken(event.message.text) === null) {
+    return { kind: "message_observed", recording };
+  }
+
   const action = await handleTelegramMessage(event.message, {
     backendClient: options.backendClient,
   });
@@ -101,21 +139,6 @@ export async function processTelegramConversationEvent(
         action.message.chat.telegramChatId,
         action.message.messageId,
         "Пока я принимаю только текстовые команды для агента tAsk.",
-      ),
-      options.replySender,
-    );
-  }
-
-  if (!event.invokesAgent) {
-    const instruction =
-      options.botUsername === null || options.botUsername === undefined
-        ? "используй /task"
-        : `упомяни @${options.botUsername} или используй /task`;
-    return sendReply(
-      createReply(
-        action.message.chat.telegramChatId,
-        action.message.messageId,
-        `Чтобы вызвать агента в групповом чате, ${instruction}.`,
       ),
       options.replySender,
     );
@@ -144,6 +167,12 @@ export async function processTelegramConversationEvent(
         attachments: action.message.attachments,
       },
     });
+    if (agentRun.status === "running") {
+      return {
+        kind: "agent_run_in_progress",
+        agentRun,
+      };
+    }
     const reply = createReply(
       action.message.chat.telegramChatId,
       action.message.messageId,
@@ -171,6 +200,66 @@ export async function processTelegramConversationEvent(
 
     throw error;
   }
+}
+
+async function recordTelegramMessageSafely(
+  message: TelegramResolvedMessageAction["message"],
+  options: TelegramUpdateProcessorOptions,
+): Promise<RecordTelegramChatMessageResponse | null> {
+  try {
+    return await recordTelegramMessage(message, options.backendClient);
+  } catch (error: unknown) {
+    logTelegramProcessingError(error, options);
+    return null;
+  }
+}
+
+async function recordTelegramMessage(
+  message: TelegramResolvedMessageAction["message"],
+  backendClient: TelegramBackendClient,
+): Promise<RecordTelegramChatMessageResponse | null> {
+  if (message.text === null || message.text.trim().length === 0) return null;
+  return backendClient.recordTelegramChatMessage({
+    body: {
+      telegramChatId: message.chat.telegramChatId,
+      telegramMessageId: message.messageId,
+      telegramThreadId: message.threadId,
+      replyToTelegramMessageId: message.replyToMessageId,
+      senderTelegramId: message.sender.telegramId,
+      senderDisplayName: telegramSenderDisplayName(message.sender),
+      senderIsBot: message.sender.isBot,
+      text: message.text,
+      sentAt: null,
+    },
+  });
+}
+
+function telegramSenderDisplayName(
+  sender: TelegramResolvedMessageAction["message"]["sender"],
+): string {
+  const fullName = [sender.firstName, sender.lastName]
+    .filter((part): part is string => part !== null && part.trim().length > 0)
+    .join(" ");
+  if (sender.username !== null) {
+    return fullName.length === 0 ? `@${sender.username}` : `${fullName} (@${sender.username})`;
+  }
+  return fullName.length === 0 ? sender.telegramId : fullName;
+}
+
+function createUnexpectedErrorReply(event: TelegramConversationEvent): TelegramReplyAction | null {
+  const text = "Не удалось обработать запрос из-за внутренней ошибки. Попробуй ещё раз позже.";
+  if (event.kind === "message") {
+    return createReply(event.message.chat.telegramChatId, event.message.messageId, text);
+  }
+  if (event.kind === "confirmation") {
+    return createReply(event.callback.chat.telegramChatId, event.callback.messageId, text);
+  }
+  if (event.replyTarget === null) return null;
+  return createReply(event.replyTarget.telegramChatId, event.replyTarget.messageId, text);
+}
+
+function logTelegramProcessingError(error: unknown, options: TelegramUpdateProcessorOptions): void {
+  (options.logger ?? console).error(error);
 }
 
 async function sendReply(

@@ -24,6 +24,7 @@ import {
   Check,
   ChevronRight,
   Columns3,
+  CopyPlus,
   ExternalLink,
   Funnel,
   Grid3X3,
@@ -57,7 +58,11 @@ import {
   noStatusKey,
   resolveProjectStatusId,
 } from "../lib/logical-statuses";
-import { changeSavedViewLayout, type SavedViewDraft as ViewDraft } from "../lib/saved-view-draft";
+import {
+  changeSavedViewLayout,
+  duplicateSavedViewDraft,
+  type SavedViewDraft as ViewDraft,
+} from "../lib/saved-view-draft";
 import { isTaskSummary } from "../lib/task-summary";
 import { buildTemplateMatrix } from "../lib/template-matrix";
 import {
@@ -185,6 +190,7 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
   const [draft, setDraft] = useState<ViewDraft | null>(null);
   const createOpen = useWorkspaceOverlayStore((state) => state.createViewOpen);
   const setCreateOpen = useWorkspaceOverlayStore((state) => state.setCreateViewOpen);
+  const [saveAsOpen, setSaveAsOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
   const [taskOverrides, setTaskOverrides] = useState<Record<string, TaskBoardOverride>>({});
@@ -225,29 +231,34 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
       </Card>
     );
 
-  const createView = async (input: ViewDraft): Promise<void> => {
+  const createView = async (input: ViewDraft): Promise<boolean> => {
     setSaving(true);
     setMutationError(null);
-    const response = await fetch(
-      `/api/views?workspaceId=${encodeURIComponent(data.workspace.id)}`,
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(input),
-      },
-    );
-    const result: unknown = await response.json();
-    if (!response.ok || !isSavedView(result)) {
-      setMutationError(readError(result, t("views.createError")));
+    try {
+      const response = await fetch(
+        `/api/views?workspaceId=${encodeURIComponent(data.workspace.id)}`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(input),
+        },
+      );
+      const result: unknown = await response.json();
+      if (!response.ok || !isSavedView(result)) {
+        setMutationError(readError(result, t("views.createError")));
+        return false;
+      }
+      updateWorkspaceData((current) => ({ ...current, views: [...current.views, result] }));
+      setSelectedId(result.id);
+      setDraft(toDraft(result));
+      router.replace(workspaceViewHref(data.workspace.slug, result.slug));
+      return true;
+    } catch (createError: unknown) {
+      setMutationError(createError instanceof Error ? createError.message : t("views.createError"));
+      return false;
+    } finally {
       setSaving(false);
-      return;
     }
-    updateWorkspaceData((current) => ({ ...current, views: [...current.views, result] }));
-    setSelectedId(result.id);
-    setDraft(toDraft(result));
-    router.replace(workspaceViewHref(data.workspace.slug, result.slug));
-    setCreateOpen(false);
-    setSaving(false);
   };
   const saveView = async (): Promise<void> => {
     if (selected === undefined || draft === null) return;
@@ -417,20 +428,26 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
                   {saving ? t("common.saving") : t("common.save")}
                 </Button>
               )}
-              {canManageSelected && (
-                <DropdownMenu.Root>
-                  <DropdownMenu.Trigger>
-                    <IconButton variant="ghost" color="gray" aria-label={t("views.actions")}>
-                      <MoreHorizontal size={17} />
-                    </IconButton>
-                  </DropdownMenu.Trigger>
-                  <DropdownMenu.Content align="end">
-                    <DropdownMenu.Item color="red" onSelect={() => void deleteView()}>
-                      <Trash2 size={14} /> {t("views.delete")}
-                    </DropdownMenu.Item>
-                  </DropdownMenu.Content>
-                </DropdownMenu.Root>
-              )}
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <IconButton variant="ghost" color="gray" aria-label={t("views.actions")}>
+                    <MoreHorizontal size={17} />
+                  </IconButton>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content align="end">
+                  <DropdownMenu.Item onSelect={() => setSaveAsOpen(true)}>
+                    <CopyPlus size={14} /> {t("views.saveAs")}
+                  </DropdownMenu.Item>
+                  {canManageSelected && (
+                    <>
+                      <DropdownMenu.Separator />
+                      <DropdownMenu.Item color="red" onSelect={() => void deleteView()}>
+                        <Trash2 size={14} /> {t("views.delete")}
+                      </DropdownMenu.Item>
+                    </>
+                  )}
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             </div>
           </div>
           {mutationError !== null && (
@@ -461,6 +478,16 @@ export function SavedViewsPage({ viewSlug }: Readonly<{ viewSlug?: string }>): R
         saving={saving}
         onCreate={createView}
       />
+      {saveAsOpen && draft !== null && (
+        <SaveViewAsDialog
+          key={selected?.id}
+          open={saveAsOpen}
+          setOpen={setSaveAsOpen}
+          saving={saving}
+          source={draft}
+          onCreate={createView}
+        />
+      )}
       <TaskDetailsDrawer data={data} task={previewTask} onClose={() => setPreviewTaskId(null)} />
     </div>
   );
@@ -1972,7 +1999,7 @@ function CreateViewDialog({
   open: boolean;
   setOpen: (open: boolean) => void;
   saving: boolean;
-  onCreate: (draft: ViewDraft) => Promise<void>;
+  onCreate: (draft: ViewDraft) => Promise<boolean>;
 }>): ReactNode {
   const { t } = useI18n();
   const [name, setName] = useState(() => t("views.newName"));
@@ -2041,8 +2068,8 @@ function CreateViewDialog({
           </Dialog.Close>
           <Button
             disabled={saving || name.trim().length === 0}
-            onClick={() =>
-              void onCreate({
+            onClick={() => {
+              const input: ViewDraft = {
                 name: name.trim(),
                 description: null,
                 projectId: null,
@@ -2052,10 +2079,90 @@ function CreateViewDialog({
                   ...defaultSettings,
                   subGrouping: layout === "board" ? "parent_task" : "none",
                 },
-              })
-            }
+              };
+              void onCreate(input).then((created) => {
+                if (created) setOpen(false);
+              });
+            }}
           >
             {t("common.create")}
+          </Button>
+        </div>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+}
+
+function SaveViewAsDialog({
+  open,
+  setOpen,
+  saving,
+  source,
+  onCreate,
+}: Readonly<{
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  saving: boolean;
+  source: ViewDraft;
+  onCreate: (draft: ViewDraft) => Promise<boolean>;
+}>): ReactNode {
+  const { t } = useI18n();
+  const [name, setName] = useState(() => t("views.copyName", { name: source.name }));
+  const [visibility, setVisibility] = useState<SavedView["visibility"]>("private");
+
+  return (
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Content maxWidth="480px">
+        <Dialog.Title>{t("views.saveAs")}</Dialog.Title>
+        <Dialog.Description size="2" color="gray">
+          {t("views.saveAsHint")}
+        </Dialog.Description>
+        <div className="create-view-form">
+          <div className="create-view-field">
+            <Text size="2">{t("common.name")}</Text>
+            <TextField.Root
+              aria-label={t("views.name")}
+              autoFocus
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+          </div>
+          <div className="create-view-field">
+            <Text size="2">{t("views.visibility")}</Text>
+            <Select.Root
+              value={visibility}
+              onValueChange={(value) => {
+                if (value === "private" || value === "workspace") setVisibility(value);
+              }}
+            >
+              <Select.Trigger aria-label={t("views.visibility")} />
+              <Select.Content>
+                <Select.Item value="private">
+                  <LockKeyhole size={14} /> {t("views.visibility.private")}
+                </Select.Item>
+                <Select.Item value="workspace">
+                  <Users size={14} /> {t("views.visibility.workspace")}
+                </Select.Item>
+              </Select.Content>
+            </Select.Root>
+          </div>
+        </div>
+        <div className="dialog-actions">
+          <Dialog.Close>
+            <Button color="gray" variant="soft">
+              {t("common.cancel")}
+            </Button>
+          </Dialog.Close>
+          <Button
+            disabled={saving || name.trim().length === 0}
+            onClick={() => {
+              const input = duplicateSavedViewDraft(source, name.trim(), visibility);
+              void onCreate(input).then((created) => {
+                if (created) setOpen(false);
+              });
+            }}
+          >
+            {saving ? t("common.saving") : t("views.saveAs")}
           </Button>
         </div>
       </Dialog.Content>

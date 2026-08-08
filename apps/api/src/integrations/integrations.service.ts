@@ -5,8 +5,15 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import type { IntegrationPluginRegistry } from "./integration-plugin.registry.js";
-import type { WorkspaceIntegrationHealth } from "./integrations.contracts.js";
-import { IntegrationCatalogItemDto, WorkspaceIntegrationDto } from "./integrations.dto.js";
+import type {
+  UpdateTelegramConnectionSettingsInput,
+  WorkspaceIntegrationHealth,
+} from "./integrations.contracts.js";
+import {
+  IntegrationCatalogItemDto,
+  WorkspaceIntegrationConnectionDto,
+  WorkspaceIntegrationDto,
+} from "./integrations.dto.js";
 import type {
   WorkspaceIntegrationOperationalSnapshot,
   WorkspaceIntegrationsStore,
@@ -33,6 +40,7 @@ export class IntegrationsService {
       return new IntegrationCatalogItemDto(
         plugin,
         snapshot?.integration ?? null,
+        snapshot?.connections ?? [],
         snapshot === null ? null : evaluateIntegrationHealth(snapshot, checkedAt),
       );
     });
@@ -73,6 +81,32 @@ export class IntegrationsService {
       throw new ConflictException("Connected workspace integration must be disconnected first.");
     }
     return new WorkspaceIntegrationDto(result.integration);
+  }
+
+  async updateTelegramConnectionSettings(
+    workspaceId: string,
+    integrationId: string,
+    connectionId: string,
+    userId: string,
+    input: UpdateTelegramConnectionSettingsInput,
+  ): Promise<WorkspaceIntegrationConnectionDto> {
+    const result = await this.store.updateTelegramConnectionSettings(
+      workspaceId,
+      integrationId,
+      connectionId,
+      userId,
+      input,
+    );
+    if (result.status === "forbidden") {
+      throw new ForbiddenException("Current user cannot manage workspace integrations.");
+    }
+    if (result.status === "integration_not_found") {
+      throw new NotFoundException("Telegram integration was not found.");
+    }
+    if (result.status === "connection_not_found") {
+      throw new NotFoundException("Telegram chat connection was not found.");
+    }
+    return new WorkspaceIntegrationConnectionDto(result.connection);
   }
 }
 

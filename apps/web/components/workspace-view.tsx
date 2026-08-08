@@ -17,7 +17,7 @@ import {
   type WorkspaceBootstrap,
 } from "../lib/workspace-contracts";
 import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
-import { workspacePageHref, workspaceProjectHref } from "../lib/workspace-url";
+import { workspaceProjectHref } from "../lib/workspace-url";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { ProjectDangerZone } from "./project-danger-zone";
 import { ProjectStatusesManager } from "./project-statuses-manager";
@@ -29,7 +29,7 @@ import { WorkspaceMembersManager } from "./workspace-members-manager";
 import { WorkspaceNameEditor } from "./workspace-name-editor";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
 
-export type ViewKind = "integrations" | "kanban" | "project" | "projects" | "settings" | "telegram";
+export type ViewKind = "integrations" | "kanban" | "members" | "project" | "projects" | "settings";
 const copy: Record<ViewKind, { title: MessageKey; subtitle: MessageKey }> = {
   integrations: {
     title: "integrations.title",
@@ -38,11 +38,8 @@ const copy: Record<ViewKind, { title: MessageKey; subtitle: MessageKey }> = {
   projects: { title: "workspace.projectsTitle", subtitle: "workspace.projectsSubtitle" },
   project: { title: "workspace.projectTitle", subtitle: "workspace.projectSubtitle" },
   kanban: { title: "workspace.kanbanTitle", subtitle: "workspace.kanbanSubtitle" },
-  settings: { title: "common.settings", subtitle: "workspace.settingsSubtitle" },
-  telegram: {
-    title: "workspace.telegramTitle",
-    subtitle: "workspace.telegramSubtitle",
-  },
+  members: { title: "workspace.members", subtitle: "workspace.membersSubtitle" },
+  settings: { title: "settings.general", subtitle: "settings.generalSubtitle" },
 };
 
 export function WorkspaceView({
@@ -115,19 +112,27 @@ function renderView(
   if (kind === "kanban") return <Kanban data={data} project={project} />;
   if (kind === "settings") {
     return canManageWorkspaceSettings(data.currentMember.role) ? (
-      <Settings data={data} />
+      <GeneralSettings data={data} />
+    ) : (
+      <WorkspaceSettingsRestricted />
+    );
+  }
+  if (kind === "members") {
+    return canManageWorkspaceSettings(data.currentMember.role) ? (
+      <MembersSettings data={data} />
     ) : (
       <WorkspaceSettingsRestricted />
     );
   }
   if (kind === "integrations") {
     return canManageWorkspaceSettings(data.currentMember.role) ? (
-      <WorkspaceIntegrations workspaceId={data.workspace.id} />
+      <WorkspaceIntegrations workspaceId={data.workspace.id} workspaceSlug={data.workspace.slug} />
     ) : (
       <WorkspaceSettingsRestricted />
     );
   }
-  return <Telegram data={data} />;
+  const exhaustiveKind: never = kind;
+  return exhaustiveKind;
 }
 function WorkspaceSettingsRestricted(): ReactNode {
   const { t } = useI18n();
@@ -270,7 +275,7 @@ function KanbanColumn({
     </section>
   );
 }
-function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
+function GeneralSettings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
   const { t } = useI18n();
   return (
     <section className="settings">
@@ -301,6 +306,21 @@ function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
           />
         </div>
       </Card>
+      <WorkspaceDangerZone
+        fallbackWorkspaceSlug={
+          data.availableWorkspaces.find((workspace) => workspace.id !== data.workspace.id)?.slug ??
+          null
+        }
+        workspaceId={data.workspace.id}
+        workspaceName={data.workspace.name}
+      />
+    </section>
+  );
+}
+function MembersSettings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
+  const { t } = useI18n();
+  return (
+    <section className="settings">
       <Card className="panel">
         <PanelTitle title={t("workspace.members")} />
         <WorkspaceMembersManager
@@ -313,38 +333,7 @@ function Settings({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
         <PanelTitle title={t("invitations.title")} />
         <WorkspaceInvitations workspaceId={data.workspace.id} />
       </Card>
-      <Card className="panel">
-        <PanelTitle title={t("integrations.title")} />
-        <Flex direction="column" gap="3" align="start">
-          <Text color="gray">{t("integrations.settingsDescription")}</Text>
-          <Button asChild size="1" variant="soft">
-            <Link href={workspacePageHref(data.workspace.slug, "settings/integrations")}>
-              {t("integrations.manage")}
-            </Link>
-          </Button>
-        </Flex>
-      </Card>
-      <WorkspaceDangerZone
-        fallbackWorkspaceSlug={
-          data.availableWorkspaces.find((workspace) => workspace.id !== data.workspace.id)?.slug ??
-          null
-        }
-        workspaceId={data.workspace.id}
-        workspaceName={data.workspace.name}
-      />
     </section>
-  );
-}
-function Telegram({ data }: Readonly<{ data: WorkspaceBootstrap }>): ReactNode {
-  const { t } = useI18n();
-  return (
-    <Card className="panel">
-      <PanelTitle title="Telegram Mini App" />
-      <p>{t("workspace.telegramInfo")}</p>
-      <Text size="2" color="gray">
-        {t("common.workspace")}: {data.workspace.name}
-      </Text>
-    </Card>
   );
 }
 function Empty({ text }: Readonly<{ text: string }>): ReactNode {
