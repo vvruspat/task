@@ -4,6 +4,7 @@ import type { TaskSummary } from "@task/api-client";
 import type { WorkspaceBootstrap, WorkspaceProjectReconciliation } from "./workspace-contracts.ts";
 import {
   applyWorkspaceProjectReconciliation,
+  applyWorkspaceTaskRemoval,
   applyWorkspaceTaskUpdate,
   workspaceTaskUpdateRequiresProjectReconciliation,
 } from "./workspace-task-cache.ts";
@@ -230,5 +231,63 @@ test("project reconciliation replaces every project representation and My Tasks"
   assert.equal(result.projectData[0]?.tasks[0]?.title, "Refreshed task");
   assert.equal(result.projectData[0]?.table.items[0]?.position, "2000");
   assert.equal(result.projectData[0]?.matrix.cells[0]?.tasks[0]?.updatedAt, refreshed.updatedAt);
+  assert.equal(result.myTasks.total, 0);
+});
+
+test("task removal clears a task hierarchy from every cached representation", () => {
+  const parent = createTask(userId);
+  const child: TaskSummary = {
+    ...createTask(userId, { title: "Child task" }),
+    id: "77777777-7777-4777-8777-777777777777",
+    number: 2,
+    parentTaskId: parent.id,
+  };
+  const data = createWorkspaceWithTask(parent);
+  const projectData = data.projectData[0];
+  assert.ok(projectData);
+  projectData.tasks.push(child);
+  projectData.table.items.push(child);
+  projectData.table.total = 2;
+  projectData.matrix.cells[0]?.tasks.push(child);
+  data.myTasks = {
+    items: [
+      {
+        id: parent.id,
+        projectId,
+        projectTitle: "Realtime",
+        title: parent.title,
+        dueAt: null,
+        statusId,
+        statusName: "In progress",
+        statusColor: "#3b82f6",
+        position: parent.position,
+        updatedAt: parent.updatedAt,
+      },
+      {
+        id: child.id,
+        projectId,
+        projectTitle: "Realtime",
+        title: child.title,
+        dueAt: null,
+        statusId,
+        statusName: "In progress",
+        statusColor: "#3b82f6",
+        position: child.position,
+        updatedAt: child.updatedAt,
+      },
+    ],
+    page: 1,
+    pageSize: 50,
+    total: 2,
+  };
+
+  const result = applyWorkspaceTaskRemoval(data, parent.id);
+
+  assert.deepEqual(result.projectData[0]?.tasks, []);
+  assert.deepEqual(result.projectData[0]?.table.items, []);
+  assert.equal(result.projectData[0]?.table.total, 0);
+  assert.deepEqual(result.projectData[0]?.matrix.columns, []);
+  assert.deepEqual(result.projectData[0]?.matrix.cells, []);
+  assert.deepEqual(result.myTasks.items, []);
   assert.equal(result.myTasks.total, 0);
 });

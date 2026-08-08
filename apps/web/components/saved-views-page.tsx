@@ -1179,7 +1179,14 @@ function MatrixView({
             <th scope="col">{t("task.subtask")}</th>
             {matrix.columns.map((task) => (
               <th scope="col" key={task.id} title={task.title}>
-                {task.title}
+                <button
+                  type="button"
+                  className="template-matrix-column-title"
+                  aria-label={t("views.openTask", { task: task.title })}
+                  onClick={() => onOpenTask(task)}
+                >
+                  {task.title}
+                </button>
               </th>
             ))}
           </tr>
@@ -1980,6 +1987,7 @@ function TaskDetailsDrawer({
                 identifier={identifier}
                 portalContainer={portalContainer}
                 task={task}
+                onTaskDeleted={onClose}
               />
             </div>
           )}

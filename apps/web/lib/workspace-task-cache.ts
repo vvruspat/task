@@ -52,6 +52,45 @@ export function applyWorkspaceTaskUpdate(
   });
 }
 
+export function applyWorkspaceTaskRemoval(
+  data: WorkspaceBootstrap,
+  taskId: string,
+): WorkspaceBootstrap {
+  const projectData = data.projectData.find((project) =>
+    project.tasks.some((task) => task.id === taskId),
+  );
+  if (projectData === undefined) return data;
+
+  const removedIds = collectTaskHierarchyIds(projectData.tasks, taskId);
+  const removedAssignedTaskCount = projectData.tasks.filter(
+    (task) => removedIds.has(task.id) && task.assigneeUserId === data.currentMember.userId,
+  ).length;
+
+  return produce(data, (draft) => {
+    const mutableProjectData = draft.projectData.find(
+      (project) => project.projectId === projectData.projectId,
+    );
+    if (mutableProjectData === undefined) return;
+
+    mutableProjectData.tasks = mutableProjectData.tasks.filter((task) => !removedIds.has(task.id));
+    mutableProjectData.table.items = mutableProjectData.table.items.filter(
+      (task) => !removedIds.has(task.id),
+    );
+    mutableProjectData.table.total = Math.max(0, mutableProjectData.table.total - removedIds.size);
+    mutableProjectData.matrix.columns = mutableProjectData.matrix.columns.filter(
+      (task) => !removedIds.has(task.id),
+    );
+    mutableProjectData.matrix.cells = mutableProjectData.matrix.cells
+      .filter((cell) => !removedIds.has(cell.columnTaskId))
+      .map((cell) => ({
+        ...cell,
+        tasks: cell.tasks.filter((task) => !removedIds.has(task.id)),
+      }));
+    draft.myTasks.items = draft.myTasks.items.filter((task) => !removedIds.has(task.id));
+    draft.myTasks.total = Math.max(0, draft.myTasks.total - removedAssignedTaskCount);
+  });
+}
+
 export function workspaceTaskUpdateRequiresProjectReconciliation(
   data: WorkspaceBootstrap,
   task: TaskSummary,
@@ -108,4 +147,18 @@ function replaceTask(tasks: TaskSummary[], task: TaskSummary): void {
     task.commentCount === undefined && current?.commentCount !== undefined
       ? { ...task, commentCount: current.commentCount }
       : task;
+}
+
+function collectTaskHierarchyIds(tasks: readonly TaskSummary[], rootTaskId: string): Set<string> {
+  const hierarchyIds = new Set([rootTaskId]);
+  let previousSize = 0;
+  while (hierarchyIds.size !== previousSize) {
+    previousSize = hierarchyIds.size;
+    for (const task of tasks) {
+      if (typeof task.parentTaskId === "string" && hierarchyIds.has(task.parentTaskId)) {
+        hierarchyIds.add(task.id);
+      }
+    }
+  }
+  return hierarchyIds;
 }

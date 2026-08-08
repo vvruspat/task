@@ -19,6 +19,7 @@ import { selectDefaultTaskStatusId } from "./default-task-status.js";
 import type { ParsedIssueIdentifier } from "./issue-identifier.js";
 import { reserveProjectTaskNumbers } from "./project-task-number.js";
 import { taskAssignmentActivityPayload } from "./task-assignment-notification.js";
+import { collectTaskHierarchyIds } from "./task-hierarchy.js";
 import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
@@ -858,32 +859,44 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
       return { status: "forbidden" };
     }
 
-    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
-
-    if (task === null) {
-      return { status: "task_not_found" };
-    }
-
-    const archivedTask = await dataSource.transaction(async (manager): Promise<TaskEntity> => {
-      task.archivedAt = new Date();
-
-      const savedTask = await manager.getRepository(TaskEntity).save(task);
-      const activityEvent = manager.getRepository(ActivityEventEntity).create({
-        workspaceId,
-        actorUserId: userId,
-        eventType: "task.archived",
-        entityType: "task",
-        entityId: savedTask.id,
-        payload: {
+    const archivedTask = await dataSource.transaction(
+      async (manager): Promise<TaskEntity | null> => {
+        const taskRepository = manager.getRepository(TaskEntity);
+        const activeTasks = await taskRepository.findBy({
+          archivedAt: IsNull(),
           projectId,
-          title: savedTask.title,
-        },
-      });
+          workspaceId,
+        });
+        const task = activeTasks.find((candidate) => candidate.id === taskId);
+        if (task === undefined) return null;
 
-      await manager.getRepository(ActivityEventEntity).save(activityEvent);
+        const hierarchyIds = collectTaskHierarchyIds(activeTasks, taskId);
+        const archivedAt = new Date();
+        const tasksToArchive = activeTasks.filter((candidate) => hierarchyIds.has(candidate.id));
+        for (const candidate of tasksToArchive) candidate.archivedAt = archivedAt;
 
-      return savedTask;
-    });
+        const savedTasks = await taskRepository.save(tasksToArchive);
+        const savedTask = savedTasks.find((candidate) => candidate.id === taskId);
+        if (savedTask === undefined) return null;
+        const activityEvent = manager.getRepository(ActivityEventEntity).create({
+          workspaceId,
+          actorUserId: userId,
+          eventType: "task.archived",
+          entityType: "task",
+          entityId: savedTask.id,
+          payload: {
+            projectId,
+            title: savedTask.title,
+          },
+        });
+
+        await manager.getRepository(ActivityEventEntity).save(activityEvent);
+
+        return savedTask;
+      },
+    );
+
+    if (archivedTask === null) return { status: "task_not_found" };
 
     return { status: "archived", task: toTaskSummary(archivedTask) };
   }
