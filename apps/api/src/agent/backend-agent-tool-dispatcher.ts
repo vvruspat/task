@@ -246,18 +246,18 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
       };
     }
 
-    if (call.toolName === "member_search") {
-      const query = readRequiredString(call.arguments, "query");
+    if (call.toolName === "member_list") {
       const members = await this.requireWorkspacesService().listMembers(
         context.workspaceId,
         context.userId,
       );
-      const matches = findMatchingWorkspaceMembers(members, query);
       return {
-        kind: "member_search_results",
-        query,
-        count: matches.length,
-        members: matches.map(toAgentMemberIdentity),
+        kind: "workspace_member_list",
+        count: members.length,
+        members: members.map((member) => ({
+          userId: member.userId,
+          ...toAgentMemberIdentity(member),
+        })),
       };
     }
 
@@ -289,6 +289,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
           title: task.title,
           description: task.description,
           statusId: task.statusId,
+          assigneeUserId: task.assigneeUserId,
           assignee:
             task.assigneeUserId === null
               ? null
@@ -938,7 +939,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
 }
 
 const readOnlyCoreToolNames = new Set([
-  "member_search",
+  "member_list",
   "project_get",
   "project_list",
   "status_list",

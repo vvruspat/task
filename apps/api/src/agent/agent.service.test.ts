@@ -161,7 +161,7 @@ test("AgentService never persists or returns visible UUIDs from agent responses"
     model: "openai/gpt-4.1-mini",
     normalizedIntent: null,
     finalResponse:
-      "Исполнитель 34755276-06a2-4133-b263-361d6efd7123: [задача ZNA-26](/tasks/55555555-5555-4555-8555-555555555555)",
+      "Исполнитель 34755276-06a2-4133-b263-361d6efd7123, резервный ID c973cab3-2fd9-…: [задача ZNA-26](/tasks/55555555-5555-4555-8555-555555555555)",
     status: "completed",
     tokenUsage: null,
     cost: null,
@@ -174,7 +174,7 @@ test("AgentService never persists or returns visible UUIDs from agent responses"
 
   assert.equal(
     response.responseText,
-    "Исполнитель [служебный идентификатор скрыт]: [задача ZNA-26](/tasks/55555555-5555-4555-8555-555555555555)",
+    "Исполнитель [служебный идентификатор скрыт], резервный ID [служебный идентификатор скрыт]: [задача ZNA-26](/tasks/55555555-5555-4555-8555-555555555555)",
   );
   assert.equal(store.lastPersistInput?.runtimeResult.finalResponse, response.responseText);
 });

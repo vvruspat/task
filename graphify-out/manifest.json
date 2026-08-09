@@ -1150,8 +1150,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.service.test.ts": {
-    "mtime": 1786265028.651807,
-    "ast_hash": "9dc545049355649a6e0f8b043d1e77bd",
+    "mtime": 1786269896.1347365,
+    "ast_hash": "7b9cf9d43fddae59c44dd2b6d7189b49",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.service.ts": {
@@ -1170,13 +1170,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.ts": {
-    "mtime": 1786264694.456949,
-    "ast_hash": "a6cad0970e92f56e3100ec8d6721214c",
+    "mtime": 1786269752.493071,
+    "ast_hash": "10d754ca6d00389302364ac7ff3f7c0d",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.test.ts": {
-    "mtime": 1786264900.28946,
-    "ast_hash": "aa3ae9017180039bca8ee9231cbef79b",
+    "mtime": 1786269804.992722,
+    "ast_hash": "9e8b94a5a3271eb71fd695716aa4d611",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296660000-add-agent-run-source-thread-id.ts": {
@@ -1700,13 +1700,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.test.ts": {
-    "mtime": 1786264900.2879877,
-    "ast_hash": "879a867a2beb768e86567e11e61d34f9",
+    "mtime": 1786269804.9931154,
+    "ast_hash": "f3894519a326e7f760f8e12f31911e8a",
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.ts": {
-    "mtime": 1786264726.750815,
-    "ast_hash": "72d15cf90181e9d61df0510f871e2b4e",
+    "mtime": 1786269752.4944923,
+    "ast_hash": "d64a08f66df55da68c31b773222f2941",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/entities/saved-view.entity.ts": {
@@ -3770,13 +3770,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/user-facing-agent-response.test.ts": {
-    "mtime": 1786264765.0654964,
-    "ast_hash": "dfd75b6b9779452a2af22c2f33eabd4d",
+    "mtime": 1786269769.7787778,
+    "ast_hash": "e86ac85fbfef80c99ca6f3f04002526f",
     "semantic_hash": ""
   },
   "apps/api/src/agent/user-facing-agent-response.ts": {
-    "mtime": 1786264765.0652914,
-    "ast_hash": "f135bd8d19366d2fb940209db5b651de",
+    "mtime": 1786269769.7785354,
+    "ast_hash": "7c00f982b2639e01562ef2178bdd65c4",
     "semantic_hash": ""
   }
 }
