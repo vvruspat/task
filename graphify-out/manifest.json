@@ -245,7 +245,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1786261427.0122492,
+    "mtime": 1786261862.1228838,
     "ast_hash": "3f89deaed072ce60e358ba93e22c10e3",
     "semantic_hash": ""
   },
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1786175328.9252217,
-    "ast_hash": "0d8fb30a660ce057041a3195c8ba20f4",
+    "mtime": 1786261888.6109843,
+    "ast_hash": "4dff68929a9845a4e9f85767a92d70aa",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
