@@ -1126,7 +1126,7 @@ test("findMatchingWorkspaceMembers matches Russian grammatical endings", () => {
   assert.deepEqual(findMatchingWorkspaceMembers([marina], marinaUserId), []);
 });
 
-test("BackendAgentToolOperationDispatcher searches members and humanizes task assignees", async () => {
+test("BackendAgentToolOperationDispatcher lists member ids for internal task correlation", async () => {
   const member = new WorkspaceMemberDto({
     id: "99999999-9999-4999-8999-999999999999",
     workspaceId,
@@ -1170,11 +1170,11 @@ test("BackendAgentToolOperationDispatcher searches members and humanizes task as
   );
   const context = { workspaceId, userId, projectId };
 
-  const search = await dispatcher.dispatchToolCall(
+  const memberList = await dispatcher.dispatchToolCall(
     {
-      callId: "call-member-search",
-      toolName: "member_search",
-      arguments: { query: "@marina_orlova" },
+      callId: "call-member-list",
+      toolName: "member_list",
+      arguments: {},
     },
     context,
   );
@@ -1183,12 +1183,12 @@ test("BackendAgentToolOperationDispatcher searches members and humanizes task as
     context,
   );
 
-  assert.deepEqual(search.result, {
-    kind: "member_search_results",
-    query: "@marina_orlova",
+  assert.deepEqual(memberList.result, {
+    kind: "workspace_member_list",
     count: 1,
     members: [
       {
+        userId: marinaUserId,
         displayName: "Марина Орлова",
         email: "marina@example.local",
         telegramUsername: "marina_orlova",
@@ -1204,6 +1204,7 @@ test("BackendAgentToolOperationDispatcher searches members and humanizes task as
       title: "Запись барабанов",
       description: null,
       statusId: null,
+      assigneeUserId: marinaUserId,
       assignee: {
         displayName: "Марина Орлова",
         email: "marina@example.local",
@@ -1213,14 +1214,8 @@ test("BackendAgentToolOperationDispatcher searches members and humanizes task as
       dueAt: null,
     },
   ]);
-  assert.doesNotMatch(
-    JSON.stringify(search.result),
-    /userId|88888888-8888-4888-8888-888888888888/u,
-  );
-  assert.doesNotMatch(
-    JSON.stringify(taskList.result),
-    /assigneeUserId|88888888-8888-4888-8888-888888888888/u,
-  );
+  assert.match(JSON.stringify(memberList.result), new RegExp(marinaUserId, "u"));
+  assert.match(JSON.stringify(taskList.result), new RegExp(marinaUserId, "u"));
 });
 
 test("BackendAgentToolOperationDispatcher updates task fields, status, due date, and links", async () => {
