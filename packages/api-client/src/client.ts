@@ -70,6 +70,15 @@ export type SelectGoogleDriveRootFolderInput =
   components["schemas"]["SelectGoogleDriveRootFolderDto"];
 export type GoogleDriveRootFolder = components["schemas"]["GoogleDriveRootFolderDto"];
 export type TelegramConnectToken = components["schemas"]["TelegramConnectTokenDto"];
+export type TelegramBrowserConnectAuthInput =
+  components["schemas"]["TelegramBrowserConnectAuthDto"];
+export type CompleteTelegramBrowserConnectInput =
+  components["schemas"]["CompleteTelegramBrowserConnectDto"];
+export type TelegramBrowserConnectWorkspace =
+  components["schemas"]["TelegramBrowserConnectWorkspaceDto"];
+export type TelegramBrowserConnectPreview =
+  components["schemas"]["TelegramBrowserConnectPreviewDto"];
+export type TelegramBrowserConnectResult = components["schemas"]["TelegramBrowserConnectResultDto"];
 export type InvitationPreview = components["schemas"]["InvitationPreviewDto"];
 export type AcceptInvitationResult = components["schemas"]["AcceptInvitationResultDto"];
 
@@ -122,6 +131,10 @@ type CreateGoogleDrivePickerSessionOperation =
 type SelectGoogleDriveRootFolderOperation =
   operations["GoogleDriveOAuthController_selectRootFolder"];
 type CreateTelegramConnectTokenOperation = operations["TelegramConnectController_createToken"];
+type PreviewTelegramBrowserConnectOperation =
+  operations["TelegramBrowserConnectController_previewBrowserConnection"];
+type CompleteTelegramBrowserConnectOperation =
+  operations["TelegramBrowserConnectController_completeBrowserConnection"];
 
 export type CreateProjectInput =
   CreateProjectOperation["requestBody"]["content"]["application/json"];
@@ -406,6 +419,18 @@ export type CreateTelegramConnectTokenRequestInput = WorkspaceScopedInput & {
 };
 export type CreateTelegramConnectTokenResponse =
   CreateTelegramConnectTokenOperation["responses"]["200"]["content"]["application/json"];
+export type PreviewTelegramBrowserConnectRequestInput = {
+  token: string;
+  body: TelegramBrowserConnectAuthInput;
+};
+export type PreviewTelegramBrowserConnectResponse =
+  PreviewTelegramBrowserConnectOperation["responses"]["200"]["content"]["application/json"];
+export type CompleteTelegramBrowserConnectRequestInput = {
+  token: string;
+  body: CompleteTelegramBrowserConnectInput;
+};
+export type CompleteTelegramBrowserConnectResponse =
+  CompleteTelegramBrowserConnectOperation["responses"]["200"]["content"]["application/json"];
 
 export type TaskApiClient = {
   archiveProject(input: ArchiveProjectRequestInput): Promise<ArchiveProjectResponse>;
@@ -494,6 +519,12 @@ export type TaskApiClient = {
   createTelegramConnectToken(
     input: CreateTelegramConnectTokenRequestInput,
   ): Promise<CreateTelegramConnectTokenResponse>;
+  previewTelegramBrowserConnect(
+    input: PreviewTelegramBrowserConnectRequestInput,
+  ): Promise<PreviewTelegramBrowserConnectResponse>;
+  completeTelegramBrowserConnect(
+    input: CompleteTelegramBrowserConnectRequestInput,
+  ): Promise<CompleteTelegramBrowserConnectResponse>;
   removeWorkspaceMember(input: WorkspaceMemberScopedInput): Promise<RemoveWorkspaceMemberResponse>;
   listTaskSkills(input: WorkspaceScopedInput): Promise<TaskSkillSummary[]>;
   listTasks(input: ProjectScopedInput): Promise<TaskSummary[]>;
@@ -1172,6 +1203,32 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
         telegramConnectTokenParser,
         { method: "POST", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
       ),
+    previewTelegramBrowserConnect: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/integrations/telegram/browser-connect/${encodePathSegment(input.token)}/preview`,
+        telegramBrowserConnectPreviewParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    completeTelegramBrowserConnect: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/integrations/telegram/browser-connect/${encodePathSegment(input.token)}/complete`,
+        telegramBrowserConnectResultParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     createWorkspaceInvitation: (input) =>
       request(
         options.fetch,
@@ -1560,6 +1617,14 @@ const googleDriveRootFolderParser: ResponseParser<GoogleDriveRootFolder> = {
 const telegramConnectTokenParser: ResponseParser<TelegramConnectToken> = {
   isValid: isTelegramConnectToken,
   label: "Telegram connect token",
+};
+const telegramBrowserConnectPreviewParser: ResponseParser<TelegramBrowserConnectPreview> = {
+  isValid: isTelegramBrowserConnectPreview,
+  label: "Telegram browser connect preview",
+};
+const telegramBrowserConnectResultParser: ResponseParser<TelegramBrowserConnectResult> = {
+  isValid: isTelegramBrowserConnectResult,
+  label: "Telegram browser connect result",
 };
 const invitationPreviewParser: ResponseParser<InvitationPreview> = {
   isValid: isInvitationPreview,
@@ -2497,6 +2562,41 @@ function isGoogleDriveRootFolder(value: unknown): value is GoogleDriveRootFolder
 function isTelegramConnectToken(value: unknown): value is TelegramConnectToken {
   return (
     isJsonObject(value) && hasNonEmptyString(value, "command") && hasString(value, "expiresAt")
+  );
+}
+
+function isTelegramBrowserConnectWorkspace(
+  value: unknown,
+): value is TelegramBrowserConnectWorkspace {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "id") &&
+    hasString(value, "name") &&
+    hasString(value, "slug")
+  );
+}
+
+function isTelegramBrowserConnectPreview(value: unknown): value is TelegramBrowserConnectPreview {
+  if (!isJsonObject(value)) return false;
+  const mode = readProperty(value, "mode");
+  const workspace = readProperty(value, "workspace");
+  const workspaces = readProperty(value, "workspaces");
+  return (
+    (mode === "link_identity" || mode === "connect_chat") &&
+    hasNullableString(value, "chatTitle") &&
+    hasString(value, "expiresAt") &&
+    (workspace === null || isTelegramBrowserConnectWorkspace(workspace)) &&
+    isArrayOf(workspaces, isTelegramBrowserConnectWorkspace)
+  );
+}
+
+function isTelegramBrowserConnectResult(value: unknown): value is TelegramBrowserConnectResult {
+  if (!isJsonObject(value)) return false;
+  const status = readProperty(value, "status");
+  return (
+    (status === "identity_linked" || status === "chat_connected") &&
+    hasNullableString(value, "chatTitle") &&
+    isTelegramBrowserConnectWorkspace(readProperty(value, "workspace"))
   );
 }
 

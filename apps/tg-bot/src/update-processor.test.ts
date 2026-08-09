@@ -9,6 +9,7 @@ import type {
   ResolveTelegramContextRequest,
   TelegramAgentRunIntakeResponse,
   TelegramBackendClient,
+  TelegramBrowserConnectIntentResponse,
   TelegramChatConnectionResponse,
   TelegramConfirmationCallbackResponse,
   TelegramContextResolutionResponse,
@@ -91,25 +92,75 @@ test("processTelegramUpdate sends reply actions through the reply sender", async
   const replySender = new RecordingTelegramReplySender({ messageId: "45" });
 
   const result = await processTelegramUpdate(telegramUpdate, {
-    backendClient: new RecordingTelegramBackendClient({ status: "telegram_user_unlinked" }),
+    backendClient: new BrowserConnectTelegramBackendClient(),
     replySender,
   });
 
   assert.deepEqual(result, {
     kind: "reply_sent",
     reply: {
+      inlineKeyboard: {
+        rows: [
+          [
+            {
+              loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+              text: "Подключить tAsk",
+            },
+          ],
+        ],
+      },
       kind: "reply",
       telegramChatId: "-100987654321",
       replyToMessageId: "20",
-      text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+      text: "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
     },
     sentMessage: { messageId: "45" },
   });
   assert.deepEqual(replySender.lastAction, {
+    inlineKeyboard: {
+      rows: [
+        [
+          {
+            loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+            text: "Подключить tAsk",
+          },
+        ],
+      ],
+    },
     kind: "reply",
     telegramChatId: "-100987654321",
     replyToMessageId: "20",
-    text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+    text: "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
+  });
+});
+
+test("processTelegramUpdate handles a bare connect command even without an agent invocation", async () => {
+  const replySender = new RecordingTelegramReplySender({ messageId: "45" });
+  const result = await processTelegramUpdate(
+    {
+      ...telegramUpdate,
+      message: {
+        ...telegramUpdate.message,
+        entities: [{ type: "bot_command", offset: 0, length: 8 }],
+        text: "/connect",
+      },
+    },
+    {
+      backendClient: new BrowserConnectTelegramBackendClient(),
+      replySender,
+    },
+  );
+
+  assert.equal(result.kind, "reply_sent");
+  assert.deepEqual(replySender.lastAction?.inlineKeyboard, {
+    rows: [
+      [
+        {
+          loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+          text: "Открыть tAsk",
+        },
+      ],
+    ],
   });
 });
 
@@ -528,6 +579,10 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
     throw new TelegramBackendClientError("Unexpected Telegram connection request.");
   }
 
+  async createTelegramBrowserConnectIntent(): Promise<TelegramBrowserConnectIntentResponse> {
+    throw new TelegramBackendClientError("Unexpected Telegram browser connection request.");
+  }
+
   async recordTelegramChatMessage(
     request: RecordTelegramChatMessageRequest,
   ): Promise<RecordTelegramChatMessageResponse> {
@@ -548,6 +603,19 @@ class CrashingTelegramBackendClient extends RecordingTelegramBackendClient {
     _request: ResolveTelegramContextRequest,
   ): Promise<TelegramContextResolutionResponse> {
     throw new Error("Unexpected context failure.");
+  }
+}
+
+class BrowserConnectTelegramBackendClient extends RecordingTelegramBackendClient {
+  constructor() {
+    super({ status: "telegram_user_unlinked" });
+  }
+
+  override async createTelegramBrowserConnectIntent(): Promise<TelegramBrowserConnectIntentResponse> {
+    return {
+      expiresAt: "2026-08-09T19:00:00.000Z",
+      loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+    };
   }
 }
 

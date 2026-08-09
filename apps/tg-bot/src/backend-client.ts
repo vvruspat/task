@@ -6,6 +6,8 @@ type HandleTelegramConfirmationCallbackOperation =
   operations["TelegramController_handleConfirmationCallback"];
 type CompleteTelegramChatConnectionOperation =
   operations["TelegramInternalConnectController_complete"];
+type CreateTelegramBrowserConnectIntentOperation =
+  operations["TelegramInternalConnectController_createBrowserIntent"];
 type RecordTelegramChatMessageOperation = operations["TelegramController_recordChatMessage"];
 
 export type ResolveTelegramContextInput =
@@ -24,6 +26,10 @@ export type CompleteTelegramChatConnectionInput =
   CompleteTelegramChatConnectionOperation["requestBody"]["content"]["application/json"];
 export type TelegramChatConnectionResponse =
   CompleteTelegramChatConnectionOperation["responses"]["200"]["content"]["application/json"];
+export type CreateTelegramBrowserConnectIntentInput =
+  CreateTelegramBrowserConnectIntentOperation["requestBody"]["content"]["application/json"];
+export type TelegramBrowserConnectIntentResponse =
+  CreateTelegramBrowserConnectIntentOperation["responses"]["201"]["content"]["application/json"];
 export type RecordTelegramChatMessageInput =
   RecordTelegramChatMessageOperation["requestBody"]["content"]["application/json"];
 export type RecordTelegramChatMessageResponse =
@@ -75,6 +81,10 @@ export type CompleteTelegramChatConnectionRequest = {
   body: CompleteTelegramChatConnectionInput;
 };
 
+export type CreateTelegramBrowserConnectIntentRequest = {
+  body: CreateTelegramBrowserConnectIntentInput;
+};
+
 export type RecordTelegramChatMessageRequest = {
   body: RecordTelegramChatMessageInput;
 };
@@ -92,6 +102,9 @@ export type TelegramBackendClient = {
   completeTelegramChatConnection(
     request: CompleteTelegramChatConnectionRequest,
   ): Promise<TelegramChatConnectionResponse>;
+  createTelegramBrowserConnectIntent(
+    request: CreateTelegramBrowserConnectIntentRequest,
+  ): Promise<TelegramBrowserConnectIntentResponse>;
   recordTelegramChatMessage(
     request: RecordTelegramChatMessageRequest,
   ): Promise<RecordTelegramChatMessageResponse>;
@@ -147,6 +160,15 @@ export function createTelegramBackendClient(
         readTelegramChatConnectionResponse,
       );
     },
+    createTelegramBrowserConnectIntent(request: CreateTelegramBrowserConnectIntentRequest) {
+      return postJson(
+        fetchImplementation,
+        `${baseUrl}/internal/integrations/telegram/connect-intents`,
+        options.botSharedSecret,
+        request.body,
+        readTelegramBrowserConnectIntentResponse,
+      );
+    },
     recordTelegramChatMessage(request: RecordTelegramChatMessageRequest) {
       return postJson(
         fetchImplementation,
@@ -168,6 +190,7 @@ async function postJson<ResponseBody>(
     | CreateTelegramAgentRunInput
     | TelegramConfirmationCallbackInput
     | CompleteTelegramChatConnectionInput
+    | CreateTelegramBrowserConnectIntentInput
     | RecordTelegramChatMessageInput,
   readResponse: (value: unknown) => ResponseBody,
 ): Promise<ResponseBody> {
@@ -264,6 +287,21 @@ function readTelegramChatConnectionResponse(value: unknown): TelegramChatConnect
     telegramChatId: readString(record, "telegramChatId"),
     workspaceId: readString(record, "workspaceId"),
   };
+}
+
+function readTelegramBrowserConnectIntentResponse(
+  value: unknown,
+): TelegramBrowserConnectIntentResponse {
+  const record = readRecord(value, "Telegram browser connect intent response");
+  const loginUrl = readString(record, "loginUrl");
+  const expiresAt = readString(record, "expiresAt");
+  try {
+    const parsedUrl = new URL(loginUrl);
+    if (parsedUrl.protocol !== "https:") throw new Error("HTTPS is required.");
+  } catch {
+    throw new TelegramBackendClientError("Telegram browser connect loginUrl is invalid.");
+  }
+  return { expiresAt, loginUrl };
 }
 
 function readRecordTelegramChatMessageResponse(value: unknown): RecordTelegramChatMessageResponse {

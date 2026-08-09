@@ -36,6 +36,13 @@ test("parseApiConfig leaves email config unset when Brevo env is absent", () => 
   assert.equal(parseApiConfig({}).email, null);
 });
 
+test("parseApiConfig accepts WEB_APP_URL without requiring email settings", () => {
+  const config = parseApiConfig({ WEB_APP_URL: "https://task.example/" });
+
+  assert.equal(config.webAppUrl, "https://task.example");
+  assert.equal(config.email, null);
+});
+
 test("parseApiConfig accepts complete Brevo email settings", () => {
   assert.deepEqual(
     parseApiConfig({

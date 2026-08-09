@@ -154,6 +154,25 @@ export const en = {
   "integrations.telegramHistoryAccessDescription":
     "When enabled, tAsk starts storing new text messages from this chat and lets the agent read them on demand. Earlier messages are unavailable; turning it off stops new storage.",
   "integrations.telegramHistoryAccessSaveError": "Could not update access to conversation history.",
+  "telegramConnect.title": "Connect Telegram to tAsk",
+  "telegramConnect.chat": "Telegram chat: {{chat}}",
+  "telegramConnect.unnamedChat": "Unnamed chat",
+  "telegramConnect.existingWorkspace":
+    "This chat is already connected to {{workspace}}. Your Telegram account will be linked without changing the workspace.",
+  "telegramConnect.selectWorkspace": "Choose the workspace for this chat",
+  "telegramConnect.workspacePlaceholder": "Select a workspace",
+  "telegramConnect.noWorkspaces":
+    "No available workspace has the Telegram integration enabled. Ask an owner or administrator to enable it first.",
+  "telegramConnect.confirm": "Continue",
+  "telegramConnect.connecting": "Connecting…",
+  "telegramConnect.invalidLink": "This Telegram connection link is invalid.",
+  "telegramConnect.previewError": "Could not validate the Telegram connection link.",
+  "telegramConnect.completeError": "Could not complete the Telegram connection.",
+  "telegramConnect.invalidResponse": "The server returned an invalid Telegram connection.",
+  "telegramConnect.doneTitle": "Telegram connected",
+  "telegramConnect.done.identity_linked":
+    "Your Telegram account can now use tAsk in {{workspace}}.",
+  "telegramConnect.done.chat_connected": "The Telegram chat is now connected to {{workspace}}.",
   "integrations.healthHealthy": "Operational",
   "integrations.healthDegraded": "Needs attention",
   "integrations.healthError": "Error",
@@ -704,6 +723,25 @@ export const ru: Record<MessageKey, string> = {
   "integrations.telegramHistoryAccessDescription":
     "После включения tAsk начнёт сохранять новые текстовые сообщения из этого чата и сможет читать их по запросу агента. Более ранние сообщения недоступны; выключение остановит сохранение новых.",
   "integrations.telegramHistoryAccessSaveError": "Не удалось изменить доступ к истории переписки.",
+  "telegramConnect.title": "Подключение Telegram к tAsk",
+  "telegramConnect.chat": "Telegram-чат: {{chat}}",
+  "telegramConnect.unnamedChat": "Чат без названия",
+  "telegramConnect.existingWorkspace":
+    "Этот чат уже подключён к {{workspace}}. Мы привяжем ваш Telegram-аккаунт, не меняя workspace.",
+  "telegramConnect.selectWorkspace": "Выберите workspace для этого чата",
+  "telegramConnect.workspacePlaceholder": "Выберите workspace",
+  "telegramConnect.noWorkspaces":
+    "Нет доступного workspace с включённой интеграцией Telegram. Сначала попросите владельца или администратора включить её.",
+  "telegramConnect.confirm": "Продолжить",
+  "telegramConnect.connecting": "Подключаю…",
+  "telegramConnect.invalidLink": "Ссылка для подключения Telegram некорректна.",
+  "telegramConnect.previewError": "Не удалось проверить ссылку для подключения Telegram.",
+  "telegramConnect.completeError": "Не удалось завершить подключение Telegram.",
+  "telegramConnect.invalidResponse": "Сервер вернул некорректное подключение Telegram.",
+  "telegramConnect.doneTitle": "Telegram подключён",
+  "telegramConnect.done.identity_linked":
+    "Теперь ваш Telegram-аккаунт может пользоваться tAsk в {{workspace}}.",
+  "telegramConnect.done.chat_connected": "Telegram-чат подключён к {{workspace}}.",
   "integrations.healthHealthy": "Работает",
   "integrations.healthDegraded": "Требует внимания",
   "integrations.healthError": "Ошибка",

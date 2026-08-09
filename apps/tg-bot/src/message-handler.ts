@@ -21,10 +21,9 @@ export type TelegramInlineKeyboardMarkup = {
   rows: TelegramInlineKeyboardButton[][];
 };
 
-export type TelegramInlineKeyboardButton = {
-  text: string;
-  callbackData: string;
-};
+export type TelegramInlineKeyboardButton =
+  | { text: string; callbackData: string; loginUrl?: never }
+  | { text: string; loginUrl: string; callbackData?: never };
 
 export type TelegramResolvedMessageAction = {
   kind: "resolved";
@@ -45,15 +44,18 @@ export async function handleTelegramMessage(
   message: TelegramMessageContext,
   options: TelegramMessageHandlerOptions,
 ): Promise<TelegramMessageHandlerAction> {
-  const connectToken = readTelegramConnectToken(message.text);
-  if (connectToken !== null) {
+  const connectCommand = readTelegramConnectCommand(message.text);
+  if (connectCommand?.kind === "browser") {
+    return createBrowserConnectReply(message, options, "command");
+  }
+  if (connectCommand?.kind === "token") {
     try {
       await options.backendClient.completeTelegramChatConnection({
         body: {
           telegramChatId: message.chat.telegramChatId,
           telegramId: message.sender.telegramId,
           title: message.chat.title,
-          token: connectToken,
+          token: connectCommand.token,
         },
       });
       return createReply(
@@ -98,11 +100,7 @@ export async function handleTelegramMessage(
   }
 
   if (context.status === "telegram_user_unlinked") {
-    return createReply(
-      message.chat.telegramChatId,
-      message.messageId,
-      "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
-    );
+    return createBrowserConnectReply(message, options, "unlinked_request");
   }
 
   if (context.status === "telegram_chat_unlinked") {
@@ -128,22 +126,77 @@ export async function handleTelegramMessage(
   };
 }
 
+type BrowserConnectReplyReason = "command" | "unlinked_request";
+
+async function createBrowserConnectReply(
+  message: TelegramMessageContext,
+  options: TelegramMessageHandlerOptions,
+  reason: BrowserConnectReplyReason,
+): Promise<TelegramReplyAction> {
+  try {
+    const intent = await options.backendClient.createTelegramBrowserConnectIntent({
+      body: {
+        telegramChatId: message.chat.telegramChatId,
+        telegramId: message.sender.telegramId,
+        title: message.chat.title,
+      },
+    });
+    return createReply(
+      message.chat.telegramChatId,
+      message.messageId,
+      reason === "command"
+        ? "Открой tAsk, войди в аккаунт и заверши привязку Telegram."
+        : "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
+      {
+        rows: [
+          [
+            {
+              text: reason === "command" ? "Открыть tAsk" : "Подключить tAsk",
+              loginUrl: intent.loginUrl,
+            },
+          ],
+        ],
+      },
+    );
+  } catch (error: unknown) {
+    if (error instanceof TelegramBackendClientError) {
+      return createReply(
+        message.chat.telegramChatId,
+        message.messageId,
+        "Не удалось создать ссылку для подключения. Попробуй /connect позже.",
+      );
+    }
+    throw error;
+  }
+}
+
 export function readTelegramConnectToken(text: string | null): string | null {
+  const command = readTelegramConnectCommand(text);
+  return command?.kind === "token" ? command.token : null;
+}
+
+export type TelegramConnectCommand = { kind: "browser" } | { kind: "token"; token: string };
+
+export function readTelegramConnectCommand(text: string | null): TelegramConnectCommand | null {
   if (text === null) return null;
-  const match = /^\/connect(?:@[A-Za-z0-9_]{5,32})?\s+([A-Za-z0-9_-]{43})\s*$/u.exec(text);
-  return match?.[1] ?? null;
+  const match = /^\/connect(?:@[A-Za-z0-9_]{5,32})?(?:\s+([A-Za-z0-9_-]{43}))?\s*$/u.exec(text);
+  if (match === null) return null;
+  const token = match[1];
+  return token === undefined ? { kind: "browser" } : { kind: "token", token };
 }
 
 function createReply(
   telegramChatId: string | null,
   replyToMessageId: string | null,
   text: string,
+  inlineKeyboard?: TelegramInlineKeyboardMarkup,
 ): TelegramReplyAction {
   return {
     kind: "reply",
     telegramChatId,
     replyToMessageId,
     text,
+    ...(inlineKeyboard === undefined ? {} : { inlineKeyboard }),
   };
 }
 

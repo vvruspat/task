@@ -89,6 +89,15 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /member_list/);
   assert.match(JSON.stringify(requestBody.tools), /status_list/);
   assert.match(JSON.stringify(requestBody.tools), /telegram_history_read/);
+  assert.match(
+    JSON.stringify(requestBody.tools),
+    /MUST call it before answering whenever the request cannot be answered from the current message alone/u,
+  );
+  assert.match(JSON.stringify(requestBody.tools), /semantically in every language/u);
+  assert.match(
+    JSON.stringify(requestBody.tools),
+    /Never claim that chat history is empty or unavailable unless this tool returned that result/u,
+  );
   assert.match(JSON.stringify(requestBody.tools), /task_skill_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_lookup/);
@@ -105,6 +114,11 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /plain task without subtasks/u);
   assert.match(JSON.stringify(requestBody.messages), /map every task statusId/u);
   assert.match(JSON.stringify(requestBody.messages), /Доступ к истории переписки/u);
+  assert.match(JSON.stringify(requestBody.messages), /Decide from meaning, not keywords/u);
+  assert.match(
+    JSON.stringify(requestBody.messages),
+    /Never infer the history or claim that it is empty or unavailable without calling the tool/u,
+  );
 });
 
 test("OpenRouterAgentRuntime asks to enable storage when Telegram history is disabled", async () => {

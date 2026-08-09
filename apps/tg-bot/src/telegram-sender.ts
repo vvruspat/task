@@ -51,10 +51,9 @@ type TelegramSendMessageBody = {
   };
 };
 
-type TelegramInlineKeyboardButtonBody = {
-  text: string;
-  callback_data: string;
-};
+type TelegramInlineKeyboardButtonBody =
+  | { text: string; callback_data: string }
+  | { text: string; login_url: { url: string } };
 
 export class TelegramReplySenderError extends Error {
   constructor(message: string) {
@@ -145,10 +144,20 @@ function toTelegramInlineKeyboardBody(
 function toTelegramInlineKeyboardButtonBody(
   button: TelegramInlineKeyboardMarkup["rows"][number][number],
 ): TelegramInlineKeyboardButtonBody {
-  return {
-    text: readInlineKeyboardButtonText(button.text),
-    callback_data: readInlineKeyboardCallbackData(button.callbackData),
-  };
+  const text = readInlineKeyboardButtonText(button.text);
+  return "callbackData" in button && button.callbackData !== undefined
+    ? { text, callback_data: readInlineKeyboardCallbackData(button.callbackData) }
+    : { text, login_url: { url: readInlineKeyboardLoginUrl(button.loginUrl) } };
+}
+
+function readInlineKeyboardLoginUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") throw new Error("HTTPS is required.");
+    return url.toString();
+  } catch {
+    throw new TelegramReplySenderError("Telegram inline keyboard login URL is invalid.");
+  }
 }
 
 function readInlineKeyboardButtonText(value: string): string {

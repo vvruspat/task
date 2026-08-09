@@ -40,7 +40,9 @@ import { IntegrationsController } from "./integrations.controller.js";
 import { IntegrationsService } from "./integrations.service.js";
 import type { WorkspaceIntegrationsStore } from "./integrations.store.js";
 import { createGoogleDriveIntegrationPlugin } from "./plugins/google-drive.integration-plugin.js";
+import { TelegramBrowserConnectConfigProvider } from "./telegram-browser-connect.config.js";
 import {
+  TelegramBrowserConnectController,
   TelegramConnectController,
   TelegramInternalConnectController,
 } from "./telegram-connect.controller.js";
@@ -107,6 +109,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     GoogleDriveWebhookController,
     IntegrationMcpToolsController,
     IntegrationsController,
+    TelegramBrowserConnectController,
     TelegramConnectController,
     TelegramInternalConnectController,
   ],
@@ -144,6 +147,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     IntegrationMcpToolsService,
     IntegrationOutboxPublisher,
     IntegrationOutboxWorker,
+    TelegramBrowserConnectConfigProvider,
     TelegramConnectService,
   ],
   exports: [

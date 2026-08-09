@@ -33,6 +33,10 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
   const backendFetch = new RecordingTelegramBackendFetch([
     { status: "telegram_chat_unlinked" },
     { status: "telegram_user_unlinked" },
+    {
+      expiresAt: "2026-08-09T19:00:00.000Z",
+      loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+    },
   ]);
   const telegramFetch = new RecordingTelegramBotApiFetch({
     ok: true,
@@ -48,18 +52,32 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
   assert.deepEqual(await runtime.processUpdate(telegramUpdate), {
     kind: "reply_sent",
     reply: {
+      inlineKeyboard: {
+        rows: [
+          [
+            {
+              loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+              text: "Подключить tAsk",
+            },
+          ],
+        ],
+      },
       kind: "reply",
       telegramChatId: "-100987654321",
       replyToMessageId: "20",
-      text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+      text: "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
     },
     sentMessage: { messageId: "45" },
   });
-  assert.equal(
-    backendFetch.lastInput,
-    "https://api.example.test/internal/telegram/context/resolve",
+  assert.deepEqual(
+    backendFetch.calls.map((call) => call.input),
+    [
+      "https://api.example.test/internal/telegram/history/messages",
+      "https://api.example.test/internal/telegram/context/resolve",
+      "https://api.example.test/internal/integrations/telegram/connect-intents",
+    ],
   );
-  assert.deepEqual(backendFetch.lastInit, {
+  assert.deepEqual(backendFetch.calls[1]?.init, {
     method: "POST",
     headers: {
       accept: "application/json",
@@ -74,6 +92,19 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
       lastName: null,
     }),
   });
+  assert.deepEqual(backendFetch.lastInit, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+      "x-task-bot-secret": "bot-secret",
+    },
+    body: JSON.stringify({
+      telegramChatId: "-100987654321",
+      telegramId: "123456789",
+      title: "Album Team",
+    }),
+  });
   assert.equal(
     telegramFetch.lastInput,
     "https://api.telegram.org/bot123456:telegram-token/sendMessage",
@@ -86,11 +117,23 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
     },
     body: JSON.stringify({
       chat_id: "-100987654321",
-      text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+      text: "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
       parse_mode: "HTML",
       reply_parameters: {
         message_id: 20,
         allow_sending_without_reply: true,
+      },
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: "Подключить tAsk",
+              login_url: {
+                url: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+              },
+            },
+          ],
+        ],
       },
     }),
   });

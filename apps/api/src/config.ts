@@ -24,6 +24,7 @@ export type ApiConfig = {
   openRouter: ApiOpenRouterConfig | null;
   port: number;
   telegramMiniApp: ApiTelegramMiniAppConfig | null;
+  webAppUrl: string | null;
 };
 
 export type ApiEmailConfig = {
@@ -63,22 +64,26 @@ const maxPort = 65_535;
 const portPattern = /^\d+$/;
 
 export function parseApiConfig(environment: ApiEnvironment): ApiConfig {
+  const webAppUrl = parseWebAppUrl(environment.WEB_APP_URL);
   return {
     botAuth: parseBotAuthConfig(environment.TELEGRAM_BOT_SHARED_SECRET),
     database: parseDatabaseConfig(environment.DATABASE_URL),
-    email: parseEmailConfig(environment),
+    email: parseEmailConfig(environment, webAppUrl),
     openRouter: parseOpenRouterConfig(environment),
     port: parsePort(environment.PORT),
     telegramMiniApp: parseTelegramMiniAppConfig(environment.TELEGRAM_BOT_TOKEN),
+    webAppUrl,
   };
 }
 
-function parseEmailConfig(environment: ApiEnvironment): ApiEmailConfig | null {
+function parseEmailConfig(
+  environment: ApiEnvironment,
+  webAppUrl: string | null,
+): ApiEmailConfig | null {
   const apiKey = environment.BREVO_API_KEY;
   const templateId = environment.BREVO_TEMPLATE_ID;
-  const webAppUrl = environment.WEB_APP_URL;
 
-  if (apiKey === undefined && templateId === undefined && webAppUrl === undefined) {
+  if (apiKey === undefined && templateId === undefined) {
     return null;
   }
 
@@ -96,7 +101,7 @@ function parseEmailConfig(environment: ApiEnvironment): ApiEmailConfig | null {
       "must be a positive integer for email invitations",
     );
   }
-  if (webAppUrl === undefined) {
+  if (webAppUrl === null) {
     throw new InvalidApiEnvironmentError(
       "WEB_APP_URL",
       "",
@@ -104,29 +109,34 @@ function parseEmailConfig(environment: ApiEnvironment): ApiEmailConfig | null {
     );
   }
 
+  return {
+    apiKey,
+    templateId: Number(templateId),
+    webAppUrl,
+  };
+}
+
+function parseWebAppUrl(value: string | undefined): string | null {
+  if (value === undefined) return null;
+
   let parsedWebAppUrl: URL;
   try {
-    parsedWebAppUrl = new URL(webAppUrl);
+    parsedWebAppUrl = new URL(value);
   } catch {
-    throw new InvalidApiEnvironmentError("WEB_APP_URL", webAppUrl, "must be an absolute URL");
+    throw new InvalidApiEnvironmentError("WEB_APP_URL", value, "must be an absolute URL");
   }
   if (
-    webAppUrl.trim() !== webAppUrl ||
+    value.trim() !== value ||
     (parsedWebAppUrl.protocol !== "https:" &&
       !(parsedWebAppUrl.protocol === "http:" && isLoopbackHost(parsedWebAppUrl.hostname)))
   ) {
     throw new InvalidApiEnvironmentError(
       "WEB_APP_URL",
-      webAppUrl,
+      value,
       "must use HTTPS, or HTTP for a loopback host",
     );
   }
-
-  return {
-    apiKey,
-    templateId: Number(templateId),
-    webAppUrl: webAppUrl.replace(/\/$/u, ""),
-  };
+  return value.replace(/\/$/u, "");
 }
 
 function isTrimmedNonEmpty(value: string): boolean {

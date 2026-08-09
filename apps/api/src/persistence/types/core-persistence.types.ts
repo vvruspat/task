@@ -238,6 +238,17 @@ export type TelegramChatRecord = {
   updatedAt: Date;
 };
 
+export type TelegramConnectIntentRecord = {
+  id: string;
+  tokenHash: string;
+  telegramChatId: string;
+  telegramId: string;
+  title: string | null;
+  expiresAt: Date;
+  consumedAt: Date | null;
+  createdAt: Date;
+};
+
 export type TelegramChatMessageRecord = {
   id: string;
   telegramChatId: string;

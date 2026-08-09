@@ -261,6 +261,56 @@ test("createTaskApiClient manages workspace integration installations", async ()
   assert.equal(fetcher.calls[5]?.init.body, JSON.stringify({ folderId: "google-drive-folder-id" }));
 });
 
+test("createTaskApiClient previews and completes Telegram browser connections", async () => {
+  const token = "b".repeat(43);
+  const workspace = { id: workspaceId, name: "Music", slug: "music" };
+  const fetcher = new RecordingFetch(
+    sequence([
+      {
+        chatTitle: "Album Team",
+        expiresAt: "2026-08-09T19:00:00.000Z",
+        mode: "link_identity",
+        workspace,
+        workspaces: [],
+      },
+      {
+        chatTitle: "Album Team",
+        status: "identity_linked",
+        workspace,
+      },
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.equal(
+    (await client.previewTelegramBrowserConnect({ body: { authData: "signed" }, token })).mode,
+    "link_identity",
+  );
+  assert.equal(
+    (await client.completeTelegramBrowserConnect({ body: { authData: "signed" }, token })).status,
+    "identity_linked",
+  );
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method, call.init.body]),
+    [
+      [
+        `https://task.example/integrations/telegram/browser-connect/${token}/preview`,
+        "POST",
+        JSON.stringify({ authData: "signed" }),
+      ],
+      [
+        `https://task.example/integrations/telegram/browser-connect/${token}/complete`,
+        "POST",
+        JSON.stringify({ authData: "signed" }),
+      ],
+    ],
+  );
+});
+
 test("createTaskApiClient updates one Telegram chat connection", async () => {
   const integrationId = "44444444-4444-4444-8444-444444444444";
   const connectionId = "55555555-5555-4555-8555-555555555555";

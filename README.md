@@ -80,11 +80,15 @@ brevo app available-scopes --json
 
 ## Telegram Chat Connection
 
-Workspace owners and admins connect a Telegram chat by generating a short-lived `/connect` command
-in workspace integration settings and sending it in the target chat. The one-time 256-bit token
-atomically pairs the Telegram sender's stable `telegram_id` with the authenticated tAsk user and
-connects the chat. Tokens expire after ten minutes, cannot be replayed, and cannot move a Telegram
-identity that is already linked to another tAsk user.
+Send `/connect` without a token in a Telegram chat to receive a short-lived browser login button.
+After tAsk authentication, an already connected chat keeps its current workspace and only links the
+sender's stable `telegram_id`. A workspace selector is shown only when the chat is not connected;
+then it lists Telegram-enabled workspaces that the signed-in owner or administrator can manage.
+
+The public `WEB_APP_URL` must use HTTPS and its domain must be linked to the bot in BotFather. The
+older one-time `/connect <token>` command generated in integration settings remains supported.
+Both flows expire after ten minutes, cannot be replayed, and cannot move a Telegram identity that is
+already linked to another tAsk user.
 
 ## Project State
 
