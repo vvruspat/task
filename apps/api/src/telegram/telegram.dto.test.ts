@@ -65,10 +65,16 @@ test("ParseResolveTelegramContextBodyPipe validates stable Telegram identifiers"
     pipe.transform({
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramUsername: "alex",
+      firstName: "Alex",
+      lastName: null,
     }),
     {
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramUsername: "alex",
+      firstName: "Alex",
+      lastName: null,
     },
   );
 });
@@ -87,6 +93,15 @@ test("ParseResolveTelegramContextBodyPipe rejects usernames and malformed identi
   );
   assert.throws(
     () => pipe.transform({ telegramId: "123456789", telegramChatId: "chat" }),
+    BadRequestException,
+  );
+  assert.throws(
+    () =>
+      pipe.transform({
+        telegramId: "123456789",
+        telegramChatId: "123456789",
+        telegramUsername: "@alex",
+      }),
     BadRequestException,
   );
 });
@@ -193,6 +208,9 @@ test("VerifiedTelegramMiniAppInitDataDto preserves stable identity fields", () =
   const dto = new VerifiedTelegramMiniAppInitDataDto({
     telegramId: "123456789",
     authDate: "1720468800",
+    telegramUsername: "alex",
+    firstName: "Alex",
+    lastName: null,
   });
 
   assert.deepEqual(
@@ -200,6 +218,9 @@ test("VerifiedTelegramMiniAppInitDataDto preserves stable identity fields", () =
     {
       telegramId: "123456789",
       authDate: "1720468800",
+      telegramUsername: "alex",
+      firstName: "Alex",
+      lastName: null,
     },
   );
 });

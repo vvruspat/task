@@ -63,6 +63,7 @@ import {
   duplicateSavedViewDraft,
   type SavedViewDraft as ViewDraft,
 } from "../lib/saved-view-draft";
+import { filterTaskHierarchy, parentTaskSortTitle } from "../lib/task-hierarchy";
 import { isTaskSummary } from "../lib/task-summary";
 import { buildTemplateMatrix } from "../lib/template-matrix";
 import {
@@ -127,6 +128,7 @@ const orderingOptions: ReadonlyArray<{
 }> = [
   { value: "manual", label: "views.order.manual" },
   { value: "title", label: "common.name" },
+  { value: "parent_task_title", label: "views.order.parentTaskTitle" },
   { value: "status", label: "common.status" },
   { value: "created_at", label: "views.created" },
   { value: "updated_at", label: "views.updated" },
@@ -1105,15 +1107,10 @@ function MatrixView({
     const templateFilter = filters.find(
       (filter) => filter.field === "template" && filter.operator === "is",
     );
-    const rootCandidates = allTasks.filter(
-      (task) =>
-        (task.parentTaskId === null || task.parentTaskId === undefined) &&
-        matchesFilters(
-          task,
-          filters.filter((filter) => filter.field !== "template"),
-          data,
-        ),
-    );
+    const nonTemplateFilters = filters.filter((filter) => filter.field !== "template");
+    const rootCandidates = filterTaskHierarchy(allTasks, (task) =>
+      matchesFilters(task, nonTemplateFilters, data),
+    ).filter((task) => task.parentTaskId === null || task.parentTaskId === undefined);
     const inferredTemplateIds = [
       ...new Set(
         rootCandidates.flatMap((task) =>
@@ -1130,20 +1127,23 @@ function MatrixView({
           (inferredTemplateIds.length === 1 ? inferredTemplateIds[0] : null));
     if (templateId === null || templateId === undefined) return null;
 
+    const matchingHierarchy = filterTaskHierarchy(
+      allTasks.filter((task) => task.sourceSkillId === templateId),
+      (task) => matchesFilters(task, filters, data),
+    );
     const roots = sortTasks(
-      rootCandidates.filter(
-        (task) => task.sourceSkillId === templateId && matchesFilters(task, filters, data),
+      matchingHierarchy.filter(
+        (task) => task.parentTaskId === null || task.parentTaskId === undefined,
       ),
       draft.settings,
       data,
     );
     const rootIds = new Set(roots.map((task) => task.id));
-    const subtasks = allTasks.filter(
+    const subtasks = matchingHierarchy.filter(
       (task) =>
         task.parentTaskId !== null &&
         task.parentTaskId !== undefined &&
-        rootIds.has(task.parentTaskId) &&
-        task.sourceSkillId === templateId,
+        rootIds.has(task.parentTaskId),
     );
     return buildTemplateMatrix([...roots, ...subtasks], templateId);
   }, [data, draft, taskOverrides]);
@@ -2277,14 +2277,13 @@ function collectTasks(
   draft: ViewDraft,
   taskOverrides: Record<string, TaskBoardOverride>,
 ): TaskWithProject[] {
-  const tasks = collectWorkspaceTasks(data, draft.projectId ?? null, taskOverrides)
-    .filter(
-      (task) =>
-        draft.settings.showSubtasks ||
-        task.parentTaskId === null ||
-        task.parentTaskId === undefined,
-    )
-    .filter((task) => matchesFilters(task, draft.settings.filters ?? [], data));
+  const tasks = filterTaskHierarchy(
+    collectWorkspaceTasks(data, draft.projectId ?? null, taskOverrides),
+    (task) => matchesFilters(task, draft.settings.filters ?? [], data),
+  ).filter(
+    (task) =>
+      draft.settings.showSubtasks || task.parentTaskId === null || task.parentTaskId === undefined,
+  );
   return sortTasks(tasks, draft.settings, data);
 }
 function collectWorkspaceTasks(
@@ -2364,9 +2363,15 @@ function sortTasks(
   settings: ViewSettings,
   data: WorkspaceBootstrap,
 ): TaskWithProject[] {
+  const taskById = new Map(tasks.map((task) => [task.id, task]));
   return [...tasks].sort((left, right) => {
     let result = 0;
     if (settings.ordering === "title") result = left.title.localeCompare(right.title, "ru");
+    else if (settings.ordering === "parent_task_title")
+      result = parentTaskSortTitle(left, taskById).localeCompare(
+        parentTaskSortTitle(right, taskById),
+        "ru",
+      );
     else if (settings.ordering === "status")
       result = logicalStatusKeyForTask(left.statusId, data.statuses).localeCompare(
         logicalStatusKeyForTask(right.statusId, data.statuses),

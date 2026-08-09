@@ -158,14 +158,14 @@ function getWorkspaceMemberMatchRank(
 }
 
 function getWorkspaceMemberSearchValues(member: WorkspaceMemberResponse): string[] {
-  return [member.displayName, member.email, member.userId]
+  return [member.displayName, member.email, member.telegramUsername]
     .filter((value): value is string => typeof value === "string")
     .map((value) => normalizeSearchValue(value))
     .filter((value) => value.length > 0);
 }
 
 function normalizeSearchValue(value: string): string {
-  return value.trim().toLocaleLowerCase();
+  return value.trim().replace(/^@/u, "").toLocaleLowerCase();
 }
 
 function readRecord(value: unknown, label: string): Record<string, unknown> {

@@ -5,6 +5,7 @@ import { selectAvailableWorkspaceScopedSlug } from "../common/workspace-slug.js"
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   TaskEntity,
+  TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
   WorkspaceMemberEntity,
@@ -63,10 +64,13 @@ export class TypeOrmWorkspaceReadStore
           workspaceId: workspace.id,
         }),
       );
+      const telegramIdentity = await manager
+        .getRepository(TelegramIdentityEntity)
+        .findOneBy({ userId });
       return {
         ...toWorkspaceSummary(workspace),
         description: workspace.description,
-        members: [toWorkspaceMember(member, user)],
+        members: [toWorkspaceMember(member, user, telegramIdentity?.telegramUsername ?? null)],
       };
     });
   }
@@ -225,7 +229,14 @@ export class TypeOrmWorkspaceReadStore
       return { status: "member_not_found" };
     }
 
-    return { member: toWorkspaceMember(updatedMember, user), status: "updated" };
+    const telegramIdentity = await dataSource
+      .getRepository(TelegramIdentityEntity)
+      .findOneBy({ userId: updatedMember.userId });
+
+    return {
+      member: toWorkspaceMember(updatedMember, user, telegramIdentity?.telegramUsername ?? null),
+      status: "updated",
+    };
   }
 
   async removeMember(
@@ -250,7 +261,14 @@ export class TypeOrmWorkspaceReadStore
       const user = await manager.getRepository(UserEntity).findOneBy({ id: member.userId });
       if (user === null) return { status: "member_not_found" };
 
-      const removedMember = toWorkspaceMember(member, user);
+      const telegramIdentity = await manager
+        .getRepository(TelegramIdentityEntity)
+        .findOneBy({ userId: member.userId });
+      const removedMember = toWorkspaceMember(
+        member,
+        user,
+        telegramIdentity?.telegramUsername ?? null,
+      );
       await manager
         .getRepository(TaskEntity)
         .update({ assigneeUserId: member.userId, workspaceId }, { assigneeUserId: null });
@@ -292,6 +310,12 @@ export class TypeOrmWorkspaceReadStore
 
     const users = await userRepository.findBy({ id: In(userIds) });
     const userById = new Map(users.map((user) => [user.id, user]));
+    const telegramIdentities = await dataSource.getRepository(TelegramIdentityEntity).findBy({
+      userId: In(userIds),
+    });
+    const telegramUsernameByUserId = new Map(
+      telegramIdentities.map((identity) => [identity.userId, identity.telegramUsername]),
+    );
 
     return members.flatMap((member) => {
       const user = userById.get(member.userId);
@@ -300,7 +324,7 @@ export class TypeOrmWorkspaceReadStore
         return [];
       }
 
-      return [toWorkspaceMember(member, user)];
+      return [toWorkspaceMember(member, user, telegramUsernameByUserId.get(member.userId) ?? null)];
     });
   }
 
@@ -336,7 +360,11 @@ function toWorkspaceSummary(workspace: WorkspaceEntity): WorkspaceSummary {
   };
 }
 
-function toWorkspaceMember(member: WorkspaceMemberEntity, user: UserEntity): WorkspaceMember {
+function toWorkspaceMember(
+  member: WorkspaceMemberEntity,
+  user: UserEntity,
+  telegramUsername: string | null,
+): WorkspaceMember {
   return {
     id: member.id,
     workspaceId: member.workspaceId,
@@ -344,6 +372,7 @@ function toWorkspaceMember(member: WorkspaceMemberEntity, user: UserEntity): Wor
     role: member.role,
     displayName: user.displayName,
     email: user.email,
+    telegramUsername,
     avatarUrl: user.avatarUrl,
     createdAt: member.createdAt,
     updatedAt: member.updatedAt,

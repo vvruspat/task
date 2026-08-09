@@ -64,6 +64,17 @@ test("saved view create payload accepts a template matrix", () => {
   ]);
 });
 
+test("saved view settings accept ordering by parent task title", () => {
+  const result = new ParseCreateSavedViewBodyPipe().transform({
+    name: "Parent task order",
+    visibility: "private",
+    layout: "list",
+    settings: { ...settings, ordering: "parent_task_title" },
+  });
+
+  assert.equal(result.settings.ordering, "parent_task_title");
+});
+
 test("saved view pipes reject malformed settings and empty updates", () => {
   const createPipe = new ParseCreateSavedViewBodyPipe();
   const updatePipe = new ParseUpdateSavedViewBodyPipe();

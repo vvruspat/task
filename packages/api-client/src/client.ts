@@ -1913,6 +1913,7 @@ function isSavedViewOrdering(value: unknown): boolean {
   return (
     value === "manual" ||
     value === "title" ||
+    value === "parent_task_title" ||
     value === "status" ||
     value === "created_at" ||
     value === "updated_at" ||
@@ -2337,6 +2338,7 @@ function isWorkspaceMember(value: unknown): value is WorkspaceMember {
     (role === "owner" || role === "admin" || role === "member" || role === "guest") &&
     hasString(value, "displayName") &&
     hasOptionalNullableString(value, "email") &&
+    hasOptionalNullableString(value, "telegramUsername") &&
     hasOptionalNullableString(value, "avatarUrl") &&
     hasString(value, "createdAt") &&
     hasString(value, "updatedAt")

@@ -10,6 +10,7 @@ export type SavedViewGrouping = (typeof savedViewGroupings)[number];
 export const savedViewOrderings = [
   "manual",
   "title",
+  "parent_task_title",
   "status",
   "created_at",
   "updated_at",

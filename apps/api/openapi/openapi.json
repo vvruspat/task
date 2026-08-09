@@ -6215,6 +6215,11 @@
             "nullable": true,
             "example": "alex@example.com"
           },
+          "telegramUsername": {
+            "type": "string",
+            "nullable": true,
+            "example": "alex"
+          },
           "avatarUrl": {
             "type": "string",
             "nullable": true,
@@ -9449,6 +9454,21 @@
           "telegramChatId": {
             "type": "string",
             "example": "-100987654321"
+          },
+          "telegramUsername": {
+            "type": "string",
+            "example": "alex",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Alex",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Smith",
+            "nullable": true
           }
         },
         "required": ["telegramId", "telegramChatId"]
@@ -9624,6 +9644,21 @@
           "authDate": {
             "type": "string",
             "example": "1720468800"
+          },
+          "telegramUsername": {
+            "type": "string",
+            "example": "alex",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Alex",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Smith",
+            "nullable": true
           }
         },
         "required": ["telegramId", "authDate"]
@@ -9682,7 +9717,15 @@
           },
           "ordering": {
             "type": "string",
-            "enum": ["manual", "title", "status", "created_at", "updated_at", "due_at"]
+            "enum": [
+              "manual",
+              "title",
+              "parent_task_title",
+              "status",
+              "created_at",
+              "updated_at",
+              "due_at"
+            ]
           },
           "orderDirection": {
             "type": "string",

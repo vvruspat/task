@@ -246,6 +246,21 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
       };
     }
 
+    if (call.toolName === "member_search") {
+      const query = readRequiredString(call.arguments, "query");
+      const members = await this.requireWorkspacesService().listMembers(
+        context.workspaceId,
+        context.userId,
+      );
+      const matches = findMatchingWorkspaceMembers(members, query);
+      return {
+        kind: "member_search_results",
+        query,
+        count: matches.length,
+        members: matches.map(toAgentMemberIdentity),
+      };
+    }
+
     if (call.toolName === "task_list") {
       const projectId = readOptionalUuid(call.arguments, "projectId") ?? context.projectId;
       if (projectId === undefined || projectId === null) {
@@ -258,6 +273,11 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         projectId,
         context.userId,
       );
+      const members =
+        this.workspacesService === undefined
+          ? []
+          : await this.workspacesService.listMembers(context.workspaceId, context.userId);
+      const memberByUserId = new Map(members.map((member) => [member.userId, member]));
       return {
         kind: "task_list",
         projectId,
@@ -269,7 +289,10 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
           title: task.title,
           description: task.description,
           statusId: task.statusId,
-          assigneeUserId: task.assigneeUserId,
+          assignee:
+            task.assigneeUserId === null
+              ? null
+              : toAgentMemberIdentity(memberByUserId.get(task.assigneeUserId)),
           dueAt: task.dueAt?.toISOString() ?? null,
         })),
       };
@@ -525,9 +548,9 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
           taskId,
           query: assignee,
           candidates: matches.map((member) => ({
-            userId: member.userId,
             displayName: member.displayName,
             email: member.email,
+            telegramUsername: member.telegramUsername ?? null,
           })),
         };
       }
@@ -544,8 +567,9 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         id: task.id,
         projectId: task.projectId,
         taskId: task.id,
-        assigneeUserId: task.assigneeUserId,
         assigneeName: member?.displayName ?? null,
+        assigneeEmail: member?.email ?? null,
+        assigneeTelegramUsername: member?.telegramUsername ?? null,
         workspaceId: task.workspaceId,
       };
     }
@@ -914,6 +938,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
 }
 
 const readOnlyCoreToolNames = new Set([
+  "member_search",
   "project_get",
   "project_list",
   "status_list",
@@ -1150,13 +1175,47 @@ export function findMatchingTaskSkills(
 }
 
 export function findMatchingWorkspaceMembers<
-  TMember extends { displayName: string; email: string | null; userId: string },
+  TMember extends {
+    displayName: string;
+    email: string | null;
+    telegramUsername?: string | null;
+  },
 >(members: TMember[], query: string): TMember[] {
   return rankHumanReadableMatches(members, query, (member) => [
     member.displayName,
     member.email,
-    member.userId,
+    member.telegramUsername ?? null,
   ]);
+}
+
+function toAgentMemberIdentity(
+  member:
+    | {
+        displayName: string;
+        email: string | null;
+        telegramUsername?: string | null;
+        role?: string;
+      }
+    | undefined,
+): {
+  displayName: string;
+  email: string | null;
+  telegramUsername: string | null;
+  role?: string;
+} {
+  if (member === undefined) {
+    return {
+      displayName: "Unknown workspace member",
+      email: null,
+      telegramUsername: null,
+    };
+  }
+  return {
+    displayName: member.displayName,
+    email: member.email,
+    telegramUsername: member.telegramUsername ?? null,
+    ...(member.role === undefined ? {} : { role: member.role }),
+  };
 }
 
 function findMatchingNamedValues<TValue extends { name: string }>(

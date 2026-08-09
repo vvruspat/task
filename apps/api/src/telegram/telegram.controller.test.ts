@@ -162,6 +162,9 @@ test("TelegramMiniAppController verifies initData through the service", () => {
     {
       telegramId: "123456789",
       authDate,
+      telegramUsername: null,
+      firstName: "Alex",
+      lastName: null,
     },
   );
 });
@@ -185,7 +188,11 @@ test("TelegramMiniAppController links verified initData to the trusted current u
       ...(await controller.linkIdentity("22222222-2222-4222-8222-222222222222", {
         initData: createSignedInitData({
           authDate,
-          userJson: JSON.stringify({ id: 123456789, first_name: "Alex" }),
+          userJson: JSON.stringify({
+            id: 123456789,
+            first_name: "Alex",
+            username: "alex",
+          }),
         }),
       })),
     },
@@ -197,6 +204,9 @@ test("TelegramMiniAppController links verified initData to the trusted current u
   assert.deepEqual(store.lastLinkInput, {
     telegramId: "123456789",
     userId: "22222222-2222-4222-8222-222222222222",
+    telegramUsername: "alex",
+    firstName: "Alex",
+    lastName: null,
   });
 });
 

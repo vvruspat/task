@@ -86,6 +86,7 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /project_get/);
   assert.match(JSON.stringify(requestBody.tools), /project_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_list/);
+  assert.match(JSON.stringify(requestBody.tools), /member_search/);
   assert.match(JSON.stringify(requestBody.tools), /status_list/);
   assert.match(JSON.stringify(requestBody.tools), /telegram_history_read/);
   assert.match(JSON.stringify(requestBody.tools), /task_skill_create/);
@@ -376,6 +377,116 @@ test("OpenRouterAgentRuntime requires task and status reads for a status table",
     function: { name: "status_list" },
   });
   assert.match(result.finalResponse ?? "", /In progress/u);
+});
+
+test("OpenRouterAgentRuntime resolves a named assignee before listing their tasks", async () => {
+  const projectId = "44444444-4444-4444-8444-444444444444";
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-member-search",
+                type: "function",
+                function: {
+                  name: "member_search",
+                  arguments: JSON.stringify({ query: "@chronolegion" }),
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-task-list",
+                type: "function",
+                function: { name: "task_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: "На @chronolegion назначена задача «Запись вокала» (vladimir@example.com).",
+          },
+        },
+      ],
+    }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("member_search", {
+      kind: "member_search_results",
+      query: "@chronolegion",
+      count: 1,
+      members: [
+        {
+          displayName: "Vladimir Osadchiy",
+          email: "vladimir@example.com",
+          telegramUsername: "chronolegion",
+        },
+      ],
+    }),
+    successfulToolCall("task_list", {
+      kind: "task_list",
+      projectId,
+      count: 1,
+      tasks: [
+        {
+          number: 1,
+          title: "Запись вокала",
+          assignee: {
+            displayName: "Vladimir Osadchiy",
+            email: "vladimir@example.com",
+            telegramUsername: "chronolegion",
+          },
+        },
+      ],
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    context: { ...request.context, projectId },
+    input: {
+      ...request.input,
+      inputText: "Покажи, какие задачи назначены на @chronolegion",
+    },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["member_search", "task_list"],
+  );
+  const memberSearchBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
+  const taskListBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(memberSearchBody));
+  assert.ok(isOpenRouterRequestBody(taskListBody));
+  assert.deepEqual(memberSearchBody.tool_choice, {
+    type: "function",
+    function: { name: "member_search" },
+  });
+  assert.deepEqual(taskListBody.tool_choice, {
+    type: "function",
+    function: { name: "task_list" },
+  });
+  assert.match(result.finalResponse ?? "", /@chronolegion/u);
+  assert.match(result.finalResponse ?? "", /vladimir@example\.com/u);
 });
 
 test("OpenRouterAgentRuntime exposes connected workspace integration tools", async () => {
@@ -979,7 +1090,7 @@ test("OpenRouterAgentRuntime asks the user to choose when several task templates
   });
   assert.equal(
     result.finalResponse,
-    `Для задачи "хуе морхэ" подходят несколько шаблонов:\n1. Песня (ID: ${firstSkillId})\n2. Песня для релиза (ID: ${secondSkillId})\nКакой использовать?`,
+    'Для задачи "хуе морхэ" подходят несколько шаблонов:\n1. Песня\n2. Песня для релиза\nКакой использовать?',
   );
   assert.equal(fetcher.calls.length, 1);
   assert.equal(result.toolCalls.length, 1);

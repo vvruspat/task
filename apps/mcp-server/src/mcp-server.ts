@@ -461,6 +461,7 @@ export type TaskMcpServerOptions = {
 };
 
 export const taskMcpServerInstructions = [
+  "Treat UUIDs and internal ids as tool-call details only. Never show user ids, workspace ids, project ids, task ids, status ids, template ids, or other UUIDs in a reply to the user. Refer to entities by human-readable names, emails, Telegram usernames, or issue identifiers.",
   "Before creating any root task in a project, search for an existing suitable task skill with skill.search. Use the task type or workflow terms from the user's request as the query, not only the task's unique title.",
   "If there are no suitable skills, call task.create and create the task without subtasks.",
   "If exactly one skill is suitable, call skill.apply instead of task.create so the stored template creates the task tree.",
@@ -526,7 +527,8 @@ export function registerWorkspaceTools(
     "user.resolve",
     {
       title: "Resolve user",
-      description: "Resolve visible workspace members by display name, email, or user id.",
+      description:
+        "Resolve visible workspace members by display name, email, or Telegram username.",
       inputSchema: workspaceUserResolveInputSchema,
     },
     async (input) => toToolResult(await handlers.resolveUser(input)),

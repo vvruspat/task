@@ -25,6 +25,9 @@ test("TelegramMiniAppInitDataVerifier returns stable Telegram identity for valid
   assert.deepEqual(verifier.verify({ initData }), {
     telegramId: "123456789",
     authDate,
+    telegramUsername: "alex",
+    firstName: "Alex",
+    lastName: null,
   });
 });
 

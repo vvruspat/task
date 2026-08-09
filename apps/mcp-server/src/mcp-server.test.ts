@@ -2017,6 +2017,7 @@ test("createTaskMcpServer returns an MCP server with task skill tools registered
   assert.match(taskMcpServerInstructions, /create the task without subtasks/u);
   assert.match(taskMcpServerInstructions, /ask the user to choose one/u);
   assert.match(taskMcpServerInstructions, /Never invent subtasks/u);
+  assert.match(taskMcpServerInstructions, /Never show user ids/u);
 });
 
 test("createTaskMcpServer publishes root task template instructions to MCP clients", async () => {

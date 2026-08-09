@@ -124,7 +124,11 @@ test("TelegramService links verified Mini App identity to the current user", asy
         userId: "22222222-2222-4222-8222-222222222222",
         initData: createSignedInitData({
           authDate,
-          userJson: JSON.stringify({ id: 123456789, first_name: "Alex" }),
+          userJson: JSON.stringify({
+            id: 123456789,
+            first_name: "Alex",
+            username: "alex",
+          }),
         }),
       })),
     },
@@ -136,6 +140,9 @@ test("TelegramService links verified Mini App identity to the current user", asy
   assert.deepEqual(store.lastLinkInput, {
     telegramId: "123456789",
     userId: "22222222-2222-4222-8222-222222222222",
+    telegramUsername: "alex",
+    firstName: "Alex",
+    lastName: null,
   });
 });
 

@@ -59,9 +59,25 @@ const openRouterAgentTools = [
   {
     type: "function",
     function: {
+      name: "member_search",
+      description:
+        "Search current workspace members by human-readable display name, email, or Telegram username. Use this before filtering or reporting tasks for a named person. Results intentionally contain no internal user ids.",
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          query: { type: "string", minLength: 1 },
+        },
+        required: ["query"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
       name: "task_list",
       description:
-        "List active tasks in a real project visible to the current user. Omit projectId only when the server supplied a selected project.",
+        "List active tasks in a real project visible to the current user, including each assignee's display name, email, and Telegram username when available. Omit projectId only when the server supplied a selected project.",
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -294,7 +310,7 @@ const openRouterAgentTools = [
     function: {
       name: "task_set_assignee",
       description:
-        "Assign a task to a workspace member by human-readable name or email. Pass null to unassign. The backend resolves the member inside the current workspace and refuses ambiguous matches.",
+        "Assign a task to a workspace member by human-readable name, email, or Telegram username. Pass null to unassign. The backend resolves the member inside the current workspace and refuses ambiguous matches.",
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -361,7 +377,8 @@ const coreMutationToolNames = new Set([
 const agentSystemPrompt = [
   "You are tAsk's backend task agent.",
   "Use the provided tools for every project or task mutation.",
-  "Use project_list, project_get, task_list, task_lookup, and status_list for workspace reads. Never invent projects, tasks, ids, statuses, or assignees.",
+  "Use project_list, project_get, member_search, task_list, task_lookup, and status_list for workspace reads. Never invent projects, tasks, ids, statuses, or assignees.",
+  "Internal ids and UUIDs are only for tool calls. Never expose a UUID, user id, project id, task id, status id, template id, workspace id, or other internal identifier in a user-facing reply. Refer to people, projects, tasks, statuses, and templates only by human-readable names, emails, Telegram usernames, or issue identifiers. Internal identifiers may appear only inside non-visible Markdown link destinations.",
   "Never claim that a project, task, or task template was created unless the corresponding tool succeeded in this response.",
   "The workspace and current user are supplied by the server and must not be invented.",
   "When the user names a project and no selected project id is supplied by the server, call project_list first and use the exact returned id. Never invent a project id from its name.",
@@ -382,7 +399,7 @@ const agentSystemPrompt = [
   "After task_create returns an id, use that id with task_add_subtasks when subtasks were requested.",
   "For changes to an existing task, use task_update, task_set_status, task_set_assignee, task_set_due_date, or task_add_link_attachment as appropriate. Never claim that a task property changed unless the corresponding tool succeeded.",
   "When an existing task is referenced by a URL, UUID, issue identifier such as ZNA-26, or title, call task_lookup first with that reference, then use the returned projectId and taskId in the requested mutation tool. If task_lookup returns task_candidates, choose only when the candidates and user context make the intended task clear, call task_lookup again with the chosen taskId, and otherwise ask the user to clarify. Never invent UUIDs.",
-  "Resolve assignees by passing the user's human-readable name or email to task_set_assignee; never invent a user id.",
+  "Before answering which tasks belong to a named person, call member_search with their name, email, or Telegram username and use the returned identity fields to decide which assignee matches. Resolve assignees by passing the user's human-readable name, email, or Telegram username to task_set_assignee; never invent a user id.",
   "Resolve statuses by passing the user's human-readable status name to task_set_status; never invent a status id.",
   "Connected workspace integrations may add namespaced tools. Use their read-only search/get tools when the user asks about external resources.",
   "In Telegram, when the request depends on earlier chat messages that are not present in the current request, call telegram_history_read. Never pretend to know the chat history without this tool. If it reports history_access_disabled, tell the user to open this Telegram chat's settings in tAsk and enable 'Доступ к истории переписки'; explain that only new messages received after enabling will be saved.",
@@ -866,6 +883,7 @@ function describeToolCall(call: AgentToolOperationCall): string {
   const name = readToolArgumentLabel(call.arguments, "name");
   if (call.toolName === "project_list") return "Получаю список проектов";
   if (call.toolName === "project_get") return "Получаю проект";
+  if (call.toolName === "member_search") return "Ищу участника";
   if (call.toolName === "task_list") return "Получаю задачи проекта";
   if (call.toolName === "status_list") return "Получаю статусы проекта";
   if (call.toolName === "telegram_history_read") return "Читаю историю Telegram-чата";
@@ -1236,10 +1254,9 @@ function formatSelectionResponse(toolCalls: AgentRuntimeToolCall[]): string | nu
     if (Array.isArray(candidates) && candidates.length >= 2) {
       const choices = candidates.flatMap((candidate, index) => {
         if (!isRecord(candidate)) return [];
-        const id = readRecordString(candidate, "id");
         const name = readRecordString(candidate, "name");
-        if (id === null || name === null) return [];
-        return [`${index + 1}. ${name} (ID: ${id})`];
+        if (name === null) return [];
+        return [`${index + 1}. ${name}`];
       });
       if (choices.length >= 2) {
         const title = readResultString(selectionCall.result, "title");
@@ -1383,7 +1400,12 @@ function looksLikeMutationRequest(inputText: string): boolean {
     .some((token) => mutationVerbs.has(token));
 }
 
-type CoreReadToolName = "project_list" | "status_list" | "task_list" | "telegram_history_read";
+type CoreReadToolName =
+  | "member_search"
+  | "project_list"
+  | "status_list"
+  | "task_list"
+  | "telegram_history_read";
 
 function requestedCoreReadTools(
   inputText: string,
@@ -1468,6 +1490,25 @@ function requestedCoreReadTools(
     "статусов",
   ].some((token) => tokenSet.has(token));
   const requiredTools: CoreReadToolName[] = [];
+  const asksAboutAssignee =
+    inputText.includes("@") ||
+    [
+      "assigned",
+      "assignee",
+      "assignees",
+      "исполнитель",
+      "исполнителя",
+      "исполнители",
+      "исполнителю",
+      "назначена",
+      "назначено",
+      "назначены",
+      "назначить",
+      "привязана",
+      "привязано",
+      "привязаны",
+    ].some((token) => tokenSet.has(token));
+  if (asksForTasks && asksAboutAssignee) requiredTools.push("member_search");
   if (asksForTasks) requiredTools.push("task_list");
   if (asksForStatuses) requiredTools.push("status_list");
   return requiredTools;

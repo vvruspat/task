@@ -62,6 +62,9 @@ export class TelegramService {
     const result = await this.telegramContextStore.linkIdentity({
       userId: input.userId,
       telegramId: verifiedIdentity.telegramId,
+      telegramUsername: verifiedIdentity.telegramUsername,
+      firstName: verifiedIdentity.firstName,
+      lastName: verifiedIdentity.lastName,
     });
 
     if (result.status === "user_not_found") {
