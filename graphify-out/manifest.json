@@ -1150,7 +1150,7 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.service.test.ts": {
-    "mtime": 1786269896.1347365,
+    "mtime": 1786270106.8004248,
     "ast_hash": "7b9cf9d43fddae59c44dd2b6d7189b49",
     "semantic_hash": ""
   },
@@ -1170,13 +1170,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.ts": {
-    "mtime": 1786269752.493071,
-    "ast_hash": "10d754ca6d00389302364ac7ff3f7c0d",
+    "mtime": 1786273604.860509,
+    "ast_hash": "4ba03bd88db164d23d77c0a5acabf212",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.test.ts": {
-    "mtime": 1786269804.992722,
-    "ast_hash": "9e8b94a5a3271eb71fd695716aa4d611",
+    "mtime": 1786273536.8849614,
+    "ast_hash": "b0ea80531d2a35b8713528ec1c022419",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296660000-add-agent-run-source-thread-id.ts": {
@@ -1700,12 +1700,12 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.test.ts": {
-    "mtime": 1786269804.9931154,
+    "mtime": 1786270106.8005984,
     "ast_hash": "f3894519a326e7f760f8e12f31911e8a",
     "semantic_hash": ""
   },
   "apps/api/src/agent/backend-agent-tool-dispatcher.ts": {
-    "mtime": 1786269752.4944923,
+    "mtime": 1786270106.8007748,
     "ast_hash": "d64a08f66df55da68c31b773222f2941",
     "semantic_hash": ""
   },
@@ -3770,13 +3770,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/user-facing-agent-response.test.ts": {
-    "mtime": 1786269769.7787778,
-    "ast_hash": "e86ac85fbfef80c99ca6f3f04002526f",
+    "mtime": 1786273562.8934095,
+    "ast_hash": "dbd6195ba1148fbcf9b3da636192e5a8",
     "semantic_hash": ""
   },
   "apps/api/src/agent/user-facing-agent-response.ts": {
-    "mtime": 1786269769.7785354,
-    "ast_hash": "7c00f982b2639e01562ef2178bdd65c4",
+    "mtime": 1786273562.8930435,
+    "ast_hash": "82591ee23f1953c1cffc907110c94e67",
     "semantic_hash": ""
   }
 }

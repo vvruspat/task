@@ -409,9 +409,28 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
             content: null,
             tool_calls: [
               {
+                id: "call-project-list",
+                type: "function",
+                function: { name: "project_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
                 id: "call-task-list",
                 type: "function",
-                function: { name: "task_list", arguments: "{}" },
+                function: {
+                  name: "task_list",
+                  arguments: JSON.stringify({ projectId }),
+                },
               },
             ],
           },
@@ -456,6 +475,11 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
         },
       ],
     }),
+    successfulToolCall("project_list", {
+      kind: "project_list",
+      count: 1,
+      projects: [{ id: projectId, title: "Descent" }],
+    }),
     successfulToolCall("task_list", {
       kind: "task_list",
       projectId,
@@ -478,25 +502,31 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
 
   const result = await runtime.handleTelegramRequest({
     ...request,
-    context: { ...request.context, projectId },
+    context: { ...request.context, projectId: null },
     input: {
       ...request.input,
-      inputText: "Какие таски висят на пользователе chronolegion?",
+      inputText: "@t_ask_me_bot какие таски висят на пользователе chronolegion?",
     },
   });
 
   assert.equal(result.status, "completed");
   assert.deepEqual(
     dispatcher.calls.map((call) => call.toolName),
-    ["member_list", "task_list"],
+    ["member_list", "project_list", "task_list"],
   );
   const memberListBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
-  const taskListBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
+  const projectListBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
+  const taskListBody = parseRequestBody(fetcher.calls[2]?.init.body ?? "");
   assert.ok(isOpenRouterRequestBody(memberListBody));
+  assert.ok(isOpenRouterRequestBody(projectListBody));
   assert.ok(isOpenRouterRequestBody(taskListBody));
   assert.deepEqual(memberListBody.tool_choice, {
     type: "function",
     function: { name: "member_list" },
+  });
+  assert.deepEqual(projectListBody.tool_choice, {
+    type: "function",
+    function: { name: "project_list" },
   });
   assert.deepEqual(taskListBody.tool_choice, {
     type: "function",
@@ -505,7 +535,8 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
   assert.match(result.finalResponse ?? "", /@chronolegion/u);
   assert.match(result.finalResponse ?? "", /vladimir@example\.com/u);
   assert.doesNotMatch(result.finalResponse ?? "", /77777777|ID пользователя/u);
-  assert.equal(fetcher.calls.length, 4);
+  assert.deepEqual(dispatcher.calls[2]?.arguments, { projectId });
+  assert.equal(fetcher.calls.length, 5);
 });
 
 test("OpenRouterAgentRuntime exposes connected workspace integration tools", async () => {
