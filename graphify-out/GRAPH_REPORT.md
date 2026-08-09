@@ -1,16 +1,16 @@
 # Graph Report - task  (2026-08-09)
 
 ## Corpus Check
-- 753 files · ~353,469 words
+- 753 files · ~353,500 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 6503 nodes · 15472 edges · 242 communities (229 shown, 13 thin omitted)
+- 6503 nodes · 15472 edges · 241 communities (227 shown, 14 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 22 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `feea769b`
+- Built from commit: `72f562f8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -239,7 +239,6 @@
 - [[_COMMUNITY_Community 227|Community 227]]
 - [[_COMMUNITY_Community 228|Community 228]]
 - [[_COMMUNITY_Community 229|Community 229]]
-- [[_COMMUNITY_Community 230|Community 230]]
 - [[_COMMUNITY_Community 231|Community 231]]
 - [[_COMMUNITY_Community 232|Community 232]]
 - [[_COMMUNITY_Community 233|Community 233]]
@@ -277,7 +276,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (242 total, 13 thin omitted)
+## Communities (241 total, 14 thin omitted)
 
 ### Community 0 - "Database Schema Reference"
 Cohesion: 0.11
@@ -465,7 +464,7 @@ Nodes (15): NotificationFeed, NotificationItem, NotificationKind, TaskSubscripti
 
 ### Community 51 - "Database Schema Migrations"
 Cohesion: 0.11
-Nodes (10): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateAgentRunTables1783296420000, CreateConfirmationRequestsTable1783296480000, AddAgentRunSourceThreadId1783296660000, AddCommentAgentRun1783297200000, addCommentAgentRunSql, dropCommentAgentRunSql (+2 more)
+Nodes (10): CreateCorePersistenceTables1783296000000, executeMigrationQueries(), CreateProjectsTable1783296060000, CreateAgentRunTables1783296420000, AddAgentRunSourceThreadId1783296660000, AddTaskNotifications1783297260000, addTaskNotificationsSql, dropTaskNotificationsSql (+2 more)
 
 ### Community 52 - "Task Skills API"
 Cohesion: 0.08
@@ -573,7 +572,7 @@ Nodes (7): description, license, name, packageManager, private, version, workspa
 
 ### Community 78 - "Workspace Interaction UI"
 Cohesion: 0.15
-Nodes (10): createCorePersistenceTablesSql, dropCorePersistenceTablesSql, MigrationQueryExecutor, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql, refreshDefaultProjectStatusesSql, restoreDefaultProjectStatusesSql, lightenBacklogStatusColorSql (+2 more)
+Nodes (10): createCorePersistenceTablesSql, dropCorePersistenceTablesSql, MigrationQueryExecutor, createProjectsTableSql, dropProjectsTableSql, refreshDefaultProjectStatusesSql, restoreDefaultProjectStatusesSql, addEmailInvitationsSql (+2 more)
 
 ### Community 79 - "Workspace API Contracts"
 Cohesion: 0.04
@@ -589,7 +588,7 @@ Nodes (35): SearchInput, SearchPage, SearchResult, SearchResultType, searchResul
 
 ### Community 82 - "OpenRouter Runtime Execution"
 Cohesion: 0.07
-Nodes (26): ParsedIssueIdentifier, parseIssueIdentifier(), AddTaskSubtasksInput, BulkUpdateTasksInput, CreateTaskInput, ListTaskTableInput, MoveTaskInput, UpdateTaskAssigneeInput (+18 more)
+Nodes (30): ParsedIssueIdentifier, parseIssueIdentifier(), AddTaskSubtasksInput, BulkUpdateTasksInput, CreateTaskInput, ListTaskTableInput, MoveTaskInput, TaskTableSortDirection (+22 more)
 
 ### Community 83 - "Saved View Route Validation"
 Cohesion: 0.20
@@ -600,16 +599,16 @@ Cohesion: 0.24
 Nodes (11): agentChatPath(), agentChatsPath(), agentRunPath(), confirmationRequestPath(), encodePathSegment(), savedViewPath(), savedViewsPath(), taskPath() (+3 more)
 
 ### Community 85 - "Telegram Message Sending"
-Cohesion: 0.08
-Nodes (33): normalizeBaseUrl(), createTelegramBackendClient(), createTelegramBotRuntime(), createTelegramBotRuntimeFromEnvironment(), CreateTelegramBotRuntimeFromEnvironmentOptions, CreateTelegramBotRuntimeOptions, environment, RecordingTelegramBotApiFetch (+25 more)
+Cohesion: 0.09
+Nodes (25): environment, RecordingTelegramBotApiFetch, telegramUpdate, createSendMessageBody(), isUnknownRecord(), readInlineKeyboardButtonText(), readInlineKeyboardCallbackData(), readMessageId() (+17 more)
 
 ### Community 86 - "Agent Artifact Formatting"
 Cohesion: 0.12
 Nodes (5): WorkspacesController, WorkspaceDetailDto, WorkspaceMemberDto, WorkspaceSummaryDto, WorkspacesService
 
 ### Community 87 - "Telegram Bot Bootstrap"
-Cohesion: 0.07
-Nodes (43): TelegramBackendClientError, TelegramBotConfig, createReply(), TelegramInlineKeyboardButton, TelegramInlineKeyboardMarkup, TelegramMessageHandlerAction, TelegramMessageHandlerOptions, TelegramResolvedContext (+35 more)
+Cohesion: 0.05
+Nodes (62): normalizeBaseUrl(), formatInvalidValue(), parseBackendBaseUrl(), parsePort(), createTelegramBackendClient(), TelegramBackendClientError, InvalidTelegramBotEnvironmentError, loadTelegramBotConfig() (+54 more)
 
 ### Community 88 - "Issue Detail Navigation"
 Cohesion: 0.08
@@ -664,8 +663,8 @@ Cohesion: 0.07
 Nodes (27): AgentChatsController, AgentChatSummary, AgentRunDetail, AgentRunIntakeResponse, AgentRunSummary, AgentController, AgentChatSummaryDto, AgentRunDetailDto (+19 more)
 
 ### Community 102 - "Confirmation Persistence Store"
-Cohesion: 0.11
-Nodes (30): collectTaskHierarchyIds(), TaskHierarchyNode, ListActiveTasksInput, TaskDetail, TaskTablePage, TaskTableSortDirection, TaskTableSortField, taskTableSortFields (+22 more)
+Cohesion: 0.14
+Nodes (23): collectTaskHierarchyIds(), TaskHierarchyNode, ListActiveTasksInput, TaskDetail, TaskTablePage, archivedAt, createdAt, taskSummary (+15 more)
 
 ### Community 103 - "API Response Type Guards"
 Cohesion: 0.07
@@ -780,8 +779,8 @@ Cohesion: 0.13
 Nodes (14): Agent rules, API and OpenAPI, Async and data consistency, Atomicity, Error handling, Git hygiene, graphify, Reuse and boundaries (+6 more)
 
 ### Community 133 - "TypeORM Project Store"
-Cohesion: 0.13
-Nodes (28): AddTaskSubtaskInput, AddTaskSubtaskDto, isTaskTableSortField(), isUnknownRecord(), parseAddTaskSubtaskInput(), ParseAddTaskSubtasksBodyPipe, parseAddTaskSubtasksInput(), ParseBulkUpdateTasksBodyPipe (+20 more)
+Cohesion: 0.10
+Nodes (31): AddTaskSubtaskInput, AddTaskSubtaskDto, isTaskTableSortField(), isUnknownRecord(), parseAddTaskSubtaskInput(), ParseAddTaskSubtasksBodyPipe, parseAddTaskSubtasksInput(), ParseBulkUpdateTasksBodyPipe (+23 more)
 
 ### Community 134 - "Workspace Creation API Route"
 Cohesion: 0.20
@@ -945,7 +944,7 @@ Nodes (24): ApiDataSourceProvider, accessError(), GoogleDriveAccessError, Google
 
 ### Community 179 - "Community 179"
 Cohesion: 0.12
-Nodes (8): RepairCommentTimestamps1783297140000, repairCommentTimestampsSql, AddEmailPasswordAuth1783297680000, addEmailPasswordAuthSql, dropEmailPasswordAuthSql, AddTelegramChatHistoryAccess1783298400000, apiEntities, apiMigrations
+Nodes (9): createWorkspaceIntegrationsSql, CreateWorkspaceIntegrationsTable1783297920000, dropWorkspaceIntegrationsSql, AddIntegrationHealthIndexes1783298280000, addIntegrationHealthIndexesQueries, dropIntegrationHealthIndexesQueries, AddTelegramChatHistoryAccess1783298400000, apiEntities (+1 more)
 
 ### Community 180 - "Community 180"
 Cohesion: 0.52
@@ -992,12 +991,12 @@ Cohesion: 0.07
 Nodes (42): SaveState, TelegramChatSettings(), WorkspaceDangerZoneProps, AgentDrawer, changeWorkspace(), CreateDialog, navigation, NavItem (+34 more)
 
 ### Community 191 - "Community 191"
-Cohesion: 0.23
-Nodes (11): formatInvalidValue(), parseBackendBaseUrl(), parsePort(), InvalidTelegramBotEnvironmentError, loadTelegramBotConfig(), parseBotUsername(), parseOptionalSecret(), parseRequiredSecret() (+3 more)
+Cohesion: 0.38
+Nodes (3): CreateConfirmationRequestsTable1783296480000, createConfirmationRequestsTableSql, dropConfirmationRequestsTableSql
 
 ### Community 192 - "Community 192"
 Cohesion: 0.38
-Nodes (3): CreateProjectsTable1783296060000, createProjectsTableSql, dropProjectsTableSql
+Nodes (3): AddCommentAgentRun1783297200000, addCommentAgentRunSql, dropCommentAgentRunSql
 
 ### Community 193 - "Community 193"
 Cohesion: 0.38
@@ -1005,7 +1004,7 @@ Nodes (3): CreateTasksTable1783296120000, createTasksTableSql, dropTasksTableSql
 
 ### Community 194 - "Community 194"
 Cohesion: 0.38
-Nodes (3): AddEmailInvitations1783297800000, addEmailInvitationsSql, removeEmailInvitationsSql
+Nodes (3): LightenBacklogStatusColor1783297620000, lightenBacklogStatusColorSql, restoreBacklogStatusColorSql
 
 ### Community 195 - "Community 195"
 Cohesion: 0.38
@@ -1089,19 +1088,19 @@ Nodes (3): AddCommentRepliesAndMentions1783297080000, addCommentRepliesAndMentio
 
 ### Community 216 - "Community 216"
 Cohesion: 0.38
-Nodes (3): createWorkspaceIntegrationsSql, CreateWorkspaceIntegrationsTable1783297920000, dropWorkspaceIntegrationsSql
+Nodes (3): AddEmailPasswordAuth1783297680000, addEmailPasswordAuthSql, dropEmailPasswordAuthSql
 
 ### Community 217 - "Community 217"
 Cohesion: 0.38
 Nodes (3): CreateIntegrationConnections1783298040000, createIntegrationConnectionsSql, dropIntegrationConnectionsSql
 
 ### Community 218 - "Community 218"
-Cohesion: 0.15
-Nodes (9): CreateAgentChats1783297380000, createAgentChatsSql, dropAgentChatsSql, AllowMultipleIntegrationConnections1783298340000, allowMultipleIntegrationConnectionsQueries, restoreSingleIntegrationConnectionQueries, createApiDataSource(), createTypeOrmDataSourceOptions() (+1 more)
+Cohesion: 0.38
+Nodes (3): CreateAgentChats1783297380000, createAgentChatsSql, dropAgentChatsSql
 
 ### Community 219 - "Community 219"
 Cohesion: 0.38
-Nodes (3): AddTaskNotifications1783297260000, addTaskNotificationsSql, dropTaskNotificationsSql
+Nodes (3): AllowMultipleIntegrationConnections1783298340000, allowMultipleIntegrationConnectionsQueries, restoreSingleIntegrationConnectionQueries
 
 ### Community 220 - "Community 220"
 Cohesion: 0.38
@@ -1116,8 +1115,8 @@ Cohesion: 0.09
 Nodes (18): TaskSkillSummary, TaskSkillSummaryDto, applyPreview, applyResult, archivedAt, archivedTaskSkillDetail, cloneInput, createdAt (+10 more)
 
 ### Community 223 - "Community 223"
-Cohesion: 0.38
-Nodes (3): allowMissingTaskStatusesSql, RequireTaskStatuses1783297500000, requireTaskStatusesSql
+Cohesion: 0.15
+Nodes (9): allowMissingTaskStatusesSql, RequireTaskStatuses1783297500000, requireTaskStatusesSql, CreateTelegramChatMessages1783298460000, createTelegramChatMessagesQueries, dropTelegramChatMessagesQueries, createApiDataSource(), createTypeOrmDataSourceOptions() (+1 more)
 
 ### Community 224 - "Community 224"
 Cohesion: 0.38
@@ -1130,14 +1129,6 @@ Nodes (3): CreateIntegrationMcpToolCalls1783298220000, createIntegrationMcpToolC
 ### Community 228 - "Community 228"
 Cohesion: 0.70
 Nodes (3): cyrillicToLatin, deriveProjectKeyBase(), selectAvailableProjectKey()
-
-### Community 229 - "Community 229"
-Cohesion: 0.38
-Nodes (3): CreateTelegramChatMessages1783298460000, createTelegramChatMessagesQueries, dropTelegramChatMessagesQueries
-
-### Community 230 - "Community 230"
-Cohesion: 0.38
-Nodes (3): AddIntegrationHealthIndexes1783298280000, addIntegrationHealthIndexesQueries, dropIntegrationHealthIndexesQueries
 
 ### Community 231 - "Community 231"
 Cohesion: 0.60
@@ -1166,7 +1157,7 @@ Nodes (3): typecheck, dependsOn, outputs
 ## Knowledge Gaps
 - **1465 isolated node(s):** `name`, `version`, `private`, `description`, `type` (+1460 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/main.ts": {
-    "mtime": 1786229396.8720174,
-    "ast_hash": "c74209d22724ce76bb6e822a60b39ba3",
+    "mtime": 1786282679.0632467,
+    "ast_hash": "82bd3b330ca982842ccd7d643541cc8a",
     "semantic_hash": ""
   },
   "apps/api/src/openapi.ts": {
@@ -1170,13 +1170,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.ts": {
-    "mtime": 1786276750.6020663,
-    "ast_hash": "e90059e27759d73953080996d3a50d7c",
+    "mtime": 1786282721.2522676,
+    "ast_hash": "0487de05d72c3f17f9300c3640a8de82",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.test.ts": {
-    "mtime": 1786276720.4897192,
-    "ast_hash": "ef4ce42f5edcbc2e85fa27d942dcf1cb",
+    "mtime": 1786282706.5641003,
+    "ast_hash": "634c2aff62967e49c0e3ef5c722f224b",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296660000-add-agent-run-source-thread-id.ts": {
@@ -1290,8 +1290,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1786261389.6036837,
-    "ast_hash": "37c6cbabca95a4d9211ebf5242106c5a",
+    "mtime": 1786282856.0854402,
+    "ast_hash": "cee03bdf88d7129efae6210e5515bbbb",
     "semantic_hash": ""
   },
   "docs/implementation-roadmap.md": {

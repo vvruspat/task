@@ -43,15 +43,17 @@ npm run test
 
 ## Production Images
 
-Coolify builds each application from the repository checkout for the deployment commit. Configure
-the Dockerfile build pack with base directory `/` and the corresponding file:
+The current Coolify resources use raw Dockerfile builds, whose build context does not contain the
+repository checkout. Their inline Dockerfiles must match the corresponding source-of-truth file:
 
 - API: `/deploy/api.Dockerfile`
 - Telegram bot: `/deploy/bot.Dockerfile`
 - Web: `/deploy/web.Dockerfile`
 
-Do not clone the repository from inside a Dockerfile. Docker can reuse that clone layer across
-deployments and produce a healthy container with stale application code.
+Enable **Advanced → Include Source Commit in Build** for every resource. The Dockerfiles require
+Coolify's `SOURCE_COMMIT` build argument, fetch that exact SHA, and make the source layer change on
+every deployment. Do not replace that fetch with a branch-only `git clone`: Docker can reuse the
+clone layer and produce a healthy container with stale application code.
 
 When API DTOs change, regenerate and check the OpenAPI/API client contract:
 
