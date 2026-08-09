@@ -69,6 +69,9 @@ test("createTelegramBotRuntimeFromEnvironment wires backend and Telegram clients
     body: JSON.stringify({
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramUsername: "alex",
+      firstName: null,
+      lastName: null,
     }),
   });
   assert.equal(

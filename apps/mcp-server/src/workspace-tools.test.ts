@@ -32,6 +32,7 @@ const workspaceMember: WorkspaceMemberResponse = {
   role: "member",
   displayName: "Alex",
   email: null,
+  telegramUsername: "alex",
   avatarUrl: null,
   createdAt: timestamp,
   updatedAt: timestamp,
@@ -43,6 +44,7 @@ const exactWorkspaceMember: WorkspaceMemberResponse = {
   userId: "99999999-9999-4999-8999-999999999999",
   displayName: "Ali",
   email: "ali@example.com",
+  telegramUsername: "chronolegion",
 };
 
 const prefixWorkspaceMember: WorkspaceMemberResponse = {
@@ -185,7 +187,7 @@ test("workspace handlers resolve users by exact, prefix, then substring matches"
   assert.deepEqual(memberCalls, [{ workspaceId, userId }]);
 });
 
-test("workspace handlers resolve users by email and user id", async () => {
+test("workspace handlers resolve users by email and Telegram username", async () => {
   const handlers = createWorkspaceToolHandlers({
     ...createBackendClientStub(),
     listWorkspaceMembers: async (): Promise<WorkspaceMemberResponse[]> => [
@@ -201,9 +203,13 @@ test("workspace handlers resolve users by email and user id", async () => {
     await handlers.resolveUser({
       workspaceId,
       userId,
-      query: exactWorkspaceMember.userId,
+      query: "@chronolegion",
     }),
     [exactWorkspaceMember],
+  );
+  assert.deepEqual(
+    await handlers.resolveUser({ workspaceId, userId, query: exactWorkspaceMember.userId }),
+    [],
   );
 });
 

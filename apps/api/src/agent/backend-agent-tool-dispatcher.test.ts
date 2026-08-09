@@ -10,7 +10,7 @@ import {
 } from "../task-skills/task-skills.dto.js";
 import type { TaskSkillsService } from "../task-skills/task-skills.service.js";
 import { TaskDetailDto } from "../tasks/tasks.dto.js";
-import { WorkspaceDetailDto } from "../workspaces/workspaces.dto.js";
+import { WorkspaceDetailDto, WorkspaceMemberDto } from "../workspaces/workspaces.dto.js";
 import {
   BackendAgentToolOperationDispatcher,
   findMatchingTaskSkills,
@@ -1073,6 +1073,7 @@ test("BackendAgentToolOperationDispatcher resolves an inflected member name and 
             role: "member",
             displayName: "Марина Орлова",
             email: "marina@example.local",
+            telegramUsername: "marina_orlova",
             avatarUrl: null,
             createdAt: now,
             updatedAt: now,
@@ -1097,8 +1098,9 @@ test("BackendAgentToolOperationDispatcher resolves an inflected member name and 
     id: taskId,
     projectId,
     taskId,
-    assigneeUserId: marinaUserId,
     assigneeName: "Марина Орлова",
+    assigneeEmail: "marina@example.local",
+    assigneeTelegramUsername: "marina_orlova",
     workspaceId,
   });
   assert.deepEqual(calls, [
@@ -1117,8 +1119,108 @@ test("findMatchingWorkspaceMembers matches Russian grammatical endings", () => {
     userId: marinaUserId,
     displayName: "Марина Орлова",
     email: "marina@example.local",
+    telegramUsername: "marina_orlova",
   };
   assert.deepEqual(findMatchingWorkspaceMembers([marina], "марину орлову"), [marina]);
+  assert.deepEqual(findMatchingWorkspaceMembers([marina], "@marina_orlova"), [marina]);
+  assert.deepEqual(findMatchingWorkspaceMembers([marina], marinaUserId), []);
+});
+
+test("BackendAgentToolOperationDispatcher searches members and humanizes task assignees", async () => {
+  const member = new WorkspaceMemberDto({
+    id: "99999999-9999-4999-8999-999999999999",
+    workspaceId,
+    userId: marinaUserId,
+    role: "member",
+    displayName: "Марина Орлова",
+    email: "marina@example.local",
+    telegramUsername: "marina_orlova",
+    avatarUrl: null,
+    createdAt: now,
+    updatedAt: now,
+  });
+  const dispatcher = new BackendAgentToolOperationDispatcher(
+    {
+      async createProject() {
+        throw new Error("Unexpected project call.");
+      },
+    },
+    {
+      async addTaskSubtasks() {
+        throw new Error("Unexpected subtask call.");
+      },
+      async createTask() {
+        throw new Error("Unexpected task create call.");
+      },
+      async listActiveTasks() {
+        return [
+          new TaskDetailDto({
+            ...taskDetail("Запись барабанов", null),
+            assigneeUserId: marinaUserId,
+          }),
+        ];
+      },
+    },
+    emptyTaskSkillsService(),
+    {
+      async listMembers() {
+        return [member];
+      },
+    },
+  );
+  const context = { workspaceId, userId, projectId };
+
+  const search = await dispatcher.dispatchToolCall(
+    {
+      callId: "call-member-search",
+      toolName: "member_search",
+      arguments: { query: "@marina_orlova" },
+    },
+    context,
+  );
+  const taskList = await dispatcher.dispatchToolCall(
+    { callId: "call-task-list", toolName: "task_list", arguments: {} },
+    context,
+  );
+
+  assert.deepEqual(search.result, {
+    kind: "member_search_results",
+    query: "@marina_orlova",
+    count: 1,
+    members: [
+      {
+        displayName: "Марина Орлова",
+        email: "marina@example.local",
+        telegramUsername: "marina_orlova",
+        role: "member",
+      },
+    ],
+  });
+  assert.deepEqual(taskList.result?.["tasks"], [
+    {
+      id: taskId,
+      number: 1,
+      parentTaskId: null,
+      title: "Запись барабанов",
+      description: null,
+      statusId: null,
+      assignee: {
+        displayName: "Марина Орлова",
+        email: "marina@example.local",
+        telegramUsername: "marina_orlova",
+        role: "member",
+      },
+      dueAt: null,
+    },
+  ]);
+  assert.doesNotMatch(
+    JSON.stringify(search.result),
+    /userId|88888888-8888-4888-8888-888888888888/u,
+  );
+  assert.doesNotMatch(
+    JSON.stringify(taskList.result),
+    /assigneeUserId|88888888-8888-4888-8888-888888888888/u,
+  );
 });
 
 test("BackendAgentToolOperationDispatcher updates task fields, status, due date, and links", async () => {

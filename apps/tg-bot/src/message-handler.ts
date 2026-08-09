@@ -80,6 +80,9 @@ export async function handleTelegramMessage(
       body: {
         telegramId: message.sender.telegramId,
         telegramChatId: message.chat.telegramChatId,
+        telegramUsername: message.sender.username,
+        firstName: message.sender.firstName,
+        lastName: message.sender.lastName,
       },
     });
   } catch (error) {

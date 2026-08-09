@@ -1544,6 +1544,8 @@ export interface components {
       displayName: string;
       /** @example alex@example.com */
       email?: string | null;
+      /** @example alex */
+      telegramUsername?: string | null;
       /** @example https://example.com/avatar.png */
       avatarUrl?: string | null;
       /** Format: date-time */
@@ -2686,6 +2688,12 @@ export interface components {
       telegramId: string;
       /** @example -100987654321 */
       telegramChatId: string;
+      /** @example alex */
+      telegramUsername?: string | null;
+      /** @example Alex */
+      firstName?: string | null;
+      /** @example Smith */
+      lastName?: string | null;
     };
     TelegramContextResolutionDto: {
       /** @enum {string} */
@@ -2759,6 +2767,12 @@ export interface components {
       telegramId: string;
       /** @example 1720468800 */
       authDate: string;
+      /** @example alex */
+      telegramUsername?: string | null;
+      /** @example Alex */
+      firstName?: string | null;
+      /** @example Smith */
+      lastName?: string | null;
     };
     LinkedTelegramIdentityDto: {
       /** @example 123456789 */
@@ -2787,7 +2801,14 @@ export interface components {
       /** @enum {string} */
       subGrouping: "none" | "status" | "project" | "parent_task";
       /** @enum {string} */
-      ordering: "manual" | "title" | "status" | "created_at" | "updated_at" | "due_at";
+      ordering:
+        | "manual"
+        | "title"
+        | "parent_task_title"
+        | "status"
+        | "created_at"
+        | "updated_at"
+        | "due_at";
       /** @enum {string} */
       orderDirection: "asc" | "desc";
       showSubtasks: boolean;

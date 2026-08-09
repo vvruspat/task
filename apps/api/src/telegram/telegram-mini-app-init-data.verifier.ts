@@ -18,10 +18,16 @@ export type TelegramMiniAppInitDataVerifierConfig = {
 
 type WebAppUserRecord = {
   id: string;
+  telegramUsername: string | null;
+  firstName: string | null;
+  lastName: string | null;
 };
 
 type WebAppUserPayload = {
   id?: unknown;
+  username?: unknown;
+  first_name?: unknown;
+  last_name?: unknown;
 };
 
 const initDataSecretKey = "WebAppData";
@@ -52,6 +58,9 @@ export class TelegramMiniAppInitDataVerifier {
     return {
       telegramId: user.id,
       authDate,
+      telegramUsername: user.telegramUsername,
+      firstName: user.firstName,
+      lastName: user.lastName,
     };
   }
 }
@@ -139,7 +148,35 @@ function readWebAppUser(value: string): WebAppUserRecord {
 
   return {
     id: String(id),
+    telegramUsername: readOptionalTelegramUsername(parsed.username),
+    firstName: readOptionalTelegramName(parsed.first_name, "first_name"),
+    lastName: readOptionalTelegramName(parsed.last_name, "last_name"),
   };
+}
+
+function readOptionalTelegramUsername(value: unknown): string | null {
+  if (value === undefined) return null;
+  if (typeof value !== "string" || !/^[A-Za-z0-9_]{1,64}$/u.test(value)) {
+    throw new BadRequestException("Telegram Mini App user username is invalid.");
+  }
+  return value;
+}
+
+function readOptionalTelegramName(
+  value: unknown,
+  field: "first_name" | "last_name",
+): string | null {
+  if (value === undefined) return null;
+  if (typeof value !== "string") {
+    throw new BadRequestException(`Telegram Mini App user ${field} must be a string.`);
+  }
+  const normalized = value.trim();
+  if (normalized.length === 0 || normalized.length > 128) {
+    throw new BadRequestException(
+      `Telegram Mini App user ${field} must contain between 1 and 128 characters.`,
+    );
+  }
+  return normalized;
 }
 
 function isWebAppUserPayload(value: unknown): value is WebAppUserPayload {

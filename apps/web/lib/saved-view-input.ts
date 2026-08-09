@@ -60,6 +60,7 @@ function isOrdering(value: unknown): boolean {
   return (
     value === "manual" ||
     value === "title" ||
+    value === "parent_task_title" ||
     value === "status" ||
     value === "created_at" ||
     value === "updated_at" ||

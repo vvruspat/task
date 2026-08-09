@@ -150,6 +150,35 @@ test("AgentService carries Telegram topic identity and selected project into the
   assert.equal(store.lastPersistInput?.sourceThreadId, "-100987654321:topic:17");
 });
 
+test("AgentService never persists or returns visible UUIDs from agent responses", async () => {
+  const store = new RecordingAgentRunStore({
+    status: "resolved",
+    conversationHistoryAccess: true,
+    workspaceId: "22222222-2222-4222-8222-222222222222",
+    userId: "33333333-3333-4333-8333-333333333333",
+  });
+  const runtime = new RecordingAgentRuntime({
+    model: "openai/gpt-4.1-mini",
+    normalizedIntent: null,
+    finalResponse:
+      "Исполнитель 34755276-06a2-4133-b263-361d6efd7123: [задача ZNA-26](/tasks/55555555-5555-4555-8555-555555555555)",
+    status: "completed",
+    tokenUsage: null,
+    cost: null,
+    error: null,
+    toolCalls: [],
+  });
+  const service = new AgentService(store, runtime, createConfirmationsService());
+
+  const response = await service.createTelegramRun(input);
+
+  assert.equal(
+    response.responseText,
+    "Исполнитель [служебный идентификатор скрыт]: [задача ZNA-26](/tasks/55555555-5555-4555-8555-555555555555)",
+  );
+  assert.equal(store.lastPersistInput?.runtimeResult.finalResponse, response.responseText);
+});
+
 test("AgentService does not load Telegram conversation history when chat access is disabled", async () => {
   const store = new RecordingAgentRunStore({
     status: "resolved",

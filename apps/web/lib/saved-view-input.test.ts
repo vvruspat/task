@@ -27,6 +27,10 @@ test("saved view input boundary accepts matrix creates and updates", () => {
   );
   assert.equal(isUpdateSavedViewInput({ layout: "matrix" }), true);
   assert.equal(isUpdateSavedViewInput({ visibility: "private" }), true);
+  assert.equal(
+    isUpdateSavedViewInput({ settings: { ...settings, ordering: "parent_task_title" } }),
+    true,
+  );
 });
 
 test("saved view input boundary rejects unsupported layouts", () => {

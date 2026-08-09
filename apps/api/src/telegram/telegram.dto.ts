@@ -30,6 +30,15 @@ export class ResolveTelegramContextDto implements ResolveTelegramContextInput {
 
   @ApiProperty({ example: "-100987654321" })
   readonly telegramChatId: string = "";
+
+  @ApiPropertyOptional({ example: "alex", nullable: true, type: String })
+  readonly telegramUsername?: string | null;
+
+  @ApiPropertyOptional({ example: "Alex", nullable: true, type: String })
+  readonly firstName?: string | null;
+
+  @ApiPropertyOptional({ example: "Smith", nullable: true, type: String })
+  readonly lastName?: string | null;
 }
 
 export class ParseResolveTelegramContextBodyPipe
@@ -187,9 +196,21 @@ export class VerifiedTelegramMiniAppInitDataDto implements VerifiedTelegramMiniA
   @ApiProperty({ example: "1720468800" })
   readonly authDate: string;
 
+  @ApiPropertyOptional({ example: "alex", nullable: true, type: String })
+  readonly telegramUsername: string | null;
+
+  @ApiPropertyOptional({ example: "Alex", nullable: true, type: String })
+  readonly firstName: string | null;
+
+  @ApiPropertyOptional({ example: "Smith", nullable: true, type: String })
+  readonly lastName: string | null;
+
   constructor(result: VerifiedTelegramMiniAppInitData) {
     this.telegramId = result.telegramId;
     this.authDate = result.authDate;
+    this.telegramUsername = result.telegramUsername;
+    this.firstName = result.firstName;
+    this.lastName = result.lastName;
   }
 }
 
@@ -231,6 +252,20 @@ function parseResolveTelegramContextInput(value: unknown): ResolveTelegramContex
   return {
     telegramId: readTelegramId(value, "telegramId", telegramUserIdPattern),
     telegramChatId: readTelegramId(value, "telegramChatId", telegramChatIdPattern),
+    ...readOptionalTelegramIdentityFields(value),
+  };
+}
+
+function readOptionalTelegramIdentityFields(
+  value: Record<string, unknown>,
+): Pick<ResolveTelegramContextInput, "telegramUsername" | "firstName" | "lastName"> {
+  const telegramUsername = readOptionalTelegramUsername(value, "telegramUsername");
+  const firstName = readOptionalNullableTrimmedString(value, "firstName", 128);
+  const lastName = readOptionalNullableTrimmedString(value, "lastName", 128);
+  return {
+    ...(telegramUsername === undefined ? {} : { telegramUsername }),
+    ...(firstName === undefined ? {} : { firstName }),
+    ...(lastName === undefined ? {} : { lastName }),
   };
 }
 
@@ -353,6 +388,37 @@ function readOptionalTelegramId(
     throw new BadRequestException(`Telegram ${propertyName} must be an integer string or null.`);
   }
   return propertyValue;
+}
+
+function readOptionalTelegramUsername(
+  value: Record<string, unknown>,
+  propertyName: string,
+): string | null | undefined {
+  const propertyValue = value[propertyName];
+  if (propertyValue === undefined || propertyValue === null) return propertyValue;
+  if (typeof propertyValue !== "string" || !/^[A-Za-z0-9_]{1,64}$/u.test(propertyValue)) {
+    throw new BadRequestException(`Telegram ${propertyName} is invalid.`);
+  }
+  return propertyValue;
+}
+
+function readOptionalNullableTrimmedString(
+  value: Record<string, unknown>,
+  propertyName: string,
+  maxLength: number,
+): string | null | undefined {
+  const propertyValue = value[propertyName];
+  if (propertyValue === undefined || propertyValue === null) return propertyValue;
+  if (
+    typeof propertyValue !== "string" ||
+    propertyValue.trim().length === 0 ||
+    propertyValue.length > maxLength
+  ) {
+    throw new BadRequestException(
+      `Telegram ${propertyName} must be a non-empty string up to ${maxLength} characters or null.`,
+    );
+  }
+  return propertyValue.trim();
 }
 
 function readRequiredTrimmedString(

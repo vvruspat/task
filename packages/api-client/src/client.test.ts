@@ -42,6 +42,19 @@ test("createTaskApiClient sends trusted user context for workspace requests", as
   assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
 });
 
+test("createTaskApiClient accepts saved views ordered by parent task title", async () => {
+  const view = savedViewRecord();
+  const fetcher = new RecordingFetch(single([view]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(await client.listSavedViews({ workspaceId }), [view]);
+  assert.equal(fetcher.calls[0]?.url, `https://task.example/workspaces/${workspaceId}/views`);
+});
+
 test("createTaskApiClient manages email invitations and keeps previews public", async () => {
   const token = "a".repeat(43);
   const fetcher = new RecordingFetch(
@@ -1477,6 +1490,33 @@ function workspaceSummary(): unknown {
   };
 }
 
+function savedViewRecord(): unknown {
+  return {
+    id: taskId,
+    workspaceId,
+    userId: trustedUserId,
+    slug: "parent-task-order",
+    projectId: null,
+    name: "Parent task order",
+    description: null,
+    visibility: "private",
+    system: false,
+    layout: "list",
+    settings: {
+      grouping: "none",
+      subGrouping: "none",
+      ordering: "parent_task_title",
+      orderDirection: "asc",
+      showSubtasks: true,
+      showEmptyGroups: false,
+      displayProperties: ["status"],
+      filters: [],
+    },
+    createdAt: "2026-07-08T10:00:00.000Z",
+    updatedAt: "2026-07-08T10:00:00.000Z",
+  };
+}
+
 function workspaceMember(): unknown {
   return workspaceMemberRecord();
 }
@@ -1488,6 +1528,7 @@ function workspaceMemberRecord(): {
   email: null;
   id: string;
   role: string;
+  telegramUsername: string;
   updatedAt: string;
   userId: string;
   workspaceId: string;
@@ -1499,6 +1540,7 @@ function workspaceMemberRecord(): {
     role: "owner",
     displayName: "Alex",
     email: null,
+    telegramUsername: "alex",
     avatarUrl: null,
     createdAt: "2026-07-08T10:00:00.000Z",
     updatedAt: "2026-07-08T10:00:00.000Z",

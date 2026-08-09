@@ -58,6 +58,26 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
       return { status: "telegram_user_unlinked" };
     }
 
+    let identityChanged = false;
+    if (
+      input.telegramUsername !== undefined &&
+      identity.telegramUsername !== input.telegramUsername
+    ) {
+      identity.telegramUsername = input.telegramUsername;
+      identityChanged = true;
+    }
+    if (input.firstName !== undefined && identity.firstName !== input.firstName) {
+      identity.firstName = input.firstName;
+      identityChanged = true;
+    }
+    if (input.lastName !== undefined && identity.lastName !== input.lastName) {
+      identity.lastName = input.lastName;
+      identityChanged = true;
+    }
+    if (identityChanged) {
+      await dataSource.getRepository(TelegramIdentityEntity).save(identity);
+    }
+
     const chat = await dataSource.getRepository(TelegramChatEntity).findOneBy({
       telegramChatId: input.telegramChatId,
     });
@@ -219,6 +239,15 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
           };
         }
 
+        if (input.telegramUsername !== undefined) {
+          identity.telegramUsername = input.telegramUsername;
+        }
+        if (input.firstName !== undefined) {
+          identity.firstName = input.firstName;
+        }
+        if (input.lastName !== undefined) {
+          identity.lastName = input.lastName;
+        }
         identity.lastSeenAt = now;
         await identityRepository.save(identity);
 
@@ -234,6 +263,9 @@ export class TypeOrmTelegramContextStore implements TelegramContextStore {
       const linkedIdentity = identityRepository.create({
         userId: input.userId,
         telegramId: input.telegramId,
+        telegramUsername: input.telegramUsername ?? null,
+        firstName: input.firstName ?? null,
+        lastName: input.lastName ?? null,
         linkedAt: now,
         lastSeenAt: now,
       });

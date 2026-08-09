@@ -1,6 +1,9 @@
 export type ResolveTelegramContextInput = {
   telegramId: string;
   telegramChatId: string;
+  telegramUsername?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 };
 
 export type VerifyTelegramMiniAppInitDataInput = {
@@ -10,6 +13,9 @@ export type VerifyTelegramMiniAppInitDataInput = {
 export type VerifiedTelegramMiniAppInitData = {
   telegramId: string;
   authDate: string;
+  telegramUsername: string | null;
+  firstName: string | null;
+  lastName: string | null;
 };
 
 export type LinkTelegramMiniAppIdentityInput = {
@@ -20,6 +26,9 @@ export type LinkTelegramMiniAppIdentityInput = {
 export type LinkTelegramIdentityInput = {
   userId: string;
   telegramId: string;
+  telegramUsername?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 };
 
 export type LinkedTelegramIdentity = {

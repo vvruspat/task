@@ -119,6 +119,9 @@ export class WorkspaceMemberDto implements WorkspaceMember {
   @ApiPropertyOptional({ nullable: true, type: String, example: "alex@example.com" })
   readonly email: string | null;
 
+  @ApiPropertyOptional({ nullable: true, type: String, example: "alex" })
+  readonly telegramUsername: string | null;
+
   @ApiPropertyOptional({ nullable: true, type: String, example: "https://example.com/avatar.png" })
   readonly avatarUrl: string | null;
 
@@ -135,6 +138,7 @@ export class WorkspaceMemberDto implements WorkspaceMember {
     this.role = member.role;
     this.displayName = member.displayName;
     this.email = member.email;
+    this.telegramUsername = member.telegramUsername ?? null;
     this.avatarUrl = member.avatarUrl;
     this.createdAt = member.createdAt;
     this.updatedAt = member.updatedAt;

@@ -147,6 +147,9 @@ test("processTelegramUpdate records resolved commands and replies with agent res
     body: {
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramUsername: "alex",
+      firstName: null,
+      lastName: null,
     },
   });
   assert.deepEqual(backendClient.lastAgentRunRequest, {

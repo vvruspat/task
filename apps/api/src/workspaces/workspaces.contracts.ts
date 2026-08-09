@@ -15,6 +15,7 @@ export type WorkspaceMember = {
   role: WorkspaceMemberRole;
   displayName: string;
   email: string | null;
+  telegramUsername?: string | null;
   avatarUrl: string | null;
   createdAt: Date;
   updatedAt: Date;

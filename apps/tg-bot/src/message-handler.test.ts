@@ -50,6 +50,9 @@ test("handleTelegramUpdate resolves Telegram context with stable identifiers", a
     body: {
       telegramId: "123456789",
       telegramChatId: "-100987654321",
+      telegramUsername: "alex",
+      firstName: null,
+      lastName: null,
     },
   });
 

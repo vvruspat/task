@@ -22,9 +22,14 @@ import {
   AgentRunIntakeResponseDto,
   AgentRunSummaryDto,
 } from "./agent.dto.js";
-import type { AgentRuntime, AgentRuntimeProgressReporter } from "./agent.runtime.js";
+import type {
+  AgentRuntime,
+  AgentRuntimeProgressReporter,
+  AgentRuntimeResult,
+} from "./agent.runtime.js";
 import { agentRuntimeNotConnectedResponse } from "./agent.runtime.js";
 import type { AgentRunStore } from "./agent.store.js";
+import { sanitizeUserFacingAgentResponse } from "./user-facing-agent-response.js";
 
 const maxPendingConfirmationRequestsInIntakeResponse = 5;
 
@@ -70,18 +75,20 @@ export class AgentService {
       }
     }
 
-    const runtimeResult = await this.agentRuntime.handleTelegramRequest({
-      input,
-      context: {
-        workspaceId: context.workspaceId,
-        userId: context.userId,
-        projectId: context.defaultProjectId ?? null,
-        telegramChatId: input.telegramChatId,
-        telegramThreadId: input.telegramThreadId ?? null,
-        telegramMessageId: input.sourceMessageId ?? null,
-      },
-      conversation: [{ role: "user", content: input.inputText }],
-    });
+    const runtimeResult = sanitizeAgentRuntimeResult(
+      await this.agentRuntime.handleTelegramRequest({
+        input,
+        context: {
+          workspaceId: context.workspaceId,
+          userId: context.userId,
+          projectId: context.defaultProjectId ?? null,
+          telegramChatId: input.telegramChatId,
+          telegramThreadId: input.telegramThreadId ?? null,
+          telegramMessageId: input.sourceMessageId ?? null,
+        },
+        conversation: [{ role: "user", content: input.inputText }],
+      }),
+    );
     const run = await this.agentRunStore.createTelegramRun({
       workspaceId: context.workspaceId,
       userId: context.userId,
@@ -104,16 +111,18 @@ export class AgentService {
     }
     const lastUserMessage = input.messages.at(-1);
     if (lastUserMessage === undefined) throw new NotFoundException("Agent message was not found.");
-    const runtimeResult = await this.agentRuntime.handleTelegramRequest({
-      input: {
-        telegramId: "web",
-        telegramChatId: "web",
-        inputText: lastUserMessage.content,
-        attachments: [],
-      },
-      context: { workspaceId, userId, projectId: input.projectId ?? null },
-      conversation: input.messages,
-    });
+    const runtimeResult = sanitizeAgentRuntimeResult(
+      await this.agentRuntime.handleTelegramRequest({
+        input: {
+          telegramId: "web",
+          telegramChatId: "web",
+          inputText: lastUserMessage.content,
+          attachments: [],
+        },
+        context: { workspaceId, userId, projectId: input.projectId ?? null },
+        conversation: input.messages,
+      }),
+    );
     const run = await this.agentRunStore.createWebRun({
       workspaceId,
       userId,
@@ -154,17 +163,19 @@ export class AgentService {
       })) ?? []),
       { role: "user", content: input.message },
     ];
-    const runtimeResult = await this.agentRuntime.handleTelegramRequest({
-      input: {
-        telegramId: "web",
-        telegramChatId: "web",
-        inputText: input.message,
-        attachments: [],
-      },
-      context: { workspaceId, userId, projectId: input.projectId ?? null },
-      conversation: messages,
-      ...(onProgress === undefined ? {} : { onProgress }),
-    });
+    const runtimeResult = sanitizeAgentRuntimeResult(
+      await this.agentRuntime.handleTelegramRequest({
+        input: {
+          telegramId: "web",
+          telegramChatId: "web",
+          inputText: input.message,
+          attachments: [],
+        },
+        context: { workspaceId, userId, projectId: input.projectId ?? null },
+        conversation: messages,
+        ...(onProgress === undefined ? {} : { onProgress }),
+      }),
+    );
     const webRuntimeResult = {
       ...runtimeResult,
       normalizedIntent: {
@@ -223,7 +234,10 @@ export class AgentService {
       messages: detail.messages.map((message) => ({
         id: message.id,
         role: message.role,
-        content: message.content,
+        content:
+          message.role === "assistant"
+            ? sanitizeUserFacingAgentResponse(message.content)
+            : message.content,
         createdAt: message.createdAt.toISOString(),
       })),
     });
@@ -313,7 +327,10 @@ export class AgentService {
       source: run.source,
       sourceMessageId: run.sourceMessageId,
       status: run.status,
-      responseText: run.finalResponse ?? agentRuntimeNotConnectedResponse,
+      responseText:
+        run.finalResponse === null
+          ? agentRuntimeNotConnectedResponse
+          : sanitizeUserFacingAgentResponse(run.finalResponse),
       pendingConfirmationRequests: pendingConfirmationRequests.map((request) => ({
         id: request.id,
         kind: request.kind,
@@ -355,6 +372,15 @@ function createFallbackChatTitle(message: string): string {
   const compact = message.replace(/\s+/gu, " ").trim();
   if (compact.length <= 64) return compact;
   return `${compact.slice(0, 61).trimEnd()}…`;
+}
+
+function sanitizeAgentRuntimeResult(result: AgentRuntimeResult): AgentRuntimeResult {
+  return result.finalResponse === null
+    ? result
+    : {
+        ...result,
+        finalResponse: sanitizeUserFacingAgentResponse(result.finalResponse),
+      };
 }
 
 function mapAgentChatSummary(chat: {
@@ -423,7 +449,8 @@ function mapAgentRunToSummaryValue(run: {
     sourceMessageId: run.sourceMessageId,
     model: run.model,
     inputText: run.inputText,
-    finalResponse: run.finalResponse,
+    finalResponse:
+      run.finalResponse === null ? null : sanitizeUserFacingAgentResponse(run.finalResponse),
     status: run.status,
     error: run.error,
     createdAt: run.createdAt.toISOString(),
