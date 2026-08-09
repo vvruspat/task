@@ -227,6 +227,12 @@ consume the token. Completion atomically creates or updates the `telegram_chats`
 active integration connection keyed by the stable Telegram chat ID, marks the installation
 connected, consumes the token, and publishes `integration.connected.v1`.
 
+A bare `/connect` command creates a separate one-time browser intent bound to the command sender and
+chat. Telegram's signed login data and the tAsk web session are both verified before completion. If
+the chat is already connected, its workspace is fixed and any member of that workspace can link
+their own Telegram identity without seeing a selector. Only an unconnected chat asks an owner or
+administrator to select one of their workspaces with an installed Telegram integration.
+
 The bot submits connection commands through the bot-shared-secret API boundary. Normal Telegram
 context resolution now also requires the matching Telegram integration and connection to remain
 active, in addition to the existing user identity and workspace membership checks.

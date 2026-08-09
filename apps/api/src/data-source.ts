@@ -33,6 +33,7 @@ import {
   TaskSubscriptionEntity,
   TelegramChatEntity,
   TelegramChatMessageEntity,
+  TelegramConnectIntentEntity,
   TelegramIdentityEntity,
   UserEntity,
   WorkspaceEntity,
@@ -81,6 +82,7 @@ import { AddIntegrationHealthIndexes1783298280000 } from "./persistence/migratio
 import { AllowMultipleIntegrationConnections1783298340000 } from "./persistence/migrations/1783298340000-allow-multiple-integration-connections.js";
 import { AddTelegramChatHistoryAccess1783298400000 } from "./persistence/migrations/1783298400000-add-telegram-chat-history-access.js";
 import { CreateTelegramChatMessages1783298460000 } from "./persistence/migrations/1783298460000-create-telegram-chat-messages.js";
+import { CreateTelegramConnectIntents1783298520000 } from "./persistence/migrations/1783298520000-create-telegram-connect-intents.js";
 
 const apiEntities = [
   WorkspaceEntity,
@@ -117,6 +119,7 @@ const apiEntities = [
   TelegramIdentityEntity,
   TelegramChatEntity,
   TelegramChatMessageEntity,
+  TelegramConnectIntentEntity,
   InviteEntity,
   TaskSubscriptionEntity,
   NotificationReadStateEntity,
@@ -164,6 +167,7 @@ const apiMigrations = [
   AllowMultipleIntegrationConnections1783298340000,
   AddTelegramChatHistoryAccess1783298400000,
   CreateTelegramChatMessages1783298460000,
+  CreateTelegramConnectIntents1783298520000,
 ] as const;
 
 export function createTypeOrmDataSourceOptions(database: ApiDatabaseConfig): DataSourceOptions {

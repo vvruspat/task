@@ -124,6 +124,33 @@ test("TelegramReplySender serializes inline keyboard reply markup", async () => 
   });
 });
 
+test("TelegramReplySender serializes Telegram login URL buttons", async () => {
+  const fetch = new RecordingTelegramBotApiFetch({ ok: true, result: { message_id: 50 } });
+  const sender = createTelegramReplySender({
+    botToken: "123456:telegram-token",
+    fetch: fetch.call,
+  });
+
+  await sender.sendReply({
+    ...replyAction,
+    inlineKeyboard: {
+      rows: [[{ text: "Открыть tAsk", loginUrl: "https://task.example/telegram/connect/token" }]],
+    },
+  });
+
+  const body: unknown = JSON.parse(fetch.lastInit?.body ?? "null");
+  assert.deepEqual(isRecord(body) ? body["reply_markup"] : null, {
+    inline_keyboard: [
+      [
+        {
+          text: "Открыть tAsk",
+          login_url: { url: "https://task.example/telegram/connect/token" },
+        },
+      ],
+    ],
+  });
+});
+
 test("createTelegramConfirmationInlineKeyboard validates confirmation identifiers", () => {
   assert.deepEqual(createTelegramConfirmationInlineKeyboard(confirmationRequestId), {
     rows: [
@@ -244,4 +271,8 @@ class RecordingTelegramBotApiFetch {
       json: async () => this.jsonBody,
     };
   };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }

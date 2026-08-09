@@ -15,7 +15,7 @@ import {
 } from "./backend-client.js";
 import {
   handleTelegramMessage,
-  readTelegramConnectToken,
+  readTelegramConnectCommand,
   type TelegramInlineKeyboardMarkup,
   type TelegramReplyAction,
   type TelegramResolvedMessageAction,
@@ -121,7 +121,7 @@ async function processTelegramConversationEventUnsafe(
   }
 
   const recording = await recordTelegramMessageSafely(event.message, options);
-  if (!event.invokesAgent && readTelegramConnectToken(event.message.text) === null) {
+  if (!event.invokesAgent && readTelegramConnectCommand(event.message.text) === null) {
     return { kind: "message_observed", recording };
   }
 

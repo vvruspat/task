@@ -584,6 +584,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/integrations/telegram/browser-connect/{token}/preview": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Preview a Telegram browser connection for the signed-in user */
+    post: operations["TelegramBrowserConnectController_previewBrowserConnection"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/integrations/telegram/browser-connect/{token}/complete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Link a Telegram identity and connect its chat when needed */
+    post: operations["TelegramBrowserConnectController_completeBrowserConnection"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/integrations/{integrationId}/telegram/connect-token": {
     parameters: {
       query?: never;
@@ -595,6 +629,23 @@ export interface paths {
     put?: never;
     /** Create a one-time Telegram workspace chat connect command */
     post: operations["TelegramConnectController_createToken"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/internal/integrations/telegram/connect-intents": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create a one-time Telegram browser connection link */
+    post: operations["TelegramInternalConnectController_createBrowserIntent"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1990,9 +2041,49 @@ export interface components {
     UpdateTelegramConnectionSettingsDto: {
       conversationHistoryAccess: boolean;
     };
+    TelegramBrowserConnectAuthDto: {
+      authData: string;
+    };
+    TelegramBrowserConnectWorkspaceDto: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      slug: string;
+    };
+    TelegramBrowserConnectPreviewDto: {
+      /** @enum {string} */
+      mode: "link_identity" | "connect_chat";
+      chatTitle: string | null;
+      /** Format: date-time */
+      expiresAt: string;
+      workspace: components["schemas"]["TelegramBrowserConnectWorkspaceDto"] | null;
+      workspaces: components["schemas"]["TelegramBrowserConnectWorkspaceDto"][];
+    };
+    CompleteTelegramBrowserConnectDto: {
+      authData: string;
+      /** Format: uuid */
+      workspaceId?: string;
+    };
+    TelegramBrowserConnectResultDto: {
+      /** @enum {string} */
+      status: "identity_linked" | "chat_connected";
+      chatTitle: string | null;
+      workspace: components["schemas"]["TelegramBrowserConnectWorkspaceDto"];
+    };
     TelegramConnectTokenDto: {
       /** @description Command to send in the Telegram chat that should be connected. */
       command: string;
+      /** Format: date-time */
+      expiresAt: string;
+    };
+    CreateTelegramBrowserConnectIntentDto: {
+      telegramChatId: string;
+      telegramId: string;
+      title: string | null;
+    };
+    TelegramBrowserConnectIntentDto: {
+      /** Format: uri */
+      loginUrl: string;
       /** Format: date-time */
       expiresAt: string;
     };
@@ -4461,6 +4552,97 @@ export interface operations {
       };
     };
   };
+  TelegramBrowserConnectController_previewBrowserConnection: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        token: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["TelegramBrowserConnectAuthDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramBrowserConnectPreviewDto"];
+        };
+      };
+      /** @description Telegram authorization or connect link is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot access the connected workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramBrowserConnectController_completeBrowserConnection: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        token: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CompleteTelegramBrowserConnectDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramBrowserConnectResultDto"];
+        };
+      };
+      /** @description Telegram authorization or connect link is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot access or manage the workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram identity or chat is already linked elsewhere. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   TelegramConnectController_createToken: {
     parameters: {
       query?: never;
@@ -4493,6 +4675,46 @@ export interface operations {
       };
       /** @description Telegram workspace integration was not found. */
       404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TelegramInternalConnectController_createBrowserIntent: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Internal Telegram bot shared secret. Not a user authentication mechanism. */
+        "x-task-bot-secret": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTelegramBrowserConnectIntentDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TelegramBrowserConnectIntentDto"];
+        };
+      };
+      /** @description Telegram chat or sender payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Telegram bot shared secret is missing or invalid. */
+      401: {
         headers: {
           [name: string]: unknown;
         };

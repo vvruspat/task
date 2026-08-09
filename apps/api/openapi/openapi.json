@@ -2134,6 +2134,119 @@
         "tags": ["workspace integrations"]
       }
     },
+    "/integrations/telegram/browser-connect/{token}/preview": {
+      "post": {
+        "operationId": "TelegramBrowserConnectController_previewBrowserConnection",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TelegramBrowserConnectAuthDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramBrowserConnectPreviewDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram authorization or connect link is invalid."
+          },
+          "403": {
+            "description": "Current user cannot access the connected workspace."
+          }
+        },
+        "summary": "Preview a Telegram browser connection for the signed-in user",
+        "tags": ["integrations"]
+      }
+    },
+    "/integrations/telegram/browser-connect/{token}/complete": {
+      "post": {
+        "operationId": "TelegramBrowserConnectController_completeBrowserConnection",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteTelegramBrowserConnectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramBrowserConnectResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram authorization or connect link is invalid."
+          },
+          "403": {
+            "description": "Current user cannot access or manage the workspace."
+          },
+          "409": {
+            "description": "Telegram identity or chat is already linked elsewhere."
+          }
+        },
+        "summary": "Link a Telegram identity and connect its chat when needed",
+        "tags": ["integrations"]
+      }
+    },
     "/workspaces/{workspaceId}/integrations/{integrationId}/telegram/connect-token": {
       "post": {
         "operationId": "TelegramConnectController_createToken",
@@ -2186,6 +2299,52 @@
           }
         },
         "summary": "Create a one-time Telegram workspace chat connect command",
+        "tags": ["integrations"]
+      }
+    },
+    "/internal/integrations/telegram/connect-intents": {
+      "post": {
+        "operationId": "TelegramInternalConnectController_createBrowserIntent",
+        "parameters": [
+          {
+            "name": "x-task-bot-secret",
+            "in": "header",
+            "description": "Internal Telegram bot shared secret. Not a user authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTelegramBrowserConnectIntentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramBrowserConnectIntentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Telegram chat or sender payload is invalid."
+          },
+          "401": {
+            "description": "Telegram bot shared secret is missing or invalid."
+          }
+        },
+        "summary": "Create a one-time Telegram browser connection link",
         "tags": ["integrations"]
       }
     },
@@ -7529,6 +7688,96 @@
         },
         "required": ["conversationHistoryAccess"]
       },
+      "TelegramBrowserConnectAuthDto": {
+        "type": "object",
+        "properties": {
+          "authData": {
+            "type": "string",
+            "maxLength": 4096
+          }
+        },
+        "required": ["authData"]
+      },
+      "TelegramBrowserConnectWorkspaceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "name", "slug"]
+      },
+      "TelegramBrowserConnectPreviewDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": ["link_identity", "connect_chat"]
+          },
+          "chatTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "workspace": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TelegramBrowserConnectWorkspaceDto"
+              }
+            ]
+          },
+          "workspaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TelegramBrowserConnectWorkspaceDto"
+            }
+          }
+        },
+        "required": ["mode", "chatTitle", "expiresAt", "workspace", "workspaces"]
+      },
+      "CompleteTelegramBrowserConnectDto": {
+        "type": "object",
+        "properties": {
+          "authData": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": ["authData"]
+      },
+      "TelegramBrowserConnectResultDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["identity_linked", "chat_connected"]
+          },
+          "chatTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "workspace": {
+            "$ref": "#/components/schemas/TelegramBrowserConnectWorkspaceDto"
+          }
+        },
+        "required": ["status", "chatTitle", "workspace"]
+      },
       "TelegramConnectTokenDto": {
         "type": "object",
         "properties": {
@@ -7542,6 +7791,36 @@
           }
         },
         "required": ["command", "expiresAt"]
+      },
+      "CreateTelegramBrowserConnectIntentDto": {
+        "type": "object",
+        "properties": {
+          "telegramChatId": {
+            "type": "string"
+          },
+          "telegramId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["telegramChatId", "telegramId", "title"]
+      },
+      "TelegramBrowserConnectIntentDto": {
+        "type": "object",
+        "properties": {
+          "loginUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["loginUrl", "expiresAt"]
       },
       "CompleteTelegramChatConnectionDto": {
         "type": "object",

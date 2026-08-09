@@ -2,12 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   type CompleteTelegramChatConnectionRequest,
+  type CreateTelegramBrowserConnectIntentRequest,
   type HandleTelegramConfirmationCallbackRequest,
   type RecordTelegramChatMessageResponse,
   type ResolveTelegramContextRequest,
   type TelegramAgentRunIntakeResponse,
   type TelegramBackendClient,
   TelegramBackendClientError,
+  type TelegramBrowserConnectIntentResponse,
   type TelegramChatConnectionResponse,
   type TelegramConfirmationCallbackResponse,
   type TelegramContextResolutionResponse,
@@ -162,13 +164,58 @@ test("handleTelegramUpdate connects an unlinked chat with a one-time command", a
   assert.equal(backendClient.lastRequest, null);
 });
 
+test("handleTelegramUpdate creates a signed browser link for a bare connect command", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    { status: "telegram_user_unlinked" },
+    null,
+    {
+      expiresAt: "2026-08-09T19:00:00.000Z",
+      loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+    },
+  );
+  const action = await handleTelegramMessage(
+    parseTelegramMessageContext({
+      ...telegramUpdate,
+      message: { ...telegramUpdate.message, text: "/connect" },
+    }),
+    { backendClient },
+  );
+
+  assert.deepEqual(action, {
+    inlineKeyboard: {
+      rows: [
+        [
+          {
+            loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+            text: "Открыть tAsk",
+          },
+        ],
+      ],
+    },
+    kind: "reply",
+    replyToMessageId: "20",
+    telegramChatId: "-100987654321",
+    text: "Открой tAsk, войди в аккаунт и заверши привязку Telegram.",
+  });
+  assert.deepEqual(backendClient.lastBrowserConnectRequest, {
+    body: {
+      telegramChatId: "-100987654321",
+      telegramId: "123456789",
+      title: "Album Team",
+    },
+  });
+  assert.equal(backendClient.lastRequest, null);
+});
+
 class RecordingTelegramBackendClient implements TelegramBackendClient {
   lastRequest: ResolveTelegramContextRequest | null = null;
   lastConnectionRequest: CompleteTelegramChatConnectionRequest | null = null;
+  lastBrowserConnectRequest: CreateTelegramBrowserConnectIntentRequest | null = null;
 
   constructor(
     private readonly response: TelegramContextResolutionResponse,
     private readonly connectionResponse: TelegramChatConnectionResponse | null = null,
+    private readonly browserConnectResponse: TelegramBrowserConnectIntentResponse | null = null,
   ) {}
 
   async resolveTelegramContext(
@@ -199,6 +246,16 @@ class RecordingTelegramBackendClient implements TelegramBackendClient {
     return this.connectionResponse;
   }
 
+  async createTelegramBrowserConnectIntent(
+    request: CreateTelegramBrowserConnectIntentRequest,
+  ): Promise<TelegramBrowserConnectIntentResponse> {
+    this.lastBrowserConnectRequest = request;
+    if (this.browserConnectResponse === null) {
+      throw new TelegramBackendClientError("Unexpected Telegram browser connection request.");
+    }
+    return this.browserConnectResponse;
+  }
+
   async recordTelegramChatMessage(): Promise<RecordTelegramChatMessageResponse> {
     return { status: "history_access_disabled" };
   }
@@ -218,6 +275,10 @@ class FailingTelegramBackendClient implements TelegramBackendClient {
   }
 
   async completeTelegramChatConnection(): Promise<TelegramChatConnectionResponse> {
+    throw new TelegramBackendClientError("Backend unavailable.");
+  }
+
+  async createTelegramBrowserConnectIntent(): Promise<TelegramBrowserConnectIntentResponse> {
     throw new TelegramBackendClientError("Backend unavailable.");
   }
 
