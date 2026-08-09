@@ -245,7 +245,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1786302203.6721268,
+    "mtime": 1786302443.6409826,
     "ast_hash": "be182cc08d1fd9d2960bff00856b938e",
     "semantic_hash": ""
   },
@@ -1045,13 +1045,13 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/message-handler.test.ts": {
-    "mtime": 1786302093.517423,
-    "ast_hash": "db65b526edd2dc62fb89a4f5ccb3f6fa",
+    "mtime": 1786302617.794687,
+    "ast_hash": "e87f9ae3650dc17f2e46e32b3b68a4de",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/message-handler.ts": {
-    "mtime": 1786302093.516352,
-    "ast_hash": "e58c848ad99c3484420f37f1f596b22c",
+    "mtime": 1786302617.7941911,
+    "ast_hash": "4ead00852070bded1d5398ab6c63b0b5",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/telegram-sender.test.ts": {
@@ -1065,8 +1065,8 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/update-processor.test.ts": {
-    "mtime": 1786302146.0495348,
-    "ast_hash": "5dc4e04e3778fd96be34ad2572f0bd89",
+    "mtime": 1786302617.7951026,
+    "ast_hash": "f14bc5e9e23e2b0045162bbe45a57a85",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/update-processor.ts": {
@@ -1075,8 +1075,8 @@
     "semantic_hash": ""
   },
   "apps/tg-bot/src/runtime.test.ts": {
-    "mtime": 1786264975.511668,
-    "ast_hash": "67e033a280fc9a64f7fe1d6009981dc3",
+    "mtime": 1786302648.3232498,
+    "ast_hash": "48fff399f450654398ba7f434a56884c",
     "semantic_hash": ""
   },
   "apps/tg-bot/src/runtime.ts": {

@@ -70,6 +70,44 @@ test("handleTelegramUpdate resolves Telegram context with stable identifiers", a
 });
 
 test("handleTelegramUpdate replies when the Telegram user is unlinked", async () => {
+  const backendClient = new RecordingTelegramBackendClient(
+    { status: "telegram_user_unlinked" },
+    null,
+    {
+      expiresAt: "2026-08-09T19:00:00.000Z",
+      loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+    },
+  );
+  const action = await handleTelegramMessage(parseTelegramMessageContext(telegramUpdate), {
+    backendClient,
+  });
+
+  assert.deepEqual(action, {
+    inlineKeyboard: {
+      rows: [
+        [
+          {
+            loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+            text: "Подключить tAsk",
+          },
+        ],
+      ],
+    },
+    kind: "reply",
+    telegramChatId: "-100987654321",
+    replyToMessageId: "20",
+    text: "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
+  });
+  assert.deepEqual(backendClient.lastBrowserConnectRequest, {
+    body: {
+      telegramChatId: "-100987654321",
+      telegramId: "123456789",
+      title: "Album Team",
+    },
+  });
+});
+
+test("handleTelegramUpdate explains when an automatic connect link cannot be created", async () => {
   const action = await handleTelegramMessage(parseTelegramMessageContext(telegramUpdate), {
     backendClient: new RecordingTelegramBackendClient({ status: "telegram_user_unlinked" }),
   });
@@ -78,7 +116,7 @@ test("handleTelegramUpdate replies when the Telegram user is unlinked", async ()
     kind: "reply",
     telegramChatId: "-100987654321",
     replyToMessageId: "20",
-    text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+    text: "Не удалось создать ссылку для подключения. Попробуй /connect позже.",
   });
 });
 

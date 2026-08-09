@@ -46,30 +46,7 @@ export async function handleTelegramMessage(
 ): Promise<TelegramMessageHandlerAction> {
   const connectCommand = readTelegramConnectCommand(message.text);
   if (connectCommand?.kind === "browser") {
-    try {
-      const intent = await options.backendClient.createTelegramBrowserConnectIntent({
-        body: {
-          telegramChatId: message.chat.telegramChatId,
-          telegramId: message.sender.telegramId,
-          title: message.chat.title,
-        },
-      });
-      return createReply(
-        message.chat.telegramChatId,
-        message.messageId,
-        "Открой tAsk, войди в аккаунт и заверши привязку Telegram.",
-        { rows: [[{ text: "Открыть tAsk", loginUrl: intent.loginUrl }]] },
-      );
-    } catch (error: unknown) {
-      if (error instanceof TelegramBackendClientError) {
-        return createReply(
-          message.chat.telegramChatId,
-          message.messageId,
-          "Не удалось создать ссылку для подключения. Попробуй позже.",
-        );
-      }
-      throw error;
-    }
+    return createBrowserConnectReply(message, options, "command");
   }
   if (connectCommand?.kind === "token") {
     try {
@@ -123,11 +100,7 @@ export async function handleTelegramMessage(
   }
 
   if (context.status === "telegram_user_unlinked") {
-    return createReply(
-      message.chat.telegramChatId,
-      message.messageId,
-      "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
-    );
+    return createBrowserConnectReply(message, options, "unlinked_request");
   }
 
   if (context.status === "telegram_chat_unlinked") {
@@ -151,6 +124,50 @@ export async function handleTelegramMessage(
     message,
     context: readResolvedContext(context),
   };
+}
+
+type BrowserConnectReplyReason = "command" | "unlinked_request";
+
+async function createBrowserConnectReply(
+  message: TelegramMessageContext,
+  options: TelegramMessageHandlerOptions,
+  reason: BrowserConnectReplyReason,
+): Promise<TelegramReplyAction> {
+  try {
+    const intent = await options.backendClient.createTelegramBrowserConnectIntent({
+      body: {
+        telegramChatId: message.chat.telegramChatId,
+        telegramId: message.sender.telegramId,
+        title: message.chat.title,
+      },
+    });
+    return createReply(
+      message.chat.telegramChatId,
+      message.messageId,
+      reason === "command"
+        ? "Открой tAsk, войди в аккаунт и заверши привязку Telegram."
+        : "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
+      {
+        rows: [
+          [
+            {
+              text: reason === "command" ? "Открыть tAsk" : "Подключить tAsk",
+              loginUrl: intent.loginUrl,
+            },
+          ],
+        ],
+      },
+    );
+  } catch (error: unknown) {
+    if (error instanceof TelegramBackendClientError) {
+      return createReply(
+        message.chat.telegramChatId,
+        message.messageId,
+        "Не удалось создать ссылку для подключения. Попробуй /connect позже.",
+      );
+    }
+    throw error;
+  }
 }
 
 export function readTelegramConnectToken(text: string | null): string | null {

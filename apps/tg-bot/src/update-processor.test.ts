@@ -92,25 +92,45 @@ test("processTelegramUpdate sends reply actions through the reply sender", async
   const replySender = new RecordingTelegramReplySender({ messageId: "45" });
 
   const result = await processTelegramUpdate(telegramUpdate, {
-    backendClient: new RecordingTelegramBackendClient({ status: "telegram_user_unlinked" }),
+    backendClient: new BrowserConnectTelegramBackendClient(),
     replySender,
   });
 
   assert.deepEqual(result, {
     kind: "reply_sent",
     reply: {
+      inlineKeyboard: {
+        rows: [
+          [
+            {
+              loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+              text: "Подключить tAsk",
+            },
+          ],
+        ],
+      },
       kind: "reply",
       telegramChatId: "-100987654321",
       replyToMessageId: "20",
-      text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+      text: "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
     },
     sentMessage: { messageId: "45" },
   });
   assert.deepEqual(replySender.lastAction, {
+    inlineKeyboard: {
+      rows: [
+        [
+          {
+            loginUrl: `https://task.example/telegram/connect/${"b".repeat(43)}`,
+            text: "Подключить tAsk",
+          },
+        ],
+      ],
+    },
     kind: "reply",
     telegramChatId: "-100987654321",
     replyToMessageId: "20",
-    text: "Сначала привяжи Telegram к аккаунту tAsk через Mini App.",
+    text: "Чтобы выполнить запрос, сначала подключи Telegram к аккаунту tAsk.",
   });
 });
 
