@@ -9310,7 +9310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_data_source_test",
-      "community": 218,
+      "community": 223,
       "norm_label": "data-source.test.ts"
     },
     {
@@ -9350,7 +9350,7 @@
       "source_location": "L169",
       "_origin": "ast",
       "id": "src_data_source_createtypeormdatasourceoptions",
-      "community": 218,
+      "community": 223,
       "norm_label": "createtypeormdatasourceoptions()"
     },
     {
@@ -9360,7 +9360,7 @@
       "source_location": "L180",
       "_origin": "ast",
       "id": "src_data_source_createapidatasource",
-      "community": 218,
+      "community": 223,
       "norm_label": "createapidatasource()"
     },
     {
@@ -19110,7 +19110,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table",
-      "community": 192,
+      "community": 78,
       "norm_label": "1783296060000-create-projects-table.ts"
     },
     {
@@ -19120,7 +19120,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstablesql",
-      "community": 192,
+      "community": 78,
       "norm_label": "createprojectstablesql"
     },
     {
@@ -19130,7 +19130,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_dropprojectstablesql",
-      "community": 192,
+      "community": 78,
       "norm_label": "dropprojectstablesql"
     },
     {
@@ -19140,7 +19140,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000",
-      "community": 192,
+      "community": 51,
       "norm_label": "createprojectstable1783296060000"
     },
     {
@@ -19150,7 +19150,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_up",
-      "community": 192,
+      "community": 51,
       "norm_label": ".up()"
     },
     {
@@ -19160,7 +19160,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296060000_create_projects_table_createprojectstable1783296060000_down",
-      "community": 192,
+      "community": 51,
       "norm_label": ".down()"
     },
     {
@@ -19530,7 +19530,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table",
-      "community": 78,
+      "community": 191,
       "norm_label": "1783296480000-create-confirmation-requests-table.ts"
     },
     {
@@ -19540,7 +19540,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststablesql",
-      "community": 78,
+      "community": 191,
       "norm_label": "createconfirmationrequeststablesql"
     },
     {
@@ -19550,7 +19550,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_dropconfirmationrequeststablesql",
-      "community": 78,
+      "community": 191,
       "norm_label": "dropconfirmationrequeststablesql"
     },
     {
@@ -19560,7 +19560,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000",
-      "community": 51,
+      "community": 191,
       "norm_label": "createconfirmationrequeststable1783296480000"
     },
     {
@@ -19570,7 +19570,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_up",
-      "community": 51,
+      "community": 191,
       "norm_label": ".up()"
     },
     {
@@ -19580,7 +19580,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "migrations_1783296480000_create_confirmation_requests_table_createconfirmationrequeststable1783296480000_down",
-      "community": 51,
+      "community": 191,
       "norm_label": ".down()"
     },
     {
@@ -20190,7 +20190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783297140000_repair_comment_timestamps",
-      "community": 179,
+      "community": 229,
       "norm_label": "1783297140000-repair-comment-timestamps.ts"
     },
     {
@@ -20200,7 +20200,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783297140000_repair_comment_timestamps_repaircommenttimestampssql",
-      "community": 179,
+      "community": 229,
       "norm_label": "repaircommenttimestampssql"
     },
     {
@@ -20210,7 +20210,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "migrations_1783297140000_repair_comment_timestamps_repaircommenttimestamps1783297140000",
-      "community": 179,
+      "community": 229,
       "norm_label": "repaircommenttimestamps1783297140000"
     },
     {
@@ -20220,7 +20220,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783297140000_repair_comment_timestamps_repaircommenttimestamps1783297140000_up",
-      "community": 179,
+      "community": 229,
       "norm_label": ".up()"
     },
     {
@@ -20230,7 +20230,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "migrations_1783297140000_repair_comment_timestamps_repaircommenttimestamps1783297140000_down",
-      "community": 179,
+      "community": 229,
       "norm_label": ".down()"
     },
     {
@@ -20240,7 +20240,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783297200000_add_comment_agent_run",
-      "community": 51,
+      "community": 192,
       "norm_label": "1783297200000-add-comment-agent-run.ts"
     },
     {
@@ -20250,7 +20250,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783297200000_add_comment_agent_run_addcommentagentrunsql",
-      "community": 51,
+      "community": 192,
       "norm_label": "addcommentagentrunsql"
     },
     {
@@ -20260,7 +20260,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "migrations_1783297200000_add_comment_agent_run_dropcommentagentrunsql",
-      "community": 51,
+      "community": 192,
       "norm_label": "dropcommentagentrunsql"
     },
     {
@@ -20270,7 +20270,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "migrations_1783297200000_add_comment_agent_run_addcommentagentrun1783297200000",
-      "community": 51,
+      "community": 192,
       "norm_label": "addcommentagentrun1783297200000"
     },
     {
@@ -20280,7 +20280,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "migrations_1783297200000_add_comment_agent_run_addcommentagentrun1783297200000_up",
-      "community": 51,
+      "community": 192,
       "norm_label": ".up()"
     },
     {
@@ -20290,7 +20290,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "migrations_1783297200000_add_comment_agent_run_addcommentagentrun1783297200000_down",
-      "community": 51,
+      "community": 192,
       "norm_label": ".down()"
     },
     {
@@ -20300,7 +20300,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783297260000_add_task_notifications",
-      "community": 219,
+      "community": 51,
       "norm_label": "1783297260000-add-task-notifications.ts"
     },
     {
@@ -20310,7 +20310,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783297260000_add_task_notifications_addtasknotificationssql",
-      "community": 219,
+      "community": 51,
       "norm_label": "addtasknotificationssql"
     },
     {
@@ -20320,7 +20320,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "migrations_1783297260000_add_task_notifications_droptasknotificationssql",
-      "community": 219,
+      "community": 51,
       "norm_label": "droptasknotificationssql"
     },
     {
@@ -20330,7 +20330,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "migrations_1783297260000_add_task_notifications_addtasknotifications1783297260000",
-      "community": 219,
+      "community": 51,
       "norm_label": "addtasknotifications1783297260000"
     },
     {
@@ -20340,7 +20340,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "migrations_1783297260000_add_task_notifications_addtasknotifications1783297260000_up",
-      "community": 219,
+      "community": 51,
       "norm_label": ".up()"
     },
     {
@@ -20350,7 +20350,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "migrations_1783297260000_add_task_notifications_addtasknotifications1783297260000_down",
-      "community": 219,
+      "community": 51,
       "norm_label": ".down()"
     },
     {
@@ -20650,7 +20650,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783297620000_lighten_backlog_status_color",
-      "community": 78,
+      "community": 194,
       "norm_label": "1783297620000-lighten-backlog-status-color.ts"
     },
     {
@@ -20660,7 +20660,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783297620000_lighten_backlog_status_color_lightenbacklogstatuscolorsql",
-      "community": 78,
+      "community": 194,
       "norm_label": "lightenbacklogstatuscolorsql"
     },
     {
@@ -20670,7 +20670,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "migrations_1783297620000_lighten_backlog_status_color_restorebacklogstatuscolorsql",
-      "community": 78,
+      "community": 194,
       "norm_label": "restorebacklogstatuscolorsql"
     },
     {
@@ -20680,7 +20680,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "migrations_1783297620000_lighten_backlog_status_color_lightenbacklogstatuscolor1783297620000",
-      "community": 51,
+      "community": 194,
       "norm_label": "lightenbacklogstatuscolor1783297620000"
     },
     {
@@ -20690,7 +20690,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "migrations_1783297620000_lighten_backlog_status_color_lightenbacklogstatuscolor1783297620000_up",
-      "community": 51,
+      "community": 194,
       "norm_label": ".up()"
     },
     {
@@ -20700,7 +20700,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "migrations_1783297620000_lighten_backlog_status_color_lightenbacklogstatuscolor1783297620000_down",
-      "community": 51,
+      "community": 194,
       "norm_label": ".down()"
     },
     {
@@ -20710,7 +20710,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783297680000_add_email_password_auth",
-      "community": 179,
+      "community": 216,
       "norm_label": "1783297680000-add-email-password-auth.ts"
     },
     {
@@ -20720,7 +20720,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783297680000_add_email_password_auth_addemailpasswordauthsql",
-      "community": 179,
+      "community": 216,
       "norm_label": "addemailpasswordauthsql"
     },
     {
@@ -20730,7 +20730,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "migrations_1783297680000_add_email_password_auth_dropemailpasswordauthsql",
-      "community": 179,
+      "community": 216,
       "norm_label": "dropemailpasswordauthsql"
     },
     {
@@ -20740,7 +20740,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783297680000_add_email_password_auth_addemailpasswordauth1783297680000",
-      "community": 179,
+      "community": 216,
       "norm_label": "addemailpasswordauth1783297680000"
     },
     {
@@ -20750,7 +20750,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "migrations_1783297680000_add_email_password_auth_addemailpasswordauth1783297680000_up",
-      "community": 179,
+      "community": 216,
       "norm_label": ".up()"
     },
     {
@@ -20760,7 +20760,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "migrations_1783297680000_add_email_password_auth_addemailpasswordauth1783297680000_down",
-      "community": 179,
+      "community": 216,
       "norm_label": ".down()"
     },
     {
@@ -20830,7 +20830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783297800000_add_email_invitations",
-      "community": 194,
+      "community": 78,
       "norm_label": "1783297800000-add-email-invitations.ts"
     },
     {
@@ -20840,7 +20840,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783297800000_add_email_invitations_addemailinvitationssql",
-      "community": 194,
+      "community": 78,
       "norm_label": "addemailinvitationssql"
     },
     {
@@ -20850,7 +20850,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "migrations_1783297800000_add_email_invitations_removeemailinvitationssql",
-      "community": 194,
+      "community": 78,
       "norm_label": "removeemailinvitationssql"
     },
     {
@@ -20860,7 +20860,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "migrations_1783297800000_add_email_invitations_addemailinvitations1783297800000",
-      "community": 194,
+      "community": 51,
       "norm_label": "addemailinvitations1783297800000"
     },
     {
@@ -20870,7 +20870,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "migrations_1783297800000_add_email_invitations_addemailinvitations1783297800000_up",
-      "community": 194,
+      "community": 51,
       "norm_label": ".up()"
     },
     {
@@ -20880,7 +20880,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783297800000_add_email_invitations_addemailinvitations1783297800000_down",
-      "community": 194,
+      "community": 51,
       "norm_label": ".down()"
     },
     {
@@ -20950,7 +20950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783297920000_create_workspace_integrations_table",
-      "community": 216,
+      "community": 179,
       "norm_label": "1783297920000-create-workspace-integrations-table.ts"
     },
     {
@@ -20960,7 +20960,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "migrations_1783297920000_create_workspace_integrations_table_createworkspaceintegrationssql",
-      "community": 216,
+      "community": 179,
       "norm_label": "createworkspaceintegrationssql"
     },
     {
@@ -20970,7 +20970,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "migrations_1783297920000_create_workspace_integrations_table_dropworkspaceintegrationssql",
-      "community": 216,
+      "community": 179,
       "norm_label": "dropworkspaceintegrationssql"
     },
     {
@@ -20980,7 +20980,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "migrations_1783297920000_create_workspace_integrations_table_createworkspaceintegrationstable1783297920000",
-      "community": 216,
+      "community": 179,
       "norm_label": "createworkspaceintegrationstable1783297920000"
     },
     {
@@ -20990,7 +20990,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "migrations_1783297920000_create_workspace_integrations_table_createworkspaceintegrationstable1783297920000_up",
-      "community": 216,
+      "community": 179,
       "norm_label": ".up()"
     },
     {
@@ -21000,7 +21000,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "migrations_1783297920000_create_workspace_integrations_table_createworkspaceintegrationstable1783297920000_down",
-      "community": 216,
+      "community": 179,
       "norm_label": ".down()"
     },
     {
@@ -21310,7 +21310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783298280000_add_integration_health_indexes",
-      "community": 230,
+      "community": 179,
       "norm_label": "1783298280000-add-integration-health-indexes.ts"
     },
     {
@@ -21320,7 +21320,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "migrations_1783298280000_add_integration_health_indexes_addintegrationhealthindexesqueries",
-      "community": 230,
+      "community": 179,
       "norm_label": "addintegrationhealthindexesqueries"
     },
     {
@@ -21330,7 +21330,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "migrations_1783298280000_add_integration_health_indexes_dropintegrationhealthindexesqueries",
-      "community": 230,
+      "community": 179,
       "norm_label": "dropintegrationhealthindexesqueries"
     },
     {
@@ -21340,7 +21340,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "migrations_1783298280000_add_integration_health_indexes_addintegrationhealthindexes1783298280000",
-      "community": 230,
+      "community": 179,
       "norm_label": "addintegrationhealthindexes1783298280000"
     },
     {
@@ -21350,7 +21350,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "migrations_1783298280000_add_integration_health_indexes_addintegrationhealthindexes1783298280000_up",
-      "community": 230,
+      "community": 179,
       "norm_label": ".up()"
     },
     {
@@ -21360,7 +21360,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "migrations_1783298280000_add_integration_health_indexes_addintegrationhealthindexes1783298280000_down",
-      "community": 230,
+      "community": 179,
       "norm_label": ".down()"
     },
     {
@@ -21370,7 +21370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783298340000_allow_multiple_integration_connections",
-      "community": 218,
+      "community": 219,
       "norm_label": "1783298340000-allow-multiple-integration-connections.ts"
     },
     {
@@ -21380,7 +21380,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "migrations_1783298340000_allow_multiple_integration_connections_allowmultipleintegrationconnectionsqueries",
-      "community": 218,
+      "community": 219,
       "norm_label": "allowmultipleintegrationconnectionsqueries"
     },
     {
@@ -21390,7 +21390,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "migrations_1783298340000_allow_multiple_integration_connections_restoresingleintegrationconnectionqueries",
-      "community": 218,
+      "community": 219,
       "norm_label": "restoresingleintegrationconnectionqueries"
     },
     {
@@ -21400,7 +21400,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "migrations_1783298340000_allow_multiple_integration_connections_allowmultipleintegrationconnections1783298340000",
-      "community": 218,
+      "community": 219,
       "norm_label": "allowmultipleintegrationconnections1783298340000"
     },
     {
@@ -21410,7 +21410,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "migrations_1783298340000_allow_multiple_integration_connections_allowmultipleintegrationconnections1783298340000_up",
-      "community": 218,
+      "community": 219,
       "norm_label": ".up()"
     },
     {
@@ -21420,7 +21420,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "migrations_1783298340000_allow_multiple_integration_connections_allowmultipleintegrationconnections1783298340000_down",
-      "community": 218,
+      "community": 219,
       "norm_label": ".down()"
     },
     {
@@ -21470,7 +21470,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_1783298460000_create_telegram_chat_messages",
-      "community": 229,
+      "community": 223,
       "norm_label": "1783298460000-create-telegram-chat-messages.ts"
     },
     {
@@ -21480,7 +21480,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "migrations_1783298460000_create_telegram_chat_messages_createtelegramchatmessagesqueries",
-      "community": 229,
+      "community": 223,
       "norm_label": "createtelegramchatmessagesqueries"
     },
     {
@@ -21490,7 +21490,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "migrations_1783298460000_create_telegram_chat_messages_droptelegramchatmessagesqueries",
-      "community": 229,
+      "community": 223,
       "norm_label": "droptelegramchatmessagesqueries"
     },
     {
@@ -21500,7 +21500,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "migrations_1783298460000_create_telegram_chat_messages_createtelegramchatmessages1783298460000",
-      "community": 229,
+      "community": 223,
       "norm_label": "createtelegramchatmessages1783298460000"
     },
     {
@@ -21510,7 +21510,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "migrations_1783298460000_create_telegram_chat_messages_createtelegramchatmessages1783298460000_up",
-      "community": 229,
+      "community": 223,
       "norm_label": ".up()"
     },
     {
@@ -21520,7 +21520,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "migrations_1783298460000_create_telegram_chat_messages_createtelegramchatmessages1783298460000_down",
-      "community": 229,
+      "community": 223,
       "norm_label": ".down()"
     },
     {
@@ -21540,7 +21540,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_add_comment_agent_run_test",
-      "community": 51,
+      "community": 192,
       "norm_label": "add-comment-agent-run.test.ts"
     },
     {
@@ -21570,7 +21570,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_add_email_invitations_test",
-      "community": 194,
+      "community": 78,
       "norm_label": "add-email-invitations.test.ts"
     },
     {
@@ -21580,7 +21580,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_add_email_password_auth_test",
-      "community": 179,
+      "community": 216,
       "norm_label": "add-email-password-auth.test.ts"
     },
     {
@@ -21590,7 +21590,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_add_integration_health_indexes_test",
-      "community": 230,
+      "community": 179,
       "norm_label": "add-integration-health-indexes.test.ts"
     },
     {
@@ -21630,7 +21630,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_add_task_notifications_test",
-      "community": 219,
+      "community": 51,
       "norm_label": "add-task-notifications.test.ts"
     },
     {
@@ -21680,7 +21680,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_allow_multiple_integration_connections_test",
-      "community": 218,
+      "community": 219,
       "norm_label": "allow-multiple-integration-connections.test.ts"
     },
     {
@@ -21740,7 +21740,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_confirmation_requests_table_test",
-      "community": 78,
+      "community": 191,
       "norm_label": "create-confirmation-requests-table.test.ts"
     },
     {
@@ -21840,7 +21840,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_projects_table_test",
-      "community": 192,
+      "community": 78,
       "norm_label": "create-projects-table.test.ts"
     },
     {
@@ -21880,7 +21880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_telegram_chat_messages_test",
-      "community": 229,
+      "community": 223,
       "norm_label": "create-telegram-chat-messages.test.ts"
     },
     {
@@ -21900,7 +21900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_create_workspace_integrations_table_test",
-      "community": 216,
+      "community": 179,
       "norm_label": "create-workspace-integrations-table.test.ts"
     },
     {
@@ -21920,7 +21920,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_lighten_backlog_status_color_test",
-      "community": 78,
+      "community": 194,
       "norm_label": "lighten-backlog-status-color.test.ts"
     },
     {
@@ -21950,7 +21950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "migrations_repair_comment_timestamps_test",
-      "community": 179,
+      "community": 229,
       "norm_label": "repair-comment-timestamps.test.ts"
     },
     {
@@ -23950,7 +23950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_run_migrations",
-      "community": 218,
+      "community": 223,
       "norm_label": "run-migrations.ts"
     },
     {
@@ -23960,7 +23960,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_run_migrations_datasource",
-      "community": 218,
+      "community": 223,
       "norm_label": "datasource"
     },
     {
@@ -27120,7 +27120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tasks_tasks_contracts",
-      "community": 102,
+      "community": 82,
       "norm_label": "tasks.contracts.ts"
     },
     {
@@ -27210,7 +27210,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "tasks_tasks_contracts_updatetaskstatusinput",
-      "community": 102,
+      "community": 82,
       "norm_label": "updatetaskstatusinput"
     },
     {
@@ -27230,7 +27230,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "tasks_tasks_contracts_updatetaskduedateinput",
-      "community": 102,
+      "community": 82,
       "norm_label": "updatetaskduedateinput"
     },
     {
@@ -27240,7 +27240,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "tasks_tasks_contracts_tasktablesortfields",
-      "community": 102,
+      "community": 82,
       "norm_label": "tasktablesortfields"
     },
     {
@@ -27250,7 +27250,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "tasks_tasks_contracts_tasktablesortfield",
-      "community": 102,
+      "community": 82,
       "norm_label": "tasktablesortfield"
     },
     {
@@ -27260,7 +27260,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "tasks_tasks_contracts_tasktablesortdirection",
-      "community": 102,
+      "community": 82,
       "norm_label": "tasktablesortdirection"
     },
     {
@@ -27460,7 +27460,7 @@
       "source_location": "L239",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_updatetaskstatus",
-      "community": 102,
+      "community": 82,
       "norm_label": ".updatetaskstatus()"
     },
     {
@@ -27480,7 +27480,7 @@
       "source_location": "L279",
       "_origin": "ast",
       "id": "tasks_tasks_controller_taskscontroller_updatetaskduedate",
-      "community": 102,
+      "community": 82,
       "norm_label": ".updatetaskduedate()"
     },
     {
@@ -27580,7 +27580,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parsecreatetaskbodypipe",
-      "community": 82,
+      "community": 133,
       "norm_label": "parsecreatetaskbodypipe"
     },
     {
@@ -27590,7 +27590,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parsecreatetaskbodypipe_transform",
-      "community": 82,
+      "community": 133,
       "norm_label": ".transform()"
     },
     {
@@ -27650,7 +27650,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskbodypipe",
-      "community": 82,
+      "community": 133,
       "norm_label": "parseupdatetaskbodypipe"
     },
     {
@@ -27660,7 +27660,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskbodypipe_transform",
-      "community": 82,
+      "community": 133,
       "norm_label": ".transform()"
     },
     {
@@ -27700,7 +27700,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "tasks_tasks_dto_updatetaskstatusdto",
-      "community": 102,
+      "community": 82,
       "norm_label": "updatetaskstatusdto"
     },
     {
@@ -27740,7 +27740,7 @@
       "source_location": "L157",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskassigneebodypipe",
-      "community": 82,
+      "community": 133,
       "norm_label": "parseupdatetaskassigneebodypipe"
     },
     {
@@ -27750,7 +27750,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "tasks_tasks_dto_parseupdatetaskassigneebodypipe_transform",
-      "community": 82,
+      "community": 133,
       "norm_label": ".transform()"
     },
     {
@@ -27760,7 +27760,7 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "tasks_tasks_dto_updatetaskduedatedto",
-      "community": 102,
+      "community": 82,
       "norm_label": "updatetaskduedatedto"
     },
     {
@@ -40750,7 +40750,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_backend_client_createtelegrambackendclient",
-      "community": 85,
+      "community": 87,
       "norm_label": "createtelegrambackendclient()"
     },
     {
@@ -40770,7 +40770,7 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "apps_tg_bot_src_backend_client_ts_src_backend_client_normalizebaseurl",
-      "community": 85,
+      "community": 87,
       "norm_label": "normalizebaseurl()"
     },
     {
@@ -40940,7 +40940,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_test_ts_src_config_test",
-      "community": 191,
+      "community": 87,
       "norm_label": "config.test.ts"
     },
     {
@@ -40950,7 +40950,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_config_test_validenvironment",
-      "community": 191,
+      "community": 87,
       "norm_label": "validenvironment"
     },
     {
@@ -40960,7 +40960,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_ts_src_config",
-      "community": 191,
+      "community": 87,
       "norm_label": "config.ts"
     },
     {
@@ -40970,7 +40970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config_telegrambotenvironment",
-      "community": 191,
+      "community": 87,
       "norm_label": "telegrambotenvironment"
     },
     {
@@ -40990,7 +40990,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_config_invalidtelegrambotenvironmenterror",
-      "community": 191,
+      "community": 87,
       "norm_label": "invalidtelegrambotenvironmenterror"
     },
     {
@@ -41000,7 +41000,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_config_invalidtelegrambotenvironmenterror_constructor",
-      "community": 191,
+      "community": 87,
       "norm_label": ".constructor()"
     },
     {
@@ -41010,7 +41010,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_config_parsetelegrambotconfig",
-      "community": 191,
+      "community": 87,
       "norm_label": "parsetelegrambotconfig()"
     },
     {
@@ -41020,7 +41020,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_config_parsebotusername",
-      "community": 191,
+      "community": 87,
       "norm_label": "parsebotusername()"
     },
     {
@@ -41030,7 +41030,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_config_loadtelegrambotconfig",
-      "community": 191,
+      "community": 87,
       "norm_label": "loadtelegrambotconfig()"
     },
     {
@@ -41040,7 +41040,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_config_parserequiredsecret",
-      "community": 191,
+      "community": 87,
       "norm_label": "parserequiredsecret()"
     },
     {
@@ -41050,7 +41050,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_config_parseoptionalsecret",
-      "community": 191,
+      "community": 87,
       "norm_label": "parseoptionalsecret()"
     },
     {
@@ -41060,7 +41060,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_ts_src_config_parsebackendbaseurl",
-      "community": 191,
+      "community": 87,
       "norm_label": "parsebackendbaseurl()"
     },
     {
@@ -41070,7 +41070,7 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_ts_src_config_parseport",
-      "community": 191,
+      "community": 87,
       "norm_label": "parseport()"
     },
     {
@@ -41080,7 +41080,7 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "apps_tg_bot_src_config_ts_src_config_formatinvalidvalue",
-      "community": 191,
+      "community": 87,
       "norm_label": "formatinvalidvalue()"
     },
     {
@@ -41470,7 +41470,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_tg_bot_src_runtime_ts_src_runtime",
-      "community": 85,
+      "community": 87,
       "norm_label": "runtime.ts"
     },
     {
@@ -41490,7 +41490,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntimeoptions",
-      "community": 85,
+      "community": 87,
       "norm_label": "createtelegrambotruntimeoptions"
     },
     {
@@ -41500,7 +41500,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntimefromenvironmentoptions",
-      "community": 85,
+      "community": 87,
       "norm_label": "createtelegrambotruntimefromenvironmentoptions"
     },
     {
@@ -41510,7 +41510,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntime",
-      "community": 85,
+      "community": 87,
       "norm_label": "createtelegrambotruntime()"
     },
     {
@@ -41520,7 +41520,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_runtime_createtelegrambotruntimefromenvironment",
-      "community": 85,
+      "community": 87,
       "norm_label": "createtelegrambotruntimefromenvironment()"
     },
     {
@@ -41930,7 +41930,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_telegram_sender_createtelegramreplysender",
-      "community": 85,
+      "community": 87,
       "norm_label": "createtelegramreplysender()"
     },
     {
@@ -42020,7 +42020,7 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "src_telegram_sender_normalizeapibaseurl",
-      "community": 85,
+      "community": 87,
       "norm_label": "normalizeapibaseurl()"
     },
     {
@@ -63697,7 +63697,7 @@
       "label": "Email Invitations",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L62",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "readme_email_invitations",
       "community": 123,
@@ -63707,7 +63707,7 @@
       "label": "Telegram Chat Connection",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L79",
+      "source_location": "L81",
       "_origin": "ast",
       "id": "readme_telegram_chat_connection",
       "community": 123,
@@ -63717,7 +63717,7 @@
       "label": "Project State",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L87",
+      "source_location": "L89",
       "_origin": "ast",
       "id": "readme_project_state",
       "community": 123,
@@ -228141,9 +228141,9 @@
       "source_file": "README.md",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "readme_task",
-      "target": "readme_production_images",
-      "confidence_score": 1.0
+      "target": "readme_production_images"
     },
     {
       "relation": "contains",
@@ -229457,5 +229457,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "feea769baf94f16d0bcb571420ac96e0a7c814e2"
+  "built_at_commit": "72f562f80049bf4d3b773069c9bd7585cb7e64e2"
 }

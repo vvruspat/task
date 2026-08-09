@@ -148,10 +148,7 @@ test("OpenRouterAgentRuntime asks to enable storage when Telegram history is dis
 
   const firstBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
   assert.ok(isOpenRouterRequestBody(firstBody));
-  assert.deepEqual(firstBody.tool_choice, {
-    type: "function",
-    function: { name: "telegram_history_read" },
-  });
+  assert.equal(firstBody.tool_choice, "auto");
   assert.match(result.finalResponse ?? "", /включи «Доступ к истории переписки»/u);
   assert.match(result.finalResponse ?? "", /новые текстовые сообщения/u);
 });
@@ -206,10 +203,7 @@ test("OpenRouterAgentRuntime reads Telegram history for referential requests", a
 
   const firstBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
   assert.ok(isOpenRouterRequestBody(firstBody));
-  assert.deepEqual(firstBody.tool_choice, {
-    type: "function",
-    function: { name: "telegram_history_read" },
-  });
+  assert.equal(firstBody.tool_choice, "auto");
   assert.equal(result.finalResponse, "Создам задачу для этой песни.");
 });
 
@@ -244,7 +238,7 @@ test("OpenRouterAgentRuntime preserves shared conversation roles and selected pr
   );
 });
 
-test("OpenRouterAgentRuntime routes project read questions to the read-only list tool", async () => {
+test("OpenRouterAgentRuntime lets the model choose the project read tool", async () => {
   const projectId = "44444444-4444-4444-8444-444444444444";
   const fetcher = new RecordingOpenRouterFetch([
     jsonResponse(200, {
@@ -284,10 +278,7 @@ test("OpenRouterAgentRuntime routes project read questions to the read-only list
 
   const firstBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
   assert.ok(isOpenRouterRequestBody(firstBody));
-  assert.deepEqual(firstBody.tool_choice, {
-    type: "function",
-    function: { name: "project_list" },
-  });
+  assert.equal(firstBody.tool_choice, "auto");
   assert.equal(result.finalResponse, "Two projects.");
   assert.deepEqual(
     dispatcher.calls.map((call) => call.toolName),
@@ -295,7 +286,7 @@ test("OpenRouterAgentRuntime routes project read questions to the read-only list
   );
 });
 
-test("OpenRouterAgentRuntime requires task and status reads for a status table", async () => {
+test("OpenRouterAgentRuntime lets the model choose task and status reads", async () => {
   const projectId = "44444444-4444-4444-8444-444444444444";
   const statusId = "55555555-5555-4555-8555-555555555555";
   const fetcher = new RecordingOpenRouterFetch([
@@ -368,14 +359,8 @@ test("OpenRouterAgentRuntime requires task and status reads for a status table",
   const statusReadBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
   assert.ok(isOpenRouterRequestBody(taskReadBody));
   assert.ok(isOpenRouterRequestBody(statusReadBody));
-  assert.deepEqual(taskReadBody.tool_choice, {
-    type: "function",
-    function: { name: "task_list" },
-  });
-  assert.deepEqual(statusReadBody.tool_choice, {
-    type: "function",
-    function: { name: "status_list" },
-  });
+  assert.equal(taskReadBody.tool_choice, "auto");
+  assert.equal(statusReadBody.tool_choice, "auto");
   assert.match(result.finalResponse ?? "", /In progress/u);
 });
 
@@ -523,21 +508,12 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
   assert.ok(isOpenRouterRequestBody(memberListBody));
   assert.ok(isOpenRouterRequestBody(projectListBody));
   assert.ok(isOpenRouterRequestBody(taskListBody));
-  assert.deepEqual(memberListBody.tool_choice, {
-    type: "function",
-    function: { name: "member_list" },
-  });
-  assert.deepEqual(projectListBody.tool_choice, {
-    type: "function",
-    function: { name: "project_list" },
-  });
-  assert.deepEqual(taskListBody.tool_choice, {
-    type: "function",
-    function: { name: "task_list" },
-  });
+  assert.equal(memberListBody.tool_choice, "auto");
+  assert.equal(projectListBody.tool_choice, "auto");
+  assert.equal(taskListBody.tool_choice, "auto");
   assert.match(
     JSON.stringify(taskListBody.tools),
-    /"name":"task_list".*"required":\["assigneeUserId"\]/u,
+    /"name":"task_list".*"assigneeUserId".*"Exact internal userId selected from member_list/u,
   );
   assert.match(result.finalResponse ?? "", /@chronolegion/u);
   assert.match(result.finalResponse ?? "", /vladimir@example\.com/u);
@@ -549,7 +525,7 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
   assert.equal(fetcher.calls.length, 5);
 });
 
-test("OpenRouterAgentRuntime forces member lookup for a direct workspace member list request", async () => {
+test("OpenRouterAgentRuntime lets the model choose member_list in any user language", async () => {
   const memberUserId = "77777777-7777-4777-8777-777777777777";
   const fetcher = new RecordingOpenRouterFetch([
     jsonResponse(200, {
@@ -598,7 +574,7 @@ test("OpenRouterAgentRuntime forces member lookup for a direct workspace member 
     ...request,
     input: {
       ...request.input,
-      inputText: "@t_ask_me_bot выдай мне списо пользователй в нашем workspace",
+      inputText: "@t_ask_me_bot 列出工作区中的所有成员",
     },
   });
 
@@ -609,10 +585,11 @@ test("OpenRouterAgentRuntime forces member lookup for a direct workspace member 
   );
   const memberListBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
   assert.ok(isOpenRouterRequestBody(memberListBody));
-  assert.deepEqual(memberListBody.tool_choice, {
-    type: "function",
-    function: { name: "member_list" },
-  });
+  assert.equal(memberListBody.tool_choice, "auto");
+  assert.match(
+    JSON.stringify(memberListBody.tools),
+    /"name":"member_list","description":"List every member.*Use this whenever the user asks about workspace members/u,
+  );
   assert.match(result.finalResponse ?? "", /Vladimir Osadchiy/u);
   assert.match(result.finalResponse ?? "", /vladimir@example\.com/u);
   assert.doesNotMatch(result.finalResponse ?? "", /77777777|ID пользователя/u);
@@ -863,10 +840,10 @@ test("OpenRouterAgentRuntime reports project batches without inventing a contain
   ]);
 });
 
-test("OpenRouterAgentRuntime rejects mutation success text without a tool call", async () => {
+test("OpenRouterAgentRuntime does not route mutation tools from language-specific tokens", async () => {
   const fetcher = new RecordingOpenRouterFetch(
     jsonResponse(200, {
-      choices: [{ message: { content: "Project created." } }],
+      choices: [{ message: { content: "Please provide the project details." } }],
       usage: { total_tokens: 10 },
     }),
   );
@@ -880,16 +857,13 @@ test("OpenRouterAgentRuntime rejects mutation success text without a tool call",
     },
   });
 
-  assert.equal(result.status, "failed");
-  assert.equal(result.error, "Agent did not call the required mutation tool.");
-  assert.equal(
-    result.finalResponse,
-    "No project or task was created because the agent did not call a tool.",
-  );
+  assert.equal(result.status, "completed");
+  assert.equal(result.error, null);
+  assert.equal(result.finalResponse, "Please provide the project details.");
   assert.deepEqual(result.toolCalls, []);
   const requestBody = parseRequestBody(getOnlyCall(fetcher).init.body);
   assert.ok(isOpenRouterRequestBody(requestBody));
-  assert.equal(requestBody.tool_choice, "required");
+  assert.equal(requestBody.tool_choice, "auto");
 });
 
 test("OpenRouterAgentRuntime resolves an issue identifier before mutating the task", async () => {
@@ -984,7 +958,7 @@ test("OpenRouterAgentRuntime resolves an issue identifier before mutating the ta
       assert.ok(isOpenRouterRequestBody(body));
       return body.tool_choice;
     }),
-    ["required", "required", "auto"],
+    ["auto", "auto", "auto"],
   );
 });
 
@@ -1048,7 +1022,7 @@ test("OpenRouterAgentRuntime asks for clarification when a task title is ambiguo
       assert.ok(isOpenRouterRequestBody(body));
       return body.tool_choice;
     }),
-    ["required", "auto"],
+    ["auto", "auto"],
   );
 });
 
@@ -1590,10 +1564,7 @@ test("OpenRouterAgentRuntime resolves a named project after a guessed id fails",
   );
   const recoveryBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
   assert.ok(isOpenRouterRequestBody(recoveryBody));
-  assert.deepEqual(recoveryBody.tool_choice, {
-    type: "function",
-    function: { name: "project_list" },
-  });
+  assert.equal(recoveryBody.tool_choice, "auto");
 });
 
 test("OpenRouterAgentRuntime sends configured attribution headers", async () => {

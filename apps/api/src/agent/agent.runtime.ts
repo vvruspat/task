@@ -62,7 +62,7 @@ const openRouterAgentTools = [
     function: {
       name: "member_list",
       description:
-        "List every member of the current workspace with the internal userId plus human-readable display name, email, and Telegram username. Use this before filtering or reporting tasks for a named person: choose the matching member from human-readable fields, then compare its userId with task assigneeUserId. Internal ids must never be shown to the user.",
+        "List every member of the current workspace with the internal userId plus human-readable display name, email, and Telegram username. Use this whenever the user asks about workspace members or refers to a person by name, email, or Telegram username and another tool needs that person's internal userId. Match the person using the human-readable fields, use userId only in later tool calls, and never show internal ids to the user.",
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -380,6 +380,7 @@ const coreMutationToolNames = new Set([
 
 const agentSystemPrompt = [
   "You are tAsk's backend task agent.",
+  "Choose tools from the semantic meaning of the user's request, regardless of its language, spelling, or wording. Tool descriptions are the source of truth for when and how to call them.",
   "Use the provided tools for every project or task mutation.",
   "Use project_list, project_get, member_list, task_list, task_lookup, and status_list for workspace reads. Never invent projects, tasks, ids, statuses, or assignees.",
   "Internal ids and UUIDs are only for tool calls. Never expose a UUID, user id, project id, task id, status id, template id, workspace id, or other internal identifier in a user-facing reply. Refer to people, projects, tasks, statuses, and templates only by human-readable names, emails, Telegram usernames, or issue identifiers. Internal identifiers may appear only inside non-visible Markdown link destinations.",
@@ -610,21 +611,8 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
       ];
       const allToolCalls: AgentRuntimeToolCall[] = [];
       let tokenUsage: Record<string, unknown> | null = null;
-      const mutationRequired = looksLikeMutationRequest(request.input.inputText);
-      const requiredReadTools = requestedCoreReadTools(
-        request.input.inputText,
-        request.context.projectId,
-        request.context.telegramChatId,
-      );
-      const availableAgentTools =
-        requiredReadTools.includes("member_list") &&
-        requiredReadTools.includes("task_list") &&
-        requestsNamedAssigneeTaskFilter(request.input.inputText)
-          ? requireTaskListAssigneeFilter(mergedAgentTools)
-          : mergedAgentTools;
       let malformedToolCallRetries = 0;
       let visibleInternalIdentifierRetries = 0;
-      let forcedToolName: string | null = null;
 
       for (let round = 0; round < maxOpenRouterToolRounds; round += 1) {
         const thinkingId = `thinking-${round + 1}`;
@@ -633,12 +621,6 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           label: round === 0 ? "Анализирую запрос" : "Планирую следующий шаг",
           state: "running",
         });
-        const currentForcedToolName = forcedToolName;
-        forcedToolName = null;
-        const requiredReadTool =
-          requiredReadTools.find(
-            (toolName) => !allToolCalls.some((toolCall) => toolCall.toolName === toolName),
-          ) ?? null;
         const response = await this.fetcher(openRouterChatCompletionsEndpoint, {
           method: "POST",
           headers: {
@@ -650,23 +632,8 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
           body: JSON.stringify({
             model,
             messages,
-            tools: availableAgentTools,
-            tool_choice:
-              currentForcedToolName !== null
-                ? {
-                    type: "function",
-                    function: { name: currentForcedToolName },
-                  }
-                : requiredReadTool !== null
-                  ? {
-                      type: "function",
-                      function: { name: requiredReadTool },
-                    }
-                  : mutationRequired &&
-                      !hasMutationToolCall(allToolCalls, mutationToolNames) &&
-                      !taskLookupNeedsClarification(allToolCalls)
-                    ? "required"
-                    : "auto",
+            tools: mergedAgentTools,
+            tool_choice: "auto",
             stream: false,
           }),
         });
@@ -718,27 +685,6 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         }
 
         if (parsedToolCalls.toolCalls.length === 0) {
-          if (
-            mutationRequired &&
-            !hasMutationToolCall(allToolCalls, mutationToolNames) &&
-            !taskLookupNeedsClarification(allToolCalls)
-          ) {
-            return {
-              model,
-              normalizedIntent: {
-                kind: "openrouter_chat_completion",
-                source: "telegram",
-              },
-              finalResponse:
-                "No project or task was created because the agent did not call a tool.",
-              status: "failed",
-              tokenUsage,
-              cost: null,
-              error: "Agent did not call the required mutation tool.",
-              toolCalls: [],
-            };
-          }
-
           if (content === null && allToolCalls.length === 0) {
             return buildRuntimeFailure(
               model,
@@ -801,17 +747,16 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
             parsedToolCalls.toolCalls,
             dispatchedToolCalls,
           );
-          const recoveryToolName = readRecoveryToolName(
+          const canRecoverFromMissingProject = shouldRetryProjectResolution(
             failedToolCall,
             allToolCalls,
             mutationToolNames,
           );
-          if (recoveryToolName !== null) {
-            forcedToolName = recoveryToolName;
+          if (canRecoverFromMissingProject) {
             messages.push({
               role: "system",
               content:
-                "The supplied project id was not found. Call project_list now, then use an exact project id returned by that tool for the requested operation.",
+                "The supplied project id was not found. Reconsider the available tools. project_list can return exact project ids for the requested operation.",
             });
             continue;
           }
@@ -964,26 +909,6 @@ export function mergeAgentToolDefinitions(
     names.add(tool.name);
   }
   return tools;
-}
-
-function requireTaskListAssigneeFilter(
-  tools: readonly OpenRouterAgentToolDefinition[],
-): readonly OpenRouterAgentToolDefinition[] {
-  return tools.map((tool): OpenRouterAgentToolDefinition => {
-    if (tool.function.name !== "task_list") return tool;
-    const requiredProperties = new Set(tool.function.parameters.required ?? []);
-    requiredProperties.add("assigneeUserId");
-    return {
-      type: "function",
-      function: {
-        ...tool.function,
-        parameters: {
-          ...tool.function.parameters,
-          required: [...requiredProperties],
-        },
-      },
-    };
-  });
 }
 
 function readToolArgumentLabel(
@@ -1411,196 +1336,6 @@ function toOpenRouterConversationToolCall(
   };
 }
 
-function looksLikeMutationRequest(inputText: string): boolean {
-  const mutationVerbs = new Set([
-    "add",
-    "archive",
-    "assign",
-    "attach",
-    "create",
-    "delete",
-    "set",
-    "update",
-    "добавить",
-    "добавь",
-    "добавьте",
-    "изменить",
-    "измени",
-    "назначить",
-    "назначь",
-    "обнови",
-    "обновить",
-    "переименовать",
-    "переименуй",
-    "поставь",
-    "прикрепи",
-    "сними",
-    "создай",
-    "создайте",
-    "создать",
-    "удали",
-    "установи",
-  ]);
-  return inputText
-    .normalize("NFKC")
-    .toLocaleLowerCase()
-    .split(/[^\p{L}]+/u)
-    .some((token) => mutationVerbs.has(token));
-}
-
-type CoreReadToolName =
-  | "member_list"
-  | "project_list"
-  | "status_list"
-  | "task_list"
-  | "telegram_history_read";
-
-function requestsNamedAssigneeTaskFilter(inputText: string): boolean {
-  const normalized = inputText.normalize("NFKC").toLocaleLowerCase();
-  const telegramHandles = normalized.match(/@[a-z0-9_]{5,32}/gu) ?? [];
-  if (telegramHandles.some((handle) => !handle.endsWith("_bot"))) return true;
-  return /(?:assignee|assigned\s+to|исполнител(?:ь|я|ю|е)|пользовател(?:ь|я|ю|е)|юзер(?:а|е|у)?|назначен\p{L}*\s+на)\s+["'«“@]?[\p{L}\p{N}]/iu.test(
-    normalized,
-  );
-}
-
-function requestedCoreReadTools(
-  inputText: string,
-  projectId: string | null | undefined,
-  telegramChatId: string | undefined,
-): CoreReadToolName[] {
-  const tokens = inputText
-    .normalize("NFKC")
-    .toLocaleLowerCase()
-    .split(/[^\p{L}]+/u)
-    .filter((token) => token.length > 0);
-  const tokenSet = new Set(tokens);
-  if (
-    telegramChatId !== undefined &&
-    [
-      "above",
-      "conversation",
-      "discussed",
-      "earlier",
-      "history",
-      "such",
-      "previous",
-      "said",
-      "выше",
-      "история",
-      "обсуждали",
-      "переписка",
-      "переписке",
-      "предыдущие",
-      "раньше",
-      "такая",
-      "такие",
-      "таким",
-      "таких",
-      "такого",
-      "такое",
-      "такой",
-      "такую",
-    ].some((token) => tokenSet.has(token))
-  ) {
-    return ["telegram_history_read"];
-  }
-  const asksForList =
-    [
-      "give",
-      "list",
-      "show",
-      "table",
-      "what",
-      "which",
-      "выдай",
-      "какие",
-      "перечисли",
-      "покажи",
-      "сколько",
-      "таблица",
-      "таблицу",
-      "табличка",
-      "табличку",
-    ].some((token) => tokenSet.has(token)) || tokens.some((token) => token.startsWith("спис"));
-  if (!asksForList) return [];
-  if (["projects", "проектов", "проекты"].some((token) => tokenSet.has(token))) {
-    return ["project_list"];
-  }
-
-  const asksForTasks = [
-    "issue",
-    "issues",
-    "task",
-    "tasks",
-    "таск",
-    "таски",
-    "задач",
-    "задача",
-    "задачи",
-  ].some((token) => tokenSet.has(token));
-  const asksForStatuses = [
-    "status",
-    "statuses",
-    "статус",
-    "статуса",
-    "статусам",
-    "статусами",
-    "статусов",
-  ].some((token) => tokenSet.has(token));
-  const hasSelectedProject = projectId !== null && projectId !== undefined;
-  const requiredTools: CoreReadToolName[] = [];
-  const asksForMembers = tokens.some(
-    (token) =>
-      ["member", "members", "user", "users"].includes(token) ||
-      token.startsWith("пользоват") ||
-      token.startsWith("участник") ||
-      token.startsWith("юзер"),
-  );
-  if (asksForMembers) requiredTools.push("member_list");
-  const telegramHandles = inputText.match(/@[a-z0-9_]{5,32}/giu) ?? [];
-  const hasNonBotTelegramHandle = telegramHandles.some(
-    (handle) => !handle.toLocaleLowerCase().endsWith("_bot"),
-  );
-  const asksAboutAssignee =
-    hasNonBotTelegramHandle ||
-    asksForMembers ||
-    [
-      "assigned",
-      "assignee",
-      "assignees",
-      "исполнитель",
-      "исполнителя",
-      "исполнители",
-      "исполнителю",
-      "пользователь",
-      "пользователе",
-      "пользователи",
-      "пользователя",
-      "назначена",
-      "назначено",
-      "назначены",
-      "назначить",
-      "привязана",
-      "привязано",
-      "привязаны",
-      "юзер",
-      "юзере",
-      "юзера",
-    ].some((token) => tokenSet.has(token));
-  if (asksForTasks && asksAboutAssignee && !requiredTools.includes("member_list")) {
-    requiredTools.push("member_list");
-  }
-  if (asksForTasks && !hasSelectedProject) {
-    requiredTools.push("project_list");
-  }
-  if (asksForTasks) requiredTools.push("task_list");
-  if (asksForStatuses && (hasSelectedProject || asksForTasks)) {
-    requiredTools.push("status_list");
-  }
-  return requiredTools;
-}
-
 function formatTelegramHistoryAccessResponse(toolCalls: AgentRuntimeToolCall[]): string | null {
   const disabledCall = toolCalls.find(
     (toolCall) =>
@@ -1619,18 +1354,15 @@ function hasMutationToolCall(
   return toolCalls.some((toolCall) => mutationToolNames.has(toolCall.toolName));
 }
 
-function readRecoveryToolName(
+function shouldRetryProjectResolution(
   failedToolCall: AgentRuntimeToolCall,
   allToolCalls: AgentRuntimeToolCall[],
   mutationToolNames: ReadonlySet<string>,
-): "project_list" | null {
-  if (
-    failedToolCall.error !== "Project was not found." ||
-    hasMutationToolCall(allToolCalls, mutationToolNames)
-  ) {
-    return null;
-  }
-  return "project_list";
+): boolean {
+  return (
+    failedToolCall.error === "Project was not found." &&
+    !hasMutationToolCall(allToolCalls, mutationToolNames)
+  );
 }
 
 function appendOpenRouterToolExchange(
@@ -1660,16 +1392,6 @@ function appendOpenRouterToolExchange(
       }),
     });
   }
-}
-
-function taskLookupNeedsClarification(toolCalls: AgentRuntimeToolCall[]): boolean {
-  for (let index = toolCalls.length - 1; index >= 0; index -= 1) {
-    const lookup = toolCalls[index];
-    if (lookup?.toolName !== "task_lookup") continue;
-    if (lookup.result === null || lookup.result === undefined) return false;
-    return ["task_candidates", "task_not_found"].includes(String(lookup.result["kind"]));
-  }
-  return false;
 }
 
 async function defaultOpenRouterFetch(
