@@ -86,7 +86,7 @@ test("OpenRouterAgentRuntime sends chat completions and maps assistant content",
   assert.match(JSON.stringify(requestBody.tools), /project_get/);
   assert.match(JSON.stringify(requestBody.tools), /project_create/);
   assert.match(JSON.stringify(requestBody.tools), /task_list/);
-  assert.match(JSON.stringify(requestBody.tools), /member_search/);
+  assert.match(JSON.stringify(requestBody.tools), /member_list/);
   assert.match(JSON.stringify(requestBody.tools), /status_list/);
   assert.match(JSON.stringify(requestBody.tools), /telegram_history_read/);
   assert.match(JSON.stringify(requestBody.tools), /task_skill_create/);
@@ -379,8 +379,9 @@ test("OpenRouterAgentRuntime requires task and status reads for a status table",
   assert.match(result.finalResponse ?? "", /In progress/u);
 });
 
-test("OpenRouterAgentRuntime resolves a named assignee before listing their tasks", async () => {
+test("OpenRouterAgentRuntime lists all members and correlates a named assignee by user id", async () => {
   const projectId = "44444444-4444-4444-8444-444444444444";
+  const targetUserId = "77777777-7777-4777-8777-777777777777";
   const fetcher = new RecordingOpenRouterFetch([
     jsonResponse(200, {
       choices: [
@@ -389,11 +390,11 @@ test("OpenRouterAgentRuntime resolves a named assignee before listing their task
             content: null,
             tool_calls: [
               {
-                id: "call-member-search",
+                id: "call-member-list",
                 type: "function",
                 function: {
-                  name: "member_search",
-                  arguments: JSON.stringify({ query: "@chronolegion" }),
+                  name: "member_list",
+                  arguments: "{}",
                 },
               },
             ],
@@ -421,6 +422,15 @@ test("OpenRouterAgentRuntime resolves a named assignee before listing their task
       choices: [
         {
           message: {
+            content: "ID пользователя: 77777777-...",
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
             content: "На @chronolegion назначена задача «Запись вокала» (vladimir@example.com).",
           },
         },
@@ -428,12 +438,18 @@ test("OpenRouterAgentRuntime resolves a named assignee before listing their task
     }),
   ]);
   const dispatcher = new RecordingAgentToolOperationDispatcher([
-    successfulToolCall("member_search", {
-      kind: "member_search_results",
-      query: "@chronolegion",
-      count: 1,
+    successfulToolCall("member_list", {
+      kind: "workspace_member_list",
+      count: 2,
       members: [
         {
+          userId: "66666666-6666-4666-8666-666666666666",
+          displayName: "Alexander Kolesov",
+          email: "alexander@example.com",
+          telegramUsername: "alexander",
+        },
+        {
+          userId: targetUserId,
           displayName: "Vladimir Osadchiy",
           email: "vladimir@example.com",
           telegramUsername: "chronolegion",
@@ -448,6 +464,7 @@ test("OpenRouterAgentRuntime resolves a named assignee before listing their task
         {
           number: 1,
           title: "Запись вокала",
+          assigneeUserId: targetUserId,
           assignee: {
             displayName: "Vladimir Osadchiy",
             email: "vladimir@example.com",
@@ -464,22 +481,22 @@ test("OpenRouterAgentRuntime resolves a named assignee before listing their task
     context: { ...request.context, projectId },
     input: {
       ...request.input,
-      inputText: "Покажи, какие задачи назначены на @chronolegion",
+      inputText: "Какие таски висят на пользователе chronolegion?",
     },
   });
 
   assert.equal(result.status, "completed");
   assert.deepEqual(
     dispatcher.calls.map((call) => call.toolName),
-    ["member_search", "task_list"],
+    ["member_list", "task_list"],
   );
-  const memberSearchBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
+  const memberListBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
   const taskListBody = parseRequestBody(fetcher.calls[1]?.init.body ?? "");
-  assert.ok(isOpenRouterRequestBody(memberSearchBody));
+  assert.ok(isOpenRouterRequestBody(memberListBody));
   assert.ok(isOpenRouterRequestBody(taskListBody));
-  assert.deepEqual(memberSearchBody.tool_choice, {
+  assert.deepEqual(memberListBody.tool_choice, {
     type: "function",
-    function: { name: "member_search" },
+    function: { name: "member_list" },
   });
   assert.deepEqual(taskListBody.tool_choice, {
     type: "function",
@@ -487,6 +504,8 @@ test("OpenRouterAgentRuntime resolves a named assignee before listing their task
   });
   assert.match(result.finalResponse ?? "", /@chronolegion/u);
   assert.match(result.finalResponse ?? "", /vladimir@example\.com/u);
+  assert.doesNotMatch(result.finalResponse ?? "", /77777777|ID пользователя/u);
+  assert.equal(fetcher.calls.length, 4);
 });
 
 test("OpenRouterAgentRuntime exposes connected workspace integration tools", async () => {
