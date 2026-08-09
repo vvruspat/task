@@ -61,7 +61,9 @@ export class TelegramInternalConnectController {
   constructor(private readonly service: TelegramConnectService) {}
 
   @Post("connect")
-  @ApiOperation({ summary: "Connect a Telegram chat using a one-time workspace token" })
+  @ApiOperation({
+    summary: "Pair the Telegram sender and connect its chat using a one-time workspace token",
+  })
   @ApiBody({ type: CompleteTelegramChatConnectionDto })
   @ApiOkResponse({ type: TelegramChatConnectionDto })
   @ApiBadRequestResponse({ description: "Telegram connect token or payload is invalid." })

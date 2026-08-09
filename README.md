@@ -64,6 +64,14 @@ brevo whoami --json
 brevo app available-scopes --json
 ```
 
+## Telegram Chat Connection
+
+Workspace owners and admins connect a Telegram chat by generating a short-lived `/connect` command
+in workspace integration settings and sending it in the target chat. The one-time 256-bit token
+atomically pairs the Telegram sender's stable `telegram_id` with the authenticated tAsk user and
+connects the chat. Tokens expire after ten minutes, cannot be replayed, and cannot move a Telegram
+identity that is already linked to another tAsk user.
+
 ## Project State
 
 `graphify-out/` is committed project state. After code or docs changes, update it before committing:

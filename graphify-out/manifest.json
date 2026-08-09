@@ -70,8 +70,8 @@
     "semantic_hash": ""
   },
   "docs/product-model.md": {
-    "mtime": 1783607153.6964302,
-    "ast_hash": "d05d57ec6e88ccbecc5725f658333c37",
+    "mtime": 1786261389.6041007,
+    "ast_hash": "c463e2d8ff4bf64f440222b01f2eaa86",
     "semantic_hash": ""
   },
   "docs/technical-architecture.md": {
@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1786216127.160425,
-    "ast_hash": "253dd3ea7eb515b5051318ce01cb8959",
+    "mtime": 1786261427.0122492,
+    "ast_hash": "3f89deaed072ce60e358ba93e22c10e3",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -1290,13 +1290,13 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1784751507.8217144,
-    "ast_hash": "0064f2b37e507cb0accf53736acdc3ec",
+    "mtime": 1786261389.6036837,
+    "ast_hash": "37c6cbabca95a4d9211ebf5242106c5a",
     "semantic_hash": ""
   },
   "docs/implementation-roadmap.md": {
-    "mtime": 1783607153.6963687,
-    "ast_hash": "7c65158ad3d75c1d17b998890ac01741",
+    "mtime": 1786261455.669272,
+    "ast_hash": "974149396eb32d80775e29b2b2b031d6",
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {
@@ -1630,7 +1630,7 @@
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
-    "mtime": 1786210232.449901,
+    "mtime": 1786259627.4610662,
     "ast_hash": "2a74d3909800ca5467fa83b0ab4a4890",
     "semantic_hash": ""
   },
@@ -1965,8 +1965,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/task-details-content.tsx": {
-    "mtime": 1786229396.9016142,
-    "ast_hash": "8c50935e40f97ffb93539fdea86834a4",
+    "mtime": 1786259552.8937576,
+    "ast_hash": "82ab8402e2f401533440778836ad8741",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296960000-add-workspace-description.ts": {
@@ -3315,8 +3315,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/telegram-connect.controller.ts": {
-    "mtime": 1785187852.856336,
-    "ast_hash": "4e91ed73ed9e326fa96d2759cbf511bf",
+    "mtime": 1786261362.2308593,
+    "ast_hash": "e37ebefd8f0414a2d41c55039e235028",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/telegram-connect.dto.test.ts": {
@@ -3330,13 +3330,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/telegram-connect.service.test.ts": {
-    "mtime": 1784751507.8292499,
-    "ast_hash": "1827be2d8b871eef8fed0feda6712ff7",
+    "mtime": 1786261395.7044168,
+    "ast_hash": "63117e777d02c4cdc9c35ac5e4afddbe",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/telegram-connect.service.ts": {
-    "mtime": 1785187852.8549757,
-    "ast_hash": "51fe7d24ba27b17bcff12d04801b0c64",
+    "mtime": 1786261362.2297919,
+    "ast_hash": "76fa72e48e8ea56ab2348e5061ca8bb6",
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/integrations/telegram/connect-token/route.ts": {

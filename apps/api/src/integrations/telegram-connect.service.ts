@@ -96,14 +96,29 @@ export class TelegramConnectService {
       ) {
         throw new BadRequestException("Telegram connect token is invalid or expired.");
       }
-      const identity = await manager.getRepository(TelegramIdentityEntity).findOneBy({
+      const identityRepository = manager.getRepository(TelegramIdentityEntity);
+      const identityCandidate = pairTelegramIdentityForConnection(null, {
+        now,
         telegramId: input.telegramId,
+        userId: state.userId,
       });
-      if (identity === null || identity.userId !== state.userId) {
-        throw new ForbiddenException("Telegram identity does not own this connect token.");
+      await identityRepository
+        .createQueryBuilder()
+        .insert()
+        .into(TelegramIdentityEntity)
+        .values(identityCandidate)
+        .orIgnore()
+        .execute();
+      const storedIdentity = await identityRepository.findOneBy({ telegramId: input.telegramId });
+      if (storedIdentity === null) {
+        throw new ServiceUnavailableException("Telegram identity pairing could not be persisted.");
       }
-      identity.lastSeenAt = now;
-      await manager.getRepository(TelegramIdentityEntity).save(identity);
+      const identity = pairTelegramIdentityForConnection(storedIdentity, {
+        now,
+        telegramId: input.telegramId,
+        userId: state.userId,
+      });
+      await identityRepository.save(identity);
       const integrationRepository = manager.getRepository(WorkspaceIntegrationEntity);
       const integration = await integrationRepository
         .createQueryBuilder("integration")
@@ -187,6 +202,28 @@ export class TelegramConnectService {
 
 export function hashConnectToken(token: string): string {
   return createHash("sha256").update(token, "utf8").digest("hex");
+}
+
+type TelegramIdentityPairingInput = {
+  now: Date;
+  telegramId: string;
+  userId: string;
+};
+
+export function pairTelegramIdentityForConnection(
+  identity: TelegramIdentityEntity | null,
+  input: TelegramIdentityPairingInput,
+): TelegramIdentityEntity {
+  if (identity !== null && identity.userId !== input.userId) {
+    throw new ForbiddenException("Telegram identity does not own this connect token.");
+  }
+
+  const pairedIdentity = identity ?? new TelegramIdentityEntity();
+  pairedIdentity.telegramId = input.telegramId;
+  pairedIdentity.userId = input.userId;
+  pairedIdentity.lastSeenAt = input.now;
+  if (identity === null) pairedIdentity.linkedAt = input.now;
+  return pairedIdentity;
 }
 
 async function assertWorkspaceManager(
