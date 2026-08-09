@@ -1152,7 +1152,16 @@ test("BackendAgentToolOperationDispatcher lists member ids for internal task cor
       async createTask() {
         throw new Error("Unexpected task create call.");
       },
-      async listActiveTasks() {
+      async listActiveTasks(actualWorkspaceId, actualProjectId, actualUserId, input) {
+        assert.deepEqual(
+          { actualWorkspaceId, actualProjectId, actualUserId, input },
+          {
+            actualWorkspaceId: workspaceId,
+            actualProjectId: projectId,
+            actualUserId: userId,
+            input: { assigneeUserId: marinaUserId },
+          },
+        );
         return [
           new TaskDetailDto({
             ...taskDetail("Запись барабанов", null),
@@ -1179,7 +1188,11 @@ test("BackendAgentToolOperationDispatcher lists member ids for internal task cor
     context,
   );
   const taskList = await dispatcher.dispatchToolCall(
-    { callId: "call-task-list", toolName: "task_list", arguments: {} },
+    {
+      callId: "call-task-list",
+      toolName: "task_list",
+      arguments: { assigneeUserId: marinaUserId },
+    },
     context,
   );
 
@@ -1214,6 +1227,7 @@ test("BackendAgentToolOperationDispatcher lists member ids for internal task cor
       dueAt: null,
     },
   ]);
+  assert.equal(taskList.result?.["assigneeUserId"], marinaUserId);
   assert.match(JSON.stringify(memberList.result), new RegExp(marinaUserId, "u"));
   assert.match(JSON.stringify(taskList.result), new RegExp(marinaUserId, "u"));
 });

@@ -429,7 +429,10 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
                 type: "function",
                 function: {
                   name: "task_list",
-                  arguments: JSON.stringify({ projectId }),
+                  arguments: JSON.stringify({
+                    assigneeUserId: targetUserId,
+                    projectId,
+                  }),
                 },
               },
             ],
@@ -532,10 +535,17 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
     type: "function",
     function: { name: "task_list" },
   });
+  assert.match(
+    JSON.stringify(taskListBody.tools),
+    /"name":"task_list".*"required":\["assigneeUserId"\]/u,
+  );
   assert.match(result.finalResponse ?? "", /@chronolegion/u);
   assert.match(result.finalResponse ?? "", /vladimir@example\.com/u);
   assert.doesNotMatch(result.finalResponse ?? "", /77777777|ID пользователя/u);
-  assert.deepEqual(dispatcher.calls[2]?.arguments, { projectId });
+  assert.deepEqual(dispatcher.calls[2]?.arguments, {
+    assigneeUserId: targetUserId,
+    projectId,
+  });
   assert.equal(fetcher.calls.length, 5);
 });
 

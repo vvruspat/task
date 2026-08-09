@@ -24,6 +24,7 @@ import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
   CreateTaskInput,
+  ListActiveTasksInput,
   ListTaskTableInput,
   MoveTaskInput,
   TaskDetail,
@@ -124,6 +125,7 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     workspaceId: string,
     projectId: string,
     userId: string,
+    input: ListActiveTasksInput = {},
   ): Promise<TaskSummary[] | null> {
     const dataSource = await this.getInitializedDataSource();
     const canReadProject = await this.canReadProject(dataSource, workspaceId, projectId, userId);
@@ -133,7 +135,12 @@ export class TypeOrmTaskReadStore implements TaskReadStore {
     }
 
     const tasks = await dataSource.getRepository(TaskEntity).find({
-      where: { archivedAt: IsNull(), projectId, workspaceId },
+      where: {
+        archivedAt: IsNull(),
+        projectId,
+        workspaceId,
+        ...(input.assigneeUserId === undefined ? {} : { assigneeUserId: input.assigneeUserId }),
+      },
       order: { parentTaskId: "ASC", position: "ASC", createdAt: "ASC" },
     });
 

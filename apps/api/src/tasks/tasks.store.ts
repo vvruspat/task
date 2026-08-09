@@ -3,6 +3,7 @@ import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
   CreateTaskInput,
+  ListActiveTasksInput,
   ListTaskTableInput,
   MoveTaskInput,
   TaskDetail,
@@ -151,6 +152,7 @@ export type TaskReadStore = {
     workspaceId: string,
     projectId: string,
     userId: string,
+    input?: ListActiveTasksInput,
   ): Promise<TaskSummary[] | null>;
   listTableForProject(
     workspaceId: string,

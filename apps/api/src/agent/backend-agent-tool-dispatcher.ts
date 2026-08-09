@@ -263,6 +263,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
 
     if (call.toolName === "task_list") {
       const projectId = readOptionalUuid(call.arguments, "projectId") ?? context.projectId;
+      const assigneeUserId = readOptionalUuid(call.arguments, "assigneeUserId");
       if (projectId === undefined || projectId === null) {
         throw new BadRequestException(
           "Agent tool task_list requires projectId when no project is selected.",
@@ -272,6 +273,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
         context.workspaceId,
         projectId,
         context.userId,
+        assigneeUserId === undefined ? {} : { assigneeUserId },
       );
       const members =
         this.workspacesService === undefined
@@ -281,6 +283,7 @@ export class BackendAgentToolOperationDispatcher implements AgentToolOperationDi
       return {
         kind: "task_list",
         projectId,
+        assigneeUserId: assigneeUserId ?? null,
         count: tasks.length,
         tasks: tasks.map((task) => ({
           id: task.id,
