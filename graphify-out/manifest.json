@@ -1170,13 +1170,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.ts": {
-    "mtime": 1786289149.2589684,
-    "ast_hash": "bc03f211a7f5bb02dcc83e1efc786817",
+    "mtime": 1786300252.4861262,
+    "ast_hash": "d55127c130ab99623837d28b97e3d08a",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.test.ts": {
-    "mtime": 1786289149.2594109,
-    "ast_hash": "9128804971be19a6c16a6e3ab4969d52",
+    "mtime": 1786300252.4865668,
+    "ast_hash": "1d3193fbe65e8cd4d17fd96efd6929db",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296660000-add-agent-run-source-thread-id.ts": {
@@ -3777,6 +3777,16 @@
   "apps/api/src/agent/user-facing-agent-response.ts": {
     "mtime": 1786273562.8930435,
     "ast_hash": "82591ee23f1953c1cffc907110c94e67",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20260809_182832_\u043c\u043e\u0436\u0435\u0448\u044c_\u0433\u043b\u044f\u043d\u0443\u0442\u044c_\u043f\u043e\u0447\u0435\u043c\u0443_tg_\u0431\u043e\u0442_\u043e\u0442\u0432\u0435\u0447\u0430\u0435\u0442_\u0442\u043e\u043b\u044c\u043a\u043e_\u043c\u043d\u0435.md": {
+    "mtime": 1786300112.2096448,
+    "ast_hash": "2a64b65ddac594c5670e110676f5443a",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20260809_182957_\u0430_\u043c\u043e\u0436\u043d\u043e_\u043a\u0430\u043a_\u0442\u043e_\u0441\u0434\u0435\u043b\u0430\u0442\u044c_\u0447\u0442\u043e_\u0431\u044b_\u0432\u0435\u0441\u044c_\u0447\u0430\u0442_\u043c\u043e\u0433_\u043e\u0431\u0449\u0430\u0442\u044c\u0441.md": {
+    "mtime": 1786300197.2604346,
+    "ast_hash": "4850abb19cff09fe6e8298f64805066f",
     "semantic_hash": ""
   }
 }

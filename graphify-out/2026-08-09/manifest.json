@@ -1170,13 +1170,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.ts": {
-    "mtime": 1786282721.2522676,
-    "ast_hash": "0487de05d72c3f17f9300c3640a8de82",
+    "mtime": 1786289149.2589684,
+    "ast_hash": "bc03f211a7f5bb02dcc83e1efc786817",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent.runtime.test.ts": {
-    "mtime": 1786282706.5641003,
-    "ast_hash": "634c2aff62967e49c0e3ef5c722f224b",
+    "mtime": 1786289149.2594109,
+    "ast_hash": "9128804971be19a6c16a6e3ab4969d52",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296660000-add-agent-run-source-thread-id.ts": {

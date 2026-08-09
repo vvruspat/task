@@ -111,7 +111,7 @@ const openRouterAgentTools = [
     function: {
       name: "telegram_history_read",
       description:
-        "Read recent text messages saved from the current Telegram chat and topic. Use this when the user's request depends on what people said earlier, references missing conversational context, or asks for a summary of the chat. If access is disabled, clearly tell the user to enable 'Доступ к истории переписки' in this chat's tAsk settings; only messages received after enabling can be read.",
+        "Read recent text messages saved from the current Telegram chat and topic. This tool is the only source of Telegram chat history. You MUST call it before answering whenever the request cannot be answered from the current message alone and depends on earlier messages, including requests to summarize a discussion, extract decisions or action items, continue something discussed earlier, or resolve references to prior conversation. Apply this rule semantically in every language; do not rely on particular keywords. Never claim that chat history is empty or unavailable unless this tool returned that result. If access is disabled, clearly tell the user to enable 'Доступ к истории переписки' in this chat's tAsk settings; only messages received after enabling can be read.",
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -407,7 +407,7 @@ const agentSystemPrompt = [
   "Before answering which tasks belong to a named person, call member_list. Inspect every member's displayName, email, and telegramUsername, choose the best human-readable match, then pass that member's exact userId to task_list as assigneeUserId so the backend returns only their tasks. Never show that id, a shortened form of it, or ask the user to identify an id. Resolve assignees for mutations by passing the user's human-readable name, email, or Telegram username to task_set_assignee; never invent a user id.",
   "Resolve statuses by passing the user's human-readable status name to task_set_status; never invent a status id.",
   "Connected workspace integrations may add namespaced tools. Use their read-only search/get tools when the user asks about external resources.",
-  "In Telegram, when the request depends on earlier chat messages that are not present in the current request, call telegram_history_read. Never pretend to know the chat history without this tool. If it reports history_access_disabled, tell the user to open this Telegram chat's settings in tAsk and enable 'Доступ к истории переписки'; explain that only new messages received after enabling will be saved.",
+  "telegram_history_read is the only source of Telegram chat history. In every language, if the request needs earlier messages that are not present in the current request, you MUST call telegram_history_read before answering. This includes summaries of a discussion, decisions, action items, continuations of earlier work, and references to prior conversation. Decide from meaning, not keywords. Never infer the history or claim that it is empty or unavailable without calling the tool. If it reports history_access_disabled, tell the user to open this Telegram chat's settings in tAsk and enable 'Доступ к истории переписки'; explain that only new messages received after enabling will be saved.",
   "Reply briefly and accurately.",
 ].join(" ");
 
