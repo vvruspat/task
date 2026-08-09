@@ -1505,21 +1505,24 @@ function requestedCoreReadTools(
   ) {
     return ["telegram_history_read"];
   }
-  const asksForList = [
-    "list",
-    "show",
-    "table",
-    "what",
-    "which",
-    "какие",
-    "перечисли",
-    "покажи",
-    "сколько",
-    "таблица",
-    "таблицу",
-    "табличка",
-    "табличку",
-  ].some((token) => tokenSet.has(token));
+  const asksForList =
+    [
+      "give",
+      "list",
+      "show",
+      "table",
+      "what",
+      "which",
+      "выдай",
+      "какие",
+      "перечисли",
+      "покажи",
+      "сколько",
+      "таблица",
+      "таблицу",
+      "табличка",
+      "табличку",
+    ].some((token) => tokenSet.has(token)) || tokens.some((token) => token.startsWith("спис"));
   if (!asksForList) return [];
   if (["projects", "проектов", "проекты"].some((token) => tokenSet.has(token))) {
     return ["project_list"];
@@ -1547,12 +1550,21 @@ function requestedCoreReadTools(
   ].some((token) => tokenSet.has(token));
   const hasSelectedProject = projectId !== null && projectId !== undefined;
   const requiredTools: CoreReadToolName[] = [];
+  const asksForMembers = tokens.some(
+    (token) =>
+      ["member", "members", "user", "users"].includes(token) ||
+      token.startsWith("пользоват") ||
+      token.startsWith("участник") ||
+      token.startsWith("юзер"),
+  );
+  if (asksForMembers) requiredTools.push("member_list");
   const telegramHandles = inputText.match(/@[a-z0-9_]{5,32}/giu) ?? [];
   const hasNonBotTelegramHandle = telegramHandles.some(
     (handle) => !handle.toLocaleLowerCase().endsWith("_bot"),
   );
   const asksAboutAssignee =
     hasNonBotTelegramHandle ||
+    asksForMembers ||
     [
       "assigned",
       "assignee",
@@ -1576,7 +1588,9 @@ function requestedCoreReadTools(
       "юзере",
       "юзера",
     ].some((token) => tokenSet.has(token));
-  if (asksForTasks && asksAboutAssignee) requiredTools.push("member_list");
+  if (asksForTasks && asksAboutAssignee && !requiredTools.includes("member_list")) {
+    requiredTools.push("member_list");
+  }
   if (asksForTasks && !hasSelectedProject) {
     requiredTools.push("project_list");
   }

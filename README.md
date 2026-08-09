@@ -41,6 +41,18 @@ npm run build
 npm run test
 ```
 
+## Production Images
+
+Coolify builds each application from the repository checkout for the deployment commit. Configure
+the Dockerfile build pack with base directory `/` and the corresponding file:
+
+- API: `/deploy/api.Dockerfile`
+- Telegram bot: `/deploy/bot.Dockerfile`
+- Web: `/deploy/web.Dockerfile`
+
+Do not clone the repository from inside a Dockerfile. Docker can reuse that clone layer across
+deployments and produce a healthy container with stale application code.
+
 When API DTOs change, regenerate and check the OpenAPI/API client contract:
 
 ```bash

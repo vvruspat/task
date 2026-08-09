@@ -549,6 +549,76 @@ test("OpenRouterAgentRuntime lists all members and correlates a named assignee b
   assert.equal(fetcher.calls.length, 5);
 });
 
+test("OpenRouterAgentRuntime forces member lookup for a direct workspace member list request", async () => {
+  const memberUserId = "77777777-7777-4777-8777-777777777777";
+  const fetcher = new RecordingOpenRouterFetch([
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: null,
+            tool_calls: [
+              {
+                id: "call-member-list",
+                type: "function",
+                function: { name: "member_list", arguments: "{}" },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    jsonResponse(200, {
+      choices: [
+        {
+          message: {
+            content: "Vladimir Osadchiy — vladimir@example.com, @chronolegion",
+          },
+        },
+      ],
+    }),
+  ]);
+  const dispatcher = new RecordingAgentToolOperationDispatcher([
+    successfulToolCall("member_list", {
+      kind: "workspace_member_list",
+      count: 1,
+      members: [
+        {
+          userId: memberUserId,
+          displayName: "Vladimir Osadchiy",
+          email: "vladimir@example.com",
+          telegramUsername: "chronolegion",
+        },
+      ],
+    }),
+  ]);
+  const runtime = new OpenRouterAgentRuntime(config, fetcher.fetch, dispatcher);
+
+  const result = await runtime.handleTelegramRequest({
+    ...request,
+    input: {
+      ...request.input,
+      inputText: "@t_ask_me_bot выдай мне списо пользователй в нашем workspace",
+    },
+  });
+
+  assert.equal(result.status, "completed");
+  assert.deepEqual(
+    dispatcher.calls.map((call) => call.toolName),
+    ["member_list"],
+  );
+  const memberListBody = parseRequestBody(fetcher.calls[0]?.init.body ?? "");
+  assert.ok(isOpenRouterRequestBody(memberListBody));
+  assert.deepEqual(memberListBody.tool_choice, {
+    type: "function",
+    function: { name: "member_list" },
+  });
+  assert.match(result.finalResponse ?? "", /Vladimir Osadchiy/u);
+  assert.match(result.finalResponse ?? "", /vladimir@example\.com/u);
+  assert.doesNotMatch(result.finalResponse ?? "", /77777777|ID пользователя/u);
+  assert.equal(fetcher.calls.length, 2);
+});
+
 test("OpenRouterAgentRuntime exposes connected workspace integration tools", async () => {
   const fetcher = new RecordingOpenRouterFetch(
     jsonResponse(200, { choices: [{ message: { content: "Found the brief." } }] }),
