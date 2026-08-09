@@ -1,0 +1,10 @@
+.git
+.github
+.turbo
+.next
+**/.next
+**/dist
+**/node_modules
+**/.env
+**/.env.*
+graphify-out
