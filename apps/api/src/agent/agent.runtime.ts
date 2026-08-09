@@ -75,11 +75,17 @@ const openRouterAgentTools = [
     function: {
       name: "task_list",
       description:
-        "List active tasks in a real project visible to the current user, including internal assigneeUserId and the assignee's display name, email, and Telegram username when available. Use assigneeUserId only to correlate tasks with member_list results; never show it to the user. Omit projectId only when the server supplied a selected project.",
+        "List active tasks in a real project visible to the current user, optionally filtered by an internal assigneeUserId. For a named person, call member_list first, select the matching member by display name, email, or Telegram username, then pass that member's exact userId as assigneeUserId so the backend returns only their tasks. Never show internal ids to the user. Omit projectId only when the server supplied a selected project.",
       parameters: {
         type: "object",
         additionalProperties: false,
         properties: {
+          assigneeUserId: {
+            type: "string",
+            format: "uuid",
+            description:
+              "Exact internal userId selected from member_list. Required when the user asks for tasks assigned to a named person.",
+          },
           projectId: { type: "string", format: "uuid" },
         },
       },
@@ -397,7 +403,7 @@ const agentSystemPrompt = [
   "After task_create returns an id, use that id with task_add_subtasks when subtasks were requested.",
   "For changes to an existing task, use task_update, task_set_status, task_set_assignee, task_set_due_date, or task_add_link_attachment as appropriate. Never claim that a task property changed unless the corresponding tool succeeded.",
   "When an existing task is referenced by a URL, UUID, issue identifier such as ZNA-26, or title, call task_lookup first with that reference, then use the returned projectId and taskId in the requested mutation tool. If task_lookup returns task_candidates, choose only when the candidates and user context make the intended task clear, call task_lookup again with the chosen taskId, and otherwise ask the user to clarify. Never invent UUIDs.",
-  "Before answering which tasks belong to a named person, call member_list. Inspect every member's displayName, email, and telegramUsername, choose the best human-readable match, then use that member's userId only to compare against task assigneeUserId. Never show that id, a shortened form of it, or ask the user to identify an id. Resolve assignees for mutations by passing the user's human-readable name, email, or Telegram username to task_set_assignee; never invent a user id.",
+  "Before answering which tasks belong to a named person, call member_list. Inspect every member's displayName, email, and telegramUsername, choose the best human-readable match, then pass that member's exact userId to task_list as assigneeUserId so the backend returns only their tasks. Never show that id, a shortened form of it, or ask the user to identify an id. Resolve assignees for mutations by passing the user's human-readable name, email, or Telegram username to task_set_assignee; never invent a user id.",
   "Resolve statuses by passing the user's human-readable status name to task_set_status; never invent a status id.",
   "Connected workspace integrations may add namespaced tools. Use their read-only search/get tools when the user asks about external resources.",
   "In Telegram, when the request depends on earlier chat messages that are not present in the current request, call telegram_history_read. Never pretend to know the chat history without this tool. If it reports history_access_disabled, tell the user to open this Telegram chat's settings in tAsk and enable 'Доступ к истории переписки'; explain that only new messages received after enabling will be saved.",
@@ -593,7 +599,7 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
     try {
       const integrationToolDefinitions =
         (await this.toolDispatcher.listToolDefinitions?.(request.context)) ?? [];
-      const availableAgentTools = mergeAgentToolDefinitions(integrationToolDefinitions);
+      const mergedAgentTools = mergeAgentToolDefinitions(integrationToolDefinitions);
       const mutationToolNames = new Set([
         ...coreMutationToolNames,
         ...integrationToolDefinitions.filter((tool) => !tool.readOnly).map((tool) => tool.name),
@@ -610,6 +616,12 @@ export class OpenRouterAgentRuntime implements AgentRuntime {
         request.context.projectId,
         request.context.telegramChatId,
       );
+      const availableAgentTools =
+        requiredReadTools.includes("member_list") &&
+        requiredReadTools.includes("task_list") &&
+        requestsNamedAssigneeTaskFilter(request.input.inputText)
+          ? requireTaskListAssigneeFilter(mergedAgentTools)
+          : mergedAgentTools;
       let malformedToolCallRetries = 0;
       let visibleInternalIdentifierRetries = 0;
       let forcedToolName: string | null = null;
@@ -952,6 +964,26 @@ export function mergeAgentToolDefinitions(
     names.add(tool.name);
   }
   return tools;
+}
+
+function requireTaskListAssigneeFilter(
+  tools: readonly OpenRouterAgentToolDefinition[],
+): readonly OpenRouterAgentToolDefinition[] {
+  return tools.map((tool): OpenRouterAgentToolDefinition => {
+    if (tool.function.name !== "task_list") return tool;
+    const requiredProperties = new Set(tool.function.parameters.required ?? []);
+    requiredProperties.add("assigneeUserId");
+    return {
+      type: "function",
+      function: {
+        ...tool.function,
+        parameters: {
+          ...tool.function.parameters,
+          required: [...requiredProperties],
+        },
+      },
+    };
+  });
 }
 
 function readToolArgumentLabel(
@@ -1422,6 +1454,15 @@ type CoreReadToolName =
   | "status_list"
   | "task_list"
   | "telegram_history_read";
+
+function requestsNamedAssigneeTaskFilter(inputText: string): boolean {
+  const normalized = inputText.normalize("NFKC").toLocaleLowerCase();
+  const telegramHandles = normalized.match(/@[a-z0-9_]{5,32}/gu) ?? [];
+  if (telegramHandles.some((handle) => !handle.endsWith("_bot"))) return true;
+  return /(?:assignee|assigned\s+to|исполнител(?:ь|я|ю|е)|пользовател(?:ь|я|ю|е)|юзер(?:а|е|у)?|назначен\p{L}*\s+на)\s+["'«“@]?[\p{L}\p{N}]/iu.test(
+    normalized,
+  );
+}
 
 function requestedCoreReadTools(
   inputText: string,

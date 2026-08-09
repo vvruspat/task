@@ -71,6 +71,34 @@ test("TasksService maps visible active tasks to DTOs", async () => {
   assert.equal(response[0]?.title, taskSummary.title);
 });
 
+test("TasksService passes the assignee filter to active task reads", async () => {
+  const readStore = createReadStore({ tasks: [taskSummary] });
+  readStore.listActiveForProject = async (
+    actualWorkspaceId,
+    actualProjectId,
+    actualUserId,
+    input,
+  ): Promise<TaskSummary[] | null> => {
+    assert.deepEqual(
+      { actualWorkspaceId, actualProjectId, actualUserId, input },
+      {
+        actualWorkspaceId: workspaceId,
+        actualProjectId: projectId,
+        actualUserId: userId,
+        input: { assigneeUserId },
+      },
+    );
+    return [taskSummary];
+  };
+  const service = new TasksService(readStore);
+
+  const response = await service.listActiveTasks(workspaceId, projectId, userId, {
+    assigneeUserId,
+  });
+
+  assert.equal(response.length, 1);
+});
+
 test("TasksService returns one visible task DTO", async () => {
   const service = new TasksService(createReadStore({ task: taskSummary }));
 

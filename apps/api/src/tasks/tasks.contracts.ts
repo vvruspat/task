@@ -22,6 +22,10 @@ export type TaskSummary = {
 
 export type TaskDetail = TaskSummary;
 
+export type ListActiveTasksInput = {
+  assigneeUserId?: string;
+};
+
 export type CreateTaskInput = {
   title: string;
   assigneeUserId?: string | null;

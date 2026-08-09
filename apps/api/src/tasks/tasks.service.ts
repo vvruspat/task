@@ -9,6 +9,7 @@ import type {
   AddTaskSubtasksInput,
   BulkUpdateTasksInput,
   CreateTaskInput,
+  ListActiveTasksInput,
   ListTaskTableInput,
   MoveTaskInput,
   UpdateTaskAssigneeInput,
@@ -43,8 +44,9 @@ export class TasksService {
     workspaceId: string,
     projectId: string,
     userId: string,
+    input: ListActiveTasksInput = {},
   ): Promise<TaskSummaryDto[]> {
-    const tasks = await this.readStore.listActiveForProject(workspaceId, projectId, userId);
+    const tasks = await this.readStore.listActiveForProject(workspaceId, projectId, userId, input);
 
     if (tasks === null) {
       throw new NotFoundException("Project was not found.");
