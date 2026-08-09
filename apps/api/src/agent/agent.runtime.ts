@@ -1483,7 +1483,6 @@ function requestedCoreReadTools(
   if (["projects", "проектов", "проекты"].some((token) => tokenSet.has(token))) {
     return ["project_list"];
   }
-  if (projectId === null || projectId === undefined) return [];
 
   const asksForTasks = [
     "issue",
@@ -1505,9 +1504,14 @@ function requestedCoreReadTools(
     "статусами",
     "статусов",
   ].some((token) => tokenSet.has(token));
+  const hasSelectedProject = projectId !== null && projectId !== undefined;
   const requiredTools: CoreReadToolName[] = [];
+  const telegramHandles = inputText.match(/@[a-z0-9_]{5,32}/giu) ?? [];
+  const hasNonBotTelegramHandle = telegramHandles.some(
+    (handle) => !handle.toLocaleLowerCase().endsWith("_bot"),
+  );
   const asksAboutAssignee =
-    inputText.includes("@") ||
+    hasNonBotTelegramHandle ||
     [
       "assigned",
       "assignee",
@@ -1532,8 +1536,13 @@ function requestedCoreReadTools(
       "юзера",
     ].some((token) => tokenSet.has(token));
   if (asksForTasks && asksAboutAssignee) requiredTools.push("member_list");
+  if (asksForTasks && !hasSelectedProject) {
+    requiredTools.push("project_list");
+  }
   if (asksForTasks) requiredTools.push("task_list");
-  if (asksForStatuses) requiredTools.push("status_list");
+  if (asksForStatuses && (hasSelectedProject || asksForTasks)) {
+    requiredTools.push("status_list");
+  }
   return requiredTools;
 }
 

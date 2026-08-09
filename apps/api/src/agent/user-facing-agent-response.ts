@@ -1,6 +1,8 @@
 const hiddenInternalIdentifier = "[служебный идентификатор скрыт]";
-const uuidSource = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
-const shortenedUuidSource = "[0-9a-f]{8}(?:-[0-9a-f]{1,4}){0,3}-(?:\\.{3}|…)";
+const dashSource = "[-‐‑‒–—―]";
+const ellipsisSource = "(?:\\.\\s*\\.\\s*\\.|…)";
+const uuidSource = `[0-9a-f]{8}${dashSource}[0-9a-f]{4}${dashSource}[0-9a-f]{4}${dashSource}[0-9a-f]{4}${dashSource}[0-9a-f]{12}`;
+const shortenedUuidSource = `[0-9a-f]{8}(?:\\s*${dashSource}\\s*[0-9a-f]{1,4}){0,3}\\s*${dashSource}?\\s*${ellipsisSource}`;
 const markdownDestinationSource = "\\]\\([^\\r\\n)]*\\)";
 const markdownDestinationPattern = new RegExp(markdownDestinationSource, "giu");
 const visibleInternalIdentifierPattern = new RegExp(
