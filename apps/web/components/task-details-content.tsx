@@ -486,7 +486,7 @@ export function TaskDetailsContent({
                   <Trash2 size={14} /> {t("task.delete")}
                 </Button>
               </AlertDialog.Trigger>
-              <AlertDialog.Content maxWidth="440px">
+              <AlertDialog.Content container={portalContainer ?? undefined} maxWidth="440px">
                 <AlertDialog.Title>
                   {t("task.deleteConfirm", { name: currentTask.title })}
                 </AlertDialog.Title>

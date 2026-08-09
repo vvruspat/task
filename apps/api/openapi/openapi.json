@@ -2237,7 +2237,7 @@
             "description": "Telegram chat is connected to another workspace."
           }
         },
-        "summary": "Connect a Telegram chat using a one-time workspace token",
+        "summary": "Pair the Telegram sender and connect its chat using a one-time workspace token",
         "tags": ["integrations"]
       }
     },

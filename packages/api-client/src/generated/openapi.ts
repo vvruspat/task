@@ -610,7 +610,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Connect a Telegram chat using a one-time workspace token */
+    /** Pair the Telegram sender and connect its chat using a one-time workspace token */
     post: operations["TelegramInternalConnectController_complete"];
     delete?: never;
     options?: never;
