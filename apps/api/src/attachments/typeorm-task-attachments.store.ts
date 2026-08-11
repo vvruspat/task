@@ -1,12 +1,16 @@
 import { Injectable, ServiceUnavailableException } from "@nestjs/common";
-import { type DataSource, IsNull } from "typeorm";
+import { type DataSource, In, IsNull } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   ActivityEventEntity,
   AttachmentEntity,
+  IntegrationConnectionEntity,
+  IntegrationExternalResourceEntity,
+  IntegrationResourceLinkEntity,
   ProjectEntity,
   TaskEntity,
+  WorkspaceIntegrationEntity,
   WorkspaceMemberEntity,
 } from "../persistence/entities/index.js";
 import type { WorkspaceMemberRole } from "../persistence/types/core-persistence.types.js";
@@ -48,7 +52,10 @@ export class TypeOrmTaskAttachmentsStore implements TaskAttachmentsStore {
       order: { createdAt: "ASC" },
     });
 
-    return attachments.map(toTaskAttachment);
+    const externalFiles = await this.listExternalFilesForTask(dataSource, workspaceId, taskId);
+    return [...attachments.map(toTaskAttachment), ...externalFiles].sort(
+      (left, right) => left.createdAt.getTime() - right.createdAt.getTime(),
+    );
   }
 
   async createLinkForTask(
@@ -287,6 +294,44 @@ export class TypeOrmTaskAttachmentsStore implements TaskAttachmentsStore {
     });
   }
 
+  private async listExternalFilesForTask(
+    dataSource: DataSource,
+    workspaceId: string,
+    taskId: string,
+  ): Promise<TaskAttachment[]> {
+    const integrations = await dataSource.getRepository(WorkspaceIntegrationEntity).find({
+      select: { id: true },
+      where: { pluginKey: "google-drive", workspaceId },
+    });
+    if (integrations.length === 0) return [];
+    const connections = await dataSource.getRepository(IntegrationConnectionEntity).find({
+      select: { id: true },
+      where: { workspaceIntegrationId: In(integrations.map((integration) => integration.id)) },
+    });
+    if (connections.length === 0) return [];
+    const links = await dataSource.getRepository(IntegrationResourceLinkEntity).findBy({
+      relation: "reference",
+      targetId: taskId,
+      targetType: "task",
+    });
+    const discoveredLinks = links.filter(
+      (link) => link.metadata["discoveredFrom"] === "managed_container",
+    );
+    if (discoveredLinks.length === 0) return [];
+    const resources = await dataSource.getRepository(IntegrationExternalResourceEntity).findBy({
+      connectionId: In(connections.map((connection) => connection.id)),
+      id: In(discoveredLinks.map((link) => link.externalResourceId)),
+      resourceKind: "google-drive.file",
+      status: "active",
+    });
+    const linkByResourceId = new Map(
+      discoveredLinks.map((link) => [link.externalResourceId, link]),
+    );
+    return resources.map((resource) =>
+      toExternalTaskAttachment(resource, linkByResourceId.get(resource.id), workspaceId, taskId),
+    );
+  }
+
   private async getInitializedDataSource(): Promise<DataSource> {
     const dataSource = this.dataSourceProvider.getDataSource();
 
@@ -324,5 +369,37 @@ function toTaskAttachment(attachment: AttachmentEntity): TaskAttachment {
     sizeBytes: attachment.sizeBytes,
     createdByUserId: attachment.createdByUserId,
     createdAt: attachment.createdAt,
+    externalResourceId: null,
+    modifiedAt: null,
+    providerResourceId: null,
+    source: "native",
+  };
+}
+
+function toExternalTaskAttachment(
+  resource: IntegrationExternalResourceEntity,
+  link: IntegrationResourceLinkEntity | undefined,
+  workspaceId: string,
+  taskId: string,
+): TaskAttachment {
+  if (link === undefined) throw new Error(`Google Drive file ${resource.id} has no task link.`);
+  return {
+    createdAt: resource.createdAt,
+    createdByUserId: link.createdByUserId,
+    externalResourceId: resource.id,
+    id: resource.id,
+    kind: "link",
+    mimeType: resource.mimeType,
+    modifiedAt: resource.modifiedAt,
+    providerResourceId: resource.providerResourceId,
+    sizeBytes: null,
+    source: "google_drive",
+    storageKey: null,
+    targetId: taskId,
+    targetType: "task",
+    telegramFileId: null,
+    title: resource.name,
+    url: resource.webUrl,
+    workspaceId,
   };
 }

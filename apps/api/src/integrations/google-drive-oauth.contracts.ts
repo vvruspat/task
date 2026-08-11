@@ -31,3 +31,20 @@ export type GoogleDriveRootFolder = {
   providerResourceId: string;
   webUrl: string | null;
 };
+
+export const googleDriveFolderTargetTypes = ["project", "task"] as const;
+export type GoogleDriveFolderTargetType = (typeof googleDriveFolderTargetTypes)[number];
+
+export type SelectGoogleDriveFolderInput = {
+  folderId: string;
+};
+
+export type GoogleDriveFolderAssignment = GoogleDriveRootFolder & {
+  assignmentSource: "managed" | "selected";
+  targetId: string;
+  targetType: GoogleDriveFolderTargetType;
+};
+
+export type GoogleDriveFolderAssignmentResponse = {
+  folder: GoogleDriveFolderAssignment | null;
+};

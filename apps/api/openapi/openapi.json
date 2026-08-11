@@ -1725,6 +1725,175 @@
         "tags": ["integrations"]
       }
     },
+    "/workspaces/{workspaceId}/integrations/{integrationId}/google-drive/folders/{targetType}/{targetId}": {
+      "get": {
+        "operationId": "GoogleDriveOAuthController_getFolderAssignment",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetType",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "enum": ["project", "task"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The assigned folder, or a null folder when this target has no folder yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleDriveFolderAssignmentResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user cannot configure integrations."
+          },
+          "404": {
+            "description": "Google Drive integration or target was not found."
+          },
+          "409": {
+            "description": "Google Drive is not connected."
+          },
+          "502": {
+            "description": "Google Drive credentials could not be refreshed."
+          }
+        },
+        "summary": "Get the Google Drive folder assigned to a project or task",
+        "tags": ["integrations"]
+      },
+      "put": {
+        "operationId": "GoogleDriveOAuthController_selectFolder",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "integrationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetType",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "enum": ["project", "task"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelectGoogleDriveFolderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleDriveFolderAssignmentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Selected Drive item is not a writable folder."
+          },
+          "403": {
+            "description": "Current user cannot configure integrations."
+          },
+          "404": {
+            "description": "Google Drive integration or target was not found."
+          },
+          "409": {
+            "description": "Google Drive is not connected or the folder is already assigned elsewhere."
+          },
+          "502": {
+            "description": "Google Drive is unavailable."
+          }
+        },
+        "summary": "Assign a writable Google Drive folder to a project or task",
+        "tags": ["integrations"]
+      }
+    },
     "/integrations/webhooks/google-drive": {
       "post": {
         "operationId": "GoogleDriveWebhookController_receive",
@@ -7297,6 +7466,73 @@
         },
         "required": ["externalResourceId", "name", "providerResourceId", "webUrl"]
       },
+      "GoogleDriveFolderAssignmentDto": {
+        "type": "object",
+        "properties": {
+          "assignmentSource": {
+            "type": "string",
+            "enum": ["managed", "selected"]
+          },
+          "externalResourceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "providerResourceId": {
+            "type": "string"
+          },
+          "targetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "targetType": {
+            "type": "string",
+            "enum": ["project", "task"]
+          },
+          "webUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "required": [
+          "assignmentSource",
+          "externalResourceId",
+          "name",
+          "providerResourceId",
+          "targetId",
+          "targetType",
+          "webUrl"
+        ]
+      },
+      "GoogleDriveFolderAssignmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "folder": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GoogleDriveFolderAssignmentDto"
+              }
+            ]
+          }
+        },
+        "required": ["folder"]
+      },
+      "SelectGoogleDriveFolderDto": {
+        "type": "object",
+        "properties": {
+          "folderId": {
+            "type": "string",
+            "maxLength": 1024,
+            "pattern": "^[A-Za-z0-9_-]{10,1024}$"
+          }
+        },
+        "required": ["folderId"]
+      },
       "IntegrationMcpToolDefinitionDto": {
         "type": "object",
         "properties": {
@@ -9504,11 +9740,30 @@
           },
           "createdByUserId": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           },
           "createdAt": {
             "format": "date-time",
             "type": "string"
+          },
+          "externalResourceId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "providerResourceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "enum": ["google_drive", "native"]
           }
         },
         "required": [
@@ -9517,8 +9772,18 @@
           "targetType",
           "targetId",
           "kind",
+          "title",
+          "url",
+          "storageKey",
+          "telegramFileId",
+          "mimeType",
+          "sizeBytes",
           "createdByUserId",
-          "createdAt"
+          "createdAt",
+          "externalResourceId",
+          "modifiedAt",
+          "providerResourceId",
+          "source"
         ]
       },
       "CreateTaskLinkAttachmentDto": {

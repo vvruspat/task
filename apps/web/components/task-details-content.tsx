@@ -19,6 +19,7 @@ import {
   CalendarDays,
   Check,
   FolderKanban,
+  FolderOpen,
   GitBranch,
   Tags,
   Trash2,
@@ -33,10 +34,12 @@ import { useI18n } from "../lib/i18n/i18n";
 import { issueIdentifier } from "../lib/issue-url";
 import { isTaskSummary } from "../lib/task-summary";
 import { removeWorkspaceTask, updateWorkspaceTask } from "../lib/use-workspace-data";
-import type { WorkspaceBootstrap } from "../lib/workspace-contracts";
+import { canManageWorkspaceSettings, type WorkspaceBootstrap } from "../lib/workspace-contracts";
 import { workspaceIssueHref } from "../lib/workspace-url";
+import { GoogleDriveFolderAssignmentControl } from "./google-drive-folder-assignment";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { TaskActivity } from "./task-activity";
+import { TaskFiles } from "./task-files";
 import { TaskStatusIndicator } from "./task-status-indicator";
 
 type EditableTextField = "due-date" | "title";
@@ -438,6 +441,16 @@ export function TaskDetailsContent({
                   : (project?.title ?? t("task.unknownProject"))}
               </Text>
             </Property>
+            {data !== null && canManageWorkspaceSettings(data.currentMember.role) && (
+              <Property icon={<FolderOpen size={15} />} label={t("integrations.taskFolder")}>
+                <GoogleDriveFolderAssignmentControl
+                  compact
+                  targetId={currentTask.id}
+                  targetType="task"
+                  workspaceId={currentTask.workspaceId}
+                />
+              </Property>
+            )}
             {parentTask !== undefined && data !== null && project !== undefined && (
               <Property icon={<GitBranch size={15} />} label={t("task.parent")}>
                 <Link
@@ -510,6 +523,7 @@ export function TaskDetailsContent({
           </Box>
         </Flex>
       </Card>
+      <TaskFiles task={currentTask} />
       <TaskActivity data={data} task={currentTask} />
     </Flex>
   );

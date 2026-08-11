@@ -240,6 +240,10 @@ const attachmentResponse: TaskAttachmentResponse = {
   sizeBytes: null,
   createdByUserId: userId,
   createdAt: timestamp,
+  externalResourceId: null,
+  modifiedAt: null,
+  providerResourceId: null,
+  source: "native",
 };
 
 const taskResponse: TaskSummaryResponse = {

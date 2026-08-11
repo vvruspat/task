@@ -17,7 +17,7 @@ import type {
 @Entity({ name: "integration_resource_links" })
 @Check(
   "chk_integration_resource_links_target_type",
-  `"target_type" IN ('workspace', 'task', 'comment', 'attachment')`,
+  `"target_type" IN ('workspace', 'project', 'task', 'comment', 'attachment')`,
 )
 @Check(
   "chk_integration_resource_links_relation",
@@ -28,6 +28,10 @@ import type {
   ["externalResourceId", "targetType", "targetId", "relation"],
   { unique: true },
 )
+@Index("uq_integration_resource_links_managed_container", ["externalResourceId"], {
+  unique: true,
+  where: `"relation" = 'managed_container' AND "target_type" IN ('project', 'task')`,
+})
 @Index("idx_integration_resource_links_target", ["targetType", "targetId", "relation"])
 export class IntegrationResourceLinkEntity implements IntegrationResourceLink {
   @PrimaryGeneratedColumn("uuid")

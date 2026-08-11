@@ -1503,47 +1503,25 @@ function readTaskAttachment(value: unknown): TaskAttachmentResponse {
   const record = readRecord(value, "task attachment");
   const targetType = readString(record, "targetType");
   const kind = readString(record, "kind");
-  const attachment: TaskAttachmentResponse = {
+  return {
+    createdAt: readString(record, "createdAt"),
+    createdByUserId: readNullableString(record, "createdByUserId"),
+    externalResourceId: readNullableString(record, "externalResourceId"),
     id: readString(record, "id"),
-    workspaceId: readString(record, "workspaceId"),
+    kind: readAttachmentKind(kind),
+    mimeType: readNullableString(record, "mimeType"),
+    modifiedAt: readNullableString(record, "modifiedAt"),
+    providerResourceId: readNullableString(record, "providerResourceId"),
+    sizeBytes: readNullableString(record, "sizeBytes"),
+    source: readAttachmentSource(readString(record, "source")),
+    storageKey: readNullableString(record, "storageKey"),
     targetId: readString(record, "targetId"),
     targetType: readAttachmentTargetType(targetType),
-    kind: readAttachmentKind(kind),
-    createdByUserId: readString(record, "createdByUserId"),
-    createdAt: readString(record, "createdAt"),
+    telegramFileId: readNullableString(record, "telegramFileId"),
+    title: readNullableString(record, "title"),
+    url: readNullableString(record, "url"),
+    workspaceId: readString(record, "workspaceId"),
   };
-  const title = readOptionalNullableString(record, "title");
-  const url = readOptionalNullableString(record, "url");
-  const storageKey = readOptionalNullableString(record, "storageKey");
-  const telegramFileId = readOptionalNullableString(record, "telegramFileId");
-  const mimeType = readOptionalNullableString(record, "mimeType");
-  const sizeBytes = readOptionalNullableString(record, "sizeBytes");
-
-  if (title !== undefined) {
-    attachment.title = title;
-  }
-
-  if (url !== undefined) {
-    attachment.url = url;
-  }
-
-  if (storageKey !== undefined) {
-    attachment.storageKey = storageKey;
-  }
-
-  if (telegramFileId !== undefined) {
-    attachment.telegramFileId = telegramFileId;
-  }
-
-  if (mimeType !== undefined) {
-    attachment.mimeType = mimeType;
-  }
-
-  if (sizeBytes !== undefined) {
-    attachment.sizeBytes = sizeBytes;
-  }
-
-  return attachment;
 }
 
 function readAttachmentTargetType(value: string): TaskAttachmentResponse["targetType"] {
@@ -1559,6 +1537,13 @@ function readAttachmentKind(value: string): TaskAttachmentResponse["kind"] {
     throw new Error("Attachment kind is invalid.");
   }
 
+  return value;
+}
+
+function readAttachmentSource(value: string): TaskAttachmentResponse["source"] {
+  if (value !== "native" && value !== "google_drive") {
+    throw new Error("Attachment source is invalid.");
+  }
   return value;
 }
 
@@ -1849,5 +1834,11 @@ function readOptionalNullableString(
     throw new Error(`${propertyName} must be a string or null.`);
   }
 
+  return value;
+}
+
+function readNullableString(record: Record<string, unknown>, propertyName: string): string | null {
+  const value = readOptionalNullableString(record, propertyName);
+  if (value === undefined) throw new Error(`${propertyName} is missing.`);
   return value;
 }

@@ -30,6 +30,7 @@ import {
 import { IntegrationOutboxPublisher } from "./integration-outbox.publisher.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the config provider value at runtime.
 import { IntegrationsConfigProvider } from "./integrations.config.js";
+import { hasRequiredGoogleDriveScopes } from "./plugins/google-drive.integration-plugin.js";
 
 const googleDrivePluginKey = "google-drive";
 const oauthStateLifetimeMs = 10 * 60_000;
@@ -100,6 +101,9 @@ export class GoogleDriveOAuthService {
     const consumedState = await this.consumeOAuthState(input.state, userId);
     try {
       const grant = await this.oauthClient.exchangeCode(input.code);
+      if (!hasRequiredGoogleDriveScopes(grant.scopes)) {
+        throw new GoogleDriveOAuthError("Google Drive did not grant the required scopes.");
+      }
       const userInfo = await this.oauthClient.readUserInfo(grant.accessToken);
       const connectedAt = new Date();
       const dataSource = await this.getInitializedDataSource();

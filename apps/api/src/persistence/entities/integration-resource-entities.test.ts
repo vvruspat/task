@@ -46,6 +46,7 @@ test("integration resource entities register identity, lookup, and renewal index
     "idx_integration_subscriptions_renewal",
     "idx_integration_subscriptions_resource",
     "uq_integration_external_resources_connection_provider_id",
+    "uq_integration_resource_links_managed_container",
     "uq_integration_resource_links_resource_target_relation",
     "uq_integration_resource_references_source_url",
     "uq_integration_subscriptions_connection_provider_id",

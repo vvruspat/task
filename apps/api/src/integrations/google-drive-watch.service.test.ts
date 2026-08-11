@@ -106,3 +106,104 @@ test("Drive renewal keeps the old channel while a reserved replacement is still 
   assert.equal(deferred, 1);
   assert.equal(stopped, 0);
 });
+
+test("Drive assignment starts a watch from the cursor captured before the initial folder scan", async () => {
+  const cursors: string[] = [];
+  const store: GoogleDriveWatchStore = {
+    async activate(): Promise<void> {},
+    async deferRenewal(): Promise<void> {},
+    async findByChannelId(): Promise<GoogleDriveWatchSubscription | null> {
+      return null;
+    },
+    async findCurrent(): Promise<GoogleDriveWatchSubscription | null> {
+      return null;
+    },
+    isConfigured(): boolean {
+      return true;
+    },
+    async listDue(): Promise<readonly GoogleDriveWatchSubscription[]> {
+      return [];
+    },
+    async markError(): Promise<void> {},
+    async markStopped(): Promise<void> {},
+    async reserve(input): Promise<{ created: true; subscription: GoogleDriveWatchSubscription }> {
+      cursors.push(input.providerCursor);
+      return {
+        created: true,
+        subscription: {
+          ...oldSubscription,
+          callbackSecretReference: input.callbackToken,
+          channelId: input.channelId,
+          providerCursor: input.providerCursor,
+          resourceId: null,
+          status: "renewing",
+        },
+      };
+    },
+    async touchEvent(): Promise<void> {},
+    async updateCursor(): Promise<boolean> {
+      return true;
+    },
+  };
+  const service = new GoogleDriveWatchService(
+    {
+      async getAccessGrant() {
+        return {
+          accessToken: "access-token",
+          connectionId: oldSubscription.connectionId,
+          expiresInSeconds: 3_600,
+        };
+      },
+    },
+    {
+      async getStartPageToken(): Promise<string> {
+        throw new Error("The assignment cursor should be reused.");
+      },
+      async stopChannel(): Promise<void> {},
+      async watchChanges(_accessToken, input): Promise<GoogleDriveChangeChannel> {
+        assert.equal(input.pageToken, "assignment-cursor");
+        return {
+          expiration: input.expiresAt,
+          id: input.channelId,
+          resourceId: "resource-id",
+          resourceUri: "https://www.googleapis.com/drive/v3/changes",
+        };
+      },
+    },
+    store,
+    {
+      getConfig(): IntegrationsConfig {
+        return {
+          attachmentContent: { maxBytes: 1024, storageRoot: null },
+          googleDrive: null,
+          googleDrivePicker: null,
+          googleDriveWebhook: {
+            callbackUrl: "https://task.example.com/api/integrations/webhooks/google-drive",
+          },
+          secretEncryptionKey: null,
+        };
+      },
+    },
+  );
+
+  await service.handleDomainEvent(
+    {
+      actorUserId: oldSubscription.id,
+      entity: { id: oldSubscription.installationId, type: "workspace_integration" },
+      id: "assignment-event",
+      name: "integration.connected.v1",
+      occurredAt: "2026-07-22T12:00:00.000Z",
+      payload: { configuration: "managedFolder", providerCursor: "assignment-cursor" },
+      workspaceId: oldSubscription.workspaceId,
+    },
+    {
+      attempt: 1,
+      idempotencyKey: "assignment-event:installation",
+      installationId: oldSubscription.installationId,
+      pluginKey: "google-drive",
+      pluginVersion: "0.1.0",
+    },
+  );
+
+  assert.deepEqual(cursors, ["assignment-cursor"]);
+});

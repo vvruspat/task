@@ -32,6 +32,10 @@ const taskAttachment: TaskAttachment = {
   sizeBytes: null,
   createdByUserId: userId,
   createdAt,
+  externalResourceId: null,
+  modifiedAt: null,
+  providerResourceId: null,
+  source: "native",
 };
 
 test("AttachmentsService maps visible task attachments to DTOs", async () => {

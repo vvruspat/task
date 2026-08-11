@@ -15,6 +15,7 @@ import { GoogleDriveAgentToolProvider } from "./google-drive-agent-tools.js";
 import { GoogleDriveAttachmentExportService } from "./google-drive-attachment-export.service.js";
 import { GoogleDriveChangeProcessor } from "./google-drive-change.processor.js";
 import { GoogleDriveChangesClient } from "./google-drive-changes.client.js";
+import { GoogleDriveFolderAssignmentService } from "./google-drive-folder-assignment.service.js";
 import { GoogleDriveOAuthClient } from "./google-drive-oauth.client.js";
 import {
   GoogleDriveOAuthCallbackController,
@@ -137,6 +138,7 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     GoogleDriveOAuthService,
     GoogleDriveReferenceService,
     GoogleDriveClient,
+    GoogleDriveFolderAssignmentService,
     GoogleDriveRootService,
     GoogleDriveTaskFolderService,
     GoogleDriveWatchService,

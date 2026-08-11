@@ -15,8 +15,12 @@ export type TaskAttachment = {
   telegramFileId: string | null;
   mimeType: string | null;
   sizeBytes: string | null;
-  createdByUserId: string;
+  createdByUserId: string | null;
   createdAt: Date;
+  externalResourceId: string | null;
+  modifiedAt: Date | null;
+  providerResourceId: string | null;
+  source: "google_drive" | "native";
 };
 
 export type CreateTaskLinkAttachmentInput = {

@@ -3,11 +3,16 @@ import { ApiProperty } from "@nestjs/swagger";
 import type {
   CompleteGoogleDriveOAuthInput,
   GoogleDriveAuthorizationStart,
+  GoogleDriveFolderAssignment,
+  GoogleDriveFolderAssignmentResponse,
+  GoogleDriveFolderTargetType,
   GoogleDriveOAuthCompletion,
   GoogleDrivePickerSession,
   GoogleDriveRootFolder,
+  SelectGoogleDriveFolderInput,
   SelectGoogleDriveRootFolderInput,
 } from "./google-drive-oauth.contracts.js";
+import { googleDriveFolderTargetTypes } from "./google-drive-oauth.contracts.js";
 
 export class GoogleDriveAuthorizationStartDto implements GoogleDriveAuthorizationStart {
   @ApiProperty({ format: "uri" }) readonly authorizationUrl: string;
@@ -77,6 +82,55 @@ export class GoogleDriveRootFolderDto implements GoogleDriveRootFolder {
   }
 }
 
+export class SelectGoogleDriveFolderDto implements SelectGoogleDriveFolderInput {
+  @ApiProperty({ maxLength: 1024, pattern: "^[A-Za-z0-9_-]{10,1024}$" })
+  readonly folderId: string;
+
+  constructor(value: SelectGoogleDriveFolderInput) {
+    this.folderId = value.folderId;
+  }
+}
+
+export class GoogleDriveFolderAssignmentDto implements GoogleDriveFolderAssignment {
+  @ApiProperty({ enum: ["managed", "selected"] })
+  readonly assignmentSource: "managed" | "selected";
+
+  @ApiProperty({ format: "uuid" })
+  readonly externalResourceId: string;
+
+  @ApiProperty() readonly name: string;
+
+  @ApiProperty() readonly providerResourceId: string;
+
+  @ApiProperty({ format: "uuid" })
+  readonly targetId: string;
+
+  @ApiProperty({ enum: googleDriveFolderTargetTypes })
+  readonly targetType: GoogleDriveFolderTargetType;
+
+  @ApiProperty({ format: "uri", nullable: true, type: String })
+  readonly webUrl: string | null;
+
+  constructor(value: GoogleDriveFolderAssignment) {
+    this.assignmentSource = value.assignmentSource;
+    this.externalResourceId = value.externalResourceId;
+    this.name = value.name;
+    this.providerResourceId = value.providerResourceId;
+    this.targetId = value.targetId;
+    this.targetType = value.targetType;
+    this.webUrl = value.webUrl;
+  }
+}
+
+export class GoogleDriveFolderAssignmentResponseDto implements GoogleDriveFolderAssignmentResponse {
+  @ApiProperty({ nullable: true, type: GoogleDriveFolderAssignmentDto })
+  readonly folder: GoogleDriveFolderAssignmentDto | null;
+
+  constructor(value: GoogleDriveFolderAssignmentResponse) {
+    this.folder = value.folder === null ? null : new GoogleDriveFolderAssignmentDto(value.folder);
+  }
+}
+
 export class ParseCompleteGoogleDriveOAuthPipe
   implements PipeTransform<unknown, CompleteGoogleDriveOAuthDto>
 {
@@ -110,12 +164,38 @@ export class ParseSelectGoogleDriveRootFolderPipe
   }
 }
 
+export class ParseSelectGoogleDriveFolderPipe
+  implements PipeTransform<unknown, SelectGoogleDriveFolderDto>
+{
+  transform(value: unknown): SelectGoogleDriveFolderDto {
+    if (!isRecord(value)) throw invalidFolder();
+    const folderId = value["folderId"];
+    if (typeof folderId !== "string" || !/^[A-Za-z0-9_-]{10,1024}$/u.test(folderId)) {
+      throw invalidFolder();
+    }
+    return new SelectGoogleDriveFolderDto({ folderId });
+  }
+}
+
+export class ParseGoogleDriveFolderTargetTypePipe
+  implements PipeTransform<string, GoogleDriveFolderTargetType>
+{
+  transform(value: string): GoogleDriveFolderTargetType {
+    if (value === "project" || value === "task") return value;
+    throw new BadRequestException("Google Drive folder target must be a project or task.");
+  }
+}
+
 function invalidOAuthCallback(): BadRequestException {
   return new BadRequestException("Google Drive OAuth callback is invalid.");
 }
 
 function invalidRootFolder(): BadRequestException {
   return new BadRequestException("Google Drive root folder selection is invalid.");
+}
+
+function invalidFolder(): BadRequestException {
+  return new BadRequestException("Google Drive folder selection is invalid.");
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
