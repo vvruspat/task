@@ -69,6 +69,10 @@ export type GoogleDrivePickerSession = components["schemas"]["GoogleDrivePickerS
 export type SelectGoogleDriveRootFolderInput =
   components["schemas"]["SelectGoogleDriveRootFolderDto"];
 export type GoogleDriveRootFolder = components["schemas"]["GoogleDriveRootFolderDto"];
+export type GoogleDriveFolderAssignment = components["schemas"]["GoogleDriveFolderAssignmentDto"];
+export type GoogleDriveFolderAssignmentResponse =
+  components["schemas"]["GoogleDriveFolderAssignmentResponseDto"];
+export type SelectGoogleDriveFolderInput = components["schemas"]["SelectGoogleDriveFolderDto"];
 export type TelegramConnectToken = components["schemas"]["TelegramConnectTokenDto"];
 export type TelegramBrowserConnectAuthInput =
   components["schemas"]["TelegramBrowserConnectAuthDto"];
@@ -130,6 +134,9 @@ type CreateGoogleDrivePickerSessionOperation =
   operations["GoogleDriveOAuthController_createPickerSession"];
 type SelectGoogleDriveRootFolderOperation =
   operations["GoogleDriveOAuthController_selectRootFolder"];
+type GetGoogleDriveFolderAssignmentOperation =
+  operations["GoogleDriveOAuthController_getFolderAssignment"];
+type SelectGoogleDriveFolderOperation = operations["GoogleDriveOAuthController_selectFolder"];
 type CreateTelegramConnectTokenOperation = operations["TelegramConnectController_createToken"];
 type PreviewTelegramBrowserConnectOperation =
   operations["TelegramBrowserConnectController_previewBrowserConnection"];
@@ -414,6 +421,19 @@ export type SelectGoogleDriveRootFolderRequestInput = WorkspaceScopedInput & {
 };
 export type SelectGoogleDriveRootFolderResponse =
   SelectGoogleDriveRootFolderOperation["responses"]["200"]["content"]["application/json"];
+export type GoogleDriveFolderScopedInput = WorkspaceScopedInput & {
+  integrationId: string;
+  targetId: string;
+  targetType: "project" | "task";
+};
+export type GetGoogleDriveFolderAssignmentRequestInput = GoogleDriveFolderScopedInput;
+export type GetGoogleDriveFolderAssignmentResponse =
+  GetGoogleDriveFolderAssignmentOperation["responses"]["200"]["content"]["application/json"];
+export type SelectGoogleDriveFolderRequestInput = GoogleDriveFolderScopedInput & {
+  body: SelectGoogleDriveFolderInput;
+};
+export type SelectGoogleDriveFolderResponse =
+  SelectGoogleDriveFolderOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTelegramConnectTokenRequestInput = WorkspaceScopedInput & {
   integrationId: string;
 };
@@ -516,6 +536,12 @@ export type TaskApiClient = {
   selectGoogleDriveRootFolder(
     input: SelectGoogleDriveRootFolderRequestInput,
   ): Promise<SelectGoogleDriveRootFolderResponse>;
+  getGoogleDriveFolderAssignment(
+    input: GetGoogleDriveFolderAssignmentRequestInput,
+  ): Promise<GetGoogleDriveFolderAssignmentResponse>;
+  selectGoogleDriveFolder(
+    input: SelectGoogleDriveFolderRequestInput,
+  ): Promise<SelectGoogleDriveFolderResponse>;
   createTelegramConnectToken(
     input: CreateTelegramConnectTokenRequestInput,
   ): Promise<CreateTelegramConnectTokenResponse>;
@@ -1195,6 +1221,27 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    getGoogleDriveFolderAssignment: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        googleDriveFolderPath(input),
+        googleDriveFolderAssignmentResponseParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    selectGoogleDriveFolder: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        googleDriveFolderPath(input),
+        googleDriveFolderAssignmentParser,
+        {
+          body: input.body,
+          method: "PUT",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     createTelegramConnectToken: (input) =>
       request(
         options.fetch,
@@ -1497,6 +1544,9 @@ function encodePathSegment(value: string): string {
 function taskPath(input: TaskScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/projects/${encodePathSegment(input.projectId)}/tasks/${encodePathSegment(input.taskId)}`;
 }
+function googleDriveFolderPath(input: GoogleDriveFolderScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/google-drive/folders/${encodePathSegment(input.targetType)}/${encodePathSegment(input.targetId)}`;
+}
 function taskSkillsPath(input: WorkspaceScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/task-skills`;
 }
@@ -1614,6 +1664,15 @@ const googleDriveRootFolderParser: ResponseParser<GoogleDriveRootFolder> = {
   isValid: isGoogleDriveRootFolder,
   label: "Google Drive root folder",
 };
+const googleDriveFolderAssignmentParser: ResponseParser<GoogleDriveFolderAssignment> = {
+  isValid: isGoogleDriveFolderAssignment,
+  label: "Google Drive folder assignment",
+};
+const googleDriveFolderAssignmentResponseParser: ResponseParser<GoogleDriveFolderAssignmentResponse> =
+  {
+    isValid: isGoogleDriveFolderAssignmentResponse,
+    label: "Google Drive folder assignment response",
+  };
 const telegramConnectTokenParser: ResponseParser<TelegramConnectToken> = {
   isValid: isTelegramConnectToken,
   label: "Telegram connect token",
@@ -2255,14 +2314,18 @@ function isTaskAttachment(value: unknown): value is TaskAttachment {
     isTaskAttachmentTargetType(readProperty(value, "targetType")) &&
     hasString(value, "targetId") &&
     isTaskAttachmentKind(readProperty(value, "kind")) &&
-    hasOptionalNullableString(value, "title") &&
-    hasOptionalNullableString(value, "url") &&
-    hasOptionalNullableString(value, "storageKey") &&
-    hasOptionalNullableString(value, "telegramFileId") &&
-    hasOptionalNullableString(value, "mimeType") &&
-    hasOptionalNullableString(value, "sizeBytes") &&
-    hasString(value, "createdByUserId") &&
-    hasString(value, "createdAt")
+    hasNullableString(value, "title") &&
+    hasNullableString(value, "url") &&
+    hasNullableString(value, "storageKey") &&
+    hasNullableString(value, "telegramFileId") &&
+    hasNullableString(value, "mimeType") &&
+    hasNullableString(value, "sizeBytes") &&
+    hasNullableString(value, "createdByUserId") &&
+    hasString(value, "createdAt") &&
+    hasNullableString(value, "externalResourceId") &&
+    hasNullableString(value, "modifiedAt") &&
+    hasNullableString(value, "providerResourceId") &&
+    isTaskAttachmentSource(readProperty(value, "source"))
   );
 }
 
@@ -2559,6 +2622,25 @@ function isGoogleDriveRootFolder(value: unknown): value is GoogleDriveRootFolder
   );
 }
 
+function isGoogleDriveFolderAssignment(value: unknown): value is GoogleDriveFolderAssignment {
+  return (
+    isGoogleDriveRootFolder(value) &&
+    (readProperty(value, "assignmentSource") === "managed" ||
+      readProperty(value, "assignmentSource") === "selected") &&
+    hasString(value, "targetId") &&
+    (readProperty(value, "targetType") === "project" ||
+      readProperty(value, "targetType") === "task")
+  );
+}
+
+function isGoogleDriveFolderAssignmentResponse(
+  value: unknown,
+): value is GoogleDriveFolderAssignmentResponse {
+  if (!isJsonObject(value)) return false;
+  const folder = readProperty(value, "folder");
+  return folder === null || isGoogleDriveFolderAssignment(folder);
+}
+
 function isTelegramConnectToken(value: unknown): value is TelegramConnectToken {
   return (
     isJsonObject(value) && hasNonEmptyString(value, "command") && hasString(value, "expiresAt")
@@ -2719,6 +2801,10 @@ function isTaskAttachmentKind(value: unknown): boolean {
 
 function isTaskAttachmentTargetType(value: unknown): boolean {
   return value === "task" || value === "project" || value === "comment";
+}
+
+function isTaskAttachmentSource(value: unknown): boolean {
+  return value === "google_drive" || value === "native";
 }
 
 function hasString(value: JsonObject, key: string): boolean {

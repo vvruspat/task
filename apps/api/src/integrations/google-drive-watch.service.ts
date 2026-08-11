@@ -47,8 +47,7 @@ export class GoogleDriveWatchService {
     if (
       event.name !== "integration.connected.v1" ||
       event.entity.type !== "workspace_integration" ||
-      event.entity.id !== handlerContext.installationId ||
-      event.payload["configuration"] !== "rootFolder"
+      event.entity.id !== handlerContext.installationId
     ) {
       return;
     }
@@ -59,8 +58,11 @@ export class GoogleDriveWatchService {
     );
     const current = await this.store.findCurrent(access.connectionId);
     if (current?.status === "active") return;
+    const requestedCursor = readProviderCursor(event.payload["providerCursor"]);
     const cursor =
-      current?.providerCursor ?? (await this.changesClient.getStartPageToken(access.accessToken));
+      current?.providerCursor ??
+      requestedCursor ??
+      (await this.changesClient.getStartPageToken(access.accessToken));
     const ready = await this.createWatch(
       {
         accessToken: access.accessToken,
@@ -170,6 +172,14 @@ export class GoogleDriveWatchService {
       throw error;
     }
   }
+}
+
+function readProviderCursor(value: unknown): string | null {
+  if (value === undefined) return null;
+  if (typeof value !== "string" || value.length === 0 || value.length > 4_096) {
+    throw new Error("Google Drive provider cursor is invalid.");
+  }
+  return value;
 }
 
 export function formatWatchError(error: unknown): string {

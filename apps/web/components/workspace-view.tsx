@@ -18,6 +18,7 @@ import {
 } from "../lib/workspace-contracts";
 import { useWorkspaceOverlayStore } from "../lib/workspace-overlay-store";
 import { workspaceProjectHref } from "../lib/workspace-url";
+import { GoogleDriveFolderAssignmentControl } from "./google-drive-folder-assignment";
 import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { ProjectDangerZone } from "./project-danger-zone";
 import { ProjectStatusesManager } from "./project-statuses-manager";
@@ -209,6 +210,16 @@ function ProjectDetail({
                   })),
               )
             }
+          />
+        </Card>
+      )}
+      {projectSummary !== undefined && canManageWorkspaceSettings(data.currentMember.role) && (
+        <Card className="panel">
+          <PanelTitle title={t("integrations.projectFolder")} />
+          <GoogleDriveFolderAssignmentControl
+            targetId={project.projectId}
+            targetType="project"
+            workspaceId={data.workspace.id}
           />
         </Card>
       )}

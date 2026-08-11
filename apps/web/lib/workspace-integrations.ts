@@ -1,4 +1,6 @@
 import type {
+  GoogleDriveFolderAssignment,
+  GoogleDriveFolderAssignmentResponse,
   GoogleDrivePickerSession,
   GoogleDriveRootFolder,
   IntegrationCatalogItem,
@@ -66,6 +68,28 @@ export function isGoogleDriveRootFolder(value: unknown): value is GoogleDriveRoo
     hasNonEmptyString(value, "name") &&
     hasNonEmptyString(value, "providerResourceId") &&
     hasNullableString(value, "webUrl")
+  );
+}
+
+export function isGoogleDriveFolderAssignment(
+  value: unknown,
+): value is GoogleDriveFolderAssignment {
+  if (!isObject(value)) return false;
+  const assignmentSource: unknown = value["assignmentSource"];
+  const targetType: unknown = value["targetType"];
+  return (
+    isGoogleDriveRootFolder(value) &&
+    (assignmentSource === "managed" || assignmentSource === "selected") &&
+    hasString(value, "targetId") &&
+    (targetType === "project" || targetType === "task")
+  );
+}
+
+export function isGoogleDriveFolderAssignmentResponse(
+  value: unknown,
+): value is GoogleDriveFolderAssignmentResponse {
+  return (
+    isObject(value) && (value["folder"] === null || isGoogleDriveFolderAssignment(value["folder"]))
   );
 }
 

@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  isGoogleDriveFolderAssignment,
+  isGoogleDriveFolderAssignmentResponse,
   isGoogleDrivePickerSession,
   isGoogleDriveRootFolder,
   isIntegrationCatalog,
@@ -150,6 +152,19 @@ test("Google Drive Picker and root folder boundaries reject malformed responses"
   assert.equal(isGoogleDrivePickerSession({ ...pickerSession, accessToken: "" }), false);
   assert.equal(isGoogleDriveRootFolder(rootFolder), true);
   assert.equal(isGoogleDriveRootFolder({ ...rootFolder, webUrl: 42 }), false);
+  const assignment = {
+    ...rootFolder,
+    assignmentSource: "selected",
+    targetId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    targetType: "task",
+  };
+  assert.equal(isGoogleDriveFolderAssignment(assignment), true);
+  assert.equal(isGoogleDriveFolderAssignmentResponse({ folder: assignment }), true);
+  assert.equal(
+    isGoogleDriveFolderAssignment({ ...assignment, assignmentSource: "inferred" }),
+    false,
+  );
+  assert.equal(isGoogleDriveFolderAssignmentResponse({ folder: null }), true);
   const configuredIntegration: unknown = { ...integration, config: { rootFolder } };
   assert.equal(isWorkspaceIntegration(configuredIntegration), true);
   if (!isWorkspaceIntegration(configuredIntegration)) {

@@ -245,7 +245,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1786483141.8931386,
+    "mtime": 1786480955.5334468,
     "ast_hash": "caa163812ec334a51e5e80029a71dd38",
     "semantic_hash": ""
   },
@@ -675,7 +675,7 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1786483142.420168,
+    "mtime": 1786480956.031431,
     "ast_hash": "0872f739aa7df7f0e63d18c8850748d8",
     "semantic_hash": ""
   },
@@ -2060,8 +2060,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/task-activity.test.ts": {
-    "mtime": 1786481065.7570727,
-    "ast_hash": "dea569d1b91e01f323c83451525e3b35",
+    "mtime": 1784697769.48943,
+    "ast_hash": "f0472e3806ffb5e4ba29ecab018132ff",
     "semantic_hash": ""
   },
   "apps/web/lib/task-activity.ts": {
@@ -3015,8 +3015,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-integrations.test.ts": {
-    "mtime": 1786481065.7560375,
-    "ast_hash": "a90581945f7a26ac014eadef1c1ca56d",
+    "mtime": 1786172621.253708,
+    "ast_hash": "78257dd4ef6ff7168a3cfcef0c447b35",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-integrations.ts": {

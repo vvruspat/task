@@ -10,9 +10,9 @@ import {
 import { DatabaseIntegrationSecretProvider } from "./database-integration-secret.provider.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the OAuth client value at runtime.
 import { GoogleDriveOAuthClient, GoogleDriveOAuthError } from "./google-drive-oauth.client.js";
+import { hasRequiredGoogleDriveScopes } from "./plugins/google-drive.integration-plugin.js";
 
 const googleDrivePluginKey = "google-drive";
-const driveFileScope = "https://www.googleapis.com/auth/drive.file";
 
 export const googleDriveAccessErrorCodes = [
   "connection_not_available",
@@ -35,6 +35,7 @@ export type GoogleDriveAccessGrant = {
 export type GoogleDriveConnectionContext = {
   connectionId: string;
   secretReference: string;
+  scopes: readonly string[];
 };
 
 export class GoogleDriveAccessError extends Error {
@@ -62,14 +63,17 @@ export class GoogleDriveAccessService {
     integrationId: string,
   ): Promise<GoogleDriveAccessGrant> {
     const connection = await this.getConnectedConnection(workspaceId, integrationId);
+    if (!hasRequiredGoogleDriveScopes(connection.scopes)) {
+      throw accessError("scope_missing", "Required Google Drive scopes are missing.");
+    }
     const refreshToken = await this.secretProvider.read(connection.secretReference);
     if (refreshToken === null) {
       throw accessError("credentials_not_available", "Google Drive credentials are unavailable.");
     }
     try {
       const grant = await this.oauthClient.refreshAccessToken(refreshToken);
-      if (!grant.scopes.includes(driveFileScope)) {
-        throw accessError("scope_missing", "Google Drive drive.file scope is missing.");
+      if (!hasRequiredGoogleDriveScopes(grant.scopes)) {
+        throw accessError("scope_missing", "Required Google Drive scopes are missing.");
       }
       return {
         accessToken: grant.accessToken,
@@ -106,7 +110,11 @@ export class GoogleDriveAccessService {
     if (connection === null) {
       throw accessError("connection_not_available", "Google Drive connection is unavailable.");
     }
-    return { connectionId: connection.id, secretReference: connection.secretReference };
+    return {
+      connectionId: connection.id,
+      scopes: connection.scopes,
+      secretReference: connection.secretReference,
+    };
   }
 
   private async getInitializedDataSource(): Promise<DataSource> {

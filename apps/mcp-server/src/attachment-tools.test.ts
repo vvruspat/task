@@ -45,6 +45,10 @@ const taskAttachment: TaskAttachmentResponse = {
   sizeBytes: null,
   createdByUserId: userId,
   createdAt: timestamp,
+  externalResourceId: null,
+  modifiedAt: null,
+  providerResourceId: null,
+  source: "native",
 };
 
 const fileAttachment: TaskAttachmentResponse = {

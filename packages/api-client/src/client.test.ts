@@ -261,6 +261,57 @@ test("createTaskApiClient manages workspace integration installations", async ()
   assert.equal(fetcher.calls[5]?.init.body, JSON.stringify({ folderId: "google-drive-folder-id" }));
 });
 
+test("createTaskApiClient reads and assigns project or task Google Drive folders", async () => {
+  const integrationId = "44444444-4444-4444-8444-444444444444";
+  const folder = {
+    assignmentSource: "selected",
+    externalResourceId: "55555555-5555-4555-8555-555555555555",
+    name: "Production files",
+    providerResourceId: "google-drive-folder-id",
+    targetId: taskId,
+    targetType: "task",
+    webUrl: "https://drive.google.com/drive/folders/google-drive-folder-id",
+  };
+  const fetcher = new RecordingFetch(sequence([{ folder: null }, folder]));
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  assert.deepEqual(
+    await client.getGoogleDriveFolderAssignment({
+      integrationId,
+      targetId: taskId,
+      targetType: "task",
+      workspaceId,
+    }),
+    { folder: null },
+  );
+  assert.deepEqual(
+    await client.selectGoogleDriveFolder({
+      body: { folderId: folder.providerResourceId },
+      integrationId,
+      targetId: taskId,
+      targetType: "task",
+      workspaceId,
+    }),
+    folder,
+  );
+  const path = `https://task.example/workspaces/${workspaceId}/integrations/${integrationId}/google-drive/folders/task/${taskId}`;
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method]),
+    [
+      [path, "GET"],
+      [path, "PUT"],
+    ],
+  );
+  assert.equal(
+    fetcher.calls[1]?.init.body,
+    JSON.stringify({ folderId: folder.providerResourceId }),
+  );
+});
+
 test("createTaskApiClient previews and completes Telegram browser connections", async () => {
   const token = "b".repeat(43);
   const workspace = { id: workspaceId, name: "Music", slug: "music" };
@@ -2016,6 +2067,10 @@ function taskAttachment(
     sizeBytes: null,
     createdByUserId: trustedUserId,
     createdAt: "2026-07-08T10:00:00.000Z",
+    externalResourceId: null,
+    modifiedAt: null,
+    providerResourceId: null,
+    source: "native",
   };
 }
 

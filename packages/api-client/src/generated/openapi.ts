@@ -465,6 +465,24 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/google-drive/folders/{targetType}/{targetId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the Google Drive folder assigned to a project or task */
+    get: operations["GoogleDriveOAuthController_getFolderAssignment"];
+    /** Assign a writable Google Drive folder to a project or task */
+    put: operations["GoogleDriveOAuthController_selectFolder"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/integrations/webhooks/google-drive": {
     parameters: {
       query?: never;
@@ -1920,6 +1938,26 @@ export interface components {
       /** Format: uri */
       webUrl: string | null;
     };
+    GoogleDriveFolderAssignmentDto: {
+      /** @enum {string} */
+      assignmentSource: "managed" | "selected";
+      /** Format: uuid */
+      externalResourceId: string;
+      name: string;
+      providerResourceId: string;
+      /** Format: uuid */
+      targetId: string;
+      /** @enum {string} */
+      targetType: "project" | "task";
+      /** Format: uri */
+      webUrl: string | null;
+    };
+    GoogleDriveFolderAssignmentResponseDto: {
+      folder: components["schemas"]["GoogleDriveFolderAssignmentDto"] | null;
+    };
+    SelectGoogleDriveFolderDto: {
+      folderId: string;
+    };
     IntegrationMcpToolDefinitionDto: {
       name: string;
       description: string;
@@ -2680,16 +2718,23 @@ export interface components {
       targetId: string;
       /** @enum {string} */
       kind: "file" | "link" | "telegram_file";
-      title?: string | null;
-      url?: string | null;
-      storageKey?: string | null;
-      telegramFileId?: string | null;
-      mimeType?: string | null;
-      sizeBytes?: string | null;
+      title: string | null;
+      url: string | null;
+      storageKey: string | null;
+      telegramFileId: string | null;
+      mimeType: string | null;
+      sizeBytes: string | null;
       /** Format: uuid */
-      createdByUserId: string;
+      createdByUserId: string | null;
       /** Format: date-time */
       createdAt: string;
+      /** Format: uuid */
+      externalResourceId: string | null;
+      /** Format: date-time */
+      modifiedAt: string | null;
+      providerResourceId: string | null;
+      /** @enum {string} */
+      source: "google_drive" | "native";
     };
     CreateTaskLinkAttachmentDto: {
       /** @example https://example.com/bass-take */
@@ -4251,6 +4296,128 @@ export interface operations {
         content?: never;
       };
       /** @description Google Drive is not connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive is unavailable. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GoogleDriveOAuthController_getFolderAssignment: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+        targetType: "project" | "task";
+        targetId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The assigned folder, or a null folder when this target has no folder yet. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GoogleDriveFolderAssignmentResponseDto"];
+        };
+      };
+      /** @description Current user cannot configure integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive integration or target was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive is not connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive credentials could not be refreshed. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GoogleDriveOAuthController_selectFolder: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+        targetType: "project" | "task";
+        targetId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SelectGoogleDriveFolderDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GoogleDriveFolderAssignmentDto"];
+        };
+      };
+      /** @description Selected Drive item is not a writable folder. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot configure integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive integration or target was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Google Drive is not connected or the folder is already assigned elsewhere. */
       409: {
         headers: {
           [name: string]: unknown;

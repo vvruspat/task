@@ -22,6 +22,7 @@ export type IntegrationExternalResource = {
 
 export const integrationResourceLinkTargetTypes = [
   "workspace",
+  "project",
   "task",
   "comment",
   "attachment",

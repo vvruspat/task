@@ -50,6 +50,26 @@ export function formatTaskActivity(event: TaskActivityEvent, context: TaskActivi
       : context.t("activity.event.templateAppliedCount", { count });
   }
   if (event.eventType === "attachment.created") return context.t("activity.event.attachmentAdded");
+  if (event.eventType === "integration.google_drive.folder_assigned") {
+    return context.t("activity.event.driveFolderAssigned", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
+  if (event.eventType === "integration.google_drive.resource_added") {
+    return context.t("activity.event.driveFileAdded", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
+  if (event.eventType === "integration.google_drive.resource_changed") {
+    return context.t("activity.event.driveFileChanged", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
+  if (event.eventType === "integration.google_drive.resource_removed") {
+    return context.t("activity.event.driveFileRemoved", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
   return context.t("activity.event.changed");
 }
 

@@ -40,6 +40,23 @@ test("formats task detail changes", () => {
   );
 });
 
+test("formats Google Drive file activity from provider metadata", () => {
+  assert.equal(
+    formatTaskActivity(
+      event("integration.google_drive.resource_added", { resourceName: "brief.pdf" }),
+      context,
+    ),
+    "добавил(а) «brief.pdf» через Google Drive",
+  );
+  assert.equal(
+    formatTaskActivity(
+      event("integration.google_drive.resource_removed", { resourceName: "brief.pdf" }),
+      context,
+    ),
+    "удалил(а) «brief.pdf» из Google Drive",
+  );
+});
+
 test("formats relative activity time", () => {
   assert.equal(
     formatActivityTime("2026-07-19T11:59:00.000Z", "ru", new Date("2026-07-19T12:00:00.000Z")),

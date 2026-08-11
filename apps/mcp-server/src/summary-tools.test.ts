@@ -281,6 +281,10 @@ const attachments: TaskAttachmentResponse[] = [
     sizeBytes: null,
     createdByUserId: userId,
     createdAt: "2026-01-01T11:00:00.000Z",
+    externalResourceId: null,
+    modifiedAt: null,
+    providerResourceId: null,
+    source: "native",
   },
   {
     id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
@@ -296,6 +300,10 @@ const attachments: TaskAttachmentResponse[] = [
     sizeBytes: "2048",
     createdByUserId: userId,
     createdAt: "2026-01-02T11:00:00.000Z",
+    externalResourceId: null,
+    modifiedAt: null,
+    providerResourceId: null,
+    source: "native",
   },
 ];
 

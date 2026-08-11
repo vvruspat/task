@@ -52,6 +52,11 @@ export type GoogleDriveFileSearchResult = {
   incomplete: boolean;
 };
 
+export type GoogleDriveFolderFilePage = {
+  files: readonly GoogleDriveFile[];
+  nextPageToken: string | null;
+};
+
 export class GoogleDriveApiError extends Error {
   constructor(message: string) {
     super(message);
@@ -238,6 +243,35 @@ export class GoogleDriveClient {
     if (!response.ok) throw new GoogleDriveApiError("Google Drive file search failed.");
     return parseGoogleDriveFileSearchResult(payload);
   }
+
+  async listFolderFiles(
+    accessToken: string,
+    folderId: string,
+    pageToken: string | null,
+  ): Promise<GoogleDriveFolderFilePage> {
+    const params = new URLSearchParams({
+      corpora: "user",
+      fields:
+        "files(id,name,mimeType,webViewLink,parents,modifiedTime,version,trashed,appProperties),nextPageToken",
+      includeItemsFromAllDrives: "true",
+      orderBy: "createdTime asc",
+      pageSize: "1000",
+      q: `'${escapeGoogleDriveQueryLiteral(folderId)}' in parents and trashed = false`,
+      spaces: "drive",
+      supportsAllDrives: "true",
+    });
+    if (pageToken !== null) params.set("pageToken", pageToken);
+    const url = new URL(driveFilesEndpoint);
+    url.search = params.toString();
+    const response = await requestDrive(url, {
+      headers: { authorization: `Bearer ${accessToken}` },
+      signal: AbortSignal.timeout(30_000),
+    });
+    const payload: unknown = await response.json().catch(() => null);
+    if (!response.ok)
+      throw new GoogleDriveApiError("Google Drive folder contents are unavailable.");
+    return parseGoogleDriveFolderFilePage(payload);
+  }
 }
 
 export function parseGoogleDriveFileSearchResult(value: unknown): GoogleDriveFileSearchResult {
@@ -247,6 +281,25 @@ export function parseGoogleDriveFileSearchResult(value: unknown): GoogleDriveFil
   return {
     files: value["files"].map(parseGoogleDriveFile),
     incomplete: value["incompleteSearch"] === true,
+  };
+}
+
+export function parseGoogleDriveFolderFilePage(value: unknown): GoogleDriveFolderFilePage {
+  if (!isRecord(value) || !Array.isArray(value["files"])) {
+    throw new GoogleDriveApiError("Google Drive returned malformed folder contents.");
+  }
+  const nextPageToken = value["nextPageToken"];
+  if (
+    nextPageToken !== undefined &&
+    (typeof nextPageToken !== "string" ||
+      nextPageToken.length === 0 ||
+      nextPageToken.length > 4_096)
+  ) {
+    throw new GoogleDriveApiError("Google Drive returned malformed folder contents.");
+  }
+  return {
+    files: value["files"].map(parseGoogleDriveFile),
+    nextPageToken: nextPageToken ?? null,
   };
 }
 

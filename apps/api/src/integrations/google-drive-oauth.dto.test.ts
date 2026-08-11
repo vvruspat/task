@@ -3,6 +3,8 @@ import test from "node:test";
 import { BadRequestException } from "@nestjs/common";
 import {
   ParseCompleteGoogleDriveOAuthPipe,
+  ParseGoogleDriveFolderTargetTypePipe,
+  ParseSelectGoogleDriveFolderPipe,
   ParseSelectGoogleDriveRootFolderPipe,
 } from "./google-drive-oauth.dto.js";
 
@@ -25,4 +27,15 @@ test("Google Drive root folder input accepts only bounded Drive identifiers", ()
   assert.equal(pipe.transform({ folderId: "folder_Id-123" }).folderId, "folder_Id-123");
   assert.throws(() => pipe.transform({ folderId: "short" }), BadRequestException);
   assert.throws(() => pipe.transform({ folderId: "folder/id/invalid" }), BadRequestException);
+});
+
+test("project and task folder assignment inputs are runtime validated", () => {
+  const folderPipe = new ParseSelectGoogleDriveFolderPipe();
+  const targetPipe = new ParseGoogleDriveFolderTargetTypePipe();
+
+  assert.equal(folderPipe.transform({ folderId: "folder_Id-123" }).folderId, "folder_Id-123");
+  assert.equal(targetPipe.transform("project"), "project");
+  assert.equal(targetPipe.transform("task"), "task");
+  assert.throws(() => folderPipe.transform({ folderId: "short" }), BadRequestException);
+  assert.throws(() => targetPipe.transform("workspace"), BadRequestException);
 });

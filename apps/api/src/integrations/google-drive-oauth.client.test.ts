@@ -7,6 +7,7 @@ import {
   parseGoogleDriveTokenGrant,
   parseGoogleDriveUserInfo,
 } from "./google-drive-oauth.client.js";
+import { hasRequiredGoogleDriveScopes } from "./plugins/google-drive.integration-plugin.js";
 
 const config = {
   clientId: "client-id",
@@ -23,6 +24,7 @@ test("Google Drive authorization requests offline access with narrow scopes and 
   assert.equal(url.searchParams.get("prompt"), "consent");
   assert.equal(url.searchParams.get("state"), "state-value");
   assert.match(url.searchParams.get("scope") ?? "", /drive\.file/u);
+  assert.match(url.searchParams.get("scope") ?? "", /drive\.metadata\.readonly/u);
 });
 
 test("Google OAuth responses are runtime validated without exposing tokens", () => {
@@ -67,4 +69,15 @@ test("Google refresh grants require a short-lived access token", () => {
     () => parseGoogleDriveAccessTokenGrant({ access_token: "picker-access" }),
     GoogleDriveOAuthError,
   );
+});
+
+test("Google Drive external-file synchronization requires both data scopes", () => {
+  assert.equal(
+    hasRequiredGoogleDriveScopes([
+      "https://www.googleapis.com/auth/drive.file",
+      "https://www.googleapis.com/auth/drive.metadata.readonly",
+    ]),
+    true,
+  );
+  assert.equal(hasRequiredGoogleDriveScopes(["https://www.googleapis.com/auth/drive.file"]), false);
 });

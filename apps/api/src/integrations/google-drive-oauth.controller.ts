@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Header,
   HttpCode,
   Param,
@@ -27,18 +28,27 @@ import {
   TrustedCurrentUserId,
 } from "../auth/trusted-current-user.decorator.js";
 import { WorkspaceRoles } from "../workspaces/workspace-roles.decorator.js";
+// biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
+import { GoogleDriveFolderAssignmentService } from "./google-drive-folder-assignment.service.js";
 import type {
   CompleteGoogleDriveOAuthInput,
+  GoogleDriveFolderTargetType,
+  SelectGoogleDriveFolderInput,
   SelectGoogleDriveRootFolderInput,
 } from "./google-drive-oauth.contracts.js";
 import {
   CompleteGoogleDriveOAuthDto,
   GoogleDriveAuthorizationStartDto,
+  GoogleDriveFolderAssignmentDto,
+  GoogleDriveFolderAssignmentResponseDto,
   GoogleDriveOAuthCompletionDto,
   GoogleDrivePickerSessionDto,
   GoogleDriveRootFolderDto,
   ParseCompleteGoogleDriveOAuthPipe,
+  ParseGoogleDriveFolderTargetTypePipe,
+  ParseSelectGoogleDriveFolderPipe,
   ParseSelectGoogleDriveRootFolderPipe,
+  SelectGoogleDriveFolderDto,
   SelectGoogleDriveRootFolderDto,
 } from "./google-drive-oauth.dto.js";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the service value at runtime.
@@ -56,6 +66,7 @@ export class GoogleDriveOAuthController {
   constructor(
     private readonly oauthService: GoogleDriveOAuthService,
     private readonly rootService: GoogleDriveRootService,
+    private readonly folderAssignmentService: GoogleDriveFolderAssignmentService,
   ) {}
 
   @Post(":integrationId/connect")
@@ -116,6 +127,71 @@ export class GoogleDriveOAuthController {
     @TrustedCurrentUserId() userId: string,
   ): Promise<GoogleDriveRootFolderDto> {
     return this.rootService.selectRootFolder(workspaceId, integrationId, input.folderId, userId);
+  }
+
+  @Get(":integrationId/google-drive/folders/:targetType/:targetId")
+  @ApiOperation({ summary: "Get the Google Drive folder assigned to a project or task" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "integrationId" })
+  @ApiParam({ enum: ["project", "task"], name: "targetType" })
+  @ApiParam({ format: "uuid", name: "targetId" })
+  @ApiOkResponse({
+    description: "The assigned folder, or a null folder when this target has no folder yet.",
+    type: GoogleDriveFolderAssignmentResponseDto,
+  })
+  @ApiForbiddenResponse({ description: "Current user cannot configure integrations." })
+  @ApiNotFoundResponse({ description: "Google Drive integration or target was not found." })
+  @ApiConflictResponse({ description: "Google Drive is not connected." })
+  @ApiBadGatewayResponse({ description: "Google Drive credentials could not be refreshed." })
+  getFolderAssignment(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("integrationId", uuidV4Pipe) integrationId: string,
+    @Param("targetType", ParseGoogleDriveFolderTargetTypePipe)
+    targetType: GoogleDriveFolderTargetType,
+    @Param("targetId", uuidV4Pipe) targetId: string,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<GoogleDriveFolderAssignmentResponseDto> {
+    return this.folderAssignmentService.getAssignment(
+      workspaceId,
+      integrationId,
+      targetType,
+      targetId,
+      userId,
+    );
+  }
+
+  @Put(":integrationId/google-drive/folders/:targetType/:targetId")
+  @ApiOperation({ summary: "Assign a writable Google Drive folder to a project or task" })
+  @ApiParam({ format: "uuid", name: "workspaceId" })
+  @ApiParam({ format: "uuid", name: "integrationId" })
+  @ApiParam({ enum: ["project", "task"], name: "targetType" })
+  @ApiParam({ format: "uuid", name: "targetId" })
+  @ApiBody({ type: SelectGoogleDriveFolderDto })
+  @ApiOkResponse({ type: GoogleDriveFolderAssignmentDto })
+  @ApiBadRequestResponse({ description: "Selected Drive item is not a writable folder." })
+  @ApiForbiddenResponse({ description: "Current user cannot configure integrations." })
+  @ApiNotFoundResponse({ description: "Google Drive integration or target was not found." })
+  @ApiConflictResponse({
+    description: "Google Drive is not connected or the folder is already assigned elsewhere.",
+  })
+  @ApiBadGatewayResponse({ description: "Google Drive is unavailable." })
+  selectFolder(
+    @Param("workspaceId", uuidV4Pipe) workspaceId: string,
+    @Param("integrationId", uuidV4Pipe) integrationId: string,
+    @Param("targetType", ParseGoogleDriveFolderTargetTypePipe)
+    targetType: GoogleDriveFolderTargetType,
+    @Param("targetId", uuidV4Pipe) targetId: string,
+    @Body(ParseSelectGoogleDriveFolderPipe) input: SelectGoogleDriveFolderInput,
+    @TrustedCurrentUserId() userId: string,
+  ): Promise<GoogleDriveFolderAssignmentDto> {
+    return this.folderAssignmentService.selectFolder(
+      workspaceId,
+      integrationId,
+      targetType,
+      targetId,
+      input.folderId,
+      userId,
+    );
   }
 }
 

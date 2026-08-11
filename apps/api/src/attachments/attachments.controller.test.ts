@@ -37,6 +37,10 @@ const taskAttachment: TaskAttachment = {
   sizeBytes: null,
   createdByUserId: userId,
   createdAt,
+  externalResourceId: null,
+  modifiedAt: null,
+  providerResourceId: null,
+  source: "native",
 };
 
 test("AttachmentsController uses trusted current user context for attachment list reads", async () => {

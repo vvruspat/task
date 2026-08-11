@@ -5,11 +5,20 @@ import {
   type IntegrationPluginManifest,
 } from "@task/integration-sdk";
 
+export const googleDriveRequiredDataScopes = [
+  "https://www.googleapis.com/auth/drive.file",
+  "https://www.googleapis.com/auth/drive.metadata.readonly",
+] as const;
+
 export const googleDriveOAuthScopes = [
   "openid",
   "email",
-  "https://www.googleapis.com/auth/drive.file",
+  ...googleDriveRequiredDataScopes,
 ] as const;
+
+export function hasRequiredGoogleDriveScopes(scopes: readonly string[]): boolean {
+  return googleDriveRequiredDataScopes.every((scope) => scopes.includes(scope));
+}
 
 export const googleDriveIntegrationManifest: IntegrationPluginManifest = {
   apiVersion: 1,

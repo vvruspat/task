@@ -3,7 +3,7 @@ import type {
   IntegrationDomainEvent,
   IntegrationDomainEventHandlerContext,
 } from "@task/integration-sdk";
-import { type DataSource, type EntityManager, In, IsNull } from "typeorm";
+import { type DataSource, type EntityManager, In } from "typeorm";
 // biome-ignore lint/style/useImportType: Nest constructor injection needs the provider value at runtime.
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
@@ -18,11 +18,7 @@ import {
   type GoogleDriveFolder,
   googleDriveFolderMimeType,
 } from "./google-drive.client.js";
-// biome-ignore lint/style/useImportType: Nest constructor injection needs the access service value at runtime.
-import {
-  type GoogleDriveAccessGrant,
-  GoogleDriveAccessService,
-} from "./google-drive-access.service.js";
+import type { GoogleDriveAccessGrant } from "./google-drive-access.service.js";
 
 const googleDrivePluginKey = "google-drive";
 const maxFolderNameLength = 240;
@@ -30,9 +26,14 @@ const maxFolderNameLength = 240;
 type TaskFolderReservation = {
   folderId: string;
   name: string;
-  parentId: string;
+  parentId: string | null;
   resourceId: string;
   status: "active" | "reserved";
+};
+
+type FolderTarget = {
+  id: string;
+  type: "project" | "task";
 };
 
 export type GoogleDriveTaskFolderContext = {
@@ -48,7 +49,6 @@ export class GoogleDriveTaskFolderService {
 
   constructor(
     private readonly dataSourceProvider: ApiDataSourceProvider,
-    private readonly accessService: GoogleDriveAccessService,
     private readonly driveClient: GoogleDriveClient,
   ) {}
 
@@ -59,26 +59,9 @@ export class GoogleDriveTaskFolderService {
     if (handlerContext.pluginKey !== googleDrivePluginKey) {
       throw new Error(`Unexpected integration plugin ${handlerContext.pluginKey}.`);
     }
-    if (
-      event.name === "integration.connected.v1" &&
-      event.entity.type === "workspace_integration" &&
-      event.entity.id === handlerContext.installationId &&
-      event.payload["configuration"] === "rootFolder"
-    ) {
-      await this.backfillTaskFolders(event, handlerContext);
-      return;
-    }
-    if (event.name !== "task.created.v1" || event.entity.type !== "task") return;
-    const access = await this.accessService.getAccessGrant(
-      event.workspaceId,
-      handlerContext.installationId,
-    );
-    await this.ensureFolderForTask(event.entity.id, {
-      access,
-      actorUserId: event.actorUserId,
-      installationId: handlerContext.installationId,
-      workspaceId: event.workspaceId,
-    });
+    // Folders are provisioned lazily by the attachment exporter. Keeping this
+    // handler registered lets the integration retain one ordered event pipeline.
+    void event;
   }
 
   async ensureFolderForTask(
@@ -86,30 +69,6 @@ export class GoogleDriveTaskFolderService {
     context: GoogleDriveTaskFolderContext,
   ): Promise<string | null> {
     return this.ensureTaskFolder(taskId, context);
-  }
-
-  private async backfillTaskFolders(
-    event: IntegrationDomainEvent,
-    handlerContext: IntegrationDomainEventHandlerContext,
-  ): Promise<void> {
-    const dataSource = await this.getInitializedDataSource();
-    const tasks = await dataSource.getRepository(TaskEntity).find({
-      order: { createdAt: "ASC", id: "ASC" },
-      select: { id: true },
-      where: { archivedAt: IsNull(), workspaceId: event.workspaceId },
-    });
-    if (tasks.length === 0) return;
-    const access = await this.accessService.getAccessGrant(
-      event.workspaceId,
-      handlerContext.installationId,
-    );
-    const context: GoogleDriveTaskFolderContext = {
-      access,
-      actorUserId: event.actorUserId,
-      installationId: handlerContext.installationId,
-      workspaceId: event.workspaceId,
-    };
-    for (const task of tasks) await this.ensureFolderForTask(task.id, context);
   }
 
   private async ensureTaskFolder(
@@ -131,28 +90,30 @@ export class GoogleDriveTaskFolderService {
     });
     if (project === null) throw new Error(`Project ${task.projectId} was not found.`);
 
-    const parentId =
-      task.parentTaskId === null
-        ? await this.findManagedRootId(context.access.connectionId, context.workspaceId)
-        : await this.ensureTaskFolder(task.parentTaskId, context, nextAncestors);
-    if (parentId === null) return null;
-
-    const name = buildGoogleDriveTaskFolderName(project.key, task.number, task.title);
     let reservation = await this.findTaskFolderReservation(context.access.connectionId, task.id);
+    if (reservation?.status === "active") return reservation.folderId;
     if (reservation === null) {
+      const parentId =
+        task.parentTaskId === null
+          ? await this.ensureProjectFolder(project, context)
+          : await this.ensureTaskFolder(task.parentTaskId, context, nextAncestors);
+      if (parentId === null) return null;
       const generatedFolderId = await this.driveClient.generateFileId(context.access.accessToken);
       reservation = await dataSource.transaction(async (manager) =>
         this.reserveTaskFolder(manager, {
           actorUserId: context.actorUserId,
           connectionId: context.access.connectionId,
           generatedFolderId,
-          name,
+          name: buildGoogleDriveTaskFolderName(task.title),
           parentId,
           taskId: task.id,
         }),
       );
     }
     if (reservation.status === "active") return reservation.folderId;
+    if (reservation.parentId === null) {
+      throw new Error(`Reserved Google Drive folder ${reservation.resourceId} has no parent.`);
+    }
 
     const folder = await this.driveClient.createFolder(context.access.accessToken, {
       appProperties: {
@@ -164,12 +125,59 @@ export class GoogleDriveTaskFolderService {
       name: reservation.name,
       parentId: reservation.parentId,
     });
-    await this.markTaskFolderActive(
-      reservation.resourceId,
+    await this.markFolderActive(reservation.resourceId, context.access.connectionId, folder, {
+      id: task.id,
+      type: "task",
+    });
+    return folder.id;
+  }
+
+  private async ensureProjectFolder(
+    project: ProjectEntity,
+    context: GoogleDriveTaskFolderContext,
+  ): Promise<string | null> {
+    let reservation = await this.findProjectFolderReservation(
       context.access.connectionId,
-      folder,
-      task.id,
+      project.id,
     );
+    if (reservation?.status === "active") return reservation.folderId;
+    if (reservation === null) {
+      const parentId = await this.findManagedRootId(
+        context.access.connectionId,
+        context.workspaceId,
+      );
+      if (parentId === null) return null;
+      const generatedFolderId = await this.driveClient.generateFileId(context.access.accessToken);
+      const dataSource = await this.getInitializedDataSource();
+      reservation = await dataSource.transaction(async (manager) =>
+        this.reserveProjectFolder(manager, {
+          actorUserId: context.actorUserId,
+          connectionId: context.access.connectionId,
+          generatedFolderId,
+          name: buildGoogleDriveProjectFolderName(project.title),
+          parentId,
+          projectId: project.id,
+        }),
+      );
+    }
+    if (reservation.status === "active") return reservation.folderId;
+    if (reservation.parentId === null) {
+      throw new Error(`Reserved Google Drive folder ${reservation.resourceId} has no parent.`);
+    }
+    const folder = await this.driveClient.createFolder(context.access.accessToken, {
+      appProperties: {
+        tAskIntegrationId: context.installationId,
+        tAskProjectId: project.id,
+        tAskWorkspaceId: context.workspaceId,
+      },
+      folderId: reservation.folderId,
+      name: reservation.name,
+      parentId: reservation.parentId,
+    });
+    await this.markFolderActive(reservation.resourceId, context.access.connectionId, folder, {
+      id: project.id,
+      type: "project",
+    });
     return folder.id;
   }
 
@@ -192,14 +200,17 @@ export class GoogleDriveTaskFolderService {
       .getOne();
     if (task === null)
       throw new Error(`Task ${input.taskId} was not found while reserving a folder.`);
-    const existing = await findLinkedTaskFolder(manager, input.connectionId, input.taskId);
+    const existing = await findLinkedFolder(manager, input.connectionId, {
+      id: input.taskId,
+      type: "task",
+    });
     if (existing !== null) return toReservation(existing);
 
     const resourceRepository = manager.getRepository(IntegrationExternalResourceEntity);
     const resource = resourceRepository.create({
       connectionId: input.connectionId,
       lastSyncedAt: new Date(),
-      metadata: { provisioningState: "reserved", taskId: input.taskId },
+      metadata: { provisioningState: "reserved", targetId: input.taskId, targetType: "task" },
       mimeType: googleDriveFolderMimeType,
       modifiedAt: null,
       name: input.name,
@@ -215,10 +226,69 @@ export class GoogleDriveTaskFolderService {
       manager.getRepository(IntegrationResourceLinkEntity).create({
         createdByUserId: input.actorUserId,
         externalResourceId: resource.id,
-        metadata: {},
+        metadata: { assignmentSource: "managed" },
         relation: "managed_container",
         targetId: input.taskId,
         targetType: "task",
+      }),
+    );
+    return toReservation(resource);
+  }
+
+  private async reserveProjectFolder(
+    manager: EntityManager,
+    input: {
+      actorUserId: string | null;
+      connectionId: string;
+      generatedFolderId: string;
+      name: string;
+      parentId: string;
+      projectId: string;
+    },
+  ): Promise<TaskFolderReservation> {
+    const project = await manager
+      .getRepository(ProjectEntity)
+      .createQueryBuilder("project")
+      .where("project.id = :projectId", { projectId: input.projectId })
+      .setLock("pessimistic_write")
+      .getOne();
+    if (project === null) {
+      throw new Error(`Project ${input.projectId} was not found while reserving a folder.`);
+    }
+    const existing = await findLinkedFolder(manager, input.connectionId, {
+      id: input.projectId,
+      type: "project",
+    });
+    if (existing !== null) return toReservation(existing);
+
+    const resourceRepository = manager.getRepository(IntegrationExternalResourceEntity);
+    const resource = resourceRepository.create({
+      connectionId: input.connectionId,
+      lastSyncedAt: new Date(),
+      metadata: {
+        provisioningState: "reserved",
+        targetId: input.projectId,
+        targetType: "project",
+      },
+      mimeType: googleDriveFolderMimeType,
+      modifiedAt: null,
+      name: input.name,
+      parentProviderResourceId: input.parentId,
+      providerResourceId: input.generatedFolderId,
+      resourceKind: "google-drive.folder",
+      status: "unavailable",
+      version: null,
+      webUrl: null,
+    });
+    await resourceRepository.save(resource);
+    await manager.getRepository(IntegrationResourceLinkEntity).save(
+      manager.getRepository(IntegrationResourceLinkEntity).create({
+        createdByUserId: input.actorUserId,
+        externalResourceId: resource.id,
+        metadata: { assignmentSource: "managed" },
+        relation: "managed_container",
+        targetId: input.projectId,
+        targetType: "project",
       }),
     );
     return toReservation(resource);
@@ -229,7 +299,22 @@ export class GoogleDriveTaskFolderService {
     taskId: string,
   ): Promise<TaskFolderReservation | null> {
     const dataSource = await this.getInitializedDataSource();
-    const resource = await findLinkedTaskFolder(dataSource.manager, connectionId, taskId);
+    const resource = await findLinkedFolder(dataSource.manager, connectionId, {
+      id: taskId,
+      type: "task",
+    });
+    return resource === null ? null : toReservation(resource);
+  }
+
+  private async findProjectFolderReservation(
+    connectionId: string,
+    projectId: string,
+  ): Promise<TaskFolderReservation | null> {
+    const dataSource = await this.getInitializedDataSource();
+    const resource = await findLinkedFolder(dataSource.manager, connectionId, {
+      id: projectId,
+      type: "project",
+    });
     return resource === null ? null : toReservation(resource);
   }
 
@@ -254,18 +339,22 @@ export class GoogleDriveTaskFolderService {
     return resources[0]?.providerResourceId ?? null;
   }
 
-  private async markTaskFolderActive(
+  private async markFolderActive(
     resourceId: string,
     connectionId: string,
     folder: GoogleDriveFolder,
-    taskId: string,
+    target: FolderTarget,
   ): Promise<void> {
     const dataSource = await this.getInitializedDataSource();
     const result = await dataSource.getRepository(IntegrationExternalResourceEntity).update(
       { connectionId, id: resourceId },
       {
         lastSyncedAt: new Date(),
-        metadata: { provisioningState: "ready", taskId },
+        metadata: {
+          provisioningState: "ready",
+          targetId: target.id,
+          targetType: target.type,
+        },
         mimeType: folder.mimeType,
         modifiedAt: folder.modifiedAt === null ? null : new Date(folder.modifiedAt),
         name: folder.name,
@@ -295,28 +384,23 @@ export class GoogleDriveTaskFolderService {
   }
 }
 
-export function buildGoogleDriveTaskFolderName(
-  projectKey: string,
-  taskNumber: number,
-  title: string,
-): string {
-  const prefix = `${cleanFolderNamePart(projectKey).toUpperCase()}-${taskNumber}`;
-  const cleanTitle = cleanFolderNamePart(title);
-  const availableTitleLength = Math.max(0, maxFolderNameLength - prefix.length - 1);
-  return cleanTitle.length === 0
-    ? prefix.slice(0, maxFolderNameLength)
-    : `${prefix} ${cleanTitle.slice(0, availableTitleLength)}`;
+export function buildGoogleDriveProjectFolderName(title: string): string {
+  return buildGoogleDriveFolderName(title, "Project");
 }
 
-async function findLinkedTaskFolder(
+export function buildGoogleDriveTaskFolderName(title: string): string {
+  return buildGoogleDriveFolderName(title, "Task");
+}
+
+async function findLinkedFolder(
   manager: EntityManager,
   connectionId: string,
-  taskId: string,
+  target: FolderTarget,
 ): Promise<IntegrationExternalResourceEntity | null> {
   const links = await manager.getRepository(IntegrationResourceLinkEntity).findBy({
     relation: "managed_container",
-    targetId: taskId,
-    targetType: "task",
+    targetId: target.id,
+    targetType: target.type,
   });
   if (links.length === 0) return null;
   const resources = await manager.getRepository(IntegrationExternalResourceEntity).findBy({
@@ -324,14 +408,17 @@ async function findLinkedTaskFolder(
     id: In(links.map((link) => link.externalResourceId)),
     resourceKind: "google-drive.folder",
   });
-  if (resources.length > 1) throw new Error(`Task ${taskId} has multiple Google Drive folders.`);
+  if (resources.length > 1) {
+    throw new Error(`${target.type} ${target.id} has multiple Google Drive folders.`);
+  }
   return resources[0] ?? null;
 }
 
 function toReservation(resource: IntegrationExternalResourceEntity): TaskFolderReservation {
   const parentId = resource.parentProviderResourceId;
-  if (parentId === null)
+  if (parentId === null && resource.status !== "active") {
     throw new Error(`Google Drive folder ${resource.id} has no parent mapping.`);
+  }
   return {
     folderId: resource.providerResourceId,
     name: resource.name,
@@ -351,4 +438,9 @@ function cleanFolderNamePart(value: string): string {
       : character;
   }).join("");
   return sanitized.replace(/\s+/gu, " ").trim();
+}
+
+function buildGoogleDriveFolderName(value: string, fallback: string): string {
+  const clean = cleanFolderNamePart(value);
+  return (clean.length === 0 ? fallback : clean).slice(0, maxFolderNameLength);
 }

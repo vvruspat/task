@@ -83,29 +83,41 @@ export class TaskAttachmentDto implements TaskAttachment {
   @ApiProperty({ enum: ["file", "link", "telegram_file"] })
   readonly kind: "file" | "link" | "telegram_file";
 
-  @ApiPropertyOptional({ nullable: true, type: String })
+  @ApiProperty({ nullable: true, type: String })
   readonly title: string | null;
 
-  @ApiPropertyOptional({ nullable: true, type: String })
+  @ApiProperty({ nullable: true, type: String })
   readonly url: string | null;
 
-  @ApiPropertyOptional({ nullable: true, type: String })
+  @ApiProperty({ nullable: true, type: String })
   readonly storageKey: string | null;
 
-  @ApiPropertyOptional({ nullable: true, type: String })
+  @ApiProperty({ nullable: true, type: String })
   readonly telegramFileId: string | null;
 
-  @ApiPropertyOptional({ nullable: true, type: String })
+  @ApiProperty({ nullable: true, type: String })
   readonly mimeType: string | null;
 
-  @ApiPropertyOptional({ nullable: true, type: String })
+  @ApiProperty({ nullable: true, type: String })
   readonly sizeBytes: string | null;
 
-  @ApiProperty({ format: "uuid" })
-  readonly createdByUserId: string;
+  @ApiProperty({ format: "uuid", nullable: true, type: String })
+  readonly createdByUserId: string | null;
 
   @ApiProperty({ format: "date-time" })
   readonly createdAt: Date;
+
+  @ApiProperty({ format: "uuid", nullable: true, type: String })
+  readonly externalResourceId: string | null;
+
+  @ApiProperty({ format: "date-time", nullable: true, type: Date })
+  readonly modifiedAt: Date | null;
+
+  @ApiProperty({ nullable: true, type: String })
+  readonly providerResourceId: string | null;
+
+  @ApiProperty({ enum: ["google_drive", "native"] })
+  readonly source: "google_drive" | "native";
 
   constructor(attachment: TaskAttachment) {
     this.id = attachment.id;
@@ -121,6 +133,10 @@ export class TaskAttachmentDto implements TaskAttachment {
     this.sizeBytes = attachment.sizeBytes;
     this.createdByUserId = attachment.createdByUserId;
     this.createdAt = attachment.createdAt;
+    this.externalResourceId = attachment.externalResourceId;
+    this.modifiedAt = attachment.modifiedAt;
+    this.providerResourceId = attachment.providerResourceId;
+    this.source = attachment.source;
   }
 }
 

@@ -9,6 +9,7 @@ import {
   parseGoogleDriveFile,
   parseGoogleDriveFileSearchResult,
   parseGoogleDriveFolder,
+  parseGoogleDriveFolderFilePage,
 } from "./google-drive.client.js";
 
 test("Google Drive folder metadata is runtime validated", () => {
@@ -122,6 +123,38 @@ test("Google Drive file search sends a bounded escaped full-text query", async (
     "fullText contains 'producer\\'s brief' and trashed = false",
   );
   assert.equal(url.searchParams.get("orderBy"), "modifiedTime desc");
+});
+
+test("Google Drive folder files are paginated and scoped to direct children", async (context) => {
+  const originalFetch = globalThis.fetch;
+  context.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+  let requestedUrl = "";
+  globalThis.fetch = async (input) => {
+    requestedUrl = input instanceof Request ? input.url : input.toString();
+    return Response.json({ files: [], nextPageToken: "next-page" });
+  };
+
+  const page = await new GoogleDriveClient().listFolderFiles(
+    "access-token",
+    "task_folder_123",
+    "current-page",
+  );
+
+  const url = new URL(requestedUrl);
+  assert.equal(url.searchParams.get("q"), "'task_folder_123' in parents and trashed = false");
+  assert.equal(url.searchParams.get("pageSize"), "1000");
+  assert.equal(url.searchParams.get("pageToken"), "current-page");
+  assert.equal(page.nextPageToken, "next-page");
+  assert.deepEqual(page.files, []);
+});
+
+test("Google Drive folder pages reject malformed cursors", () => {
+  assert.throws(
+    () => parseGoogleDriveFolderFilePage({ files: [], nextPageToken: "" }),
+    GoogleDriveApiError,
+  );
 });
 
 test("Google Drive file upload treats a pre-generated ID conflict as an idempotent retry", async (context) => {
