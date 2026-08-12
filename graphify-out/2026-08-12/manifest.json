@@ -245,7 +245,7 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1786546550.147786,
+    "mtime": 1786546359.6210907,
     "ast_hash": "054f1898a50b258a886c36aa4ff77660",
     "semantic_hash": ""
   },
@@ -675,7 +675,7 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1786546550.85048,
+    "mtime": 1786546360.2837949,
     "ast_hash": "c082abd3b7553f4f761baabc79cc5c6b",
     "semantic_hash": ""
   },
@@ -730,8 +730,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.controller.test.ts": {
-    "mtime": 1786546539.9398763,
-    "ast_hash": "76bd5ac15ba4786f79a3873521902dae",
+    "mtime": 1786546131.6072443,
+    "ast_hash": "70c074a90339f69f513103e32b892ed2",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.controller.ts": {
@@ -740,8 +740,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.dto.ts": {
-    "mtime": 1786546545.102923,
-    "ast_hash": "652e762a368f5584e3c9d451c082685d",
+    "mtime": 1786546131.6089969,
+    "ast_hash": "0b3092ed7d2ba60ed463ab5199f62498",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.module.ts": {
@@ -750,8 +750,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.service.test.ts": {
-    "mtime": 1786546558.8170526,
-    "ast_hash": "c2e925081efbda0b72af333512b63621",
+    "mtime": 1786546059.9894688,
+    "ast_hash": "4072903b4a223e213a88fc04a3645477",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.service.ts": {
@@ -3040,8 +3040,8 @@
     "semantic_hash": ""
   },
   "docs/integrations-plugin-framework.md": {
-    "mtime": 1786546475.8775735,
-    "ast_hash": "e6cad3ca6a3b0b1be7dcfde049fbf51a",
+    "mtime": 1786545937.9613738,
+    "ast_hash": "6aa17290829d62e48d905bce842336d2",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {

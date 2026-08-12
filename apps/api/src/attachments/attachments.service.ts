@@ -11,6 +11,24 @@ import type { TaskAttachmentsStore } from "./attachments.store.js";
 export class AttachmentsService {
   constructor(private readonly attachmentsStore: TaskAttachmentsStore) {}
 
+  async authorizeTaskFileUpload(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<void> {
+    const status = await this.attachmentsStore.authorizeFileUpload(
+      workspaceId,
+      projectId,
+      taskId,
+      userId,
+    );
+    if (status === "task_not_found") throw new NotFoundException("Task was not found.");
+    if (status === "forbidden") {
+      throw new ForbiddenException("Current user cannot attach files to tasks in this workspace.");
+    }
+  }
+
   async listTaskAttachments(
     workspaceId: string,
     projectId: string,

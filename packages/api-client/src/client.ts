@@ -137,6 +137,7 @@ type SelectGoogleDriveRootFolderOperation =
 type GetGoogleDriveFolderAssignmentOperation =
   operations["GoogleDriveOAuthController_getFolderAssignment"];
 type SelectGoogleDriveFolderOperation = operations["GoogleDriveOAuthController_selectFolder"];
+type UploadTaskFileOperation = operations["AttachmentsController_uploadTaskFile"];
 type CreateTelegramConnectTokenOperation = operations["TelegramConnectController_createToken"];
 type PreviewTelegramBrowserConnectOperation =
   operations["TelegramBrowserConnectController_previewBrowserConnection"];
@@ -225,12 +226,14 @@ export type LinkTelegramMiniAppIdentityRequestInput = {
 
 export type TaskApiRequestHeaders = {
   accept: "application/json";
-  "content-type"?: "application/json";
+  "content-type"?: "application/json" | "application/octet-stream";
+  "x-task-file-mime-type"?: string;
+  "x-task-file-name"?: string;
   "x-task-user-id"?: string;
 };
 
 export type TaskApiRequestInit = {
-  body?: string;
+  body?: ArrayBuffer | string;
   headers: TaskApiRequestHeaders;
   method: "DELETE" | "GET" | "PATCH" | "POST" | "PUT";
 };
@@ -328,6 +331,15 @@ export type UpdateTaskStatusRequestInput = TaskScopedInput & {
 export type BulkUpdateTasksRequestInput = ProjectScopedInput & { body: BulkUpdateTasksInput };
 
 export type TaskScopedInput = ArchiveTaskRequestInput;
+
+export type UploadTaskFileRequestInput = TaskScopedInput & {
+  bytes: ArrayBuffer;
+  fileName: string;
+  mimeType: string;
+};
+
+export type UploadTaskFileResponse =
+  UploadTaskFileOperation["responses"]["201"]["content"]["application/json"];
 
 export type TaskSkillScopedInput = WorkspaceScopedInput & {
   taskSkillId: string;
@@ -463,6 +475,7 @@ export type TaskApiClient = {
   createTaskTelegramFileAttachment(
     input: CreateTaskTelegramFileAttachmentRequestInput,
   ): Promise<TaskAttachment>;
+  uploadTaskFile(input: UploadTaskFileRequestInput): Promise<UploadTaskFileResponse>;
   createProject(input: CreateProjectRequestInput): Promise<ProjectDetail>;
   createTask(input: CreateTaskRequestInput): Promise<TaskDetail>;
   createTaskSkill(input: CreateTaskSkillRequestInput): Promise<CreateTaskSkillResponse>;
@@ -766,6 +779,19 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           body: input.body,
           method: "POST",
           requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    uploadTaskFile: (input) =>
+      binaryRequest(
+        options.fetch,
+        baseUrl,
+        `${taskPath(input)}/attachments/uploads`,
+        taskAttachmentParser,
+        {
+          bytes: input.bytes,
+          fileName: input.fileName,
+          mimeType: input.mimeType,
           trustedUserId: options.trustedUserId,
         },
       ),
@@ -1505,6 +1531,47 @@ async function request<TResponse>(
     });
   }
 
+  return body;
+}
+
+type BinaryRequestOptions = {
+  bytes: ArrayBuffer;
+  fileName: string;
+  mimeType: string;
+  trustedUserId: string | null | undefined;
+};
+
+async function binaryRequest<TResponse>(
+  fetcher: TaskApiFetch,
+  baseUrl: string,
+  path: string,
+  parser: ResponseParser<TResponse>,
+  options: BinaryRequestOptions,
+): Promise<TResponse> {
+  const response = await fetcher(`${baseUrl}${path}`, {
+    body: options.bytes,
+    headers: {
+      accept: "application/json",
+      "content-type": "application/octet-stream",
+      "x-task-file-mime-type": options.mimeType,
+      "x-task-file-name": encodeURIComponent(options.fileName),
+      "x-task-user-id": readTrustedUserId(options.trustedUserId),
+    },
+    method: "POST",
+  });
+  if (!response.ok) {
+    const body = await readErrorBody(response);
+    throw new TaskApiClientError(`Task API request failed with status ${response.status}.`, {
+      responseBody: body,
+      status: response.status,
+    });
+  }
+  const body = await response.json();
+  if (!parser.isValid(body)) {
+    throw new TaskApiClientError(`Task API returned malformed ${parser.label}.`, {
+      status: response.status,
+    });
+  }
   return body;
 }
 

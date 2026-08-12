@@ -165,6 +165,12 @@ task-folder mappings retain their Drive IDs when the root selection changes.
 
 ## Drive attachment export
 
+Files uploaded from the task page are written below `ATTACHMENT_STORAGE_ROOT` with a random storage
+key and private file permissions. The authenticated download endpoint re-checks task visibility and
+addresses content by attachment ID instead of accepting a filesystem path. Drag-and-drop and the
+file picker use the same bounded binary upload path; creating the attachment emits the existing
+durable event consumed by Drive export.
+
 The Drive handler consumes `attachment.created.v1` and exports file attachments into the managed
 folder of their task. Attachment bytes come through a typed content-provider boundary; the first
 provider resolves storage keys below the absolute `ATTACHMENT_STORAGE_ROOT`. It resolves real paths,

@@ -153,11 +153,13 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     TelegramConnectService,
   ],
   exports: [
+    attachmentContentProviderToken,
     DatabaseIntegrationSecretProvider,
     IntegrationAgentToolsService,
     IntegrationEventDispatcher,
     IntegrationOutboxPublisher,
     IntegrationPluginRegistry,
+    IntegrationsConfigProvider,
   ],
 })
 export class IntegrationsModule {}

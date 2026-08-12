@@ -187,6 +187,8 @@ export {
   type UpdateWorkspaceStatusInput,
   type UpdateWorkspaceStatusRequestInput,
   type UpdateWorkspaceStatusResponse,
+  type UploadTaskFileRequestInput,
+  type UploadTaskFileResponse,
   type WorkspaceDetail,
   type WorkspaceIntegration,
   type WorkspaceIntegrationConnection,

@@ -22,5 +22,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=build /app /app
 ENV NODE_ENV=production
+ENV ATTACHMENT_STORAGE_ROOT=/var/lib/task/attachments
+RUN mkdir -p /var/lib/task/attachments
 EXPOSE 3000
 CMD ["sh", "-lc", "node apps/api/dist/run-migrations.js && exec node apps/api/dist/main.js"]
