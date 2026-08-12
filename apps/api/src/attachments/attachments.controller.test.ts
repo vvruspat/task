@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, PayloadTooLargeException } from "@nestjs/common";
+import { attachmentContentMaxBytes } from "../integrations/integrations.config.js";
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
@@ -12,9 +13,12 @@ import {
   ParseCreateTaskFileAttachmentBodyPipe,
   ParseCreateTaskLinkAttachmentBodyPipe,
   ParseCreateTaskTelegramFileAttachmentBodyPipe,
+  ParseTaskFileUploadBodyPipe,
+  parseTaskFileUploadHeaders,
 } from "./attachments.dto.js";
 import { AttachmentsService } from "./attachments.service.js";
 import type { TaskAttachmentCreateResult, TaskAttachmentsStore } from "./attachments.store.js";
+import { TaskFileUploadService } from "./task-file-upload.service.js";
 
 const workspaceId = "11111111-1111-4111-8111-111111111111";
 const projectId = "33333333-3333-4333-8333-333333333333";
@@ -44,8 +48,8 @@ const taskAttachment: TaskAttachment = {
 };
 
 test("AttachmentsController uses trusted current user context for attachment list reads", async () => {
-  const controller = new AttachmentsController(
-    new AttachmentsService(createAttachmentsStore({ attachments: [taskAttachment] })),
+  const controller = createAttachmentsController(
+    createAttachmentsStore({ attachments: [taskAttachment] }),
   );
 
   const response = await controller.listTaskAttachments(workspaceId, projectId, taskId, userId);
@@ -59,15 +63,13 @@ test("AttachmentsController uses trusted current user context for link attachmen
     title: "Bass take reference",
     url: "https://example.com/reference",
   };
-  const controller = new AttachmentsController(
-    new AttachmentsService(
-      createAttachmentsStore({
-        createResult: {
-          attachment: { ...taskAttachment, title: input.title ?? null, url: input.url },
-          status: "created",
-        },
-      }),
-    ),
+  const controller = createAttachmentsController(
+    createAttachmentsStore({
+      createResult: {
+        attachment: { ...taskAttachment, title: input.title ?? null, url: input.url },
+        status: "created",
+      },
+    }),
   );
 
   const response = await controller.createTaskLinkAttachment(
@@ -89,23 +91,21 @@ test("AttachmentsController uses trusted current user context for file attachmen
     mimeType: "audio/wav",
     sizeBytes: "18432000",
   };
-  const controller = new AttachmentsController(
-    new AttachmentsService(
-      createAttachmentsStore({
-        createResult: {
-          attachment: {
-            ...taskAttachment,
-            kind: "file",
-            title: input.title ?? null,
-            url: null,
-            storageKey: input.storageKey,
-            mimeType: input.mimeType ?? null,
-            sizeBytes: input.sizeBytes ?? null,
-          },
-          status: "created",
+  const controller = createAttachmentsController(
+    createAttachmentsStore({
+      createResult: {
+        attachment: {
+          ...taskAttachment,
+          kind: "file",
+          title: input.title ?? null,
+          url: null,
+          storageKey: input.storageKey,
+          mimeType: input.mimeType ?? null,
+          sizeBytes: input.sizeBytes ?? null,
         },
-      }),
-    ),
+        status: "created",
+      },
+    }),
   );
 
   const response = await controller.createTaskFileAttachment(
@@ -129,23 +129,21 @@ test("AttachmentsController uses trusted current user context for Telegram file 
     mimeType: "audio/wav",
     sizeBytes: "18432000",
   };
-  const controller = new AttachmentsController(
-    new AttachmentsService(
-      createAttachmentsStore({
-        createResult: {
-          attachment: {
-            ...taskAttachment,
-            kind: "telegram_file",
-            title: input.title ?? null,
-            url: null,
-            telegramFileId: input.telegramFileId,
-            mimeType: input.mimeType ?? null,
-            sizeBytes: input.sizeBytes ?? null,
-          },
-          status: "created",
+  const controller = createAttachmentsController(
+    createAttachmentsStore({
+      createResult: {
+        attachment: {
+          ...taskAttachment,
+          kind: "telegram_file",
+          title: input.title ?? null,
+          url: null,
+          telegramFileId: input.telegramFileId,
+          mimeType: input.mimeType ?? null,
+          sizeBytes: input.sizeBytes ?? null,
         },
-      }),
-    ),
+        status: "created",
+      },
+    }),
   );
 
   const response = await controller.createTaskTelegramFileAttachment(
@@ -290,11 +288,60 @@ test("ParseCreateTaskTelegramFileAttachmentBodyPipe validates and normalizes Tel
   assert.throws(() => pipe.transform(null), BadRequestException);
 });
 
+test("task file upload boundary validates binary content and encoded metadata", () => {
+  const bodyPipe = new ParseTaskFileUploadBodyPipe();
+  const bytes = Buffer.from("hello");
+
+  assert.equal(bodyPipe.transform(bytes), bytes);
+  assert.deepEqual(
+    parseTaskFileUploadHeaders({
+      "x-task-file-mime-type": "text/plain",
+      "x-task-file-name": encodeURIComponent("План.txt"),
+    }),
+    { fileName: "План.txt", mimeType: "text/plain" },
+  );
+  assert.throws(() => bodyPipe.transform(Buffer.alloc(0)), BadRequestException);
+  assert.throws(() => bodyPipe.transform("hello"), BadRequestException);
+  assert.throws(
+    () => bodyPipe.transform(Buffer.alloc(attachmentContentMaxBytes + 1)),
+    PayloadTooLargeException,
+  );
+  assert.throws(
+    () =>
+      parseTaskFileUploadHeaders({
+        "x-task-file-mime-type": "text/plain\r\nx-bad: true",
+        "x-task-file-name": "notes.txt",
+      }),
+    BadRequestException,
+  );
+  assert.throws(
+    () =>
+      parseTaskFileUploadHeaders({
+        "x-task-file-mime-type": "text/plain",
+        "x-task-file-name": "%E0%A4%A",
+      }),
+    BadRequestException,
+  );
+  assert.throws(
+    () =>
+      parseTaskFileUploadHeaders({
+        "x-task-file-mime-type": "text/plain",
+        "x-task-file-name": encodeURIComponent("folder/notes.txt"),
+      }),
+    BadRequestException,
+  );
+});
+
 function createAttachmentsStore(options: {
   attachments?: TaskAttachment[] | null;
   createResult?: TaskAttachmentCreateResult;
 }): TaskAttachmentsStore {
   return {
+    authorizeFileUpload: async (): Promise<"allowed" | "forbidden" | "task_not_found"> => {
+      if (options.createResult?.status === "forbidden") return "forbidden";
+      if (options.createResult?.status === "task_not_found") return "task_not_found";
+      return "allowed";
+    },
     listForTask: async (): Promise<TaskAttachment[] | null> =>
       options.attachments === undefined ? [] : options.attachments,
     createLinkForTask: async (): Promise<TaskAttachmentCreateResult> =>
@@ -304,4 +351,23 @@ function createAttachmentsStore(options: {
     createTelegramFileForTask: async (): Promise<TaskAttachmentCreateResult> =>
       options.createResult ?? { status: "task_not_found" },
   };
+}
+
+function createAttachmentsController(store: TaskAttachmentsStore): AttachmentsController {
+  const attachmentsService = new AttachmentsService(store);
+  const taskFileUploads = new TaskFileUploadService(
+    {
+      async remove(): Promise<void> {},
+      async store(): Promise<never> {
+        throw new Error("Unexpected task file upload in attachment controller test.");
+      },
+    },
+    {
+      async read(): Promise<never> {
+        throw new Error("Unexpected task file download in attachment controller test.");
+      },
+    },
+    attachmentsService,
+  );
+  return new AttachmentsController(attachmentsService, taskFileUploads);
 }

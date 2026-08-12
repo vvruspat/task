@@ -159,7 +159,12 @@ test("AttachmentsService creates Telegram file attachments for writable workspac
 });
 
 test("AttachmentsService hides inaccessible or missing tasks", async () => {
-  const service = new AttachmentsService(createAttachmentsStore({ attachments: null }));
+  const service = new AttachmentsService(
+    createAttachmentsStore({
+      attachments: null,
+      createResult: { status: "task_not_found" },
+    }),
+  );
 
   await assert.rejects(
     () => service.listTaskAttachments(workspaceId, projectId, taskId, userId),
@@ -184,6 +189,10 @@ test("AttachmentsService hides inaccessible or missing tasks", async () => {
       service.createTaskTelegramFileAttachment(workspaceId, projectId, taskId, userId, {
         telegramFileId: "hidden-telegram-file-id",
       }),
+    NotFoundException,
+  );
+  await assert.rejects(
+    () => service.authorizeTaskFileUpload(workspaceId, projectId, taskId, userId),
     NotFoundException,
   );
 });
@@ -214,6 +223,10 @@ test("AttachmentsService rejects attachment creates without write permission", a
       }),
     ForbiddenException,
   );
+  await assert.rejects(
+    () => service.authorizeTaskFileUpload(workspaceId, projectId, taskId, userId),
+    ForbiddenException,
+  );
 });
 
 function createAttachmentsStore(options: {
@@ -221,6 +234,11 @@ function createAttachmentsStore(options: {
   createResult?: TaskAttachmentCreateResult;
 }): TaskAttachmentsStore {
   return {
+    authorizeFileUpload: async (): Promise<"allowed" | "forbidden" | "task_not_found"> => {
+      if (options.createResult?.status === "forbidden") return "forbidden";
+      if (options.createResult?.status === "task_not_found") return "task_not_found";
+      return "allowed";
+    },
     listForTask: async (): Promise<TaskAttachment[] | null> =>
       options.attachments === undefined ? [] : options.attachments,
     createLinkForTask: async (): Promise<TaskAttachmentCreateResult> =>

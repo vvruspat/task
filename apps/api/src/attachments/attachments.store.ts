@@ -18,6 +18,12 @@ export type TaskAttachmentCreateResult =
     };
 
 export type TaskAttachmentsStore = {
+  authorizeFileUpload(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<"allowed" | "forbidden" | "task_not_found">;
   listForTask(
     workspaceId: string,
     projectId: string,

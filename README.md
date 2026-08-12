@@ -55,6 +55,11 @@ Coolify's `SOURCE_COMMIT` build argument, fetch that exact SHA, and make the sou
 every deployment. Do not replace that fetch with a branch-only `git clone`: Docker can reuse the
 clone layer and produce a healthy container with stale application code.
 
+The API accepts task file uploads when `ATTACHMENT_STORAGE_ROOT` points to a writable persistent
+directory. In Coolify, mount persistent storage at that exact path (for example
+`/var/lib/task/attachments`); otherwise local file downloads and pending Google Drive exports are
+lost when the API container is replaced.
+
 When API DTOs change, regenerate and check the OpenAPI/API client contract:
 
 ```bash

@@ -5464,6 +5464,181 @@
         "tags": ["attachments"]
       }
     },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments/uploads": {
+      "post": {
+        "operationId": "AttachmentsController_uploadTaskFile",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-task-file-mime-type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-task-file-name",
+            "in": "header",
+            "description": "URL-encoded UTF-8 file name.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "format": "binary",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskAttachmentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "File name, MIME type, or body is invalid."
+          },
+          "403": {
+            "description": "Current user cannot attach files in this workspace."
+          },
+          "404": {
+            "description": "Workspace, project, or task is missing or not visible."
+          },
+          "413": {
+            "description": "File exceeds the 25 MB upload limit."
+          },
+          "503": {
+            "description": "Attachment storage is not configured."
+          }
+        },
+        "summary": "Upload a binary file to a visible task",
+        "tags": ["attachments"]
+      }
+    },
+    "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments/{attachmentId}/content": {
+      "get": {
+        "operationId": "AttachmentsController_downloadTaskFile",
+        "parameters": [
+          {
+            "name": "x-task-user-id",
+            "in": "header",
+            "description": "Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "attachmentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task or file is missing or not visible."
+          },
+          "503": {
+            "description": "File content is unavailable."
+          }
+        },
+        "summary": "Download one uploaded task file",
+        "tags": ["attachments"]
+      }
+    },
     "/workspaces/{workspaceId}/projects/{projectId}/tasks/{taskId}/attachments/telegram-files": {
       "post": {
         "operationId": "AttachmentsController_createTaskTelegramFileAttachment",

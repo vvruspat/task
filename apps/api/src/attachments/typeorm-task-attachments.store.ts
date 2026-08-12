@@ -34,6 +34,20 @@ export class TypeOrmTaskAttachmentsStore implements TaskAttachmentsStore {
 
   constructor(private readonly dataSourceProvider: ApiDataSourceProvider) {}
 
+  async authorizeFileUpload(
+    workspaceId: string,
+    projectId: string,
+    taskId: string,
+    userId: string,
+  ): Promise<"allowed" | "forbidden" | "task_not_found"> {
+    const dataSource = await this.getInitializedDataSource();
+    const membership = await this.getWorkspaceMembership(dataSource, workspaceId, userId);
+    if (membership === null) return "task_not_found";
+    if (!attachmentWriteRoles.has(membership.role)) return "forbidden";
+    const task = await this.getVisibleTask(dataSource, workspaceId, projectId, taskId);
+    return task === null ? "task_not_found" : "allowed";
+  }
+
   async listForTask(
     workspaceId: string,
     projectId: string,

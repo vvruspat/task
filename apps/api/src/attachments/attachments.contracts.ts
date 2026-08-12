@@ -41,3 +41,19 @@ export type CreateTaskTelegramFileAttachmentInput = {
   mimeType?: string | null;
   sizeBytes?: string | null;
 };
+
+export type TaskFileUploadMetadata = {
+  fileName: string;
+  mimeType: string;
+};
+
+export type TaskFileUploadInput = TaskFileUploadMetadata & {
+  bytes: Uint8Array;
+};
+
+export type TaskFileContent = {
+  bytes: Uint8Array;
+  fileName: string;
+  mimeType: string;
+  sizeBytes: number;
+};

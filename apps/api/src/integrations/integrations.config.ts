@@ -1,7 +1,7 @@
 import { isAbsolute, normalize, parse as parsePath } from "node:path";
 import { Injectable } from "@nestjs/common";
 
-const defaultAttachmentExportMaxBytes = 25 * 1_024 * 1_024;
+export const attachmentContentMaxBytes = 25 * 1_024 * 1_024;
 
 export type IntegrationsEnvironment = {
   ATTACHMENT_STORAGE_ROOT?: string;
@@ -90,7 +90,7 @@ function parseAttachmentContentConfig(
 ): AttachmentContentConfig {
   const storageRoot = environment.ATTACHMENT_STORAGE_ROOT;
   if (storageRoot === undefined) {
-    return { maxBytes: defaultAttachmentExportMaxBytes, storageRoot: null };
+    return { maxBytes: attachmentContentMaxBytes, storageRoot: null };
   }
   assertTrimmedValue("ATTACHMENT_STORAGE_ROOT", storageRoot);
   if (!isAbsolute(storageRoot)) {
@@ -106,7 +106,7 @@ function parseAttachmentContentConfig(
       "must not be a filesystem root",
     );
   }
-  return { maxBytes: defaultAttachmentExportMaxBytes, storageRoot: normalizedRoot };
+  return { maxBytes: attachmentContentMaxBytes, storageRoot: normalizedRoot };
 }
 
 function parseGoogleDrivePickerConfig(

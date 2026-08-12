@@ -938,6 +938,46 @@ test("createTaskApiClient creates task attachments with trusted user context", a
   );
 });
 
+test("createTaskApiClient uploads binary task files with encoded metadata", async () => {
+  const fetcher = new RecordingFetch(
+    single(
+      taskAttachment({
+        kind: "file",
+        mimeType: "text/plain",
+        sizeBytes: "5",
+        storageKey: "workspaces/studio/notes",
+        title: "План.txt",
+      }),
+    ),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+  const bytes = new TextEncoder().encode("hello").buffer;
+
+  const result = await client.uploadTaskFile({
+    bytes,
+    fileName: "План.txt",
+    mimeType: "text/plain",
+    projectId,
+    taskId,
+    workspaceId,
+  });
+
+  assert.equal(result.title, "План.txt");
+  assert.equal(
+    fetcher.calls[0]?.url,
+    `https://task.example/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/attachments/uploads`,
+  );
+  assert.equal(fetcher.calls[0]?.init.body, bytes);
+  assert.equal(fetcher.calls[0]?.init.headers["content-type"], "application/octet-stream");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-file-name"], encodeURIComponent("План.txt"));
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-file-mime-type"], "text/plain");
+  assert.equal(fetcher.calls[0]?.init.headers["x-task-user-id"], trustedUserId);
+});
+
 test("createTaskApiClient validates supported list responses", async () => {
   const fetcher = new RecordingFetch(
     sequence([[projectSummary()], [taskSkillSummary()], [workspaceStatus()]]),
@@ -2047,6 +2087,8 @@ function taskComment(): unknown {
 function taskAttachment(
   overrides: Partial<{
     kind: "file" | "link" | "telegram_file";
+    mimeType: string | null;
+    sizeBytes: string | null;
     storageKey: string | null;
     telegramFileId: string | null;
     title: string | null;
@@ -2063,8 +2105,8 @@ function taskAttachment(
     url: overrides.url ?? "https://example.com/bass",
     storageKey: overrides.storageKey ?? null,
     telegramFileId: overrides.telegramFileId ?? null,
-    mimeType: null,
-    sizeBytes: null,
+    mimeType: overrides.mimeType ?? null,
+    sizeBytes: overrides.sizeBytes ?? null,
     createdByUserId: trustedUserId,
     createdAt: "2026-07-08T10:00:00.000Z",
     externalResourceId: null,

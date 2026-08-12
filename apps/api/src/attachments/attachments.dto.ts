@@ -1,10 +1,12 @@
-import { BadRequestException, type PipeTransform } from "@nestjs/common";
+import { BadRequestException, PayloadTooLargeException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { attachmentContentMaxBytes } from "../integrations/integrations.config.js";
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
   CreateTaskTelegramFileAttachmentInput,
   TaskAttachment,
+  TaskFileUploadMetadata,
 } from "./attachments.contracts.js";
 
 export class CreateTaskLinkAttachmentDto implements CreateTaskLinkAttachmentInput {
@@ -65,6 +67,53 @@ export class ParseCreateTaskTelegramFileAttachmentBodyPipe
   transform(value: unknown): CreateTaskTelegramFileAttachmentInput {
     return parseCreateTaskTelegramFileAttachmentInput(value);
   }
+}
+
+export class ParseTaskFileUploadBodyPipe implements PipeTransform<unknown, Uint8Array> {
+  transform(value: unknown): Uint8Array {
+    if (!Buffer.isBuffer(value)) {
+      throw new BadRequestException("Task file upload body must contain binary data.");
+    }
+    if (value.byteLength === 0) {
+      throw new BadRequestException("Task file upload must not be empty.");
+    }
+    if (value.byteLength > attachmentContentMaxBytes) {
+      throw new PayloadTooLargeException(
+        `Task file upload must not exceed ${attachmentContentMaxBytes} bytes.`,
+      );
+    }
+    return value;
+  }
+}
+
+export function parseTaskFileUploadHeaders(value: unknown): TaskFileUploadMetadata {
+  if (!isUnknownRecord(value)) {
+    throw new BadRequestException("Task file upload headers are invalid.");
+  }
+  const encodedFileName = readRequiredHeader(value, "x-task-file-name");
+  const mimeType = readRequiredHeader(value, "x-task-file-mime-type");
+  let fileName: string;
+  try {
+    fileName = decodeURIComponent(encodedFileName);
+  } catch {
+    throw new BadRequestException("Task file name must be URL encoded UTF-8.");
+  }
+  if (
+    fileName.length === 0 ||
+    Array.from(fileName).length > 240 ||
+    fileName.includes("/") ||
+    fileName.includes("\\") ||
+    Array.from(fileName).some((character) => {
+      const codePoint = character.codePointAt(0);
+      return codePoint !== undefined && (codePoint <= 31 || codePoint === 127);
+    })
+  ) {
+    throw new BadRequestException("Task file name is invalid.");
+  }
+  if (mimeType.length > 255 || !/^[A-Za-z0-9!#$&^_.+-]+\/[A-Za-z0-9!#$&^_.+-]+$/u.test(mimeType)) {
+    throw new BadRequestException("Task file MIME type is invalid.");
+  }
+  return { fileName, mimeType };
 }
 
 export class TaskAttachmentDto implements TaskAttachment {
@@ -212,6 +261,14 @@ function parseCreateTaskTelegramFileAttachmentInput(
 
 function isUnknownRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readRequiredHeader(value: Record<string, unknown>, name: string): string {
+  const header = value[name];
+  if (typeof header !== "string" || header.length === 0 || header.trim() !== header) {
+    throw new BadRequestException(`Task file header ${name} is required.`);
+  }
+  return header;
 }
 
 function readRequiredString(value: Record<string, unknown>, propertyName: string): string {
