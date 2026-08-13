@@ -19967,7 +19967,7 @@
       "label": "AttachmentEntity",
       "file_type": "code",
       "source_file": "apps/api/src/persistence/entities/attachment.entity.ts",
-      "source_location": "L14",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "entities_attachment_entity_attachmententity",
       "community": 176,
@@ -30730,7 +30730,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "telegram_telegram_contracts_resolvetelegramcontextinput",
-      "community": 181,
+      "community": 145,
       "norm_label": "resolvetelegramcontextinput"
     },
     {
@@ -30830,7 +30830,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "telegram_telegram_contracts_telegramconfirmationcallbackresult",
-      "community": 124,
+      "community": 181,
       "norm_label": "telegramconfirmationcallbackresult"
     },
     {
@@ -30930,7 +30930,7 @@
       "source_location": "L256",
       "_origin": "ast",
       "id": "telegram_telegram_controller_test_recordingtelegramcontextstore",
-      "community": 173,
+      "community": 145,
       "norm_label": "recordingtelegramcontextstore"
     },
     {
@@ -30950,7 +30950,7 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "telegram_telegram_controller_test_recordingtelegramcontextstore_getidentitylinkstatus",
-      "community": 173,
+      "community": 145,
       "norm_label": ".getidentitylinkstatus()"
     },
     {
@@ -30960,7 +30960,7 @@
       "source_location": "L277",
       "_origin": "ast",
       "id": "telegram_telegram_controller_test_recordingtelegramcontextstore_resolvecontext",
-      "community": 173,
+      "community": 145,
       "norm_label": ".resolvecontext()"
     },
     {
@@ -30980,7 +30980,7 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "telegram_telegram_controller_test_recordingtelegramcontextstore_recordchatmessage",
-      "community": 173,
+      "community": 145,
       "norm_label": ".recordchatmessage()"
     },
     {
@@ -31270,7 +31270,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "telegram_telegram_dto_resolvetelegramcontextdto",
-      "community": 181,
+      "community": 145,
       "norm_label": "resolvetelegramcontextdto"
     },
     {
@@ -31410,7 +31410,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "telegram_telegram_dto_telegramconfirmationcallbackresultdto",
-      "community": 124,
+      "community": 181,
       "norm_label": "telegramconfirmationcallbackresultdto"
     },
     {
@@ -31420,7 +31420,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "telegram_telegram_dto_telegramconfirmationcallbackresultdto_constructor",
-      "community": 124,
+      "community": 181,
       "norm_label": ".constructor()"
     },
     {
@@ -31760,7 +31760,7 @@
       "source_location": "L214",
       "_origin": "ast",
       "id": "telegram_telegram_service_test_recordingtelegramcontextstore_resolvecontext",
-      "community": 181,
+      "community": 145,
       "norm_label": ".resolvecontext()"
     },
     {
@@ -31860,7 +31860,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "telegram_telegram_service_telegramservice",
-      "community": 181,
+      "community": 173,
       "norm_label": "telegramservice"
     },
     {
@@ -31880,7 +31880,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "telegram_telegram_service_telegramservice_resolvecontext",
-      "community": 181,
+      "community": 173,
       "norm_label": ".resolvecontext()"
     },
     {
@@ -31890,7 +31890,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "telegram_telegram_service_telegramservice_recordchatmessage",
-      "community": 181,
+      "community": 173,
       "norm_label": ".recordchatmessage()"
     },
     {
@@ -31920,7 +31920,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "telegram_telegram_service_telegramservice_getminiappidentitylinkstatus",
-      "community": 181,
+      "community": 173,
       "norm_label": ".getminiappidentitylinkstatus()"
     },
     {
@@ -35190,7 +35190,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_backend_client_previewtaskskillapplyresponse",
-      "community": 128,
+      "community": 57,
       "norm_label": "previewtaskskillapplyresponse"
     },
     {
@@ -35250,7 +35250,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_backend_client_archivetaskskillresponse",
-      "community": 66,
+      "community": 56,
       "norm_label": "archivetaskskillresponse"
     },
     {
@@ -35340,7 +35340,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_backend_client_confirmationrequestsummaryresponse",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationrequestsummaryresponse"
     },
     {
@@ -35350,7 +35350,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_backend_client_confirmationrequestdetailresponse",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationrequestdetailresponse"
     },
     {
@@ -35360,7 +35360,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_backend_client_confirmconfirmationrequestresponse",
-      "community": 17,
+      "community": 66,
       "norm_label": "confirmconfirmationrequestresponse"
     },
     {
@@ -35370,7 +35370,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_backend_client_createconfirmationrequestinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "createconfirmationrequestinput"
     },
     {
@@ -35380,7 +35380,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_backend_client_taskskillsummaryresponse",
-      "community": 17,
+      "community": 56,
       "norm_label": "taskskillsummaryresponse"
     },
     {
@@ -35390,7 +35390,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_backend_client_taskskilldetailresponse",
-      "community": 17,
+      "community": 56,
       "norm_label": "taskskilldetailresponse"
     },
     {
@@ -35600,7 +35600,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_backend_client_tasksummaryresponse",
-      "community": 54,
+      "community": 128,
       "norm_label": "tasksummaryresponse"
     },
     {
@@ -35620,7 +35620,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "src_backend_client_taskattachmentresponse",
-      "community": 68,
+      "community": 128,
       "norm_label": "taskattachmentresponse"
     },
     {
@@ -37340,7 +37340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_confirmation_tools_test",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmation-tools.test.ts"
     },
     {
@@ -37350,7 +37350,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_confirmation_tools_test_confirmationrequest",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationrequest"
     },
     {
@@ -37360,7 +37360,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_confirmation_tools_test_createinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "createinput"
     },
     {
@@ -37370,7 +37370,7 @@
       "source_location": "L239",
       "_origin": "ast",
       "id": "src_confirmation_tools_test_createbackendclientstub",
-      "community": 17,
+      "community": 128,
       "norm_label": "createbackendclientstub()"
     },
     {
@@ -37380,7 +37380,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_confirmation_tools",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmation-tools.ts"
     },
     {
@@ -37390,7 +37390,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationlistpendingtoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationlistpendingtoolinput"
     },
     {
@@ -37400,7 +37400,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationgettoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationgettoolinput"
     },
     {
@@ -37410,7 +37410,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationcreatetoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationcreatetoolinput"
     },
     {
@@ -37420,7 +37420,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationcanceltoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationcanceltoolinput"
     },
     {
@@ -37430,7 +37430,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationcommittoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationcommittoolinput"
     },
     {
@@ -37440,7 +37440,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationtoolhandlers",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationtoolhandlers"
     },
     {
@@ -37450,7 +37450,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationtoolinputerror",
-      "community": 17,
+      "community": 128,
       "norm_label": "confirmationtoolinputerror"
     },
     {
@@ -37460,7 +37460,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_confirmation_tools_confirmationtoolinputerror_constructor",
-      "community": 17,
+      "community": 128,
       "norm_label": ".constructor()"
     },
     {
@@ -37470,7 +37470,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_confirmation_tools_createconfirmationtoolhandlers",
-      "community": 69,
+      "community": 128,
       "norm_label": "createconfirmationtoolhandlers()"
     },
     {
@@ -37480,7 +37480,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "src_confirmation_tools_parseconfirmationlistpendingtoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "parseconfirmationlistpendingtoolinput()"
     },
     {
@@ -37490,7 +37490,7 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "src_confirmation_tools_parseconfirmationgettoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "parseconfirmationgettoolinput()"
     },
     {
@@ -37500,7 +37500,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "src_confirmation_tools_parseconfirmationcreatetoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "parseconfirmationcreatetoolinput()"
     },
     {
@@ -37510,7 +37510,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "src_confirmation_tools_parseconfirmationcanceltoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "parseconfirmationcanceltoolinput()"
     },
     {
@@ -37520,7 +37520,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "src_confirmation_tools_parseconfirmationcommittoolinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "parseconfirmationcommittoolinput()"
     },
     {
@@ -37530,7 +37530,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "src_confirmation_tools_tocreateconfirmationrequestinput",
-      "community": 17,
+      "community": 128,
       "norm_label": "tocreateconfirmationrequestinput()"
     },
     {
@@ -37540,7 +37540,7 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "src_confirmation_tools_readrecord",
-      "community": 17,
+      "community": 128,
       "norm_label": "readrecord()"
     },
     {
@@ -37550,7 +37550,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "src_confirmation_tools_isunknownrecord",
-      "community": 17,
+      "community": 128,
       "norm_label": "isunknownrecord()"
     },
     {
@@ -37560,7 +37560,7 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "src_confirmation_tools_readrequireduuid",
-      "community": 17,
+      "community": 128,
       "norm_label": "readrequireduuid()"
     },
     {
@@ -37570,7 +37570,7 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "src_confirmation_tools_readrequirednonemptystring",
-      "community": 17,
+      "community": 128,
       "norm_label": "readrequirednonemptystring()"
     },
     {
@@ -37580,7 +37580,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "src_confirmation_tools_readrequiredrecord",
-      "community": 17,
+      "community": 128,
       "norm_label": "readrequiredrecord()"
     },
     {
@@ -37590,7 +37590,7 @@
       "source_location": "L221",
       "_origin": "ast",
       "id": "src_confirmation_tools_readrequireddatetime",
-      "community": 17,
+      "community": 128,
       "norm_label": "readrequireddatetime()"
     },
     {
@@ -40580,7 +40580,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_task_skill_tools_createtaskskilltoolhandlers",
-      "community": 56,
+      "community": 69,
       "norm_label": "createtaskskilltoolhandlers()"
     },
     {
@@ -84322,9 +84322,9 @@
       "source_file": "apps/api/src/attachments/attachments.controller.test.ts",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "attachments_attachments_controller_test",
-      "target": "integrations_integrations_config"
+      "target": "integrations_integrations_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -240491,5 +240491,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7b72f94ff6ac7778484f06d2169398ecad9225ff"
+  "built_at_commit": "501665d624388fda6a49de0424a9fcfdc09f7dc8"
 }
