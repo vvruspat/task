@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Check, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 import type {
   AttachmentKind,
@@ -12,7 +13,7 @@ import type {
 @Index("idx_attachments_workspace_id_created_by_user_id", ["workspaceId", "createdByUserId"])
 export class AttachmentEntity implements AttachmentRecord {
   @PrimaryGeneratedColumn("uuid")
-  id = "";
+  id: string = randomUUID();
 
   @Column({ name: "workspace_id", type: "uuid" })
   workspaceId = "";
