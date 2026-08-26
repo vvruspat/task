@@ -1,7 +1,7 @@
 "use client";
 
 import type { IntegrationCatalogItem } from "@task/api-client";
-import { Badge, Button, Card, Flex, Text } from "@task/ui";
+import { Badge, Button, Card, Flex, Text, TextField } from "@task/ui";
 import { ChevronRight, FolderOpen, Plug, Unplug } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
@@ -14,7 +14,9 @@ import {
   isIntegrationCatalog,
   isTelegramConnectToken,
   isWorkspaceIntegration,
+  isYandexDiskRootFolder,
   readGoogleDriveRootFolderConfig,
+  readYandexDiskRootFolderConfig,
 } from "../lib/workspace-integrations";
 import { workspaceTelegramChatSettingsHref } from "../lib/workspace-url";
 
@@ -28,6 +30,7 @@ export function WorkspaceIntegrations({
   const [pendingPluginKey, setPendingPluginKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [telegramConnectCommand, setTelegramConnectCommand] = useState<string | null>(null);
+  const [yandexRootPath, setYandexRootPath] = useState("disk:/tAsk");
 
   const load = useCallback(async (): Promise<void> => {
     setLoading(true);
@@ -42,6 +45,14 @@ export function WorkspaceIntegrations({
         setError(isApiFailure(body) ? body.error : t("integrations.loadError"));
       } else if (isIntegrationCatalog(body)) {
         setCatalog(body);
+        const yandexIntegration = body.find((item) => item.pluginKey === "yandex-disk");
+        if (
+          yandexIntegration?.installation !== null &&
+          yandexIntegration?.installation !== undefined
+        ) {
+          const configuredRoot = readYandexDiskRootFolderConfig(yandexIntegration.installation);
+          if (configuredRoot !== null) setYandexRootPath(configuredRoot.path);
+        }
         setError(null);
       } else {
         setError(t("workspace.invalidResponse"));
@@ -112,12 +123,16 @@ export function WorkspaceIntegrations({
     }
   };
 
-  const connectGoogleDrive = async (item: IntegrationCatalogItem): Promise<void> => {
+  const connectCloudDrive = async (item: IntegrationCatalogItem): Promise<void> => {
     if (item.installation === null) return;
     setPendingPluginKey(item.pluginKey);
     try {
       const response = await fetch("/api/workspace/integrations/connect", {
-        body: JSON.stringify({ integrationId: item.installation.id, workspaceId }),
+        body: JSON.stringify({
+          integrationId: item.installation.id,
+          pluginKey: item.pluginKey,
+          workspaceId,
+        }),
         headers: { "content-type": "application/json" },
         method: "POST",
       });
@@ -131,6 +146,50 @@ export function WorkspaceIntegrations({
       }
     } catch (_error: unknown) {
       setError(t("integrations.connectError"));
+    } finally {
+      setPendingPluginKey(null);
+    }
+  };
+
+  const configureYandexDiskRoot = async (item: IntegrationCatalogItem): Promise<void> => {
+    if (item.installation === null || yandexRootPath.trim().length === 0) return;
+    setPendingPluginKey(item.pluginKey);
+    try {
+      const response = await fetch("/api/workspace/integrations/yandex-disk/root-folder", {
+        body: JSON.stringify({
+          integrationId: item.installation.id,
+          path: yandexRootPath.trim(),
+          workspaceId,
+        }),
+        headers: { "content-type": "application/json" },
+        method: "PUT",
+      });
+      const body: unknown = await response.json();
+      if (!response.ok || isApiFailure(body)) {
+        setError(isApiFailure(body) ? body.error : t("integrations.yandexRootFolderError"));
+        return;
+      }
+      if (!isYandexDiskRootFolder(body)) {
+        setError(t("workspace.invalidResponse"));
+        return;
+      }
+      setYandexRootPath(body.path);
+      setCatalog((current) =>
+        current.map((candidate) =>
+          candidate.pluginKey === item.pluginKey && candidate.installation !== null
+            ? {
+                ...candidate,
+                installation: {
+                  ...candidate.installation,
+                  config: { ...candidate.installation.config, rootFolder: body },
+                },
+              }
+            : candidate,
+        ),
+      );
+      setError(null);
+    } catch (_error: unknown) {
+      setError(t("integrations.yandexRootFolderError"));
     } finally {
       setPendingPluginKey(null);
     }
@@ -247,15 +306,23 @@ export function WorkspaceIntegrations({
       {catalog.map((item) => {
         const installed = item.installation !== null;
         const connected = item.installation?.status === "connected";
-        const canConnectGoogleDrive = item.pluginKey === "google-drive" && installed && !connected;
+        const canConnectCloudDrive =
+          (item.pluginKey === "google-drive" || item.pluginKey === "yandex-disk") &&
+          installed &&
+          !connected;
         const canConnectTelegram = item.pluginKey === "telegram" && installed;
         const canConfigureGoogleDrive = item.pluginKey === "google-drive" && connected;
+        const canConfigureYandexDisk = item.pluginKey === "yandex-disk" && connected;
         const telegramConnections =
           item.pluginKey === "telegram"
             ? item.connections.filter((connection) => connection.status === "connected")
             : [];
         const rootFolder =
-          item.installation === null ? null : readGoogleDriveRootFolderConfig(item.installation);
+          item.installation === null
+            ? null
+            : item.pluginKey === "yandex-disk"
+              ? readYandexDiskRootFolderConfig(item.installation)
+              : readGoogleDriveRootFolderConfig(item.installation);
         const health = item.health;
         const subscriptionIssues =
           health === null ? 0 : health.subscriptions.expiredCount + health.subscriptions.errorCount;
@@ -309,7 +376,7 @@ export function WorkspaceIntegrations({
                     </Text>
                   </Flex>
                 )}
-                {canConfigureGoogleDrive && (
+                {(canConfigureGoogleDrive || canConfigureYandexDisk) && (
                   <Text color="gray" size="2">
                     {rootFolder === null
                       ? t("integrations.rootFolderMissing")
@@ -348,10 +415,10 @@ export function WorkspaceIntegrations({
                   </Flex>
                 )}
               </Flex>
-              {canConnectGoogleDrive ? (
+              {canConnectCloudDrive ? (
                 <Button
                   disabled={pendingPluginKey !== null}
-                  onClick={() => void connectGoogleDrive(item)}
+                  onClick={() => void connectCloudDrive(item)}
                   size="1"
                   type="button"
                 >
@@ -387,6 +454,31 @@ export function WorkspaceIntegrations({
                       ? t("integrations.selectRootFolder")
                       : t("integrations.changeRootFolder")}
                 </Button>
+              ) : canConfigureYandexDisk ? (
+                <Flex align="center" gap="2" wrap="wrap">
+                  <TextField.Root
+                    aria-label={t("integrations.yandexFolderPath")}
+                    disabled={pendingPluginKey !== null}
+                    placeholder={t("integrations.yandexRootPathPlaceholder")}
+                    size="1"
+                    value={yandexRootPath}
+                    onChange={(event) => setYandexRootPath(event.target.value)}
+                  />
+                  <Button
+                    disabled={pendingPluginKey !== null || yandexRootPath.trim().length === 0}
+                    onClick={() => void configureYandexDiskRoot(item)}
+                    size="1"
+                    type="button"
+                    variant="soft"
+                  >
+                    <FolderOpen size={14} />
+                    {pending
+                      ? t("integrations.savingFolder")
+                      : rootFolder === null
+                        ? t("integrations.selectRootFolder")
+                        : t("integrations.changeRootFolder")}
+                  </Button>
+                </Flex>
               ) : installed && !connected ? (
                 <Button
                   color="red"

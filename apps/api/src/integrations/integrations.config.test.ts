@@ -7,22 +7,24 @@ import {
 
 test("integration secret encryption key is optional until a connection stores credentials", () => {
   assert.deepEqual(parseIntegrationsConfig({}), {
-    attachmentContent: { maxBytes: 26_214_400, storageRoot: null },
+    attachmentContent: { storageRoot: null },
     googleDrive: null,
     googleDrivePicker: null,
     googleDriveWebhook: null,
     secretEncryptionKey: null,
+    yandexDisk: null,
   });
 });
 
 test("integration secret encryption key requires exactly 32 canonical base64 bytes", () => {
   const encoded = Buffer.alloc(32, 7).toString("base64");
   assert.deepEqual(parseIntegrationsConfig({ INTEGRATION_SECRET_ENCRYPTION_KEY: encoded }), {
-    attachmentContent: { maxBytes: 26_214_400, storageRoot: null },
+    attachmentContent: { storageRoot: null },
     googleDrive: null,
     googleDrivePicker: null,
     googleDriveWebhook: null,
     secretEncryptionKey: Buffer.alloc(32, 7),
+    yandexDisk: null,
   });
   assert.throws(
     () => parseIntegrationsConfig({ INTEGRATION_SECRET_ENCRYPTION_KEY: "not-base64" }),
@@ -36,11 +38,12 @@ test("integration secret encryption key requires exactly 32 canonical base64 byt
 
 test("attachment content storage requires a bounded absolute root", () => {
   assert.deepEqual(parseIntegrationsConfig({ ATTACHMENT_STORAGE_ROOT: "/srv/task/files" }), {
-    attachmentContent: { maxBytes: 26_214_400, storageRoot: "/srv/task/files" },
+    attachmentContent: { storageRoot: "/srv/task/files" },
     googleDrive: null,
     googleDrivePicker: null,
     googleDriveWebhook: null,
     secretEncryptionKey: null,
+    yandexDisk: null,
   });
   assert.throws(
     () => parseIntegrationsConfig({ ATTACHMENT_STORAGE_ROOT: "relative/files" }),
@@ -114,5 +117,31 @@ test("Google Drive OAuth configuration is complete and uses a safe redirect URI"
     () =>
       parseIntegrationsConfig({ ...environment, GOOGLE_DRIVE_REDIRECT_URI: "http://example.com" }),
     /\[redacted\]/u,
+  );
+});
+
+test("Yandex Disk OAuth configuration is complete and uses a safe redirect URI", () => {
+  const environment = {
+    YANDEX_DISK_CLIENT_ID: "client-id",
+    YANDEX_DISK_CLIENT_SECRET: "client-secret",
+    YANDEX_DISK_REDIRECT_URI: "https://app.example.com/api/integrations/yandex-disk/callback",
+  };
+  assert.deepEqual(parseIntegrationsConfig(environment).yandexDisk, {
+    clientId: "client-id",
+    clientSecret: "client-secret",
+    redirectUri: "https://app.example.com/api/integrations/yandex-disk/callback",
+  });
+  assert.throws(
+    () =>
+      parseIntegrationsConfig({
+        YANDEX_DISK_CLIENT_ID: environment.YANDEX_DISK_CLIENT_ID,
+        YANDEX_DISK_REDIRECT_URI: environment.YANDEX_DISK_REDIRECT_URI,
+      }),
+    /YANDEX_DISK_CLIENT_SECRET/u,
+  );
+  assert.throws(
+    () =>
+      parseIntegrationsConfig({ ...environment, YANDEX_DISK_REDIRECT_URI: "http://example.com" }),
+    InvalidIntegrationsEnvironmentError,
   );
 });

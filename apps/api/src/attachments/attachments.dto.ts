@@ -1,6 +1,5 @@
-import { BadRequestException, PayloadTooLargeException, type PipeTransform } from "@nestjs/common";
+import { BadRequestException, type PipeTransform } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { attachmentContentMaxBytes } from "../integrations/integrations.config.js";
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
@@ -76,11 +75,6 @@ export class ParseTaskFileUploadBodyPipe implements PipeTransform<unknown, Uint8
     }
     if (value.byteLength === 0) {
       throw new BadRequestException("Task file upload must not be empty.");
-    }
-    if (value.byteLength > attachmentContentMaxBytes) {
-      throw new PayloadTooLargeException(
-        `Task file upload must not exceed ${attachmentContentMaxBytes} bytes.`,
-      );
     }
     return value;
   }
@@ -165,8 +159,8 @@ export class TaskAttachmentDto implements TaskAttachment {
   @ApiProperty({ nullable: true, type: String })
   readonly providerResourceId: string | null;
 
-  @ApiProperty({ enum: ["google_drive", "native"] })
-  readonly source: "google_drive" | "native";
+  @ApiProperty({ enum: ["google_drive", "native", "yandex_disk"] })
+  readonly source: "google_drive" | "native" | "yandex_disk";
 
   constructor(attachment: TaskAttachment) {
     this.id = attachment.id;

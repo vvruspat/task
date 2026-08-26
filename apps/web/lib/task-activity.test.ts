@@ -57,6 +57,30 @@ test("formats Google Drive file activity from provider metadata", () => {
   );
 });
 
+test("formats Yandex Disk file activity from provider metadata", () => {
+  assert.equal(
+    formatTaskActivity(
+      event("integration.yandex_disk.resource_added", { resourceName: "brief.pdf" }),
+      context,
+    ),
+    "добавил(а) «brief.pdf» через Яндекс Диск",
+  );
+  assert.equal(
+    formatTaskActivity(
+      event("integration.yandex_disk.resource_changed", { resourceName: "brief.pdf" }),
+      context,
+    ),
+    "обновил(а) «brief.pdf» в Яндекс Диске",
+  );
+  assert.equal(
+    formatTaskActivity(
+      event("integration.yandex_disk.resource_removed", { resourceName: "brief.pdf" }),
+      context,
+    ),
+    "удалил(а) «brief.pdf» из Яндекс Диска",
+  );
+});
+
 test("formats relative activity time", () => {
   assert.equal(
     formatActivityTime("2026-07-19T11:59:00.000Z", "ru", new Date("2026-07-19T12:00:00.000Z")),

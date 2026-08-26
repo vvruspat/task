@@ -41,6 +41,7 @@ import { MarkdownDescriptionEditor } from "./markdown-description-editor";
 import { TaskActivity } from "./task-activity";
 import { TaskFiles } from "./task-files";
 import { TaskStatusIndicator } from "./task-status-indicator";
+import { YandexDiskFolderAssignmentControl } from "./yandex-disk-folder-assignment";
 
 type EditableTextField = "due-date" | "title";
 
@@ -444,6 +445,12 @@ export function TaskDetailsContent({
             {data !== null && canManageWorkspaceSettings(data.currentMember.role) && (
               <Property icon={<FolderOpen size={15} />} label={t("integrations.taskFolder")}>
                 <GoogleDriveFolderAssignmentControl
+                  compact
+                  targetId={currentTask.id}
+                  targetType="task"
+                  workspaceId={currentTask.workspaceId}
+                />
+                <YandexDiskFolderAssignmentControl
                   compact
                   targetId={currentTask.id}
                   targetType="task"

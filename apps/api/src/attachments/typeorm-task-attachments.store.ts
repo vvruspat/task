@@ -315,7 +315,7 @@ export class TypeOrmTaskAttachmentsStore implements TaskAttachmentsStore {
   ): Promise<TaskAttachment[]> {
     const integrations = await dataSource.getRepository(WorkspaceIntegrationEntity).find({
       select: { id: true },
-      where: { pluginKey: "google-drive", workspaceId },
+      where: { pluginKey: In(["google-drive", "yandex-disk"]), workspaceId },
     });
     if (integrations.length === 0) return [];
     const connections = await dataSource.getRepository(IntegrationConnectionEntity).find({
@@ -335,7 +335,7 @@ export class TypeOrmTaskAttachmentsStore implements TaskAttachmentsStore {
     const resources = await dataSource.getRepository(IntegrationExternalResourceEntity).findBy({
       connectionId: In(connections.map((connection) => connection.id)),
       id: In(discoveredLinks.map((link) => link.externalResourceId)),
-      resourceKind: "google-drive.file",
+      resourceKind: In(["google-drive.file", "yandex-disk.file"]),
       status: "active",
     });
     const linkByResourceId = new Map(
@@ -396,7 +396,8 @@ function toExternalTaskAttachment(
   workspaceId: string,
   taskId: string,
 ): TaskAttachment {
-  if (link === undefined) throw new Error(`Google Drive file ${resource.id} has no task link.`);
+  if (link === undefined) throw new Error(`External file ${resource.id} has no task link.`);
+  const sizeBytes = readExternalSizeBytes(resource.metadata["sizeBytes"]);
   return {
     createdAt: resource.createdAt,
     createdByUserId: link.createdByUserId,
@@ -406,8 +407,8 @@ function toExternalTaskAttachment(
     mimeType: resource.mimeType,
     modifiedAt: resource.modifiedAt,
     providerResourceId: resource.providerResourceId,
-    sizeBytes: null,
-    source: "google_drive",
+    sizeBytes,
+    source: resource.resourceKind === "yandex-disk.file" ? "yandex_disk" : "google_drive",
     storageKey: null,
     targetId: taskId,
     targetType: "task",
@@ -416,4 +417,11 @@ function toExternalTaskAttachment(
     url: resource.webUrl,
     workspaceId,
   };
+}
+
+function readExternalSizeBytes(value: unknown): string | null {
+  if (typeof value === "string" && /^\d+$/u.test(value)) return value;
+  return typeof value === "number" && Number.isSafeInteger(value) && value >= 0
+    ? String(value)
+    : null;
 }

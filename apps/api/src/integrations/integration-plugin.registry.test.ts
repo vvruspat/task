@@ -7,6 +7,11 @@ import {
   createGoogleDriveIntegrationPlugin,
   googleDriveIntegrationPlugin,
 } from "./plugins/google-drive.integration-plugin.js";
+import {
+  createYandexDiskIntegrationPlugin,
+  hasRequiredYandexDiskScopes,
+  yandexDiskRequiredDataScopes,
+} from "./plugins/yandex-disk.integration-plugin.js";
 
 test("integration registry exposes first-party plugins in display order", () => {
   const registry = new IntegrationPluginRegistry([
@@ -117,6 +122,37 @@ test("Google Drive plugin factory binds its domain-event handler", async () => {
       idempotencyKey: "event-id:installation-id",
       installationId: "installation-id",
       pluginKey: "google-drive",
+      pluginVersion: "0.1.0",
+    },
+  );
+  assert.deepEqual(handled, ["event-id"]);
+});
+
+test("Yandex Disk plugin declares required scopes and binds its domain-event handler", async () => {
+  assert.equal(hasRequiredYandexDiskScopes(yandexDiskRequiredDataScopes), true);
+  assert.equal(hasRequiredYandexDiskScopes(["cloud_api:disk.read"]), false);
+  const handled: string[] = [];
+  const plugin = createYandexDiskIntegrationPlugin(async (event) => {
+    handled.push(event.id);
+  });
+  const handler = plugin.handlers?.handleDomainEvent;
+  assert.notEqual(handler, undefined);
+  if (handler === undefined) return;
+  await handler(
+    {
+      actorUserId: null,
+      entity: { id: "attachment-id", type: "attachment" },
+      id: "event-id",
+      name: "attachment.created.v1",
+      occurredAt: "2026-07-22T12:00:00.000Z",
+      payload: {},
+      workspaceId: "workspace-id",
+    },
+    {
+      attempt: 1,
+      idempotencyKey: "event-id:installation-id",
+      installationId: "installation-id",
+      pluginKey: "yandex-disk",
       pluginVersion: "0.1.0",
     },
   );

@@ -60,13 +60,14 @@ test("Drive renewal keeps the old channel while a reserved replacement is still 
     },
   };
   const config: IntegrationsConfig = {
-    attachmentContent: { maxBytes: 1024, storageRoot: null },
+    attachmentContent: { storageRoot: null },
     googleDrive: null,
     googleDrivePicker: null,
     googleDriveWebhook: {
       callbackUrl: "https://task.example.com/api/integrations/webhooks/google-drive",
     },
     secretEncryptionKey: null,
+    yandexDisk: null,
   };
   const service = new GoogleDriveWatchService(
     {
@@ -174,13 +175,14 @@ test("Drive assignment starts a watch from the cursor captured before the initia
     {
       getConfig(): IntegrationsConfig {
         return {
-          attachmentContent: { maxBytes: 1024, storageRoot: null },
+          attachmentContent: { storageRoot: null },
           googleDrive: null,
           googleDrivePicker: null,
           googleDriveWebhook: {
             callbackUrl: "https://task.example.com/api/integrations/webhooks/google-drive",
           },
           secretEncryptionKey: null,
+          yandexDisk: null,
         };
       },
     },

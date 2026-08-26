@@ -7,8 +7,6 @@ import type { DragEvent, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useI18n } from "../lib/i18n/i18n";
 
-const maxUploadBytes = 25 * 1_024 * 1_024;
-
 export function TaskFiles({ task }: Readonly<{ task: TaskSummary }>): ReactNode {
   const { t } = useI18n();
   const [files, setFiles] = useState<TaskAttachment[]>([]);
@@ -50,11 +48,6 @@ export function TaskFiles({ task }: Readonly<{ task: TaskSummary }>): ReactNode 
     async (selectedFiles: FileList | readonly File[]): Promise<void> => {
       const uploadQueue = Array.from(selectedFiles);
       if (uploadQueue.length === 0 || uploading) return;
-      const oversized = uploadQueue.find((file) => file.size > maxUploadBytes);
-      if (oversized !== undefined) {
-        setError(t("files.tooLarge", { name: oversized.name }));
-        return;
-      }
       setUploading(true);
       setError(null);
       let uploadFailure: string | null = null;
@@ -147,9 +140,6 @@ export function TaskFiles({ task }: Readonly<{ task: TaskSummary }>): ReactNode 
                     ? t("files.dropNow")
                     : t("files.dropHint")}
               </Text>
-              <Text color="gray" size="1">
-                {t("files.sizeLimit")}
-              </Text>
             </Flex>
           </Flex>
           <Button
@@ -199,6 +189,9 @@ export function TaskFiles({ task }: Readonly<{ task: TaskSummary }>): ReactNode 
                 {file.source === "google_drive" && (
                   <Badge color="blue">{t("files.googleDrive")}</Badge>
                 )}
+                {file.source === "yandex_disk" && (
+                  <Badge color="red">{t("files.yandexDisk")}</Badge>
+                )}
               </Flex>
             );
           })}
@@ -247,7 +240,9 @@ function isTaskAttachment(value: unknown): value is TaskAttachment {
     isNullableString(value["externalResourceId"]) &&
     isNullableString(value["modifiedAt"]) &&
     isNullableString(value["providerResourceId"]) &&
-    (value["source"] === "native" || value["source"] === "google_drive") &&
+    (value["source"] === "native" ||
+      value["source"] === "google_drive" ||
+      value["source"] === "yandex_disk") &&
     typeof value["createdAt"] === "string"
   );
 }

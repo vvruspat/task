@@ -69,11 +69,6 @@ export class LocalAttachmentContentProvider implements AttachmentContentProvider
           );
         }
         assertExpectedSize(source, stats.size);
-        if (stats.size > BigInt(this.config.maxBytes)) {
-          throw new AttachmentContentUnavailableError(
-            `Attachment ${source.id} exceeds the ${this.config.maxBytes}-byte export limit.`,
-          );
-        }
         const bytes = await handle.readFile();
         return {
           bytes,

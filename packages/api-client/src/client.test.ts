@@ -312,6 +312,89 @@ test("createTaskApiClient reads and assigns project or task Google Drive folders
   );
 });
 
+test("createTaskApiClient connects Yandex Disk and manages folder paths", async () => {
+  const integrationId = "44444444-4444-4444-8444-444444444444";
+  const folder = {
+    assignmentSource: "selected",
+    externalResourceId: "55555555-5555-4555-8555-555555555555",
+    name: "Production files",
+    path: "disk:/Projects/Production files",
+    providerResourceId: "disk:/Projects/Production files",
+    targetId: taskId,
+    targetType: "task",
+    webUrl: "https://disk.yandex.ru/client/disk/Projects/Production%20files",
+  };
+  const root = {
+    externalResourceId: projectId,
+    name: "tAsk",
+    path: "disk:/tAsk",
+    providerResourceId: "disk:/tAsk",
+    webUrl: "https://disk.yandex.ru/client/disk/tAsk",
+  };
+  const fetcher = new RecordingFetch(
+    sequence([
+      { authorizationUrl: "https://oauth.yandex.com/authorize?state=state" },
+      { integrationId, pluginKey: "yandex-disk", status: "connected", workspaceId },
+      root,
+      { folder: null },
+      folder,
+    ]),
+  );
+  const client = createTaskApiClient({
+    baseUrl: "https://task.example",
+    fetch: fetcher.fetch,
+    trustedUserId,
+  });
+
+  await client.startYandexDiskOAuth({ integrationId, workspaceId });
+  await client.completeYandexDiskOAuth({ body: { code: "code", state: "state" } });
+  assert.deepEqual(
+    await client.selectYandexDiskRootFolder({
+      body: { path: root.path },
+      integrationId,
+      workspaceId,
+    }),
+    root,
+  );
+  assert.deepEqual(
+    await client.getYandexDiskFolderAssignment({
+      integrationId,
+      targetId: taskId,
+      targetType: "task",
+      workspaceId,
+    }),
+    { folder: null },
+  );
+  assert.deepEqual(
+    await client.selectYandexDiskFolder({
+      body: { path: folder.path },
+      integrationId,
+      targetId: taskId,
+      targetType: "task",
+      workspaceId,
+    }),
+    folder,
+  );
+
+  const folderPath = `https://task.example/workspaces/${workspaceId}/integrations/${integrationId}/yandex-disk/folders/task/${taskId}`;
+  assert.deepEqual(
+    fetcher.calls.map((call) => [call.url, call.init.method]),
+    [
+      [
+        `https://task.example/workspaces/${workspaceId}/integrations/${integrationId}/yandex-disk/connect`,
+        "POST",
+      ],
+      ["https://task.example/integrations/oauth/yandex-disk/callback", "POST"],
+      [
+        `https://task.example/workspaces/${workspaceId}/integrations/${integrationId}/yandex-disk/root-folder`,
+        "PUT",
+      ],
+      [folderPath, "GET"],
+      [folderPath, "PUT"],
+    ],
+  );
+});
+
 test("createTaskApiClient previews and completes Telegram browser connections", async () => {
   const token = "b".repeat(43);
   const workspace = { id: workspaceId, name: "Music", slug: "music" };

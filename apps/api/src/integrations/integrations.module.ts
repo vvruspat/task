@@ -41,6 +41,7 @@ import { IntegrationsController } from "./integrations.controller.js";
 import { IntegrationsService } from "./integrations.service.js";
 import type { WorkspaceIntegrationsStore } from "./integrations.store.js";
 import { createGoogleDriveIntegrationPlugin } from "./plugins/google-drive.integration-plugin.js";
+import { createYandexDiskIntegrationPlugin } from "./plugins/yandex-disk.integration-plugin.js";
 import { TelegramBrowserConnectConfigProvider } from "./telegram-browser-connect.config.js";
 import {
   TelegramBrowserConnectController,
@@ -56,6 +57,22 @@ import { TypeOrmIntegrationAgentToolsStore } from "./typeorm-integration-agent-t
 import { TypeOrmIntegrationMcpToolCallStore } from "./typeorm-integration-mcp-tool-call.store.js";
 import { TypeOrmIntegrationOutboxStore } from "./typeorm-integration-outbox.store.js";
 import { TypeOrmWorkspaceIntegrationsStore } from "./typeorm-workspace-integrations.store.js";
+import { TypeOrmYandexDiskAttachmentExportStore } from "./typeorm-yandex-disk-attachment-export.store.js";
+import { TypeOrmYandexDiskSyncStore } from "./typeorm-yandex-disk-sync.store.js";
+import { YandexDiskClient } from "./yandex-disk.client.js";
+import { YandexDiskAccessService } from "./yandex-disk-access.service.js";
+import { YandexDiskAttachmentExportService } from "./yandex-disk-attachment-export.service.js";
+import { YandexDiskFolderAssignmentService } from "./yandex-disk-folder-assignment.service.js";
+import { YandexDiskOAuthClient } from "./yandex-disk-oauth.client.js";
+import {
+  YandexDiskOAuthCallbackController,
+  YandexDiskOAuthController,
+} from "./yandex-disk-oauth.controller.js";
+import { YandexDiskOAuthService } from "./yandex-disk-oauth.service.js";
+import { YandexDiskRootService } from "./yandex-disk-root.service.js";
+import { YandexDiskSyncService } from "./yandex-disk-sync.service.js";
+import { YandexDiskSyncWorker } from "./yandex-disk-sync.worker.js";
+import { YandexDiskTaskFolderService } from "./yandex-disk-task-folder.service.js";
 
 const attachmentContentProvider: Provider<AttachmentContentProvider> = {
   provide: attachmentContentProviderToken,
@@ -72,6 +89,8 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
     googleDriveReferences: GoogleDriveReferenceService,
     googleDriveWatches: GoogleDriveWatchService,
     googleDriveAgentTools: GoogleDriveAgentToolProvider,
+    yandexDiskTaskFolders: YandexDiskTaskFolderService,
+    yandexDiskAttachmentExports: YandexDiskAttachmentExportService,
   ): IntegrationPluginRegistry => {
     const plugins: readonly IntegrationPlugin[] = [
       createGoogleDriveIntegrationPlugin(async (event, context) => {
@@ -80,6 +99,10 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
         await googleDriveReferences.handleDomainEvent(event, context);
         await googleDriveWatches.handleDomainEvent(event, context);
       }, googleDriveAgentTools),
+      createYandexDiskIntegrationPlugin(async (event, context) => {
+        await yandexDiskTaskFolders.handleDomainEvent(event, context);
+        await yandexDiskAttachmentExports.handleDomainEvent(event, context);
+      }),
       telegramIntegrationPlugin,
     ];
     return new IntegrationPluginRegistry(plugins);
@@ -90,6 +113,8 @@ const integrationPluginRegistryProvider: Provider<IntegrationPluginRegistry> = {
     GoogleDriveReferenceService,
     GoogleDriveWatchService,
     GoogleDriveAgentToolProvider,
+    YandexDiskTaskFolderService,
+    YandexDiskAttachmentExportService,
   ],
 };
 
@@ -108,6 +133,8 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     GoogleDriveOAuthCallbackController,
     GoogleDriveOAuthController,
     GoogleDriveWebhookController,
+    YandexDiskOAuthCallbackController,
+    YandexDiskOAuthController,
     IntegrationMcpToolsController,
     IntegrationsController,
     TelegramBrowserConnectController,
@@ -126,6 +153,8 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     TypeOrmGoogleDriveChangeStore,
     TypeOrmGoogleDriveWatchStore,
     TypeOrmGoogleDriveWebhookStore,
+    TypeOrmYandexDiskAttachmentExportStore,
+    TypeOrmYandexDiskSyncStore,
     IntegrationsConfigProvider,
     attachmentContentProvider,
     DatabaseIntegrationSecretProvider,
@@ -144,6 +173,16 @@ const integrationsServiceProvider: Provider<IntegrationsService> = {
     GoogleDriveWatchService,
     GoogleDriveWatchWorker,
     GoogleDriveWebhookService,
+    YandexDiskAccessService,
+    YandexDiskAttachmentExportService,
+    YandexDiskClient,
+    YandexDiskFolderAssignmentService,
+    YandexDiskOAuthClient,
+    YandexDiskOAuthService,
+    YandexDiskRootService,
+    YandexDiskSyncService,
+    YandexDiskSyncWorker,
+    YandexDiskTaskFolderService,
     IntegrationEventDispatcher,
     IntegrationAgentToolsService,
     IntegrationMcpToolsService,

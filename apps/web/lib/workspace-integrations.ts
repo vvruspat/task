@@ -7,6 +7,10 @@ import type {
   TelegramConnectToken,
   WorkspaceIntegration,
   WorkspaceIntegrationConnection,
+  YandexDiskAuthorizationStart,
+  YandexDiskFolderAssignment,
+  YandexDiskFolderAssignmentResponse,
+  YandexDiskRootFolder,
 } from "@task/api-client";
 
 const authKinds = new Set(["app_installation", "bot_token", "oauth2"]);
@@ -93,6 +97,43 @@ export function isGoogleDriveFolderAssignmentResponse(
   );
 }
 
+export function isYandexDiskAuthorizationStart(
+  value: unknown,
+): value is YandexDiskAuthorizationStart {
+  return isObject(value) && hasNonEmptyString(value, "authorizationUrl");
+}
+
+export function isYandexDiskRootFolder(value: unknown): value is YandexDiskRootFolder {
+  return (
+    isObject(value) &&
+    hasString(value, "externalResourceId") &&
+    hasNonEmptyString(value, "name") &&
+    hasNonEmptyString(value, "path") &&
+    hasNonEmptyString(value, "providerResourceId") &&
+    hasNullableString(value, "webUrl")
+  );
+}
+
+export function isYandexDiskFolderAssignment(value: unknown): value is YandexDiskFolderAssignment {
+  if (!isObject(value)) return false;
+  const assignmentSource = value["assignmentSource"];
+  const targetType = value["targetType"];
+  return (
+    isYandexDiskRootFolder(value) &&
+    (assignmentSource === "managed" || assignmentSource === "selected") &&
+    hasString(value, "targetId") &&
+    (targetType === "project" || targetType === "task")
+  );
+}
+
+export function isYandexDiskFolderAssignmentResponse(
+  value: unknown,
+): value is YandexDiskFolderAssignmentResponse {
+  return (
+    isObject(value) && (value["folder"] === null || isYandexDiskFolderAssignment(value["folder"]))
+  );
+}
+
 export function isTelegramConnectToken(value: unknown): value is TelegramConnectToken {
   if (!isObject(value)) return false;
   const expiresAt = value["expiresAt"];
@@ -108,6 +149,13 @@ export function readGoogleDriveRootFolderConfig(
 ): GoogleDriveRootFolder | null {
   const rootFolder = installation.config["rootFolder"];
   return isGoogleDriveRootFolder(rootFolder) ? rootFolder : null;
+}
+
+export function readYandexDiskRootFolderConfig(
+  installation: WorkspaceIntegration,
+): YandexDiskRootFolder | null {
+  const rootFolder = installation.config["rootFolder"];
+  return isYandexDiskRootFolder(rootFolder) ? rootFolder : null;
 }
 
 function isIntegrationCatalogItem(value: unknown): value is IntegrationCatalogItem {

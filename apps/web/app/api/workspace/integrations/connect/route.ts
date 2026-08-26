@@ -12,23 +12,32 @@ export async function POST(request: Request): Promise<NextResponse> {
   const result = createServerTaskApi(request);
   if (result.response !== undefined) return result.response;
   try {
-    return NextResponse.json(
-      await result.api.startGoogleDriveOAuth({
-        integrationId: input.integrationId,
-        workspaceId: input.workspaceId,
-      }),
-      { status: 201 },
-    );
+    const response =
+      input.pluginKey === "yandex-disk"
+        ? await result.api.startYandexDiskOAuth({
+            integrationId: input.integrationId,
+            workspaceId: input.workspaceId,
+          })
+        : await result.api.startGoogleDriveOAuth({
+            integrationId: input.integrationId,
+            workspaceId: input.workspaceId,
+          });
+    return NextResponse.json(response, { status: 201 });
   } catch (error: unknown) {
-    return taskApiErrorResponse(error, "Unable to connect Google Drive.");
+    return taskApiErrorResponse(error, "Unable to connect the cloud drive.");
   }
 }
 
-function isConnectInput(value: unknown): value is { integrationId: string; workspaceId: string } {
+function isConnectInput(value: unknown): value is {
+  integrationId: string;
+  pluginKey: "google-drive" | "yandex-disk";
+  workspaceId: string;
+} {
   return (
     isRecord(value) &&
     hasNonEmptyString(value, "workspaceId") &&
-    hasNonEmptyString(value, "integrationId")
+    hasNonEmptyString(value, "integrationId") &&
+    (value["pluginKey"] === "google-drive" || value["pluginKey"] === "yandex-disk")
   );
 }
 

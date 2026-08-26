@@ -500,6 +500,75 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/integrations/oauth/yandex-disk/callback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Complete a Yandex Disk OAuth connection */
+    post: operations["YandexDiskOAuthCallbackController_complete"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/yandex-disk/connect": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Start a workspace Yandex Disk OAuth connection */
+    post: operations["YandexDiskOAuthController_start"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/yandex-disk/root-folder": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Select the managed Yandex Disk workspace root folder */
+    put: operations["YandexDiskOAuthController_selectRootFolder"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/workspaces/{workspaceId}/integrations/{integrationId}/yandex-disk/folders/{targetType}/{targetId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the Yandex Disk folder assigned to a project or task */
+    get: operations["YandexDiskOAuthController_getFolderAssignment"];
+    /** Assign a Yandex Disk folder to a project or task */
+    put: operations["YandexDiskOAuthController_selectFolder"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/workspaces/{workspaceId}/integration-tools": {
     parameters: {
       query?: never;
@@ -1992,6 +2061,59 @@ export interface components {
     SelectGoogleDriveFolderDto: {
       folderId: string;
     };
+    CompleteYandexDiskOAuthDto: {
+      code: string;
+      state: string;
+    };
+    YandexDiskOAuthCompletionDto: {
+      /** Format: uuid */
+      integrationId: string;
+      /** @enum {string} */
+      pluginKey: "yandex-disk";
+      /** @enum {string} */
+      status: "connected";
+      /** Format: uuid */
+      workspaceId: string;
+    };
+    YandexDiskAuthorizationStartDto: {
+      /** Format: uri */
+      authorizationUrl: string;
+    };
+    SelectYandexDiskRootFolderDto: {
+      /** @example disk:/tAsk */
+      path: string;
+    };
+    YandexDiskRootFolderDto: {
+      /** Format: uuid */
+      externalResourceId: string;
+      name: string;
+      path: string;
+      providerResourceId: string;
+      /** Format: uri */
+      webUrl: string | null;
+    };
+    YandexDiskFolderAssignmentDto: {
+      /** @enum {string} */
+      assignmentSource: "managed" | "selected";
+      /** Format: uuid */
+      externalResourceId: string;
+      name: string;
+      path: string;
+      providerResourceId: string;
+      /** Format: uuid */
+      targetId: string;
+      /** @enum {string} */
+      targetType: "project" | "task";
+      /** Format: uri */
+      webUrl: string | null;
+    };
+    YandexDiskFolderAssignmentResponseDto: {
+      folder: components["schemas"]["YandexDiskFolderAssignmentDto"] | null;
+    };
+    SelectYandexDiskFolderDto: {
+      /** @example disk:/Projects/Acme */
+      path: string;
+    };
     IntegrationMcpToolDefinitionDto: {
       name: string;
       description: string;
@@ -2768,7 +2890,7 @@ export interface components {
       modifiedAt: string | null;
       providerResourceId: string | null;
       /** @enum {string} */
-      source: "google_drive" | "native";
+      source: "google_drive" | "native" | "yandex_disk";
     };
     CreateTaskLinkAttachmentDto: {
       /** @example https://example.com/bass-take */
@@ -4506,6 +4628,277 @@ export interface operations {
       };
       /** @description The change feed could not be processed. */
       503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  YandexDiskOAuthCallbackController_complete: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CompleteYandexDiskOAuthDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["YandexDiskOAuthCompletionDto"];
+        };
+      };
+      /** @description OAuth state or callback payload is invalid. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description The initiating user no longer manages the workspace. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex rejected the authorization. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  YandexDiskOAuthController_start: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["YandexDiskAuthorizationStartDto"];
+        };
+      };
+      /** @description Current user cannot connect integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk workspace integration was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk is already connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk OAuth or encryption is not configured. */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  YandexDiskOAuthController_selectRootFolder: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SelectYandexDiskRootFolderDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["YandexDiskRootFolderDto"];
+        };
+      };
+      /** @description Selected Yandex Disk path is not a folder. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot configure integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk workspace integration was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk is not connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk is unavailable. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  YandexDiskOAuthController_getFolderAssignment: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+        targetType: "project" | "task";
+        targetId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["YandexDiskFolderAssignmentResponseDto"];
+        };
+      };
+      /** @description Current user cannot configure integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk integration or target was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk is not connected. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  YandexDiskOAuthController_selectFolder: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Temporary trusted user context header until AuthModule owns request identity. Not an authentication mechanism. */
+        "x-task-user-id": string;
+      };
+      path: {
+        workspaceId: string;
+        integrationId: string;
+        targetType: "project" | "task";
+        targetId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SelectYandexDiskFolderDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["YandexDiskFolderAssignmentDto"];
+        };
+      };
+      /** @description Selected Yandex Disk path is not a folder. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Current user cannot configure integrations. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk integration or target was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Yandex Disk is not connected or the folder is already assigned. */
+      409: {
         headers: {
           [name: string]: unknown;
         };
@@ -6942,13 +7335,6 @@ export interface operations {
       };
       /** @description Workspace, project, or task is missing or not visible. */
       404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description File exceeds the 25 MB upload limit. */
-      413: {
         headers: {
           [name: string]: unknown;
         };
