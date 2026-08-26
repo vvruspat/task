@@ -7,13 +7,12 @@ import { AppModule } from "./app.module.js";
 import { registerTaskFileUploadBodyParser } from "./attachments/task-file-upload-body-parser.js";
 import { loadApiConfig } from "./config.js";
 import { configureCors } from "./cors.js";
-import { attachmentContentMaxBytes } from "./integrations/integrations.config.js";
 import { createOpenApiDocument } from "./openapi.js";
 
 async function bootstrap(): Promise<void> {
   const config = loadApiConfig();
   const adapter = new FastifyAdapter();
-  registerTaskFileUploadBodyParser(adapter, attachmentContentMaxBytes);
+  registerTaskFileUploadBodyParser(adapter);
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter);
   configureCors(app);
   const document = createOpenApiDocument(app);

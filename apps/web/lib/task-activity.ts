@@ -70,6 +70,26 @@ export function formatTaskActivity(event: TaskActivityEvent, context: TaskActivi
       name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
     });
   }
+  if (event.eventType === "integration.yandex_disk.folder_assigned") {
+    return context.t("activity.event.yandexFolderAssigned", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
+  if (event.eventType === "integration.yandex_disk.resource_added") {
+    return context.t("activity.event.yandexFileAdded", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
+  if (event.eventType === "integration.yandex_disk.resource_changed") {
+    return context.t("activity.event.yandexFileChanged", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
+  if (event.eventType === "integration.yandex_disk.resource_removed") {
+    return context.t("activity.event.yandexFileRemoved", {
+      name: readString(event.payload, "resourceName") ?? context.t("files.untitled"),
+    });
+  }
   return context.t("activity.event.changed");
 }
 

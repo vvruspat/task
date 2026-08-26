@@ -8,7 +8,12 @@ import {
   isIntegrationCatalog,
   isTelegramConnectToken,
   isWorkspaceIntegration,
+  isYandexDiskAuthorizationStart,
+  isYandexDiskFolderAssignment,
+  isYandexDiskFolderAssignmentResponse,
+  isYandexDiskRootFolder,
   readGoogleDriveRootFolderConfig,
+  readYandexDiskRootFolderConfig,
 } from "./workspace-integrations.ts";
 
 const integration = {
@@ -171,4 +176,40 @@ test("Google Drive Picker and root folder boundaries reject malformed responses"
     throw new Error("Expected a valid configured workspace integration.");
   }
   assert.deepEqual(readGoogleDriveRootFolderConfig(configuredIntegration), rootFolder);
+});
+
+test("Yandex Disk authorization and folder boundaries reject malformed responses", () => {
+  assert.equal(
+    isYandexDiskAuthorizationStart({ authorizationUrl: "https://oauth.yandex.ru/authorize" }),
+    true,
+  );
+  assert.equal(isYandexDiskAuthorizationStart({ authorizationUrl: "" }), false);
+  const rootFolder = {
+    externalResourceId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    name: "tAsk workspace",
+    path: "disk:/tAsk workspace",
+    providerResourceId: "disk:/tAsk workspace",
+    webUrl: "https://disk.yandex.ru/client/disk/tAsk%20workspace",
+  };
+  assert.equal(isYandexDiskRootFolder(rootFolder), true);
+  assert.equal(isYandexDiskRootFolder({ ...rootFolder, path: "" }), false);
+  const assignment = {
+    ...rootFolder,
+    assignmentSource: "managed",
+    targetId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    targetType: "project",
+  };
+  assert.equal(isYandexDiskFolderAssignment(assignment), true);
+  assert.equal(isYandexDiskFolderAssignmentResponse({ folder: assignment }), true);
+  assert.equal(isYandexDiskFolderAssignmentResponse({ folder: null }), true);
+  const configuredIntegration: unknown = {
+    ...integration,
+    config: { rootFolder },
+    pluginKey: "yandex-disk",
+  };
+  assert.equal(isWorkspaceIntegration(configuredIntegration), true);
+  if (!isWorkspaceIntegration(configuredIntegration)) {
+    throw new Error("Expected a valid configured Yandex Disk integration.");
+  }
+  assert.deepEqual(readYandexDiskRootFolderConfig(configuredIntegration), rootFolder);
 });

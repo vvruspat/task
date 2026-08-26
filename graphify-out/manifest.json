@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/index.ts": {
-    "mtime": 1786546131.6067758,
-    "ast_hash": "85a1a2d40bca63516fe184c12347ec55",
+    "mtime": 1787774475.0787432,
+    "ast_hash": "85825e2e3ee002ff566a4fcb1bc3146c",
     "semantic_hash": ""
   },
   "packages/api-client/tsconfig.json": {
@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1786546550.147786,
-    "ast_hash": "054f1898a50b258a886c36aa4ff77660",
+    "mtime": 1787780119.516715,
+    "ast_hash": "bf20ddebe601ff6c8844476e148a04f1",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/main.ts": {
-    "mtime": 1786545613.1483793,
-    "ast_hash": "52ba3236f793f6b1bbc9c206b2b949c1",
+    "mtime": 1787780039.6259377,
+    "ast_hash": "21c4ad6c27aef2bb5a145133a6454e5b",
     "semantic_hash": ""
   },
   "apps/api/src/openapi.ts": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1786546550.85048,
-    "ast_hash": "c082abd3b7553f4f761baabc79cc5c6b",
+    "mtime": 1787780120.103198,
+    "ast_hash": "ecd56d223c4e90720512f980343b45b2",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
@@ -725,23 +725,23 @@
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.contracts.ts": {
-    "mtime": 1786545677.4790623,
-    "ast_hash": "793847c8e7f1db0add163016e6d05230",
+    "mtime": 1787774131.1809254,
+    "ast_hash": "32389ee356e9d9b5d1d8b758c618885d",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.controller.test.ts": {
-    "mtime": 1786546539.9398763,
-    "ast_hash": "76bd5ac15ba4786f79a3873521902dae",
+    "mtime": 1787780070.7434652,
+    "ast_hash": "28a984880457ad215d07501d9c48eed6",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.controller.ts": {
-    "mtime": 1786546309.3970761,
-    "ast_hash": "a36a7e643ef66ed97aa00e939abf8769",
+    "mtime": 1787780039.6274974,
+    "ast_hash": "59a30b49530db63ca7e2c49eadde0a88",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.dto.ts": {
-    "mtime": 1786546545.102923,
-    "ast_hash": "652e762a368f5584e3c9d451c082685d",
+    "mtime": 1787780039.6269422,
+    "ast_hash": "acb389150e1a2309b320ffc444a380a1",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/attachments.module.ts": {
@@ -765,8 +765,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/attachments/typeorm-task-attachments.store.ts": {
-    "mtime": 1786546026.685415,
-    "ast_hash": "d85591ebb11d0a885eeaef79eefb4958",
+    "mtime": 1787774131.1817276,
+    "ast_hash": "0f5b09088ecbf2ee73c6dc35273fef66",
     "semantic_hash": ""
   },
   "apps/api/src/statuses/statuses.contracts.ts": {
@@ -1190,13 +1190,13 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/client.test.ts": {
-    "mtime": 1786546081.3856435,
-    "ast_hash": "6b8be9ce06af46e870625b2c56b02fed",
+    "mtime": 1787774475.1120915,
+    "ast_hash": "61ec194ed8c41d698ab738aa4ddc64b4",
     "semantic_hash": ""
   },
   "packages/api-client/src/client.ts": {
-    "mtime": 1786545964.770697,
-    "ast_hash": "29769402c7044a9a789b88c637623297",
+    "mtime": 1787774475.12866,
+    "ast_hash": "785de3c932fb522230a72dcc06578e21",
     "semantic_hash": ""
   },
   "apps/api/src/agent/agent-runs.controller.ts": {
@@ -1625,8 +1625,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/workspace-view.tsx": {
-    "mtime": 1786480250.454677,
-    "ast_hash": "6b5eecaa4bff8664cf2ba2648ff66e4b",
+    "mtime": 1787774475.0992167,
+    "ast_hash": "932f8f44aaa42bab28b401b2b63fd893",
     "semantic_hash": ""
   },
   "apps/web/next-env.d.ts": {
@@ -1965,8 +1965,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/task-details-content.tsx": {
-    "mtime": 1786480250.4625802,
-    "ast_hash": "dcbc115e915e7a313f1676e332574e4c",
+    "mtime": 1787774475.1062572,
+    "ast_hash": "a5308e67649c4ff6c26196f8aa64cc67",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783296960000-add-workspace-description.ts": {
@@ -2050,8 +2050,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/task-activity.tsx": {
-    "mtime": 1786480148.2712145,
-    "ast_hash": "671a2feed5929b63fd2ce6fdbe324da1",
+    "mtime": 1787774145.3410013,
+    "ast_hash": "1f268f918c9e5a031659e66552029cfa",
     "semantic_hash": ""
   },
   "apps/web/lib/server-task-api.ts": {
@@ -2060,13 +2060,13 @@
     "semantic_hash": ""
   },
   "apps/web/lib/task-activity.test.ts": {
-    "mtime": 1786481065.7570727,
-    "ast_hash": "dea569d1b91e01f323c83451525e3b35",
+    "mtime": 1787774590.629261,
+    "ast_hash": "03eda2b51b191095b5c8a92912154b6f",
     "semantic_hash": ""
   },
   "apps/web/lib/task-activity.ts": {
-    "mtime": 1786480148.2705066,
-    "ast_hash": "ebff1053199bf1447e8d07033d382f57",
+    "mtime": 1787774145.3404245,
+    "ast_hash": "0b3bdd829dff3da7cb5d172483a4b435",
     "semantic_hash": ""
   },
   "apps/api/src/persistence/migrations/1783297080000-add-comment-replies-and-mentions.ts": {
@@ -2565,8 +2565,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/messages.ts": {
-    "mtime": 1786545937.9601657,
-    "ast_hash": "c73713de858bbd3831bde024d2114573",
+    "mtime": 1787780039.6288543,
+    "ast_hash": "408901a68d5752a65e473cf64af5de69",
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/ui-copy.test.ts": {
@@ -2930,8 +2930,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-plugin.registry.test.ts": {
-    "mtime": 1784751507.8277977,
-    "ast_hash": "e38066a4580d3bfeba04ee132839db8d",
+    "mtime": 1787774590.629892,
+    "ast_hash": "8e499c1a0ae9159cabcf2b06fa7d96e4",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-plugin.registry.ts": {
@@ -2955,8 +2955,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.module.ts": {
-    "mtime": 1786545677.4811869,
-    "ast_hash": "20e91d97edfbaab097bcdd43d1509713",
+    "mtime": 1787774475.0819762,
+    "ast_hash": "067f1e74b15777435218e193d2510647",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.service.test.ts": {
@@ -3010,18 +3010,18 @@
     "semantic_hash": ""
   },
   "apps/web/components/workspace-integrations.tsx": {
-    "mtime": 1786172666.616672,
-    "ast_hash": "e96bd8d49465cfd4597fc366a0ec935d",
+    "mtime": 1787774668.7524683,
+    "ast_hash": "0dd9da1551d69f10ce77f3c2965645b0",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-integrations.test.ts": {
-    "mtime": 1786481065.7560375,
-    "ast_hash": "a90581945f7a26ac014eadef1c1ca56d",
+    "mtime": 1787774590.6284747,
+    "ast_hash": "a342e142f343915913e080be43f6e32b",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-integrations.ts": {
-    "mtime": 1786480250.4540908,
-    "ast_hash": "427ad15b1a551044719853a7a6a16d48",
+    "mtime": 1787774475.0958154,
+    "ast_hash": "d731f68af7870b2e58b83bc4be20d858",
     "semantic_hash": ""
   },
   "packages/integration-sdk/package.json": {
@@ -3130,13 +3130,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.config.test.ts": {
-    "mtime": 1784751507.828154,
-    "ast_hash": "27887ec3431a207c71410e39adec48a8",
+    "mtime": 1787780070.7416592,
+    "ast_hash": "ade93cbe23ddea773b305dd38d6a243e",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integrations.config.ts": {
-    "mtime": 1786545613.1474073,
-    "ast_hash": "8242a3b50cf3cd43a78079c1737ed05b",
+    "mtime": 1787780039.625004,
+    "ast_hash": "2e047c56ca0a1ff1a3a68ca2b34bd19f",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/typeorm-integration-outbox.store.test.ts": {
@@ -3195,8 +3195,8 @@
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/integrations/connect/route.ts": {
-    "mtime": 1784751507.8377862,
-    "ast_hash": "e41fd5382119a69edd0e8631894e177c",
+    "mtime": 1787774772.767736,
+    "ast_hash": "697efadbc7739d90a4375cfba6d78323",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-resources.contracts.ts": {
@@ -3345,13 +3345,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/attachment-content.provider.test.ts": {
-    "mtime": 1784751507.8240638,
-    "ast_hash": "c486ec6e2de0508bb1d6b4351cb1d0cd",
+    "mtime": 1787780070.7426305,
+    "ast_hash": "192176fbb30ce4ebfefc95282b71ead6",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/attachment-content.provider.ts": {
-    "mtime": 1784751507.8241243,
-    "ast_hash": "a8cdd7570fc354440baf0c723c2fd641",
+    "mtime": 1787780039.6279767,
+    "ast_hash": "5b95f8d5d39f84541ace7bdefef65d4b",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-attachment-export.contracts.ts": {
@@ -3405,8 +3405,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-watch.service.test.ts": {
-    "mtime": 1786480792.8496985,
-    "ast_hash": "d3172126bd94be87c5b2c5b59e90c44d",
+    "mtime": 1787780070.7421012,
+    "ast_hash": "b2a46dab385dcd107577bd5c04f1e589",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-watch.service.ts": {
@@ -3880,8 +3880,8 @@
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/tasks/[taskId]/attachments/route.ts": {
-    "mtime": 1786546131.607685,
-    "ast_hash": "a875c823797341f04764301d2c389d06",
+    "mtime": 1787780039.6282094,
+    "ast_hash": "5e5aef51350b58df25165cef36af126e",
     "semantic_hash": ""
   },
   "apps/web/components/google-drive-folder-assignment.tsx": {
@@ -3890,8 +3890,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/task-files.tsx": {
-    "mtime": 1786546164.9965682,
-    "ast_hash": "d903078c55c633edabc564d1c6f97f31",
+    "mtime": 1787780039.6285212,
+    "ast_hash": "a5b1e7b5c21b920767c06c588f65c687",
     "semantic_hash": ""
   },
   "graphify-out/memory/query_20260809_191204_\u0430_\u0434\u0430\u0432\u0430\u0439_\u043a\u043d\u043e\u043f\u043a\u0443_connect_\u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c_\u0435\u0441\u043b\u0438_\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b.md": {
@@ -3905,23 +3905,23 @@
     "semantic_hash": ""
   },
   "apps/api/src/attachments/local-attachment-upload.store.test.ts": {
-    "mtime": 1786545613.1488416,
-    "ast_hash": "82d43871a2e7770390e58f723c9dd86b",
+    "mtime": 1787780070.7428644,
+    "ast_hash": "294945997b025cfbb7d3fe0971e158d1",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/local-attachment-upload.store.ts": {
-    "mtime": 1786546121.3326764,
-    "ast_hash": "8ebe8529b9d5920d2defc5e8224fc00e",
+    "mtime": 1787780039.6276515,
+    "ast_hash": "ba124ef7b56af87bdce967a02def5dee",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/task-file-upload-body-parser.test.ts": {
-    "mtime": 1786545613.1479723,
-    "ast_hash": "c7e6ee00d0cab19a907b30dd2c5fb184",
+    "mtime": 1787780070.743137,
+    "ast_hash": "6e04b85c6bc7b806f7f2077d41ff2f2d",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/task-file-upload-body-parser.ts": {
-    "mtime": 1786546184.7450101,
-    "ast_hash": "4b694f6f027ee235787d51a3d0b2e890",
+    "mtime": 1787780039.6265092,
+    "ast_hash": "71060b9352e3c914e95c679ea13b9342",
     "semantic_hash": ""
   },
   "apps/api/src/attachments/task-file-upload.service.test.ts": {
@@ -3937,6 +3937,146 @@
   "apps/web/app/api/workspace/tasks/[taskId]/attachments/[attachmentId]/content/route.ts": {
     "mtime": 1786546309.398367,
     "ast_hash": "195a12954b05ecb21474b3a3850e57e2",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/plugins/yandex-disk.integration-plugin.ts": {
+    "mtime": 1787773628.0857646,
+    "ast_hash": "6fa76b4cb4963f644edc7d515bdc8170",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-yandex-disk-attachment-export.store.ts": {
+    "mtime": 1787774475.080682,
+    "ast_hash": "584f2eb20d671f6fc3727cfeeef95726",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-yandex-disk-sync.store.test.ts": {
+    "mtime": 1787774862.6424453,
+    "ast_hash": "ed74fc1eeb1c82d8e22b6bef0f21e4b9",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/typeorm-yandex-disk-sync.store.ts": {
+    "mtime": 1787774854.2004116,
+    "ast_hash": "c326d05992650fcbc4e7036912ec8825",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-access.service.ts": {
+    "mtime": 1787774782.614175,
+    "ast_hash": "0aa757b3efe013f3b43f384b61727433",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-attachment-export.contracts.ts": {
+    "mtime": 1787773961.6477346,
+    "ast_hash": "0bb5054e2943c5fc770d9c72dc29299b",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-attachment-export.service.test.ts": {
+    "mtime": 1787774561.3633928,
+    "ast_hash": "a01e3c506d41e0c969a55a2cf3da09c4",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-attachment-export.service.ts": {
+    "mtime": 1787774668.7521465,
+    "ast_hash": "7faad929c9c0932484b31704a1767aeb",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-folder-assignment.service.ts": {
+    "mtime": 1787774632.0420322,
+    "ast_hash": "0c11fedee3beb747556707ec7876040f",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-oauth.client.test.ts": {
+    "mtime": 1787774792.714291,
+    "ast_hash": "b754a872e5d1a26313a1d9743cbee041",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-oauth.client.ts": {
+    "mtime": 1787774792.7139044,
+    "ast_hash": "b1a3a693646dd5b959c9d1860ffad82d",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-oauth.contracts.ts": {
+    "mtime": 1787773688.327677,
+    "ast_hash": "e9a92ad73717b8459446ef3b1a1244f4",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-oauth.controller.ts": {
+    "mtime": 1787774475.0868888,
+    "ast_hash": "15a128c6114f939ffbbaf91fa6395543",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-oauth.dto.test.ts": {
+    "mtime": 1787774402.0634642,
+    "ast_hash": "4844897119232631e2b7faf9620bffe3",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-oauth.dto.ts": {
+    "mtime": 1787774480.7167506,
+    "ast_hash": "ea91a29d103003e49fe7555cbc4760e6",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-oauth.service.ts": {
+    "mtime": 1787774475.0867991,
+    "ast_hash": "f293f61f39aff4069edadaa3f4f3a4ba",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-root.service.ts": {
+    "mtime": 1787774632.0418708,
+    "ast_hash": "6aa5bd0cfea66b036b2e8a88a7cdbef0",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-sync.contracts.ts": {
+    "mtime": 1787773907.277681,
+    "ast_hash": "397324298932a53d54b15fe6fc4c1b86",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-sync.service.ts": {
+    "mtime": 1787774642.005439,
+    "ast_hash": "a20b115882c22d6619f64eed8cd8bbcc",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-sync.worker.ts": {
+    "mtime": 1787774413.7342682,
+    "ast_hash": "30f0996f278b753b5fd11653552b8464",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-task-folder.service.test.ts": {
+    "mtime": 1787774828.5594327,
+    "ast_hash": "98dcf6e3ed596bf3f1121627ce83fa81",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk-task-folder.service.ts": {
+    "mtime": 1787774828.5587738,
+    "ast_hash": "7ec96aa25bbf6645507c55118b20112e",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk.client.test.ts": {
+    "mtime": 1787774475.086083,
+    "ast_hash": "8a309bc12ebf96df6b69ff01f73ae442",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/yandex-disk.client.ts": {
+    "mtime": 1787774480.7162962,
+    "ast_hash": "c6f4a43dd6040dd5f8c1c83feb3a5e69",
+    "semantic_hash": ""
+  },
+  "apps/web/app/api/integrations/yandex-disk/callback/route.ts": {
+    "mtime": 1787774257.0494924,
+    "ast_hash": "b841c0302802da36f9e65c88405fbb5c",
+    "semantic_hash": ""
+  },
+  "apps/web/app/api/workspace/integrations/yandex-disk/folder/route.ts": {
+    "mtime": 1787774475.0900915,
+    "ast_hash": "227d70ddb80cdb761add72ffef36180b",
+    "semantic_hash": ""
+  },
+  "apps/web/app/api/workspace/integrations/yandex-disk/root-folder/route.ts": {
+    "mtime": 1787774257.049732,
+    "ast_hash": "755742deff701b8a25fd10518a6e7343",
+    "semantic_hash": ""
+  },
+  "apps/web/components/yandex-disk-folder-assignment.tsx": {
+    "mtime": 1787774668.7527287,
+    "ast_hash": "652384e05cfe81fbcdcc36d2ef67c26d",
     "semantic_hash": ""
   }
 }

@@ -29,6 +29,7 @@ import { WorkspaceInvitations } from "./workspace-invitations";
 import { WorkspaceMembersManager } from "./workspace-members-manager";
 import { WorkspaceNameEditor } from "./workspace-name-editor";
 import { WorkspaceOnboarding } from "./workspace-onboarding";
+import { YandexDiskFolderAssignmentControl } from "./yandex-disk-folder-assignment";
 
 export type ViewKind = "integrations" | "kanban" | "members" | "project" | "projects" | "settings";
 const copy: Record<ViewKind, { title: MessageKey; subtitle: MessageKey }> = {
@@ -217,6 +218,11 @@ function ProjectDetail({
         <Card className="panel">
           <PanelTitle title={t("integrations.projectFolder")} />
           <GoogleDriveFolderAssignmentControl
+            targetId={project.projectId}
+            targetType="project"
+            workspaceId={data.workspace.id}
+          />
+          <YandexDiskFolderAssignmentControl
             targetId={project.projectId}
             targetType="project"
             workspaceId={data.workspace.id}

@@ -20,7 +20,7 @@ export type TaskAttachment = {
   externalResourceId: string | null;
   modifiedAt: Date | null;
   providerResourceId: string | null;
-  source: "google_drive" | "native";
+  source: "google_drive" | "native" | "yandex_disk";
 };
 
 export type CreateTaskLinkAttachmentInput = {

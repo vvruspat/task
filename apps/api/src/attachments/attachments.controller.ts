@@ -20,7 +20,6 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
-  ApiPayloadTooLargeResponse,
   ApiProduces,
   ApiServiceUnavailableResponse,
   ApiTags,
@@ -146,7 +145,6 @@ export class AttachmentsController {
   @ApiBadRequestResponse({ description: "File name, MIME type, or body is invalid." })
   @ApiForbiddenResponse({ description: "Current user cannot attach files in this workspace." })
   @ApiNotFoundResponse({ description: "Workspace, project, or task is missing or not visible." })
-  @ApiPayloadTooLargeResponse({ description: "File exceeds the 25 MB upload limit." })
   @ApiServiceUnavailableResponse({ description: "Attachment storage is not configured." })
   uploadTaskFile(
     @Param("workspaceId", uuidV4Pipe) workspaceId: string,

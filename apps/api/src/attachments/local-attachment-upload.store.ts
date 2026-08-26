@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, open, rm } from "node:fs/promises";
 import { resolve } from "node:path";
-import { PayloadTooLargeException, ServiceUnavailableException } from "@nestjs/common";
+import { ServiceUnavailableException } from "@nestjs/common";
 import type { AttachmentContentConfig } from "../integrations/integrations.config.js";
 import type {
   AttachmentUploadStore,
@@ -14,11 +14,6 @@ export class LocalAttachmentUploadStore implements AttachmentUploadStore {
 
   async store(input: StoreTaskFileUploadInput): Promise<StoredTaskFileUpload> {
     const storageRoot = this.requireStorageRoot();
-    if (input.bytes.byteLength > this.config.maxBytes) {
-      throw new PayloadTooLargeException(
-        `Task files must not exceed ${this.config.maxBytes} bytes.`,
-      );
-    }
     const directoryKey = `workspaces/${input.workspaceId}/tasks/${input.taskId}`;
     const storageKey = `${directoryKey}/${randomUUID()}`;
     const directoryPath = resolve(storageRoot, directoryKey);

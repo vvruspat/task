@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { BadRequestException, PayloadTooLargeException } from "@nestjs/common";
-import { attachmentContentMaxBytes } from "../integrations/integrations.config.js";
+import { BadRequestException } from "@nestjs/common";
 import type {
   CreateTaskFileAttachmentInput,
   CreateTaskLinkAttachmentInput,
@@ -302,10 +301,8 @@ test("task file upload boundary validates binary content and encoded metadata", 
   );
   assert.throws(() => bodyPipe.transform(Buffer.alloc(0)), BadRequestException);
   assert.throws(() => bodyPipe.transform("hello"), BadRequestException);
-  assert.throws(
-    () => bodyPipe.transform(Buffer.alloc(attachmentContentMaxBytes + 1)),
-    PayloadTooLargeException,
-  );
+  const formerlyOversizedBytes = Buffer.alloc(25 * 1_024 * 1_024 + 1);
+  assert.equal(bodyPipe.transform(formerlyOversizedBytes), formerlyOversizedBytes);
   assert.throws(
     () =>
       parseTaskFileUploadHeaders({

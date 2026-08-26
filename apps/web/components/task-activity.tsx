@@ -595,6 +595,10 @@ function activityIcon(eventType: string): ReactNode {
   if (eventType === "integration.google_drive.resource_added") return <FilePlus size={14} />;
   if (eventType === "integration.google_drive.resource_changed") return <FilePen size={14} />;
   if (eventType === "integration.google_drive.resource_removed") return <FileMinus size={14} />;
+  if (eventType === "integration.yandex_disk.folder_assigned") return <FolderOpen size={14} />;
+  if (eventType === "integration.yandex_disk.resource_added") return <FilePlus size={14} />;
+  if (eventType === "integration.yandex_disk.resource_changed") return <FilePen size={14} />;
+  if (eventType === "integration.yandex_disk.resource_removed") return <FileMinus size={14} />;
   if (eventType === "task.due_date_updated") return <CalendarClock size={14} />;
   if (eventType === "task.updated") return <Pencil size={14} />;
   return <CircleDot size={14} />;

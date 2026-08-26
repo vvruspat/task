@@ -21,16 +21,15 @@ const baseSource: AttachmentContentSource = {
   title: "Sprint / notes.txt",
 };
 
-test("local attachment provider reads a bounded file under its configured root", async (context) => {
+test("local attachment provider reads a file under its configured root", async (context) => {
   const rootPath = await mkdtemp(join(tmpdir(), "task-attachment-provider-"));
   context.after(async () => rm(rootPath, { force: true, recursive: true }));
   await mkdir(join(rootPath, "tasks"));
   await writeFile(join(rootPath, "tasks", "note.txt"), "hello");
 
-  const content = await new LocalAttachmentContentProvider({
-    maxBytes: 1_024,
-    storageRoot: rootPath,
-  }).read(baseSource);
+  const content = await new LocalAttachmentContentProvider({ storageRoot: rootPath }).read(
+    baseSource,
+  );
 
   assert.equal(content?.fileName, "Sprint notes.txt");
   assert.equal(content?.mimeType, "text/plain");
@@ -48,23 +47,20 @@ test("local attachment provider rejects traversal through a symlink", async (con
   await writeFile(join(outsidePath, "secret.txt"), "secret");
   await symlink(outsidePath, join(rootPath, "escaped"));
 
-  const provider = new LocalAttachmentContentProvider({ maxBytes: 1_024, storageRoot: rootPath });
+  const provider = new LocalAttachmentContentProvider({ storageRoot: rootPath });
   await assert.rejects(
     provider.read({ ...baseSource, sizeBytes: "6", storageKey: "escaped/secret.txt" }),
     AttachmentContentUnavailableError,
   );
 });
 
-test("local attachment provider enforces metadata and byte limits", async (context) => {
+test("local attachment provider enforces stored size metadata", async (context) => {
   const rootPath = await mkdtemp(join(tmpdir(), "task-attachment-provider-"));
   context.after(async () => rm(rootPath, { force: true, recursive: true }));
   await mkdir(join(rootPath, "tasks"));
   await writeFile(join(rootPath, "tasks", "note.txt"), "hello");
-  const provider = new LocalAttachmentContentProvider({ maxBytes: 4, storageRoot: rootPath });
-
-  await assert.rejects(provider.read(baseSource), /export limit/u);
   await assert.rejects(
-    new LocalAttachmentContentProvider({ maxBytes: 10, storageRoot: rootPath }).read({
+    new LocalAttachmentContentProvider({ storageRoot: rootPath }).read({
       ...baseSource,
       sizeBytes: "4",
     }),

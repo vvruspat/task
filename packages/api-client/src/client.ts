@@ -73,6 +73,16 @@ export type GoogleDriveFolderAssignment = components["schemas"]["GoogleDriveFold
 export type GoogleDriveFolderAssignmentResponse =
   components["schemas"]["GoogleDriveFolderAssignmentResponseDto"];
 export type SelectGoogleDriveFolderInput = components["schemas"]["SelectGoogleDriveFolderDto"];
+export type CompleteYandexDiskOAuthInput = components["schemas"]["CompleteYandexDiskOAuthDto"];
+export type YandexDiskOAuthCompletion = components["schemas"]["YandexDiskOAuthCompletionDto"];
+export type YandexDiskAuthorizationStart = components["schemas"]["YandexDiskAuthorizationStartDto"];
+export type SelectYandexDiskRootFolderInput =
+  components["schemas"]["SelectYandexDiskRootFolderDto"];
+export type YandexDiskRootFolder = components["schemas"]["YandexDiskRootFolderDto"];
+export type YandexDiskFolderAssignment = components["schemas"]["YandexDiskFolderAssignmentDto"];
+export type YandexDiskFolderAssignmentResponse =
+  components["schemas"]["YandexDiskFolderAssignmentResponseDto"];
+export type SelectYandexDiskFolderInput = components["schemas"]["SelectYandexDiskFolderDto"];
 export type TelegramConnectToken = components["schemas"]["TelegramConnectTokenDto"];
 export type TelegramBrowserConnectAuthInput =
   components["schemas"]["TelegramBrowserConnectAuthDto"];
@@ -137,6 +147,12 @@ type SelectGoogleDriveRootFolderOperation =
 type GetGoogleDriveFolderAssignmentOperation =
   operations["GoogleDriveOAuthController_getFolderAssignment"];
 type SelectGoogleDriveFolderOperation = operations["GoogleDriveOAuthController_selectFolder"];
+type StartYandexDiskOAuthOperation = operations["YandexDiskOAuthController_start"];
+type CompleteYandexDiskOAuthOperation = operations["YandexDiskOAuthCallbackController_complete"];
+type SelectYandexDiskRootFolderOperation = operations["YandexDiskOAuthController_selectRootFolder"];
+type GetYandexDiskFolderAssignmentOperation =
+  operations["YandexDiskOAuthController_getFolderAssignment"];
+type SelectYandexDiskFolderOperation = operations["YandexDiskOAuthController_selectFolder"];
 type UploadTaskFileOperation = operations["AttachmentsController_uploadTaskFile"];
 type CreateTelegramConnectTokenOperation = operations["TelegramConnectController_createToken"];
 type PreviewTelegramBrowserConnectOperation =
@@ -446,6 +462,31 @@ export type SelectGoogleDriveFolderRequestInput = GoogleDriveFolderScopedInput &
 };
 export type SelectGoogleDriveFolderResponse =
   SelectGoogleDriveFolderOperation["responses"]["200"]["content"]["application/json"];
+export type StartYandexDiskOAuthRequestInput = WorkspaceScopedInput & { integrationId: string };
+export type StartYandexDiskOAuthResponse =
+  StartYandexDiskOAuthOperation["responses"]["201"]["content"]["application/json"];
+export type CompleteYandexDiskOAuthRequestInput = { body: CompleteYandexDiskOAuthInput };
+export type CompleteYandexDiskOAuthResponse =
+  CompleteYandexDiskOAuthOperation["responses"]["201"]["content"]["application/json"];
+export type SelectYandexDiskRootFolderRequestInput = WorkspaceScopedInput & {
+  body: SelectYandexDiskRootFolderInput;
+  integrationId: string;
+};
+export type SelectYandexDiskRootFolderResponse =
+  SelectYandexDiskRootFolderOperation["responses"]["200"]["content"]["application/json"];
+export type YandexDiskFolderScopedInput = WorkspaceScopedInput & {
+  integrationId: string;
+  targetId: string;
+  targetType: "project" | "task";
+};
+export type GetYandexDiskFolderAssignmentRequestInput = YandexDiskFolderScopedInput;
+export type GetYandexDiskFolderAssignmentResponse =
+  GetYandexDiskFolderAssignmentOperation["responses"]["200"]["content"]["application/json"];
+export type SelectYandexDiskFolderRequestInput = YandexDiskFolderScopedInput & {
+  body: SelectYandexDiskFolderInput;
+};
+export type SelectYandexDiskFolderResponse =
+  SelectYandexDiskFolderOperation["responses"]["200"]["content"]["application/json"];
 export type CreateTelegramConnectTokenRequestInput = WorkspaceScopedInput & {
   integrationId: string;
 };
@@ -555,6 +596,21 @@ export type TaskApiClient = {
   selectGoogleDriveFolder(
     input: SelectGoogleDriveFolderRequestInput,
   ): Promise<SelectGoogleDriveFolderResponse>;
+  startYandexDiskOAuth(
+    input: StartYandexDiskOAuthRequestInput,
+  ): Promise<StartYandexDiskOAuthResponse>;
+  completeYandexDiskOAuth(
+    input: CompleteYandexDiskOAuthRequestInput,
+  ): Promise<CompleteYandexDiskOAuthResponse>;
+  selectYandexDiskRootFolder(
+    input: SelectYandexDiskRootFolderRequestInput,
+  ): Promise<SelectYandexDiskRootFolderResponse>;
+  getYandexDiskFolderAssignment(
+    input: GetYandexDiskFolderAssignmentRequestInput,
+  ): Promise<GetYandexDiskFolderAssignmentResponse>;
+  selectYandexDiskFolder(
+    input: SelectYandexDiskFolderRequestInput,
+  ): Promise<SelectYandexDiskFolderResponse>;
   createTelegramConnectToken(
     input: CreateTelegramConnectTokenRequestInput,
   ): Promise<CreateTelegramConnectTokenResponse>;
@@ -1268,6 +1324,61 @@ export function createTaskApiClient(options: TaskApiClientOptions): TaskApiClien
           trustedUserId: options.trustedUserId,
         },
       ),
+    startYandexDiskOAuth: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/yandex-disk/connect`,
+        yandexDiskAuthorizationStartParser,
+        { method: "POST", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    completeYandexDiskOAuth: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        "/integrations/oauth/yandex-disk/callback",
+        yandexDiskOAuthCompletionParser,
+        {
+          body: input.body,
+          method: "POST",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    selectYandexDiskRootFolder: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/yandex-disk/root-folder`,
+        yandexDiskRootFolderParser,
+        {
+          body: input.body,
+          method: "PUT",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
+    getYandexDiskFolderAssignment: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        yandexDiskFolderPath(input),
+        yandexDiskFolderAssignmentResponseParser,
+        { method: "GET", requiresTrustedUserId: true, trustedUserId: options.trustedUserId },
+      ),
+    selectYandexDiskFolder: (input) =>
+      request(
+        options.fetch,
+        baseUrl,
+        yandexDiskFolderPath(input),
+        yandexDiskFolderAssignmentParser,
+        {
+          body: input.body,
+          method: "PUT",
+          requiresTrustedUserId: true,
+          trustedUserId: options.trustedUserId,
+        },
+      ),
     createTelegramConnectToken: (input) =>
       request(
         options.fetch,
@@ -1614,6 +1725,9 @@ function taskPath(input: TaskScopedInput): string {
 function googleDriveFolderPath(input: GoogleDriveFolderScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/google-drive/folders/${encodePathSegment(input.targetType)}/${encodePathSegment(input.targetId)}`;
 }
+function yandexDiskFolderPath(input: YandexDiskFolderScopedInput): string {
+  return `/workspaces/${encodePathSegment(input.workspaceId)}/integrations/${encodePathSegment(input.integrationId)}/yandex-disk/folders/${encodePathSegment(input.targetType)}/${encodePathSegment(input.targetId)}`;
+}
 function taskSkillsPath(input: WorkspaceScopedInput): string {
   return `/workspaces/${encodePathSegment(input.workspaceId)}/task-skills`;
 }
@@ -1739,6 +1853,27 @@ const googleDriveFolderAssignmentResponseParser: ResponseParser<GoogleDriveFolde
   {
     isValid: isGoogleDriveFolderAssignmentResponse,
     label: "Google Drive folder assignment response",
+  };
+const yandexDiskAuthorizationStartParser: ResponseParser<YandexDiskAuthorizationStart> = {
+  isValid: isYandexDiskAuthorizationStart,
+  label: "Yandex Disk authorization start",
+};
+const yandexDiskOAuthCompletionParser: ResponseParser<YandexDiskOAuthCompletion> = {
+  isValid: isYandexDiskOAuthCompletion,
+  label: "Yandex Disk OAuth completion",
+};
+const yandexDiskRootFolderParser: ResponseParser<YandexDiskRootFolder> = {
+  isValid: isYandexDiskRootFolder,
+  label: "Yandex Disk root folder",
+};
+const yandexDiskFolderAssignmentParser: ResponseParser<YandexDiskFolderAssignment> = {
+  isValid: isYandexDiskFolderAssignment,
+  label: "Yandex Disk folder assignment",
+};
+const yandexDiskFolderAssignmentResponseParser: ResponseParser<YandexDiskFolderAssignmentResponse> =
+  {
+    isValid: isYandexDiskFolderAssignmentResponse,
+    label: "Yandex Disk folder assignment response",
   };
 const telegramConnectTokenParser: ResponseParser<TelegramConnectToken> = {
   isValid: isTelegramConnectToken,
@@ -2708,6 +2843,50 @@ function isGoogleDriveFolderAssignmentResponse(
   return folder === null || isGoogleDriveFolderAssignment(folder);
 }
 
+function isYandexDiskAuthorizationStart(value: unknown): value is YandexDiskAuthorizationStart {
+  return isJsonObject(value) && hasString(value, "authorizationUrl");
+}
+
+function isYandexDiskOAuthCompletion(value: unknown): value is YandexDiskOAuthCompletion {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "integrationId") &&
+    readProperty(value, "pluginKey") === "yandex-disk" &&
+    readProperty(value, "status") === "connected" &&
+    hasString(value, "workspaceId")
+  );
+}
+
+function isYandexDiskRootFolder(value: unknown): value is YandexDiskRootFolder {
+  return (
+    isJsonObject(value) &&
+    hasString(value, "externalResourceId") &&
+    hasNonEmptyString(value, "name") &&
+    hasNonEmptyString(value, "path") &&
+    hasNonEmptyString(value, "providerResourceId") &&
+    hasNullableString(value, "webUrl")
+  );
+}
+
+function isYandexDiskFolderAssignment(value: unknown): value is YandexDiskFolderAssignment {
+  return (
+    isYandexDiskRootFolder(value) &&
+    (readProperty(value, "assignmentSource") === "managed" ||
+      readProperty(value, "assignmentSource") === "selected") &&
+    hasString(value, "targetId") &&
+    (readProperty(value, "targetType") === "project" ||
+      readProperty(value, "targetType") === "task")
+  );
+}
+
+function isYandexDiskFolderAssignmentResponse(
+  value: unknown,
+): value is YandexDiskFolderAssignmentResponse {
+  if (!isJsonObject(value)) return false;
+  const folder = readProperty(value, "folder");
+  return folder === null || isYandexDiskFolderAssignment(folder);
+}
+
 function isTelegramConnectToken(value: unknown): value is TelegramConnectToken {
   return (
     isJsonObject(value) && hasNonEmptyString(value, "command") && hasString(value, "expiresAt")
@@ -2871,7 +3050,7 @@ function isTaskAttachmentTargetType(value: unknown): boolean {
 }
 
 function isTaskAttachmentSource(value: unknown): boolean {
-  return value === "google_drive" || value === "native";
+  return value === "google_drive" || value === "native" || value === "yandex_disk";
 }
 
 function hasString(value: JsonObject, key: string): boolean {
