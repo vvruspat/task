@@ -675,7 +675,7 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1793559556.9256868,
+    "mtime": 1793559620.3312774,
     "ast_hash": "d8ee44f3414a6e142205819d883c2722",
     "semantic_hash": ""
   },
@@ -3190,8 +3190,8 @@
     "semantic_hash": ""
   },
   "apps/web/app/api/integrations/google-drive/callback/route.ts": {
-    "mtime": 1784751507.8376122,
-    "ast_hash": "b1cb6901052be5eae21cda8443e2b367",
+    "mtime": 1793563616.034492,
+    "ast_hash": "c64004eb6cd0ed5e330fee2cc0629b3e",
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/integrations/connect/route.ts": {
@@ -4060,8 +4060,8 @@
     "semantic_hash": ""
   },
   "apps/web/app/api/integrations/yandex-disk/callback/route.ts": {
-    "mtime": 1787774257.0494924,
-    "ast_hash": "b841c0302802da36f9e65c88405fbb5c",
+    "mtime": 1793563616.0535228,
+    "ast_hash": "2c9e8bdb2106486a3e0abf4259753c29",
     "semantic_hash": ""
   },
   "apps/web/app/api/workspace/integrations/yandex-disk/folder/route.ts": {
@@ -4082,6 +4082,16 @@
   "apps/api/src/integrations/google-drive-reconnect.integration.test.ts": {
     "mtime": 1793559137.7465835,
     "ast_hash": "0706a758fe93125f104780c9dcd80ca0",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/app-redirect.test.ts": {
+    "mtime": 1793563616.342615,
+    "ast_hash": "163ab3ed931cb1f1b3984938c73c1eca",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/app-redirect.ts": {
+    "mtime": 1793563615.9932618,
+    "ast_hash": "d3c30b83951e349a8221841223052509",
     "semantic_hash": ""
   }
 }

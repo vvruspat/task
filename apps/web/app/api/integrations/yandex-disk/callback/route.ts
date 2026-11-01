@@ -1,26 +1,25 @@
-import { NextResponse } from "next/server";
+import { createAppRedirect } from "../../../../../lib/app-redirect";
 import { createServerTaskApi } from "../../../../../lib/server-task-api";
 
-export async function GET(request: Request): Promise<NextResponse> {
+export async function GET(request: Request): Promise<Response> {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const state = requestUrl.searchParams.get("state");
   const oauthError = requestUrl.searchParams.get("error");
   if (oauthError !== null || code === null || state === null) {
-    return redirectToIntegrations(requestUrl, "error");
+    return redirectToIntegrations("error");
   }
   const result = createServerTaskApi(request);
-  if (result.response !== undefined) return NextResponse.redirect(new URL("/login", requestUrl));
+  if (result.response !== undefined) return createAppRedirect("/login");
   try {
     await result.api.completeYandexDiskOAuth({ body: { code, state } });
-    return redirectToIntegrations(requestUrl, "connected");
+    return redirectToIntegrations("connected");
   } catch (_error: unknown) {
-    return redirectToIntegrations(requestUrl, "error");
+    return redirectToIntegrations("error");
   }
 }
 
-function redirectToIntegrations(requestUrl: URL, status: "connected" | "error"): NextResponse {
-  const target = new URL("/settings/integrations", requestUrl);
-  target.searchParams.set("yandexDisk", status);
-  return NextResponse.redirect(target);
+function redirectToIntegrations(status: "connected" | "error"): Response {
+  const query = new URLSearchParams({ yandexDisk: status });
+  return createAppRedirect(`/settings/integrations?${query.toString()}`);
 }
