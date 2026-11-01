@@ -1518,6 +1518,9 @@
           "403": {
             "description": "The initiating user no longer manages the workspace."
           },
+          "409": {
+            "description": "Reconnect with the same Google account to preserve folder assignments."
+          },
           "502": {
             "description": "Google rejected the authorization."
           }

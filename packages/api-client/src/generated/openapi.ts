@@ -4281,6 +4281,13 @@ export interface operations {
         };
         content?: never;
       };
+      /** @description Reconnect with the same Google account to preserve folder assignments. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
       /** @description Google rejected the authorization. */
       502: {
         headers: {

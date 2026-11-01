@@ -208,6 +208,9 @@ export class GoogleDriveOAuthCallbackController {
   @ApiCreatedResponse({ type: GoogleDriveOAuthCompletionDto })
   @ApiBadRequestResponse({ description: "OAuth state or callback payload is invalid." })
   @ApiForbiddenResponse({ description: "The initiating user no longer manages the workspace." })
+  @ApiConflictResponse({
+    description: "Reconnect with the same Google account to preserve folder assignments.",
+  })
   @ApiBadGatewayResponse({ description: "Google rejected the authorization." })
   complete(
     @Body(ParseCompleteGoogleDriveOAuthPipe) input: CompleteGoogleDriveOAuthInput,
