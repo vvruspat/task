@@ -13,6 +13,8 @@ import { GoogleDriveOAuthClient, GoogleDriveOAuthError } from "./google-drive-oa
 import { hasRequiredGoogleDriveScopes } from "./plugins/google-drive.integration-plugin.js";
 
 const googleDrivePluginKey = "google-drive";
+const reconnectMessage =
+  "Google Drive authorization expired or was revoked. Reconnect Google Drive to resume synchronization.";
 
 export const googleDriveAccessErrorCodes = [
   "connection_not_available",
@@ -64,15 +66,18 @@ export class GoogleDriveAccessService {
   ): Promise<GoogleDriveAccessGrant> {
     const connection = await this.getConnectedConnection(workspaceId, integrationId);
     if (!hasRequiredGoogleDriveScopes(connection.scopes)) {
+      await this.markReauthorizationRequired(integrationId, connection);
       throw accessError("scope_missing", "Required Google Drive scopes are missing.");
     }
     const refreshToken = await this.secretProvider.read(connection.secretReference);
     if (refreshToken === null) {
+      await this.markReauthorizationRequired(integrationId, connection);
       throw accessError("credentials_not_available", "Google Drive credentials are unavailable.");
     }
     try {
       const grant = await this.oauthClient.refreshAccessToken(refreshToken);
       if (!hasRequiredGoogleDriveScopes(grant.scopes)) {
+        await this.markReauthorizationRequired(integrationId, connection);
         throw accessError("scope_missing", "Required Google Drive scopes are missing.");
       }
       return {
@@ -83,10 +88,44 @@ export class GoogleDriveAccessService {
     } catch (error: unknown) {
       if (error instanceof GoogleDriveAccessError) throw error;
       if (error instanceof GoogleDriveOAuthError) {
+        if (error.requiresReauthorization) {
+          await this.markReauthorizationRequired(integrationId, connection);
+          throw accessError("oauth_failed", reconnectMessage);
+        }
         throw accessError("oauth_failed", "Google Drive credentials could not be refreshed.");
       }
       throw error;
     }
+  }
+
+  private async markReauthorizationRequired(
+    integrationId: string,
+    connection: GoogleDriveConnectionContext,
+  ): Promise<void> {
+    const dataSource = await this.getInitializedDataSource();
+    await dataSource.transaction(async (manager) => {
+      const integrationRepository = manager.getRepository(WorkspaceIntegrationEntity);
+      const integration = await integrationRepository
+        .createQueryBuilder("integration")
+        .where("integration.id = :integrationId", { integrationId })
+        .setLock("pessimistic_write")
+        .getOne();
+      if (integration?.status !== "connected") return;
+      const updated = await manager.getRepository(IntegrationConnectionEntity).update(
+        {
+          id: connection.connectionId,
+          secretReference: connection.secretReference,
+          status: "connected",
+          workspaceIntegrationId: integrationId,
+        },
+        { lastError: reconnectMessage, status: "error" },
+      );
+      // A successful reconnect may have replaced the credentials while refresh was in flight.
+      if (updated.affected !== 1) return;
+      integration.status = "error";
+      integration.lastError = reconnectMessage;
+      await integrationRepository.save(integration);
+    });
   }
 
   async getConnectedConnection(

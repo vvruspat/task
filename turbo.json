@@ -36,6 +36,7 @@
       "outputs": ["openapi/openapi.json"]
     },
     "generate:api-client": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/apps/api/openapi/openapi.json"],
       "outputs": ["src/**"]
     }
   }

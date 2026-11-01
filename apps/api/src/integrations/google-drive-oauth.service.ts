@@ -13,6 +13,7 @@ import { type DataSource, type EntityManager, IsNull } from "typeorm";
 import { ApiDataSourceProvider } from "../database/database.module.js";
 import {
   IntegrationConnectionEntity,
+  IntegrationEventDeliveryEntity,
   IntegrationOAuthStateEntity,
   WorkspaceIntegrationEntity,
   WorkspaceMemberEntity,
@@ -66,12 +67,16 @@ export class GoogleDriveOAuthService {
     await dataSource.transaction(async (manager) => {
       await assertWorkspaceManager(manager, workspaceId, userId);
       const integrationRepository = manager.getRepository(WorkspaceIntegrationEntity);
-      const integration = await integrationRepository.findOneBy({ id: integrationId, workspaceId });
+      const integration = await integrationRepository
+        .createQueryBuilder("integration")
+        .where("integration.id = :integrationId AND integration.workspaceId = :workspaceId", {
+          integrationId,
+          workspaceId,
+        })
+        .setLock("pessimistic_write")
+        .getOne();
       if (integration === null || integration.pluginKey !== googleDrivePluginKey) {
         throw new NotFoundException("Google Drive workspace integration was not found.");
-      }
-      if (integration.status === "connected") {
-        throw new ConflictException("Google Drive is already connected.");
       }
       await manager
         .getRepository(IntegrationOAuthStateEntity)
@@ -87,8 +92,8 @@ export class GoogleDriveOAuthService {
         workspaceIntegrationId: integrationId,
       });
       await manager.getRepository(IntegrationOAuthStateEntity).save(oauthState);
-      integration.status = "authorizing";
-      integration.lastError = null;
+      // Keep an existing connection usable if the owner cancels reauthorization.
+      if (integration.status !== "connected") integration.status = "authorizing";
       await integrationRepository.save(integration);
     });
     return new GoogleDriveAuthorizationStartDto({ authorizationUrl });
@@ -108,6 +113,7 @@ export class GoogleDriveOAuthService {
       const connectedAt = new Date();
       const dataSource = await this.getInitializedDataSource();
       await dataSource.transaction(async (manager) => {
+        await assertWorkspaceManager(manager, consumedState.workspaceId, userId);
         const integrationRepository = manager.getRepository(WorkspaceIntegrationEntity);
         const integration = await integrationRepository
           .createQueryBuilder("integration")
@@ -127,6 +133,11 @@ export class GoogleDriveOAuthService {
         const existing = await connectionRepository.findOneBy({
           workspaceIntegrationId: integration.id,
         });
+        if (existing !== null && existing.providerAccountId !== userInfo.accountId) {
+          throw new ConflictException(
+            "Reconnect using the same Google account to preserve folder access.",
+          );
+        }
         if (existing !== null) {
           await this.secretProvider.deleteUsingManager(manager, existing.secretReference);
         }
@@ -154,6 +165,46 @@ export class GoogleDriveOAuthService {
         integration.lastError = null;
         integration.status = "connected";
         await integrationRepository.save(integration);
+        if (existing !== null) {
+          await manager
+            .getRepository(IntegrationEventDeliveryEntity)
+            .createQueryBuilder()
+            .update()
+            .set({
+              attemptCount: 0,
+              availableAt: connectedAt,
+              lastError: null,
+              lockedAt: null,
+              lockToken: null,
+              processedAt: null,
+              status: "pending",
+            })
+            .where("workspace_integration_id = :integrationId AND plugin_key = :pluginKey", {
+              integrationId: integration.id,
+              pluginKey: googleDrivePluginKey,
+            })
+            .andWhere("status = :status AND last_error LIKE :errorPrefix", {
+              errorPrefix: "GoogleDriveAccessError:%",
+              status: "dead",
+            })
+            .execute();
+          // Events published while authorization was unavailable have no delivery yet.
+          await manager.query(
+            `INSERT INTO integration_event_deliveries
+              (id, outbox_event_id, workspace_integration_id, plugin_key, plugin_version, available_at)
+             SELECT gen_random_uuid(), event.id, $1, $2, $3, $4
+             FROM integration_outbox_events event
+             WHERE event.workspace_id = $5 AND event.event_name = 'attachment.created.v1'
+             ON CONFLICT (outbox_event_id, workspace_integration_id) DO NOTHING`,
+            [
+              integration.id,
+              googleDrivePluginKey,
+              integration.pluginVersion,
+              connectedAt,
+              integration.workspaceId,
+            ],
+          );
+        }
         await this.outboxPublisher.publishUsingManager(manager, {
           actorUserId: userId,
           entity: { id: integration.id, type: "workspace_integration" },

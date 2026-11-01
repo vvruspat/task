@@ -27,7 +27,10 @@ export type GoogleDriveUserInfo = {
 };
 
 export class GoogleDriveOAuthError extends Error {
-  constructor(message: string) {
+  constructor(
+    message: string,
+    readonly requiresReauthorization = false,
+  ) {
     super(message);
     this.name = "GoogleDriveOAuthError";
   }
@@ -76,7 +79,12 @@ export class GoogleDriveOAuthClient {
       signal: AbortSignal.timeout(15_000),
     });
     const payload: unknown = await response.json().catch(() => null);
-    if (!response.ok) throw new GoogleDriveOAuthError("Google rejected the refresh token.");
+    if (!response.ok) {
+      throw new GoogleDriveOAuthError(
+        "Google rejected the refresh token.",
+        response.status === 400 && isRecord(payload) && payload["error"] === "invalid_grant",
+      );
+    }
     return parseGoogleDriveAccessTokenGrant(payload);
   }
 

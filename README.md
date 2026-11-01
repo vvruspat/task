@@ -66,6 +66,35 @@ When API DTOs change, regenerate and check the OpenAPI/API client contract:
 npm run check:generated
 ```
 
+## Google Drive Connection Recovery
+
+Google Drive uses offline OAuth access and an encrypted refresh token. For a long-lived deployment,
+set the Google Auth Platform audience publishing status to **In production**. External applications
+in **Testing** receive refresh tokens that expire after seven days for Drive scopes. Publishing
+removes that testing limit; tokens can still be revoked by the user or invalidated by Google.
+See [Google's token expiration rules](https://developers.google.com/identity/protocols/oauth2#expiration).
+
+The integration requests `drive.file` and `drive.metadata.readonly` to export attachments and
+discover files added outside tAsk. The metadata scope is restricted; public deployments must meet
+Google's applicable verification requirements. See
+[Drive scope requirements](https://developers.google.com/workspace/drive/api/guides/api-specific-auth).
+
+If authorization expires, use **Settings → Integrations → Google Drive → Reconnect** with the same
+Google account. Folder assignments and the connection ID are preserved. After successful consent,
+tAsk retries deliveries blocked by authorization and creates export deliveries for attachments
+missed while the connection was unavailable. Completed deliveries and unrelated failures are retained.
+
+Run the recovery regression suite against a dedicated disposable PostgreSQL database:
+
+```bash
+npm run build --workspace @task/api
+GOOGLE_DRIVE_TEST_DATABASE_URL=postgresql://postgres:task-test@localhost:5432/task_drive_test \
+  node --test apps/api/dist/integrations/google-drive-reconnect.integration.test.js
+```
+
+The suite applies the application's migrations and creates test fixtures. CI runs it in an ephemeral
+PostgreSQL service; do not point it at a live application database.
+
 ## Email Invitations
 
 Workspace owners and admins can invite people from the workspace settings screen. Configure the

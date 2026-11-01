@@ -70,13 +70,14 @@ export class GoogleDriveOAuthController {
   ) {}
 
   @Post(":integrationId/connect")
-  @ApiOperation({ summary: "Start a workspace Google Drive OAuth connection" })
+  @ApiOperation({
+    summary: "Connect or reauthorize workspace Google Drive while preserving folder assignments",
+  })
   @ApiParam({ format: "uuid", name: "workspaceId" })
   @ApiParam({ format: "uuid", name: "integrationId" })
   @ApiCreatedResponse({ type: GoogleDriveAuthorizationStartDto })
   @ApiForbiddenResponse({ description: "Current user cannot connect integrations." })
   @ApiNotFoundResponse({ description: "Google Drive workspace integration was not found." })
-  @ApiConflictResponse({ description: "Google Drive is already connected." })
   @ApiServiceUnavailableResponse({
     description: "Google Drive OAuth or encryption is not configured.",
   })
@@ -207,6 +208,9 @@ export class GoogleDriveOAuthCallbackController {
   @ApiCreatedResponse({ type: GoogleDriveOAuthCompletionDto })
   @ApiBadRequestResponse({ description: "OAuth state or callback payload is invalid." })
   @ApiForbiddenResponse({ description: "The initiating user no longer manages the workspace." })
+  @ApiConflictResponse({
+    description: "Reconnect with the same Google account to preserve folder assignments.",
+  })
   @ApiBadGatewayResponse({ description: "Google rejected the authorization." })
   complete(
     @Body(ParseCompleteGoogleDriveOAuthPipe) input: CompleteGoogleDriveOAuthInput,

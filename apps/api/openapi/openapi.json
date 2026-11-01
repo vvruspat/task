@@ -1518,6 +1518,9 @@
           "403": {
             "description": "The initiating user no longer manages the workspace."
           },
+          "409": {
+            "description": "Reconnect with the same Google account to preserve folder assignments."
+          },
           "502": {
             "description": "Google rejected the authorization."
           }
@@ -1576,14 +1579,11 @@
           "404": {
             "description": "Google Drive workspace integration was not found."
           },
-          "409": {
-            "description": "Google Drive is already connected."
-          },
           "503": {
             "description": "Google Drive OAuth or encryption is not configured."
           }
         },
-        "summary": "Start a workspace Google Drive OAuth connection",
+        "summary": "Connect or reauthorize workspace Google Drive while preserving folder assignments",
         "tags": ["integrations"]
       }
     },
