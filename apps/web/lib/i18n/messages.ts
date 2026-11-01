@@ -127,6 +127,10 @@ export const en = {
   "integrations.loadError": "Could not load workspace integrations.",
   "integrations.enabled": "Enabled",
   "integrations.connected": "Connected",
+  "integrations.connectionError": "Connection error",
+  "integrations.reconnect": "Reconnect",
+  "integrations.reconnectHint":
+    "Reconnect with the same Google account. Exports blocked by authorization will resume automatically.",
   "integrations.notEnabled": "Not enabled",
   "integrations.enable": "Enable",
   "integrations.enabling": "Enabling…",
@@ -732,6 +736,10 @@ export const ru: Record<MessageKey, string> = {
   "integrations.loadError": "Не удалось загрузить интеграции workspace.",
   "integrations.enabled": "Включён",
   "integrations.connected": "Подключён",
+  "integrations.connectionError": "Ошибка подключения",
+  "integrations.reconnect": "Переподключить",
+  "integrations.reconnectHint":
+    "Переподключите тот же Google-аккаунт. Экспорт, остановленный из-за авторизации, возобновится автоматически.",
   "integrations.notEnabled": "Не включён",
   "integrations.enable": "Включить",
   "integrations.enabling": "Включаю…",

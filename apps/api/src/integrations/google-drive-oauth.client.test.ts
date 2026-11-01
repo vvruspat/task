@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildGoogleDriveAuthorizationUrl,
+  GoogleDriveOAuthClient,
   GoogleDriveOAuthError,
   parseGoogleDriveAccessTokenGrant,
   parseGoogleDriveTokenGrant,
   parseGoogleDriveUserInfo,
 } from "./google-drive-oauth.client.js";
+import { IntegrationsConfigProvider, parseIntegrationsConfig } from "./integrations.config.js";
 import { hasRequiredGoogleDriveScopes } from "./plugins/google-drive.integration-plugin.js";
 
 const config = {
@@ -80,4 +82,31 @@ test("Google Drive external-file synchronization requires both data scopes", () 
     true,
   );
   assert.equal(hasRequiredGoogleDriveScopes(["https://www.googleapis.com/auth/drive.file"]), false);
+});
+
+test("only an invalid refresh grant requires reauthorization, without leaking Google responses", async (context) => {
+  const provider = new IntegrationsConfigProvider();
+  context.mock.method(provider, "getConfig", () =>
+    parseIntegrationsConfig({
+      GOOGLE_DRIVE_CLIENT_ID: config.clientId,
+      GOOGLE_DRIVE_CLIENT_SECRET: config.clientSecret,
+      GOOGLE_DRIVE_REDIRECT_URI: config.redirectUri,
+    }),
+  );
+  const client = new GoogleDriveOAuthClient(provider);
+  for (const [status, error, requiresReauthorization] of [
+    [400, "invalid_grant", true],
+    [400, "invalid_client", false],
+    [503, "temporarily_unavailable", false],
+  ] as const) {
+    context.mock.method(globalThis, "fetch", async () =>
+      Response.json({ error, error_description: "sensitive-provider-detail" }, { status }),
+    );
+    await assert.rejects(client.refreshAccessToken("private-refresh-token"), (failure: unknown) => {
+      assert.ok(failure instanceof GoogleDriveOAuthError);
+      assert.equal(failure.requiresReauthorization, requiresReauthorization);
+      assert.doesNotMatch(failure.message, /sensitive-provider-detail|private-refresh-token/u);
+      return true;
+    });
+  }
 });

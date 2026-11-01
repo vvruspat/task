@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.json": {
-    "mtime": 1787780119.516715,
-    "ast_hash": "bf20ddebe601ff6c8844476e148a04f1",
+    "mtime": 1793559140.09764,
+    "ast_hash": "4e02dece51d3e77b52b0ecc3135832e9",
     "semantic_hash": ""
   },
   "apps/api/src/app.contracts.ts": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "packages/api-client/src/generated/openapi.ts": {
-    "mtime": 1787780120.103198,
-    "ast_hash": "ecd56d223c4e90720512f980343b45b2",
+    "mtime": 1793559140.6603236,
+    "ast_hash": "ca011393505f7ec8babfa97a59d42cca",
     "semantic_hash": ""
   },
   "apps/api/src/comments/comments.contracts.ts": {
@@ -1290,8 +1290,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1786545937.9609919,
-    "ast_hash": "c54edfacd7c4bec793dd41a3979de496",
+    "mtime": 1793559137.7883196,
+    "ast_hash": "85f16c65d751ffc2e244df8e3517ad2c",
     "semantic_hash": ""
   },
   "docs/implementation-roadmap.md": {
@@ -1300,8 +1300,8 @@
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {
-    "mtime": 1783607153.6775455,
-    "ast_hash": "fc5b95b8ae17b98178c2e9bdb24306c2",
+    "mtime": 1793559062.065866,
+    "ast_hash": "607917775dbdc8bc7a3cd6a497fda72b",
     "semantic_hash": ""
   },
   "apps/api/src/telegram/telegram-mini-app-init-data.verifier.test.ts": {
@@ -2565,8 +2565,8 @@
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/messages.ts": {
-    "mtime": 1787780039.6288543,
-    "ast_hash": "408901a68d5752a65e473cf64af5de69",
+    "mtime": 1793558990.5701413,
+    "ast_hash": "ce0016d256c0ca483badfef3e6a5ec15",
     "semantic_hash": ""
   },
   "apps/web/lib/i18n/ui-copy.test.ts": {
@@ -3010,8 +3010,8 @@
     "semantic_hash": ""
   },
   "apps/web/components/workspace-integrations.tsx": {
-    "mtime": 1787774668.7524683,
-    "ast_hash": "0dd9da1551d69f10ce77f3c2965645b0",
+    "mtime": 1793558990.5744727,
+    "ast_hash": "9107cf121ca99f3628a30ac2118c6605",
     "semantic_hash": ""
   },
   "apps/web/lib/workspace-integrations.test.ts": {
@@ -3045,13 +3045,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.test.ts": {
-    "mtime": 1786480932.0145538,
-    "ast_hash": "9abe219a29eb7270c41537b59aa5d2a0",
+    "mtime": 1793559062.341647,
+    "ast_hash": "d5bc8a510da00db65a035a2d07caa9bc",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.client.ts": {
-    "mtime": 1784751507.8250492,
-    "ast_hash": "5878daaef656e8a7b0f1c26e2cf34a31",
+    "mtime": 1793558937.0466928,
+    "ast_hash": "451099049e65d9ebad4cc891f23ec488",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.contracts.ts": {
@@ -3060,8 +3060,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.controller.ts": {
-    "mtime": 1786480918.2513232,
-    "ast_hash": "bdfcb338505ebc4cf4fe1d4eab84508c",
+    "mtime": 1793558990.5689151,
+    "ast_hash": "a144d9ab2a34c1b70337d3a4d43feca8",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.dto.test.ts": {
@@ -3080,8 +3080,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-oauth.service.ts": {
-    "mtime": 1786480879.0451632,
-    "ast_hash": "0e9182f83e45de93324fa364ff7ae498",
+    "mtime": 1793559137.7696595,
+    "ast_hash": "a00f1ef080738853375944de1564df5c",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/integration-connections.contracts.ts": {
@@ -3275,8 +3275,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-access.service.ts": {
-    "mtime": 1786480879.0447378,
-    "ast_hash": "7e1b29b418f10d1e7dc810bedd18ddb4",
+    "mtime": 1793558937.0659738,
+    "ast_hash": "005e91720c91aafdad59abff922a305e",
     "semantic_hash": ""
   },
   "apps/api/src/integrations/google-drive-reference.service.test.ts": {
@@ -4077,6 +4077,11 @@
   "apps/web/components/yandex-disk-folder-assignment.tsx": {
     "mtime": 1787774668.7527287,
     "ast_hash": "652384e05cfe81fbcdcc36d2ef67c26d",
+    "semantic_hash": ""
+  },
+  "apps/api/src/integrations/google-drive-reconnect.integration.test.ts": {
+    "mtime": 1793559137.7465835,
+    "ast_hash": "0706a758fe93125f104780c9dcd80ca0",
     "semantic_hash": ""
   }
 }

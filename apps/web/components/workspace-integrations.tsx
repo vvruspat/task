@@ -306,6 +306,9 @@ export function WorkspaceIntegrations({
       {catalog.map((item) => {
         const installed = item.installation !== null;
         const connected = item.installation?.status === "connected";
+        const connectionError = item.installation?.status === "error";
+        const reconnectGoogleDrive =
+          item.pluginKey === "google-drive" && item.connections.length > 0;
         const canConnectCloudDrive =
           (item.pluginKey === "google-drive" || item.pluginKey === "yandex-disk") &&
           installed &&
@@ -333,12 +336,18 @@ export function WorkspaceIntegrations({
               <Flex direction="column" gap="1">
                 <Flex align="center" gap="2">
                   <Text weight="bold">{item.name}</Text>
-                  <Badge color={connected ? "green" : installed ? "amber" : "gray"}>
-                    {connected
-                      ? t("integrations.connected")
-                      : installed
-                        ? t("integrations.enabled")
-                        : t("integrations.notEnabled")}
+                  <Badge
+                    color={
+                      connectionError ? "red" : connected ? "green" : installed ? "amber" : "gray"
+                    }
+                  >
+                    {connectionError
+                      ? t("integrations.connectionError")
+                      : connected
+                        ? t("integrations.connected")
+                        : installed
+                          ? t("integrations.enabled")
+                          : t("integrations.notEnabled")}
                   </Badge>
                 </Flex>
                 <Text color="gray" size="2">
@@ -376,6 +385,17 @@ export function WorkspaceIntegrations({
                     </Text>
                   </Flex>
                 )}
+                {item.installation?.lastError && (
+                  <Text color="red" size="2">
+                    {item.installation.lastError}
+                  </Text>
+                )}
+                {reconnectGoogleDrive &&
+                  (connectionError || (health?.deliveries.deadCount ?? 0) > 0) && (
+                    <Text color="gray" size="2">
+                      {t("integrations.reconnectHint")}
+                    </Text>
+                  )}
                 {(canConfigureGoogleDrive || canConfigureYandexDisk) && (
                   <Text color="gray" size="2">
                     {rootFolder === null
@@ -423,7 +443,11 @@ export function WorkspaceIntegrations({
                   type="button"
                 >
                   <Plug size={14} />
-                  {pending ? t("integrations.connecting") : t("integrations.connect")}
+                  {pending
+                    ? t("integrations.connecting")
+                    : reconnectGoogleDrive
+                      ? t("integrations.reconnect")
+                      : t("integrations.connect")}
                 </Button>
               ) : canConnectTelegram ? (
                 <Button
@@ -440,20 +464,32 @@ export function WorkspaceIntegrations({
                       : t("integrations.telegramConnect")}
                 </Button>
               ) : canConfigureGoogleDrive ? (
-                <Button
-                  disabled={pendingPluginKey !== null}
-                  onClick={() => void configureGoogleDriveRoot(item)}
-                  size="1"
-                  type="button"
-                  variant="soft"
-                >
-                  <FolderOpen size={14} />
-                  {pending
-                    ? t("integrations.openingPicker")
-                    : rootFolder === null
-                      ? t("integrations.selectRootFolder")
-                      : t("integrations.changeRootFolder")}
-                </Button>
+                <Flex align="center" gap="2" wrap="wrap">
+                  <Button
+                    disabled={pendingPluginKey !== null}
+                    onClick={() => void configureGoogleDriveRoot(item)}
+                    size="1"
+                    type="button"
+                    variant="soft"
+                  >
+                    <FolderOpen size={14} />
+                    {pending
+                      ? t("integrations.openingPicker")
+                      : rootFolder === null
+                        ? t("integrations.selectRootFolder")
+                        : t("integrations.changeRootFolder")}
+                  </Button>
+                  <Button
+                    disabled={pendingPluginKey !== null}
+                    onClick={() => void connectCloudDrive(item)}
+                    size="1"
+                    type="button"
+                    variant="soft"
+                  >
+                    <Plug size={14} />
+                    {pending ? t("integrations.connecting") : t("integrations.reconnect")}
+                  </Button>
+                </Flex>
               ) : canConfigureYandexDisk ? (
                 <Flex align="center" gap="2" wrap="wrap">
                   <TextField.Root

@@ -423,7 +423,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Start a workspace Google Drive OAuth connection */
+    /** Connect or reauthorize workspace Google Drive while preserving folder assignments */
     post: operations["GoogleDriveOAuthController_start"];
     delete?: never;
     options?: never;
@@ -4322,13 +4322,6 @@ export interface operations {
       };
       /** @description Google Drive workspace integration was not found. */
       404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Google Drive is already connected. */
-      409: {
         headers: {
           [name: string]: unknown;
         };
